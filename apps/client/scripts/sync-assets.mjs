@@ -38,6 +38,14 @@ const files = [
     "maps/layouts/078_viridiancity_layout/preview.png",
     "maps/viridian-city/preview.png",
   ],
+  [
+    "maps/layouts/004_pallettown_professoroakslab_layout/layout.json",
+    "maps/oak-lab/layout.json",
+  ],
+  [
+    "maps/layouts/004_pallettown_professoroakslab_layout/preview.png",
+    "maps/oak-lab/preview.png",
+  ],
   ["overworld/000_red_normal.png", "overworld/red-normal.png"],
 
   ["tilesets/00_general/tiles.4bpp", "tilesets/general/tiles.4bpp"],
@@ -87,6 +95,34 @@ const files = [
     "tilesets/02_viridiancity/attributes.bin",
     "tilesets/viridian-city/attributes.bin",
   ],
+
+  ["tilesets/12_building/tiles.4bpp", "tilesets/building/tiles.4bpp"],
+  [
+    "tilesets/12_building/palettes.gbapal",
+    "tilesets/building/palettes.gbapal",
+  ],
+  [
+    "tilesets/12_building/metatiles.bin",
+    "tilesets/building/metatiles.bin",
+  ],
+  [
+    "tilesets/12_building/attributes.bin",
+    "tilesets/building/attributes.bin",
+  ],
+
+  ["tilesets/21_lab/tiles.4bpp", "tilesets/lab/tiles.4bpp"],
+  [
+    "tilesets/21_lab/palettes.gbapal",
+    "tilesets/lab/palettes.gbapal",
+  ],
+  [
+    "tilesets/21_lab/metatiles.bin",
+    "tilesets/lab/metatiles.bin",
+  ],
+  [
+    "tilesets/21_lab/attributes.bin",
+    "tilesets/lab/attributes.bin",
+  ],
 ];
 
 const optionalFiles = [
@@ -101,6 +137,10 @@ const optionalFiles = [
   [
     "maps/world/189_viridiancity/world.json",
     "maps/viridian-city/world.json",
+  ],
+  [
+    "maps/world/257_pallettown_professoroakslab/world.json",
+    "maps/oak-lab/world.json",
   ],
 ];
 

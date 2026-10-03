@@ -103,6 +103,20 @@ const VIRIDIAN_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/viridian-city/attributes.bin",
 };
 
+const BUILDING_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/building/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/building/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/building/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/building/attributes.bin",
+};
+
+const LAB_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/lab/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/lab/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/lab/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/lab/attributes.bin",
+};
+
 export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
   "pallet-town": {
     id: "pallet-town",
@@ -140,6 +154,18 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: VIRIDIAN_TILESET,
     },
   },
+  "oak-lab": {
+    id: "oak-lab",
+    label: "Professor Oak's Lab",
+    layoutUrl: "/game-assets/maps/oak-lab/layout.json",
+    previewUrl: "/game-assets/maps/oak-lab/preview.png",
+    worldUrl: "/game-assets/maps/oak-lab/world.json",
+    spawn: { x: 6, y: 11 },
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: LAB_TILESET,
+    },
+  },
 };
 
 export const PLAYER_SPRITE = {
@@ -161,12 +187,6 @@ export const DIRECTION_DELTA: Record<
   east: { x: 1, y: 0 },
 };
 
-/**
- * First real overworld connections.
- *
- * These use the decoded FireRed layout edges. Later this table will be
- * generated from MapConnections rather than maintained by hand.
- */
 export function resolveWorldTransition(
   mapId: string,
   x: number,
@@ -222,6 +242,44 @@ export function resolveWorldTransition(
     return {
       mapId: "route-1",
       spawn: { x: x - 12, y: 0 },
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Supported door warps for the first story slice.
+ *
+ * The semantic extractor now exports every ROM warp. Once the full map
+ * registry is generated for the client this fallback table can be replaced
+ * by target_map + target warp lookup without changing the movement engine.
+ */
+export function resolveWarpTransitionAt(
+  mapId: string,
+  x: number,
+  y: number,
+): WorldTransition | null {
+  if (
+    mapId === "pallet-town" &&
+    x === 16 &&
+    y === 13
+  ) {
+    return {
+      mapId: "oak-lab",
+      spawn: { x: 6, y: 11 },
+    };
+  }
+
+  if (
+    mapId === "oak-lab" &&
+    y === 12 &&
+    x >= 5 &&
+    x <= 7
+  ) {
+    return {
+      mapId: "pallet-town",
+      spawn: { x: 16, y: 14 },
     };
   }
 

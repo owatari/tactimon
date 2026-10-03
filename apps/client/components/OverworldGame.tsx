@@ -12,18 +12,24 @@ import {
   Direction,
   MapLayout,
   PLAYER_SPRITE,
+  resolveWarpTransitionAt,
   resolveWorldTransition,
   TILE_SIZE,
   WORLD_MAPS,
   WORLD_ZOOM,
   WorldMapData,
   WorldObject,
+  WorldTransition,
 } from "@/lib/maps";
+import {
+  storyStarterSummary,
+  type StoryState,
+} from "@/lib/story";
 
 const STEP_DURATION_MS = 142;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
-const INTERACTION_DURATION_MS = 1800;
+const INTERACTION_DURATION_MS = 2200;
 
 const IDLE_FRAME: Record<Direction, number> = {
   south: 0,
@@ -37,6 +43,13 @@ const WALK_FRAME: Record<Direction, [number, number]> = {
   north: [5, 6],
   west: [7, 8],
   east: [7, 8],
+};
+
+type Props = {
+  story: StoryState;
+  paused: boolean;
+  onRequestStarterChoice: () => void;
+  onFirstBattleTrigger: () => void;
 };
 
 type RuntimePlayer = {
@@ -55,6 +68,20 @@ type RuntimePlayer = {
   stepStartedAt: number;
   foot: 0 | 1;
   blockedUntil: number;
+};
+
+type StoryObject = {
+  id: string;
+  kind: "oak" | "rival" | "starter";
+  label: string;
+  x: number;
+  y: number;
+  spriteUrl: string;
+  frameWidth: number;
+  frameHeight: number;
+  sheetWidth: number;
+  sheetHeight: number;
+  starter?: "bulbasaur" | "charmander" | "squirtle";
 };
 
 function createPlayer(
@@ -144,16 +171,91 @@ function displayObjectName(object: WorldObject): string {
     .join(" ");
 }
 
-export function OverworldGame() {
+function labStoryObjects(story: StoryState): StoryObject[] {
+  const objects: StoryObject[] = [
+    {
+      id: "oak",
+      kind: "oak",
+      label: "Prof. Oak",
+      x: 6,
+      y: 3,
+      spriteUrl: "/game-assets/overworld/071_prof_oak.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+    },
+  ];
+
+  if (!story.firstBattleComplete) {
+    objects.push({
+      id: "rival",
+      kind: "rival",
+      label: "Blue",
+      x: 5,
+      y: 4,
+      spriteUrl: "/game-assets/overworld/072_blue.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+    });
+  }
+
+  const starters = [
+    { starter: "bulbasaur" as const, x: 8 },
+    { starter: "squirtle" as const, x: 9 },
+    { starter: "charmander" as const, x: 10 },
+  ];
+
+  for (const item of starters) {
+    const takenByPlayer = story.starter === item.starter;
+    const takenByRival = story.rivalStarter === item.starter;
+
+    if (takenByPlayer || takenByRival) {
+      continue;
+    }
+
+    objects.push({
+      id: `starter-${item.starter}`,
+      kind: "starter",
+      label:
+        item.starter.charAt(0).toUpperCase() +
+        item.starter.slice(1),
+      starter: item.starter,
+      x: item.x,
+      y: 4,
+      spriteUrl: "/game-assets/overworld/092_item_ball.png",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 16,
+      sheetHeight: 16,
+    });
+  }
+
+  return objects;
+}
+
+export function OverworldGame({
+  story,
+  paused,
+  onRequestStarterChoice,
+  onFirstBattleTrigger,
+}: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
   const playerElementRef = useRef<HTMLDivElement>(null);
   const foregroundRef = useRef<HTMLCanvasElement>(null);
 
   const layoutRef = useRef<MapLayout | null>(null);
-  const worldDataRef = useRef<WorldMapData | null>(null);
   const worldObjectsRef = useRef<WorldObject[]>([]);
+  const storyObjectsRef = useRef<StoryObject[]>([]);
   const mapIdRef = useRef("pallet-town");
+  const storyRef = useRef(story);
+  const pausedRef = useRef(paused);
+  const pendingWarpRef = useRef<WorldTransition | null>(null);
+  const battleTriggerRef = useRef(false);
+
   const playerRef = useRef(
     createPlayer(
       WORLD_MAPS["pallet-town"].spawn.x,
@@ -176,6 +278,31 @@ export function OverworldGame() {
 
   const mapDefinition = WORLD_MAPS[mapId];
   const visibleObjects = renderableObjects(worldData);
+  const storyObjects =
+    mapId === "oak-lab" ? labStoryObjects(story) : [];
+
+  useEffect(() => {
+    storyRef.current = story;
+    storyObjectsRef.current =
+      mapIdRef.current === "oak-lab"
+        ? labStoryObjects(story)
+        : [];
+
+    if (story.firstBattleComplete) {
+      battleTriggerRef.current = false;
+    }
+  }, [story]);
+
+  useEffect(() => {
+    pausedRef.current = paused;
+    if (paused) {
+      pressedRef.current = [];
+    }
+  }, [paused]);
+
+  useEffect(() => {
+    storyObjectsRef.current = storyObjects;
+  }, [storyObjects]);
 
   const setDirectionPressed = useCallback(
     (direction: Direction, pressed: boolean) => {
@@ -206,15 +333,59 @@ export function OverworldGame() {
   }, []);
 
   const interact = useCallback(() => {
+    if (pausedRef.current) {
+      return;
+    }
+
     const player = playerRef.current;
     const delta = DIRECTION_DELTA[player.facing];
     const targetX = player.tileX + delta.x;
     const targetY = player.tileY + delta.y;
 
+    const storyObject = storyObjectsRef.current.find(
+      (candidate) =>
+        candidate.x === targetX && candidate.y === targetY,
+    );
+
+    if (storyObject) {
+      if (
+        storyObject.kind === "starter" &&
+        !storyRef.current.starter
+      ) {
+        onRequestStarterChoice();
+        return;
+      }
+
+      if (storyObject.kind === "oak") {
+        if (!storyRef.current.starter) {
+          onRequestStarterChoice();
+        } else {
+          showInteraction(
+            storyStarterSummary(storyRef.current) ??
+              "Oak: Cuide bem do seu primeiro Pokémon.",
+          );
+        }
+        return;
+      }
+
+      if (storyObject.kind === "rival") {
+        showInteraction(
+          storyRef.current.starter
+            ? "Blue: Quando você tentar sair, vamos ver quem treinou melhor."
+            : "Blue: Ei! Escolha logo o seu Pokémon.",
+        );
+        return;
+      }
+
+      showInteraction(
+        `${storyObject.label} ficou no laboratório de Oak.`,
+      );
+      return;
+    }
+
     const object = worldObjectsRef.current.find(
       (candidate) =>
-        candidate.x === targetX &&
-        candidate.y === targetY,
+        candidate.x === targetX && candidate.y === targetY,
     );
 
     if (object) {
@@ -222,7 +393,10 @@ export function OverworldGame() {
         `${displayObjectName(object)} · diálogo ainda não importado`,
       );
     }
-  }, [showInteraction]);
+  }, [
+    onRequestStarterChoice,
+    showInteraction,
+  ]);
 
   const loadMap = useCallback(
     async (
@@ -263,13 +437,18 @@ export function OverworldGame() {
 
         mapIdRef.current = nextMapId;
         layoutRef.current = nextLayout;
-        worldDataRef.current = nextWorldData;
-        worldObjectsRef.current = renderableObjects(nextWorldData);
+        worldObjectsRef.current =
+          renderableObjects(nextWorldData);
+        storyObjectsRef.current =
+          nextMapId === "oak-lab"
+            ? labStoryObjects(storyRef.current)
+            : [];
         playerRef.current = createPlayer(
           spawn.x,
           spawn.y,
           facing,
         );
+        pendingWarpRef.current = null;
         cameraPositionRef.current.ready = false;
 
         setMapId(nextMapId);
@@ -329,6 +508,10 @@ export function OverworldGame() {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (pausedRef.current) {
+        return;
+      }
+
       const lowerKey = event.key.toLowerCase();
 
       if (
@@ -373,6 +556,14 @@ export function OverworldGame() {
     let animationFrame = 0;
     let previousTime = performance.now();
 
+    const isOccupied = (x: number, y: number) =>
+      worldObjectsRef.current.some(
+        (object) => object.x === x && object.y === y,
+      ) ||
+      storyObjectsRef.current.some(
+        (object) => object.x === x && object.y === y,
+      );
+
     const canWalk = (
       activeLayout: MapLayout,
       x: number,
@@ -392,9 +583,7 @@ export function OverworldGame() {
         return false;
       }
 
-      return !worldObjectsRef.current.some(
-        (object) => object.x === x && object.y === y,
-      );
+      return !isOccupied(x, y);
     };
 
     const startStep = (
@@ -404,23 +593,39 @@ export function OverworldGame() {
       const activeLayout = layoutRef.current;
       const player = playerRef.current;
 
-      if (!activeLayout || transitioningRef.current) {
+      if (
+        !activeLayout ||
+        transitioningRef.current ||
+        pausedRef.current
+      ) {
         return false;
       }
 
       player.facing = direction;
 
-      const transition = resolveWorldTransition(
+      const edgeTransition = resolveWorldTransition(
         mapIdRef.current,
         player.tileX,
         player.tileY,
         direction,
       );
 
-      if (transition) {
+      if (edgeTransition) {
+        if (
+          mapIdRef.current === "pallet-town" &&
+          edgeTransition.mapId === "route-1" &&
+          !storyRef.current.starter
+        ) {
+          showInteraction(
+            "Prof. Oak: Espere! Passe no meu laboratório antes de sair de Pallet.",
+          );
+          player.blockedUntil = now + 500;
+          return false;
+        }
+
         void loadMap(
-          transition.mapId,
-          transition.spawn,
+          edgeTransition.mapId,
+          edgeTransition.spawn,
           direction,
         );
         return false;
@@ -429,8 +634,13 @@ export function OverworldGame() {
       const delta = DIRECTION_DELTA[direction];
       const nextX = player.tileX + delta.x;
       const nextY = player.tileY + delta.y;
+      const warp = resolveWarpTransitionAt(
+        mapIdRef.current,
+        nextX,
+        nextY,
+      );
 
-      if (!canWalk(activeLayout, nextX, nextY)) {
+      if (!warp && !canWalk(activeLayout, nextX, nextY)) {
         player.blockedUntil = now + BLOCKED_RETRY_MS;
         return false;
       }
@@ -444,8 +654,33 @@ export function OverworldGame() {
       player.targetTileY = nextY;
       player.stepStartedAt = now;
       player.foot = player.foot === 0 ? 1 : 0;
+      pendingWarpRef.current = warp;
 
       return true;
+    };
+
+    const maybeTriggerLabBattle = () => {
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+
+      if (
+        mapIdRef.current !== "oak-lab" ||
+        !currentStory.starter ||
+        currentStory.firstBattleComplete ||
+        battleTriggerRef.current
+      ) {
+        return;
+      }
+
+      if (
+        player.tileY === 8 &&
+        player.tileX >= 5 &&
+        player.tileX <= 7
+      ) {
+        battleTriggerRef.current = true;
+        resetInput();
+        onFirstBattleTrigger();
+      }
     };
 
     const renderScene = (
@@ -486,12 +721,27 @@ export function OverworldGame() {
           player.tileX = player.targetTileX;
           player.tileY = player.targetTileY;
           player.moving = false;
+
+          const pendingWarp = pendingWarpRef.current;
+          pendingWarpRef.current = null;
+
+          if (pendingWarp) {
+            void loadMap(
+              pendingWarp.mapId,
+              pendingWarp.spawn,
+              player.facing,
+            );
+            return;
+          }
+
+          maybeTriggerLabBattle();
         }
       }
 
       if (
         !player.moving &&
         !transitioningRef.current &&
+        !pausedRef.current &&
         now >= player.blockedUntil
       ) {
         const intent =
@@ -566,13 +816,19 @@ export function OverworldGame() {
     animationFrame = requestAnimationFrame(tick);
 
     return () => cancelAnimationFrame(animationFrame);
-  }, [loadMap]);
+  }, [
+    loadMap,
+    onFirstBattleTrigger,
+    resetInput,
+    showInteraction,
+  ]);
 
   const handlePadPointerDown = (
     event: React.PointerEvent<HTMLButtonElement>,
     direction: Direction,
   ) => {
     event.preventDefault();
+    if (pausedRef.current) return;
     event.currentTarget.setPointerCapture(event.pointerId);
     setDirectionPressed(direction, true);
   };
@@ -618,7 +874,7 @@ export function OverworldGame() {
 
               return (
                 <div
-                  key={object.local_id}
+                  key={`world-${object.local_id}`}
                   className="world-object"
                   title={displayObjectName(object)}
                   style={{
@@ -637,6 +893,27 @@ export function OverworldGame() {
                 />
               );
             })}
+
+            {storyObjects.map((object) => (
+              <div
+                key={object.id}
+                className="world-object story-object"
+                title={object.label}
+                style={{
+                  left: object.x * TILE_SIZE,
+                  top:
+                    object.y * TILE_SIZE +
+                    TILE_SIZE -
+                    object.frameHeight,
+                  width: object.frameWidth,
+                  height: object.frameHeight,
+                  zIndex: 100 + object.y * TILE_SIZE,
+                  backgroundImage: `url("${object.spriteUrl}")`,
+                  backgroundSize:
+                    `${object.sheetWidth}px ${object.sheetHeight}px`,
+                }}
+              />
+            ))}
 
             <div
               ref={playerElementRef}

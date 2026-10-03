@@ -1,4 +1,4 @@
-import { OverworldGame } from "@/components/OverworldGame";
+import { GameClient } from "@/components/GameClient";
 
 export default function HomePage() {
   return (
@@ -8,16 +8,17 @@ export default function HomePage() {
           <span className="eyebrow">TACTIMON ONLINE</span>
           <h1>Kanto Overworld</h1>
         </div>
-        <div className="build-badge">Pallet → Route 1 → Viridian</div>
+        <div className="build-badge">
+          Pallet · Oak Lab · Primeiro combate
+        </div>
       </header>
 
-      <section className="game-card" aria-label="Tactimon overworld">
-        <OverworldGame />
+      <section className="game-card" aria-label="Tactimon game client">
+        <GameClient />
       </section>
 
       <footer className="footer-note">
-        Overworld em construção: movimento contínuo, camadas reais do FireRed,
-        colisão e conexões entre mapas.
+        Overworld + história inicial + primeiro duelo tático.
       </footer>
     </main>
   );
