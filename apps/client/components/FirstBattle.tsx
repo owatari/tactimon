@@ -1190,7 +1190,9 @@ export function FirstBattle({
                             <span>
                               ×{amount} · {item.kind === "heal"
                                 ? `+${item.heal} HP`
-                                : "captura com HP ≤10%"}
+                                : state.captureAllowed
+                                  ? "captura com HP ≤10%"
+                                  : "party 6/6"}
                             </span>
                           </button>
                         );
@@ -1292,7 +1294,7 @@ export function FirstBattle({
                     ? `${rival.displayName} foi derrotado.`
                     : `${player.displayName} venceu o primeiro duelo.`
                   : encounter.kind === "wild"
-                    ? `${player.displayName} foi derrotado.`
+                    ? "Seu time foi derrotado."
                     : "Blue venceu desta vez."}
             </h3>
             <p>
