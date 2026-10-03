@@ -71,11 +71,24 @@ Scratch and Growl use useful visual effects referenced by the EoS move-animation
 
 Raw extraction has no third-party Python dependency.
 
-To turn selected WAN effects into PNG sprite sheets, install the optional renderer dependencies:
+To turn selected WAN effects into PNG sprite sheets, use **CPython 3.12 or 3.13**. The pinned SkyTemple Rust package publishes Windows wheels for those versions; Python 3.14 currently falls back to a local Rust build and may fail.
 
-```bash
-python -m pip install skytemple-files pillow
+On Windows, first check:
+
+```powershell
+py -0p
 ```
+
+If Python 3.12 is installed, create a dedicated environment:
+
+```powershell
+py -3.12 -m venv .venv-pmd
+.\.venv-pmd\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install --only-binary=:all: -r tools/pmd-vfx-extractor/requirements-render.txt
+```
+
+`--only-binary=:all:` is intentional: it prevents `pip` from attempting to compile `skytemple-rust` with Cargo. If no compatible wheel exists, installation fails immediately with a clear message instead of entering a Rust build.
 
 Then:
 

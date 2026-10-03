@@ -3,8 +3,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import platform
 import shutil
 import struct
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -352,10 +354,19 @@ def render_with_skytemple(
             EffectWanHandler,
         )
     except ImportError as exc:
+        python_tag = (
+            f"{sys.version_info.major}."
+            f"{sys.version_info.minor}."
+            f"{sys.version_info.micro}"
+        )
         raise RuntimeError(
-            "Rendering requires skytemple-files and Pillow. "
-            "Install them with: "
-            "python -m pip install skytemple-files pillow"
+            "Rendering requires the optional SkyTemple renderer. "
+            f"Current Python: {python_tag} ({platform.machine()}). "
+            "Use a CPython 3.12 or 3.13 virtual environment and install "
+            "the pinned binary dependencies with: "
+            "python -m pip install --only-binary=:all: "
+            "-r tools/pmd-vfx-extractor/requirements-render.txt. "
+            "Do not let pip compile skytemple-rust from source."
         ) from exc
 
     rendered_dir.mkdir(
