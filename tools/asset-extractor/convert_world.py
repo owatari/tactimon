@@ -1697,7 +1697,6 @@ def main() -> int:
 
     if args.raw_previews:
         previews = render_raw_previews(
-            extracted,
             blocks,
             output,
             args.max_previews,
