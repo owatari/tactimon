@@ -1374,3 +1374,19 @@ h1 {
     transform: scale(1.15) !important;
   }
 }
+
+
+.move-card .move-description {
+  min-height: 2.7em;
+  margin-top: 8px;
+  color: rgba(241, 244, 234, 0.78);
+  line-height: 1.4;
+}
+
+.battle-vfx-proxy {
+  opacity: 0.92;
+}
+
+.battle-vfx-canonical {
+  opacity: 1;
+}

@@ -18,6 +18,10 @@ export type DuelMoveId =
   | "growl"
   | "tail-whip";
 
+export type DuelMoveTargeting = "single-enemy";
+export type DuelMoveMotion = "contact" | "status";
+export type DuelStatId = "attack" | "defense";
+
 export interface DuelPoint {
   x: number;
   y: number;
@@ -40,13 +44,51 @@ export interface DuelItem {
 export interface DuelMove {
   id: DuelMoveId;
   name: string;
+  type: "normal";
   category: "physical" | "status";
+  targeting: DuelMoveTargeting;
+  motion: DuelMoveMotion;
+  vfxId: DuelMoveId;
+  description: string;
   power: number | null;
   apCost: number;
   minRange: number;
   maxRange: number;
   effect?: "attack-down" | "defense-down";
 }
+
+export type DuelPresentationEvent =
+  | {
+      kind: "movement";
+      actorId: string;
+      from: DuelPoint;
+      to: DuelPoint;
+      cost: number;
+    }
+  | {
+      kind: "move";
+      actorId: string;
+      moveId: DuelMoveId;
+      targetIds: string[];
+      vfxId: DuelMoveId;
+      motion: DuelMoveMotion;
+      results: Array<{
+        targetId: string;
+        damage: number;
+        fainted: boolean;
+        statChanges: Array<{
+          stat: DuelStatId;
+          delta: number;
+        }>;
+      }>;
+    }
+  | {
+      kind: "item";
+      actorId: string;
+      itemId: DuelItemId;
+      targetIds: string[];
+      healed: number;
+    };
 
 export interface DuelUnit {
   id: string;
@@ -117,6 +159,12 @@ export interface DuelActionResult {
   state: DuelState;
   accepted: boolean;
   reason?: string;
+  presentation?: DuelPresentationEvent;
+}
+
+export interface DuelAiTurnResult {
+  state: DuelState;
+  steps: DuelActionResult[];
 }
 
 const LEVEL = 5;
@@ -177,7 +225,12 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
   tackle: {
     id: "tackle",
     name: "Tackle",
+    type: "normal",
     category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Avança sobre um inimigo adjacente e causa dano físico.",
     power: 40,
     apCost: 4,
     minRange: 1,
@@ -186,7 +239,12 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
   scratch: {
     id: "scratch",
     name: "Scratch",
+    type: "normal",
     category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "scratch",
+    description: "Golpe de contato em um inimigo adjacente.",
     power: 40,
     apCost: 4,
     minRange: 1,
@@ -195,7 +253,12 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
   growl: {
     id: "growl",
     name: "Growl",
+    type: "normal",
     category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description: "Intimida um inimigo próximo e reduz seu Attack em 1 estágio.",
     power: null,
     apCost: 2,
     minRange: 1,
@@ -205,7 +268,12 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
   "tail-whip": {
     id: "tail-whip",
     name: "Tail Whip",
+    type: "normal",
     category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "tail-whip",
+    description: "Distrai um inimigo próximo e reduz sua Defense em 1 estágio.",
     power: null,
     apCost: 2,
     minRange: 1,
@@ -777,7 +845,17 @@ export function applyDuelAction(
     );
 
     resolveTurnEnd(state, actor);
-    return { state, accepted: true };
+    return {
+      state,
+      accepted: true,
+      presentation: {
+        kind: "item",
+        actorId: actor.id,
+        itemId: item.id,
+        targetIds: [target.id],
+        healed,
+      },
+    };
   }
 
   if (action.kind === "move") {
@@ -795,6 +873,7 @@ export function applyDuelAction(
       };
     }
 
+    const from = { ...actor.position };
     const cost = manhattanDistance(
       actor.position,
       action.to,
@@ -807,7 +886,17 @@ export function applyDuelAction(
       `${actor.displayName} se moveu ${cost} tile${cost === 1 ? "" : "s"}.`,
     );
 
-    return { state, accepted: true };
+    return {
+      state,
+      accepted: true,
+      presentation: {
+        kind: "movement",
+        actorId: actor.id,
+        from,
+        to: { ...action.to },
+        cost,
+      },
+    };
   }
 
   const move = DUEL_MOVES[action.moveId];
@@ -855,8 +944,14 @@ export function applyDuelAction(
 
   actor.ap -= move.apCost;
 
+  let damage = 0;
+  const statChanges: Array<{
+    stat: DuelStatId;
+    delta: number;
+  }> = [];
+
   if (move.category === "physical") {
-    const damage = calculateDamage(actor, target, move);
+    damage = calculateDamage(actor, target, move);
     target.hp = Math.max(0, target.hp - damage);
 
     appendLog(
@@ -873,26 +968,55 @@ export function applyDuelAction(
       state.winner = actor.side;
     }
   } else if (move.effect === "attack-down") {
+    const before = target.attackStage;
     target.attackStage = Math.max(
       -MAX_STAGE,
       target.attackStage - 1,
     );
+    statChanges.push({
+      stat: "attack",
+      delta: target.attackStage - before,
+    });
     appendLog(
       state,
       `${move.name} reduziu o Attack de ${target.displayName}.`,
     );
   } else if (move.effect === "defense-down") {
+    const before = target.defenseStage;
     target.defenseStage = Math.max(
       -MAX_STAGE,
       target.defenseStage - 1,
     );
+    statChanges.push({
+      stat: "defense",
+      delta: target.defenseStage - before,
+    });
     appendLog(
       state,
       `${move.name} reduziu a Defense de ${target.displayName}.`,
     );
   }
 
-  return { state, accepted: true };
+  return {
+    state,
+    accepted: true,
+    presentation: {
+      kind: "move",
+      actorId: actor.id,
+      moveId: move.id,
+      targetIds: [target.id],
+      vfxId: move.vfxId,
+      motion: move.motion,
+      results: [
+        {
+          targetId: target.id,
+          damage,
+          fainted: target.hp <= 0,
+          statChanges,
+        },
+      ],
+    },
+  };
 }
 
 function attackMoveFor(unit: DuelUnit): DuelMoveId {
@@ -938,25 +1062,35 @@ function bestAiDestination(
   );
 }
 
-export function resolveSimpleAiTurn(
+export function resolveSimpleAiTurnDetailed(
   input: DuelState,
-): DuelState {
+): DuelAiTurnResult {
   let state = input;
+  const steps: DuelActionResult[] = [];
   let actor = getActiveDuelUnit(state);
+
+  const run = (action: DuelAction): DuelActionResult => {
+    const result = applyDuelAction(state, action);
+    if (result.accepted) {
+      state = result.state;
+      steps.push(result);
+    }
+    return result;
+  };
 
   if (
     state.status !== "active" ||
     !actor ||
     actor.side !== "rival"
   ) {
-    return state;
+    return { state, steps };
   }
 
   const target = state.units.find(
     (unit) => unit.side === "player" && unit.hp > 0,
   );
   if (!target) {
-    return state;
+    return { state, steps };
   }
 
   const attackMoveId = attackMoveFor(actor);
@@ -974,24 +1108,24 @@ export function resolveSimpleAiTurn(
     );
 
     if (destination) {
-      state = applyDuelAction(state, {
+      run({
         kind: "move",
         unitId: actor.id,
         to: destination,
-      }).state;
+      });
       actor = getActiveDuelUnit(state);
     }
   }
 
   if (!actor || actor.side !== "rival") {
-    return state;
+    return { state, steps };
   }
 
   const currentTarget = state.units.find(
     (unit) => unit.side === "player" && unit.hp > 0,
   );
   if (!currentTarget) {
-    return state;
+    return { state, steps };
   }
 
   const distance = manhattanDistance(
@@ -1003,21 +1137,21 @@ export function resolveSimpleAiTurn(
     actor.ap >= attackMove.apCost &&
     distance <= attackMove.maxRange
   ) {
-    state = applyDuelAction(state, {
+    run({
       kind: "use-move",
       unitId: actor.id,
       moveId: attackMoveId,
       targetId: currentTarget.id,
-    }).state;
+    });
   }
 
   if (state.status === "finished") {
-    return state;
+    return { state, steps };
   }
 
   actor = getActiveDuelUnit(state);
   if (!actor || actor.side !== "rival") {
-    return state;
+    return { state, steps };
   }
 
   const statusMoveId = statusMoveFor(actor);
@@ -1036,12 +1170,12 @@ export function resolveSimpleAiTurn(
       actor.ap >= statusMove.apCost &&
       statusDistance <= statusMove.maxRange
     ) {
-      state = applyDuelAction(state, {
+      run({
         kind: "use-move",
         unitId: actor.id,
         moveId: statusMoveId,
         targetId: refreshedTarget.id,
-      }).state;
+      });
     }
   }
 
@@ -1050,11 +1184,17 @@ export function resolveSimpleAiTurn(
     state.status === "active" &&
     actor?.side === "rival"
   ) {
-    state = applyDuelAction(state, {
+    run({
       kind: "end-turn",
       unitId: actor.id,
-    }).state;
+    });
   }
 
-  return state;
+  return { state, steps };
+}
+
+export function resolveSimpleAiTurn(
+  input: DuelState,
+): DuelState {
+  return resolveSimpleAiTurnDetailed(input).state;
 }

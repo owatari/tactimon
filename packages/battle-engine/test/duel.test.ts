@@ -6,6 +6,7 @@ import {
   getReachableCells,
   manhattanDistance,
   resolveSimpleAiTurn,
+  resolveSimpleAiTurnDetailed,
   rivalStarterFor,
 } from "../src/duel";
 
@@ -79,6 +80,59 @@ describe("starter duel", () => {
     ).toBe(false);
   });
 
+  it("returns presentation data for a resolved move", () => {
+    let state = createStarterDuel("charmander", {
+      seed: 17,
+      width: 7,
+      height: 5,
+    });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const rival = state.units.find((unit) => unit.side === "rival")!;
+    player.position = { x: 2, y: 2 };
+    rival.position = { x: 3, y: 2 };
+    state = { ...state, activeUnitId: player.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "scratch",
+      targetId: rival.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.presentation?.kind).toBe("move");
+    if (result.presentation?.kind === "move") {
+      expect(result.presentation.moveId).toBe("scratch");
+      expect(result.presentation.vfxId).toBe("scratch");
+      expect(result.presentation.motion).toBe("contact");
+      expect(result.presentation.results[0].damage).toBeGreaterThan(0);
+    }
+  });
+
+  it("returns stat-change presentation data for status moves", () => {
+    let state = createStarterDuel("bulbasaur", { seed: 33 });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const rival = state.units.find((unit) => unit.side === "rival")!;
+    player.position = { x: 2, y: 2 };
+    rival.position = { x: 4, y: 2 };
+    state = { ...state, activeUnitId: player.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "growl",
+      targetId: rival.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    if (result.presentation?.kind === "move") {
+      expect(result.presentation.motion).toBe("status");
+      expect(result.presentation.results[0].statChanges).toEqual([
+        { stat: "attack", delta: -1 },
+      ]);
+    }
+  });
+
   it("rejects melee attacks outside range", () => {
     let state = createStarterDuel("charmander", {
       seed: 1,
@@ -149,6 +203,23 @@ describe("starter duel", () => {
     expect(result.accepted).toBe(false);
     expect(result.reason).toBe("cannot-flee-trainer");
     expect(result.state.status).toBe("active");
+  });
+
+  it("exposes the exact AI actions for animation", () => {
+    let state = createStarterDuel("bulbasaur", {
+      seed: 991,
+      width: 9,
+      height: 7,
+    });
+    const rival = state.units.find((unit) => unit.side === "rival")!;
+    state = { ...state, activeUnitId: rival.id };
+
+    const turn = resolveSimpleAiTurnDetailed(state);
+
+    expect(turn.steps.length).toBeGreaterThan(0);
+    expect(
+      turn.steps.some((step) => step.presentation?.kind === "move"),
+    ).toBe(true);
   });
 
   it("lets the rival AI move, act, and hand back the turn", () => {

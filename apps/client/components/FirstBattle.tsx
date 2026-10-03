@@ -9,7 +9,8 @@ import {
   getActiveDuelUnit,
   getReachableCells,
   manhattanDistance,
-  resolveSimpleAiTurn,
+  resolveSimpleAiTurnDetailed,
+  type DuelActionResult,
   type DuelItemId,
   type DuelMoveId,
   type DuelPoint,
@@ -52,7 +53,6 @@ type VfxEvent = {
 
 const STEP_ANIMATION_MS = 145;
 const ATTACK_WINDUP_MS = 180;
-const IMPACT_MS = 330;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -203,6 +203,7 @@ export function FirstBattle({
   const aiRunningRef = useRef(false);
   const animationNonceRef = useRef(0);
   const vfxNonceRef = useRef(0);
+  const vfxDoneRef = useRef<(() => void) | null>(null);
 
   const active = getActiveDuelUnit(state);
   const player = state.units.find((unit) => unit.side === "player")!;
@@ -331,6 +332,22 @@ export function FirstBattle({
     }, 1800);
   };
 
+  const playVfx = (
+    moveId: DuelMoveId,
+    position: DuelPoint,
+  ): Promise<void> => {
+    vfxNonceRef.current += 1;
+
+    return new Promise((resolve) => {
+      vfxDoneRef.current = resolve;
+      setVfx({
+        moveId,
+        position: { ...position },
+        nonce: vfxNonceRef.current,
+      });
+    });
+  };
+
   const animatePath = async (
     currentState: DuelState,
     unit: DuelUnit,
@@ -350,6 +367,63 @@ export function FirstBattle({
     }
 
     setUnitAnimation(unit.id, "idle", lastFacing);
+  };
+
+  const animateResolvedMove = async (
+    beforeState: DuelState,
+    result: DuelActionResult,
+  ) => {
+    const presentation = result.presentation;
+    if (!presentation || presentation.kind !== "move") {
+      setState(result.state);
+      return;
+    }
+
+    const actor = beforeState.units.find(
+      (unit) => unit.id === presentation.actorId,
+    );
+    const targetId = presentation.targetIds[0];
+    const target = beforeState.units.find(
+      (unit) => unit.id === targetId,
+    );
+    const targetResult = presentation.results.find(
+      (entry) => entry.targetId === targetId,
+    );
+
+    if (!actor || !target) {
+      setState(result.state);
+      return;
+    }
+
+    setUnitAnimation(
+      actor.id,
+      "attack",
+      facingBetween(actor.position, target.position),
+    );
+    await sleep(ATTACK_WINDUP_MS);
+
+    if ((targetResult?.damage ?? 0) > 0) {
+      setUnitAnimation(target.id, "hurt");
+    }
+
+    await playVfx(
+      presentation.vfxId,
+      target.position,
+    );
+
+    setState(result.state);
+    const nextTarget = result.state.units.find(
+      (unit) => unit.id === target.id,
+    );
+
+    if (nextTarget?.hp === 0) {
+      setUnitAnimation(target.id, "faint");
+    } else {
+      setUnitAnimation(target.id, "idle");
+    }
+
+    setUnitAnimation(actor.id, "idle");
+    await sleep(100);
   };
 
   const handleWalk = async (destination: DuelPoint) => {
@@ -389,8 +463,7 @@ export function FirstBattle({
     if (!isPlayerTurn || busy) return;
 
     const actor = getActiveDuelUnit(state);
-    const target = state.units.find((unit) => unit.id === targetId);
-    if (!actor || !target || actor.side !== "player") return;
+    if (!actor || actor.side !== "player") return;
 
     const result = applyDuelAction(state, {
       kind: "use-move",
@@ -410,36 +483,7 @@ export function FirstBattle({
 
     setBusy(true);
     resetCommand();
-    setUnitAnimation(
-      actor.id,
-      "attack",
-      facingBetween(actor.position, target.position),
-    );
-    await sleep(ATTACK_WINDUP_MS);
-
-    vfxNonceRef.current += 1;
-    setVfx({
-      moveId,
-      position: { ...target.position },
-      nonce: vfxNonceRef.current,
-    });
-    setUnitAnimation(target.id, "hurt");
-    await sleep(IMPACT_MS);
-
-    setState(result.state);
-    const nextTarget = result.state.units.find(
-      (unit) => unit.id === target.id,
-    );
-
-    if (nextTarget?.hp === 0) {
-      setUnitAnimation(target.id, "faint");
-    } else {
-      setUnitAnimation(target.id, "idle");
-    }
-
-    setUnitAnimation(actor.id, "idle");
-    await sleep(160);
-    setVfx(null);
+    await animateResolvedMove(state, result);
     setBusy(false);
   };
 
@@ -542,76 +586,47 @@ export function FirstBattle({
       void (async () => {
         setBusy(true);
 
-        const before = state;
-        const beforeRival = before.units.find(
-          (unit) => unit.side === "rival",
-        )!;
-        const beforePlayer = before.units.find(
-          (unit) => unit.side === "player",
-        )!;
-        const next = resolveSimpleAiTurn(before);
-        const afterRival = next.units.find(
-          (unit) => unit.side === "rival",
-        )!;
-        const afterPlayer = next.units.find(
-          (unit) => unit.side === "player",
-        )!;
+        const turn = resolveSimpleAiTurnDetailed(state);
+        let visualState = state;
 
-        if (
-          beforeRival.position.x !== afterRival.position.x ||
-          beforeRival.position.y !== afterRival.position.y
-        ) {
-          await animatePath(before, beforeRival, afterRival.position);
+        for (const step of turn.steps) {
+          const presentation = step.presentation;
+
+          if (presentation?.kind === "movement") {
+            const actorBefore = visualState.units.find(
+              (unit) => unit.id === presentation.actorId,
+            );
+
+            if (actorBefore) {
+              await animatePath(
+                visualState,
+                actorBefore,
+                presentation.to,
+              );
+              setVisualPosition(
+                actorBefore.id,
+                presentation.to,
+              );
+            }
+
+            setState(step.state);
+          } else if (presentation?.kind === "move") {
+            await animateResolvedMove(visualState, step);
+          } else {
+            setState(step.state);
+          }
+
+          visualState = step.state;
         }
 
-        const dealtDamage = afterPlayer.hp < beforePlayer.hp;
-        const loweredAttack =
-          afterPlayer.attackStage < beforePlayer.attackStage;
-        const loweredDefense =
-          afterPlayer.defenseStage < beforePlayer.defenseStage;
-
-        if (dealtDamage || loweredAttack || loweredDefense) {
-          const moveId = dealtDamage
-            ? primaryAttackMove(beforeRival.species)
-            : primaryStatusMove(beforeRival.species);
-
-          setUnitAnimation(
-            beforeRival.id,
-            "attack",
-            facingBetween(
-              afterRival.position,
-              beforePlayer.position,
-            ),
-          );
-          await sleep(ATTACK_WINDUP_MS);
-
-          vfxNonceRef.current += 1;
-          setVfx({
-            moveId,
-            position: { ...beforePlayer.position },
-            nonce: vfxNonceRef.current,
-          });
-          setUnitAnimation(beforePlayer.id, "hurt");
-          await sleep(IMPACT_MS);
+        for (const unit of turn.state.units) {
+          setVisualPosition(unit.id, unit.position);
+          if (unit.hp <= 0) {
+            setUnitAnimation(unit.id, "faint");
+          }
         }
 
-        setState(next);
-        setVisualPosition(afterRival.id, afterRival.position);
-        setVisualPosition(afterPlayer.id, afterPlayer.position);
-
-        if (afterPlayer.hp <= 0) {
-          setUnitAnimation(afterPlayer.id, "faint");
-        } else {
-          setUnitAnimation(afterPlayer.id, "idle");
-        }
-
-        if (afterRival.hp <= 0) {
-          setUnitAnimation(afterRival.id, "faint");
-        } else {
-          setUnitAnimation(afterRival.id, "idle");
-        }
-
-        setVfx(null);
+        setState(turn.state);
         setBusy(false);
         aiRunningRef.current = false;
       })();
@@ -838,6 +853,12 @@ export function FirstBattle({
                 <BattleVfx
                   moveId={vfx.moveId}
                   nonce={vfx.nonce}
+                  onComplete={() => {
+                    const done = vfxDoneRef.current;
+                    vfxDoneRef.current = null;
+                    setVfx(null);
+                    done?.();
+                  }}
                 />
               </div>
             )}
@@ -947,8 +968,11 @@ export function FirstBattle({
                     >
                       <div>
                         <strong>{move.name}</strong>
-                        <span>{move.category}</span>
+                        <span>{move.type} · {move.category}</span>
                       </div>
+                      <small className="move-description">
+                        {move.description}
+                      </small>
                       <small>
                         {move.apCost} AP · alcance {move.minRange}–
                         {move.maxRange}

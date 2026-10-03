@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { DuelMoveId } from "@tactimon/battle-engine";
 
 type RuntimeVfx = {
@@ -25,6 +25,7 @@ type RuntimeManifest = {
 type Props = {
   moveId: DuelMoveId;
   nonce: number;
+  onComplete?: () => void;
 };
 
 let manifestPromise: Promise<RuntimeManifest | null> | null = null;
@@ -42,9 +43,18 @@ function loadManifest(): Promise<RuntimeManifest | null> {
   return manifestPromise;
 }
 
-export function BattleVfx({ moveId, nonce }: Props) {
+export function BattleVfx({
+  moveId,
+  nonce,
+  onComplete,
+}: Props) {
   const [manifest, setManifest] = useState<RuntimeManifest | null>(null);
   const [frame, setFrame] = useState(0);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     let active = true;
@@ -61,13 +71,45 @@ export function BattleVfx({ moveId, nonce }: Props) {
 
   useEffect(() => {
     setFrame(0);
-    if (!data || data.frames <= 1) return;
 
-    const timer = setInterval(() => {
-      setFrame((current) => (current + 1) % data.frames);
-    }, Math.max(45, data.frame_duration_ms));
+    if (!data) {
+      const timeout = window.setTimeout(() => {
+        onCompleteRef.current?.();
+      }, 420);
 
-    return () => clearInterval(timer);
+      return () => window.clearTimeout(timeout);
+    }
+
+    let cancelled = false;
+    let currentFrame = 0;
+    let timeout: number | null = null;
+
+    const advance = () => {
+      if (cancelled) return;
+
+      const duration = Math.max(45, data.frame_duration_ms);
+      timeout = window.setTimeout(() => {
+        if (cancelled) return;
+
+        if (currentFrame >= data.frames - 1) {
+          onCompleteRef.current?.();
+          return;
+        }
+
+        currentFrame += 1;
+        setFrame(currentFrame);
+        advance();
+      }, duration);
+    };
+
+    advance();
+
+    return () => {
+      cancelled = true;
+      if (timeout !== null) {
+        window.clearTimeout(timeout);
+      }
+    };
   }, [data, nonce]);
 
   if (!data) {
@@ -87,7 +129,7 @@ export function BattleVfx({ moveId, nonce }: Props) {
   return (
     <div
       key={nonce}
-      className="battle-vfx-sprite"
+      className={`battle-vfx-sprite battle-vfx-${data.mapping}`}
       title={`EoS effect ${data.effect_animation_id} · ${data.mapping}`}
       style={{
         width: data.frame_width,
