@@ -28,11 +28,48 @@ export type TilesetAssetDefinition = {
   attributesUrl: string;
 };
 
+export type WorldObject = {
+  index: number;
+  local_id: number;
+  graphics_id: number;
+  graphics_name: string | null;
+  x: number;
+  y: number;
+  elevation: number;
+  movement_type: number;
+  flag_id: number;
+  sprite_file: string | null;
+  frame_width: number | null;
+  frame_height: number | null;
+  frame_count: number;
+};
+
+export type WorldMapData = {
+  index: number;
+  name: string;
+  objects: WorldObject[];
+  warps: Array<{
+    index: number;
+    x: number;
+    y: number;
+    warp_id: number;
+    target_map: string | null;
+  }>;
+  connections: Array<{
+    index: number;
+    direction: string;
+    offset: number;
+    target_map: string | null;
+    target_map_index: number | null;
+  }>;
+};
+
 export type WorldMapDefinition = {
   id: string;
   label: string;
   layoutUrl: string;
   previewUrl: string;
+  worldUrl: string;
   spawn: { x: number; y: number };
   tilesets: {
     primary: TilesetAssetDefinition;
@@ -72,6 +109,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Pallet Town",
     layoutUrl: "/game-assets/maps/pallet-town/layout.json",
     previewUrl: "/game-assets/maps/pallet-town/preview.png",
+    worldUrl: "/game-assets/maps/pallet-town/world.json",
     spawn: { x: 12, y: 17 },
     tilesets: {
       primary: GENERAL_TILESET,
@@ -83,6 +121,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 1",
     layoutUrl: "/game-assets/maps/route-1/layout.json",
     previewUrl: "/game-assets/maps/route-1/preview.png",
+    worldUrl: "/game-assets/maps/route-1/world.json",
     spawn: { x: 12, y: 37 },
     tilesets: {
       primary: GENERAL_TILESET,
@@ -94,6 +133,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Viridian City",
     layoutUrl: "/game-assets/maps/viridian-city/layout.json",
     previewUrl: "/game-assets/maps/viridian-city/preview.png",
+    worldUrl: "/game-assets/maps/viridian-city/world.json",
     spawn: { x: 23, y: 39 },
     tilesets: {
       primary: GENERAL_TILESET,

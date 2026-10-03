@@ -1,4 +1,4 @@
-import { copyFile, mkdir, rm } from "node:fs/promises";
+import { access, copyFile, cp, mkdir, rm } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -89,6 +89,21 @@ const files = [
   ],
 ];
 
+const optionalFiles = [
+  [
+    "maps/world/188_pallettown/world.json",
+    "maps/pallet-town/world.json",
+  ],
+  [
+    "maps/world/207_route1/world.json",
+    "maps/route-1/world.json",
+  ],
+  [
+    "maps/world/189_viridiancity/world.json",
+    "maps/viridian-city/world.json",
+  ],
+];
+
 await rm(publicRoot, { recursive: true, force: true });
 
 for (const [source, destination] of files) {
@@ -97,6 +112,26 @@ for (const [source, destination] of files) {
   await mkdir(dirname(to), { recursive: true });
   await copyFile(from, to);
   console.log(`synced ${source} -> ${destination}`);
+}
+
+const overworldSource = resolve(sourceRoot, "overworld");
+const overworldDestination = resolve(publicRoot, "overworld");
+await cp(overworldSource, overworldDestination, { recursive: true });
+
+for (const [source, destination] of optionalFiles) {
+  const from = resolve(sourceRoot, source);
+  const to = resolve(publicRoot, destination);
+
+  try {
+    await access(from);
+    await mkdir(dirname(to), { recursive: true });
+    await copyFile(from, to);
+    console.log(`synced ${source} -> ${destination}`);
+  } catch {
+    console.warn(
+      `optional world data missing: ${source} (run convert_world.py --maps)`,
+    );
+  }
 }
 
 console.log("Tactimon client assets synced.");

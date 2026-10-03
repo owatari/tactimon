@@ -16,11 +16,14 @@ import {
   TILE_SIZE,
   WORLD_MAPS,
   WORLD_ZOOM,
+  WorldMapData,
+  WorldObject,
 } from "@/lib/maps";
 
 const STEP_DURATION_MS = 142;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
+const INTERACTION_DURATION_MS = 1800;
 
 const IDLE_FRAME: Record<Direction, number> = {
   south: 0,
@@ -119,6 +122,28 @@ function framePosition(frame: number) {
   };
 }
 
+function renderableObjects(
+  data: WorldMapData | null,
+): WorldObject[] {
+  if (!data) return [];
+
+  return data.objects.filter(
+    (object) =>
+      object.flag_id === 0 &&
+      Boolean(object.sprite_file) &&
+      Boolean(object.frame_width) &&
+      Boolean(object.frame_height),
+  );
+}
+
+function displayObjectName(object: WorldObject): string {
+  return (object.graphics_name ?? `NPC ${object.local_id}`)
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 export function OverworldGame() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -126,6 +151,8 @@ export function OverworldGame() {
   const foregroundRef = useRef<HTMLCanvasElement>(null);
 
   const layoutRef = useRef<MapLayout | null>(null);
+  const worldDataRef = useRef<WorldMapData | null>(null);
+  const worldObjectsRef = useRef<WorldObject[]>([]);
   const mapIdRef = useRef("pallet-town");
   const playerRef = useRef(
     createPlayer(
@@ -137,12 +164,18 @@ export function OverworldGame() {
   const cameraPositionRef = useRef({ x: 0, y: 0, ready: false });
   const transitioningRef = useRef(false);
   const loadTokenRef = useRef(0);
+  const interactionTimerRef = useRef<
+    ReturnType<typeof setTimeout> | null
+  >(null);
 
   const [mapId, setMapId] = useState("pallet-town");
   const [layout, setLayout] = useState<MapLayout | null>(null);
+  const [worldData, setWorldData] = useState<WorldMapData | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [interaction, setInteraction] = useState<string | null>(null);
 
   const mapDefinition = WORLD_MAPS[mapId];
+  const visibleObjects = renderableObjects(worldData);
 
   const setDirectionPressed = useCallback(
     (direction: Direction, pressed: boolean) => {
@@ -161,6 +194,36 @@ export function OverworldGame() {
     pressedRef.current = [];
   }, []);
 
+  const showInteraction = useCallback((message: string) => {
+    if (interactionTimerRef.current) {
+      clearTimeout(interactionTimerRef.current);
+    }
+
+    setInteraction(message);
+    interactionTimerRef.current = setTimeout(() => {
+      setInteraction(null);
+    }, INTERACTION_DURATION_MS);
+  }, []);
+
+  const interact = useCallback(() => {
+    const player = playerRef.current;
+    const delta = DIRECTION_DELTA[player.facing];
+    const targetX = player.tileX + delta.x;
+    const targetY = player.tileY + delta.y;
+
+    const object = worldObjectsRef.current.find(
+      (candidate) =>
+        candidate.x === targetX &&
+        candidate.y === targetY,
+    );
+
+    if (object) {
+      showInteraction(
+        `${displayObjectName(object)} · diálogo ainda não importado`,
+      );
+    }
+  }, [showInteraction]);
+
   const loadMap = useCallback(
     async (
       nextMapId: string,
@@ -177,14 +240,22 @@ export function OverworldGame() {
       resetInput();
 
       try {
-        const response = await fetch(definition.layoutUrl);
-        if (!response.ok) {
+        const [layoutResponse, worldResponse] = await Promise.all([
+          fetch(definition.layoutUrl),
+          fetch(definition.worldUrl),
+        ]);
+
+        if (!layoutResponse.ok) {
           throw new Error(
-            `Failed to load ${definition.label}: ${response.status}`,
+            `Failed to load ${definition.label}: ${layoutResponse.status}`,
           );
         }
 
-        const nextLayout = (await response.json()) as MapLayout;
+        const nextLayout =
+          (await layoutResponse.json()) as MapLayout;
+        const nextWorldData = worldResponse.ok
+          ? ((await worldResponse.json()) as WorldMapData)
+          : null;
 
         if (loadTokenRef.current !== token) {
           return;
@@ -192,6 +263,8 @@ export function OverworldGame() {
 
         mapIdRef.current = nextMapId;
         layoutRef.current = nextLayout;
+        worldDataRef.current = nextWorldData;
+        worldObjectsRef.current = renderableObjects(nextWorldData);
         playerRef.current = createPlayer(
           spawn.x,
           spawn.y,
@@ -201,6 +274,7 @@ export function OverworldGame() {
 
         setMapId(nextMapId);
         setLayout(nextLayout);
+        setWorldData(nextWorldData);
 
         requestAnimationFrame(() => {
           transitioningRef.current = false;
@@ -224,13 +298,19 @@ export function OverworldGame() {
   }, [loadMap]);
 
   useEffect(() => {
+    return () => {
+      if (interactionTimerRef.current) {
+        clearTimeout(interactionTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (!layout || !foregroundRef.current) {
       return;
     }
 
-    let cancelled = false;
     const canvas = foregroundRef.current;
-
     canvas.getContext("2d")?.clearRect(
       0,
       0,
@@ -243,18 +323,24 @@ export function OverworldGame() {
       layout,
       mapDefinition.tilesets,
     ).catch((error) => {
-      if (!cancelled) {
-        console.error("Failed to build foreground layer", error);
-      }
+      console.error("Failed to build foreground layer", error);
     });
-
-    return () => {
-      cancelled = true;
-    };
   }, [layout, mapDefinition.tilesets]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      const lowerKey = event.key.toLowerCase();
+
+      if (
+        event.key === " " ||
+        event.key === "Enter" ||
+        lowerKey === "e"
+      ) {
+        event.preventDefault();
+        if (!event.repeat) interact();
+        return;
+      }
+
       const direction = keyToDirection(event.key);
       if (!direction) return;
 
@@ -281,7 +367,7 @@ export function OverworldGame() {
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
     };
-  }, [resetInput, setDirectionPressed]);
+  }, [interact, resetInput, setDirectionPressed]);
 
   useEffect(() => {
     let animationFrame = 0;
@@ -302,7 +388,13 @@ export function OverworldGame() {
       }
 
       const cell = activeLayout.cells[y * activeLayout.width + x];
-      return Boolean(cell && cell.collision === 0);
+      if (!cell || cell.collision !== 0) {
+        return false;
+      }
+
+      return !worldObjectsRef.current.some(
+        (object) => object.x === x && object.y === y,
+      );
     };
 
     const startStep = (
@@ -326,17 +418,10 @@ export function OverworldGame() {
       );
 
       if (transition) {
-        const reverseFacing: Direction =
-          direction === "north"
-            ? "north"
-            : direction === "south"
-              ? "south"
-              : direction;
-
         void loadMap(
           transition.mapId,
           transition.spawn,
-          reverseFacing,
+          direction,
         );
         return false;
       }
@@ -428,6 +513,9 @@ export function OverworldGame() {
         `${frameOffset.x}px ${frameOffset.y}px`;
       playerElement.style.transform =
         player.facing === "east" ? "scaleX(-1)" : "scaleX(1)";
+      playerElement.style.zIndex = String(
+        100 + Math.round(player.visualY),
+      );
 
       const viewportWidth = viewport.clientWidth;
       const viewportHeight = viewport.clientHeight;
@@ -521,6 +609,35 @@ export function OverworldGame() {
               }}
             />
 
+            {visibleObjects.map((object) => {
+              const frameWidth = object.frame_width ?? 16;
+              const frameHeight = object.frame_height ?? 16;
+              const frameCount = Math.max(1, object.frame_count);
+              const columns = Math.max(1, Math.min(6, frameCount));
+              const rows = Math.ceil(frameCount / columns);
+
+              return (
+                <div
+                  key={object.local_id}
+                  className="world-object"
+                  title={displayObjectName(object)}
+                  style={{
+                    left: object.x * TILE_SIZE,
+                    top:
+                      object.y * TILE_SIZE +
+                      TILE_SIZE -
+                      frameHeight,
+                    width: frameWidth,
+                    height: frameHeight,
+                    zIndex: 100 + object.y * TILE_SIZE,
+                    backgroundImage: `url("/game-assets/${object.sprite_file}")`,
+                    backgroundSize:
+                      `${columns * frameWidth}px ${rows * frameHeight}px`,
+                  }}
+                />
+              );
+            })}
+
             <div
               ref={playerElementRef}
               className="player"
@@ -546,8 +663,14 @@ export function OverworldGame() {
         <div key={mapId} className="location-chip location-enter">
           {mapDefinition.label}
         </div>
-        <div className="control-hint">WASD / setas · segure para andar</div>
+        <div className="control-hint">
+          WASD / setas · E/Space interage
+        </div>
       </div>
+
+      {interaction && (
+        <div className="interaction-toast">{interaction}</div>
+      )}
 
       <div
         className={`transition-curtain ${
@@ -578,11 +701,6 @@ export function OverworldGame() {
             onPointerCancel={(event) =>
               handlePadPointerUp(event, direction)
             }
-            onPointerLeave={(event) => {
-              if (event.buttons === 0) {
-                setDirectionPressed(direction, false);
-              }
-            }}
           >
             {icon}
           </button>

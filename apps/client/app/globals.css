@@ -127,7 +127,6 @@ h1 {
 
 .player {
   position: absolute;
-  z-index: 10;
   background-repeat: no-repeat;
   image-rendering: pixelated;
   transform-origin: center;
@@ -135,8 +134,16 @@ h1 {
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.42));
 }
 
+.world-object {
+  position: absolute;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.32));
+}
+
 .map-foreground {
-  z-index: 20;
+  z-index: 10000;
 }
 
 .world-hud {
@@ -182,6 +189,24 @@ h1 {
   100% {
     opacity: 0.7;
   }
+}
+
+.interaction-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: 80;
+  max-width: min(520px, calc(100% - 32px));
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  border: 1px solid rgba(216, 242, 121, 0.35);
+  border-radius: 9px;
+  background: rgba(13, 15, 12, 0.92);
+  color: var(--text);
+  font-size: 12px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
 }
 
 .transition-curtain {

@@ -41,3 +41,21 @@ This means roofs, fences and other upper tiles occlude the trainer independently
 ## Next world work
 
 The world engine now has the map-transition seam needed to replace the temporary hand-authored Pallet/Route 1/Viridian edge rules with ROM-extracted `MapConnections`. The next data layer is NPC/object events, warps, coord events and background events.
+
+
+## Semantic world data
+
+After pulling the latest extractor changes, regenerate the FireRed map data once:
+
+```bash
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --maps
+```
+
+When `maps/world/*/world.json` is present, the client also loads:
+
+- NPC/object placements from the ROM;
+- NPC collision;
+- basic interaction targeting with `E`, Space or Enter;
+- warp/connection metadata for the next transition pass.
+
+NPCs whose original ROM flag is non-zero are intentionally hidden for now until story flags are implemented.
