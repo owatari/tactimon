@@ -74,7 +74,10 @@ export interface StarterDuelOptions {
   width?: number;
   height?: number;
   blocked?: readonly DuelPoint[];
+  /** Backward-compatible single-member party input. */
   player?: DuelPokemonBuild;
+  /** Every member is deployed at battle start, capped at six. */
+  players?: readonly DuelPokemonBuild[];
 }
 
 export interface WildDuelOptions {
@@ -923,26 +926,32 @@ export function createStarterDuel(
   const rivalStarter = rivalStarterFor(playerStarter);
   const { width, height, seed, blocked } =
     normalizeArenaOptions(options);
-
-  const [playerPosition, rivalPosition] = pickSpawnPositions(
+  const fallbackPlayer: DuelPokemonBuild = {
+    species: playerStarter,
+    level: LEVEL,
+    moves: SPECIES[playerStarter].moves,
+  };
+  const party = (
+    options.players && options.players.length > 0
+      ? [...options.players]
+      : options.player
+        ? [options.player]
+        : [fallbackPlayer]
+  ).slice(0, 6);
+  const positions = pickPartySpawnPositions(
     width,
     height,
     blocked,
     seed,
+    party.length,
   );
-
-  const playerBuild: DuelPokemonBuild =
-    options.player ?? {
-      species: playerStarter,
-      level: LEVEL,
-      moves: SPECIES[playerStarter].moves,
-    };
-
-  const player = makeUnit(
-    playerBuild,
-    "player",
-    playerPosition,
-    0,
+  const players = party.map((build, index) =>
+    makeUnit(
+      build,
+      "player",
+      positions.players[index],
+      index,
+    ),
   );
   const rival = makeUnit(
     {
@@ -951,10 +960,10 @@ export function createStarterDuel(
       moves: SPECIES[rivalStarter].moves,
     },
     "rival",
-    rivalPosition,
+    positions.rival,
     0,
   );
-  const units = [player, rival];
+  const units = [...players, rival];
   const turnOrder = createTurnOrder(units);
   const active = units.find(
     (unit) => unit.id === turnOrder[0],
@@ -982,7 +991,9 @@ export function createStarterDuel(
     units,
     log: [
       `Blue desafia você! ${rival.displayName} entra na arena.`,
-      `Posições sorteadas para esta batalha (seed ${seed}).`,
+      players.length > 1
+        ? `${players.length} Pokémon do seu time entram na arena.`
+        : `${players[0].displayName} entra na arena.`,
       `${active.displayName} age primeiro pela Speed.`,
     ],
   };

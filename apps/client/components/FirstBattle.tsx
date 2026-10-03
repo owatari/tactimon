@@ -257,7 +257,7 @@ export function FirstBattle({
       width: context.arenaWidth,
       height: context.arenaHeight,
       blocked: context.blocked,
-      player: starterBuild,
+      players: deployedParty,
     });
   }, [context, encounter, party, progression, starter]);
 

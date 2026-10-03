@@ -18,6 +18,27 @@ describe("starter duel", () => {
     expect(rivalStarterFor("squirtle")).toBe("bulbasaur");
   });
 
+
+  it("deploys the whole player party in trainer battles too", () => {
+    const state = createStarterDuel("bulbasaur", {
+      seed: 122,
+      width: 13,
+      height: 7,
+      players: [
+        { species: "bulbasaur", level: 5, moves: ["tackle", "growl"] },
+        { species: "pidgey", level: 3, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 3, moves: ["tackle", "tail-whip"] },
+      ],
+    });
+
+    expect(
+      state.units.filter((unit) => unit.side === "player"),
+    ).toHaveLength(3);
+    expect(
+      state.units.filter((unit) => unit.side === "rival"),
+    ).toHaveLength(1);
+  });
+
   it("uses the same random placement for the same seed", () => {
     const first = createStarterDuel("bulbasaur", {
       seed: 12345,
