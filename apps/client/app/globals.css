@@ -2346,6 +2346,12 @@ h1 {
   min-height: 25px;
 }
 
+.progression-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 520;
+}
+
 .progression-exp-card {
   display: grid;
   gap: 6px;
