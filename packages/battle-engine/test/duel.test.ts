@@ -102,6 +102,55 @@ describe("starter duel", () => {
     expect(result.reason).toBe("target-out-of-range");
   });
 
+
+  it("uses an item on an ally and consumes the turn", () => {
+    let state = createStarterDuel("bulbasaur", {
+      seed: 42,
+      width: 7,
+      height: 5,
+    });
+
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const rival = state.units.find((unit) => unit.side === "rival")!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, hp: Math.max(1, unit.hp - 10) }
+          : unit,
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-item",
+      unitId: player.id,
+      itemId: "potion",
+      targetId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.items.potion).toBe(0);
+    expect(getActiveDuelUnit(result.state)?.id).toBe(rival.id);
+  });
+
+  it("does not allow fleeing from the starter trainer battle", () => {
+    let state = createStarterDuel("squirtle", {
+      seed: 12,
+    });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    state = { ...state, activeUnitId: player.id };
+
+    const result = applyDuelAction(state, {
+      kind: "flee",
+      unitId: player.id,
+    });
+
+    expect(result.accepted).toBe(false);
+    expect(result.reason).toBe("cannot-flee-trainer");
+    expect(result.state.status).toBe("active");
+  });
+
   it("lets the rival AI move, act, and hand back the turn", () => {
     let state = createStarterDuel("bulbasaur", {
       seed: 999,

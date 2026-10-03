@@ -10,6 +10,8 @@ export type StarterSpeciesId =
 
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
+export type DuelBattleKind = "trainer" | "wild";
+export type DuelItemId = "potion";
 export type DuelMoveId =
   | "tackle"
   | "scratch"
@@ -26,6 +28,13 @@ export interface StarterDuelOptions {
   width?: number;
   height?: number;
   blocked?: readonly DuelPoint[];
+}
+
+export interface DuelItem {
+  id: DuelItemId;
+  name: string;
+  target: "ally";
+  heal: number;
 }
 
 export interface DuelMove {
@@ -66,6 +75,9 @@ export interface DuelState {
   height: number;
   seed: number;
   blocked: DuelPoint[];
+  battleKind: DuelBattleKind;
+  escaped: boolean;
+  items: Record<DuelItemId, number>;
   round: number;
   activeUnitId: string;
   status: DuelStatus;
@@ -85,6 +97,16 @@ export type DuelAction =
       unitId: string;
       moveId: DuelMoveId;
       targetId: string;
+    }
+  | {
+      kind: "use-item";
+      unitId: string;
+      itemId: DuelItemId;
+      targetId: string;
+    }
+  | {
+      kind: "flee";
+      unitId: string;
     }
   | {
       kind: "end-turn";
@@ -139,6 +161,15 @@ const SPECIES: Record<
     defense: 65,
     speed: 43,
     moves: ["tackle", "tail-whip"],
+  },
+};
+
+export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
+  potion: {
+    id: "potion",
+    name: "Potion",
+    target: "ally",
+    heal: 20,
   },
 };
 
@@ -442,6 +473,11 @@ export function createStarterDuel(
     height,
     seed,
     blocked,
+    battleKind: "trainer",
+    escaped: false,
+    items: {
+      potion: 1,
+    },
     round: 1,
     activeUnitId: active.id,
     status: "active",
@@ -476,6 +512,7 @@ function cloneState(state: DuelState): DuelState {
   return {
     ...state,
     blocked: state.blocked.map((point) => ({ ...point })),
+    items: { ...state.items },
     units: state.units.map((unit) => ({
       ...unit,
       position: { ...unit.position },
@@ -667,6 +704,78 @@ export function applyDuelAction(
   }
 
   if (action.kind === "end-turn") {
+    resolveTurnEnd(state, actor);
+    return { state, accepted: true };
+  }
+
+  if (action.kind === "flee") {
+    if (state.battleKind === "trainer") {
+      appendLog(
+        state,
+        "Não é possível fugir de uma batalha de treinador.",
+      );
+      return {
+        state,
+        accepted: false,
+        reason: "cannot-flee-trainer",
+      };
+    }
+
+    state.status = "finished";
+    state.escaped = true;
+    state.winner = null;
+    appendLog(state, `${actor.displayName} escapou da batalha.`);
+    return { state, accepted: true };
+  }
+
+  if (action.kind === "use-item") {
+    const item = DUEL_ITEMS[action.itemId];
+    const target = state.units.find(
+      (unit) => unit.id === action.targetId,
+    );
+
+    if (
+      !item ||
+      !target ||
+      target.hp <= 0 ||
+      target.side !== actor.side
+    ) {
+      return {
+        state: input,
+        accepted: false,
+        reason: "invalid-item-target",
+      };
+    }
+
+    if ((state.items[item.id] ?? 0) <= 0) {
+      return {
+        state: input,
+        accepted: false,
+        reason: "item-unavailable",
+      };
+    }
+
+    if (target.hp >= target.maxHp) {
+      return {
+        state: input,
+        accepted: false,
+        reason: "target-full-hp",
+      };
+    }
+
+    const healed = Math.min(
+      item.heal,
+      target.maxHp - target.hp,
+    );
+
+    target.hp += healed;
+    state.items[item.id] -= 1;
+
+    appendLog(
+      state,
+      `${target.displayName} recuperou ${healed} HP com ${item.name}.`,
+    );
+
     resolveTurnEnd(state, actor);
     return { state, accepted: true };
   }

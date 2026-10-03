@@ -1,18 +1,23 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   applyDuelAction,
   createStarterDuel,
+  DUEL_ITEMS,
   DUEL_MOVES,
   getActiveDuelUnit,
   getReachableCells,
   manhattanDistance,
   resolveSimpleAiTurn,
+  type DuelItemId,
   type DuelMoveId,
+  type DuelPoint,
   type DuelState,
+  type DuelUnit,
   type StarterSpeciesId,
 } from "@tactimon/battle-engine";
+import { BattleVfx } from "@/components/BattleVfx";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
 import type { BattleSceneContext } from "@/lib/maps";
 
@@ -22,8 +27,123 @@ type Props = {
   onComplete: (won: boolean) => void;
 };
 
+type CommandMode =
+  | "root"
+  | "walk"
+  | "moves"
+  | "move-target"
+  | "items"
+  | "item-target";
+
+type SpriteAnimation = "idle" | "walk" | "attack" | "hurt" | "faint";
+
+type UnitAnimationState = {
+  name: SpriteAnimation;
+  nonce: number;
+};
+
+type VfxEvent = {
+  moveId: DuelMoveId;
+  position: DuelPoint;
+  nonce: number;
+};
+
+const STEP_ANIMATION_MS = 145;
+const ATTACK_WINDUP_MS = 180;
+const IMPACT_MS = 330;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function hpPercent(hp: number, maxHp: number): number {
   return Math.max(0, Math.min(100, (hp / maxHp) * 100));
+}
+
+function pointKey(point: DuelPoint): string {
+  return `${point.x},${point.y}`;
+}
+
+function primaryAttackMove(species: StarterSpeciesId): DuelMoveId {
+  return species === "charmander" ? "scratch" : "tackle";
+}
+
+function primaryStatusMove(species: StarterSpeciesId): DuelMoveId {
+  return species === "squirtle" ? "tail-whip" : "growl";
+}
+
+function findPath(
+  state: DuelState,
+  unitId: string,
+  destination: DuelPoint,
+): DuelPoint[] {
+  const unit = state.units.find((candidate) => candidate.id === unitId);
+  if (!unit) return [];
+
+  const blocked = new Set(state.blocked.map(pointKey));
+  const occupied = new Set(
+    state.units
+      .filter((candidate) => candidate.hp > 0 && candidate.id !== unitId)
+      .map((candidate) => pointKey(candidate.position)),
+  );
+
+  const startKey = pointKey(unit.position);
+  const destinationKey = pointKey(destination);
+  const queue: DuelPoint[] = [{ ...unit.position }];
+  const previous = new Map<string, string | null>([[startKey, null]]);
+  const points = new Map<string, DuelPoint>([[startKey, { ...unit.position }]]);
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current) break;
+    const currentKey = pointKey(current);
+
+    if (currentKey === destinationKey) {
+      break;
+    }
+
+    const neighbors = [
+      { x: current.x + 1, y: current.y },
+      { x: current.x - 1, y: current.y },
+      { x: current.x, y: current.y + 1 },
+      { x: current.x, y: current.y - 1 },
+    ];
+
+    for (const next of neighbors) {
+      const key = pointKey(next);
+      if (
+        next.x < 0 ||
+        next.y < 0 ||
+        next.x >= state.width ||
+        next.y >= state.height ||
+        blocked.has(key) ||
+        occupied.has(key) ||
+        previous.has(key)
+      ) {
+        continue;
+      }
+
+      previous.set(key, currentKey);
+      points.set(key, next);
+      queue.push(next);
+    }
+  }
+
+  if (!previous.has(destinationKey)) {
+    return [];
+  }
+
+  const reversed: DuelPoint[] = [];
+  let cursor: string | null = destinationKey;
+
+  while (cursor && cursor !== startKey) {
+    const point = points.get(cursor);
+    if (!point) break;
+    reversed.push(point);
+    cursor = previous.get(cursor) ?? null;
+  }
+
+  return reversed.reverse();
 }
 
 export function FirstBattle({
@@ -31,131 +151,458 @@ export function FirstBattle({
   context,
   onComplete,
 }: Props) {
-  const [state, setState] = useState<DuelState>(() =>
-    createStarterDuel(starter, {
-      seed: context.seed,
-      width: context.arenaWidth,
-      height: context.arenaHeight,
-      blocked: context.blocked,
-    }),
+  const initialState = useMemo(
+    () =>
+      createStarterDuel(starter, {
+        seed: context.seed,
+        width: context.arenaWidth,
+        height: context.arenaHeight,
+        blocked: context.blocked,
+      }),
+    [context, starter],
   );
+
+  const [state, setState] = useState<DuelState>(initialState);
+  const [command, setCommand] = useState<CommandMode>("root");
+  const [selectedMove, setSelectedMove] = useState<DuelMoveId | null>(null);
+  const [selectedItem, setSelectedItem] = useState<DuelItemId | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [vfx, setVfx] = useState<VfxEvent | null>(null);
+  const [animations, setAnimations] = useState<
+    Record<string, UnitAnimationState>
+  >({});
+  const [visualPositions, setVisualPositions] = useState<
+    Record<string, DuelPoint>
+  >(() =>
+    Object.fromEntries(
+      initialState.units.map((unit) => [
+        unit.id,
+        { ...unit.position },
+      ]),
+    ),
+  );
+
+  const aiRunningRef = useRef(false);
+  const animationNonceRef = useRef(0);
+  const vfxNonceRef = useRef(0);
 
   const active = getActiveDuelUnit(state);
   const player = state.units.find((unit) => unit.side === "player")!;
   const rival = state.units.find((unit) => unit.side === "rival")!;
   const isPlayerTurn =
-    state.status === "active" && active?.side === "player";
-
-  const reachable = useMemo(
-    () =>
-      isPlayerTurn
-        ? getReachableCells(state, player.id)
-        : [],
-    [isPlayerTurn, player.id, state],
-  );
-
-  const reachableKeys = useMemo(
-    () => new Set(reachable.map((cell) => `${cell.x},${cell.y}`)),
-    [reachable],
-  );
+    state.status === "active" && active?.side === "player" && !busy;
 
   const blockedKeys = useMemo(
-    () =>
-      new Set(
-        state.blocked.map((cell) => `${cell.x},${cell.y}`),
-      ),
+    () => new Set(state.blocked.map(pointKey)),
     [state.blocked],
   );
 
-  useEffect(() => {
+  const reachable = useMemo(
+    () =>
+      command === "walk" && isPlayerTurn
+        ? getReachableCells(state, player.id)
+        : [],
+    [command, isPlayerTurn, player.id, state],
+  );
+
+  const reachableKeys = useMemo(
+    () => new Set(reachable.map(pointKey)),
+    [reachable],
+  );
+
+  const moveRangeKeys = useMemo(() => {
+    if (command !== "move-target" || !selectedMove) {
+      return new Set<string>();
+    }
+
+    const move = DUEL_MOVES[selectedMove];
+    const keys = new Set<string>();
+
+    for (let y = 0; y < state.height; y += 1) {
+      for (let x = 0; x < state.width; x += 1) {
+        const distance = manhattanDistance(player.position, { x, y });
+        if (
+          distance >= move.minRange &&
+          distance <= move.maxRange
+        ) {
+          keys.add(`${x},${y}`);
+        }
+      }
+    }
+
+    return keys;
+  }, [command, player.position, selectedMove, state.height, state.width]);
+
+  const targetableUnitIds = useMemo(() => {
+    if (!isPlayerTurn) return new Set<string>();
+
+    if (command === "move-target" && selectedMove) {
+      const move = DUEL_MOVES[selectedMove];
+      return new Set(
+        state.units
+          .filter(
+            (unit) =>
+              unit.hp > 0 &&
+              unit.side !== player.side &&
+              manhattanDistance(player.position, unit.position) >=
+                move.minRange &&
+              manhattanDistance(player.position, unit.position) <=
+                move.maxRange,
+          )
+          .map((unit) => unit.id),
+      );
+    }
+
+    if (command === "item-target" && selectedItem) {
+      return new Set(
+        state.units
+          .filter(
+            (unit) =>
+              unit.hp > 0 &&
+              unit.side === player.side &&
+              unit.hp < unit.maxHp,
+          )
+          .map((unit) => unit.id),
+      );
+    }
+
+    return new Set<string>();
+  }, [
+    command,
+    isPlayerTurn,
+    player.position,
+    player.side,
+    selectedItem,
+    selectedMove,
+    state.units,
+  ]);
+
+  const setUnitAnimation = (
+    unitId: string,
+    name: SpriteAnimation,
+  ) => {
+    animationNonceRef.current += 1;
+    setAnimations((current) => ({
+      ...current,
+      [unitId]: {
+        name,
+        nonce: animationNonceRef.current,
+      },
+    }));
+  };
+
+  const setVisualPosition = (unitId: string, position: DuelPoint) => {
+    setVisualPositions((current) => ({
+      ...current,
+      [unitId]: { ...position },
+    }));
+  };
+
+  const resetCommand = () => {
+    setCommand("root");
+    setSelectedMove(null);
+    setSelectedItem(null);
+  };
+
+  const flashNotice = (message: string) => {
+    setNotice(message);
+    window.setTimeout(() => {
+      setNotice((current) => (current === message ? null : current));
+    }, 1800);
+  };
+
+  const animatePath = async (
+    currentState: DuelState,
+    unit: DuelUnit,
+    destination: DuelPoint,
+  ) => {
+    const path = findPath(currentState, unit.id, destination);
+    setUnitAnimation(unit.id, "walk");
+
+    for (const step of path) {
+      setVisualPosition(unit.id, step);
+      await sleep(STEP_ANIMATION_MS);
+    }
+
+    setUnitAnimation(unit.id, "idle");
+  };
+
+  const handleWalk = async (destination: DuelPoint) => {
     if (
-      state.status !== "active" ||
-      active?.side !== "rival"
+      !isPlayerTurn ||
+      busy ||
+      !reachableKeys.has(pointKey(destination))
     ) {
       return;
     }
 
-    const timer = setTimeout(() => {
-      setState((current) =>
-        resolveSimpleAiTurn(current),
-      );
-    }, 520);
+    const actor = getActiveDuelUnit(state);
+    if (!actor || actor.side !== "player") return;
 
-    return () => clearTimeout(timer);
-  }, [active?.side, state.status]);
-
-  const useMove = (moveId: DuelMoveId) => {
-    setState((current) => {
-      const actor = getActiveDuelUnit(current);
-      const target = current.units.find(
-        (unit) => unit.side === "rival" && unit.hp > 0,
-      );
-
-      if (!actor || actor.side !== "player" || !target) {
-        return current;
-      }
-
-      return applyDuelAction(current, {
-        kind: "use-move",
-        unitId: actor.id,
-        moveId,
-        targetId: target.id,
-      }).state;
+    const result = applyDuelAction(state, {
+      kind: "move",
+      unitId: actor.id,
+      to: destination,
     });
-  };
 
-  const endTurn = () => {
-    setState((current) => {
-      const actor = getActiveDuelUnit(current);
-      if (!actor || actor.side !== "player") {
-        return current;
-      }
-
-      return applyDuelAction(current, {
-        kind: "end-turn",
-        unitId: actor.id,
-      }).state;
-    });
-  };
-
-  const moveTo = (x: number, y: number) => {
-    if (!isPlayerTurn || !reachableKeys.has(`${x},${y}`)) {
+    if (!result.accepted) {
+      flashNotice("Não é possível andar até esse tile.");
       return;
     }
 
-    setState((current) => {
-      const actor = getActiveDuelUnit(current);
-      if (!actor || actor.side !== "player") {
-        return current;
-      }
+    setBusy(true);
+    resetCommand();
+    await animatePath(state, actor, destination);
+    setState(result.state);
+    setBusy(false);
+  };
 
-      return applyDuelAction(current, {
-        kind: "move",
-        unitId: actor.id,
-        to: { x, y },
-      }).state;
+  const performMove = async (
+    moveId: DuelMoveId,
+    targetId: string,
+  ) => {
+    if (!isPlayerTurn || busy) return;
+
+    const actor = getActiveDuelUnit(state);
+    const target = state.units.find((unit) => unit.id === targetId);
+    if (!actor || !target || actor.side !== "player") return;
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId,
+      targetId,
     });
-  };
 
-  const canUse = (moveId: DuelMoveId) => {
-    if (!isPlayerTurn) return false;
+    if (!result.accepted) {
+      flashNotice(
+        result.reason === "target-out-of-range"
+          ? "O alvo está fora do alcance."
+          : "Esse golpe não pode ser usado agora.",
+      );
+      return;
+    }
 
-    const move = DUEL_MOVES[moveId];
-    const distance = manhattanDistance(
-      player.position,
-      rival.position,
+    setBusy(true);
+    resetCommand();
+    setUnitAnimation(actor.id, "attack");
+    await sleep(ATTACK_WINDUP_MS);
+
+    vfxNonceRef.current += 1;
+    setVfx({
+      moveId,
+      position: { ...target.position },
+      nonce: vfxNonceRef.current,
+    });
+    setUnitAnimation(target.id, "hurt");
+    await sleep(IMPACT_MS);
+
+    setState(result.state);
+    const nextTarget = result.state.units.find(
+      (unit) => unit.id === target.id,
     );
 
-    return (
-      player.ap >= move.apCost &&
-      distance >= move.minRange &&
-      distance <= move.maxRange
-    );
+    if (nextTarget?.hp === 0) {
+      setUnitAnimation(target.id, "faint");
+    } else {
+      setUnitAnimation(target.id, "idle");
+    }
+
+    setUnitAnimation(actor.id, "idle");
+    await sleep(160);
+    setVfx(null);
+    setBusy(false);
   };
+
+  const performItem = async (
+    itemId: DuelItemId,
+    targetId: string,
+  ) => {
+    if (!isPlayerTurn || busy) return;
+
+    const actor = getActiveDuelUnit(state);
+    if (!actor || actor.side !== "player") return;
+
+    const result = applyDuelAction(state, {
+      kind: "use-item",
+      unitId: actor.id,
+      itemId,
+      targetId,
+    });
+
+    if (!result.accepted) {
+      flashNotice(
+        result.reason === "target-full-hp"
+          ? "Esse Pokémon já está com HP cheio."
+          : "Não é possível usar esse item agora.",
+      );
+      return;
+    }
+
+    setBusy(true);
+    resetCommand();
+    setUnitAnimation(targetId, "idle");
+    flashNotice(`${DUEL_ITEMS[itemId].name} usada.`);
+    await sleep(320);
+    setState(result.state);
+    setBusy(false);
+  };
+
+  const handleUnitTarget = (unitId: string) => {
+    if (!targetableUnitIds.has(unitId) || busy) {
+      return;
+    }
+
+    if (command === "move-target" && selectedMove) {
+      void performMove(selectedMove, unitId);
+      return;
+    }
+
+    if (command === "item-target" && selectedItem) {
+      void performItem(selectedItem, unitId);
+    }
+  };
+
+  const handleFlee = () => {
+    if (!isPlayerTurn || busy) return;
+    const actor = getActiveDuelUnit(state);
+    if (!actor || actor.side !== "player") return;
+
+    const result = applyDuelAction(state, {
+      kind: "flee",
+      unitId: actor.id,
+    });
+
+    if (!result.accepted) {
+      flashNotice("Você não pode fugir de uma batalha de treinador.");
+      return;
+    }
+
+    setState(result.state);
+  };
+
+  const endTurn = () => {
+    if (!isPlayerTurn || busy) return;
+
+    const actor = getActiveDuelUnit(state);
+    if (!actor || actor.side !== "player") return;
+
+    const result = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: actor.id,
+    });
+
+    if (result.accepted) {
+      resetCommand();
+      setState(result.state);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      state.status !== "active" ||
+      active?.side !== "rival" ||
+      busy ||
+      aiRunningRef.current
+    ) {
+      return;
+    }
+
+    aiRunningRef.current = true;
+    const timer = window.setTimeout(() => {
+      void (async () => {
+        setBusy(true);
+
+        const before = state;
+        const beforeRival = before.units.find(
+          (unit) => unit.side === "rival",
+        )!;
+        const beforePlayer = before.units.find(
+          (unit) => unit.side === "player",
+        )!;
+        const next = resolveSimpleAiTurn(before);
+        const afterRival = next.units.find(
+          (unit) => unit.side === "rival",
+        )!;
+        const afterPlayer = next.units.find(
+          (unit) => unit.side === "player",
+        )!;
+
+        if (
+          beforeRival.position.x !== afterRival.position.x ||
+          beforeRival.position.y !== afterRival.position.y
+        ) {
+          await animatePath(before, beforeRival, afterRival.position);
+        }
+
+        const dealtDamage = afterPlayer.hp < beforePlayer.hp;
+        const loweredAttack =
+          afterPlayer.attackStage < beforePlayer.attackStage;
+        const loweredDefense =
+          afterPlayer.defenseStage < beforePlayer.defenseStage;
+
+        if (dealtDamage || loweredAttack || loweredDefense) {
+          const moveId = dealtDamage
+            ? primaryAttackMove(beforeRival.species)
+            : primaryStatusMove(beforeRival.species);
+
+          setUnitAnimation(beforeRival.id, "attack");
+          await sleep(ATTACK_WINDUP_MS);
+
+          vfxNonceRef.current += 1;
+          setVfx({
+            moveId,
+            position: { ...beforePlayer.position },
+            nonce: vfxNonceRef.current,
+          });
+          setUnitAnimation(beforePlayer.id, "hurt");
+          await sleep(IMPACT_MS);
+        }
+
+        setState(next);
+        setVisualPosition(afterRival.id, afterRival.position);
+        setVisualPosition(afterPlayer.id, afterPlayer.position);
+
+        if (afterPlayer.hp <= 0) {
+          setUnitAnimation(afterPlayer.id, "faint");
+        } else {
+          setUnitAnimation(afterPlayer.id, "idle");
+        }
+
+        if (afterRival.hp <= 0) {
+          setUnitAnimation(afterRival.id, "faint");
+        } else {
+          setUnitAnimation(afterRival.id, "idle");
+        }
+
+        setVfx(null);
+        setBusy(false);
+        aiRunningRef.current = false;
+      })();
+    }, 380);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [active?.side, busy, state]);
+
+  const prompt =
+    command === "walk"
+      ? "Escolha um tile destacado para andar."
+      : command === "move-target" && selectedMove
+        ? `Escolha quem receberá ${DUEL_MOVES[selectedMove].name}.`
+        : command === "item-target" && selectedItem
+          ? `Escolha quem receberá ${DUEL_ITEMS[selectedItem].name}.`
+          : command === "moves"
+            ? "Escolha um golpe."
+            : command === "items"
+              ? "Escolha um item."
+              : "Escolha sua próxima ação.";
 
   return (
     <div className="battle-overlay">
-      <div className="battle-shell">
+      <div className="battle-shell battle-shell-v2">
         <header className="battle-header">
           <div>
             <span className="eyebrow">PRIMEIRO COMBATE</span>
@@ -164,19 +611,35 @@ export function FirstBattle({
               Arena gerada de {context.mapLabel}
             </small>
           </div>
-          <div className="battle-turn">
-            Round {state.round} ·{" "}
-            {state.status === "finished"
-              ? "Fim"
-              : active?.side === "player"
-                ? "Seu turno"
-                : "Turno do rival"}
+
+          <div className="battle-round-cluster">
+            <div className="battle-turn">
+              Round {state.round} ·{" "}
+              {state.status === "finished"
+                ? "Fim"
+                : active?.side === "player"
+                  ? "Seu turno"
+                  : "Turno do rival"}
+            </div>
+            <button
+              type="button"
+              className="end-turn-compact"
+              disabled={!isPlayerTurn}
+              onClick={endTurn}
+            >
+              Encerrar turno
+            </button>
           </div>
         </header>
 
-        <div className="duel-status-row">
+        <div className="duel-status-row battle-party-row">
           {[player, rival].map((unit) => (
-            <div key={unit.id} className="duel-status-card">
+            <div
+              key={unit.id}
+              className={`duel-status-card ${unit.side} ${
+                active?.id === unit.id ? "active" : ""
+              }`}
+            >
               <div className="duel-status-name">
                 <strong>{unit.displayName}</strong>
                 <span>Lv. {unit.level}</span>
@@ -189,10 +652,13 @@ export function FirstBattle({
                   }}
                 />
               </div>
-              <small>
-                HP {unit.hp}/{unit.maxHp} · AP {unit.ap}/{unit.maxAp} ·
-                MP {unit.mp}/{unit.maxMp}
-              </small>
+              <div className="resource-row">
+                <small>
+                  HP {unit.hp}/{unit.maxHp}
+                </small>
+                <small>AP {unit.ap}/{unit.maxAp}</small>
+                <small>MP {unit.mp}/{unit.maxMp}</small>
+              </div>
             </div>
           ))}
         </div>
@@ -224,6 +690,7 @@ export function FirstBattle({
             className="duel-grid"
             style={{
               gridTemplateColumns: `repeat(${state.width}, 1fr)`,
+              gridTemplateRows: `repeat(${state.height}, 1fr)`,
             }}
           >
             {Array.from({
@@ -232,14 +699,16 @@ export function FirstBattle({
               const x = index % state.width;
               const y = Math.floor(index / state.width);
               const key = `${x},${y}`;
-              const unit = state.units.find(
-                (candidate) =>
-                  candidate.hp > 0 &&
-                  candidate.position.x === x &&
-                  candidate.position.y === y,
-              );
               const reachableCell = reachableKeys.has(key);
               const blockedCell = blockedKeys.has(key);
+              const inMoveRange = moveRangeKeys.has(key);
+              const targetOnCell = state.units.find(
+                (unit) =>
+                  unit.hp > 0 &&
+                  unit.position.x === x &&
+                  unit.position.y === y &&
+                  targetableUnitIds.has(unit.id),
+              );
 
               return (
                 <button
@@ -249,76 +718,313 @@ export function FirstBattle({
                     "duel-cell",
                     reachableCell ? "reachable" : "",
                     blockedCell ? "blocked-terrain" : "",
-                    unit?.side === "player" ? "player-unit-cell" : "",
-                    unit?.side === "rival" ? "rival-unit-cell" : "",
+                    inMoveRange ? "move-range" : "",
+                    targetOnCell ? "target-cell" : "",
                   ]
                     .filter(Boolean)
                     .join(" ")}
-                  onClick={() => moveTo(x, y)}
-                  disabled={blockedCell}
-                >
-                  {unit && (
-                    <div className={`duel-unit ${unit.side}`}>
-                      <PokemonBattleSprite
-                        species={unit.species}
-                        side={unit.side}
-                      />
-                      <span className="duel-unit-label">
-                        {unit.displayName}
-                      </span>
-                    </div>
-                  )}
-                </button>
+                  onClick={() => {
+                    if (targetOnCell) {
+                      handleUnitTarget(targetOnCell.id);
+                    } else if (reachableCell) {
+                      void handleWalk({ x, y });
+                    }
+                  }}
+                  disabled={
+                    blockedCell ||
+                    busy ||
+                    (!reachableCell && !targetOnCell)
+                  }
+                  aria-label={`Tile ${x}, ${y}`}
+                />
               );
             })}
           </div>
-        </div>
 
-        <div className="battle-actions">
-          <div>
-            <span className="panel-label">Arena local</span>
-            <p>
-              O terreno é um recorte do mapa do encontro. Paredes e objetos
-              bloqueados no overworld também bloqueiam movimento aqui.
-            </p>
-          </div>
+          <div className="duel-units-layer">
+            {state.units.map((unit) => {
+              const position =
+                visualPositions[unit.id] ?? unit.position;
+              const animation =
+                animations[unit.id] ?? {
+                  name: unit.hp > 0 ? "idle" : "faint",
+                  nonce: 0,
+                };
+              const targetable = targetableUnitIds.has(unit.id);
 
-          <div className="move-buttons">
-            {player.moves.map((moveId) => {
-              const move = DUEL_MOVES[moveId];
               return (
                 <button
-                  key={moveId}
+                  key={unit.id}
                   type="button"
-                  disabled={!canUse(moveId)}
-                  onClick={() => useMove(moveId)}
+                  className={[
+                    "duel-unit-position",
+                    unit.side,
+                    targetable ? "targetable" : "",
+                    active?.id === unit.id ? "active-unit" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  style={{
+                    left: `${(position.x / state.width) * 100}%`,
+                    top: `${(position.y / state.height) * 100}%`,
+                    width: `${100 / state.width}%`,
+                    height: `${100 / state.height}%`,
+                  }}
+                  onClick={() => handleUnitTarget(unit.id)}
+                  disabled={!targetable || busy}
                 >
-                  <strong>{move.name}</strong>
-                  <span>
-                    {move.apCost} AP · alcance {move.minRange}-{move.maxRange}
-                  </span>
+                  <div className="duel-unit">
+                    <PokemonBattleSprite
+                      key={`${unit.id}-${animation.name}-${animation.nonce}`}
+                      species={unit.species}
+                      side={unit.side}
+                      animation={animation.name}
+                    />
+                    <span className="duel-unit-label">
+                      {unit.displayName}
+                    </span>
+                  </div>
                 </button>
               );
             })}
 
-            <button
-              type="button"
-              className="end-turn"
-              disabled={!isPlayerTurn}
-              onClick={endTurn}
-            >
-              Encerrar turno
-            </button>
+            {vfx && (
+              <div
+                className="battle-vfx-position"
+                style={{
+                  left: `${(vfx.position.x / state.width) * 100}%`,
+                  top: `${(vfx.position.y / state.height) * 100}%`,
+                  width: `${100 / state.width}%`,
+                  height: `${100 / state.height}%`,
+                }}
+              >
+                <BattleVfx
+                  moveId={vfx.moveId}
+                  nonce={vfx.nonce}
+                />
+              </div>
+            )}
           </div>
+
+          {busy && (
+            <div className="battle-busy-indicator">
+              Resolvendo ação…
+            </div>
+          )}
         </div>
 
-        <div className="battle-log">
-          {state.log.slice(-5).map((entry, index) => (
+        <section className="battle-command-hud">
+          <div className="battle-command-context">
+            <span className="panel-label">COMANDO</span>
+            <strong>{prompt}</strong>
+            <div className="active-resource-strip">
+              <span>{player.displayName}</span>
+              <span>{player.ap} AP</span>
+              <span>{player.mp} MP</span>
+              <span>Potion ×{state.items.potion}</span>
+            </div>
+          </div>
+
+          <div className="battle-command-panel">
+            {command === "root" && (
+              <div className="command-grid">
+                <button
+                  type="button"
+                  className="command-button command-walk"
+                  disabled={!isPlayerTurn || player.mp <= 0}
+                  onClick={() => setCommand("walk")}
+                >
+                  <span className="command-index">01</span>
+                  <strong>Andar</strong>
+                  <small>Gaste MP para reposicionar.</small>
+                </button>
+                <button
+                  type="button"
+                  className="command-button command-move"
+                  disabled={!isPlayerTurn}
+                  onClick={() => setCommand("moves")}
+                >
+                  <span className="command-index">02</span>
+                  <strong>Move</strong>
+                  <small>Escolha golpe e depois o alvo.</small>
+                </button>
+                <button
+                  type="button"
+                  className="command-button command-item"
+                  disabled={!isPlayerTurn}
+                  onClick={() => setCommand("items")}
+                >
+                  <span className="command-index">03</span>
+                  <strong>Item</strong>
+                  <small>Use um item da mochila.</small>
+                </button>
+                <button
+                  type="button"
+                  className="command-button command-flee"
+                  disabled={!isPlayerTurn}
+                  onClick={handleFlee}
+                >
+                  <span className="command-index">04</span>
+                  <strong>Fugir</strong>
+                  <small>Tente abandonar o combate.</small>
+                </button>
+              </div>
+            )}
+
+            {command === "walk" && (
+              <div className="command-detail">
+                <div>
+                  <span className="panel-label">ANDAR</span>
+                  <strong>{reachable.length} destinos ao alcance</strong>
+                  <p>
+                    Clique em um tile verde. O custo é a distância
+                    percorrida e sai do MP atual.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="back-command"
+                  onClick={resetCommand}
+                >
+                  Voltar
+                </button>
+              </div>
+            )}
+
+            {command === "moves" && (
+              <div className="move-selection-grid">
+                {player.moves.map((moveId) => {
+                  const move = DUEL_MOVES[moveId];
+                  const canPay = player.ap >= move.apCost;
+
+                  return (
+                    <button
+                      key={moveId}
+                      type="button"
+                      className="move-card"
+                      disabled={!canPay}
+                      onClick={() => {
+                        setSelectedMove(moveId);
+                        setCommand("move-target");
+                      }}
+                    >
+                      <div>
+                        <strong>{move.name}</strong>
+                        <span>{move.category}</span>
+                      </div>
+                      <small>
+                        {move.apCost} AP · alcance {move.minRange}–
+                        {move.maxRange}
+                      </small>
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  className="back-command"
+                  onClick={resetCommand}
+                >
+                  Voltar
+                </button>
+              </div>
+            )}
+
+            {command === "move-target" && selectedMove && (
+              <div className="command-detail target-detail">
+                <div>
+                  <span className="panel-label">ALVO</span>
+                  <strong>{DUEL_MOVES[selectedMove].name}</strong>
+                  <p>
+                    {targetableUnitIds.size > 0
+                      ? "Clique no Pokémon inimigo destacado."
+                      : "Nenhum inimigo está dentro do alcance. Volte e se mova primeiro."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="back-command"
+                  onClick={() => {
+                    setSelectedMove(null);
+                    setCommand("moves");
+                  }}
+                >
+                  Voltar
+                </button>
+              </div>
+            )}
+
+            {command === "items" && (
+              <div className="item-selection-grid">
+                {(Object.keys(DUEL_ITEMS) as DuelItemId[]).map(
+                  (itemId) => {
+                    const item = DUEL_ITEMS[itemId];
+                    const amount = state.items[itemId] ?? 0;
+
+                    return (
+                      <button
+                        key={itemId}
+                        type="button"
+                        className="item-card"
+                        disabled={amount <= 0}
+                        onClick={() => {
+                          setSelectedItem(itemId);
+                          setCommand("item-target");
+                        }}
+                      >
+                        <div>
+                          <strong>{item.name}</strong>
+                          <span>×{amount}</span>
+                        </div>
+                        <small>Recupera {item.heal} HP.</small>
+                      </button>
+                    );
+                  },
+                )}
+                <button
+                  type="button"
+                  className="back-command"
+                  onClick={resetCommand}
+                >
+                  Voltar
+                </button>
+              </div>
+            )}
+
+            {command === "item-target" && selectedItem && (
+              <div className="command-detail target-detail">
+                <div>
+                  <span className="panel-label">ALVO DO ITEM</span>
+                  <strong>{DUEL_ITEMS[selectedItem].name}</strong>
+                  <p>
+                    {targetableUnitIds.size > 0
+                      ? "Clique em um Pokémon aliado destacado."
+                      : "Nenhum aliado precisa desse item agora."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="back-command"
+                  onClick={() => {
+                    setSelectedItem(null);
+                    setCommand("items");
+                  }}
+                >
+                  Voltar
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <div className="battle-feed">
+          {state.log.slice(-4).map((entry, index) => (
             <div key={`${entry}-${index}`}>{entry}</div>
           ))}
         </div>
 
-        {state.status === "finished" && (
+        {notice && <div className="battle-notice">{notice}</div>}
+
+        {state.status === "finished" && !state.escaped && (
           <div className="battle-result">
             <span className="eyebrow">
               {state.winner === "player" ? "VITÓRIA" : "DERROTA"}
@@ -329,14 +1035,24 @@ export function FirstBattle({
                 : "Blue venceu desta vez."}
             </h3>
             <p>
-              O resultado não bloqueia a história; este combate é o tutorial
-              do sistema tático.
+              O resultado não bloqueia a história; este combate é o
+              tutorial do sistema tático.
             </p>
             <button
               type="button"
               onClick={() => onComplete(state.winner === "player")}
             >
               Voltar ao laboratório
+            </button>
+          </div>
+        )}
+
+        {state.status === "finished" && state.escaped && (
+          <div className="battle-result">
+            <span className="eyebrow">ESCAPOU</span>
+            <h3>Você saiu do combate.</h3>
+            <button type="button" onClick={() => onComplete(false)}>
+              Voltar ao mapa
             </button>
           </div>
         )}

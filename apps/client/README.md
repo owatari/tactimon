@@ -1,6 +1,6 @@
 # Tactimon client
 
-Playable Kanto overworld slice using the extracted FireRed world assets and SpriteCollab Pokémon animations.
+Playable Kanto overworld slice using extracted FireRed world assets, SpriteCollab Pokémon animation sheets, and optional Explorers of Sky battle VFX.
 
 ## Run
 
@@ -11,37 +11,27 @@ pnpm install
 pnpm dev
 ```
 
-Before the first run, put a SpriteCollab checkout at either:
+Before the first run, put a SpriteCollab checkout at either `local-assets/spritecollab/` or `local-assets/spritecollab/SpriteCollab/`.
 
-```text
-local-assets/spritecollab/
-```
-
-or:
-
-```text
-local-assets/spritecollab/SpriteCollab/
-```
-
-For example:
+Example:
 
 ```bash
 git clone https://github.com/PMDCollab/SpriteCollab.git local-assets/spritecollab/SpriteCollab
 ```
 
-The `predev` hook builds `apps/client/public/game-assets` from the versioned FireRed extraction plus the local SpriteCollab checkout.
+The `predev` hook builds `apps/client/public/game-assets` from the FireRed extraction, local SpriteCollab checkout, and (when present) rendered Mystery Dungeon VFX.
 
 ## Current overworld slice
 
-- Pallet Town, Route 1 and Viridian City
-- Professor Oak's Lab
-- smooth held-key four-direction movement
-- FireRed collision/elevation data
-- smooth camera follow
-- FireRed foreground reconstruction for roofs/fences
-- NPC/object placements from semantic world data
-- door warp into/out of Oak's Lab
-- keyboard and touch controls
+- Pallet Town, Route 1 and Viridian City;
+- Professor Oak's Lab;
+- smooth held-key four-direction movement;
+- FireRed collision/elevation data;
+- smooth camera follow;
+- FireRed foreground reconstruction for roofs/fences;
+- NPC/object placements from semantic world data;
+- door warp into/out of Oak's Lab;
+- keyboard and touch controls.
 
 ## Semantic world data
 
@@ -51,37 +41,48 @@ Regenerate FireRed semantic map data when the extractor changes:
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --maps
 ```
 
-This exports NPC placements, warps, coordinate/background events and map connections under `maps/world/`.
-
 ## Oak Lab starter flow
 
-1. enter Oak's Lab from Pallet Town;
-2. interact with Oak or a starter ball;
-3. choose Bulbasaur, Charmander or Squirtle;
-4. Blue receives the classic counter starter;
-5. approach the Lab exit;
-6. start the first tactical duel;
-7. after the duel, leave through the Lab door warp.
+The first story slice covers Lab entry, starter choice, Blue's counter starter, the rival trigger near the exit, the first tactical battle, and the Lab exit warp.
 
 Starter/battle completion state is persisted in browser local storage for now.
 
-## Tactical battle scene
+## Tactical battle HUD
 
 The battle is driven by `@tactimon/battle-engine`.
 
-For the current starter duel:
+The player's command flow is now explicit:
 
-- arena size is derived from a 9×7 (or smaller) crop around the encounter location;
-- the arena background is the actual FireRed map preview from that location;
-- overworld collision and occupied object cells become blocked tactical cells;
-- player and enemy Pokémon spawn on seeded-random valid cells;
-- both spawns are kept in the same connected walkable region;
-- Speed determines the first turn;
-- each Pokémon starts a turn with 6 AP and 3 MP;
-- movement is four-directional;
-- distance is Manhattan;
-- Tackle/Scratch cost 4 AP and range 1;
-- Growl/Tail Whip cost 2 AP and range up to 3;
-- rival AI uses the same movement/action rules.
+```text
+Andar -> escolher tile
+Move  -> escolher golpe -> escolher alvo
+Item  -> escolher item  -> escolher aliado
+Fugir -> validar se o encontro permite fuga
+```
 
-Pokémon visuals come from SpriteCollab runtime assets. FireRed Pokémon battle sprites are not used.
+A compact `Encerrar turno` action remains available because AP/MP can support several actions in one turn.
+
+Current tutorial rules:
+
+- arena is a crop of the actual map where combat started;
+- overworld collision/object cells become tactical obstacles;
+- Pokémon spawn on seeded-random valid connected cells;
+- 6 AP and 3 MP per turn;
+- four-direction movement / Manhattan distance;
+- one Potion is available in the tutorial battle;
+- trainer battles reject fleeing;
+- rival AI uses the same engine actions.
+
+## Battle animation layers
+
+The battle renderer separates:
+
+1. map crop;
+2. tactical grid;
+3. animated Pokémon units;
+4. move VFX;
+5. HUD/target selection.
+
+Pokémon sprites come from SpriteCollab. Unit states can switch through `Idle`, `Walk`, `Attack`, `Hurt`, and `Faint`.
+
+Move VFX are optionally extracted from Pokémon Mystery Dungeon: Explorers of Sky. See `tools/pmd-vfx-extractor/README.md`. If rendered runtime VFX are not present, CSS fallback effects are used.

@@ -195,4 +195,20 @@ await buildRuntimeSpriteAssets(
   resolve(publicRoot, "pokemon-sprites"),
 );
 
-console.log("Tactimon FireRed + SpriteCollab assets synced.");
+const pmdVfxRuntime = resolve(
+  repoRoot,
+  "local-assets/extracted/pmd-eos/vfx/runtime",
+);
+const pmdVfxDestination = resolve(publicRoot, "battle-vfx");
+
+try {
+  await access(resolve(pmdVfxRuntime, "manifest.json"));
+  await cp(pmdVfxRuntime, pmdVfxDestination, { recursive: true });
+  console.log("synced Explorers of Sky battle VFX runtime assets");
+} catch {
+  console.warn(
+    "optional PMD battle VFX missing: run tools/pmd-vfx-extractor/extract.py with --render",
+  );
+}
+
+console.log("Tactimon FireRed + SpriteCollab + optional PMD VFX assets synced.");
