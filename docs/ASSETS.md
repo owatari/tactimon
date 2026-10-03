@@ -2,11 +2,7 @@
 
 ## Local-only asset model
 
-Tactimon keeps ROM files and extracted proprietary assets on the user's/developer's machine.
-
-The repository contains extraction/import code and metadata, not ROM binaries or the generated proprietary asset payloads.
-
-Local layout:
+Tactimon keeps ROM files and extracted proprietary assets on the user's/developer's machine. Git contains extraction/conversion code and metadata, not ROM binaries or generated proprietary asset payloads.
 
 ```text
 local-assets/
@@ -15,37 +11,33 @@ local-assets/
   spritecollab/
 ```
 
-All payload files inside those three directories are ignored by Git; only placeholder files/documentation are versioned.
+## Supported ROMs
 
-## Reference ROMs
+| Game | Code | Size | SHA-1 |
+| --- | --- | ---: | --- |
+| Pokémon Emerald | BPEE | 16777216 | f3ae088181bf583e55daf962a92bb46f4f1d07b7 |
+| Pokémon FireRed | BPRE | 16777216 | 41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc |
 
-| Game | Header | Code | Size | SHA-1 |
-| --- | --- | --- | ---: | --- |
-| Pokémon Emerald | POKEMON EMER | BPEE | 16777216 | f3ae088181bf583e55daf962a92bb46f4f1d07b7 |
-| Pokémon FireRed | POKEMON FIRE | BPRE | 16777216 | 41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc |
+## Generated world assets
 
-Run:
+`convert_world.py` reads the user's local ROM and the raw LZ77 extraction to build semantic local assets:
 
-```bash
-python tools/asset-extractor/extract.py local-assets/roms/emerald.gba --clean
-```
+- trainer battle sprites;
+- player/NPC/object overworld sheets;
+- tiles and palettes;
+- metatile definitions and attributes;
+- reconstructed metatile atlas previews.
 
-The extractor currently:
+Semantic naming/frame metadata is derived from the matching pret decomp sources but graphics bytes are read from the user's ROM.
 
-- validates the SHA-1 and GBA header;
-- creates a per-game local extraction directory;
-- scans and validates BIOS/GBA LZ77 type `0x10` streams;
-- decompresses each valid stream locally;
-- records source ROM offsets, compressed/decompressed sizes and hashes in a manifest.
+Pokemon battle sprites are intentionally not generated in the normal world pipeline; Tactimon's Pokémon runtime art is planned around SpriteCollab.
 
-This gives us a reliable local raw-asset layer. Game-specific extraction specs can then map known ROM tables/pointers into semantic resources such as Pokémon graphics, tilesets, palettes and maps.
+## UI and miscellaneous graphics
+
+Many UI/effect assets are not centralized in a single Gen III table. `--raw-previews` remains available as the discovery layer for unclassified compressed 4bpp graphics. Named UI extractors can be added progressively as specific screens become part of the client.
 
 ## SpriteCollab
 
 Upstream: https://github.com/PMDCollab/SpriteCollab
 
-A local checkout or locally extracted SpriteCollab payload may be placed under `local-assets/spritecollab/`.
-
-Its submission policy describes community submissions under CC BY-NC 4.0 with attribution and separately calls out official Chunsoft-made material. Import must retain author/provenance metadata and generate attribution information. Useful upstream credit files include `credit_names.txt` and `spritebot_credits.txt`.
-
-Gameplay movement uses North/East/South/West only; diagonal movement frames are not required for rules.
+A local checkout may live under `local-assets/spritecollab/`. Attribution/provenance must be retained for assets used in distributable builds.

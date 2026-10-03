@@ -1,89 +1,94 @@
-# Python ROM asset extractor
+# Local ROM asset pipeline
 
-This directory contains the local-only ROM extraction and conversion pipeline for Tactimon.
+This directory converts user-owned FireRed/Emerald ROM data into local Tactimon assets.
 
-Nothing is uploaded. ROMs, raw extracted blocks and generated PNG assets remain under `local-assets/`, which is ignored by Git.
+Nothing generated under `local-assets/` is committed.
 
-## 1. Raw extraction
-
-Windows:
-
-```powershell
-py tools/asset-extractor/extract.py local-assets/roms/emerald.gba --clean
-```
-
-Linux/macOS:
+## 1. Raw LZ77 extraction
 
 ```bash
-python3 tools/asset-extractor/extract.py local-assets/roms/emerald.gba --clean
+python tools/asset-extractor/extract.py local-assets/roms/firered.gba --clean
+python tools/asset-extractor/extract.py local-assets/roms/emerald.gba --clean
 ```
 
-Repeat for FireRed if desired.
+## 2. World asset conversion
 
-The raw stage validates the supported ROM and decompresses valid GBA LZ77 streams into:
-
-```text
-local-assets/extracted/emerald/lz77/
-local-assets/extracted/firered/lz77/
-```
-
-## 2. Convert raw blocks into assets
-
-Emerald:
+The world converter is now the default asset path for Tactimon:
 
 ```bash
-python tools/asset-extractor/convert.py local-assets/roms/emerald.gba
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba
 ```
 
-FireRed:
+or:
 
 ```bash
-python tools/asset-extractor/convert.py local-assets/roms/firered.gba
+python tools/asset-extractor/convert_world.py local-assets/roms/emerald.gba
 ```
 
-Generated assets are written to:
+Without category flags it generates:
 
 ```text
 local-assets/extracted/<game>/assets/
-├── asset-manifest.json
-└── pokemon/
-    ├── front/
-    │   ├── normal/
-    │   └── shiny/
-    └── back/
-        ├── normal/
-        └── shiny/
+├── world-asset-manifest.json
+├── trainers/
+│   └── front/
+├── overworld/
+└── tilesets/
+    ├── 00_general/
+    │   ├── tiles.4bpp
+    │   ├── palettes.gbapal
+    │   ├── palettes.png
+    │   ├── metatiles.bin
+    │   ├── attributes.bin
+    │   └── metatiles_with_general.png
+    └── ...
 ```
 
-The converter reads the ROM's pointer tables, finds the corresponding already-extracted LZ77 blocks, decodes GBA 4bpp graphics and BGR555 palettes, and writes transparent RGBA PNGs.
+### Trainers
 
-The current supported reference ROMs render all 440 Gen III internal species slots.
+Trainer battle sprites are extracted from the ROM's compressed trainer tables and rendered as transparent 64×64 PNGs with semantic names.
 
-## Diagnostic raw previews
+### Overworld
 
-To render all plausible 4bpp blocks as PNG previews:
+Player/NPC/object graphics are read from `ObjectEventGraphicsInfo`. Frame dimensions, palettes and exact frame counts come from ROM structures plus metadata generated from the matching pret decomp source.
+
+Each output PNG is a sprite sheet and the manifest records frame dimensions/count and source offsets.
+
+### Tilesets
+
+For every primary/secondary tileset the converter exports:
+
+- decompressed 4bpp tile graphics;
+- raw 16-palette set;
+- palette preview PNG;
+- metatile definitions;
+- metatile attributes;
+- reconstructed 16×16 metatile atlas PNG.
+
+Secondary tilesets are paired with primary tilesets based on the layouts in the original game data. For example, FireRed PalletTown is rendered with General, while indoor secondary tilesets are commonly paired with Building.
+
+## Optional categories
+
+Generate only one category:
 
 ```bash
-python tools/asset-extractor/convert.py local-assets/roms/firered.gba --raw-previews
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --trainers
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --overworld
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --tilesets
 ```
 
-These previews are useful for identifying tilesets, UI graphics and other compressed ROM resources before we add semantic table-specific extractors.
-
-You can limit preview generation while testing:
+Pokemon battle sprites are not part of the default Tactimon pipeline. They remain available only as an explicit diagnostic/legacy option:
 
 ```bash
-python tools/asset-extractor/convert.py local-assets/roms/firered.gba --raw-previews --max-previews 100
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --pokemon
 ```
 
-## Next semantic extractors
+Miscellaneous compressed 4bpp candidates can still be previewed for UI/effect discovery:
 
-The next stages will map FireRed/Emerald ROM tables into named local resources such as:
+```bash
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --raw-previews
+```
 
-- tilesets and palettes
-- overworld/player/NPC sprites
-- map layouts and metatiles
-- trainer graphics
-- UI/icon graphics
-- data tables needed by the game
+## Metadata
 
-Pokemon battle sprite extraction is implemented first as a verified end-to-end conversion path.
+`rom-assets-gen3.json` contains semantic names/frame counts and tileset pairings derived from the matching pret FireRed/Emerald decomp projects. It contains no ROM payload.

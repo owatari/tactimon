@@ -1,0 +1,2389 @@
+{
+  "firered": {
+    "source_repository": "pret/pokefirered",
+    "trainer_names": {
+      "0": "AQUA_LEADER_ARCHIE",
+      "1": "AQUA_GRUNT_M",
+      "2": "AQUA_GRUNT_F",
+      "3": "RS_AROMA_LADY",
+      "4": "RS_RUIN_MANIAC",
+      "5": "INTERVIEWER",
+      "6": "RS_TUBER_F",
+      "7": "RS_TUBER_M",
+      "8": "RS_COOLTRAINER_M",
+      "9": "RS_COOLTRAINER_F",
+      "10": "HEX_MANIAC",
+      "11": "RS_LADY",
+      "12": "RS_BEAUTY",
+      "13": "RICH_BOY",
+      "14": "RS_POKEMANIAC",
+      "15": "RS_SWIMMER_M",
+      "16": "RS_BLACK_BELT",
+      "17": "GUITARIST",
+      "18": "KINDLER",
+      "19": "RS_CAMPER",
+      "20": "BUG_MANIAC",
+      "21": "RS_PSYCHIC_M",
+      "22": "RS_PSYCHIC_F",
+      "23": "RS_GENTLEMAN",
+      "24": "ELITE_FOUR_SIDNEY",
+      "25": "ELITE_FOUR_PHOEBE",
+      "26": "LEADER_ROXANNE",
+      "27": "LEADER_BRAWLY",
+      "28": "LEADER_TATE_AND_LIZA",
+      "29": "SCHOOL_KID_M",
+      "30": "SCHOOL_KID_F",
+      "31": "SR_AND_JR",
+      "32": "POKEFAN_M",
+      "33": "POKEFAN_F",
+      "34": "EXPERT_M",
+      "35": "EXPERT_F",
+      "36": "RS_YOUNGSTER",
+      "37": "CHAMPION_STEVEN",
+      "38": "RS_FISHERMAN",
+      "39": "CYCLING_TRIATHLETE_M",
+      "40": "CYCLING_TRIATHLETE_F",
+      "41": "RUNNING_TRIATHLETE_M",
+      "42": "RUNNING_TRIATHLETE_F",
+      "43": "SWIMMING_TRIATHLETE_M",
+      "44": "SWIMMING_TRIATHLETE_F",
+      "45": "DRAGON_TAMER",
+      "46": "RS_BIRD_KEEPER",
+      "47": "NINJA_BOY",
+      "48": "BATTLE_GIRL",
+      "49": "PARASOL_LADY",
+      "50": "RS_SWIMMER_F",
+      "51": "RS_PICNICKER",
+      "52": "RS_TWINS",
+      "53": "RS_SAILOR",
+      "54": "COLLECTOR",
+      "55": "WALLY",
+      "56": "RS_BRENDAN_1",
+      "57": "RS_MAY_1",
+      "58": "RS_POKEMON_BREEDER_M",
+      "59": "RS_POKEMON_BREEDER_F",
+      "60": "RS_POKEMON_RANGER_M",
+      "61": "RS_POKEMON_RANGER_F",
+      "62": "MAGMA_LEADER_MAXIE",
+      "63": "MAGMA_GRUNT_M",
+      "64": "MAGMA_GRUNT_F",
+      "65": "RS_LASS",
+      "66": "RS_BUG_CATCHER",
+      "67": "RS_HIKER",
+      "68": "RS_YOUNG_COUPLE",
+      "69": "OLD_COUPLE",
+      "70": "RS_SIS_AND_BRO",
+      "71": "AQUA_ADMIN_M",
+      "72": "AQUA_ADMIN_F",
+      "73": "MAGMA_ADMIN_M",
+      "74": "MAGMA_ADMIN_F",
+      "75": "LEADER_WATTSON",
+      "76": "LEADER_FLANNERY",
+      "77": "LEADER_NORMAN",
+      "78": "LEADER_WINONA",
+      "79": "LEADER_WALLACE",
+      "80": "ELITE_FOUR_GLACIA",
+      "81": "ELITE_FOUR_DRAKE",
+      "82": "YOUNGSTER",
+      "83": "BUG_CATCHER",
+      "84": "LASS",
+      "85": "SAILOR",
+      "86": "CAMPER",
+      "87": "PICNICKER",
+      "88": "POKEMANIAC",
+      "89": "SUPER_NERD",
+      "90": "HIKER",
+      "91": "BIKER",
+      "92": "BURGLAR",
+      "93": "ENGINEER",
+      "94": "FISHERMAN",
+      "95": "SWIMMER_M",
+      "96": "CUE_BALL",
+      "97": "GAMER",
+      "98": "BEAUTY",
+      "99": "SWIMMER_F",
+      "100": "PSYCHIC_M",
+      "101": "ROCKER",
+      "102": "JUGGLER",
+      "103": "TAMER",
+      "104": "BIRD_KEEPER",
+      "105": "BLACK_BELT",
+      "106": "RIVAL_EARLY",
+      "107": "SCIENTIST",
+      "108": "LEADER_GIOVANNI",
+      "109": "ROCKET_GRUNT_M",
+      "110": "COOLTRAINER_M",
+      "111": "COOLTRAINER_F",
+      "112": "ELITE_FOUR_LORELEI",
+      "113": "ELITE_FOUR_BRUNO",
+      "114": "ELITE_FOUR_AGATHA",
+      "115": "ELITE_FOUR_LANCE",
+      "116": "LEADER_BROCK",
+      "117": "LEADER_MISTY",
+      "118": "LEADER_LT_SURGE",
+      "119": "LEADER_ERIKA",
+      "120": "LEADER_KOGA",
+      "121": "LEADER_BLAINE",
+      "122": "LEADER_SABRINA",
+      "123": "GENTLEMAN",
+      "124": "RIVAL_LATE",
+      "125": "CHAMPION_RIVAL",
+      "126": "CHANNELER",
+      "127": "TWINS",
+      "128": "COOL_COUPLE",
+      "129": "YOUNG_COUPLE",
+      "130": "CRUSH_KIN",
+      "131": "SIS_AND_BRO",
+      "132": "PROFESSOR_OAK",
+      "133": "RS_BRENDAN_2",
+      "134": "RS_MAY_2",
+      "135": "RED",
+      "136": "LEAF",
+      "137": "ROCKET_GRUNT_F",
+      "138": "PSYCHIC_F",
+      "139": "CRUSH_GIRL",
+      "140": "TUBER_F",
+      "141": "POKEMON_BREEDER",
+      "142": "POKEMON_RANGER_M",
+      "143": "POKEMON_RANGER_F",
+      "144": "AROMA_LADY",
+      "145": "RUIN_MANIAC",
+      "146": "LADY",
+      "147": "PAINTER"
+    },
+    "trainer_back_names": {
+      "0": "RED",
+      "1": "LEAF",
+      "2": "RUBY_SAPPHIRE_BRENDAN",
+      "3": "RUBY_SAPPHIRE_MAY",
+      "4": "POKEDUDE",
+      "5": "OLD_MAN"
+    },
+    "overworld": {
+      "0": {
+        "name": "RED_NORMAL",
+        "frame_count": 20
+      },
+      "1": {
+        "name": "RED_BIKE",
+        "frame_count": 9
+      },
+      "2": {
+        "name": "RED_SURF",
+        "frame_count": 12
+      },
+      "3": {
+        "name": "RED_FIELD_MOVE",
+        "frame_count": 9
+      },
+      "4": {
+        "name": "RED_FISH",
+        "frame_count": 12
+      },
+      "5": {
+        "name": "RED_VS_SEEKER",
+        "frame_count": 9
+      },
+      "6": {
+        "name": "RED_VS_SEEKER_BIKE",
+        "frame_count": 6
+      },
+      "7": {
+        "name": "GREEN_NORMAL",
+        "frame_count": 20
+      },
+      "8": {
+        "name": "GREEN_BIKE",
+        "frame_count": 9
+      },
+      "9": {
+        "name": "GREEN_SURF",
+        "frame_count": 12
+      },
+      "10": {
+        "name": "GREEN_FIELD_MOVE",
+        "frame_count": 9
+      },
+      "11": {
+        "name": "GREEN_FISH",
+        "frame_count": 12
+      },
+      "12": {
+        "name": "GREEN_VS_SEEKER",
+        "frame_count": 9
+      },
+      "13": {
+        "name": "GREEN_VS_SEEKER_BIKE",
+        "frame_count": 6
+      },
+      "14": {
+        "name": "RS_BRENDAN",
+        "frame_count": 10
+      },
+      "15": {
+        "name": "RS_MAY",
+        "frame_count": 10
+      },
+      "16": {
+        "name": "LITTLE_BOY",
+        "frame_count": 9
+      },
+      "17": {
+        "name": "LITTLE_GIRL",
+        "frame_count": 10
+      },
+      "18": {
+        "name": "YOUNGSTER",
+        "frame_count": 10
+      },
+      "19": {
+        "name": "BOY",
+        "frame_count": 10
+      },
+      "20": {
+        "name": "BUG_CATCHER",
+        "frame_count": 10
+      },
+      "21": {
+        "name": "SITTING_BOY",
+        "frame_count": 9
+      },
+      "22": {
+        "name": "LASS",
+        "frame_count": 10
+      },
+      "23": {
+        "name": "WOMAN_1",
+        "frame_count": 10
+      },
+      "24": {
+        "name": "CRUSH_GIRL",
+        "frame_count": 10
+      },
+      "25": {
+        "name": "MAN",
+        "frame_count": 10
+      },
+      "26": {
+        "name": "ROCKER",
+        "frame_count": 10
+      },
+      "27": {
+        "name": "FAT_MAN",
+        "frame_count": 9
+      },
+      "28": {
+        "name": "WOMAN_2",
+        "frame_count": 10
+      },
+      "29": {
+        "name": "BEAUTY",
+        "frame_count": 10
+      },
+      "30": {
+        "name": "BALDING_MAN",
+        "frame_count": 10
+      },
+      "31": {
+        "name": "WOMAN_3",
+        "frame_count": 9
+      },
+      "32": {
+        "name": "OLD_MAN_1",
+        "frame_count": 10
+      },
+      "33": {
+        "name": "OLD_MAN_2",
+        "frame_count": 10
+      },
+      "34": {
+        "name": "OLD_MAN_LYING_DOWN",
+        "frame_count": 9
+      },
+      "35": {
+        "name": "OLD_WOMAN",
+        "frame_count": 9
+      },
+      "36": {
+        "name": "TUBER_M_WATER",
+        "frame_count": 10
+      },
+      "37": {
+        "name": "TUBER_F",
+        "frame_count": 10
+      },
+      "38": {
+        "name": "TUBER_M_LAND",
+        "frame_count": 10
+      },
+      "39": {
+        "name": "CAMPER",
+        "frame_count": 10
+      },
+      "40": {
+        "name": "PICNICKER",
+        "frame_count": 10
+      },
+      "41": {
+        "name": "COOLTRAINER_M",
+        "frame_count": 10
+      },
+      "42": {
+        "name": "COOLTRAINER_F",
+        "frame_count": 10
+      },
+      "43": {
+        "name": "SWIMMER_M_WATER",
+        "frame_count": 10
+      },
+      "44": {
+        "name": "SWIMMER_F_WATER",
+        "frame_count": 10
+      },
+      "45": {
+        "name": "SWIMMER_M_LAND",
+        "frame_count": 10
+      },
+      "46": {
+        "name": "SWIMMER_F_LAND",
+        "frame_count": 10
+      },
+      "47": {
+        "name": "WORKER_M",
+        "frame_count": 9
+      },
+      "48": {
+        "name": "WORKER_F",
+        "frame_count": 9
+      },
+      "49": {
+        "name": "ROCKET_M",
+        "frame_count": 9
+      },
+      "50": {
+        "name": "ROCKET_F",
+        "frame_count": 9
+      },
+      "51": {
+        "name": "GBA_KID",
+        "frame_count": 9
+      },
+      "52": {
+        "name": "POKE_MANIAC",
+        "frame_count": 10
+      },
+      "53": {
+        "name": "BIKER",
+        "frame_count": 10
+      },
+      "54": {
+        "name": "BLACK_BELT",
+        "frame_count": 10
+      },
+      "55": {
+        "name": "SCIENTIST",
+        "frame_count": 10
+      },
+      "56": {
+        "name": "HIKER",
+        "frame_count": 10
+      },
+      "57": {
+        "name": "FISHER",
+        "frame_count": 10
+      },
+      "58": {
+        "name": "CHANNELER",
+        "frame_count": 10
+      },
+      "59": {
+        "name": "CHEF",
+        "frame_count": 9
+      },
+      "60": {
+        "name": "POLICEMAN",
+        "frame_count": 9
+      },
+      "61": {
+        "name": "GENTLEMAN",
+        "frame_count": 10
+      },
+      "62": {
+        "name": "SAILOR",
+        "frame_count": 10
+      },
+      "63": {
+        "name": "CAPTAIN",
+        "frame_count": 9
+      },
+      "64": {
+        "name": "NURSE",
+        "frame_count": 10
+      },
+      "65": {
+        "name": "CABLE_CLUB_RECEPTIONIST",
+        "frame_count": 9
+      },
+      "66": {
+        "name": "UNION_ROOM_RECEPTIONIST",
+        "frame_count": 9
+      },
+      "67": {
+        "name": "UNUSED_MALE_RECEPTIONIST",
+        "frame_count": 9
+      },
+      "68": {
+        "name": "CLERK",
+        "frame_count": 9
+      },
+      "69": {
+        "name": "MG_DELIVERYMAN",
+        "frame_count": 9
+      },
+      "70": {
+        "name": "TRAINER_TOWER_DUDE",
+        "frame_count": 9
+      },
+      "71": {
+        "name": "PROF_OAK",
+        "frame_count": 9
+      },
+      "72": {
+        "name": "BLUE",
+        "frame_count": 9
+      },
+      "73": {
+        "name": "BILL",
+        "frame_count": 9
+      },
+      "74": {
+        "name": "LANCE",
+        "frame_count": 9
+      },
+      "75": {
+        "name": "AGATHA",
+        "frame_count": 9
+      },
+      "76": {
+        "name": "DAISY",
+        "frame_count": 9
+      },
+      "77": {
+        "name": "LORELEI",
+        "frame_count": 9
+      },
+      "78": {
+        "name": "MR_FUJI",
+        "frame_count": 9
+      },
+      "79": {
+        "name": "BRUNO",
+        "frame_count": 9
+      },
+      "80": {
+        "name": "BROCK",
+        "frame_count": 9
+      },
+      "81": {
+        "name": "MISTY",
+        "frame_count": 9
+      },
+      "82": {
+        "name": "LT_SURGE",
+        "frame_count": 9
+      },
+      "83": {
+        "name": "ERIKA",
+        "frame_count": 9
+      },
+      "84": {
+        "name": "KOGA",
+        "frame_count": 9
+      },
+      "85": {
+        "name": "SABRINA",
+        "frame_count": 9
+      },
+      "86": {
+        "name": "BLAINE",
+        "frame_count": 9
+      },
+      "87": {
+        "name": "GIOVANNI",
+        "frame_count": 9
+      },
+      "88": {
+        "name": "MOM",
+        "frame_count": 9
+      },
+      "89": {
+        "name": "CELIO",
+        "frame_count": 9
+      },
+      "90": {
+        "name": "TEACHY_TV_HOST",
+        "frame_count": 9
+      },
+      "91": {
+        "name": "GYM_GUY",
+        "frame_count": 9
+      },
+      "92": {
+        "name": "ITEM_BALL",
+        "frame_count": 1
+      },
+      "93": {
+        "name": "TOWN_MAP",
+        "frame_count": 1
+      },
+      "94": {
+        "name": "POKEDEX",
+        "frame_count": 1
+      },
+      "95": {
+        "name": "CUT_TREE",
+        "frame_count": 4
+      },
+      "96": {
+        "name": "ROCK_SMASH_ROCK",
+        "frame_count": 4
+      },
+      "97": {
+        "name": "PUSHABLE_BOULDER",
+        "frame_count": 1
+      },
+      "98": {
+        "name": "FOSSIL",
+        "frame_count": 1
+      },
+      "99": {
+        "name": "RUBY",
+        "frame_count": 1
+      },
+      "100": {
+        "name": "SAPPHIRE",
+        "frame_count": 1
+      },
+      "101": {
+        "name": "OLD_AMBER",
+        "frame_count": 1
+      },
+      "102": {
+        "name": "GYM_SIGN",
+        "frame_count": 1
+      },
+      "103": {
+        "name": "SIGN",
+        "frame_count": 1
+      },
+      "104": {
+        "name": "TRAINER_TIPS",
+        "frame_count": 1
+      },
+      "105": {
+        "name": "CLIPBOARD",
+        "frame_count": 1
+      },
+      "106": {
+        "name": "METEORITE",
+        "frame_count": 1
+      },
+      "107": {
+        "name": "LAPRAS_DOLL",
+        "frame_count": 1
+      },
+      "108": {
+        "name": "SEAGALLOP",
+        "frame_count": 9
+      },
+      "109": {
+        "name": "SNORLAX",
+        "frame_count": 9
+      },
+      "110": {
+        "name": "SPEAROW",
+        "frame_count": 9
+      },
+      "111": {
+        "name": "CUBONE",
+        "frame_count": 9
+      },
+      "112": {
+        "name": "POLIWRATH",
+        "frame_count": 9
+      },
+      "113": {
+        "name": "CLEFAIRY",
+        "frame_count": 9
+      },
+      "114": {
+        "name": "PIDGEOT",
+        "frame_count": 9
+      },
+      "115": {
+        "name": "JIGGLYPUFF",
+        "frame_count": 9
+      },
+      "116": {
+        "name": "PIDGEY",
+        "frame_count": 9
+      },
+      "117": {
+        "name": "CHANSEY",
+        "frame_count": 9
+      },
+      "118": {
+        "name": "OMANYTE",
+        "frame_count": 9
+      },
+      "119": {
+        "name": "KANGASKHAN",
+        "frame_count": 9
+      },
+      "120": {
+        "name": "PIKACHU",
+        "frame_count": 9
+      },
+      "121": {
+        "name": "PSYDUCK",
+        "frame_count": 9
+      },
+      "122": {
+        "name": "NIDORAN_F",
+        "frame_count": 9
+      },
+      "123": {
+        "name": "NIDORAN_M",
+        "frame_count": 9
+      },
+      "124": {
+        "name": "NIDORINO",
+        "frame_count": 9
+      },
+      "125": {
+        "name": "MEOWTH",
+        "frame_count": 9
+      },
+      "126": {
+        "name": "SEEL",
+        "frame_count": 9
+      },
+      "127": {
+        "name": "VOLTORB",
+        "frame_count": 9
+      },
+      "128": {
+        "name": "SLOWPOKE",
+        "frame_count": 9
+      },
+      "129": {
+        "name": "SLOWBRO",
+        "frame_count": 9
+      },
+      "130": {
+        "name": "MACHOP",
+        "frame_count": 9
+      },
+      "131": {
+        "name": "WIGGLYTUFF",
+        "frame_count": 9
+      },
+      "132": {
+        "name": "DODUO",
+        "frame_count": 9
+      },
+      "133": {
+        "name": "FEAROW",
+        "frame_count": 9
+      },
+      "134": {
+        "name": "MACHOKE",
+        "frame_count": 9
+      },
+      "135": {
+        "name": "LAPRAS",
+        "frame_count": 9
+      },
+      "136": {
+        "name": "ZAPDOS",
+        "frame_count": 9
+      },
+      "137": {
+        "name": "MOLTRES",
+        "frame_count": 9
+      },
+      "138": {
+        "name": "ARTICUNO",
+        "frame_count": 9
+      },
+      "139": {
+        "name": "MEWTWO",
+        "frame_count": 9
+      },
+      "140": {
+        "name": "MEW",
+        "frame_count": 9
+      },
+      "141": {
+        "name": "ENTEI",
+        "frame_count": 9
+      },
+      "142": {
+        "name": "SUICUNE",
+        "frame_count": 9
+      },
+      "143": {
+        "name": "RAIKOU",
+        "frame_count": 9
+      },
+      "144": {
+        "name": "LUGIA",
+        "frame_count": 9
+      },
+      "145": {
+        "name": "HO_OH",
+        "frame_count": 9
+      },
+      "146": {
+        "name": "CELEBI",
+        "frame_count": 9
+      },
+      "147": {
+        "name": "KABUTO",
+        "frame_count": 9
+      },
+      "148": {
+        "name": "DEOXYS_D",
+        "frame_count": 9
+      },
+      "149": {
+        "name": "DEOXYS_A",
+        "frame_count": 9
+      },
+      "150": {
+        "name": "DEOXYS_N",
+        "frame_count": 9
+      },
+      "151": {
+        "name": "SS_ANNE",
+        "frame_count": 9
+      }
+    },
+    "tileset_names": [
+      "General",
+      "PalletTown",
+      "ViridianCity",
+      "PewterCity",
+      "CeruleanCity",
+      "LavenderTown",
+      "VermilionCity",
+      "CeladonCity",
+      "FuchsiaCity",
+      "CinnabarIsland",
+      "IndigoPlateau",
+      "SaffronCity",
+      "Building",
+      "Mart",
+      "PokemonCenter",
+      "Cave",
+      "Dummy1",
+      "Museum",
+      "CableClub",
+      "BikeShop",
+      "GenericBuilding1",
+      "Lab",
+      "FuchsiaGym",
+      "ViridianGym",
+      "HoennBuilding",
+      "GameCorner",
+      "PewterGym",
+      "CeruleanGym",
+      "VermilionGym",
+      "CeladonGym",
+      "SaffronGym",
+      "CinnabarGym",
+      "SSAnne",
+      "Dummy2",
+      "ViridianForest",
+      "UnusedGatehouse1",
+      "RockTunnel",
+      "DiglettsCave",
+      "SeafoamIslands",
+      "UnusedGatehouse2",
+      "CeruleanCave",
+      "DepartmentStore",
+      "GenericBuilding2",
+      "PowerPlant",
+      "SeaCottage",
+      "SilphCo",
+      "UndergroundPath",
+      "PokemonTower",
+      "SafariZoneBuilding",
+      "PokemonMansion",
+      "RestaurantHotel",
+      "School",
+      "FanClubDaycare",
+      "Condominiums",
+      "BurgledHouse",
+      "Dummy3",
+      "Dummy4",
+      "MtEmber",
+      "BerryForest",
+      "NavelRock",
+      "TanobyRuins",
+      "SeviiIslands123",
+      "SeviiIslands45",
+      "SeviiIslands67",
+      "TrainerTower",
+      "IslandHarbor",
+      "PokemonLeague",
+      "HallOfFame"
+    ],
+    "tileset_primary_associations": {
+      "GenericBuilding1": [
+        "Building"
+      ],
+      "GenericBuilding2": [
+        "Building"
+      ],
+      "Lab": [
+        "Building"
+      ],
+      "PokemonCenter": [
+        "Building"
+      ],
+      "Mart": [
+        "Building"
+      ],
+      "CeruleanGym": [
+        "Building"
+      ],
+      "CeladonGym": [
+        "Building"
+      ],
+      "Museum": [
+        "Building"
+      ],
+      "HoennBuilding": [
+        "Building"
+      ],
+      "FuchsiaGym": [
+        "Building"
+      ],
+      "VermilionGym": [
+        "Building"
+      ],
+      "BikeShop": [
+        "Building"
+      ],
+      "GameCorner": [
+        "Building"
+      ],
+      "PewterGym": [
+        "Building"
+      ],
+      "SafariZoneBuilding": [
+        "Building"
+      ],
+      "SaffronGym": [
+        "Building"
+      ],
+      "CinnabarGym": [
+        "Building"
+      ],
+      "ViridianGym": [
+        "Building"
+      ],
+      "CableClub": [
+        "Building"
+      ],
+      "CinnabarIsland": [
+        "General"
+      ],
+      "PewterCity": [
+        "General"
+      ],
+      "SSAnne": [
+        "General"
+      ],
+      "PalletTown": [
+        "General"
+      ],
+      "ViridianCity": [
+        "General"
+      ],
+      "CeruleanCity": [
+        "General"
+      ],
+      "LavenderTown": [
+        "General"
+      ],
+      "VermilionCity": [
+        "General"
+      ],
+      "CeladonCity": [
+        "General"
+      ],
+      "FuchsiaCity": [
+        "General"
+      ],
+      "IndigoPlateau": [
+        "General"
+      ],
+      "SaffronCity": [
+        "General"
+      ],
+      "Cave": [
+        "General"
+      ],
+      "ViridianForest": [
+        "General"
+      ],
+      "DiglettsCave": [
+        "General"
+      ],
+      "SilphCo": [
+        "Building"
+      ],
+      "PokemonMansion": [
+        "Building"
+      ],
+      "CeruleanCave": [
+        "General"
+      ],
+      "RockTunnel": [
+        "General"
+      ],
+      "SeafoamIslands": [
+        "General",
+        "Building"
+      ],
+      "PokemonTower": [
+        "Building"
+      ],
+      "PowerPlant": [
+        "Building"
+      ],
+      "SeaCottage": [
+        "Building"
+      ],
+      "UndergroundPath": [
+        "Building"
+      ],
+      "BurgledHouse": [
+        "Building"
+      ],
+      "Condominiums": [
+        "Building"
+      ],
+      "School": [
+        "Building"
+      ],
+      "RestaurantHotel": [
+        "Building"
+      ],
+      "DepartmentStore": [
+        "Building"
+      ],
+      "PokemonLeague": [
+        "Building"
+      ],
+      "HallOfFame": [
+        "Building"
+      ],
+      "SeviiIslands123": [
+        "General"
+      ],
+      "SeviiIslands45": [
+        "General"
+      ],
+      "SeviiIslands67": [
+        "General"
+      ],
+      "FanClubDaycare": [
+        "Building"
+      ],
+      "MtEmber": [
+        "General"
+      ],
+      "BerryForest": [
+        "General"
+      ],
+      "TrainerTower": [
+        "Building"
+      ],
+      "NavelRock": [
+        "General"
+      ],
+      "IslandHarbor": [
+        "General"
+      ],
+      "TanobyRuins": [
+        "Building"
+      ]
+    }
+  },
+  "emerald": {
+    "source_repository": "pret/pokeemerald",
+    "trainer_names": {
+      "0": "HIKER",
+      "1": "AQUA_GRUNT_M",
+      "2": "POKEMON_BREEDER_F",
+      "3": "COOLTRAINER_M",
+      "4": "BIRD_KEEPER",
+      "5": "COLLECTOR",
+      "6": "AQUA_GRUNT_F",
+      "7": "SWIMMER_M",
+      "8": "MAGMA_GRUNT_M",
+      "9": "EXPERT_M",
+      "10": "AQUA_ADMIN_M",
+      "11": "BLACK_BELT",
+      "12": "AQUA_ADMIN_F",
+      "13": "AQUA_LEADER_ARCHIE",
+      "14": "HEX_MANIAC",
+      "15": "AROMA_LADY",
+      "16": "RUIN_MANIAC",
+      "17": "INTERVIEWER",
+      "18": "TUBER_F",
+      "19": "TUBER_M",
+      "20": "COOLTRAINER_F",
+      "21": "LADY",
+      "22": "BEAUTY",
+      "23": "RICH_BOY",
+      "24": "EXPERT_F",
+      "25": "POKEMANIAC",
+      "26": "MAGMA_GRUNT_F",
+      "27": "GUITARIST",
+      "28": "KINDLER",
+      "29": "CAMPER",
+      "30": "PICNICKER",
+      "31": "BUG_MANIAC",
+      "32": "POKEMON_BREEDER_M",
+      "33": "PSYCHIC_M",
+      "34": "PSYCHIC_F",
+      "35": "GENTLEMAN",
+      "36": "ELITE_FOUR_SIDNEY",
+      "37": "ELITE_FOUR_PHOEBE",
+      "38": "ELITE_FOUR_GLACIA",
+      "39": "ELITE_FOUR_DRAKE",
+      "40": "LEADER_ROXANNE",
+      "41": "LEADER_BRAWLY",
+      "42": "LEADER_WATTSON",
+      "43": "LEADER_FLANNERY",
+      "44": "LEADER_NORMAN",
+      "45": "LEADER_WINONA",
+      "46": "LEADER_TATE_AND_LIZA",
+      "47": "LEADER_JUAN",
+      "48": "SCHOOL_KID_M",
+      "49": "SCHOOL_KID_F",
+      "50": "SR_AND_JR",
+      "51": "POKEFAN_M",
+      "52": "POKEFAN_F",
+      "53": "YOUNGSTER",
+      "54": "CHAMPION_WALLACE",
+      "55": "FISHERMAN",
+      "56": "CYCLING_TRIATHLETE_M",
+      "57": "CYCLING_TRIATHLETE_F",
+      "58": "RUNNING_TRIATHLETE_M",
+      "59": "RUNNING_TRIATHLETE_F",
+      "60": "SWIMMING_TRIATHLETE_M",
+      "61": "SWIMMING_TRIATHLETE_F",
+      "62": "DRAGON_TAMER",
+      "63": "NINJA_BOY",
+      "64": "BATTLE_GIRL",
+      "65": "PARASOL_LADY",
+      "66": "SWIMMER_F",
+      "67": "TWINS",
+      "68": "SAILOR",
+      "69": "MAGMA_ADMIN",
+      "70": "WALLY",
+      "71": "BRENDAN",
+      "72": "MAY",
+      "73": "BUG_CATCHER",
+      "74": "POKEMON_RANGER_M",
+      "75": "POKEMON_RANGER_F",
+      "76": "MAGMA_LEADER_MAXIE",
+      "77": "LASS",
+      "78": "YOUNG_COUPLE",
+      "79": "OLD_COUPLE",
+      "80": "SIS_AND_BRO",
+      "81": "STEVEN",
+      "82": "SALON_MAIDEN_ANABEL",
+      "83": "DOME_ACE_TUCKER",
+      "84": "PALACE_MAVEN_SPENSER",
+      "85": "ARENA_TYCOON_GRETA",
+      "86": "FACTORY_HEAD_NOLAND",
+      "87": "PIKE_QUEEN_LUCY",
+      "88": "PYRAMID_KING_BRANDON",
+      "89": "RED",
+      "90": "LEAF",
+      "91": "RS_BRENDAN",
+      "92": "RS_MAY"
+    },
+    "trainer_back_names": {
+      "0": "BRENDAN",
+      "1": "MAY",
+      "2": "RED",
+      "3": "LEAF",
+      "4": "RUBY_SAPPHIRE_BRENDAN",
+      "5": "RUBY_SAPPHIRE_MAY",
+      "6": "WALLY",
+      "7": "STEVEN"
+    },
+    "overworld": {
+      "0": {
+        "name": "BRENDAN_NORMAL",
+        "frame_count": 18
+      },
+      "1": {
+        "name": "BRENDAN_MACH_BIKE",
+        "frame_count": 9
+      },
+      "2": {
+        "name": "BRENDAN_SURFING",
+        "frame_count": 12
+      },
+      "3": {
+        "name": "BRENDAN_FIELD_MOVE",
+        "frame_count": 5
+      },
+      "4": {
+        "name": "QUINTY_PLUMP",
+        "frame_count": 7
+      },
+      "5": {
+        "name": "NINJA_BOY",
+        "frame_count": 9
+      },
+      "6": {
+        "name": "TWIN",
+        "frame_count": 9
+      },
+      "7": {
+        "name": "BOY_1",
+        "frame_count": 9
+      },
+      "8": {
+        "name": "GIRL_1",
+        "frame_count": 9
+      },
+      "9": {
+        "name": "BOY_2",
+        "frame_count": 9
+      },
+      "10": {
+        "name": "GIRL_2",
+        "frame_count": 9
+      },
+      "11": {
+        "name": "LITTLE_BOY",
+        "frame_count": 9
+      },
+      "12": {
+        "name": "LITTLE_GIRL",
+        "frame_count": 9
+      },
+      "13": {
+        "name": "BOY_3",
+        "frame_count": 9
+      },
+      "14": {
+        "name": "GIRL_3",
+        "frame_count": 9
+      },
+      "15": {
+        "name": "RICH_BOY",
+        "frame_count": 9
+      },
+      "16": {
+        "name": "WOMAN_1",
+        "frame_count": 9
+      },
+      "17": {
+        "name": "FAT_MAN",
+        "frame_count": 9
+      },
+      "18": {
+        "name": "POKEFAN_F",
+        "frame_count": 9
+      },
+      "19": {
+        "name": "MAN_1",
+        "frame_count": 9
+      },
+      "20": {
+        "name": "WOMAN_2",
+        "frame_count": 9
+      },
+      "21": {
+        "name": "EXPERT_M",
+        "frame_count": 9
+      },
+      "22": {
+        "name": "EXPERT_F",
+        "frame_count": 9
+      },
+      "23": {
+        "name": "MAN_2",
+        "frame_count": 9
+      },
+      "24": {
+        "name": "WOMAN_3",
+        "frame_count": 9
+      },
+      "25": {
+        "name": "POKEFAN_M",
+        "frame_count": 9
+      },
+      "26": {
+        "name": "WOMAN_4",
+        "frame_count": 9
+      },
+      "27": {
+        "name": "COOK",
+        "frame_count": 9
+      },
+      "28": {
+        "name": "LINK_RECEPTIONIST",
+        "frame_count": 9
+      },
+      "29": {
+        "name": "OLD_MAN",
+        "frame_count": 9
+      },
+      "30": {
+        "name": "OLD_WOMAN",
+        "frame_count": 9
+      },
+      "31": {
+        "name": "CAMPER",
+        "frame_count": 9
+      },
+      "32": {
+        "name": "PICNICKER",
+        "frame_count": 9
+      },
+      "33": {
+        "name": "MAN_3",
+        "frame_count": 9
+      },
+      "34": {
+        "name": "WOMAN_5",
+        "frame_count": 9
+      },
+      "35": {
+        "name": "YOUNGSTER",
+        "frame_count": 9
+      },
+      "36": {
+        "name": "BUG_CATCHER",
+        "frame_count": 9
+      },
+      "37": {
+        "name": "PSYCHIC_M",
+        "frame_count": 9
+      },
+      "38": {
+        "name": "SCHOOL_KID_M",
+        "frame_count": 9
+      },
+      "39": {
+        "name": "MANIAC",
+        "frame_count": 9
+      },
+      "40": {
+        "name": "HEX_MANIAC",
+        "frame_count": 9
+      },
+      "41": {
+        "name": "RAYQUAZA_STILL",
+        "frame_count": 0
+      },
+      "42": {
+        "name": "SWIMMER_M",
+        "frame_count": 9
+      },
+      "43": {
+        "name": "SWIMMER_F",
+        "frame_count": 9
+      },
+      "44": {
+        "name": "BLACK_BELT",
+        "frame_count": 9
+      },
+      "45": {
+        "name": "BEAUTY",
+        "frame_count": 9
+      },
+      "46": {
+        "name": "SCIENTIST_1",
+        "frame_count": 9
+      },
+      "47": {
+        "name": "LASS",
+        "frame_count": 9
+      },
+      "48": {
+        "name": "GENTLEMAN",
+        "frame_count": 9
+      },
+      "49": {
+        "name": "SAILOR",
+        "frame_count": 9
+      },
+      "50": {
+        "name": "FISHERMAN",
+        "frame_count": 9
+      },
+      "51": {
+        "name": "RUNNING_TRIATHLETE_M",
+        "frame_count": 9
+      },
+      "52": {
+        "name": "RUNNING_TRIATHLETE_F",
+        "frame_count": 9
+      },
+      "53": {
+        "name": "TUBER_F",
+        "frame_count": 9
+      },
+      "54": {
+        "name": "TUBER_M",
+        "frame_count": 9
+      },
+      "55": {
+        "name": "HIKER",
+        "frame_count": 9
+      },
+      "56": {
+        "name": "CYCLING_TRIATHLETE_M",
+        "frame_count": 9
+      },
+      "57": {
+        "name": "CYCLING_TRIATHLETE_F",
+        "frame_count": 9
+      },
+      "58": {
+        "name": "NURSE",
+        "frame_count": 10
+      },
+      "59": {
+        "name": "ITEM_BALL",
+        "frame_count": 0
+      },
+      "60": {
+        "name": "BERRY_TREE",
+        "frame_count": 0
+      },
+      "61": {
+        "name": "BERRY_TREE_EARLY_STAGES",
+        "frame_count": 0
+      },
+      "62": {
+        "name": "BERRY_TREE_LATE_STAGES",
+        "frame_count": 0
+      },
+      "63": {
+        "name": "BRENDAN_ACRO_BIKE",
+        "frame_count": 27
+      },
+      "64": {
+        "name": "PROF_BIRCH",
+        "frame_count": 9
+      },
+      "65": {
+        "name": "MAN_4",
+        "frame_count": 9
+      },
+      "66": {
+        "name": "MAN_5",
+        "frame_count": 9
+      },
+      "67": {
+        "name": "REPORTER_M",
+        "frame_count": 9
+      },
+      "68": {
+        "name": "REPORTER_F",
+        "frame_count": 9
+      },
+      "69": {
+        "name": "BARD",
+        "frame_count": 9
+      },
+      "70": {
+        "name": "ANABEL",
+        "frame_count": 9
+      },
+      "71": {
+        "name": "TUCKER",
+        "frame_count": 9
+      },
+      "72": {
+        "name": "GRETA",
+        "frame_count": 9
+      },
+      "73": {
+        "name": "SPENSER",
+        "frame_count": 9
+      },
+      "74": {
+        "name": "NOLAND",
+        "frame_count": 9
+      },
+      "75": {
+        "name": "LUCY",
+        "frame_count": 9
+      },
+      "76": {
+        "name": "UNUSED_NATU_DOLL",
+        "frame_count": 0
+      },
+      "77": {
+        "name": "UNUSED_MAGNEMITE_DOLL",
+        "frame_count": 0
+      },
+      "78": {
+        "name": "UNUSED_SQUIRTLE_DOLL",
+        "frame_count": 0
+      },
+      "79": {
+        "name": "UNUSED_WOOPER_DOLL",
+        "frame_count": 0
+      },
+      "80": {
+        "name": "UNUSED_PIKACHU_DOLL",
+        "frame_count": 0
+      },
+      "81": {
+        "name": "UNUSED_PORYGON2_DOLL",
+        "frame_count": 0
+      },
+      "82": {
+        "name": "CUTTABLE_TREE",
+        "frame_count": 4
+      },
+      "83": {
+        "name": "MART_EMPLOYEE",
+        "frame_count": 9
+      },
+      "84": {
+        "name": "ROOFTOP_SALE_WOMAN",
+        "frame_count": 9
+      },
+      "85": {
+        "name": "TEALA",
+        "frame_count": 9
+      },
+      "86": {
+        "name": "BREAKABLE_ROCK",
+        "frame_count": 4
+      },
+      "87": {
+        "name": "PUSHABLE_BOULDER",
+        "frame_count": 0
+      },
+      "88": {
+        "name": "MR_BRINEYS_BOAT",
+        "frame_count": 9
+      },
+      "89": {
+        "name": "MAY_NORMAL",
+        "frame_count": 18
+      },
+      "90": {
+        "name": "MAY_MACH_BIKE",
+        "frame_count": 9
+      },
+      "91": {
+        "name": "MAY_ACRO_BIKE",
+        "frame_count": 27
+      },
+      "92": {
+        "name": "MAY_SURFING",
+        "frame_count": 12
+      },
+      "93": {
+        "name": "MAY_FIELD_MOVE",
+        "frame_count": 5
+      },
+      "94": {
+        "name": "TRUCK",
+        "frame_count": 0
+      },
+      "95": {
+        "name": "VIGOROTH_CARRYING_BOX",
+        "frame_count": 9
+      },
+      "96": {
+        "name": "VIGOROTH_FACING_AWAY",
+        "frame_count": 9
+      },
+      "97": {
+        "name": "BIRCHS_BAG",
+        "frame_count": 0
+      },
+      "98": {
+        "name": "ZIGZAGOON_1",
+        "frame_count": 9
+      },
+      "99": {
+        "name": "ARTIST",
+        "frame_count": 9
+      },
+      "100": {
+        "name": "RIVAL_BRENDAN_NORMAL",
+        "frame_count": 18
+      },
+      "101": {
+        "name": "RIVAL_BRENDAN_MACH_BIKE",
+        "frame_count": 9
+      },
+      "102": {
+        "name": "RIVAL_BRENDAN_ACRO_BIKE",
+        "frame_count": 27
+      },
+      "103": {
+        "name": "RIVAL_BRENDAN_SURFING",
+        "frame_count": 12
+      },
+      "104": {
+        "name": "RIVAL_BRENDAN_FIELD_MOVE",
+        "frame_count": 5
+      },
+      "105": {
+        "name": "RIVAL_MAY_NORMAL",
+        "frame_count": 18
+      },
+      "106": {
+        "name": "RIVAL_MAY_MACH_BIKE",
+        "frame_count": 9
+      },
+      "107": {
+        "name": "RIVAL_MAY_ACRO_BIKE",
+        "frame_count": 27
+      },
+      "108": {
+        "name": "RIVAL_MAY_SURFING",
+        "frame_count": 12
+      },
+      "109": {
+        "name": "RIVAL_MAY_FIELD_MOVE",
+        "frame_count": 5
+      },
+      "110": {
+        "name": "CAMERAMAN",
+        "frame_count": 9
+      },
+      "111": {
+        "name": "BRENDAN_UNDERWATER",
+        "frame_count": 9
+      },
+      "112": {
+        "name": "MAY_UNDERWATER",
+        "frame_count": 9
+      },
+      "113": {
+        "name": "MOVING_BOX",
+        "frame_count": 0
+      },
+      "114": {
+        "name": "CABLE_CAR",
+        "frame_count": 0
+      },
+      "115": {
+        "name": "SCIENTIST_2",
+        "frame_count": 9
+      },
+      "116": {
+        "name": "DEVON_EMPLOYEE",
+        "frame_count": 9
+      },
+      "117": {
+        "name": "AQUA_MEMBER_M",
+        "frame_count": 9
+      },
+      "118": {
+        "name": "AQUA_MEMBER_F",
+        "frame_count": 9
+      },
+      "119": {
+        "name": "MAGMA_MEMBER_M",
+        "frame_count": 9
+      },
+      "120": {
+        "name": "MAGMA_MEMBER_F",
+        "frame_count": 9
+      },
+      "121": {
+        "name": "SIDNEY",
+        "frame_count": 9
+      },
+      "122": {
+        "name": "PHOEBE",
+        "frame_count": 9
+      },
+      "123": {
+        "name": "GLACIA",
+        "frame_count": 9
+      },
+      "124": {
+        "name": "DRAKE",
+        "frame_count": 9
+      },
+      "125": {
+        "name": "ROXANNE",
+        "frame_count": 9
+      },
+      "126": {
+        "name": "BRAWLY",
+        "frame_count": 9
+      },
+      "127": {
+        "name": "WATTSON",
+        "frame_count": 9
+      },
+      "128": {
+        "name": "FLANNERY",
+        "frame_count": 9
+      },
+      "129": {
+        "name": "NORMAN",
+        "frame_count": 9
+      },
+      "130": {
+        "name": "WINONA",
+        "frame_count": 9
+      },
+      "131": {
+        "name": "LIZA",
+        "frame_count": 9
+      },
+      "132": {
+        "name": "TATE",
+        "frame_count": 9
+      },
+      "133": {
+        "name": "WALLACE",
+        "frame_count": 9
+      },
+      "134": {
+        "name": "STEVEN",
+        "frame_count": 9
+      },
+      "135": {
+        "name": "WALLY",
+        "frame_count": 9
+      },
+      "136": {
+        "name": "LITTLE_BOY_3",
+        "frame_count": 9
+      },
+      "137": {
+        "name": "BRENDAN_FISHING",
+        "frame_count": 12
+      },
+      "138": {
+        "name": "MAY_FISHING",
+        "frame_count": 12
+      },
+      "139": {
+        "name": "HOT_SPRINGS_OLD_WOMAN",
+        "frame_count": 9
+      },
+      "140": {
+        "name": "SS_TIDAL",
+        "frame_count": 0
+      },
+      "141": {
+        "name": "SUBMARINE_SHADOW",
+        "frame_count": 0
+      },
+      "142": {
+        "name": "PICHU_DOLL",
+        "frame_count": 0
+      },
+      "143": {
+        "name": "PIKACHU_DOLL",
+        "frame_count": 0
+      },
+      "144": {
+        "name": "MARILL_DOLL",
+        "frame_count": 0
+      },
+      "145": {
+        "name": "TOGEPI_DOLL",
+        "frame_count": 0
+      },
+      "146": {
+        "name": "CYNDAQUIL_DOLL",
+        "frame_count": 0
+      },
+      "147": {
+        "name": "CHIKORITA_DOLL",
+        "frame_count": 0
+      },
+      "148": {
+        "name": "TOTODILE_DOLL",
+        "frame_count": 0
+      },
+      "149": {
+        "name": "JIGGLYPUFF_DOLL",
+        "frame_count": 0
+      },
+      "150": {
+        "name": "MEOWTH_DOLL",
+        "frame_count": 0
+      },
+      "151": {
+        "name": "CLEFAIRY_DOLL",
+        "frame_count": 0
+      },
+      "152": {
+        "name": "DITTO_DOLL",
+        "frame_count": 0
+      },
+      "153": {
+        "name": "SMOOCHUM_DOLL",
+        "frame_count": 0
+      },
+      "154": {
+        "name": "TREECKO_DOLL",
+        "frame_count": 0
+      },
+      "155": {
+        "name": "TORCHIC_DOLL",
+        "frame_count": 0
+      },
+      "156": {
+        "name": "MUDKIP_DOLL",
+        "frame_count": 0
+      },
+      "157": {
+        "name": "DUSKULL_DOLL",
+        "frame_count": 0
+      },
+      "158": {
+        "name": "WYNAUT_DOLL",
+        "frame_count": 0
+      },
+      "159": {
+        "name": "BALTOY_DOLL",
+        "frame_count": 0
+      },
+      "160": {
+        "name": "KECLEON_DOLL",
+        "frame_count": 0
+      },
+      "161": {
+        "name": "AZURILL_DOLL",
+        "frame_count": 0
+      },
+      "162": {
+        "name": "SKITTY_DOLL",
+        "frame_count": 0
+      },
+      "163": {
+        "name": "SWABLU_DOLL",
+        "frame_count": 0
+      },
+      "164": {
+        "name": "GULPIN_DOLL",
+        "frame_count": 0
+      },
+      "165": {
+        "name": "LOTAD_DOLL",
+        "frame_count": 0
+      },
+      "166": {
+        "name": "SEEDOT_DOLL",
+        "frame_count": 0
+      },
+      "167": {
+        "name": "PIKA_CUSHION",
+        "frame_count": 0
+      },
+      "168": {
+        "name": "ROUND_CUSHION",
+        "frame_count": 0
+      },
+      "169": {
+        "name": "KISS_CUSHION",
+        "frame_count": 0
+      },
+      "170": {
+        "name": "ZIGZAG_CUSHION",
+        "frame_count": 0
+      },
+      "171": {
+        "name": "SPIN_CUSHION",
+        "frame_count": 0
+      },
+      "172": {
+        "name": "DIAMOND_CUSHION",
+        "frame_count": 0
+      },
+      "173": {
+        "name": "BALL_CUSHION",
+        "frame_count": 0
+      },
+      "174": {
+        "name": "GRASS_CUSHION",
+        "frame_count": 0
+      },
+      "175": {
+        "name": "FIRE_CUSHION",
+        "frame_count": 0
+      },
+      "176": {
+        "name": "WATER_CUSHION",
+        "frame_count": 0
+      },
+      "177": {
+        "name": "BIG_SNORLAX_DOLL",
+        "frame_count": 0
+      },
+      "178": {
+        "name": "BIG_RHYDON_DOLL",
+        "frame_count": 0
+      },
+      "179": {
+        "name": "BIG_LAPRAS_DOLL",
+        "frame_count": 0
+      },
+      "180": {
+        "name": "BIG_VENUSAUR_DOLL",
+        "frame_count": 0
+      },
+      "181": {
+        "name": "BIG_CHARIZARD_DOLL",
+        "frame_count": 0
+      },
+      "182": {
+        "name": "BIG_BLASTOISE_DOLL",
+        "frame_count": 0
+      },
+      "183": {
+        "name": "BIG_WAILMER_DOLL",
+        "frame_count": 0
+      },
+      "184": {
+        "name": "BIG_REGIROCK_DOLL",
+        "frame_count": 0
+      },
+      "185": {
+        "name": "BIG_REGICE_DOLL",
+        "frame_count": 0
+      },
+      "186": {
+        "name": "BIG_REGISTEEL_DOLL",
+        "frame_count": 0
+      },
+      "187": {
+        "name": "LATIAS",
+        "frame_count": 9
+      },
+      "188": {
+        "name": "LATIOS",
+        "frame_count": 9
+      },
+      "189": {
+        "name": "GAMEBOY_KID",
+        "frame_count": 9
+      },
+      "190": {
+        "name": "CONTEST_JUDGE",
+        "frame_count": 9
+      },
+      "191": {
+        "name": "BRENDAN_WATERING",
+        "frame_count": 9
+      },
+      "192": {
+        "name": "MAY_WATERING",
+        "frame_count": 9
+      },
+      "193": {
+        "name": "BRENDAN_DECORATING",
+        "frame_count": 0
+      },
+      "194": {
+        "name": "MAY_DECORATING",
+        "frame_count": 0
+      },
+      "195": {
+        "name": "ARCHIE",
+        "frame_count": 9
+      },
+      "196": {
+        "name": "MAXIE",
+        "frame_count": 9
+      },
+      "197": {
+        "name": "KYOGRE_FRONT",
+        "frame_count": 9
+      },
+      "198": {
+        "name": "GROUDON_FRONT",
+        "frame_count": 9
+      },
+      "199": {
+        "name": "FOSSIL",
+        "frame_count": 0
+      },
+      "200": {
+        "name": "REGIROCK",
+        "frame_count": 0
+      },
+      "201": {
+        "name": "REGICE",
+        "frame_count": 0
+      },
+      "202": {
+        "name": "REGISTEEL",
+        "frame_count": 0
+      },
+      "203": {
+        "name": "SKITTY",
+        "frame_count": 9
+      },
+      "204": {
+        "name": "KECLEON",
+        "frame_count": 9
+      },
+      "205": {
+        "name": "KYOGRE_ASLEEP",
+        "frame_count": 9
+      },
+      "206": {
+        "name": "GROUDON_ASLEEP",
+        "frame_count": 9
+      },
+      "207": {
+        "name": "RAYQUAZA",
+        "frame_count": 5
+      },
+      "208": {
+        "name": "ZIGZAGOON_2",
+        "frame_count": 9
+      },
+      "209": {
+        "name": "PIKACHU",
+        "frame_count": 9
+      },
+      "210": {
+        "name": "AZUMARILL",
+        "frame_count": 9
+      },
+      "211": {
+        "name": "WINGULL",
+        "frame_count": 9
+      },
+      "212": {
+        "name": "KECLEON_BRIDGE_SHADOW",
+        "frame_count": 9
+      },
+      "213": {
+        "name": "TUBER_M_SWIMMING",
+        "frame_count": 9
+      },
+      "214": {
+        "name": "AZURILL",
+        "frame_count": 9
+      },
+      "215": {
+        "name": "MOM",
+        "frame_count": 9
+      },
+      "216": {
+        "name": "LINK_BRENDAN",
+        "frame_count": 18
+      },
+      "217": {
+        "name": "LINK_MAY",
+        "frame_count": 18
+      },
+      "218": {
+        "name": "JUAN",
+        "frame_count": 9
+      },
+      "219": {
+        "name": "SCOTT",
+        "frame_count": 9
+      },
+      "220": {
+        "name": "POOCHYENA",
+        "frame_count": 9
+      },
+      "221": {
+        "name": "KYOGRE_SIDE",
+        "frame_count": 9
+      },
+      "222": {
+        "name": "GROUDON_SIDE",
+        "frame_count": 9
+      },
+      "223": {
+        "name": "MYSTERY_GIFT_MAN",
+        "frame_count": 9
+      },
+      "224": {
+        "name": "TRICK_HOUSE_STATUE",
+        "frame_count": 0
+      },
+      "225": {
+        "name": "KIRLIA",
+        "frame_count": 9
+      },
+      "226": {
+        "name": "DUSCLOPS",
+        "frame_count": 9
+      },
+      "227": {
+        "name": "UNION_ROOM_NURSE",
+        "frame_count": 9
+      },
+      "228": {
+        "name": "SUDOWOODO",
+        "frame_count": 9
+      },
+      "229": {
+        "name": "MEW",
+        "frame_count": 9
+      },
+      "230": {
+        "name": "RED",
+        "frame_count": 9
+      },
+      "231": {
+        "name": "LEAF",
+        "frame_count": 9
+      },
+      "232": {
+        "name": "DEOXYS",
+        "frame_count": 9
+      },
+      "233": {
+        "name": "DEOXYS_TRIANGLE",
+        "frame_count": 0
+      },
+      "234": {
+        "name": "BRANDON",
+        "frame_count": 9
+      },
+      "235": {
+        "name": "LINK_RS_BRENDAN",
+        "frame_count": 9
+      },
+      "236": {
+        "name": "LINK_RS_MAY",
+        "frame_count": 9
+      },
+      "237": {
+        "name": "LUGIA",
+        "frame_count": 9
+      },
+      "238": {
+        "name": "HOOH",
+        "frame_count": 9
+      }
+    },
+    "tileset_names": [
+      "General",
+      "Petalburg",
+      "Rustboro",
+      "Dewford",
+      "Slateport",
+      "Mauville",
+      "Lavaridge",
+      "Fallarbor",
+      "Fortree",
+      "Lilycove",
+      "Mossdeep",
+      "EverGrande",
+      "Pacifidlog",
+      "Sootopolis",
+      "BattleFrontierOutsideWest",
+      "BattleFrontierOutsideEast",
+      "Building",
+      "Shop",
+      "PokemonCenter",
+      "Cave",
+      "PokemonSchool",
+      "PokemonFanClub",
+      "Unused1",
+      "MeteorFalls",
+      "OceanicMuseum",
+      "CableClub",
+      "SeashoreHouse",
+      "PrettyPetalFlowerShop",
+      "PokemonDayCare",
+      "Facility",
+      "BikeShop",
+      "RusturfTunnel",
+      "SecretBaseBrownCave",
+      "SecretBaseTree",
+      "SecretBaseShrub",
+      "SecretBaseBlueCave",
+      "SecretBaseYellowCave",
+      "SecretBaseRedCave",
+      "InsideOfTruck",
+      "Unused2",
+      "Contest",
+      "LilycoveMuseum",
+      "BrendansMaysHouse",
+      "Lab",
+      "Underwater",
+      "PetalburgGym",
+      "SootopolisGym",
+      "GenericBuilding",
+      "MauvilleGameCorner",
+      "RustboroGym",
+      "DewfordGym",
+      "MauvilleGym",
+      "LavaridgeGym",
+      "TrickHousePuzzle",
+      "FortreeGym",
+      "MossdeepGym",
+      "InsideShip",
+      "SecretBase",
+      "EliteFour",
+      "BattleFrontier",
+      "BattlePalace",
+      "BattleDome",
+      "BattleFactory",
+      "BattlePike",
+      "BattleArena",
+      "BattlePyramid",
+      "MirageTower",
+      "MossdeepGameCorner",
+      "IslandHarbor",
+      "TrainerHill",
+      "NavelRock",
+      "BattleFrontierRankingHall",
+      "BattleTent",
+      "MysteryEventsHouse",
+      "UnionRoom"
+    ],
+    "tileset_primary_associations": {
+      "0": [
+        "General"
+      ],
+      "Petalburg": [
+        "General"
+      ],
+      "Slateport": [
+        "General"
+      ],
+      "Mauville": [
+        "General"
+      ],
+      "Rustboro": [
+        "General"
+      ],
+      "Fortree": [
+        "General"
+      ],
+      "Lilycove": [
+        "General"
+      ],
+      "Mossdeep": [
+        "General"
+      ],
+      "Sootopolis": [
+        "General"
+      ],
+      "EverGrande": [
+        "General"
+      ],
+      "Dewford": [
+        "General"
+      ],
+      "Lavaridge": [
+        "General"
+      ],
+      "Fallarbor": [
+        "General"
+      ],
+      "Pacifidlog": [
+        "General"
+      ],
+      "Cave": [
+        "General"
+      ],
+      "Underwater": [
+        "General"
+      ],
+      "BrendansMaysHouse": [
+        "Building"
+      ],
+      "Lab": [
+        "Building"
+      ],
+      "GenericBuilding": [
+        "Building"
+      ],
+      "PokemonCenter": [
+        "Building"
+      ],
+      "Shop": [
+        "Building"
+      ],
+      "DewfordGym": [
+        "Building"
+      ],
+      "LavaridgeGym": [
+        "Building"
+      ],
+      "Contest": [
+        "Building",
+        "General"
+      ],
+      "PetalburgGym": [
+        "Building"
+      ],
+      "Facility": [
+        "General",
+        "Building"
+      ],
+      "PokemonFanClub": [
+        "Building"
+      ],
+      "OceanicMuseum": [
+        "Building"
+      ],
+      "MauvilleGym": [
+        "Building"
+      ],
+      "BikeShop": [
+        "General"
+      ],
+      "MauvilleGameCorner": [
+        "Building"
+      ],
+      "RustboroGym": [
+        "Building"
+      ],
+      "PokemonSchool": [
+        "Building"
+      ],
+      "FortreeGym": [
+        "Building"
+      ],
+      "LilycoveMuseum": [
+        "Building"
+      ],
+      "MossdeepGym": [
+        "Building"
+      ],
+      "SootopolisGym": [
+        "Building"
+      ],
+      "EliteFour": [
+        "Building"
+      ],
+      "PrettyPetalFlowerShop": [
+        "Building"
+      ],
+      "PokemonDayCare": [
+        "Building"
+      ],
+      "MeteorFalls": [
+        "General"
+      ],
+      "RusturfTunnel": [
+        "General"
+      ],
+      "InsideShip": [
+        "General"
+      ],
+      "SecretBaseRedCave": [
+        "SecretBase"
+      ],
+      "SecretBaseBrownCave": [
+        "SecretBase"
+      ],
+      "SecretBaseBlueCave": [
+        "SecretBase"
+      ],
+      "SecretBaseYellowCave": [
+        "SecretBase"
+      ],
+      "SecretBaseTree": [
+        "SecretBase"
+      ],
+      "SecretBaseShrub": [
+        "SecretBase"
+      ],
+      "CableClub": [
+        "Building"
+      ],
+      "InsideOfTruck": [
+        "General"
+      ],
+      "SeashoreHouse": [
+        "Building"
+      ],
+      "TrickHousePuzzle": [
+        "Building"
+      ],
+      "BattleFrontier": [
+        "Building",
+        "General"
+      ],
+      "BattleFrontierOutsideWest": [
+        "General"
+      ],
+      "MossdeepGameCorner": [
+        "Building"
+      ],
+      "BattleDome": [
+        "Building"
+      ],
+      "BattlePalace": [
+        "General",
+        "Building"
+      ],
+      "BattleFrontierOutsideEast": [
+        "General"
+      ],
+      "BattleFactory": [
+        "Building"
+      ],
+      "BattlePike": [
+        "Building"
+      ],
+      "BattleArena": [
+        "Building"
+      ],
+      "BattlePyramid": [
+        "Building"
+      ],
+      "MirageTower": [
+        "General"
+      ],
+      "BattleTent": [
+        "Building",
+        "General"
+      ],
+      "UnionRoom": [
+        "Building"
+      ],
+      "BattleFrontierRankingHall": [
+        "Building"
+      ],
+      "IslandHarbor": [
+        "General"
+      ],
+      "TrainerHill": [
+        "Building"
+      ],
+      "NavelRock": [
+        "General"
+      ],
+      "MysteryEventsHouse": [
+        "Building"
+      ]
+    }
+  }
+}
