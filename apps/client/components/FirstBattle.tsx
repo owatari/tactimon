@@ -1182,9 +1182,13 @@ export function FirstBattle({
                       <span>ITEM</span>
                       <strong>{DUEL_ITEMS[selectedItem].name}</strong>
                       <small>
-                        {targetableUnitIds.size > 0
-                          ? "Escolha um aliado"
-                          : "Nenhum alvo precisa do item"}
+                        {DUEL_ITEMS[selectedItem].kind === "capture"
+                          ? targetableUnitIds.size > 0
+                            ? "Escolha o Pokémon selvagem"
+                            : "Reduza o alvo para 10% de HP ou menos"
+                          : targetableUnitIds.size > 0
+                            ? "Escolha um aliado"
+                            : "Nenhum alvo precisa do item"}
                       </small>
                     </div>
                     <button
@@ -1262,11 +1266,17 @@ export function FirstBattle({
                     : "Blue venceu desta vez."}
             </h3>
             <p>
-              {encounter.kind === "wild"
-                ? state.winner === "player"
-                  ? "Vitórias selvagens concedem XP e podem gerar level up, EV e novos moves."
-                  : "Você retorna ao mapa sem receber recompensa."
-                : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
+              {state.captureResult
+                ? state.captureResult.success
+                  ? "O Pokémon foi adicionado ao seu time e o combate concede a recompensa completa de XP."
+                  : `O Pokémon fugiu, mas você recebe ${Math.round(
+                      state.captureResult.xpRatio * 100,
+                    )}% da recompensa de XP pelo progresso da captura.`
+                : encounter.kind === "wild"
+                  ? state.winner === "player"
+                    ? "Vitórias selvagens concedem XP e podem gerar level up, EV e novos moves."
+                    : "Você retorna ao mapa sem receber recompensa."
+                  : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
             </p>
             <button
               type="button"

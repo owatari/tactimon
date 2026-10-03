@@ -106,8 +106,11 @@ export function storyStarterSummary(
     return null;
   }
 
+  const partySize = 1 + story.capturedPokemon.length;
+
   return (
     `Você escolheu ${starterDisplayName(story.starter)}. ` +
-    `Blue escolheu ${starterDisplayName(story.rivalStarter)}.`
+    `Blue escolheu ${starterDisplayName(story.rivalStarter)}. ` +
+    `Seu time tem ${partySize} Pokémon.`
   );
 }
