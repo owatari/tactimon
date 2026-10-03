@@ -1,0 +1,22 @@
+{
+  "index": 83,
+  "id": "LAYOUT_UNUSED_CONTEST_ROOM3",
+  "name": "UnusedContestRoom3_Layout",
+  "width": 1,
+  "height": 1,
+  "source_width": 1,
+  "source_height": 1,
+  "primary_tileset": "Building",
+  "secondary_tileset": "Contest",
+  "struct_offset": 4363496,
+  "map_offset": 4363492,
+  "border_offset": 4363484,
+  "cells": [
+    {
+      "raw": 1565,
+      "metatile": 541,
+      "collision": 1,
+      "elevation": 0
+    }
+  ]
+}

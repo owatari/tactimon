@@ -1,0 +1,304 @@
+{
+  "index": 254,
+  "id": "LAYOUT_FORTREE_CITY_DECORATION_SHOP",
+  "name": "FortreeCity_DecorationShop_Layout",
+  "width": 8,
+  "height": 6,
+  "source_width": 8,
+  "source_height": 6,
+  "primary_tileset": "Building",
+  "secondary_tileset": "GenericBuilding",
+  "struct_offset": 4492356,
+  "map_offset": 4492260,
+  "border_offset": 4492252,
+  "cells": [
+    {
+      "raw": 1992,
+      "metatile": 968,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1993,
+      "metatile": 969,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1993,
+      "metatile": 969,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1982,
+      "metatile": 958,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1983,
+      "metatile": 959,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1993,
+      "metatile": 969,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1993,
+      "metatile": 969,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1994,
+      "metatile": 970,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2000,
+      "metatile": 976,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2001,
+      "metatile": 977,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2001,
+      "metatile": 977,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1982,
+      "metatile": 958,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1983,
+      "metatile": 959,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2001,
+      "metatile": 977,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2001,
+      "metatile": 977,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2002,
+      "metatile": 978,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2029,
+      "metatile": 1005,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 13294,
+      "metatile": 1006,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13263,
+      "metatile": 975,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1982,
+      "metatile": 958,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1983,
+      "metatile": 959,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 13262,
+      "metatile": 974,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13294,
+      "metatile": 1006,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 2031,
+      "metatile": 1007,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2037,
+      "metatile": 1013,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2038,
+      "metatile": 1014,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2007,
+      "metatile": 983,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1990,
+      "metatile": 966,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1991,
+      "metatile": 967,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2006,
+      "metatile": 982,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2038,
+      "metatile": 1014,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 2039,
+      "metatile": 1015,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 14284,
+      "metatile": 972,
+      "collision": 1,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 980,
+      "metatile": 980,
+      "collision": 0,
+      "elevation": 0
+    },
+    {
+      "raw": 981,
+      "metatile": 981,
+      "collision": 0,
+      "elevation": 0
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 13273,
+      "metatile": 985,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 14285,
+      "metatile": 973,
+      "collision": 1,
+      "elevation": 3
+    }
+  ]
+}

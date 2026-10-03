@@ -1,0 +1,166 @@
+{
+  "index": 236,
+  "id": "LAYOUT_INSIDE_OF_TRUCK",
+  "name": "InsideOfTruck_Layout",
+  "width": 5,
+  "height": 5,
+  "source_width": 5,
+  "source_height": 5,
+  "primary_tileset": "General",
+  "secondary_tileset": "InsideOfTruck",
+  "struct_offset": 4469184,
+  "map_offset": 4469132,
+  "border_offset": 4469124,
+  "cells": [
+    {
+      "raw": 1537,
+      "metatile": 513,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1539,
+      "metatile": 515,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1540,
+      "metatile": 516,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1541,
+      "metatile": 517,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1545,
+      "metatile": 521,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12810,
+      "metatile": 522,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12811,
+      "metatile": 523,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12812,
+      "metatile": 524,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 520,
+      "metatile": 520,
+      "collision": 0,
+      "elevation": 0
+    },
+    {
+      "raw": 1553,
+      "metatile": 529,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12818,
+      "metatile": 530,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12819,
+      "metatile": 531,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12820,
+      "metatile": 532,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 528,
+      "metatile": 528,
+      "collision": 0,
+      "elevation": 0
+    },
+    {
+      "raw": 1561,
+      "metatile": 537,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1562,
+      "metatile": 538,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1563,
+      "metatile": 539,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12828,
+      "metatile": 540,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 536,
+      "metatile": 536,
+      "collision": 0,
+      "elevation": 0
+    },
+    {
+      "raw": 1569,
+      "metatile": 545,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1570,
+      "metatile": 546,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1571,
+      "metatile": 547,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1572,
+      "metatile": 548,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1568,
+      "metatile": 544,
+      "collision": 1,
+      "elevation": 0
+    }
+  ]
+}

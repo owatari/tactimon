@@ -1,0 +1,22 @@
+{
+  "index": 241,
+  "id": "LAYOUT_PROTOTYPE_SEVII_ISLE_6",
+  "name": "Prototype_SeviiIsle_6_Layout",
+  "width": 1,
+  "height": 1,
+  "source_width": 1,
+  "source_height": 1,
+  "primary_tileset": "General",
+  "secondary_tileset": "CeladonCity",
+  "struct_offset": 3310504,
+  "map_offset": 3310500,
+  "border_offset": 3310492,
+  "cells": [
+    {
+      "raw": 4395,
+      "metatile": 299,
+      "collision": 0,
+      "elevation": 1
+    }
+  ]
+}

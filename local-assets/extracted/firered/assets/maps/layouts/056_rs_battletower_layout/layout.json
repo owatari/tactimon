@@ -1,0 +1,5236 @@
+{
+  "index": 56,
+  "id": "LAYOUT_RS_BATTLE_TOWER",
+  "name": "RS_BattleTower_Layout",
+  "width": 29,
+  "height": 30,
+  "source_width": 29,
+  "source_height": 30,
+  "primary_tileset": "General",
+  "secondary_tileset": "PewterCity",
+  "struct_offset": 2997216,
+  "map_offset": 2995476,
+  "border_offset": 2995468,
+  "cells": [
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1394,
+      "metatile": 370,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1664,
+      "metatile": 640,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1609,
+      "metatile": 585,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1656,
+      "metatile": 632,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1657,
+      "metatile": 633,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1658,
+      "metatile": 634,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1659,
+      "metatile": 635,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1634,
+      "metatile": 610,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1632,
+      "metatile": 608,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1665,
+      "metatile": 641,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1396,
+      "metatile": 372,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12656,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1394,
+      "metatile": 370,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1425,
+      "metatile": 401,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1214,
+      "metatile": 190,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1664,
+      "metatile": 640,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1609,
+      "metatile": 585,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1656,
+      "metatile": 632,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1657,
+      "metatile": 633,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1658,
+      "metatile": 634,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1659,
+      "metatile": 635,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1634,
+      "metatile": 610,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1632,
+      "metatile": 608,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1665,
+      "metatile": 641,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1215,
+      "metatile": 191,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1425,
+      "metatile": 401,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1396,
+      "metatile": 372,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1394,
+      "metatile": 370,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1425,
+      "metatile": 401,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1214,
+      "metatile": 190,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1131,
+      "metatile": 107,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12499,
+      "metatile": 211,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1650,
+      "metatile": 626,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1609,
+      "metatile": 585,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1656,
+      "metatile": 632,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1657,
+      "metatile": 633,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1658,
+      "metatile": 634,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1659,
+      "metatile": 635,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1634,
+      "metatile": 610,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1632,
+      "metatile": 608,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1651,
+      "metatile": 627,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12500,
+      "metatile": 212,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1133,
+      "metatile": 109,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1215,
+      "metatile": 191,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1396,
+      "metatile": 372,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1394,
+      "metatile": 370,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1425,
+      "metatile": 401,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1262,
+      "metatile": 238,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1131,
+      "metatile": 107,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1214,
+      "metatile": 190,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1642,
+      "metatile": 618,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1609,
+      "metatile": 585,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1656,
+      "metatile": 632,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1657,
+      "metatile": 633,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1658,
+      "metatile": 634,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1659,
+      "metatile": 635,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1634,
+      "metatile": 610,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1632,
+      "metatile": 608,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1643,
+      "metatile": 619,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12500,
+      "metatile": 212,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1133,
+      "metatile": 109,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1215,
+      "metatile": 191,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1396,
+      "metatile": 372,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4472,
+      "metatile": 376,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1262,
+      "metatile": 238,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1131,
+      "metatile": 107,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12499,
+      "metatile": 211,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1608,
+      "metatile": 584,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1609,
+      "metatile": 585,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1656,
+      "metatile": 632,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1657,
+      "metatile": 633,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1658,
+      "metatile": 634,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1659,
+      "metatile": 635,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1634,
+      "metatile": 610,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1632,
+      "metatile": 608,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1633,
+      "metatile": 609,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1133,
+      "metatile": 109,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1215,
+      "metatile": 191,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1396,
+      "metatile": 372,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1131,
+      "metatile": 107,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1214,
+      "metatile": 190,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1608,
+      "metatile": 584,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1609,
+      "metatile": 585,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1656,
+      "metatile": 632,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1657,
+      "metatile": 633,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1658,
+      "metatile": 634,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1659,
+      "metatile": 635,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1634,
+      "metatile": 610,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1632,
+      "metatile": 608,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1633,
+      "metatile": 609,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1396,
+      "metatile": 372,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1608,
+      "metatile": 584,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1609,
+      "metatile": 585,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1611,
+      "metatile": 587,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1612,
+      "metatile": 588,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1613,
+      "metatile": 589,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1614,
+      "metatile": 590,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1615,
+      "metatile": 591,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1610,
+      "metatile": 586,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1632,
+      "metatile": 608,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1633,
+      "metatile": 609,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4473,
+      "metatile": 377,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1616,
+      "metatile": 592,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1617,
+      "metatile": 593,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1618,
+      "metatile": 594,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1618,
+      "metatile": 594,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1619,
+      "metatile": 595,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1620,
+      "metatile": 596,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1621,
+      "metatile": 597,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1622,
+      "metatile": 598,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1623,
+      "metatile": 599,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1618,
+      "metatile": 594,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1618,
+      "metatile": 594,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1640,
+      "metatile": 616,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1641,
+      "metatile": 617,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4473,
+      "metatile": 377,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1131,
+      "metatile": 107,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1214,
+      "metatile": 190,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12888,
+      "metatile": 600,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12889,
+      "metatile": 601,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12890,
+      "metatile": 602,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12890,
+      "metatile": 602,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1627,
+      "metatile": 603,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1628,
+      "metatile": 604,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1629,
+      "metatile": 605,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1630,
+      "metatile": 606,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1631,
+      "metatile": 607,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12890,
+      "metatile": 602,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12890,
+      "metatile": 602,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12912,
+      "metatile": 624,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12913,
+      "metatile": 625,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12919,
+      "metatile": 631,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12911,
+      "metatile": 623,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12899,
+      "metatile": 611,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12900,
+      "metatile": 612,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12901,
+      "metatile": 613,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12902,
+      "metatile": 614,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12903,
+      "metatile": 615,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12919,
+      "metatile": 631,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12911,
+      "metatile": 623,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12908,
+      "metatile": 620,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12909,
+      "metatile": 621,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12910,
+      "metatile": 622,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12801,
+      "metatile": 513,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1543,
+      "metatile": 519,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12916,
+      "metatile": 628,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12917,
+      "metatile": 629,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12918,
+      "metatile": 630,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12924,
+      "metatile": 636,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12925,
+      "metatile": 637,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12926,
+      "metatile": 638,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1027,
+      "metatile": 3,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4480,
+      "metatile": 384,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4504,
+      "metatile": 408,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12289,
+      "metatile": 1,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1538,
+      "metatile": 514,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4506,
+      "metatile": 410,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4481,
+      "metatile": 385,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12463,
+      "metatile": 175,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12495,
+      "metatile": 207,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12495,
+      "metatile": 207,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12463,
+      "metatile": 175,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12495,
+      "metatile": 207,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12495,
+      "metatile": 207,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4506,
+      "metatile": 410,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4481,
+      "metatile": 385,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12463,
+      "metatile": 175,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12495,
+      "metatile": 207,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12495,
+      "metatile": 207,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1161,
+      "metatile": 137,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1140,
+      "metatile": 116,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1139,
+      "metatile": 115,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1117,
+      "metatile": 93,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1119,
+      "metatile": 95,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1137,
+      "metatile": 113,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1141,
+      "metatile": 117,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4480,
+      "metatile": 384,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4504,
+      "metatile": 408,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4498,
+      "metatile": 402,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1147,
+      "metatile": 123,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1117,
+      "metatile": 93,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1119,
+      "metatile": 95,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1193,
+      "metatile": 169,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1148,
+      "metatile": 124,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1149,
+      "metatile": 125,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4496,
+      "metatile": 400,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4506,
+      "metatile": 410,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1117,
+      "metatile": 93,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1119,
+      "metatile": 95,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 5762,
+      "metatile": 642,
+      "collision": 1,
+      "elevation": 1
+    },
+    {
+      "raw": 5513,
+      "metatile": 393,
+      "collision": 1,
+      "elevation": 1
+    },
+    {
+      "raw": 5513,
+      "metatile": 393,
+      "collision": 1,
+      "elevation": 1
+    },
+    {
+      "raw": 5513,
+      "metatile": 393,
+      "collision": 1,
+      "elevation": 1
+    },
+    {
+      "raw": 5513,
+      "metatile": 393,
+      "collision": 1,
+      "elevation": 1
+    },
+    {
+      "raw": 5513,
+      "metatile": 393,
+      "collision": 1,
+      "elevation": 1
+    },
+    {
+      "raw": 5513,
+      "metatile": 393,
+      "collision": 1,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4489,
+      "metatile": 393,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4504,
+      "metatile": 408,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1117,
+      "metatile": 93,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12374,
+      "metatile": 86,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12374,
+      "metatile": 86,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12374,
+      "metatile": 86,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12374,
+      "metatile": 86,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12374,
+      "metatile": 86,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12374,
+      "metatile": 86,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1111,
+      "metatile": 87,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1117,
+      "metatile": 93,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12382,
+      "metatile": 94,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1119,
+      "metatile": 95,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4742,
+      "metatile": 646,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 1667,
+      "metatile": 643,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 12936,
+      "metatile": 648,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 12937,
+      "metatile": 649,
+      "collision": 0,
+      "elevation": 3
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1668,
+      "metatile": 644,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 1669,
+      "metatile": 645,
+      "collision": 1,
+      "elevation": 0
+    },
+    {
+      "raw": 4742,
+      "metatile": 646,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4747,
+      "metatile": 651,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4748,
+      "metatile": 652,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4749,
+      "metatile": 653,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4742,
+      "metatile": 646,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    },
+    {
+      "raw": 4464,
+      "metatile": 368,
+      "collision": 0,
+      "elevation": 1
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "index": 225,
+  "id": "LAYOUT_UNUSED_CONTEST_HALL1",
+  "name": "UnusedContestHall1_Layout",
+  "width": 1,
+  "height": 1,
+  "source_width": 1,
+  "source_height": 1,
+  "primary_tileset": "Building",
+  "secondary_tileset": "Contest",
+  "struct_offset": 4467100,
+  "map_offset": 4467096,
+  "border_offset": 4467088,
+  "cells": [
+    {
+      "raw": 1548,
+      "metatile": 524,
+      "collision": 1,
+      "elevation": 0
+    }
+  ]
+}

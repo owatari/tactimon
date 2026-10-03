@@ -1,0 +1,22 @@
+{
+  "index": 358,
+  "id": "LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_UNUSED",
+  "name": "BattleFrontier_BattlePikeRoomUnused_Layout",
+  "width": 1,
+  "height": 1,
+  "source_width": 1,
+  "source_height": 1,
+  "primary_tileset": "Building",
+  "secondary_tileset": "BattlePike",
+  "struct_offset": 4625324,
+  "map_offset": 4625320,
+  "border_offset": 4625312,
+  "cells": [
+    {
+      "raw": 662,
+      "metatile": 662,
+      "collision": 0,
+      "elevation": 0
+    }
+  ]
+}

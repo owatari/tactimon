@@ -1,0 +1,22 @@
+{
+  "index": 173,
+  "id": "LAYOUT_UNUSED_CAVE5",
+  "name": "UnusedCave5_Layout",
+  "width": 1,
+  "height": 1,
+  "source_width": 1,
+  "source_height": 1,
+  "primary_tileset": "General",
+  "secondary_tileset": "Cave",
+  "struct_offset": 4450128,
+  "map_offset": 4450124,
+  "border_offset": 4450116,
+  "cells": [
+    {
+      "raw": 1542,
+      "metatile": 518,
+      "collision": 1,
+      "elevation": 0
+    }
+  ]
+}
