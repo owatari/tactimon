@@ -35,6 +35,25 @@ describe("starter duel", () => {
     );
   });
 
+  it("keeps combatants well separated on the expanded battle field", () => {
+    for (const seed of [1, 2, 3, 77, 2026]) {
+      const state = createStarterDuel("bulbasaur", {
+        seed,
+        width: 13,
+        height: 7,
+      });
+      const [player, rival] = state.units;
+
+      expect(
+        manhattanDistance(player.position, rival.position),
+      ).toBeGreaterThanOrEqual(6);
+      expect(player.position.x).toBeGreaterThan(0);
+      expect(player.position.x).toBeLessThan(12);
+      expect(player.position.y).toBeGreaterThan(0);
+      expect(player.position.y).toBeLessThan(6);
+    }
+  });
+
   it("never spawns units on blocked cells", () => {
     const blocked = [
       { x: 0, y: 0 },

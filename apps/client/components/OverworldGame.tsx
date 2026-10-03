@@ -95,6 +95,10 @@ type Props = {
   story: StoryState;
   paused: boolean;
   onRequestStarterChoice: () => void;
+  onMapAudioContextChange: (context: {
+    mapId: string;
+    musicId: number | null;
+  }) => void;
   onFirstBattleTrigger: (context: BattleSceneContext) => void;
   onWildBattleTrigger: (
     context: BattleSceneContext,
@@ -293,6 +297,7 @@ export function OverworldGame({
   story,
   paused,
   onRequestStarterChoice,
+  onMapAudioContextChange,
   onFirstBattleTrigger,
   onWildBattleTrigger,
 }: Props) {
@@ -513,6 +518,12 @@ export function OverworldGame({
         setMapId(nextMapId);
         setLayout(nextLayout);
         setWorldData(nextWorldData);
+        onMapAudioContextChange({
+          mapId: nextMapId,
+          musicId:
+            nextWorldData?.music ??
+            definition.fallbackMusicId,
+        });
 
         requestAnimationFrame(() => {
           transitioningRef.current = false;
@@ -524,7 +535,7 @@ export function OverworldGame({
         setIsTransitioning(false);
       }
     },
-    [resetInput],
+    [onMapAudioContextChange, resetInput],
   );
 
   useEffect(() => {
@@ -727,7 +738,7 @@ export function OverworldGame({
         return null;
       }
 
-      const arenaWidth = Math.min(9, activeLayout.width);
+      const arenaWidth = Math.min(13, activeLayout.width);
       const arenaHeight = Math.min(7, activeLayout.height);
       const cropX = Math.max(
         0,

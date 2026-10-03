@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   grantWildBattleProgress,
   type PokemonProgression,
@@ -13,6 +13,7 @@ import {
   type BattleEncounter,
   type BattleOutcome,
 } from "@/components/FirstBattle";
+import { GameMusic } from "@/components/GameMusic";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
 import { StarterChoice } from "@/components/StarterChoice";
@@ -40,6 +41,13 @@ export function GameClient() {
     useState<BattleSession | null>(null);
   const [progressionReward, setProgressionReward] =
     useState<ProgressionReward | null>(null);
+  const [mapAudioContext, setMapAudioContext] = useState<{
+    mapId: string;
+    musicId: number | null;
+  }>({
+    mapId: "pallet-town",
+    musicId: 300,
+  });
 
   useEffect(() => {
     try {
@@ -66,6 +74,18 @@ export function GameClient() {
       // Ignore unavailable storage.
     }
   }, [story]);
+
+  const handleMapAudioContextChange = useCallback(
+    (next: { mapId: string; musicId: number | null }) => {
+      setMapAudioContext((current) =>
+        current.mapId === next.mapId &&
+        current.musicId === next.musicId
+          ? current
+          : next,
+      );
+    },
+    [],
+  );
 
   const handleChooseStarter = (
     starter: StarterSpeciesId,
@@ -129,13 +149,25 @@ export function GameClient() {
     starterChoiceOpen ||
     Boolean(battleSession) ||
     Boolean(progressionReward);
+  const battleMusicKind = battleSession
+    ? battleSession.encounter.kind === "wild"
+      ? "wild"
+      : "rival"
+    : null;
 
   return (
     <div className="game-client">
+      <GameMusic
+        mapId={mapAudioContext.mapId}
+        mapMusicId={mapAudioContext.musicId}
+        battleKind={battleMusicKind}
+      />
+
       <OverworldGame
         story={story}
         paused={paused}
         onRequestStarterChoice={() => setStarterChoiceOpen(true)}
+        onMapAudioContextChange={handleMapAudioContextChange}
         onFirstBattleTrigger={(context) => {
           if (
             story.starter &&

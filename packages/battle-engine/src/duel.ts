@@ -603,7 +603,17 @@ function pickSpawnPositions(
   }
 
   const random = createSeededRandom(seed);
-  const player = randomItem(open, random);
+  const interiorOpen = open.filter(
+    (point) =>
+      point.x > 0 &&
+      point.y > 0 &&
+      point.x < width - 1 &&
+      point.y < height - 1,
+  );
+  const player = randomItem(
+    interiorOpen.length >= 2 ? interiorOpen : open,
+    random,
+  );
   const connected = connectedOpenCells(
     player,
     width,
@@ -614,17 +624,28 @@ function pickSpawnPositions(
   );
 
   const minimumDistance = Math.max(
-    3,
-    Math.floor((width + height) / 4),
+    4,
+    Math.floor((width + height) / 3),
   );
+  const interiorConnected = connected.filter(
+    (point) =>
+      point.x > 0 &&
+      point.y > 0 &&
+      point.x < width - 1 &&
+      point.y < height - 1,
+  );
+  const rivalPool =
+    interiorConnected.length > 0
+      ? interiorConnected
+      : connected;
 
-  const preferredRivalCells = connected.filter(
+  const preferredRivalCells = rivalPool.filter(
     (point) =>
       manhattanDistance(point, player) >= minimumDistance,
   );
   const fallbackRivalCells =
-    connected.length > 0
-      ? connected
+    rivalPool.length > 0
+      ? rivalPool
       : open.filter(
           (point) => pointKey(point) !== pointKey(player),
         );

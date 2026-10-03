@@ -47,6 +47,7 @@ export type WorldObject = {
 export type WorldMapData = {
   index: number;
   name: string;
+  music: number | null;
   objects: WorldObject[];
   warps: Array<{
     index: number;
@@ -71,6 +72,7 @@ export type WorldMapDefinition = {
   previewUrl: string;
   worldUrl: string;
   spawn: { x: number; y: number };
+  fallbackMusicId: number;
   tilesets: {
     primary: TilesetAssetDefinition;
     secondary: TilesetAssetDefinition;
@@ -139,6 +141,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     previewUrl: "/game-assets/maps/pallet-town/preview.png",
     worldUrl: "/game-assets/maps/pallet-town/world.json",
     spawn: { x: 12, y: 17 },
+    fallbackMusicId: 300,
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: PALLET_TILESET,
@@ -151,6 +154,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     previewUrl: "/game-assets/maps/route-1/preview.png",
     worldUrl: "/game-assets/maps/route-1/world.json",
     spawn: { x: 12, y: 37 },
+    fallbackMusicId: 291,
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: PALLET_TILESET,
@@ -163,6 +167,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     previewUrl: "/game-assets/maps/viridian-city/preview.png",
     worldUrl: "/game-assets/maps/viridian-city/world.json",
     spawn: { x: 23, y: 39 },
+    fallbackMusicId: 314,
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: VIRIDIAN_TILESET,
@@ -175,6 +180,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     previewUrl: "/game-assets/maps/oak-lab/preview.png",
     worldUrl: "/game-assets/maps/oak-lab/world.json",
     spawn: { x: 6, y: 11 },
+    fallbackMusicId: 301,
     tilesets: {
       primary: BUILDING_TILESET,
       secondary: LAB_TILESET,

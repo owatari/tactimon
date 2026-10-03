@@ -2465,3 +2465,37 @@ h1 {
     height: 3px;
   }
 }
+
+
+/* Battle stage v5: wider tactical view and larger SpriteCollab combatants */
+.battle-shell-clean {
+  width: min(1500px, 100%);
+}
+
+.battle-minimal-header,
+.battle-combatant-hud-row,
+.battle-message-strip {
+  width: min(1360px, 100%);
+}
+
+.clean-arena {
+  width: 100%;
+  max-width: 1360px;
+  min-height: 0;
+}
+
+.duel-unit {
+  bottom: 7%;
+}
+
+.duel-unit-position.player .pokemon-battle-sprite,
+.duel-unit-position.rival .pokemon-battle-sprite {
+  transform-origin: center bottom;
+}
+
+@media (max-width: 760px) {
+  .duel-unit-position.player .pokemon-battle-sprite,
+  .duel-unit-position.rival .pokemon-battle-sprite {
+    transform: scale(1.45) !important;
+  }
+}

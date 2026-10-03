@@ -143,6 +143,11 @@ export function PokemonBattleSprite({
 
   const sheetWidth = data.frameWidth * data.frames;
   const sheetHeight = data.frameHeight * data.directionRows;
+  const longestSide = Math.max(data.frameWidth, data.frameHeight);
+  const battleScale = Math.max(
+    1.45,
+    Math.min(2.5, 92 / longestSide),
+  );
 
   return (
     <div
@@ -157,6 +162,7 @@ export function PokemonBattleSprite({
           `${sheetWidth}px ${sheetHeight}px`,
         backgroundPosition:
           `-${frame * data.frameWidth}px -${directionIndex * data.frameHeight}px`,
+        transform: `scale(${battleScale})`,
       }}
     />
   );

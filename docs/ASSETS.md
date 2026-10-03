@@ -38,3 +38,18 @@ Tactimon uses a developer-local checkout under `local-assets/spritecollab/`. Run
 Raw extraction is dependency-free. Optional PNG rendering uses an installed `skytemple-files` package and writes runtime sheets under `local-assets/extracted/pmd-eos/vfx/runtime/`.
 
 The client consumes only the generated runtime VFX copies; the `.nds` itself is never shipped.
+
+
+## FireRed music
+
+World metadata already exposes the original FireRed `music` id from each map header. The client forwards that id into a centralized music registry/manager, with explicit fallbacks for the currently playable maps when optional world metadata is unavailable.
+
+Music assets are generated from the developer-local FireRed ROM rather than from checked-in audio. The extractor under `tools/firered-music-extractor/` uses GBA Mus Ripper to recover Sappy MIDI/SoundFont data, then FluidSynth + FFmpeg to render browser-ready Ogg Vorbis files under:
+
+```text
+local-assets/extracted/firered/music/runtime/
+```
+
+The asset sync copies that runtime directory to `apps/client/public/game-assets/music/firered/` when its manifest exists. The current registry covers Pallet Town, Route 1, Viridian City, Oak's Lab, wild battles, and trainer/rival battles. The rival duel uses FireRed's trainer battle theme because FireRed exposes a rival encounter cue but no separate `MUS_VS_RIVAL` battle theme constant.
+
+Future dungeon, boss and raid music can be added to the same registry without coupling audio playback to the battle engine.

@@ -1,4 +1,12 @@
-import { access, copyFile, cp, mkdir, rm } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import {
+  access,
+  copyFile,
+  cp,
+  mkdir,
+  readdir,
+  rm,
+} from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -16,6 +24,110 @@ const publicRoot = resolve(
   repoRoot,
   "apps/client/public/game-assets",
 );
+const fireRedMusicRuntime = resolve(
+  repoRoot,
+  "local-assets/extracted/firered/music/runtime",
+);
+
+function runCommand(command, args) {
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn(command, args, {
+      cwd: repoRoot,
+      stdio: "inherit",
+    });
+
+    child.on("error", reject);
+    child.on("exit", (code) => {
+      if (code === 0) {
+        resolvePromise();
+      } else {
+        reject(
+          new Error(
+            `${command} exited with code ${code ?? "unknown"}`,
+          ),
+        );
+      }
+    });
+  });
+}
+
+async function hasFireRedMusicRuntime() {
+  try {
+    await access(resolve(fireRedMusicRuntime, "manifest.json"));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function ensureFireRedMusicRuntime() {
+  if (await hasFireRedMusicRuntime()) {
+    return true;
+  }
+
+  const romRoot = resolve(repoRoot, "local-assets/roms");
+  let roms = [];
+
+  try {
+    roms = (await readdir(romRoot, { withFileTypes: true }))
+      .filter(
+        (entry) =>
+          entry.isFile() &&
+          entry.name.toLowerCase().endsWith(".gba"),
+      )
+      .map((entry) => resolve(romRoot, entry.name))
+      .sort((left, right) => {
+        const leftFireRed = /fire.?red/i.test(left) ? 0 : 1;
+        const rightFireRed = /fire.?red/i.test(right) ? 0 : 1;
+        return leftFireRed - rightFireRed ||
+          left.localeCompare(right);
+      });
+  } catch {
+    return false;
+  }
+
+  if (roms.length === 0) {
+    return false;
+  }
+
+  const extractor = resolve(
+    repoRoot,
+    "tools/firered-music-extractor/extract.py",
+  );
+  const pythonCommands = process.env.PYTHON
+    ? [process.env.PYTHON]
+    : ["python3", "python"];
+  const ripperArgs = process.env.TACTIMON_GBA_MUS_RIPPER
+    ? [
+        "--ripper",
+        process.env.TACTIMON_GBA_MUS_RIPPER,
+      ]
+    : [];
+
+  for (const rom of roms) {
+    for (const python of pythonCommands) {
+      try {
+        console.log(
+          `FireRed music missing; extracting from local ROM ${rom}`,
+        );
+        await runCommand(python, [
+          extractor,
+          rom,
+          ...ripperArgs,
+        ]);
+        if (await hasFireRedMusicRuntime()) {
+          return true;
+        }
+      } catch (error) {
+        console.warn(
+          `FireRed music extraction attempt failed with ${python}: ${error}`,
+        );
+      }
+    }
+  }
+
+  return false;
+}
 
 const files = [
   [
@@ -211,4 +323,27 @@ try {
   );
 }
 
-console.log("Tactimon FireRed + SpriteCollab + optional PMD VFX assets synced.");
+const fireRedMusicDestination = resolve(
+  publicRoot,
+  "music/firered",
+);
+
+if (await ensureFireRedMusicRuntime()) {
+  await cp(fireRedMusicRuntime, fireRedMusicDestination, {
+    recursive: true,
+  });
+  console.log("synced FireRed runtime music assets");
+} else {
+  console.warn(
+    [
+      "FireRed music runtime unavailable.",
+      "Put the supported FireRed ROM under local-assets/roms and install",
+      "GBA Mus Ripper + FluidSynth + FFmpeg.",
+      "Set TACTIMON_GBA_MUS_RIPPER when the ripper is not on PATH.",
+    ].join(" "),
+  );
+}
+
+console.log(
+  "Tactimon FireRed + SpriteCollab + optional PMD VFX/music assets synced.",
+);
