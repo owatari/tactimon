@@ -4,6 +4,7 @@ coverage/
 .env
 .env.*
 !.env.example
+
 *.gba
 *.gb
 *.gbc
@@ -16,3 +17,11 @@ vendor/
 generated/
 assets/generated/
 tools/**/generated/
+
+# Local user-owned ROMs and extracted assets.
+local-assets/roms/*
+!local-assets/roms/.gitkeep
+local-assets/extracted/*
+!local-assets/extracted/.gitkeep
+local-assets/spritecollab/*
+!local-assets/spritecollab/.gitkeep
