@@ -4,6 +4,7 @@
   "packageManager": "pnpm@10.17.1",
   "scripts": {
     "dev": "pnpm --filter @tactimon/client dev",
+    "music": "pnpm --filter @tactimon/client prepare:music",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
