@@ -44,11 +44,13 @@ The client consumes only the generated runtime VFX copies; the `.nds` itself is 
 
 World metadata already exposes the original FireRed `music` id from each map header. The client forwards that id into a centralized music registry/manager, with explicit fallbacks for the currently playable maps when optional world metadata is unavailable.
 
-Music assets are generated from the developer-local FireRed ROM rather than from checked-in audio. The self-contained extractor under `tools/firered-music-extractor/` reads FireRed's MP2K/Sappy song table, sequence data, PCM samples, compressed samples, voicegroups and PSG instruments directly from the ROM, then renders browser-ready WAV files using only the Python standard library under:
+Music assets are generated from the developer-local FireRed ROM rather than from checked-in audio. Tactimon no longer implements MP2K synthesis itself. The wrapper under `tools/firered-music-extractor/` uses a pinned external `gba-audio-tools` revision to scan FireRed's MP2K/Sappy song table, extract the selected songs to a self-contained `firered-music.pak`, and render browser-ready WAV files with its C MP2K engine at 32,768 Hz under:
 
 ```text
 local-assets/extracted/firered/music/runtime/
 ```
+
+The external renderer is installed into `local-assets/.tools/` and is not vendored into Tactimon.
 
 The asset sync copies that runtime directory to `apps/client/public/game-assets/music/firered/` when its manifest exists. The current registry covers Pallet Town, Route 1, Viridian City, Oak's Lab, wild battles, and trainer/rival battles. The rival duel uses FireRed's trainer battle theme because FireRed exposes a rival encounter cue but no separate `MUS_VS_RIVAL` battle theme constant.
 

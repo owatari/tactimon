@@ -4,6 +4,8 @@ import {
   access,
   readFile,
   readdir,
+  rm,
+  writeFile,
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,6 +14,10 @@ import { spawn } from "node:child_process";
 const FIRE_RED_SHA1 =
   "41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc";
 const REQUIRED_TRACKS = [291, 297, 298, 300, 301, 314];
+const GBA_AUDIO_TOOLS_REVISION =
+  "45e84ba8a5a47b22e56dac7e4e87b1ac605bcb19";
+const GBA_AUDIO_TOOLS_SOURCE =
+  `https://github.com/mudassarzahid/gba-audio-tools/archive/${GBA_AUDIO_TOOLS_REVISION}.zip`;
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../../..");
@@ -24,6 +30,15 @@ const extractor = resolve(
   repoRoot,
   "tools/firered-music-extractor/extract.py",
 );
+const toolRoot = resolve(
+  repoRoot,
+  "local-assets/.tools/gba-audio-tools",
+);
+const toolPython = resolve(
+  toolRoot,
+  process.platform === "win32" ? "Scripts/python.exe" : "bin/python",
+);
+const toolMarker = resolve(toolRoot, ".tactimon-renderer.json");
 
 async function exists(path) {
   try {
@@ -48,8 +63,10 @@ async function runtimeReady() {
   }
 
   if (
-    manifest.extractor !== "tactimon-pure-python-mp2k-v2" ||
+    manifest.extractor !== "gba-audio-tools-mp2k" ||
+    manifest.rendererRevision !== GBA_AUDIO_TOOLS_REVISION ||
     !Array.isArray(manifest.tracks) ||
+    manifest.tracks.length !== REQUIRED_TRACKS.length ||
     manifest.tracks.some((track) => track.sampleRate !== 32768)
   ) {
     return false;
@@ -125,40 +142,88 @@ function run(command, args) {
   });
 }
 
+async function installedRendererReady() {
+  if (!(await exists(toolPython)) || !(await exists(toolMarker))) {
+    return false;
+  }
+
+  try {
+    const marker = JSON.parse(await readFile(toolMarker, "utf8"));
+    return marker.revision === GBA_AUDIO_TOOLS_REVISION;
+  } catch {
+    return false;
+  }
+}
+
+async function installRenderer(systemPython) {
+  await rm(toolRoot, { recursive: true, force: true });
+  console.log("Installing the pinned gba-audio-tools MP2K renderer...");
+  await run(systemPython, ["-m", "venv", toolRoot]);
+  await run(toolPython, [
+    "-m",
+    "pip",
+    "install",
+    "--disable-pip-version-check",
+    GBA_AUDIO_TOOLS_SOURCE,
+  ]);
+  await writeFile(
+    toolMarker,
+    JSON.stringify(
+      {
+        revision: GBA_AUDIO_TOOLS_REVISION,
+        source: GBA_AUDIO_TOOLS_SOURCE,
+      },
+      null,
+      2,
+    ) + "\n",
+    "utf8",
+  );
+}
+
+async function ensureRenderer() {
+  if (await installedRendererReady()) {
+    return toolPython;
+  }
+
+  const pythonCommands = process.env.PYTHON
+    ? [process.env.PYTHON]
+    : ["python3", "python"];
+  let lastError = null;
+
+  for (const python of pythonCommands) {
+    try {
+      await installRenderer(python);
+      return toolPython;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw new Error(
+    [
+      "Could not install gba-audio-tools.",
+      "Python 3.10+ and a working C compiler are required for the pinned renderer build.",
+      "The first install also needs access to github.com.",
+    ].join(" "),
+    { cause: lastError ?? undefined },
+  );
+}
+
 if (await runtimeReady()) {
   console.log("FireRed music ready.");
   process.exit(0);
 }
 
 const rom = await findFireRedRom();
-const pythonCommands = process.env.PYTHON
-  ? [process.env.PYTHON]
-  : ["python3", "python"];
-console.log("FireRed music missing. Extracting directly from ROM...");
+const rendererPython = await ensureRenderer();
 
-let lastError = null;
-for (const python of pythonCommands) {
-  try {
-    await run(python, [
-      extractor,
-      rom,
-    ]);
-    lastError = null;
-    break;
-  } catch (error) {
-    lastError = error;
-  }
-}
+console.log("Extracting FireRed MP2K music with gba-audio-tools...");
+await run(rendererPython, [extractor, rom]);
 
-if (lastError || !(await runtimeReady())) {
+if (!(await runtimeReady())) {
   throw new Error(
-    [
-      "Could not generate FireRed music from the local ROM.",
-      "The extractor uses only Python's standard library.",
-      "Check the ROM hash and the Python error above.",
-    ].join(" "),
-    { cause: lastError ?? undefined },
+    "gba-audio-tools completed, but the expected FireRed WAV assets were not generated.",
   );
 }
 
-console.log("FireRed music extracted.");
+console.log("FireRed music extracted with the MP2K renderer.");
