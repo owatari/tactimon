@@ -35,6 +35,9 @@ WORLD_CONFIG = {
         "trainer_count": 148,
         "item_icon_table": 0x003D4294,
         "item_icon_count": 376,
+        "layout_pointer_table": 0x0034EB8C,
+        "layout_count": 383,
+        "layout_struct": "frlg",
         "object_info_table": 0x0039FDB0,
         "object_palette_table": 0x003A5158,
         "object_count": 152,
@@ -52,6 +55,9 @@ WORLD_CONFIG = {
         "trainer_count": 93,
         "item_icon_table": 0x00614410,
         "item_icon_count": 378,
+        "layout_pointer_table": 0x00481DD4,
+        "layout_count": 441,
+        "layout_struct": "emerald",
         "object_info_table": 0x00505620,
         "object_palette_table": 0x0050BBC8,
         "object_count": 239,
@@ -1021,6 +1027,453 @@ def extract_tilesets(
     }
 
 
+def build_layout_render_context(
+    rom: bytes,
+    blocks,
+    all_tilesets,
+    primary_tileset,
+    secondary_tileset,
+    config,
+):
+    primary_raw = read_tiles_payload(
+        rom,
+        blocks,
+        primary_tileset,
+        all_tilesets,
+    )
+    if primary_raw is None:
+        return None
+
+    primary_tiles = decode_tiles(primary_raw)
+    secondary_tiles = []
+
+    if secondary_tileset is not None:
+        secondary_raw = read_tiles_payload(
+            rom,
+            blocks,
+            secondary_tileset,
+            all_tilesets,
+        )
+        if secondary_raw is not None:
+            secondary_tiles = decode_tiles(secondary_raw)
+
+    primary_palettes = decode_palette_set(
+        rom,
+        primary_tileset["palettes_offset"],
+        16,
+        transparent_zero=False,
+    )
+
+    if secondary_tileset is None:
+        palettes = primary_palettes
+    else:
+        secondary_palettes = decode_palette_set(
+            rom,
+            secondary_tileset["palettes_offset"],
+            16,
+            transparent_zero=False,
+        )
+        palettes = [
+            primary_palettes[index]
+            if index < config["primary_palette_count"]
+            else secondary_palettes[index]
+            for index in range(16)
+        ]
+
+    return {
+        "primary_tiles": primary_tiles,
+        "secondary_tiles": secondary_tiles,
+        "palettes": palettes,
+        "metatiles": {},
+    }
+
+
+def render_layout_metatile(
+    rom: bytes,
+    context,
+    primary_tileset,
+    secondary_tileset,
+    config,
+    metatile_id: int,
+):
+    cached = context["metatiles"].get(metatile_id)
+    if cached is not None:
+        return cached
+
+    if metatile_id < config["primary_metatile_count"]:
+        source = primary_tileset
+        local_id = metatile_id
+    else:
+        source = secondary_tileset
+        local_id = (
+            metatile_id
+            - config["primary_metatile_count"]
+        )
+
+    if (
+        source is None
+        or source["metatiles_offset"] is None
+        or source["attributes_offset"] is None
+    ):
+        return None
+
+    record = (
+        source["metatiles_offset"]
+        + local_id * 16
+    )
+
+    if record + 16 > source["attributes_offset"]:
+        return None
+
+    entries = struct.unpack_from(
+        "<8H",
+        rom,
+        record,
+    )
+
+    rgba = [
+        (*context["palettes"][0][0][:3], 255)
+        for _ in range(16 * 16)
+    ]
+
+    for entry_index, value in enumerate(entries):
+        tile_id = value & 0x03FF
+        x_flip = bool(value & 0x0400)
+        y_flip = bool(value & 0x0800)
+        palette_id = (value >> 12) & 0x0F
+
+        if tile_id < config["primary_tile_count"]:
+            tiles = context["primary_tiles"]
+            local_tile_id = tile_id
+        else:
+            tiles = context["secondary_tiles"]
+            local_tile_id = (
+                tile_id
+                - config["primary_tile_count"]
+            )
+
+        if local_tile_id >= len(tiles):
+            continue
+
+        tile = tiles[local_tile_id]
+        quadrant = entry_index % 4
+        tile_x = (quadrant % 2) * 8
+        tile_y = (quadrant // 2) * 8
+        upper_layer = entry_index >= 4
+
+        for y in range(8):
+            source_y = 7 - y if y_flip else y
+            for x in range(8):
+                source_x = 7 - x if x_flip else x
+                color_index = tile[
+                    source_y * 8 + source_x
+                ]
+
+                if upper_layer and color_index == 0:
+                    continue
+
+                color = context["palettes"][
+                    palette_id
+                ][color_index]
+                rgba[
+                    (tile_y + y) * 16
+                    + tile_x
+                    + x
+                ] = (*color[:3], 255)
+
+    context["metatiles"][metatile_id] = rgba
+    return rgba
+
+
+def extract_map_layouts(
+    rom: bytes,
+    blocks,
+    config,
+    metadata,
+    output: Path,
+):
+    layout_metadata = metadata.get("layouts", [])
+    tilesets = parse_tilesets(
+        rom,
+        config,
+        metadata,
+    )
+    tilesets_by_name = {
+        item["name"]: item
+        for item in tilesets
+    }
+
+    contexts = {}
+    entries = []
+    table = config["layout_pointer_table"]
+    count = min(
+        config["layout_count"],
+        len(layout_metadata),
+    )
+
+    for layout_index in range(count):
+        meta = layout_metadata[layout_index]
+        struct_offset = gba_offset(
+            read_u32(
+                rom,
+                table + layout_index * 4,
+            ),
+            len(rom),
+        )
+
+        if struct_offset is None:
+            entries.append(
+                {
+                    "index": layout_index,
+                    "name": meta.get("name"),
+                    "status": "missing-layout-struct",
+                }
+            )
+            continue
+
+        width = struct.unpack_from(
+            "<i",
+            rom,
+            struct_offset,
+        )[0]
+        height = struct.unpack_from(
+            "<i",
+            rom,
+            struct_offset + 4,
+        )[0]
+        border_offset = gba_offset(
+            read_u32(rom, struct_offset + 8),
+            len(rom),
+        )
+        map_offset = gba_offset(
+            read_u32(rom, struct_offset + 12),
+            len(rom),
+        )
+
+        if (
+            width <= 0
+            or height <= 0
+            or width > 256
+            or height > 256
+            or map_offset is None
+        ):
+            entries.append(
+                {
+                    "index": layout_index,
+                    "name": meta.get("name"),
+                    "status": "invalid-layout",
+                    "width": width,
+                    "height": height,
+                }
+            )
+            continue
+
+        cell_count = width * height
+        end = map_offset + cell_count * 2
+        if end > len(rom):
+            entries.append(
+                {
+                    "index": layout_index,
+                    "name": meta.get("name"),
+                    "status": "map-out-of-range",
+                }
+            )
+            continue
+
+        cells = list(
+            struct.unpack_from(
+                f"<{cell_count}H",
+                rom,
+                map_offset,
+            )
+        )
+
+        primary_name = meta.get("primary")
+        secondary_name = meta.get("secondary")
+        primary_tileset = tilesets_by_name.get(
+            primary_name
+        )
+        secondary_tileset = tilesets_by_name.get(
+            secondary_name
+        )
+
+        if primary_tileset is None:
+            entries.append(
+                {
+                    "index": layout_index,
+                    "name": meta.get("name"),
+                    "status": "missing-primary-tileset",
+                    "primary": primary_name,
+                }
+            )
+            continue
+
+        context_key = (
+            primary_name,
+            secondary_name,
+        )
+        context = contexts.get(context_key)
+        if context is None:
+            context = build_layout_render_context(
+                rom,
+                blocks,
+                tilesets,
+                primary_tileset,
+                secondary_tileset,
+                config,
+            )
+            contexts[context_key] = context
+
+        name = meta.get(
+            "name",
+            f"Layout{layout_index}",
+        )
+        directory = (
+            Path("maps/layouts")
+            / f"{layout_index:03d}_{slug(name)}"
+        )
+        root = output / directory
+        root.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        map_raw = rom[
+            map_offset : map_offset + cell_count * 2
+        ]
+        (root / "map.bin").write_bytes(map_raw)
+
+        border_width = meta.get("border_width")
+        border_height = meta.get("border_height")
+
+        if (
+            border_offset is not None
+            and border_width
+            and border_height
+        ):
+            border_size = (
+                int(border_width)
+                * int(border_height)
+                * 2
+            )
+            if border_offset + border_size <= len(rom):
+                (root / "border.bin").write_bytes(
+                    rom[
+                        border_offset :
+                        border_offset + border_size
+                    ]
+                )
+
+        decoded_cells = [
+            {
+                "raw": value,
+                "metatile": value & 0x03FF,
+                "collision": (value >> 10) & 0x03,
+                "elevation": (value >> 12) & 0x0F,
+            }
+            for value in cells
+        ]
+
+        layout_json = {
+            "index": layout_index,
+            "id": meta.get("id"),
+            "name": name,
+            "width": width,
+            "height": height,
+            "source_width": meta.get("width"),
+            "source_height": meta.get("height"),
+            "primary_tileset": primary_name,
+            "secondary_tileset": secondary_name,
+            "struct_offset": struct_offset,
+            "map_offset": map_offset,
+            "border_offset": border_offset,
+            "cells": decoded_cells,
+        }
+        (root / "layout.json").write_text(
+            json.dumps(layout_json, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+        preview_file = None
+        if context is not None:
+            preview_width = width * 16
+            preview_height = height * 16
+            preview = [
+                (0, 0, 0, 255)
+                for _ in range(
+                    preview_width * preview_height
+                )
+            ]
+
+            for cell_index, value in enumerate(cells):
+                metatile_id = value & 0x03FF
+                tile_rgba = render_layout_metatile(
+                    rom,
+                    context,
+                    primary_tileset,
+                    secondary_tileset,
+                    config,
+                    metatile_id,
+                )
+                if tile_rgba is None:
+                    continue
+
+                cell_x = (
+                    cell_index % width
+                ) * 16
+                cell_y = (
+                    cell_index // width
+                ) * 16
+
+                for y in range(16):
+                    src = y * 16
+                    dst = (
+                        (cell_y + y)
+                        * preview_width
+                        + cell_x
+                    )
+                    preview[
+                        dst : dst + 16
+                    ] = tile_rgba[
+                        src : src + 16
+                    ]
+
+            preview_path = root / "preview.png"
+            write_rgba_direct(
+                preview_path,
+                preview_width,
+                preview_height,
+                preview,
+            )
+            preview_file = (
+                directory / "preview.png"
+            ).as_posix()
+
+        entries.append(
+            {
+                "index": layout_index,
+                "id": meta.get("id"),
+                "name": name,
+                "status": "ok",
+                "width": width,
+                "height": height,
+                "primary": primary_name,
+                "secondary": secondary_name,
+                "directory": directory.as_posix(),
+                "preview": preview_file,
+            }
+        )
+
+    return {
+        "rendered": sum(
+            1 for entry in entries
+            if entry["status"] == "ok"
+        ),
+        "total": count,
+        "entries": entries,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -1061,6 +1514,11 @@ def main() -> int:
     parser.add_argument("--trainers", action="store_true")
     parser.add_argument("--overworld", action="store_true")
     parser.add_argument("--tilesets", action="store_true")
+    parser.add_argument(
+        "--maps",
+        action="store_true",
+        help="Extract named map layouts and PNG previews",
+    )
     parser.add_argument(
         "--ui",
         action="store_true",
@@ -1116,6 +1574,7 @@ def main() -> int:
             args.trainers,
             args.overworld,
             args.tilesets,
+            args.maps,
             args.ui,
             args.pokemon,
             args.raw_previews,
@@ -1125,6 +1584,7 @@ def main() -> int:
     do_trainers = args.trainers or not explicit
     do_overworld = args.overworld or not explicit
     do_tilesets = args.tilesets or not explicit
+    do_maps = args.maps or not explicit
     do_ui = args.ui or not explicit
 
     result = {
@@ -1180,6 +1640,20 @@ def main() -> int:
         print(
             "Tilesets: "
             f"{tilesets['rendered']}/{tilesets['total']}"
+        )
+
+    if do_maps:
+        maps = extract_map_layouts(
+            rom,
+            blocks,
+            config,
+            metadata,
+            output,
+        )
+        result["maps"] = maps
+        print(
+            "Map layouts: "
+            f"{maps['rendered']}/{maps['total']}"
         )
 
     if do_ui:
