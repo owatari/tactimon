@@ -85,7 +85,7 @@ If Python 3.12 is installed, create a dedicated environment:
 py -3.12 -m venv .venv-pmd
 .\.venv-pmd\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install --only-binary=:all: -r tools/pmd-vfx-extractor/requirements-render.txt
+python -m pip install --only-binary=:all: --index-url https://pypi.org/simple -r tools/pmd-vfx-extractor/requirements-render.txt
 ```
 
 `--only-binary=:all:` is intentional: it prevents `pip` from attempting to compile `skytemple-rust` with Cargo. If no compatible wheel exists, installation fails immediately with a clear message instead of entering a Rust build.
@@ -128,3 +128,16 @@ python tools/pmd-vfx-extractor/extract.py \
 ```
 
 The extractor calls the installed SkyTemple Files package as an optional renderer; its parser implementation is not vendored into Tactimon.
+
+
+### If pip reports `from versions: none`
+
+The CPython 3.12 Windows x64 wheel for `skytemple-rust==1.8.5` exists on the official PyPI. If pip reports no matching versions at all, first verify the active interpreter and pip index:
+
+```powershell
+python -c "import sys, platform, struct; print(sys.version); print(platform.machine()); print(struct.calcsize('P') * 8)"
+python -m pip config list
+python -m pip index versions skytemple-rust --index-url https://pypi.org/simple
+```
+
+For Windows x64 + CPython 3.12 the install should resolve from the official PyPI. Windows ARM64 does not have a native `win_arm64` wheel in the 1.8.5 release; use an x64 CPython installation under Windows emulation in that case.
