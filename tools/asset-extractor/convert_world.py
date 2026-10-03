@@ -33,6 +33,8 @@ WORLD_CONFIG = {
         "trainer_front_table": 0x0023957C,
         "trainer_palette_table": 0x00239A1C,
         "trainer_count": 148,
+        "item_icon_table": 0x003D4294,
+        "item_icon_count": 376,
         "object_info_table": 0x0039FDB0,
         "object_palette_table": 0x003A5158,
         "object_count": 152,
@@ -48,6 +50,8 @@ WORLD_CONFIG = {
         "trainer_front_table": 0x00305654,
         "trainer_palette_table": 0x0030593C,
         "trainer_count": 93,
+        "item_icon_table": 0x00614410,
+        "item_icon_count": 378,
         "object_info_table": 0x00505620,
         "object_palette_table": 0x0050BBC8,
         "object_count": 239,
@@ -238,6 +242,97 @@ def extract_trainers(
         "total": config["trainer_count"],
         "entries": result,
         "claimed_offsets": claimed,
+    }
+
+
+def extract_item_icons(
+    rom: bytes,
+    blocks,
+    config,
+    metadata,
+    output: Path,
+):
+    entries = []
+    names = metadata.get("item_names", {})
+    table = config["item_icon_table"]
+    count = config["item_icon_count"]
+
+    for item_id in range(count):
+        record = table + item_id * 8
+        gfx_offset = gba_offset(
+            read_u32(rom, record),
+            len(rom),
+        )
+        palette_offset = gba_offset(
+            read_u32(rom, record + 4),
+            len(rom),
+        )
+
+        gfx = read_block(blocks, gfx_offset)
+        palette_raw = read_block(blocks, palette_offset)
+
+        if gfx is None or palette_raw is None:
+            entries.append(
+                {
+                    "id": item_id,
+                    "name": names.get(str(item_id)),
+                    "status": "missing-block",
+                }
+            )
+            continue
+
+        try:
+            pixels = decode_4bpp_tiles(gfx, 24, 24)
+            palette = decode_palette(palette_raw)
+        except ValueError:
+            entries.append(
+                {
+                    "id": item_id,
+                    "name": names.get(str(item_id)),
+                    "status": "decode-error",
+                }
+            )
+            continue
+
+        name = names.get(str(item_id))
+        if name is None:
+            name = (
+                "RETURN_TO_FIELD"
+                if item_id == count - 1
+                else f"ITEM_{item_id:03d}"
+            )
+
+        relative = (
+            Path("ui/items")
+            / f"{item_id:03d}_{slug(name)}.png"
+        )
+
+        write_rgba_png(
+            output / relative,
+            24,
+            24,
+            pixels,
+            palette,
+        )
+
+        entries.append(
+            {
+                "id": item_id,
+                "name": name,
+                "status": "ok",
+                "gfx_offset": gfx_offset,
+                "palette_offset": palette_offset,
+                "file": relative.as_posix(),
+            }
+        )
+
+    return {
+        "rendered": sum(
+            1 for entry in entries
+            if entry["status"] == "ok"
+        ),
+        "total": count,
+        "entries": entries,
     }
 
 
@@ -967,6 +1062,11 @@ def main() -> int:
     parser.add_argument("--overworld", action="store_true")
     parser.add_argument("--tilesets", action="store_true")
     parser.add_argument(
+        "--ui",
+        action="store_true",
+        help="Extract semantic UI assets (currently item icons)",
+    )
+    parser.add_argument(
         "--pokemon",
         action="store_true",
         help="Optional legacy Pokemon battle sprite conversion",
@@ -1016,6 +1116,7 @@ def main() -> int:
             args.trainers,
             args.overworld,
             args.tilesets,
+            args.ui,
             args.pokemon,
             args.raw_previews,
         )
@@ -1024,6 +1125,7 @@ def main() -> int:
     do_trainers = args.trainers or not explicit
     do_overworld = args.overworld or not explicit
     do_tilesets = args.tilesets or not explicit
+    do_ui = args.ui or not explicit
 
     result = {
         "format": 2,
@@ -1078,6 +1180,22 @@ def main() -> int:
         print(
             "Tilesets: "
             f"{tilesets['rendered']}/{tilesets['total']}"
+        )
+
+    if do_ui:
+        ui_items = extract_item_icons(
+            rom,
+            blocks,
+            config,
+            metadata,
+            output,
+        )
+        result["ui"] = {
+            "items": ui_items,
+        }
+        print(
+            "UI item icons: "
+            f"{ui_items['rendered']}/{ui_items['total']}"
         )
 
     if args.pokemon:
