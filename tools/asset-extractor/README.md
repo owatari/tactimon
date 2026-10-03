@@ -33,6 +33,8 @@ local-assets/extracted/<game>/assets/
 ├── trainers/
 │   └── front/
 ├── overworld/
+├── ui/
+│   └── items/
 └── tilesets/
     ├── 00_general/
     │   ├── tiles.4bpp
@@ -53,6 +55,12 @@ Trainer battle sprites are extracted from the ROM's compressed trainer tables an
 Player/NPC/object graphics are read from `ObjectEventGraphicsInfo`. Frame dimensions, palettes and exact frame counts come from ROM structures plus metadata generated from the matching pret decomp source.
 
 Each output PNG is a sprite sheet and the manifest records frame dimensions/count and source offsets.
+
+### UI
+
+The first semantic UI extractor exports every item icon (including balls, berries, Held Items, TMs/HMs and key items) as a named transparent 24×24 PNG under `ui/items/`.
+
+Screen-specific UI graphics are still discovered progressively; use `--raw-previews` when we need to classify additional compressed interface assets.
 
 ### Tilesets
 
@@ -75,6 +83,7 @@ Generate only one category:
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --trainers
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --overworld
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --tilesets
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --ui
 ```
 
 Pokemon battle sprites are not part of the default Tactimon pipeline. They remain available only as an explicit diagnostic/legacy option:
