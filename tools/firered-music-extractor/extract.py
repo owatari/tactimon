@@ -481,7 +481,7 @@ def sequence_song(
             break
         for state, events in zip(states, per_track_events, strict=True):
             run_track_tick(rom, state, tick, events, tempo_box)
-        dt = 60.0 / (max(1, tempo_box[0]) * 24.0)
+        dt = 150.0 / (max(1, tempo_box[0]) * GBA_FPS)
         tick_seconds.append(dt)
         elapsed += dt
         tick += 1
