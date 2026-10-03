@@ -38,6 +38,8 @@ WORLD_CONFIG = {
         "layout_pointer_table": 0x0034EB8C,
         "layout_count": 383,
         "layout_struct": "frlg",
+        "map_header_table": 0x0034F188,
+        "map_count": 425,
         "object_info_table": 0x0039FDB0,
         "object_palette_table": 0x003A5158,
         "object_count": 152,
@@ -58,6 +60,8 @@ WORLD_CONFIG = {
         "layout_pointer_table": 0x00481DD4,
         "layout_count": 441,
         "layout_struct": "emerald",
+        "map_header_table": 0x004824B8,
+        "map_count": 518,
         "object_info_table": 0x00505620,
         "object_palette_table": 0x0050BBC8,
         "object_count": 239,
@@ -1474,6 +1478,404 @@ def extract_map_layouts(
     }
 
 
+
+CONNECTION_NAMES = {
+    1: "south",
+    2: "north",
+    3: "west",
+    4: "east",
+    5: "dive",
+    6: "emerge",
+}
+
+
+def read_s16(data: bytes, offset: int) -> int:
+    return struct.unpack_from("<h", data, offset)[0]
+
+
+def read_s32(data: bytes, offset: int) -> int:
+    return struct.unpack_from("<i", data, offset)[0]
+
+
+def extract_world_maps(
+    rom: bytes,
+    config,
+    metadata,
+    output: Path,
+):
+    map_metadata = metadata.get("maps", [])
+    layout_metadata = metadata.get("layouts", [])
+    object_metadata = metadata.get("overworld", {})
+
+    map_lookup = {
+        (int(entry["group"]), int(entry["map_num"])): entry
+        for entry in map_metadata
+    }
+
+    entries = []
+    count = min(
+        int(config.get("map_count", 0)),
+        len(map_metadata),
+    )
+    table = int(config["map_header_table"])
+
+    for map_index in range(count):
+        meta = map_metadata[map_index]
+        header = table + map_index * 28
+
+        if header + 28 > len(rom):
+            entries.append(
+                {
+                    "index": map_index,
+                    "name": meta.get("name"),
+                    "status": "header-out-of-range",
+                }
+            )
+            continue
+
+        layout_offset = gba_offset(
+            read_u32(rom, header + 0x00),
+            len(rom),
+        )
+        events_offset = gba_offset(
+            read_u32(rom, header + 0x04),
+            len(rom),
+        )
+        scripts_offset = gba_offset(
+            read_u32(rom, header + 0x08),
+            len(rom),
+        )
+        connections_offset = gba_offset(
+            read_u32(rom, header + 0x0C),
+            len(rom),
+        )
+
+        layout_id = read_u16(rom, header + 0x12)
+        layout_index = layout_id - 1 if layout_id > 0 else None
+        layout_meta = (
+            layout_metadata[layout_index]
+            if (
+                layout_index is not None
+                and 0 <= layout_index < len(layout_metadata)
+            )
+            else None
+        )
+
+        objects = []
+        warps = []
+        coord_events = []
+        bg_events = []
+
+        if events_offset is not None and events_offset + 20 <= len(rom):
+            object_count = rom[events_offset + 0]
+            warp_count = rom[events_offset + 1]
+            coord_count = rom[events_offset + 2]
+            bg_count = rom[events_offset + 3]
+
+            object_pointer = gba_offset(
+                read_u32(rom, events_offset + 4),
+                len(rom),
+            )
+            warp_pointer = gba_offset(
+                read_u32(rom, events_offset + 8),
+                len(rom),
+            )
+            coord_pointer = gba_offset(
+                read_u32(rom, events_offset + 12),
+                len(rom),
+            )
+            bg_pointer = gba_offset(
+                read_u32(rom, events_offset + 16),
+                len(rom),
+            )
+
+            if object_pointer is not None:
+                for object_index in range(object_count):
+                    record = object_pointer + object_index * 24
+                    if record + 24 > len(rom):
+                        break
+
+                    graphics_id = rom[record + 1]
+                    graphics_meta = object_metadata.get(
+                        str(graphics_id),
+                        {},
+                    )
+                    graphics_name = graphics_meta.get("name")
+                    graphics_info = (
+                        object_info(
+                            rom,
+                            config["object_info_table"],
+                            graphics_id,
+                        )
+                        if graphics_id < config["object_count"]
+                        else None
+                    )
+
+                    sprite_file = None
+                    if graphics_name is not None and graphics_info is not None:
+                        sprite_file = (
+                            Path("overworld")
+                            / f"{graphics_id:03d}_{slug(graphics_name)}.png"
+                        ).as_posix()
+
+                    movement_range = read_u16(rom, record + 10)
+
+                    objects.append(
+                        {
+                            "index": object_index,
+                            "local_id": rom[record + 0],
+                            "graphics_id": graphics_id,
+                            "graphics_name": graphics_name,
+                            "kind": rom[record + 2],
+                            "x": read_s16(rom, record + 4),
+                            "y": read_s16(rom, record + 6),
+                            "elevation": rom[record + 8],
+                            "movement_type": rom[record + 9],
+                            "movement_range_x": movement_range & 0x0F,
+                            "movement_range_y": (
+                                movement_range >> 4
+                            ) & 0x0F,
+                            "trainer_type": read_u16(
+                                rom,
+                                record + 12,
+                            ),
+                            "trainer_range_or_berry_id": read_u16(
+                                rom,
+                                record + 14,
+                            ),
+                            "script_offset": gba_offset(
+                                read_u32(rom, record + 16),
+                                len(rom),
+                            ),
+                            "flag_id": read_u16(rom, record + 20),
+                            "sprite_file": sprite_file,
+                            "frame_width": (
+                                graphics_info["width"]
+                                if graphics_info is not None
+                                else None
+                            ),
+                            "frame_height": (
+                                graphics_info["height"]
+                                if graphics_info is not None
+                                else None
+                            ),
+                            "frame_count": int(
+                                graphics_meta.get(
+                                    "frame_count",
+                                    0,
+                                )
+                                or 0
+                            ),
+                        }
+                    )
+
+            if warp_pointer is not None:
+                for warp_index in range(warp_count):
+                    record = warp_pointer + warp_index * 8
+                    if record + 8 > len(rom):
+                        break
+
+                    target_group = rom[record + 7]
+                    target_map_num = rom[record + 6]
+                    target_meta = map_lookup.get(
+                        (target_group, target_map_num)
+                    )
+
+                    warps.append(
+                        {
+                            "index": warp_index,
+                            "x": read_s16(rom, record + 0),
+                            "y": read_s16(rom, record + 2),
+                            "elevation": rom[record + 4],
+                            "warp_id": rom[record + 5],
+                            "target_group": target_group,
+                            "target_map_num": target_map_num,
+                            "target_map": (
+                                target_meta.get("name")
+                                if target_meta is not None
+                                else None
+                            ),
+                            "target_map_index": (
+                                target_meta.get("index")
+                                if target_meta is not None
+                                else None
+                            ),
+                        }
+                    )
+
+            if coord_pointer is not None:
+                for coord_index in range(coord_count):
+                    record = coord_pointer + coord_index * 16
+                    if record + 16 > len(rom):
+                        break
+
+                    coord_events.append(
+                        {
+                            "index": coord_index,
+                            "x": read_s16(rom, record + 0),
+                            "y": read_s16(rom, record + 2),
+                            "elevation": rom[record + 4],
+                            "trigger": read_u16(rom, record + 6),
+                            "trigger_index": read_u16(
+                                rom,
+                                record + 8,
+                            ),
+                            "script_offset": gba_offset(
+                                read_u32(rom, record + 12),
+                                len(rom),
+                            ),
+                        }
+                    )
+
+            if bg_pointer is not None:
+                for bg_index in range(bg_count):
+                    record = bg_pointer + bg_index * 12
+                    if record + 12 > len(rom):
+                        break
+
+                    raw_value = read_u32(rom, record + 8)
+                    bg_events.append(
+                        {
+                            "index": bg_index,
+                            "x": read_u16(rom, record + 0),
+                            "y": read_u16(rom, record + 2),
+                            "elevation": rom[record + 4],
+                            "kind": rom[record + 5],
+                            "raw_value": raw_value,
+                            "script_offset": gba_offset(
+                                raw_value,
+                                len(rom),
+                            ),
+                        }
+                    )
+
+        connections = []
+        if (
+            connections_offset is not None
+            and connections_offset + 8 <= len(rom)
+        ):
+            connection_count = read_s32(
+                rom,
+                connections_offset,
+            )
+            connection_pointer = gba_offset(
+                read_u32(rom, connections_offset + 4),
+                len(rom),
+            )
+
+            if (
+                connection_pointer is not None
+                and 0 <= connection_count <= 64
+            ):
+                for connection_index in range(connection_count):
+                    record = (
+                        connection_pointer
+                        + connection_index * 12
+                    )
+                    if record + 12 > len(rom):
+                        break
+
+                    direction = rom[record + 0]
+                    target_group = rom[record + 8]
+                    target_map_num = rom[record + 9]
+                    target_meta = map_lookup.get(
+                        (target_group, target_map_num)
+                    )
+
+                    connections.append(
+                        {
+                            "index": connection_index,
+                            "direction_id": direction,
+                            "direction": CONNECTION_NAMES.get(
+                                direction,
+                                f"direction_{direction}",
+                            ),
+                            "offset": read_s32(rom, record + 4),
+                            "target_group": target_group,
+                            "target_map_num": target_map_num,
+                            "target_map": (
+                                target_meta.get("name")
+                                if target_meta is not None
+                                else None
+                            ),
+                            "target_map_index": (
+                                target_meta.get("index")
+                                if target_meta is not None
+                                else None
+                            ),
+                        }
+                    )
+
+        name = meta.get("name", f"Map{map_index}")
+        directory = (
+            Path("maps/world")
+            / f"{map_index:03d}_{slug(name)}"
+        )
+        root = output / directory
+        root.mkdir(parents=True, exist_ok=True)
+
+        world_data = {
+            "index": map_index,
+            "group": meta.get("group"),
+            "map_num": meta.get("map_num"),
+            "group_name": meta.get("group_name"),
+            "name": name,
+            "header_offset": header,
+            "layout_offset": layout_offset,
+            "layout_id": layout_id,
+            "layout_index": layout_index,
+            "layout_name": (
+                layout_meta.get("name")
+                if layout_meta is not None
+                else None
+            ),
+            "events_offset": events_offset,
+            "scripts_offset": scripts_offset,
+            "connections_offset": connections_offset,
+            "music": read_u16(rom, header + 0x10),
+            "region_map_section_id": rom[header + 0x14],
+            "cave": rom[header + 0x15],
+            "weather": rom[header + 0x16],
+            "map_type": rom[header + 0x17],
+            "objects": objects,
+            "warps": warps,
+            "coord_events": coord_events,
+            "bg_events": bg_events,
+            "connections": connections,
+        }
+
+        relative = directory / "world.json"
+        (output / relative).write_text(
+            json.dumps(world_data, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+        entries.append(
+            {
+                "index": map_index,
+                "group": meta.get("group"),
+                "map_num": meta.get("map_num"),
+                "name": name,
+                "status": "ok",
+                "layout_index": layout_index,
+                "file": relative.as_posix(),
+                "object_count": len(objects),
+                "warp_count": len(warps),
+                "connection_count": len(connections),
+            }
+        )
+
+    return {
+        "rendered": sum(
+            1 for entry in entries
+            if entry["status"] == "ok"
+        ),
+        "total": count,
+        "entries": entries,
+    }
+
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -1650,10 +2052,23 @@ def main() -> int:
             metadata,
             output,
         )
-        result["maps"] = maps
+        world_maps = extract_world_maps(
+            rom,
+            config,
+            metadata,
+            output,
+        )
+        result["maps"] = {
+            **maps,
+            "world": world_maps,
+        }
         print(
             "Map layouts: "
             f"{maps['rendered']}/{maps['total']}"
+        )
+        print(
+            "World maps: "
+            f"{world_maps['rendered']}/{world_maps['total']}"
         )
 
     if do_ui:

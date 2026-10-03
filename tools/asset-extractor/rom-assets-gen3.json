@@ -5541,6 +5541,2983 @@
         "primary": "General",
         "secondary": "MtEmber"
       }
+    ],
+    "maps": [
+      {
+        "index": 0,
+        "group": 0,
+        "map_num": 0,
+        "group_name": "Link",
+        "name": "BattleColosseum_2P"
+      },
+      {
+        "index": 1,
+        "group": 0,
+        "map_num": 1,
+        "group_name": "Link",
+        "name": "TradeCenter"
+      },
+      {
+        "index": 2,
+        "group": 0,
+        "map_num": 2,
+        "group_name": "Link",
+        "name": "RecordCorner"
+      },
+      {
+        "index": 3,
+        "group": 0,
+        "map_num": 3,
+        "group_name": "Link",
+        "name": "BattleColosseum_4P"
+      },
+      {
+        "index": 4,
+        "group": 0,
+        "map_num": 4,
+        "group_name": "Link",
+        "name": "UnionRoom"
+      },
+      {
+        "index": 5,
+        "group": 1,
+        "map_num": 0,
+        "group_name": "Dungeons",
+        "name": "ViridianForest"
+      },
+      {
+        "index": 6,
+        "group": 1,
+        "map_num": 1,
+        "group_name": "Dungeons",
+        "name": "MtMoon_1F"
+      },
+      {
+        "index": 7,
+        "group": 1,
+        "map_num": 2,
+        "group_name": "Dungeons",
+        "name": "MtMoon_B1F"
+      },
+      {
+        "index": 8,
+        "group": 1,
+        "map_num": 3,
+        "group_name": "Dungeons",
+        "name": "MtMoon_B2F"
+      },
+      {
+        "index": 9,
+        "group": 1,
+        "map_num": 4,
+        "group_name": "Dungeons",
+        "name": "SSAnne_Exterior"
+      },
+      {
+        "index": 10,
+        "group": 1,
+        "map_num": 5,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Corridor"
+      },
+      {
+        "index": 11,
+        "group": 1,
+        "map_num": 6,
+        "group_name": "Dungeons",
+        "name": "SSAnne_2F_Corridor"
+      },
+      {
+        "index": 12,
+        "group": 1,
+        "map_num": 7,
+        "group_name": "Dungeons",
+        "name": "SSAnne_3F_Corridor"
+      },
+      {
+        "index": 13,
+        "group": 1,
+        "map_num": 8,
+        "group_name": "Dungeons",
+        "name": "SSAnne_B1F_Corridor"
+      },
+      {
+        "index": 14,
+        "group": 1,
+        "map_num": 9,
+        "group_name": "Dungeons",
+        "name": "SSAnne_Deck"
+      },
+      {
+        "index": 15,
+        "group": 1,
+        "map_num": 10,
+        "group_name": "Dungeons",
+        "name": "SSAnne_Kitchen"
+      },
+      {
+        "index": 16,
+        "group": 1,
+        "map_num": 11,
+        "group_name": "Dungeons",
+        "name": "SSAnne_CaptainsOffice"
+      },
+      {
+        "index": 17,
+        "group": 1,
+        "map_num": 12,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Room1"
+      },
+      {
+        "index": 18,
+        "group": 1,
+        "map_num": 13,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Room2"
+      },
+      {
+        "index": 19,
+        "group": 1,
+        "map_num": 14,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Room3"
+      },
+      {
+        "index": 20,
+        "group": 1,
+        "map_num": 15,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Room4"
+      },
+      {
+        "index": 21,
+        "group": 1,
+        "map_num": 16,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Room5"
+      },
+      {
+        "index": 22,
+        "group": 1,
+        "map_num": 17,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Room7"
+      },
+      {
+        "index": 23,
+        "group": 1,
+        "map_num": 18,
+        "group_name": "Dungeons",
+        "name": "SSAnne_2F_Room1"
+      },
+      {
+        "index": 24,
+        "group": 1,
+        "map_num": 19,
+        "group_name": "Dungeons",
+        "name": "SSAnne_2F_Room2"
+      },
+      {
+        "index": 25,
+        "group": 1,
+        "map_num": 20,
+        "group_name": "Dungeons",
+        "name": "SSAnne_2F_Room3"
+      },
+      {
+        "index": 26,
+        "group": 1,
+        "map_num": 21,
+        "group_name": "Dungeons",
+        "name": "SSAnne_2F_Room4"
+      },
+      {
+        "index": 27,
+        "group": 1,
+        "map_num": 22,
+        "group_name": "Dungeons",
+        "name": "SSAnne_2F_Room5"
+      },
+      {
+        "index": 28,
+        "group": 1,
+        "map_num": 23,
+        "group_name": "Dungeons",
+        "name": "SSAnne_2F_Room6"
+      },
+      {
+        "index": 29,
+        "group": 1,
+        "map_num": 24,
+        "group_name": "Dungeons",
+        "name": "SSAnne_B1F_Room1"
+      },
+      {
+        "index": 30,
+        "group": 1,
+        "map_num": 25,
+        "group_name": "Dungeons",
+        "name": "SSAnne_B1F_Room2"
+      },
+      {
+        "index": 31,
+        "group": 1,
+        "map_num": 26,
+        "group_name": "Dungeons",
+        "name": "SSAnne_B1F_Room3"
+      },
+      {
+        "index": 32,
+        "group": 1,
+        "map_num": 27,
+        "group_name": "Dungeons",
+        "name": "SSAnne_B1F_Room4"
+      },
+      {
+        "index": 33,
+        "group": 1,
+        "map_num": 28,
+        "group_name": "Dungeons",
+        "name": "SSAnne_B1F_Room5"
+      },
+      {
+        "index": 34,
+        "group": 1,
+        "map_num": 29,
+        "group_name": "Dungeons",
+        "name": "SSAnne_1F_Room6"
+      },
+      {
+        "index": 35,
+        "group": 1,
+        "map_num": 30,
+        "group_name": "Dungeons",
+        "name": "UndergroundPath_NorthEntrance"
+      },
+      {
+        "index": 36,
+        "group": 1,
+        "map_num": 31,
+        "group_name": "Dungeons",
+        "name": "UndergroundPath_NorthSouthTunnel"
+      },
+      {
+        "index": 37,
+        "group": 1,
+        "map_num": 32,
+        "group_name": "Dungeons",
+        "name": "UndergroundPath_SouthEntrance"
+      },
+      {
+        "index": 38,
+        "group": 1,
+        "map_num": 33,
+        "group_name": "Dungeons",
+        "name": "UndergroundPath_WestEntrance"
+      },
+      {
+        "index": 39,
+        "group": 1,
+        "map_num": 34,
+        "group_name": "Dungeons",
+        "name": "UndergroundPath_EastWestTunnel"
+      },
+      {
+        "index": 40,
+        "group": 1,
+        "map_num": 35,
+        "group_name": "Dungeons",
+        "name": "UndergroundPath_EastEntrance"
+      },
+      {
+        "index": 41,
+        "group": 1,
+        "map_num": 36,
+        "group_name": "Dungeons",
+        "name": "DiglettsCave_NorthEntrance"
+      },
+      {
+        "index": 42,
+        "group": 1,
+        "map_num": 37,
+        "group_name": "Dungeons",
+        "name": "DiglettsCave_B1F"
+      },
+      {
+        "index": 43,
+        "group": 1,
+        "map_num": 38,
+        "group_name": "Dungeons",
+        "name": "DiglettsCave_SouthEntrance"
+      },
+      {
+        "index": 44,
+        "group": 1,
+        "map_num": 39,
+        "group_name": "Dungeons",
+        "name": "VictoryRoad_1F"
+      },
+      {
+        "index": 45,
+        "group": 1,
+        "map_num": 40,
+        "group_name": "Dungeons",
+        "name": "VictoryRoad_2F"
+      },
+      {
+        "index": 46,
+        "group": 1,
+        "map_num": 41,
+        "group_name": "Dungeons",
+        "name": "VictoryRoad_3F"
+      },
+      {
+        "index": 47,
+        "group": 1,
+        "map_num": 42,
+        "group_name": "Dungeons",
+        "name": "RocketHideout_B1F"
+      },
+      {
+        "index": 48,
+        "group": 1,
+        "map_num": 43,
+        "group_name": "Dungeons",
+        "name": "RocketHideout_B2F"
+      },
+      {
+        "index": 49,
+        "group": 1,
+        "map_num": 44,
+        "group_name": "Dungeons",
+        "name": "RocketHideout_B3F"
+      },
+      {
+        "index": 50,
+        "group": 1,
+        "map_num": 45,
+        "group_name": "Dungeons",
+        "name": "RocketHideout_B4F"
+      },
+      {
+        "index": 51,
+        "group": 1,
+        "map_num": 46,
+        "group_name": "Dungeons",
+        "name": "RocketHideout_Elevator"
+      },
+      {
+        "index": 52,
+        "group": 1,
+        "map_num": 47,
+        "group_name": "Dungeons",
+        "name": "SilphCo_1F"
+      },
+      {
+        "index": 53,
+        "group": 1,
+        "map_num": 48,
+        "group_name": "Dungeons",
+        "name": "SilphCo_2F"
+      },
+      {
+        "index": 54,
+        "group": 1,
+        "map_num": 49,
+        "group_name": "Dungeons",
+        "name": "SilphCo_3F"
+      },
+      {
+        "index": 55,
+        "group": 1,
+        "map_num": 50,
+        "group_name": "Dungeons",
+        "name": "SilphCo_4F"
+      },
+      {
+        "index": 56,
+        "group": 1,
+        "map_num": 51,
+        "group_name": "Dungeons",
+        "name": "SilphCo_5F"
+      },
+      {
+        "index": 57,
+        "group": 1,
+        "map_num": 52,
+        "group_name": "Dungeons",
+        "name": "SilphCo_6F"
+      },
+      {
+        "index": 58,
+        "group": 1,
+        "map_num": 53,
+        "group_name": "Dungeons",
+        "name": "SilphCo_7F"
+      },
+      {
+        "index": 59,
+        "group": 1,
+        "map_num": 54,
+        "group_name": "Dungeons",
+        "name": "SilphCo_8F"
+      },
+      {
+        "index": 60,
+        "group": 1,
+        "map_num": 55,
+        "group_name": "Dungeons",
+        "name": "SilphCo_9F"
+      },
+      {
+        "index": 61,
+        "group": 1,
+        "map_num": 56,
+        "group_name": "Dungeons",
+        "name": "SilphCo_10F"
+      },
+      {
+        "index": 62,
+        "group": 1,
+        "map_num": 57,
+        "group_name": "Dungeons",
+        "name": "SilphCo_11F"
+      },
+      {
+        "index": 63,
+        "group": 1,
+        "map_num": 58,
+        "group_name": "Dungeons",
+        "name": "SilphCo_Elevator"
+      },
+      {
+        "index": 64,
+        "group": 1,
+        "map_num": 59,
+        "group_name": "Dungeons",
+        "name": "PokemonMansion_1F"
+      },
+      {
+        "index": 65,
+        "group": 1,
+        "map_num": 60,
+        "group_name": "Dungeons",
+        "name": "PokemonMansion_2F"
+      },
+      {
+        "index": 66,
+        "group": 1,
+        "map_num": 61,
+        "group_name": "Dungeons",
+        "name": "PokemonMansion_3F"
+      },
+      {
+        "index": 67,
+        "group": 1,
+        "map_num": 62,
+        "group_name": "Dungeons",
+        "name": "PokemonMansion_B1F"
+      },
+      {
+        "index": 68,
+        "group": 1,
+        "map_num": 63,
+        "group_name": "Dungeons",
+        "name": "SafariZone_Center"
+      },
+      {
+        "index": 69,
+        "group": 1,
+        "map_num": 64,
+        "group_name": "Dungeons",
+        "name": "SafariZone_East"
+      },
+      {
+        "index": 70,
+        "group": 1,
+        "map_num": 65,
+        "group_name": "Dungeons",
+        "name": "SafariZone_North"
+      },
+      {
+        "index": 71,
+        "group": 1,
+        "map_num": 66,
+        "group_name": "Dungeons",
+        "name": "SafariZone_West"
+      },
+      {
+        "index": 72,
+        "group": 1,
+        "map_num": 67,
+        "group_name": "Dungeons",
+        "name": "SafariZone_Center_RestHouse"
+      },
+      {
+        "index": 73,
+        "group": 1,
+        "map_num": 68,
+        "group_name": "Dungeons",
+        "name": "SafariZone_East_RestHouse"
+      },
+      {
+        "index": 74,
+        "group": 1,
+        "map_num": 69,
+        "group_name": "Dungeons",
+        "name": "SafariZone_North_RestHouse"
+      },
+      {
+        "index": 75,
+        "group": 1,
+        "map_num": 70,
+        "group_name": "Dungeons",
+        "name": "SafariZone_West_RestHouse"
+      },
+      {
+        "index": 76,
+        "group": 1,
+        "map_num": 71,
+        "group_name": "Dungeons",
+        "name": "SafariZone_SecretHouse"
+      },
+      {
+        "index": 77,
+        "group": 1,
+        "map_num": 72,
+        "group_name": "Dungeons",
+        "name": "CeruleanCave_1F"
+      },
+      {
+        "index": 78,
+        "group": 1,
+        "map_num": 73,
+        "group_name": "Dungeons",
+        "name": "CeruleanCave_2F"
+      },
+      {
+        "index": 79,
+        "group": 1,
+        "map_num": 74,
+        "group_name": "Dungeons",
+        "name": "CeruleanCave_B1F"
+      },
+      {
+        "index": 80,
+        "group": 1,
+        "map_num": 75,
+        "group_name": "Dungeons",
+        "name": "PokemonLeague_LoreleisRoom"
+      },
+      {
+        "index": 81,
+        "group": 1,
+        "map_num": 76,
+        "group_name": "Dungeons",
+        "name": "PokemonLeague_BrunosRoom"
+      },
+      {
+        "index": 82,
+        "group": 1,
+        "map_num": 77,
+        "group_name": "Dungeons",
+        "name": "PokemonLeague_AgathasRoom"
+      },
+      {
+        "index": 83,
+        "group": 1,
+        "map_num": 78,
+        "group_name": "Dungeons",
+        "name": "PokemonLeague_LancesRoom"
+      },
+      {
+        "index": 84,
+        "group": 1,
+        "map_num": 79,
+        "group_name": "Dungeons",
+        "name": "PokemonLeague_ChampionsRoom"
+      },
+      {
+        "index": 85,
+        "group": 1,
+        "map_num": 80,
+        "group_name": "Dungeons",
+        "name": "PokemonLeague_HallOfFame"
+      },
+      {
+        "index": 86,
+        "group": 1,
+        "map_num": 81,
+        "group_name": "Dungeons",
+        "name": "RockTunnel_1F"
+      },
+      {
+        "index": 87,
+        "group": 1,
+        "map_num": 82,
+        "group_name": "Dungeons",
+        "name": "RockTunnel_B1F"
+      },
+      {
+        "index": 88,
+        "group": 1,
+        "map_num": 83,
+        "group_name": "Dungeons",
+        "name": "SeafoamIslands_1F"
+      },
+      {
+        "index": 89,
+        "group": 1,
+        "map_num": 84,
+        "group_name": "Dungeons",
+        "name": "SeafoamIslands_B1F"
+      },
+      {
+        "index": 90,
+        "group": 1,
+        "map_num": 85,
+        "group_name": "Dungeons",
+        "name": "SeafoamIslands_B2F"
+      },
+      {
+        "index": 91,
+        "group": 1,
+        "map_num": 86,
+        "group_name": "Dungeons",
+        "name": "SeafoamIslands_B3F"
+      },
+      {
+        "index": 92,
+        "group": 1,
+        "map_num": 87,
+        "group_name": "Dungeons",
+        "name": "SeafoamIslands_B4F"
+      },
+      {
+        "index": 93,
+        "group": 1,
+        "map_num": 88,
+        "group_name": "Dungeons",
+        "name": "PokemonTower_1F"
+      },
+      {
+        "index": 94,
+        "group": 1,
+        "map_num": 89,
+        "group_name": "Dungeons",
+        "name": "PokemonTower_2F"
+      },
+      {
+        "index": 95,
+        "group": 1,
+        "map_num": 90,
+        "group_name": "Dungeons",
+        "name": "PokemonTower_3F"
+      },
+      {
+        "index": 96,
+        "group": 1,
+        "map_num": 91,
+        "group_name": "Dungeons",
+        "name": "PokemonTower_4F"
+      },
+      {
+        "index": 97,
+        "group": 1,
+        "map_num": 92,
+        "group_name": "Dungeons",
+        "name": "PokemonTower_5F"
+      },
+      {
+        "index": 98,
+        "group": 1,
+        "map_num": 93,
+        "group_name": "Dungeons",
+        "name": "PokemonTower_6F"
+      },
+      {
+        "index": 99,
+        "group": 1,
+        "map_num": 94,
+        "group_name": "Dungeons",
+        "name": "PokemonTower_7F"
+      },
+      {
+        "index": 100,
+        "group": 1,
+        "map_num": 95,
+        "group_name": "Dungeons",
+        "name": "PowerPlant"
+      },
+      {
+        "index": 101,
+        "group": 1,
+        "map_num": 96,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_B4F"
+      },
+      {
+        "index": 102,
+        "group": 1,
+        "map_num": 97,
+        "group_name": "Dungeons",
+        "name": "MtEmber_Exterior"
+      },
+      {
+        "index": 103,
+        "group": 1,
+        "map_num": 98,
+        "group_name": "Dungeons",
+        "name": "MtEmber_SummitPath_1F"
+      },
+      {
+        "index": 104,
+        "group": 1,
+        "map_num": 99,
+        "group_name": "Dungeons",
+        "name": "MtEmber_SummitPath_2F"
+      },
+      {
+        "index": 105,
+        "group": 1,
+        "map_num": 100,
+        "group_name": "Dungeons",
+        "name": "MtEmber_SummitPath_3F"
+      },
+      {
+        "index": 106,
+        "group": 1,
+        "map_num": 101,
+        "group_name": "Dungeons",
+        "name": "MtEmber_Summit"
+      },
+      {
+        "index": 107,
+        "group": 1,
+        "map_num": 102,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_B5F"
+      },
+      {
+        "index": 108,
+        "group": 1,
+        "map_num": 103,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_1F"
+      },
+      {
+        "index": 109,
+        "group": 1,
+        "map_num": 104,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_B1F"
+      },
+      {
+        "index": 110,
+        "group": 1,
+        "map_num": 105,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_B2F"
+      },
+      {
+        "index": 111,
+        "group": 1,
+        "map_num": 106,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_B3F"
+      },
+      {
+        "index": 112,
+        "group": 1,
+        "map_num": 107,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_B1F_Stairs"
+      },
+      {
+        "index": 113,
+        "group": 1,
+        "map_num": 108,
+        "group_name": "Dungeons",
+        "name": "MtEmber_RubyPath_B2F_Stairs"
+      },
+      {
+        "index": 114,
+        "group": 1,
+        "map_num": 109,
+        "group_name": "Dungeons",
+        "name": "ThreeIsland_BerryForest"
+      },
+      {
+        "index": 115,
+        "group": 1,
+        "map_num": 110,
+        "group_name": "Dungeons",
+        "name": "FourIsland_IcefallCave_Entrance"
+      },
+      {
+        "index": 116,
+        "group": 1,
+        "map_num": 111,
+        "group_name": "Dungeons",
+        "name": "FourIsland_IcefallCave_1F"
+      },
+      {
+        "index": 117,
+        "group": 1,
+        "map_num": 112,
+        "group_name": "Dungeons",
+        "name": "FourIsland_IcefallCave_B1F"
+      },
+      {
+        "index": 118,
+        "group": 1,
+        "map_num": 113,
+        "group_name": "Dungeons",
+        "name": "FourIsland_IcefallCave_Back"
+      },
+      {
+        "index": 119,
+        "group": 1,
+        "map_num": 114,
+        "group_name": "Dungeons",
+        "name": "FiveIsland_RocketWarehouse"
+      },
+      {
+        "index": 120,
+        "group": 1,
+        "map_num": 115,
+        "group_name": "Dungeons",
+        "name": "SixIsland_DottedHole_1F"
+      },
+      {
+        "index": 121,
+        "group": 1,
+        "map_num": 116,
+        "group_name": "Dungeons",
+        "name": "SixIsland_DottedHole_B1F"
+      },
+      {
+        "index": 122,
+        "group": 1,
+        "map_num": 117,
+        "group_name": "Dungeons",
+        "name": "SixIsland_DottedHole_B2F"
+      },
+      {
+        "index": 123,
+        "group": 1,
+        "map_num": 118,
+        "group_name": "Dungeons",
+        "name": "SixIsland_DottedHole_B3F"
+      },
+      {
+        "index": 124,
+        "group": 1,
+        "map_num": 119,
+        "group_name": "Dungeons",
+        "name": "SixIsland_DottedHole_B4F"
+      },
+      {
+        "index": 125,
+        "group": 1,
+        "map_num": 120,
+        "group_name": "Dungeons",
+        "name": "SixIsland_DottedHole_SapphireRoom"
+      },
+      {
+        "index": 126,
+        "group": 1,
+        "map_num": 121,
+        "group_name": "Dungeons",
+        "name": "SixIsland_PatternBush"
+      },
+      {
+        "index": 127,
+        "group": 1,
+        "map_num": 122,
+        "group_name": "Dungeons",
+        "name": "SixIsland_AlteringCave"
+      },
+      {
+        "index": 128,
+        "group": 2,
+        "map_num": 0,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Exterior"
+      },
+      {
+        "index": 129,
+        "group": 2,
+        "map_num": 1,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_1F"
+      },
+      {
+        "index": 130,
+        "group": 2,
+        "map_num": 2,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_2F"
+      },
+      {
+        "index": 131,
+        "group": 2,
+        "map_num": 3,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_3F"
+      },
+      {
+        "index": 132,
+        "group": 2,
+        "map_num": 4,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_4F"
+      },
+      {
+        "index": 133,
+        "group": 2,
+        "map_num": 5,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_5F"
+      },
+      {
+        "index": 134,
+        "group": 2,
+        "map_num": 6,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_6F"
+      },
+      {
+        "index": 135,
+        "group": 2,
+        "map_num": 7,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_7F"
+      },
+      {
+        "index": 136,
+        "group": 2,
+        "map_num": 8,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_8F"
+      },
+      {
+        "index": 137,
+        "group": 2,
+        "map_num": 9,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_Roof"
+      },
+      {
+        "index": 138,
+        "group": 2,
+        "map_num": 10,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_Lobby"
+      },
+      {
+        "index": 139,
+        "group": 2,
+        "map_num": 11,
+        "group_name": "SpecialArea",
+        "name": "TrainerTower_Elevator"
+      },
+      {
+        "index": 140,
+        "group": 2,
+        "map_num": 12,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Entrance"
+      },
+      {
+        "index": 141,
+        "group": 2,
+        "map_num": 13,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room1"
+      },
+      {
+        "index": 142,
+        "group": 2,
+        "map_num": 14,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room2"
+      },
+      {
+        "index": 143,
+        "group": 2,
+        "map_num": 15,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room3"
+      },
+      {
+        "index": 144,
+        "group": 2,
+        "map_num": 16,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room4"
+      },
+      {
+        "index": 145,
+        "group": 2,
+        "map_num": 17,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room5"
+      },
+      {
+        "index": 146,
+        "group": 2,
+        "map_num": 18,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room6"
+      },
+      {
+        "index": 147,
+        "group": 2,
+        "map_num": 19,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room7"
+      },
+      {
+        "index": 148,
+        "group": 2,
+        "map_num": 20,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room8"
+      },
+      {
+        "index": 149,
+        "group": 2,
+        "map_num": 21,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room9"
+      },
+      {
+        "index": 150,
+        "group": 2,
+        "map_num": 22,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room10"
+      },
+      {
+        "index": 151,
+        "group": 2,
+        "map_num": 23,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room11"
+      },
+      {
+        "index": 152,
+        "group": 2,
+        "map_num": 24,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room12"
+      },
+      {
+        "index": 153,
+        "group": 2,
+        "map_num": 25,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room13"
+      },
+      {
+        "index": 154,
+        "group": 2,
+        "map_num": 26,
+        "group_name": "SpecialArea",
+        "name": "FiveIsland_LostCave_Room14"
+      },
+      {
+        "index": 155,
+        "group": 2,
+        "map_num": 27,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_TanobyRuins_MoneanChamber"
+      },
+      {
+        "index": 156,
+        "group": 2,
+        "map_num": 28,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_TanobyRuins_LiptooChamber"
+      },
+      {
+        "index": 157,
+        "group": 2,
+        "map_num": 29,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_TanobyRuins_WeepthChamber"
+      },
+      {
+        "index": 158,
+        "group": 2,
+        "map_num": 30,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_TanobyRuins_DilfordChamber"
+      },
+      {
+        "index": 159,
+        "group": 2,
+        "map_num": 31,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_TanobyRuins_ScufibChamber"
+      },
+      {
+        "index": 160,
+        "group": 2,
+        "map_num": 32,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_TanobyRuins_RixyChamber"
+      },
+      {
+        "index": 161,
+        "group": 2,
+        "map_num": 33,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_TanobyRuins_ViapoisChamber"
+      },
+      {
+        "index": 162,
+        "group": 2,
+        "map_num": 34,
+        "group_name": "SpecialArea",
+        "name": "ThreeIsland_DunsparceTunnel"
+      },
+      {
+        "index": 163,
+        "group": 2,
+        "map_num": 35,
+        "group_name": "SpecialArea",
+        "name": "SevenIsland_SevaultCanyon_TanobyKey"
+      },
+      {
+        "index": 164,
+        "group": 2,
+        "map_num": 36,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_1F"
+      },
+      {
+        "index": 165,
+        "group": 2,
+        "map_num": 37,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Summit"
+      },
+      {
+        "index": 166,
+        "group": 2,
+        "map_num": 38,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Base"
+      },
+      {
+        "index": 167,
+        "group": 2,
+        "map_num": 39,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_SummitPath_2F"
+      },
+      {
+        "index": 168,
+        "group": 2,
+        "map_num": 40,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_SummitPath_3F"
+      },
+      {
+        "index": 169,
+        "group": 2,
+        "map_num": 41,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_SummitPath_4F"
+      },
+      {
+        "index": 170,
+        "group": 2,
+        "map_num": 42,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_SummitPath_5F"
+      },
+      {
+        "index": 171,
+        "group": 2,
+        "map_num": 43,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B1F"
+      },
+      {
+        "index": 172,
+        "group": 2,
+        "map_num": 44,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B2F"
+      },
+      {
+        "index": 173,
+        "group": 2,
+        "map_num": 45,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B3F"
+      },
+      {
+        "index": 174,
+        "group": 2,
+        "map_num": 46,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B4F"
+      },
+      {
+        "index": 175,
+        "group": 2,
+        "map_num": 47,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B5F"
+      },
+      {
+        "index": 176,
+        "group": 2,
+        "map_num": 48,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B6F"
+      },
+      {
+        "index": 177,
+        "group": 2,
+        "map_num": 49,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B7F"
+      },
+      {
+        "index": 178,
+        "group": 2,
+        "map_num": 50,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B8F"
+      },
+      {
+        "index": 179,
+        "group": 2,
+        "map_num": 51,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B9F"
+      },
+      {
+        "index": 180,
+        "group": 2,
+        "map_num": 52,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B10F"
+      },
+      {
+        "index": 181,
+        "group": 2,
+        "map_num": 53,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_BasePath_B11F"
+      },
+      {
+        "index": 182,
+        "group": 2,
+        "map_num": 54,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_B1F"
+      },
+      {
+        "index": 183,
+        "group": 2,
+        "map_num": 55,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Fork"
+      },
+      {
+        "index": 184,
+        "group": 2,
+        "map_num": 56,
+        "group_name": "SpecialArea",
+        "name": "BirthIsland_Exterior"
+      },
+      {
+        "index": 185,
+        "group": 2,
+        "map_num": 57,
+        "group_name": "SpecialArea",
+        "name": "OneIsland_KindleRoad_EmberSpa"
+      },
+      {
+        "index": 186,
+        "group": 2,
+        "map_num": 58,
+        "group_name": "SpecialArea",
+        "name": "BirthIsland_Harbor"
+      },
+      {
+        "index": 187,
+        "group": 2,
+        "map_num": 59,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Harbor"
+      },
+      {
+        "index": 188,
+        "group": 3,
+        "map_num": 0,
+        "group_name": "TownsAndRoutes",
+        "name": "PalletTown"
+      },
+      {
+        "index": 189,
+        "group": 3,
+        "map_num": 1,
+        "group_name": "TownsAndRoutes",
+        "name": "ViridianCity"
+      },
+      {
+        "index": 190,
+        "group": 3,
+        "map_num": 2,
+        "group_name": "TownsAndRoutes",
+        "name": "PewterCity"
+      },
+      {
+        "index": 191,
+        "group": 3,
+        "map_num": 3,
+        "group_name": "TownsAndRoutes",
+        "name": "CeruleanCity"
+      },
+      {
+        "index": 192,
+        "group": 3,
+        "map_num": 4,
+        "group_name": "TownsAndRoutes",
+        "name": "LavenderTown"
+      },
+      {
+        "index": 193,
+        "group": 3,
+        "map_num": 5,
+        "group_name": "TownsAndRoutes",
+        "name": "VermilionCity"
+      },
+      {
+        "index": 194,
+        "group": 3,
+        "map_num": 6,
+        "group_name": "TownsAndRoutes",
+        "name": "CeladonCity"
+      },
+      {
+        "index": 195,
+        "group": 3,
+        "map_num": 7,
+        "group_name": "TownsAndRoutes",
+        "name": "FuchsiaCity"
+      },
+      {
+        "index": 196,
+        "group": 3,
+        "map_num": 8,
+        "group_name": "TownsAndRoutes",
+        "name": "CinnabarIsland"
+      },
+      {
+        "index": 197,
+        "group": 3,
+        "map_num": 9,
+        "group_name": "TownsAndRoutes",
+        "name": "IndigoPlateau_Exterior"
+      },
+      {
+        "index": 198,
+        "group": 3,
+        "map_num": 10,
+        "group_name": "TownsAndRoutes",
+        "name": "SaffronCity"
+      },
+      {
+        "index": 199,
+        "group": 3,
+        "map_num": 11,
+        "group_name": "TownsAndRoutes",
+        "name": "SaffronCity_Connection"
+      },
+      {
+        "index": 200,
+        "group": 3,
+        "map_num": 12,
+        "group_name": "TownsAndRoutes",
+        "name": "OneIsland"
+      },
+      {
+        "index": 201,
+        "group": 3,
+        "map_num": 13,
+        "group_name": "TownsAndRoutes",
+        "name": "TwoIsland"
+      },
+      {
+        "index": 202,
+        "group": 3,
+        "map_num": 14,
+        "group_name": "TownsAndRoutes",
+        "name": "ThreeIsland"
+      },
+      {
+        "index": 203,
+        "group": 3,
+        "map_num": 15,
+        "group_name": "TownsAndRoutes",
+        "name": "FourIsland"
+      },
+      {
+        "index": 204,
+        "group": 3,
+        "map_num": 16,
+        "group_name": "TownsAndRoutes",
+        "name": "FiveIsland"
+      },
+      {
+        "index": 205,
+        "group": 3,
+        "map_num": 17,
+        "group_name": "TownsAndRoutes",
+        "name": "SevenIsland"
+      },
+      {
+        "index": 206,
+        "group": 3,
+        "map_num": 18,
+        "group_name": "TownsAndRoutes",
+        "name": "SixIsland"
+      },
+      {
+        "index": 207,
+        "group": 3,
+        "map_num": 19,
+        "group_name": "TownsAndRoutes",
+        "name": "Route1"
+      },
+      {
+        "index": 208,
+        "group": 3,
+        "map_num": 20,
+        "group_name": "TownsAndRoutes",
+        "name": "Route2"
+      },
+      {
+        "index": 209,
+        "group": 3,
+        "map_num": 21,
+        "group_name": "TownsAndRoutes",
+        "name": "Route3"
+      },
+      {
+        "index": 210,
+        "group": 3,
+        "map_num": 22,
+        "group_name": "TownsAndRoutes",
+        "name": "Route4"
+      },
+      {
+        "index": 211,
+        "group": 3,
+        "map_num": 23,
+        "group_name": "TownsAndRoutes",
+        "name": "Route5"
+      },
+      {
+        "index": 212,
+        "group": 3,
+        "map_num": 24,
+        "group_name": "TownsAndRoutes",
+        "name": "Route6"
+      },
+      {
+        "index": 213,
+        "group": 3,
+        "map_num": 25,
+        "group_name": "TownsAndRoutes",
+        "name": "Route7"
+      },
+      {
+        "index": 214,
+        "group": 3,
+        "map_num": 26,
+        "group_name": "TownsAndRoutes",
+        "name": "Route8"
+      },
+      {
+        "index": 215,
+        "group": 3,
+        "map_num": 27,
+        "group_name": "TownsAndRoutes",
+        "name": "Route9"
+      },
+      {
+        "index": 216,
+        "group": 3,
+        "map_num": 28,
+        "group_name": "TownsAndRoutes",
+        "name": "Route10"
+      },
+      {
+        "index": 217,
+        "group": 3,
+        "map_num": 29,
+        "group_name": "TownsAndRoutes",
+        "name": "Route11"
+      },
+      {
+        "index": 218,
+        "group": 3,
+        "map_num": 30,
+        "group_name": "TownsAndRoutes",
+        "name": "Route12"
+      },
+      {
+        "index": 219,
+        "group": 3,
+        "map_num": 31,
+        "group_name": "TownsAndRoutes",
+        "name": "Route13"
+      },
+      {
+        "index": 220,
+        "group": 3,
+        "map_num": 32,
+        "group_name": "TownsAndRoutes",
+        "name": "Route14"
+      },
+      {
+        "index": 221,
+        "group": 3,
+        "map_num": 33,
+        "group_name": "TownsAndRoutes",
+        "name": "Route15"
+      },
+      {
+        "index": 222,
+        "group": 3,
+        "map_num": 34,
+        "group_name": "TownsAndRoutes",
+        "name": "Route16"
+      },
+      {
+        "index": 223,
+        "group": 3,
+        "map_num": 35,
+        "group_name": "TownsAndRoutes",
+        "name": "Route17"
+      },
+      {
+        "index": 224,
+        "group": 3,
+        "map_num": 36,
+        "group_name": "TownsAndRoutes",
+        "name": "Route18"
+      },
+      {
+        "index": 225,
+        "group": 3,
+        "map_num": 37,
+        "group_name": "TownsAndRoutes",
+        "name": "Route19"
+      },
+      {
+        "index": 226,
+        "group": 3,
+        "map_num": 38,
+        "group_name": "TownsAndRoutes",
+        "name": "Route20"
+      },
+      {
+        "index": 227,
+        "group": 3,
+        "map_num": 39,
+        "group_name": "TownsAndRoutes",
+        "name": "Route21_North"
+      },
+      {
+        "index": 228,
+        "group": 3,
+        "map_num": 40,
+        "group_name": "TownsAndRoutes",
+        "name": "Route21_South"
+      },
+      {
+        "index": 229,
+        "group": 3,
+        "map_num": 41,
+        "group_name": "TownsAndRoutes",
+        "name": "Route22"
+      },
+      {
+        "index": 230,
+        "group": 3,
+        "map_num": 42,
+        "group_name": "TownsAndRoutes",
+        "name": "Route23"
+      },
+      {
+        "index": 231,
+        "group": 3,
+        "map_num": 43,
+        "group_name": "TownsAndRoutes",
+        "name": "Route24"
+      },
+      {
+        "index": 232,
+        "group": 3,
+        "map_num": 44,
+        "group_name": "TownsAndRoutes",
+        "name": "Route25"
+      },
+      {
+        "index": 233,
+        "group": 3,
+        "map_num": 45,
+        "group_name": "TownsAndRoutes",
+        "name": "OneIsland_KindleRoad"
+      },
+      {
+        "index": 234,
+        "group": 3,
+        "map_num": 46,
+        "group_name": "TownsAndRoutes",
+        "name": "OneIsland_TreasureBeach"
+      },
+      {
+        "index": 235,
+        "group": 3,
+        "map_num": 47,
+        "group_name": "TownsAndRoutes",
+        "name": "TwoIsland_CapeBrink"
+      },
+      {
+        "index": 236,
+        "group": 3,
+        "map_num": 48,
+        "group_name": "TownsAndRoutes",
+        "name": "ThreeIsland_BondBridge"
+      },
+      {
+        "index": 237,
+        "group": 3,
+        "map_num": 49,
+        "group_name": "TownsAndRoutes",
+        "name": "ThreeIsland_Port"
+      },
+      {
+        "index": 238,
+        "group": 3,
+        "map_num": 50,
+        "group_name": "TownsAndRoutes",
+        "name": "Prototype_SeviiIsle_6"
+      },
+      {
+        "index": 239,
+        "group": 3,
+        "map_num": 51,
+        "group_name": "TownsAndRoutes",
+        "name": "Prototype_SeviiIsle_7"
+      },
+      {
+        "index": 240,
+        "group": 3,
+        "map_num": 52,
+        "group_name": "TownsAndRoutes",
+        "name": "Prototype_SeviiIsle_8"
+      },
+      {
+        "index": 241,
+        "group": 3,
+        "map_num": 53,
+        "group_name": "TownsAndRoutes",
+        "name": "Prototype_SeviiIsle_9"
+      },
+      {
+        "index": 242,
+        "group": 3,
+        "map_num": 54,
+        "group_name": "TownsAndRoutes",
+        "name": "FiveIsland_ResortGorgeous"
+      },
+      {
+        "index": 243,
+        "group": 3,
+        "map_num": 55,
+        "group_name": "TownsAndRoutes",
+        "name": "FiveIsland_WaterLabyrinth"
+      },
+      {
+        "index": 244,
+        "group": 3,
+        "map_num": 56,
+        "group_name": "TownsAndRoutes",
+        "name": "FiveIsland_Meadow"
+      },
+      {
+        "index": 245,
+        "group": 3,
+        "map_num": 57,
+        "group_name": "TownsAndRoutes",
+        "name": "FiveIsland_MemorialPillar"
+      },
+      {
+        "index": 246,
+        "group": 3,
+        "map_num": 58,
+        "group_name": "TownsAndRoutes",
+        "name": "SixIsland_OutcastIsland"
+      },
+      {
+        "index": 247,
+        "group": 3,
+        "map_num": 59,
+        "group_name": "TownsAndRoutes",
+        "name": "SixIsland_GreenPath"
+      },
+      {
+        "index": 248,
+        "group": 3,
+        "map_num": 60,
+        "group_name": "TownsAndRoutes",
+        "name": "SixIsland_WaterPath"
+      },
+      {
+        "index": 249,
+        "group": 3,
+        "map_num": 61,
+        "group_name": "TownsAndRoutes",
+        "name": "SixIsland_RuinValley"
+      },
+      {
+        "index": 250,
+        "group": 3,
+        "map_num": 62,
+        "group_name": "TownsAndRoutes",
+        "name": "SevenIsland_TrainerTower"
+      },
+      {
+        "index": 251,
+        "group": 3,
+        "map_num": 63,
+        "group_name": "TownsAndRoutes",
+        "name": "SevenIsland_SevaultCanyon_Entrance"
+      },
+      {
+        "index": 252,
+        "group": 3,
+        "map_num": 64,
+        "group_name": "TownsAndRoutes",
+        "name": "SevenIsland_SevaultCanyon"
+      },
+      {
+        "index": 253,
+        "group": 3,
+        "map_num": 65,
+        "group_name": "TownsAndRoutes",
+        "name": "SevenIsland_TanobyRuins"
+      },
+      {
+        "index": 254,
+        "group": 4,
+        "map_num": 0,
+        "group_name": "IndoorPallet",
+        "name": "PalletTown_PlayersHouse_1F"
+      },
+      {
+        "index": 255,
+        "group": 4,
+        "map_num": 1,
+        "group_name": "IndoorPallet",
+        "name": "PalletTown_PlayersHouse_2F"
+      },
+      {
+        "index": 256,
+        "group": 4,
+        "map_num": 2,
+        "group_name": "IndoorPallet",
+        "name": "PalletTown_RivalsHouse"
+      },
+      {
+        "index": 257,
+        "group": 4,
+        "map_num": 3,
+        "group_name": "IndoorPallet",
+        "name": "PalletTown_ProfessorOaksLab"
+      },
+      {
+        "index": 258,
+        "group": 5,
+        "map_num": 0,
+        "group_name": "IndoorViridian",
+        "name": "ViridianCity_House"
+      },
+      {
+        "index": 259,
+        "group": 5,
+        "map_num": 1,
+        "group_name": "IndoorViridian",
+        "name": "ViridianCity_Gym"
+      },
+      {
+        "index": 260,
+        "group": 5,
+        "map_num": 2,
+        "group_name": "IndoorViridian",
+        "name": "ViridianCity_School"
+      },
+      {
+        "index": 261,
+        "group": 5,
+        "map_num": 3,
+        "group_name": "IndoorViridian",
+        "name": "ViridianCity_Mart"
+      },
+      {
+        "index": 262,
+        "group": 5,
+        "map_num": 4,
+        "group_name": "IndoorViridian",
+        "name": "ViridianCity_PokemonCenter_1F"
+      },
+      {
+        "index": 263,
+        "group": 5,
+        "map_num": 5,
+        "group_name": "IndoorViridian",
+        "name": "ViridianCity_PokemonCenter_2F"
+      },
+      {
+        "index": 264,
+        "group": 6,
+        "map_num": 0,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_Museum_1F"
+      },
+      {
+        "index": 265,
+        "group": 6,
+        "map_num": 1,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_Museum_2F"
+      },
+      {
+        "index": 266,
+        "group": 6,
+        "map_num": 2,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_Gym"
+      },
+      {
+        "index": 267,
+        "group": 6,
+        "map_num": 3,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_Mart"
+      },
+      {
+        "index": 268,
+        "group": 6,
+        "map_num": 4,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_House1"
+      },
+      {
+        "index": 269,
+        "group": 6,
+        "map_num": 5,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_PokemonCenter_1F"
+      },
+      {
+        "index": 270,
+        "group": 6,
+        "map_num": 6,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_PokemonCenter_2F"
+      },
+      {
+        "index": 271,
+        "group": 6,
+        "map_num": 7,
+        "group_name": "IndoorPewter",
+        "name": "PewterCity_House2"
+      },
+      {
+        "index": 272,
+        "group": 7,
+        "map_num": 0,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_House1"
+      },
+      {
+        "index": 273,
+        "group": 7,
+        "map_num": 1,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_House2"
+      },
+      {
+        "index": 274,
+        "group": 7,
+        "map_num": 2,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_House3"
+      },
+      {
+        "index": 275,
+        "group": 7,
+        "map_num": 3,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_PokemonCenter_1F"
+      },
+      {
+        "index": 276,
+        "group": 7,
+        "map_num": 4,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_PokemonCenter_2F"
+      },
+      {
+        "index": 277,
+        "group": 7,
+        "map_num": 5,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_Gym"
+      },
+      {
+        "index": 278,
+        "group": 7,
+        "map_num": 6,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_BikeShop"
+      },
+      {
+        "index": 279,
+        "group": 7,
+        "map_num": 7,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_Mart"
+      },
+      {
+        "index": 280,
+        "group": 7,
+        "map_num": 8,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_House4"
+      },
+      {
+        "index": 281,
+        "group": 7,
+        "map_num": 9,
+        "group_name": "IndoorCerulean",
+        "name": "CeruleanCity_House5"
+      },
+      {
+        "index": 282,
+        "group": 8,
+        "map_num": 0,
+        "group_name": "IndoorLavender",
+        "name": "LavenderTown_PokemonCenter_1F"
+      },
+      {
+        "index": 283,
+        "group": 8,
+        "map_num": 1,
+        "group_name": "IndoorLavender",
+        "name": "LavenderTown_PokemonCenter_2F"
+      },
+      {
+        "index": 284,
+        "group": 8,
+        "map_num": 2,
+        "group_name": "IndoorLavender",
+        "name": "LavenderTown_VolunteerPokemonHouse"
+      },
+      {
+        "index": 285,
+        "group": 8,
+        "map_num": 3,
+        "group_name": "IndoorLavender",
+        "name": "LavenderTown_House1"
+      },
+      {
+        "index": 286,
+        "group": 8,
+        "map_num": 4,
+        "group_name": "IndoorLavender",
+        "name": "LavenderTown_House2"
+      },
+      {
+        "index": 287,
+        "group": 8,
+        "map_num": 5,
+        "group_name": "IndoorLavender",
+        "name": "LavenderTown_Mart"
+      },
+      {
+        "index": 288,
+        "group": 9,
+        "map_num": 0,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_House1"
+      },
+      {
+        "index": 289,
+        "group": 9,
+        "map_num": 1,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_PokemonCenter_1F"
+      },
+      {
+        "index": 290,
+        "group": 9,
+        "map_num": 2,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_PokemonCenter_2F"
+      },
+      {
+        "index": 291,
+        "group": 9,
+        "map_num": 3,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_PokemonFanClub"
+      },
+      {
+        "index": 292,
+        "group": 9,
+        "map_num": 4,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_House2"
+      },
+      {
+        "index": 293,
+        "group": 9,
+        "map_num": 5,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_Mart"
+      },
+      {
+        "index": 294,
+        "group": 9,
+        "map_num": 6,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_Gym"
+      },
+      {
+        "index": 295,
+        "group": 9,
+        "map_num": 7,
+        "group_name": "IndoorVermilion",
+        "name": "VermilionCity_House3"
+      },
+      {
+        "index": 296,
+        "group": 10,
+        "map_num": 0,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_DepartmentStore_1F"
+      },
+      {
+        "index": 297,
+        "group": 10,
+        "map_num": 1,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_DepartmentStore_2F"
+      },
+      {
+        "index": 298,
+        "group": 10,
+        "map_num": 2,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_DepartmentStore_3F"
+      },
+      {
+        "index": 299,
+        "group": 10,
+        "map_num": 3,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_DepartmentStore_4F"
+      },
+      {
+        "index": 300,
+        "group": 10,
+        "map_num": 4,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_DepartmentStore_5F"
+      },
+      {
+        "index": 301,
+        "group": 10,
+        "map_num": 5,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_DepartmentStore_Roof"
+      },
+      {
+        "index": 302,
+        "group": 10,
+        "map_num": 6,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_DepartmentStore_Elevator"
+      },
+      {
+        "index": 303,
+        "group": 10,
+        "map_num": 7,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Condominiums_1F"
+      },
+      {
+        "index": 304,
+        "group": 10,
+        "map_num": 8,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Condominiums_2F"
+      },
+      {
+        "index": 305,
+        "group": 10,
+        "map_num": 9,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Condominiums_3F"
+      },
+      {
+        "index": 306,
+        "group": 10,
+        "map_num": 10,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Condominiums_Roof"
+      },
+      {
+        "index": 307,
+        "group": 10,
+        "map_num": 11,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Condominiums_RoofRoom"
+      },
+      {
+        "index": 308,
+        "group": 10,
+        "map_num": 12,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_PokemonCenter_1F"
+      },
+      {
+        "index": 309,
+        "group": 10,
+        "map_num": 13,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_PokemonCenter_2F"
+      },
+      {
+        "index": 310,
+        "group": 10,
+        "map_num": 14,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_GameCorner"
+      },
+      {
+        "index": 311,
+        "group": 10,
+        "map_num": 15,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_GameCorner_PrizeRoom"
+      },
+      {
+        "index": 312,
+        "group": 10,
+        "map_num": 16,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Gym"
+      },
+      {
+        "index": 313,
+        "group": 10,
+        "map_num": 17,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Restaurant"
+      },
+      {
+        "index": 314,
+        "group": 10,
+        "map_num": 18,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_House1"
+      },
+      {
+        "index": 315,
+        "group": 10,
+        "map_num": 19,
+        "group_name": "IndoorCeladon",
+        "name": "CeladonCity_Hotel"
+      },
+      {
+        "index": 316,
+        "group": 11,
+        "map_num": 0,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_SafariZone_Entrance"
+      },
+      {
+        "index": 317,
+        "group": 11,
+        "map_num": 1,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_Mart"
+      },
+      {
+        "index": 318,
+        "group": 11,
+        "map_num": 2,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_SafariZone_Office"
+      },
+      {
+        "index": 319,
+        "group": 11,
+        "map_num": 3,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_Gym"
+      },
+      {
+        "index": 320,
+        "group": 11,
+        "map_num": 4,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_House1"
+      },
+      {
+        "index": 321,
+        "group": 11,
+        "map_num": 5,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_PokemonCenter_1F"
+      },
+      {
+        "index": 322,
+        "group": 11,
+        "map_num": 6,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_PokemonCenter_2F"
+      },
+      {
+        "index": 323,
+        "group": 11,
+        "map_num": 7,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_WardensHouse"
+      },
+      {
+        "index": 324,
+        "group": 11,
+        "map_num": 8,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_House2"
+      },
+      {
+        "index": 325,
+        "group": 11,
+        "map_num": 9,
+        "group_name": "IndoorFuchsia",
+        "name": "FuchsiaCity_House3"
+      },
+      {
+        "index": 326,
+        "group": 12,
+        "map_num": 0,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_Gym"
+      },
+      {
+        "index": 327,
+        "group": 12,
+        "map_num": 1,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_PokemonLab_Entrance"
+      },
+      {
+        "index": 328,
+        "group": 12,
+        "map_num": 2,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_PokemonLab_Lounge"
+      },
+      {
+        "index": 329,
+        "group": 12,
+        "map_num": 3,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_PokemonLab_ResearchRoom"
+      },
+      {
+        "index": 330,
+        "group": 12,
+        "map_num": 4,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_PokemonLab_ExperimentRoom"
+      },
+      {
+        "index": 331,
+        "group": 12,
+        "map_num": 5,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 332,
+        "group": 12,
+        "map_num": 6,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 333,
+        "group": 12,
+        "map_num": 7,
+        "group_name": "IndoorCinnabar",
+        "name": "CinnabarIsland_Mart"
+      },
+      {
+        "index": 334,
+        "group": 13,
+        "map_num": 0,
+        "group_name": "IndoorIndigoPlateau",
+        "name": "IndigoPlateau_PokemonCenter_1F"
+      },
+      {
+        "index": 335,
+        "group": 13,
+        "map_num": 1,
+        "group_name": "IndoorIndigoPlateau",
+        "name": "IndigoPlateau_PokemonCenter_2F"
+      },
+      {
+        "index": 336,
+        "group": 14,
+        "map_num": 0,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_CopycatsHouse_1F"
+      },
+      {
+        "index": 337,
+        "group": 14,
+        "map_num": 1,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_CopycatsHouse_2F"
+      },
+      {
+        "index": 338,
+        "group": 14,
+        "map_num": 2,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_Dojo"
+      },
+      {
+        "index": 339,
+        "group": 14,
+        "map_num": 3,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_Gym"
+      },
+      {
+        "index": 340,
+        "group": 14,
+        "map_num": 4,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_House"
+      },
+      {
+        "index": 341,
+        "group": 14,
+        "map_num": 5,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_Mart"
+      },
+      {
+        "index": 342,
+        "group": 14,
+        "map_num": 6,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_PokemonCenter_1F"
+      },
+      {
+        "index": 343,
+        "group": 14,
+        "map_num": 7,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_PokemonCenter_2F"
+      },
+      {
+        "index": 344,
+        "group": 14,
+        "map_num": 8,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_MrPsychicsHouse"
+      },
+      {
+        "index": 345,
+        "group": 14,
+        "map_num": 9,
+        "group_name": "IndoorSaffron",
+        "name": "SaffronCity_PokemonTrainerFanClub"
+      },
+      {
+        "index": 346,
+        "group": 15,
+        "map_num": 0,
+        "group_name": "IndoorRoute2",
+        "name": "Route2_ViridianForest_SouthEntrance"
+      },
+      {
+        "index": 347,
+        "group": 15,
+        "map_num": 1,
+        "group_name": "IndoorRoute2",
+        "name": "Route2_House"
+      },
+      {
+        "index": 348,
+        "group": 15,
+        "map_num": 2,
+        "group_name": "IndoorRoute2",
+        "name": "Route2_EastBuilding"
+      },
+      {
+        "index": 349,
+        "group": 15,
+        "map_num": 3,
+        "group_name": "IndoorRoute2",
+        "name": "Route2_ViridianForest_NorthEntrance"
+      },
+      {
+        "index": 350,
+        "group": 16,
+        "map_num": 0,
+        "group_name": "IndoorRoute4",
+        "name": "Route4_PokemonCenter_1F"
+      },
+      {
+        "index": 351,
+        "group": 16,
+        "map_num": 1,
+        "group_name": "IndoorRoute4",
+        "name": "Route4_PokemonCenter_2F"
+      },
+      {
+        "index": 352,
+        "group": 17,
+        "map_num": 0,
+        "group_name": "IndoorRoute5",
+        "name": "Route5_PokemonDayCare"
+      },
+      {
+        "index": 353,
+        "group": 17,
+        "map_num": 1,
+        "group_name": "IndoorRoute5",
+        "name": "Route5_SouthEntrance"
+      },
+      {
+        "index": 354,
+        "group": 18,
+        "map_num": 0,
+        "group_name": "IndoorRoute6",
+        "name": "Route6_NorthEntrance"
+      },
+      {
+        "index": 355,
+        "group": 18,
+        "map_num": 1,
+        "group_name": "IndoorRoute6",
+        "name": "Route6_UnusedHouse"
+      },
+      {
+        "index": 356,
+        "group": 19,
+        "map_num": 0,
+        "group_name": "IndoorRoute7",
+        "name": "Route7_EastEntrance"
+      },
+      {
+        "index": 357,
+        "group": 20,
+        "map_num": 0,
+        "group_name": "IndoorRoute8",
+        "name": "Route8_WestEntrance"
+      },
+      {
+        "index": 358,
+        "group": 21,
+        "map_num": 0,
+        "group_name": "IndoorRoute10",
+        "name": "Route10_PokemonCenter_1F"
+      },
+      {
+        "index": 359,
+        "group": 21,
+        "map_num": 1,
+        "group_name": "IndoorRoute10",
+        "name": "Route10_PokemonCenter_2F"
+      },
+      {
+        "index": 360,
+        "group": 22,
+        "map_num": 0,
+        "group_name": "IndoorRoute11",
+        "name": "Route11_EastEntrance_1F"
+      },
+      {
+        "index": 361,
+        "group": 22,
+        "map_num": 1,
+        "group_name": "IndoorRoute11",
+        "name": "Route11_EastEntrance_2F"
+      },
+      {
+        "index": 362,
+        "group": 23,
+        "map_num": 0,
+        "group_name": "IndoorRoute12",
+        "name": "Route12_NorthEntrance_1F"
+      },
+      {
+        "index": 363,
+        "group": 23,
+        "map_num": 1,
+        "group_name": "IndoorRoute12",
+        "name": "Route12_NorthEntrance_2F"
+      },
+      {
+        "index": 364,
+        "group": 23,
+        "map_num": 2,
+        "group_name": "IndoorRoute12",
+        "name": "Route12_FishingHouse"
+      },
+      {
+        "index": 365,
+        "group": 24,
+        "map_num": 0,
+        "group_name": "IndoorRoute15",
+        "name": "Route15_WestEntrance_1F"
+      },
+      {
+        "index": 366,
+        "group": 24,
+        "map_num": 1,
+        "group_name": "IndoorRoute15",
+        "name": "Route15_WestEntrance_2F"
+      },
+      {
+        "index": 367,
+        "group": 25,
+        "map_num": 0,
+        "group_name": "IndoorRoute16",
+        "name": "Route16_House"
+      },
+      {
+        "index": 368,
+        "group": 25,
+        "map_num": 1,
+        "group_name": "IndoorRoute16",
+        "name": "Route16_NorthEntrance_1F"
+      },
+      {
+        "index": 369,
+        "group": 25,
+        "map_num": 2,
+        "group_name": "IndoorRoute16",
+        "name": "Route16_NorthEntrance_2F"
+      },
+      {
+        "index": 370,
+        "group": 26,
+        "map_num": 0,
+        "group_name": "IndoorRoute18",
+        "name": "Route18_EastEntrance_1F"
+      },
+      {
+        "index": 371,
+        "group": 26,
+        "map_num": 1,
+        "group_name": "IndoorRoute18",
+        "name": "Route18_EastEntrance_2F"
+      },
+      {
+        "index": 372,
+        "group": 27,
+        "map_num": 0,
+        "group_name": "IndoorRoute19",
+        "name": "Route19_UnusedHouse"
+      },
+      {
+        "index": 373,
+        "group": 28,
+        "map_num": 0,
+        "group_name": "IndoorRoute22",
+        "name": "Route22_NorthEntrance"
+      },
+      {
+        "index": 374,
+        "group": 29,
+        "map_num": 0,
+        "group_name": "IndoorRoute23",
+        "name": "Route23_UnusedHouse"
+      },
+      {
+        "index": 375,
+        "group": 30,
+        "map_num": 0,
+        "group_name": "IndoorRoute25",
+        "name": "Route25_SeaCottage"
+      },
+      {
+        "index": 376,
+        "group": 31,
+        "map_num": 0,
+        "group_name": "IndoorSevenIsland",
+        "name": "SevenIsland_House_Room1"
+      },
+      {
+        "index": 377,
+        "group": 31,
+        "map_num": 1,
+        "group_name": "IndoorSevenIsland",
+        "name": "SevenIsland_House_Room2"
+      },
+      {
+        "index": 378,
+        "group": 31,
+        "map_num": 2,
+        "group_name": "IndoorSevenIsland",
+        "name": "SevenIsland_Mart"
+      },
+      {
+        "index": 379,
+        "group": 31,
+        "map_num": 3,
+        "group_name": "IndoorSevenIsland",
+        "name": "SevenIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 380,
+        "group": 31,
+        "map_num": 4,
+        "group_name": "IndoorSevenIsland",
+        "name": "SevenIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 381,
+        "group": 31,
+        "map_num": 5,
+        "group_name": "IndoorSevenIsland",
+        "name": "SevenIsland_UnusedHouse"
+      },
+      {
+        "index": 382,
+        "group": 31,
+        "map_num": 6,
+        "group_name": "IndoorSevenIsland",
+        "name": "SevenIsland_Harbor"
+      },
+      {
+        "index": 383,
+        "group": 32,
+        "map_num": 0,
+        "group_name": "IndoorOneIsland",
+        "name": "OneIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 384,
+        "group": 32,
+        "map_num": 1,
+        "group_name": "IndoorOneIsland",
+        "name": "OneIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 385,
+        "group": 32,
+        "map_num": 2,
+        "group_name": "IndoorOneIsland",
+        "name": "OneIsland_House1"
+      },
+      {
+        "index": 386,
+        "group": 32,
+        "map_num": 3,
+        "group_name": "IndoorOneIsland",
+        "name": "OneIsland_House2"
+      },
+      {
+        "index": 387,
+        "group": 32,
+        "map_num": 4,
+        "group_name": "IndoorOneIsland",
+        "name": "OneIsland_Harbor"
+      },
+      {
+        "index": 388,
+        "group": 33,
+        "map_num": 0,
+        "group_name": "IndoorTwoIsland",
+        "name": "TwoIsland_JoyfulGameCorner"
+      },
+      {
+        "index": 389,
+        "group": 33,
+        "map_num": 1,
+        "group_name": "IndoorTwoIsland",
+        "name": "TwoIsland_House"
+      },
+      {
+        "index": 390,
+        "group": 33,
+        "map_num": 2,
+        "group_name": "IndoorTwoIsland",
+        "name": "TwoIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 391,
+        "group": 33,
+        "map_num": 3,
+        "group_name": "IndoorTwoIsland",
+        "name": "TwoIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 392,
+        "group": 33,
+        "map_num": 4,
+        "group_name": "IndoorTwoIsland",
+        "name": "TwoIsland_Harbor"
+      },
+      {
+        "index": 393,
+        "group": 34,
+        "map_num": 0,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_House1"
+      },
+      {
+        "index": 394,
+        "group": 34,
+        "map_num": 1,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 395,
+        "group": 34,
+        "map_num": 2,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 396,
+        "group": 34,
+        "map_num": 3,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_Mart"
+      },
+      {
+        "index": 397,
+        "group": 34,
+        "map_num": 4,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_House2"
+      },
+      {
+        "index": 398,
+        "group": 34,
+        "map_num": 5,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_House3"
+      },
+      {
+        "index": 399,
+        "group": 34,
+        "map_num": 6,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_House4"
+      },
+      {
+        "index": 400,
+        "group": 34,
+        "map_num": 7,
+        "group_name": "IndoorThreeIsland",
+        "name": "ThreeIsland_House5"
+      },
+      {
+        "index": 401,
+        "group": 35,
+        "map_num": 0,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_PokemonDayCare"
+      },
+      {
+        "index": 402,
+        "group": 35,
+        "map_num": 1,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 403,
+        "group": 35,
+        "map_num": 2,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 404,
+        "group": 35,
+        "map_num": 3,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_House1"
+      },
+      {
+        "index": 405,
+        "group": 35,
+        "map_num": 4,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_LoreleisHouse"
+      },
+      {
+        "index": 406,
+        "group": 35,
+        "map_num": 5,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_Harbor"
+      },
+      {
+        "index": 407,
+        "group": 35,
+        "map_num": 6,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_House2"
+      },
+      {
+        "index": 408,
+        "group": 35,
+        "map_num": 7,
+        "group_name": "IndoorFourIsland",
+        "name": "FourIsland_Mart"
+      },
+      {
+        "index": 409,
+        "group": 36,
+        "map_num": 0,
+        "group_name": "IndoorFiveIsland",
+        "name": "FiveIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 410,
+        "group": 36,
+        "map_num": 1,
+        "group_name": "IndoorFiveIsland",
+        "name": "FiveIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 411,
+        "group": 36,
+        "map_num": 2,
+        "group_name": "IndoorFiveIsland",
+        "name": "FiveIsland_Harbor"
+      },
+      {
+        "index": 412,
+        "group": 36,
+        "map_num": 3,
+        "group_name": "IndoorFiveIsland",
+        "name": "FiveIsland_House1"
+      },
+      {
+        "index": 413,
+        "group": 36,
+        "map_num": 4,
+        "group_name": "IndoorFiveIsland",
+        "name": "FiveIsland_House2"
+      },
+      {
+        "index": 414,
+        "group": 37,
+        "map_num": 0,
+        "group_name": "IndoorSixIsland",
+        "name": "SixIsland_PokemonCenter_1F"
+      },
+      {
+        "index": 415,
+        "group": 37,
+        "map_num": 1,
+        "group_name": "IndoorSixIsland",
+        "name": "SixIsland_PokemonCenter_2F"
+      },
+      {
+        "index": 416,
+        "group": 37,
+        "map_num": 2,
+        "group_name": "IndoorSixIsland",
+        "name": "SixIsland_Harbor"
+      },
+      {
+        "index": 417,
+        "group": 37,
+        "map_num": 3,
+        "group_name": "IndoorSixIsland",
+        "name": "SixIsland_House"
+      },
+      {
+        "index": 418,
+        "group": 37,
+        "map_num": 4,
+        "group_name": "IndoorSixIsland",
+        "name": "SixIsland_Mart"
+      },
+      {
+        "index": 419,
+        "group": 38,
+        "map_num": 0,
+        "group_name": "IndoorThreeIslandRoute",
+        "name": "ThreeIsland_Harbor"
+      },
+      {
+        "index": 420,
+        "group": 39,
+        "map_num": 0,
+        "group_name": "IndoorFiveIslandRoute",
+        "name": "FiveIsland_ResortGorgeous_House"
+      },
+      {
+        "index": 421,
+        "group": 40,
+        "map_num": 0,
+        "group_name": "IndoorTwoIslandRoute",
+        "name": "TwoIsland_CapeBrink_House"
+      },
+      {
+        "index": 422,
+        "group": 41,
+        "map_num": 0,
+        "group_name": "IndoorSixIslandRoute",
+        "name": "SixIsland_WaterPath_House1"
+      },
+      {
+        "index": 423,
+        "group": 41,
+        "map_num": 1,
+        "group_name": "IndoorSixIslandRoute",
+        "name": "SixIsland_WaterPath_House2"
+      },
+      {
+        "index": 424,
+        "group": 42,
+        "map_num": 0,
+        "group_name": "IndoorSevenIslandRoute",
+        "name": "SevenIsland_SevaultCanyon_House"
+      }
     ]
   },
   "emerald": {
@@ -12135,6 +15112,3634 @@
         "border_height": null,
         "primary": "Building",
         "secondary": "MysteryEventsHouse"
+      }
+    ],
+    "maps": [
+      {
+        "index": 0,
+        "group": 0,
+        "map_num": 0,
+        "group_name": "TownsAndRoutes",
+        "name": "PetalburgCity"
+      },
+      {
+        "index": 1,
+        "group": 0,
+        "map_num": 1,
+        "group_name": "TownsAndRoutes",
+        "name": "SlateportCity"
+      },
+      {
+        "index": 2,
+        "group": 0,
+        "map_num": 2,
+        "group_name": "TownsAndRoutes",
+        "name": "MauvilleCity"
+      },
+      {
+        "index": 3,
+        "group": 0,
+        "map_num": 3,
+        "group_name": "TownsAndRoutes",
+        "name": "RustboroCity"
+      },
+      {
+        "index": 4,
+        "group": 0,
+        "map_num": 4,
+        "group_name": "TownsAndRoutes",
+        "name": "FortreeCity"
+      },
+      {
+        "index": 5,
+        "group": 0,
+        "map_num": 5,
+        "group_name": "TownsAndRoutes",
+        "name": "LilycoveCity"
+      },
+      {
+        "index": 6,
+        "group": 0,
+        "map_num": 6,
+        "group_name": "TownsAndRoutes",
+        "name": "MossdeepCity"
+      },
+      {
+        "index": 7,
+        "group": 0,
+        "map_num": 7,
+        "group_name": "TownsAndRoutes",
+        "name": "SootopolisCity"
+      },
+      {
+        "index": 8,
+        "group": 0,
+        "map_num": 8,
+        "group_name": "TownsAndRoutes",
+        "name": "EverGrandeCity"
+      },
+      {
+        "index": 9,
+        "group": 0,
+        "map_num": 9,
+        "group_name": "TownsAndRoutes",
+        "name": "LittlerootTown"
+      },
+      {
+        "index": 10,
+        "group": 0,
+        "map_num": 10,
+        "group_name": "TownsAndRoutes",
+        "name": "OldaleTown"
+      },
+      {
+        "index": 11,
+        "group": 0,
+        "map_num": 11,
+        "group_name": "TownsAndRoutes",
+        "name": "DewfordTown"
+      },
+      {
+        "index": 12,
+        "group": 0,
+        "map_num": 12,
+        "group_name": "TownsAndRoutes",
+        "name": "LavaridgeTown"
+      },
+      {
+        "index": 13,
+        "group": 0,
+        "map_num": 13,
+        "group_name": "TownsAndRoutes",
+        "name": "FallarborTown"
+      },
+      {
+        "index": 14,
+        "group": 0,
+        "map_num": 14,
+        "group_name": "TownsAndRoutes",
+        "name": "VerdanturfTown"
+      },
+      {
+        "index": 15,
+        "group": 0,
+        "map_num": 15,
+        "group_name": "TownsAndRoutes",
+        "name": "PacifidlogTown"
+      },
+      {
+        "index": 16,
+        "group": 0,
+        "map_num": 16,
+        "group_name": "TownsAndRoutes",
+        "name": "Route101"
+      },
+      {
+        "index": 17,
+        "group": 0,
+        "map_num": 17,
+        "group_name": "TownsAndRoutes",
+        "name": "Route102"
+      },
+      {
+        "index": 18,
+        "group": 0,
+        "map_num": 18,
+        "group_name": "TownsAndRoutes",
+        "name": "Route103"
+      },
+      {
+        "index": 19,
+        "group": 0,
+        "map_num": 19,
+        "group_name": "TownsAndRoutes",
+        "name": "Route104"
+      },
+      {
+        "index": 20,
+        "group": 0,
+        "map_num": 20,
+        "group_name": "TownsAndRoutes",
+        "name": "Route105"
+      },
+      {
+        "index": 21,
+        "group": 0,
+        "map_num": 21,
+        "group_name": "TownsAndRoutes",
+        "name": "Route106"
+      },
+      {
+        "index": 22,
+        "group": 0,
+        "map_num": 22,
+        "group_name": "TownsAndRoutes",
+        "name": "Route107"
+      },
+      {
+        "index": 23,
+        "group": 0,
+        "map_num": 23,
+        "group_name": "TownsAndRoutes",
+        "name": "Route108"
+      },
+      {
+        "index": 24,
+        "group": 0,
+        "map_num": 24,
+        "group_name": "TownsAndRoutes",
+        "name": "Route109"
+      },
+      {
+        "index": 25,
+        "group": 0,
+        "map_num": 25,
+        "group_name": "TownsAndRoutes",
+        "name": "Route110"
+      },
+      {
+        "index": 26,
+        "group": 0,
+        "map_num": 26,
+        "group_name": "TownsAndRoutes",
+        "name": "Route111"
+      },
+      {
+        "index": 27,
+        "group": 0,
+        "map_num": 27,
+        "group_name": "TownsAndRoutes",
+        "name": "Route112"
+      },
+      {
+        "index": 28,
+        "group": 0,
+        "map_num": 28,
+        "group_name": "TownsAndRoutes",
+        "name": "Route113"
+      },
+      {
+        "index": 29,
+        "group": 0,
+        "map_num": 29,
+        "group_name": "TownsAndRoutes",
+        "name": "Route114"
+      },
+      {
+        "index": 30,
+        "group": 0,
+        "map_num": 30,
+        "group_name": "TownsAndRoutes",
+        "name": "Route115"
+      },
+      {
+        "index": 31,
+        "group": 0,
+        "map_num": 31,
+        "group_name": "TownsAndRoutes",
+        "name": "Route116"
+      },
+      {
+        "index": 32,
+        "group": 0,
+        "map_num": 32,
+        "group_name": "TownsAndRoutes",
+        "name": "Route117"
+      },
+      {
+        "index": 33,
+        "group": 0,
+        "map_num": 33,
+        "group_name": "TownsAndRoutes",
+        "name": "Route118"
+      },
+      {
+        "index": 34,
+        "group": 0,
+        "map_num": 34,
+        "group_name": "TownsAndRoutes",
+        "name": "Route119"
+      },
+      {
+        "index": 35,
+        "group": 0,
+        "map_num": 35,
+        "group_name": "TownsAndRoutes",
+        "name": "Route120"
+      },
+      {
+        "index": 36,
+        "group": 0,
+        "map_num": 36,
+        "group_name": "TownsAndRoutes",
+        "name": "Route121"
+      },
+      {
+        "index": 37,
+        "group": 0,
+        "map_num": 37,
+        "group_name": "TownsAndRoutes",
+        "name": "Route122"
+      },
+      {
+        "index": 38,
+        "group": 0,
+        "map_num": 38,
+        "group_name": "TownsAndRoutes",
+        "name": "Route123"
+      },
+      {
+        "index": 39,
+        "group": 0,
+        "map_num": 39,
+        "group_name": "TownsAndRoutes",
+        "name": "Route124"
+      },
+      {
+        "index": 40,
+        "group": 0,
+        "map_num": 40,
+        "group_name": "TownsAndRoutes",
+        "name": "Route125"
+      },
+      {
+        "index": 41,
+        "group": 0,
+        "map_num": 41,
+        "group_name": "TownsAndRoutes",
+        "name": "Route126"
+      },
+      {
+        "index": 42,
+        "group": 0,
+        "map_num": 42,
+        "group_name": "TownsAndRoutes",
+        "name": "Route127"
+      },
+      {
+        "index": 43,
+        "group": 0,
+        "map_num": 43,
+        "group_name": "TownsAndRoutes",
+        "name": "Route128"
+      },
+      {
+        "index": 44,
+        "group": 0,
+        "map_num": 44,
+        "group_name": "TownsAndRoutes",
+        "name": "Route129"
+      },
+      {
+        "index": 45,
+        "group": 0,
+        "map_num": 45,
+        "group_name": "TownsAndRoutes",
+        "name": "Route130"
+      },
+      {
+        "index": 46,
+        "group": 0,
+        "map_num": 46,
+        "group_name": "TownsAndRoutes",
+        "name": "Route131"
+      },
+      {
+        "index": 47,
+        "group": 0,
+        "map_num": 47,
+        "group_name": "TownsAndRoutes",
+        "name": "Route132"
+      },
+      {
+        "index": 48,
+        "group": 0,
+        "map_num": 48,
+        "group_name": "TownsAndRoutes",
+        "name": "Route133"
+      },
+      {
+        "index": 49,
+        "group": 0,
+        "map_num": 49,
+        "group_name": "TownsAndRoutes",
+        "name": "Route134"
+      },
+      {
+        "index": 50,
+        "group": 0,
+        "map_num": 50,
+        "group_name": "TownsAndRoutes",
+        "name": "Underwater_Route124"
+      },
+      {
+        "index": 51,
+        "group": 0,
+        "map_num": 51,
+        "group_name": "TownsAndRoutes",
+        "name": "Underwater_Route126"
+      },
+      {
+        "index": 52,
+        "group": 0,
+        "map_num": 52,
+        "group_name": "TownsAndRoutes",
+        "name": "Underwater_Route127"
+      },
+      {
+        "index": 53,
+        "group": 0,
+        "map_num": 53,
+        "group_name": "TownsAndRoutes",
+        "name": "Underwater_Route128"
+      },
+      {
+        "index": 54,
+        "group": 0,
+        "map_num": 54,
+        "group_name": "TownsAndRoutes",
+        "name": "Underwater_Route129"
+      },
+      {
+        "index": 55,
+        "group": 0,
+        "map_num": 55,
+        "group_name": "TownsAndRoutes",
+        "name": "Underwater_Route105"
+      },
+      {
+        "index": 56,
+        "group": 0,
+        "map_num": 56,
+        "group_name": "TownsAndRoutes",
+        "name": "Underwater_Route125"
+      },
+      {
+        "index": 57,
+        "group": 1,
+        "map_num": 0,
+        "group_name": "IndoorLittleroot",
+        "name": "LittlerootTown_BrendansHouse_1F"
+      },
+      {
+        "index": 58,
+        "group": 1,
+        "map_num": 1,
+        "group_name": "IndoorLittleroot",
+        "name": "LittlerootTown_BrendansHouse_2F"
+      },
+      {
+        "index": 59,
+        "group": 1,
+        "map_num": 2,
+        "group_name": "IndoorLittleroot",
+        "name": "LittlerootTown_MaysHouse_1F"
+      },
+      {
+        "index": 60,
+        "group": 1,
+        "map_num": 3,
+        "group_name": "IndoorLittleroot",
+        "name": "LittlerootTown_MaysHouse_2F"
+      },
+      {
+        "index": 61,
+        "group": 1,
+        "map_num": 4,
+        "group_name": "IndoorLittleroot",
+        "name": "LittlerootTown_ProfessorBirchsLab"
+      },
+      {
+        "index": 62,
+        "group": 2,
+        "map_num": 0,
+        "group_name": "IndoorOldale",
+        "name": "OldaleTown_House1"
+      },
+      {
+        "index": 63,
+        "group": 2,
+        "map_num": 1,
+        "group_name": "IndoorOldale",
+        "name": "OldaleTown_House2"
+      },
+      {
+        "index": 64,
+        "group": 2,
+        "map_num": 2,
+        "group_name": "IndoorOldale",
+        "name": "OldaleTown_PokemonCenter_1F"
+      },
+      {
+        "index": 65,
+        "group": 2,
+        "map_num": 3,
+        "group_name": "IndoorOldale",
+        "name": "OldaleTown_PokemonCenter_2F"
+      },
+      {
+        "index": 66,
+        "group": 2,
+        "map_num": 4,
+        "group_name": "IndoorOldale",
+        "name": "OldaleTown_Mart"
+      },
+      {
+        "index": 67,
+        "group": 3,
+        "map_num": 0,
+        "group_name": "IndoorDewford",
+        "name": "DewfordTown_House1"
+      },
+      {
+        "index": 68,
+        "group": 3,
+        "map_num": 1,
+        "group_name": "IndoorDewford",
+        "name": "DewfordTown_PokemonCenter_1F"
+      },
+      {
+        "index": 69,
+        "group": 3,
+        "map_num": 2,
+        "group_name": "IndoorDewford",
+        "name": "DewfordTown_PokemonCenter_2F"
+      },
+      {
+        "index": 70,
+        "group": 3,
+        "map_num": 3,
+        "group_name": "IndoorDewford",
+        "name": "DewfordTown_Gym"
+      },
+      {
+        "index": 71,
+        "group": 3,
+        "map_num": 4,
+        "group_name": "IndoorDewford",
+        "name": "DewfordTown_Hall"
+      },
+      {
+        "index": 72,
+        "group": 3,
+        "map_num": 5,
+        "group_name": "IndoorDewford",
+        "name": "DewfordTown_House2"
+      },
+      {
+        "index": 73,
+        "group": 4,
+        "map_num": 0,
+        "group_name": "IndoorLavaridge",
+        "name": "LavaridgeTown_HerbShop"
+      },
+      {
+        "index": 74,
+        "group": 4,
+        "map_num": 1,
+        "group_name": "IndoorLavaridge",
+        "name": "LavaridgeTown_Gym_1F"
+      },
+      {
+        "index": 75,
+        "group": 4,
+        "map_num": 2,
+        "group_name": "IndoorLavaridge",
+        "name": "LavaridgeTown_Gym_B1F"
+      },
+      {
+        "index": 76,
+        "group": 4,
+        "map_num": 3,
+        "group_name": "IndoorLavaridge",
+        "name": "LavaridgeTown_House"
+      },
+      {
+        "index": 77,
+        "group": 4,
+        "map_num": 4,
+        "group_name": "IndoorLavaridge",
+        "name": "LavaridgeTown_Mart"
+      },
+      {
+        "index": 78,
+        "group": 4,
+        "map_num": 5,
+        "group_name": "IndoorLavaridge",
+        "name": "LavaridgeTown_PokemonCenter_1F"
+      },
+      {
+        "index": 79,
+        "group": 4,
+        "map_num": 6,
+        "group_name": "IndoorLavaridge",
+        "name": "LavaridgeTown_PokemonCenter_2F"
+      },
+      {
+        "index": 80,
+        "group": 5,
+        "map_num": 0,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_Mart"
+      },
+      {
+        "index": 81,
+        "group": 5,
+        "map_num": 1,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_BattleTentLobby"
+      },
+      {
+        "index": 82,
+        "group": 5,
+        "map_num": 2,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_BattleTentCorridor"
+      },
+      {
+        "index": 83,
+        "group": 5,
+        "map_num": 3,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_BattleTentBattleRoom"
+      },
+      {
+        "index": 84,
+        "group": 5,
+        "map_num": 4,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_PokemonCenter_1F"
+      },
+      {
+        "index": 85,
+        "group": 5,
+        "map_num": 5,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_PokemonCenter_2F"
+      },
+      {
+        "index": 86,
+        "group": 5,
+        "map_num": 6,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_CozmosHouse"
+      },
+      {
+        "index": 87,
+        "group": 5,
+        "map_num": 7,
+        "group_name": "IndoorFallarbor",
+        "name": "FallarborTown_MoveRelearnersHouse"
+      },
+      {
+        "index": 88,
+        "group": 6,
+        "map_num": 0,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_BattleTentLobby"
+      },
+      {
+        "index": 89,
+        "group": 6,
+        "map_num": 1,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_BattleTentCorridor"
+      },
+      {
+        "index": 90,
+        "group": 6,
+        "map_num": 2,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_BattleTentBattleRoom"
+      },
+      {
+        "index": 91,
+        "group": 6,
+        "map_num": 3,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_Mart"
+      },
+      {
+        "index": 92,
+        "group": 6,
+        "map_num": 4,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_PokemonCenter_1F"
+      },
+      {
+        "index": 93,
+        "group": 6,
+        "map_num": 5,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_PokemonCenter_2F"
+      },
+      {
+        "index": 94,
+        "group": 6,
+        "map_num": 6,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_WandasHouse"
+      },
+      {
+        "index": 95,
+        "group": 6,
+        "map_num": 7,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_FriendshipRatersHouse"
+      },
+      {
+        "index": 96,
+        "group": 6,
+        "map_num": 8,
+        "group_name": "IndoorVerdanturf",
+        "name": "VerdanturfTown_House"
+      },
+      {
+        "index": 97,
+        "group": 7,
+        "map_num": 0,
+        "group_name": "IndoorPacifidlog",
+        "name": "PacifidlogTown_PokemonCenter_1F"
+      },
+      {
+        "index": 98,
+        "group": 7,
+        "map_num": 1,
+        "group_name": "IndoorPacifidlog",
+        "name": "PacifidlogTown_PokemonCenter_2F"
+      },
+      {
+        "index": 99,
+        "group": 7,
+        "map_num": 2,
+        "group_name": "IndoorPacifidlog",
+        "name": "PacifidlogTown_House1"
+      },
+      {
+        "index": 100,
+        "group": 7,
+        "map_num": 3,
+        "group_name": "IndoorPacifidlog",
+        "name": "PacifidlogTown_House2"
+      },
+      {
+        "index": 101,
+        "group": 7,
+        "map_num": 4,
+        "group_name": "IndoorPacifidlog",
+        "name": "PacifidlogTown_House3"
+      },
+      {
+        "index": 102,
+        "group": 7,
+        "map_num": 5,
+        "group_name": "IndoorPacifidlog",
+        "name": "PacifidlogTown_House4"
+      },
+      {
+        "index": 103,
+        "group": 7,
+        "map_num": 6,
+        "group_name": "IndoorPacifidlog",
+        "name": "PacifidlogTown_House5"
+      },
+      {
+        "index": 104,
+        "group": 8,
+        "map_num": 0,
+        "group_name": "IndoorPetalburg",
+        "name": "PetalburgCity_WallysHouse"
+      },
+      {
+        "index": 105,
+        "group": 8,
+        "map_num": 1,
+        "group_name": "IndoorPetalburg",
+        "name": "PetalburgCity_Gym"
+      },
+      {
+        "index": 106,
+        "group": 8,
+        "map_num": 2,
+        "group_name": "IndoorPetalburg",
+        "name": "PetalburgCity_House1"
+      },
+      {
+        "index": 107,
+        "group": 8,
+        "map_num": 3,
+        "group_name": "IndoorPetalburg",
+        "name": "PetalburgCity_House2"
+      },
+      {
+        "index": 108,
+        "group": 8,
+        "map_num": 4,
+        "group_name": "IndoorPetalburg",
+        "name": "PetalburgCity_PokemonCenter_1F"
+      },
+      {
+        "index": 109,
+        "group": 8,
+        "map_num": 5,
+        "group_name": "IndoorPetalburg",
+        "name": "PetalburgCity_PokemonCenter_2F"
+      },
+      {
+        "index": 110,
+        "group": 8,
+        "map_num": 6,
+        "group_name": "IndoorPetalburg",
+        "name": "PetalburgCity_Mart"
+      },
+      {
+        "index": 111,
+        "group": 9,
+        "map_num": 0,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_SternsShipyard_1F"
+      },
+      {
+        "index": 112,
+        "group": 9,
+        "map_num": 1,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_SternsShipyard_2F"
+      },
+      {
+        "index": 113,
+        "group": 9,
+        "map_num": 2,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_BattleTentLobby"
+      },
+      {
+        "index": 114,
+        "group": 9,
+        "map_num": 3,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_BattleTentCorridor"
+      },
+      {
+        "index": 115,
+        "group": 9,
+        "map_num": 4,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_BattleTentBattleRoom"
+      },
+      {
+        "index": 116,
+        "group": 9,
+        "map_num": 5,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_NameRatersHouse"
+      },
+      {
+        "index": 117,
+        "group": 9,
+        "map_num": 6,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_PokemonFanClub"
+      },
+      {
+        "index": 118,
+        "group": 9,
+        "map_num": 7,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_OceanicMuseum_1F"
+      },
+      {
+        "index": 119,
+        "group": 9,
+        "map_num": 8,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_OceanicMuseum_2F"
+      },
+      {
+        "index": 120,
+        "group": 9,
+        "map_num": 9,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_Harbor"
+      },
+      {
+        "index": 121,
+        "group": 9,
+        "map_num": 10,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_House"
+      },
+      {
+        "index": 122,
+        "group": 9,
+        "map_num": 11,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_PokemonCenter_1F"
+      },
+      {
+        "index": 123,
+        "group": 9,
+        "map_num": 12,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_PokemonCenter_2F"
+      },
+      {
+        "index": 124,
+        "group": 9,
+        "map_num": 13,
+        "group_name": "IndoorSlateport",
+        "name": "SlateportCity_Mart"
+      },
+      {
+        "index": 125,
+        "group": 10,
+        "map_num": 0,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_Gym"
+      },
+      {
+        "index": 126,
+        "group": 10,
+        "map_num": 1,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_BikeShop"
+      },
+      {
+        "index": 127,
+        "group": 10,
+        "map_num": 2,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_House1"
+      },
+      {
+        "index": 128,
+        "group": 10,
+        "map_num": 3,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_GameCorner"
+      },
+      {
+        "index": 129,
+        "group": 10,
+        "map_num": 4,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_House2"
+      },
+      {
+        "index": 130,
+        "group": 10,
+        "map_num": 5,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_PokemonCenter_1F"
+      },
+      {
+        "index": 131,
+        "group": 10,
+        "map_num": 6,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_PokemonCenter_2F"
+      },
+      {
+        "index": 132,
+        "group": 10,
+        "map_num": 7,
+        "group_name": "IndoorMauville",
+        "name": "MauvilleCity_Mart"
+      },
+      {
+        "index": 133,
+        "group": 11,
+        "map_num": 0,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_DevonCorp_1F"
+      },
+      {
+        "index": 134,
+        "group": 11,
+        "map_num": 1,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_DevonCorp_2F"
+      },
+      {
+        "index": 135,
+        "group": 11,
+        "map_num": 2,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_DevonCorp_3F"
+      },
+      {
+        "index": 136,
+        "group": 11,
+        "map_num": 3,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_Gym"
+      },
+      {
+        "index": 137,
+        "group": 11,
+        "map_num": 4,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_PokemonSchool"
+      },
+      {
+        "index": 138,
+        "group": 11,
+        "map_num": 5,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_PokemonCenter_1F"
+      },
+      {
+        "index": 139,
+        "group": 11,
+        "map_num": 6,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_PokemonCenter_2F"
+      },
+      {
+        "index": 140,
+        "group": 11,
+        "map_num": 7,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_Mart"
+      },
+      {
+        "index": 141,
+        "group": 11,
+        "map_num": 8,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_Flat1_1F"
+      },
+      {
+        "index": 142,
+        "group": 11,
+        "map_num": 9,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_Flat1_2F"
+      },
+      {
+        "index": 143,
+        "group": 11,
+        "map_num": 10,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_House1"
+      },
+      {
+        "index": 144,
+        "group": 11,
+        "map_num": 11,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_CuttersHouse"
+      },
+      {
+        "index": 145,
+        "group": 11,
+        "map_num": 12,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_House2"
+      },
+      {
+        "index": 146,
+        "group": 11,
+        "map_num": 13,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_Flat2_1F"
+      },
+      {
+        "index": 147,
+        "group": 11,
+        "map_num": 14,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_Flat2_2F"
+      },
+      {
+        "index": 148,
+        "group": 11,
+        "map_num": 15,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_Flat2_3F"
+      },
+      {
+        "index": 149,
+        "group": 11,
+        "map_num": 16,
+        "group_name": "IndoorRustboro",
+        "name": "RustboroCity_House3"
+      },
+      {
+        "index": 150,
+        "group": 12,
+        "map_num": 0,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_House1"
+      },
+      {
+        "index": 151,
+        "group": 12,
+        "map_num": 1,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_Gym"
+      },
+      {
+        "index": 152,
+        "group": 12,
+        "map_num": 2,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_PokemonCenter_1F"
+      },
+      {
+        "index": 153,
+        "group": 12,
+        "map_num": 3,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_PokemonCenter_2F"
+      },
+      {
+        "index": 154,
+        "group": 12,
+        "map_num": 4,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_Mart"
+      },
+      {
+        "index": 155,
+        "group": 12,
+        "map_num": 5,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_House2"
+      },
+      {
+        "index": 156,
+        "group": 12,
+        "map_num": 6,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_House3"
+      },
+      {
+        "index": 157,
+        "group": 12,
+        "map_num": 7,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_House4"
+      },
+      {
+        "index": 158,
+        "group": 12,
+        "map_num": 8,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_House5"
+      },
+      {
+        "index": 159,
+        "group": 12,
+        "map_num": 9,
+        "group_name": "IndoorFortree",
+        "name": "FortreeCity_DecorationShop"
+      },
+      {
+        "index": 160,
+        "group": 13,
+        "map_num": 0,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_CoveLilyMotel_1F"
+      },
+      {
+        "index": 161,
+        "group": 13,
+        "map_num": 1,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_CoveLilyMotel_2F"
+      },
+      {
+        "index": 162,
+        "group": 13,
+        "map_num": 2,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_LilycoveMuseum_1F"
+      },
+      {
+        "index": 163,
+        "group": 13,
+        "map_num": 3,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_LilycoveMuseum_2F"
+      },
+      {
+        "index": 164,
+        "group": 13,
+        "map_num": 4,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_ContestLobby"
+      },
+      {
+        "index": 165,
+        "group": 13,
+        "map_num": 5,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_ContestHall"
+      },
+      {
+        "index": 166,
+        "group": 13,
+        "map_num": 6,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_PokemonCenter_1F"
+      },
+      {
+        "index": 167,
+        "group": 13,
+        "map_num": 7,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_PokemonCenter_2F"
+      },
+      {
+        "index": 168,
+        "group": 13,
+        "map_num": 8,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_UnusedMart"
+      },
+      {
+        "index": 169,
+        "group": 13,
+        "map_num": 9,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_PokemonTrainerFanClub"
+      },
+      {
+        "index": 170,
+        "group": 13,
+        "map_num": 10,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_Harbor"
+      },
+      {
+        "index": 171,
+        "group": 13,
+        "map_num": 11,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_MoveDeletersHouse"
+      },
+      {
+        "index": 172,
+        "group": 13,
+        "map_num": 12,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_House1"
+      },
+      {
+        "index": 173,
+        "group": 13,
+        "map_num": 13,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_House2"
+      },
+      {
+        "index": 174,
+        "group": 13,
+        "map_num": 14,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_House3"
+      },
+      {
+        "index": 175,
+        "group": 13,
+        "map_num": 15,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_House4"
+      },
+      {
+        "index": 176,
+        "group": 13,
+        "map_num": 16,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_DepartmentStore_1F"
+      },
+      {
+        "index": 177,
+        "group": 13,
+        "map_num": 17,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_DepartmentStore_2F"
+      },
+      {
+        "index": 178,
+        "group": 13,
+        "map_num": 18,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_DepartmentStore_3F"
+      },
+      {
+        "index": 179,
+        "group": 13,
+        "map_num": 19,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_DepartmentStore_4F"
+      },
+      {
+        "index": 180,
+        "group": 13,
+        "map_num": 20,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_DepartmentStore_5F"
+      },
+      {
+        "index": 181,
+        "group": 13,
+        "map_num": 21,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_DepartmentStoreRooftop"
+      },
+      {
+        "index": 182,
+        "group": 13,
+        "map_num": 22,
+        "group_name": "IndoorLilycove",
+        "name": "LilycoveCity_DepartmentStoreElevator"
+      },
+      {
+        "index": 183,
+        "group": 14,
+        "map_num": 0,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_Gym"
+      },
+      {
+        "index": 184,
+        "group": 14,
+        "map_num": 1,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_House1"
+      },
+      {
+        "index": 185,
+        "group": 14,
+        "map_num": 2,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_House2"
+      },
+      {
+        "index": 186,
+        "group": 14,
+        "map_num": 3,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_PokemonCenter_1F"
+      },
+      {
+        "index": 187,
+        "group": 14,
+        "map_num": 4,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_PokemonCenter_2F"
+      },
+      {
+        "index": 188,
+        "group": 14,
+        "map_num": 5,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_Mart"
+      },
+      {
+        "index": 189,
+        "group": 14,
+        "map_num": 6,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_House3"
+      },
+      {
+        "index": 190,
+        "group": 14,
+        "map_num": 7,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_StevensHouse"
+      },
+      {
+        "index": 191,
+        "group": 14,
+        "map_num": 8,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_House4"
+      },
+      {
+        "index": 192,
+        "group": 14,
+        "map_num": 9,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_SpaceCenter_1F"
+      },
+      {
+        "index": 193,
+        "group": 14,
+        "map_num": 10,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_SpaceCenter_2F"
+      },
+      {
+        "index": 194,
+        "group": 14,
+        "map_num": 11,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_GameCorner_1F"
+      },
+      {
+        "index": 195,
+        "group": 14,
+        "map_num": 12,
+        "group_name": "IndoorMossdeep",
+        "name": "MossdeepCity_GameCorner_B1F"
+      },
+      {
+        "index": 196,
+        "group": 15,
+        "map_num": 0,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_Gym_1F"
+      },
+      {
+        "index": 197,
+        "group": 15,
+        "map_num": 1,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_Gym_B1F"
+      },
+      {
+        "index": 198,
+        "group": 15,
+        "map_num": 2,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_PokemonCenter_1F"
+      },
+      {
+        "index": 199,
+        "group": 15,
+        "map_num": 3,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_PokemonCenter_2F"
+      },
+      {
+        "index": 200,
+        "group": 15,
+        "map_num": 4,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_Mart"
+      },
+      {
+        "index": 201,
+        "group": 15,
+        "map_num": 5,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_House1"
+      },
+      {
+        "index": 202,
+        "group": 15,
+        "map_num": 6,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_House2"
+      },
+      {
+        "index": 203,
+        "group": 15,
+        "map_num": 7,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_House3"
+      },
+      {
+        "index": 204,
+        "group": 15,
+        "map_num": 8,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_House4"
+      },
+      {
+        "index": 205,
+        "group": 15,
+        "map_num": 9,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_House5"
+      },
+      {
+        "index": 206,
+        "group": 15,
+        "map_num": 10,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_House6"
+      },
+      {
+        "index": 207,
+        "group": 15,
+        "map_num": 11,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_House7"
+      },
+      {
+        "index": 208,
+        "group": 15,
+        "map_num": 12,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_LotadAndSeedotHouse"
+      },
+      {
+        "index": 209,
+        "group": 15,
+        "map_num": 13,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_MysteryEventsHouse_1F"
+      },
+      {
+        "index": 210,
+        "group": 15,
+        "map_num": 14,
+        "group_name": "IndoorSootopolis",
+        "name": "SootopolisCity_MysteryEventsHouse_B1F"
+      },
+      {
+        "index": 211,
+        "group": 16,
+        "map_num": 0,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_SidneysRoom"
+      },
+      {
+        "index": 212,
+        "group": 16,
+        "map_num": 1,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_PhoebesRoom"
+      },
+      {
+        "index": 213,
+        "group": 16,
+        "map_num": 2,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_GlaciasRoom"
+      },
+      {
+        "index": 214,
+        "group": 16,
+        "map_num": 3,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_DrakesRoom"
+      },
+      {
+        "index": 215,
+        "group": 16,
+        "map_num": 4,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_ChampionsRoom"
+      },
+      {
+        "index": 216,
+        "group": 16,
+        "map_num": 5,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_Hall1"
+      },
+      {
+        "index": 217,
+        "group": 16,
+        "map_num": 6,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_Hall2"
+      },
+      {
+        "index": 218,
+        "group": 16,
+        "map_num": 7,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_Hall3"
+      },
+      {
+        "index": 219,
+        "group": 16,
+        "map_num": 8,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_Hall4"
+      },
+      {
+        "index": 220,
+        "group": 16,
+        "map_num": 9,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_Hall5"
+      },
+      {
+        "index": 221,
+        "group": 16,
+        "map_num": 10,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_PokemonLeague_1F"
+      },
+      {
+        "index": 222,
+        "group": 16,
+        "map_num": 11,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_HallOfFame"
+      },
+      {
+        "index": 223,
+        "group": 16,
+        "map_num": 12,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_PokemonCenter_1F"
+      },
+      {
+        "index": 224,
+        "group": 16,
+        "map_num": 13,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_PokemonCenter_2F"
+      },
+      {
+        "index": 225,
+        "group": 16,
+        "map_num": 14,
+        "group_name": "IndoorEverGrande",
+        "name": "EverGrandeCity_PokemonLeague_2F"
+      },
+      {
+        "index": 226,
+        "group": 17,
+        "map_num": 0,
+        "group_name": "IndoorRoute104",
+        "name": "Route104_MrBrineysHouse"
+      },
+      {
+        "index": 227,
+        "group": 17,
+        "map_num": 1,
+        "group_name": "IndoorRoute104",
+        "name": "Route104_PrettyPetalFlowerShop"
+      },
+      {
+        "index": 228,
+        "group": 18,
+        "map_num": 0,
+        "group_name": "IndoorRoute111",
+        "name": "Route111_WinstrateFamilysHouse"
+      },
+      {
+        "index": 229,
+        "group": 18,
+        "map_num": 1,
+        "group_name": "IndoorRoute111",
+        "name": "Route111_OldLadysRestStop"
+      },
+      {
+        "index": 230,
+        "group": 19,
+        "map_num": 0,
+        "group_name": "IndoorRoute112",
+        "name": "Route112_CableCarStation"
+      },
+      {
+        "index": 231,
+        "group": 19,
+        "map_num": 1,
+        "group_name": "IndoorRoute112",
+        "name": "MtChimney_CableCarStation"
+      },
+      {
+        "index": 232,
+        "group": 20,
+        "map_num": 0,
+        "group_name": "IndoorRoute114",
+        "name": "Route114_FossilManiacsHouse"
+      },
+      {
+        "index": 233,
+        "group": 20,
+        "map_num": 1,
+        "group_name": "IndoorRoute114",
+        "name": "Route114_FossilManiacsTunnel"
+      },
+      {
+        "index": 234,
+        "group": 20,
+        "map_num": 2,
+        "group_name": "IndoorRoute114",
+        "name": "Route114_LanettesHouse"
+      },
+      {
+        "index": 235,
+        "group": 21,
+        "map_num": 0,
+        "group_name": "IndoorRoute116",
+        "name": "Route116_TunnelersRestHouse"
+      },
+      {
+        "index": 236,
+        "group": 22,
+        "map_num": 0,
+        "group_name": "IndoorRoute117",
+        "name": "Route117_PokemonDayCare"
+      },
+      {
+        "index": 237,
+        "group": 23,
+        "map_num": 0,
+        "group_name": "IndoorRoute121",
+        "name": "Route121_SafariZoneEntrance"
+      },
+      {
+        "index": 238,
+        "group": 24,
+        "map_num": 0,
+        "group_name": "Dungeons",
+        "name": "MeteorFalls_1F_1R"
+      },
+      {
+        "index": 239,
+        "group": 24,
+        "map_num": 1,
+        "group_name": "Dungeons",
+        "name": "MeteorFalls_1F_2R"
+      },
+      {
+        "index": 240,
+        "group": 24,
+        "map_num": 2,
+        "group_name": "Dungeons",
+        "name": "MeteorFalls_B1F_1R"
+      },
+      {
+        "index": 241,
+        "group": 24,
+        "map_num": 3,
+        "group_name": "Dungeons",
+        "name": "MeteorFalls_B1F_2R"
+      },
+      {
+        "index": 242,
+        "group": 24,
+        "map_num": 4,
+        "group_name": "Dungeons",
+        "name": "RusturfTunnel"
+      },
+      {
+        "index": 243,
+        "group": 24,
+        "map_num": 5,
+        "group_name": "Dungeons",
+        "name": "Underwater_SootopolisCity"
+      },
+      {
+        "index": 244,
+        "group": 24,
+        "map_num": 6,
+        "group_name": "Dungeons",
+        "name": "DesertRuins"
+      },
+      {
+        "index": 245,
+        "group": 24,
+        "map_num": 7,
+        "group_name": "Dungeons",
+        "name": "GraniteCave_1F"
+      },
+      {
+        "index": 246,
+        "group": 24,
+        "map_num": 8,
+        "group_name": "Dungeons",
+        "name": "GraniteCave_B1F"
+      },
+      {
+        "index": 247,
+        "group": 24,
+        "map_num": 9,
+        "group_name": "Dungeons",
+        "name": "GraniteCave_B2F"
+      },
+      {
+        "index": 248,
+        "group": 24,
+        "map_num": 10,
+        "group_name": "Dungeons",
+        "name": "GraniteCave_StevensRoom"
+      },
+      {
+        "index": 249,
+        "group": 24,
+        "map_num": 11,
+        "group_name": "Dungeons",
+        "name": "PetalburgWoods"
+      },
+      {
+        "index": 250,
+        "group": 24,
+        "map_num": 12,
+        "group_name": "Dungeons",
+        "name": "MtChimney"
+      },
+      {
+        "index": 251,
+        "group": 24,
+        "map_num": 13,
+        "group_name": "Dungeons",
+        "name": "JaggedPass"
+      },
+      {
+        "index": 252,
+        "group": 24,
+        "map_num": 14,
+        "group_name": "Dungeons",
+        "name": "FieryPath"
+      },
+      {
+        "index": 253,
+        "group": 24,
+        "map_num": 15,
+        "group_name": "Dungeons",
+        "name": "MtPyre_1F"
+      },
+      {
+        "index": 254,
+        "group": 24,
+        "map_num": 16,
+        "group_name": "Dungeons",
+        "name": "MtPyre_2F"
+      },
+      {
+        "index": 255,
+        "group": 24,
+        "map_num": 17,
+        "group_name": "Dungeons",
+        "name": "MtPyre_3F"
+      },
+      {
+        "index": 256,
+        "group": 24,
+        "map_num": 18,
+        "group_name": "Dungeons",
+        "name": "MtPyre_4F"
+      },
+      {
+        "index": 257,
+        "group": 24,
+        "map_num": 19,
+        "group_name": "Dungeons",
+        "name": "MtPyre_5F"
+      },
+      {
+        "index": 258,
+        "group": 24,
+        "map_num": 20,
+        "group_name": "Dungeons",
+        "name": "MtPyre_6F"
+      },
+      {
+        "index": 259,
+        "group": 24,
+        "map_num": 21,
+        "group_name": "Dungeons",
+        "name": "MtPyre_Exterior"
+      },
+      {
+        "index": 260,
+        "group": 24,
+        "map_num": 22,
+        "group_name": "Dungeons",
+        "name": "MtPyre_Summit"
+      },
+      {
+        "index": 261,
+        "group": 24,
+        "map_num": 23,
+        "group_name": "Dungeons",
+        "name": "AquaHideout_1F"
+      },
+      {
+        "index": 262,
+        "group": 24,
+        "map_num": 24,
+        "group_name": "Dungeons",
+        "name": "AquaHideout_B1F"
+      },
+      {
+        "index": 263,
+        "group": 24,
+        "map_num": 25,
+        "group_name": "Dungeons",
+        "name": "AquaHideout_B2F"
+      },
+      {
+        "index": 264,
+        "group": 24,
+        "map_num": 26,
+        "group_name": "Dungeons",
+        "name": "Underwater_SeafloorCavern"
+      },
+      {
+        "index": 265,
+        "group": 24,
+        "map_num": 27,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Entrance"
+      },
+      {
+        "index": 266,
+        "group": 24,
+        "map_num": 28,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room1"
+      },
+      {
+        "index": 267,
+        "group": 24,
+        "map_num": 29,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room2"
+      },
+      {
+        "index": 268,
+        "group": 24,
+        "map_num": 30,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room3"
+      },
+      {
+        "index": 269,
+        "group": 24,
+        "map_num": 31,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room4"
+      },
+      {
+        "index": 270,
+        "group": 24,
+        "map_num": 32,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room5"
+      },
+      {
+        "index": 271,
+        "group": 24,
+        "map_num": 33,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room6"
+      },
+      {
+        "index": 272,
+        "group": 24,
+        "map_num": 34,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room7"
+      },
+      {
+        "index": 273,
+        "group": 24,
+        "map_num": 35,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room8"
+      },
+      {
+        "index": 274,
+        "group": 24,
+        "map_num": 36,
+        "group_name": "Dungeons",
+        "name": "SeafloorCavern_Room9"
+      },
+      {
+        "index": 275,
+        "group": 24,
+        "map_num": 37,
+        "group_name": "Dungeons",
+        "name": "CaveOfOrigin_Entrance"
+      },
+      {
+        "index": 276,
+        "group": 24,
+        "map_num": 38,
+        "group_name": "Dungeons",
+        "name": "CaveOfOrigin_1F"
+      },
+      {
+        "index": 277,
+        "group": 24,
+        "map_num": 39,
+        "group_name": "Dungeons",
+        "name": "CaveOfOrigin_UnusedRubySapphireMap1"
+      },
+      {
+        "index": 278,
+        "group": 24,
+        "map_num": 40,
+        "group_name": "Dungeons",
+        "name": "CaveOfOrigin_UnusedRubySapphireMap2"
+      },
+      {
+        "index": 279,
+        "group": 24,
+        "map_num": 41,
+        "group_name": "Dungeons",
+        "name": "CaveOfOrigin_UnusedRubySapphireMap3"
+      },
+      {
+        "index": 280,
+        "group": 24,
+        "map_num": 42,
+        "group_name": "Dungeons",
+        "name": "CaveOfOrigin_B1F"
+      },
+      {
+        "index": 281,
+        "group": 24,
+        "map_num": 43,
+        "group_name": "Dungeons",
+        "name": "VictoryRoad_1F"
+      },
+      {
+        "index": 282,
+        "group": 24,
+        "map_num": 44,
+        "group_name": "Dungeons",
+        "name": "VictoryRoad_B1F"
+      },
+      {
+        "index": 283,
+        "group": 24,
+        "map_num": 45,
+        "group_name": "Dungeons",
+        "name": "VictoryRoad_B2F"
+      },
+      {
+        "index": 284,
+        "group": 24,
+        "map_num": 46,
+        "group_name": "Dungeons",
+        "name": "ShoalCave_LowTideEntranceRoom"
+      },
+      {
+        "index": 285,
+        "group": 24,
+        "map_num": 47,
+        "group_name": "Dungeons",
+        "name": "ShoalCave_LowTideInnerRoom"
+      },
+      {
+        "index": 286,
+        "group": 24,
+        "map_num": 48,
+        "group_name": "Dungeons",
+        "name": "ShoalCave_LowTideStairsRoom"
+      },
+      {
+        "index": 287,
+        "group": 24,
+        "map_num": 49,
+        "group_name": "Dungeons",
+        "name": "ShoalCave_LowTideLowerRoom"
+      },
+      {
+        "index": 288,
+        "group": 24,
+        "map_num": 50,
+        "group_name": "Dungeons",
+        "name": "ShoalCave_HighTideEntranceRoom"
+      },
+      {
+        "index": 289,
+        "group": 24,
+        "map_num": 51,
+        "group_name": "Dungeons",
+        "name": "ShoalCave_HighTideInnerRoom"
+      },
+      {
+        "index": 290,
+        "group": 24,
+        "map_num": 52,
+        "group_name": "Dungeons",
+        "name": "NewMauville_Entrance"
+      },
+      {
+        "index": 291,
+        "group": 24,
+        "map_num": 53,
+        "group_name": "Dungeons",
+        "name": "NewMauville_Inside"
+      },
+      {
+        "index": 292,
+        "group": 24,
+        "map_num": 54,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Deck"
+      },
+      {
+        "index": 293,
+        "group": 24,
+        "map_num": 55,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Corridors_1F"
+      },
+      {
+        "index": 294,
+        "group": 24,
+        "map_num": 56,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Rooms_1F"
+      },
+      {
+        "index": 295,
+        "group": 24,
+        "map_num": 57,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Corridors_B1F"
+      },
+      {
+        "index": 296,
+        "group": 24,
+        "map_num": 58,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Rooms_B1F"
+      },
+      {
+        "index": 297,
+        "group": 24,
+        "map_num": 59,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Rooms2_B1F"
+      },
+      {
+        "index": 298,
+        "group": 24,
+        "map_num": 60,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Underwater1"
+      },
+      {
+        "index": 299,
+        "group": 24,
+        "map_num": 61,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Room_B1F"
+      },
+      {
+        "index": 300,
+        "group": 24,
+        "map_num": 62,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Rooms2_1F"
+      },
+      {
+        "index": 301,
+        "group": 24,
+        "map_num": 63,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_CaptainsOffice"
+      },
+      {
+        "index": 302,
+        "group": 24,
+        "map_num": 64,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_Underwater2"
+      },
+      {
+        "index": 303,
+        "group": 24,
+        "map_num": 65,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_HiddenFloorCorridors"
+      },
+      {
+        "index": 304,
+        "group": 24,
+        "map_num": 66,
+        "group_name": "Dungeons",
+        "name": "AbandonedShip_HiddenFloorRooms"
+      },
+      {
+        "index": 305,
+        "group": 24,
+        "map_num": 67,
+        "group_name": "Dungeons",
+        "name": "IslandCave"
+      },
+      {
+        "index": 306,
+        "group": 24,
+        "map_num": 68,
+        "group_name": "Dungeons",
+        "name": "AncientTomb"
+      },
+      {
+        "index": 307,
+        "group": 24,
+        "map_num": 69,
+        "group_name": "Dungeons",
+        "name": "Underwater_Route134"
+      },
+      {
+        "index": 308,
+        "group": 24,
+        "map_num": 70,
+        "group_name": "Dungeons",
+        "name": "Underwater_SealedChamber"
+      },
+      {
+        "index": 309,
+        "group": 24,
+        "map_num": 71,
+        "group_name": "Dungeons",
+        "name": "SealedChamber_OuterRoom"
+      },
+      {
+        "index": 310,
+        "group": 24,
+        "map_num": 72,
+        "group_name": "Dungeons",
+        "name": "SealedChamber_InnerRoom"
+      },
+      {
+        "index": 311,
+        "group": 24,
+        "map_num": 73,
+        "group_name": "Dungeons",
+        "name": "ScorchedSlab"
+      },
+      {
+        "index": 312,
+        "group": 24,
+        "map_num": 74,
+        "group_name": "Dungeons",
+        "name": "AquaHideout_UnusedRubyMap1"
+      },
+      {
+        "index": 313,
+        "group": 24,
+        "map_num": 75,
+        "group_name": "Dungeons",
+        "name": "AquaHideout_UnusedRubyMap2"
+      },
+      {
+        "index": 314,
+        "group": 24,
+        "map_num": 76,
+        "group_name": "Dungeons",
+        "name": "AquaHideout_UnusedRubyMap3"
+      },
+      {
+        "index": 315,
+        "group": 24,
+        "map_num": 77,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_Entrance"
+      },
+      {
+        "index": 316,
+        "group": 24,
+        "map_num": 78,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_Outside"
+      },
+      {
+        "index": 317,
+        "group": 24,
+        "map_num": 79,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_1F"
+      },
+      {
+        "index": 318,
+        "group": 24,
+        "map_num": 80,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_2F"
+      },
+      {
+        "index": 319,
+        "group": 24,
+        "map_num": 81,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_3F"
+      },
+      {
+        "index": 320,
+        "group": 24,
+        "map_num": 82,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_4F"
+      },
+      {
+        "index": 321,
+        "group": 24,
+        "map_num": 83,
+        "group_name": "Dungeons",
+        "name": "ShoalCave_LowTideIceRoom"
+      },
+      {
+        "index": 322,
+        "group": 24,
+        "map_num": 84,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_5F"
+      },
+      {
+        "index": 323,
+        "group": 24,
+        "map_num": 85,
+        "group_name": "Dungeons",
+        "name": "SkyPillar_Top"
+      },
+      {
+        "index": 324,
+        "group": 24,
+        "map_num": 86,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_1F"
+      },
+      {
+        "index": 325,
+        "group": 24,
+        "map_num": 87,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_2F_1R"
+      },
+      {
+        "index": 326,
+        "group": 24,
+        "map_num": 88,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_2F_2R"
+      },
+      {
+        "index": 327,
+        "group": 24,
+        "map_num": 89,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_3F_1R"
+      },
+      {
+        "index": 328,
+        "group": 24,
+        "map_num": 90,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_3F_2R"
+      },
+      {
+        "index": 329,
+        "group": 24,
+        "map_num": 91,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_4F"
+      },
+      {
+        "index": 330,
+        "group": 24,
+        "map_num": 92,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_3F_3R"
+      },
+      {
+        "index": 331,
+        "group": 24,
+        "map_num": 93,
+        "group_name": "Dungeons",
+        "name": "MagmaHideout_2F_3R"
+      },
+      {
+        "index": 332,
+        "group": 24,
+        "map_num": 94,
+        "group_name": "Dungeons",
+        "name": "MirageTower_1F"
+      },
+      {
+        "index": 333,
+        "group": 24,
+        "map_num": 95,
+        "group_name": "Dungeons",
+        "name": "MirageTower_2F"
+      },
+      {
+        "index": 334,
+        "group": 24,
+        "map_num": 96,
+        "group_name": "Dungeons",
+        "name": "MirageTower_3F"
+      },
+      {
+        "index": 335,
+        "group": 24,
+        "map_num": 97,
+        "group_name": "Dungeons",
+        "name": "MirageTower_4F"
+      },
+      {
+        "index": 336,
+        "group": 24,
+        "map_num": 98,
+        "group_name": "Dungeons",
+        "name": "DesertUnderpass"
+      },
+      {
+        "index": 337,
+        "group": 24,
+        "map_num": 99,
+        "group_name": "Dungeons",
+        "name": "ArtisanCave_B1F"
+      },
+      {
+        "index": 338,
+        "group": 24,
+        "map_num": 100,
+        "group_name": "Dungeons",
+        "name": "ArtisanCave_1F"
+      },
+      {
+        "index": 339,
+        "group": 24,
+        "map_num": 101,
+        "group_name": "Dungeons",
+        "name": "Underwater_MarineCave"
+      },
+      {
+        "index": 340,
+        "group": 24,
+        "map_num": 102,
+        "group_name": "Dungeons",
+        "name": "MarineCave_Entrance"
+      },
+      {
+        "index": 341,
+        "group": 24,
+        "map_num": 103,
+        "group_name": "Dungeons",
+        "name": "MarineCave_End"
+      },
+      {
+        "index": 342,
+        "group": 24,
+        "map_num": 104,
+        "group_name": "Dungeons",
+        "name": "TerraCave_Entrance"
+      },
+      {
+        "index": 343,
+        "group": 24,
+        "map_num": 105,
+        "group_name": "Dungeons",
+        "name": "TerraCave_End"
+      },
+      {
+        "index": 344,
+        "group": 24,
+        "map_num": 106,
+        "group_name": "Dungeons",
+        "name": "AlteringCave"
+      },
+      {
+        "index": 345,
+        "group": 24,
+        "map_num": 107,
+        "group_name": "Dungeons",
+        "name": "MeteorFalls_StevensCave"
+      },
+      {
+        "index": 346,
+        "group": 25,
+        "map_num": 0,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_RedCave1"
+      },
+      {
+        "index": 347,
+        "group": 25,
+        "map_num": 1,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BrownCave1"
+      },
+      {
+        "index": 348,
+        "group": 25,
+        "map_num": 2,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BlueCave1"
+      },
+      {
+        "index": 349,
+        "group": 25,
+        "map_num": 3,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_YellowCave1"
+      },
+      {
+        "index": 350,
+        "group": 25,
+        "map_num": 4,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Tree1"
+      },
+      {
+        "index": 351,
+        "group": 25,
+        "map_num": 5,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Shrub1"
+      },
+      {
+        "index": 352,
+        "group": 25,
+        "map_num": 6,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_RedCave2"
+      },
+      {
+        "index": 353,
+        "group": 25,
+        "map_num": 7,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BrownCave2"
+      },
+      {
+        "index": 354,
+        "group": 25,
+        "map_num": 8,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BlueCave2"
+      },
+      {
+        "index": 355,
+        "group": 25,
+        "map_num": 9,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_YellowCave2"
+      },
+      {
+        "index": 356,
+        "group": 25,
+        "map_num": 10,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Tree2"
+      },
+      {
+        "index": 357,
+        "group": 25,
+        "map_num": 11,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Shrub2"
+      },
+      {
+        "index": 358,
+        "group": 25,
+        "map_num": 12,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_RedCave3"
+      },
+      {
+        "index": 359,
+        "group": 25,
+        "map_num": 13,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BrownCave3"
+      },
+      {
+        "index": 360,
+        "group": 25,
+        "map_num": 14,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BlueCave3"
+      },
+      {
+        "index": 361,
+        "group": 25,
+        "map_num": 15,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_YellowCave3"
+      },
+      {
+        "index": 362,
+        "group": 25,
+        "map_num": 16,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Tree3"
+      },
+      {
+        "index": 363,
+        "group": 25,
+        "map_num": 17,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Shrub3"
+      },
+      {
+        "index": 364,
+        "group": 25,
+        "map_num": 18,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_RedCave4"
+      },
+      {
+        "index": 365,
+        "group": 25,
+        "map_num": 19,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BrownCave4"
+      },
+      {
+        "index": 366,
+        "group": 25,
+        "map_num": 20,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_BlueCave4"
+      },
+      {
+        "index": 367,
+        "group": 25,
+        "map_num": 21,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_YellowCave4"
+      },
+      {
+        "index": 368,
+        "group": 25,
+        "map_num": 22,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Tree4"
+      },
+      {
+        "index": 369,
+        "group": 25,
+        "map_num": 23,
+        "group_name": "IndoorDynamic",
+        "name": "SecretBase_Shrub4"
+      },
+      {
+        "index": 370,
+        "group": 25,
+        "map_num": 24,
+        "group_name": "IndoorDynamic",
+        "name": "BattleColosseum_2P"
+      },
+      {
+        "index": 371,
+        "group": 25,
+        "map_num": 25,
+        "group_name": "IndoorDynamic",
+        "name": "TradeCenter"
+      },
+      {
+        "index": 372,
+        "group": 25,
+        "map_num": 26,
+        "group_name": "IndoorDynamic",
+        "name": "RecordCorner"
+      },
+      {
+        "index": 373,
+        "group": 25,
+        "map_num": 27,
+        "group_name": "IndoorDynamic",
+        "name": "BattleColosseum_4P"
+      },
+      {
+        "index": 374,
+        "group": 25,
+        "map_num": 28,
+        "group_name": "IndoorDynamic",
+        "name": "ContestHall"
+      },
+      {
+        "index": 375,
+        "group": 25,
+        "map_num": 29,
+        "group_name": "IndoorDynamic",
+        "name": "UnusedContestHall1"
+      },
+      {
+        "index": 376,
+        "group": 25,
+        "map_num": 30,
+        "group_name": "IndoorDynamic",
+        "name": "UnusedContestHall2"
+      },
+      {
+        "index": 377,
+        "group": 25,
+        "map_num": 31,
+        "group_name": "IndoorDynamic",
+        "name": "UnusedContestHall3"
+      },
+      {
+        "index": 378,
+        "group": 25,
+        "map_num": 32,
+        "group_name": "IndoorDynamic",
+        "name": "UnusedContestHall4"
+      },
+      {
+        "index": 379,
+        "group": 25,
+        "map_num": 33,
+        "group_name": "IndoorDynamic",
+        "name": "UnusedContestHall5"
+      },
+      {
+        "index": 380,
+        "group": 25,
+        "map_num": 34,
+        "group_name": "IndoorDynamic",
+        "name": "UnusedContestHall6"
+      },
+      {
+        "index": 381,
+        "group": 25,
+        "map_num": 35,
+        "group_name": "IndoorDynamic",
+        "name": "ContestHallBeauty"
+      },
+      {
+        "index": 382,
+        "group": 25,
+        "map_num": 36,
+        "group_name": "IndoorDynamic",
+        "name": "ContestHallTough"
+      },
+      {
+        "index": 383,
+        "group": 25,
+        "map_num": 37,
+        "group_name": "IndoorDynamic",
+        "name": "ContestHallCool"
+      },
+      {
+        "index": 384,
+        "group": 25,
+        "map_num": 38,
+        "group_name": "IndoorDynamic",
+        "name": "ContestHallSmart"
+      },
+      {
+        "index": 385,
+        "group": 25,
+        "map_num": 39,
+        "group_name": "IndoorDynamic",
+        "name": "ContestHallCute"
+      },
+      {
+        "index": 386,
+        "group": 25,
+        "map_num": 40,
+        "group_name": "IndoorDynamic",
+        "name": "InsideOfTruck"
+      },
+      {
+        "index": 387,
+        "group": 25,
+        "map_num": 41,
+        "group_name": "IndoorDynamic",
+        "name": "SSTidalCorridor"
+      },
+      {
+        "index": 388,
+        "group": 25,
+        "map_num": 42,
+        "group_name": "IndoorDynamic",
+        "name": "SSTidalLowerDeck"
+      },
+      {
+        "index": 389,
+        "group": 25,
+        "map_num": 43,
+        "group_name": "IndoorDynamic",
+        "name": "SSTidalRooms"
+      },
+      {
+        "index": 390,
+        "group": 25,
+        "map_num": 44,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare01"
+      },
+      {
+        "index": 391,
+        "group": 25,
+        "map_num": 45,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare02"
+      },
+      {
+        "index": 392,
+        "group": 25,
+        "map_num": 46,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare03"
+      },
+      {
+        "index": 393,
+        "group": 25,
+        "map_num": 47,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare04"
+      },
+      {
+        "index": 394,
+        "group": 25,
+        "map_num": 48,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare05"
+      },
+      {
+        "index": 395,
+        "group": 25,
+        "map_num": 49,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare06"
+      },
+      {
+        "index": 396,
+        "group": 25,
+        "map_num": 50,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare07"
+      },
+      {
+        "index": 397,
+        "group": 25,
+        "map_num": 51,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare08"
+      },
+      {
+        "index": 398,
+        "group": 25,
+        "map_num": 52,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare09"
+      },
+      {
+        "index": 399,
+        "group": 25,
+        "map_num": 53,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare10"
+      },
+      {
+        "index": 400,
+        "group": 25,
+        "map_num": 54,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare11"
+      },
+      {
+        "index": 401,
+        "group": 25,
+        "map_num": 55,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare12"
+      },
+      {
+        "index": 402,
+        "group": 25,
+        "map_num": 56,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare13"
+      },
+      {
+        "index": 403,
+        "group": 25,
+        "map_num": 57,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare14"
+      },
+      {
+        "index": 404,
+        "group": 25,
+        "map_num": 58,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare15"
+      },
+      {
+        "index": 405,
+        "group": 25,
+        "map_num": 59,
+        "group_name": "IndoorDynamic",
+        "name": "BattlePyramidSquare16"
+      },
+      {
+        "index": 406,
+        "group": 25,
+        "map_num": 60,
+        "group_name": "IndoorDynamic",
+        "name": "UnionRoom"
+      },
+      {
+        "index": 407,
+        "group": 26,
+        "map_num": 0,
+        "group_name": "SpecialArea",
+        "name": "SafariZone_Northwest"
+      },
+      {
+        "index": 408,
+        "group": 26,
+        "map_num": 1,
+        "group_name": "SpecialArea",
+        "name": "SafariZone_North"
+      },
+      {
+        "index": 409,
+        "group": 26,
+        "map_num": 2,
+        "group_name": "SpecialArea",
+        "name": "SafariZone_Southwest"
+      },
+      {
+        "index": 410,
+        "group": 26,
+        "map_num": 3,
+        "group_name": "SpecialArea",
+        "name": "SafariZone_South"
+      },
+      {
+        "index": 411,
+        "group": 26,
+        "map_num": 4,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_OutsideWest"
+      },
+      {
+        "index": 412,
+        "group": 26,
+        "map_num": 5,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleTowerLobby"
+      },
+      {
+        "index": 413,
+        "group": 26,
+        "map_num": 6,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleTowerElevator"
+      },
+      {
+        "index": 414,
+        "group": 26,
+        "map_num": 7,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleTowerCorridor"
+      },
+      {
+        "index": 415,
+        "group": 26,
+        "map_num": 8,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleTowerBattleRoom"
+      },
+      {
+        "index": 416,
+        "group": 26,
+        "map_num": 9,
+        "group_name": "SpecialArea",
+        "name": "SouthernIsland_Exterior"
+      },
+      {
+        "index": 417,
+        "group": 26,
+        "map_num": 10,
+        "group_name": "SpecialArea",
+        "name": "SouthernIsland_Interior"
+      },
+      {
+        "index": 418,
+        "group": 26,
+        "map_num": 11,
+        "group_name": "SpecialArea",
+        "name": "SafariZone_RestHouse"
+      },
+      {
+        "index": 419,
+        "group": 26,
+        "map_num": 12,
+        "group_name": "SpecialArea",
+        "name": "SafariZone_Northeast"
+      },
+      {
+        "index": 420,
+        "group": 26,
+        "map_num": 13,
+        "group_name": "SpecialArea",
+        "name": "SafariZone_Southeast"
+      },
+      {
+        "index": 421,
+        "group": 26,
+        "map_num": 14,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_OutsideEast"
+      },
+      {
+        "index": 422,
+        "group": 26,
+        "map_num": 15,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleTowerMultiPartnerRoom"
+      },
+      {
+        "index": 423,
+        "group": 26,
+        "map_num": 16,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleTowerMultiCorridor"
+      },
+      {
+        "index": 424,
+        "group": 26,
+        "map_num": 17,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleTowerMultiBattleRoom"
+      },
+      {
+        "index": 425,
+        "group": 26,
+        "map_num": 18,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleDomeLobby"
+      },
+      {
+        "index": 426,
+        "group": 26,
+        "map_num": 19,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleDomeCorridor"
+      },
+      {
+        "index": 427,
+        "group": 26,
+        "map_num": 20,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleDomePreBattleRoom"
+      },
+      {
+        "index": 428,
+        "group": 26,
+        "map_num": 21,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleDomeBattleRoom"
+      },
+      {
+        "index": 429,
+        "group": 26,
+        "map_num": 22,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePalaceLobby"
+      },
+      {
+        "index": 430,
+        "group": 26,
+        "map_num": 23,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePalaceCorridor"
+      },
+      {
+        "index": 431,
+        "group": 26,
+        "map_num": 24,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePalaceBattleRoom"
+      },
+      {
+        "index": 432,
+        "group": 26,
+        "map_num": 25,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePyramidLobby"
+      },
+      {
+        "index": 433,
+        "group": 26,
+        "map_num": 26,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePyramidFloor"
+      },
+      {
+        "index": 434,
+        "group": 26,
+        "map_num": 27,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePyramidTop"
+      },
+      {
+        "index": 435,
+        "group": 26,
+        "map_num": 28,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleArenaLobby"
+      },
+      {
+        "index": 436,
+        "group": 26,
+        "map_num": 29,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleArenaCorridor"
+      },
+      {
+        "index": 437,
+        "group": 26,
+        "map_num": 30,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleArenaBattleRoom"
+      },
+      {
+        "index": 438,
+        "group": 26,
+        "map_num": 31,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleFactoryLobby"
+      },
+      {
+        "index": 439,
+        "group": 26,
+        "map_num": 32,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleFactoryPreBattleRoom"
+      },
+      {
+        "index": 440,
+        "group": 26,
+        "map_num": 33,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattleFactoryBattleRoom"
+      },
+      {
+        "index": 441,
+        "group": 26,
+        "map_num": 34,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePikeLobby"
+      },
+      {
+        "index": 442,
+        "group": 26,
+        "map_num": 35,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePikeCorridor"
+      },
+      {
+        "index": 443,
+        "group": 26,
+        "map_num": 36,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePikeThreePathRoom"
+      },
+      {
+        "index": 444,
+        "group": 26,
+        "map_num": 37,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePikeRoomNormal"
+      },
+      {
+        "index": 445,
+        "group": 26,
+        "map_num": 38,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePikeRoomFinal"
+      },
+      {
+        "index": 446,
+        "group": 26,
+        "map_num": 39,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_BattlePikeRoomWildMons"
+      },
+      {
+        "index": 447,
+        "group": 26,
+        "map_num": 40,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_RankingHall"
+      },
+      {
+        "index": 448,
+        "group": 26,
+        "map_num": 41,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge1"
+      },
+      {
+        "index": 449,
+        "group": 26,
+        "map_num": 42,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_ExchangeServiceCorner"
+      },
+      {
+        "index": 450,
+        "group": 26,
+        "map_num": 43,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge2"
+      },
+      {
+        "index": 451,
+        "group": 26,
+        "map_num": 44,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge3"
+      },
+      {
+        "index": 452,
+        "group": 26,
+        "map_num": 45,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge4"
+      },
+      {
+        "index": 453,
+        "group": 26,
+        "map_num": 46,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_ScottsHouse"
+      },
+      {
+        "index": 454,
+        "group": 26,
+        "map_num": 47,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge5"
+      },
+      {
+        "index": 455,
+        "group": 26,
+        "map_num": 48,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge6"
+      },
+      {
+        "index": 456,
+        "group": 26,
+        "map_num": 49,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge7"
+      },
+      {
+        "index": 457,
+        "group": 26,
+        "map_num": 50,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_ReceptionGate"
+      },
+      {
+        "index": 458,
+        "group": 26,
+        "map_num": 51,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge8"
+      },
+      {
+        "index": 459,
+        "group": 26,
+        "map_num": 52,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Lounge9"
+      },
+      {
+        "index": 460,
+        "group": 26,
+        "map_num": 53,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_PokemonCenter_1F"
+      },
+      {
+        "index": 461,
+        "group": 26,
+        "map_num": 54,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_PokemonCenter_2F"
+      },
+      {
+        "index": 462,
+        "group": 26,
+        "map_num": 55,
+        "group_name": "SpecialArea",
+        "name": "BattleFrontier_Mart"
+      },
+      {
+        "index": 463,
+        "group": 26,
+        "map_num": 56,
+        "group_name": "SpecialArea",
+        "name": "FarawayIsland_Entrance"
+      },
+      {
+        "index": 464,
+        "group": 26,
+        "map_num": 57,
+        "group_name": "SpecialArea",
+        "name": "FarawayIsland_Interior"
+      },
+      {
+        "index": 465,
+        "group": 26,
+        "map_num": 58,
+        "group_name": "SpecialArea",
+        "name": "BirthIsland_Exterior"
+      },
+      {
+        "index": 466,
+        "group": 26,
+        "map_num": 59,
+        "group_name": "SpecialArea",
+        "name": "BirthIsland_Harbor"
+      },
+      {
+        "index": 467,
+        "group": 26,
+        "map_num": 60,
+        "group_name": "SpecialArea",
+        "name": "TrainerHill_Entrance"
+      },
+      {
+        "index": 468,
+        "group": 26,
+        "map_num": 61,
+        "group_name": "SpecialArea",
+        "name": "TrainerHill_1F"
+      },
+      {
+        "index": 469,
+        "group": 26,
+        "map_num": 62,
+        "group_name": "SpecialArea",
+        "name": "TrainerHill_2F"
+      },
+      {
+        "index": 470,
+        "group": 26,
+        "map_num": 63,
+        "group_name": "SpecialArea",
+        "name": "TrainerHill_3F"
+      },
+      {
+        "index": 471,
+        "group": 26,
+        "map_num": 64,
+        "group_name": "SpecialArea",
+        "name": "TrainerHill_4F"
+      },
+      {
+        "index": 472,
+        "group": 26,
+        "map_num": 65,
+        "group_name": "SpecialArea",
+        "name": "TrainerHill_Roof"
+      },
+      {
+        "index": 473,
+        "group": 26,
+        "map_num": 66,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Exterior"
+      },
+      {
+        "index": 474,
+        "group": 26,
+        "map_num": 67,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Harbor"
+      },
+      {
+        "index": 475,
+        "group": 26,
+        "map_num": 68,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Entrance"
+      },
+      {
+        "index": 476,
+        "group": 26,
+        "map_num": 69,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_B1F"
+      },
+      {
+        "index": 477,
+        "group": 26,
+        "map_num": 70,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Fork"
+      },
+      {
+        "index": 478,
+        "group": 26,
+        "map_num": 71,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Up1"
+      },
+      {
+        "index": 479,
+        "group": 26,
+        "map_num": 72,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Up2"
+      },
+      {
+        "index": 480,
+        "group": 26,
+        "map_num": 73,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Up3"
+      },
+      {
+        "index": 481,
+        "group": 26,
+        "map_num": 74,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Up4"
+      },
+      {
+        "index": 482,
+        "group": 26,
+        "map_num": 75,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Top"
+      },
+      {
+        "index": 483,
+        "group": 26,
+        "map_num": 76,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down01"
+      },
+      {
+        "index": 484,
+        "group": 26,
+        "map_num": 77,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down02"
+      },
+      {
+        "index": 485,
+        "group": 26,
+        "map_num": 78,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down03"
+      },
+      {
+        "index": 486,
+        "group": 26,
+        "map_num": 79,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down04"
+      },
+      {
+        "index": 487,
+        "group": 26,
+        "map_num": 80,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down05"
+      },
+      {
+        "index": 488,
+        "group": 26,
+        "map_num": 81,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down06"
+      },
+      {
+        "index": 489,
+        "group": 26,
+        "map_num": 82,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down07"
+      },
+      {
+        "index": 490,
+        "group": 26,
+        "map_num": 83,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down08"
+      },
+      {
+        "index": 491,
+        "group": 26,
+        "map_num": 84,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down09"
+      },
+      {
+        "index": 492,
+        "group": 26,
+        "map_num": 85,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down10"
+      },
+      {
+        "index": 493,
+        "group": 26,
+        "map_num": 86,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Down11"
+      },
+      {
+        "index": 494,
+        "group": 26,
+        "map_num": 87,
+        "group_name": "SpecialArea",
+        "name": "NavelRock_Bottom"
+      },
+      {
+        "index": 495,
+        "group": 26,
+        "map_num": 88,
+        "group_name": "SpecialArea",
+        "name": "TrainerHill_Elevator"
+      },
+      {
+        "index": 496,
+        "group": 27,
+        "map_num": 0,
+        "group_name": "IndoorRoute104Prototype",
+        "name": "Route104_Prototype"
+      },
+      {
+        "index": 497,
+        "group": 27,
+        "map_num": 1,
+        "group_name": "IndoorRoute104Prototype",
+        "name": "Route104_PrototypePrettyPetalFlowerShop"
+      },
+      {
+        "index": 498,
+        "group": 28,
+        "map_num": 0,
+        "group_name": "IndoorRoute109",
+        "name": "Route109_SeashoreHouse"
+      },
+      {
+        "index": 499,
+        "group": 29,
+        "map_num": 0,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHouseEntrance"
+      },
+      {
+        "index": 500,
+        "group": 29,
+        "map_num": 1,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHouseEnd"
+      },
+      {
+        "index": 501,
+        "group": 29,
+        "map_num": 2,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHouseCorridor"
+      },
+      {
+        "index": 502,
+        "group": 29,
+        "map_num": 3,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle1"
+      },
+      {
+        "index": 503,
+        "group": 29,
+        "map_num": 4,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle2"
+      },
+      {
+        "index": 504,
+        "group": 29,
+        "map_num": 5,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle3"
+      },
+      {
+        "index": 505,
+        "group": 29,
+        "map_num": 6,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle4"
+      },
+      {
+        "index": 506,
+        "group": 29,
+        "map_num": 7,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle5"
+      },
+      {
+        "index": 507,
+        "group": 29,
+        "map_num": 8,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle6"
+      },
+      {
+        "index": 508,
+        "group": 29,
+        "map_num": 9,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle7"
+      },
+      {
+        "index": 509,
+        "group": 29,
+        "map_num": 10,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_TrickHousePuzzle8"
+      },
+      {
+        "index": 510,
+        "group": 29,
+        "map_num": 11,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_SeasideCyclingRoadSouthEntrance"
+      },
+      {
+        "index": 511,
+        "group": 29,
+        "map_num": 12,
+        "group_name": "IndoorRoute110",
+        "name": "Route110_SeasideCyclingRoadNorthEntrance"
+      },
+      {
+        "index": 512,
+        "group": 30,
+        "map_num": 0,
+        "group_name": "IndoorRoute113",
+        "name": "Route113_GlassWorkshop"
+      },
+      {
+        "index": 513,
+        "group": 31,
+        "map_num": 0,
+        "group_name": "IndoorRoute123",
+        "name": "Route123_BerryMastersHouse"
+      },
+      {
+        "index": 514,
+        "group": 32,
+        "map_num": 0,
+        "group_name": "IndoorRoute119",
+        "name": "Route119_WeatherInstitute_1F"
+      },
+      {
+        "index": 515,
+        "group": 32,
+        "map_num": 1,
+        "group_name": "IndoorRoute119",
+        "name": "Route119_WeatherInstitute_2F"
+      },
+      {
+        "index": 516,
+        "group": 32,
+        "map_num": 2,
+        "group_name": "IndoorRoute119",
+        "name": "Route119_House"
+      },
+      {
+        "index": 517,
+        "group": 33,
+        "map_num": 0,
+        "group_name": "IndoorRoute124",
+        "name": "Route124_DivingTreasureHuntersHouse"
       }
     ]
   }

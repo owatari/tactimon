@@ -115,3 +115,28 @@ python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --ra
 ## Metadata
 
 `rom-assets-gen3.json` contains semantic names/frame counts and tileset pairings derived from the matching pret FireRed/Emerald decomp projects. It contains no ROM payload.
+
+
+### World map data
+
+The map pass also reads the compiled `MapHeader` / `MapEvents` structures from the supported ROM and exports:
+
+- map group + map number + semantic map name;
+- layout association;
+- object/NPC placements and graphics ids;
+- warp destinations;
+- coordinate events;
+- background events;
+- north/south/east/west map connections with offsets.
+
+Generated files are written under:
+
+```text
+local-assets/extracted/<game>/assets/maps/world/
+  188_pallettown/world.json
+  189_viridiancity/world.json
+  207_route1/world.json
+  ...
+```
+
+This is the data layer the MMO client/server should consume for world topology and initial NPC placement. Script bytecode is not interpreted yet; script pointers are preserved as ROM offsets for the later quest/dialogue importer.
