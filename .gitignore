@@ -13,3 +13,6 @@ coverage/
 *.cia
 *.zip
 roms/
+
+# Build/runtime copies synced from versioned extracted assets.
+apps/client/public/game-assets/
