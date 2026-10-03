@@ -112,13 +112,12 @@ export function GameClient() {
       return;
     }
 
-    if (
-      !outcome.won ||
-      outcome.escaped ||
-      !story.playerPokemon
-    ) {
+    if (outcome.escaped || !story.playerPokemon) {
       return;
     }
+
+    const xpRatio = outcome.capture?.xpRatio ?? (outcome.won ? 1 : 0);
+    if (xpRatio <= 0) return;
 
     const reward = grantWildBattleProgress(
       story.playerPokemon,
@@ -126,11 +125,21 @@ export function GameClient() {
         species: session.encounter.species,
         level: session.encounter.level,
       },
+      xpRatio,
     );
 
     setStory((current) => ({
       ...current,
       playerPokemon: reward.progression,
+      capturedPokemon: outcome.capture?.success
+        ? [
+            ...current.capturedPokemon,
+            {
+              species: outcome.capture.species,
+              level: outcome.capture.level,
+            },
+          ]
+        : current.capturedPokemon,
     }));
     setProgressionReward(reward);
   };

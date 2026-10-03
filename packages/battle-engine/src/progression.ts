@@ -383,6 +383,7 @@ export function grantWildBattleProgress(
     species: WildSpeciesId;
     level: number;
   },
+  xpRatio = 1,
 ): ProgressionReward {
   const progression = normalizePokemonProgression(input);
   const oldLevel = progression.level;
@@ -390,9 +391,11 @@ export function grantWildBattleProgress(
   const requestedXp =
     progression.level >= 100
       ? 0
-      : experienceRewardForWild(
-          enemy.species,
-          enemy.level,
+      : Math.floor(
+          experienceRewardForWild(
+            enemy.species,
+            enemy.level,
+          ) * Math.max(0, Math.min(1, xpRatio)),
         );
   const level100Cap = fireRedExperienceAtLevel(
     progression.species,

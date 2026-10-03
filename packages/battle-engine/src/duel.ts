@@ -2,6 +2,12 @@ import {
   calculateHpStat,
   calculateOtherStat,
 } from "./stats";
+import {
+  experimentalCaptureChance,
+  getCaptureEligibility,
+  resolveCaptureRoll,
+  type CaptureEligibility,
+} from "./capture";
 
 export type StarterSpeciesId =
   | "bulbasaur"
@@ -22,7 +28,7 @@ export type DuelType =
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
-export type DuelItemId = "potion";
+export type DuelItemId = "potion" | "poke-ball";
 export type DuelMoveId =
   | "tackle"
   | "scratch"
@@ -81,12 +87,9 @@ export interface WildDuelOptions {
   wildLevel: number;
 }
 
-export interface DuelItem {
-  id: DuelItemId;
-  name: string;
-  target: "ally";
-  heal: number;
-}
+export type DuelItem =
+  | { id: "potion"; name: string; kind: "heal"; target: "ally"; heal: number }
+  | { id: "poke-ball"; name: string; kind: "capture"; target: "wild-enemy"; ballModifier: number };
 
 export interface DuelMove {
   id: DuelMoveId;
@@ -135,6 +138,16 @@ export type DuelPresentationEvent =
       itemId: DuelItemId;
       targetIds: string[];
       healed: number;
+    }
+  | {
+      kind: "capture";
+      actorId: string;
+      itemId: "poke-ball";
+      targetIds: string[];
+      success: boolean;
+      chance: number;
+      xpRatio: number;
+      targetFlees: boolean;
     };
 
 export interface DuelUnit {
@@ -159,6 +172,7 @@ export interface DuelUnit {
   maxMp: number;
   position: DuelPoint;
   moves: DuelMoveId[];
+  captureAttempted: boolean;
 }
 
 export interface DuelState {
@@ -173,6 +187,13 @@ export interface DuelState {
   activeUnitId: string;
   status: DuelStatus;
   winner: DuelSide | null;
+  captureResult: {
+    success: boolean;
+    species: WildSpeciesId;
+    level: number;
+    xpRatio: number;
+    chance: number;
+  } | null;
   units: DuelUnit[];
   log: string[];
 }
@@ -294,9 +315,22 @@ export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
   potion: {
     id: "potion",
     name: "Potion",
+    kind: "heal",
     target: "ally",
     heal: 20,
   },
+  "poke-ball": {
+    id: "poke-ball",
+    name: "Poké Ball",
+    kind: "capture",
+    target: "wild-enemy",
+    ballModifier: 1,
+  },
+};
+
+const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
+  pidgey: 255,
+  rattata: 255,
 };
 
 export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
@@ -740,6 +774,7 @@ function makeUnit(
     maxMp: 3,
     position,
     moves: [...build.moves].slice(0, 4),
+    captureAttempted: false,
   };
 }
 
@@ -814,11 +849,13 @@ export function createStarterDuel(
     escaped: false,
     items: {
       potion: 1,
+      "poke-ball": 0,
     },
     round: 1,
     activeUnitId: active.id,
     status: "active",
     winner: null,
+    captureResult: null,
     units: [player, rival],
     log: [
       `Blue desafia você! ${rival.displayName} entra na arena.`,
@@ -868,11 +905,13 @@ export function createWildDuel(
     escaped: false,
     items: {
       potion: 1,
+      "poke-ball": 3,
     },
     round: 1,
     activeUnitId: active.id,
     status: "active",
     winner: null,
+    captureResult: null,
     units: [player, wild],
     log: [
       `Um ${wild.displayName} selvagem apareceu!`,
@@ -904,6 +943,7 @@ function cloneState(state: DuelState): DuelState {
     ...state,
     blocked: state.blocked.map((point) => ({ ...point })),
     items: { ...state.items },
+    captureResult: state.captureResult ? { ...state.captureResult } : null,
     units: state.units.map((unit) => ({
       ...unit,
       position: { ...unit.position },
@@ -1067,6 +1107,31 @@ function calculateDamage(
   );
 }
 
+export function getDuelCaptureEligibility(
+  state: DuelState,
+  targetId: string,
+): CaptureEligibility {
+  const target = state.units.find((unit) => unit.id === targetId);
+  if (!target) return { allowed: false, reason: "target-not-wild" };
+  return getCaptureEligibility(
+    {
+      id: target.id,
+      ownerId: target.side === "player" ? "player" : null,
+      wild: state.battleKind === "wild" && target.side === "rival",
+      boss: false,
+      currentHp: target.hp,
+      maxHp: target.maxHp,
+      speed: target.speed,
+      position: target.position,
+      captureAttempted: target.captureAttempted,
+    },
+    {
+      capturePolicy: state.battleKind === "wild" ? "allowed" : "forbidden",
+      captureHpThresholdRatio: 0.1,
+    },
+  );
+}
+
 export function applyDuelAction(
   input: DuelState,
   action: DuelAction,
@@ -1123,52 +1188,80 @@ export function applyDuelAction(
 
   if (action.kind === "use-item") {
     const item = DUEL_ITEMS[action.itemId];
-    const target = state.units.find(
-      (unit) => unit.id === action.targetId,
-    );
-
-    if (
-      !item ||
-      !target ||
-      target.hp <= 0 ||
-      target.side !== actor.side
-    ) {
-      return {
-        state: input,
-        accepted: false,
-        reason: "invalid-item-target",
-      };
+    const target = state.units.find((unit) => unit.id === action.targetId);
+    if (!item || !target || target.hp <= 0) {
+      return { state: input, accepted: false, reason: "invalid-item-target" };
     }
-
     if ((state.items[item.id] ?? 0) <= 0) {
+      return { state: input, accepted: false, reason: "item-unavailable" };
+    }
+
+    if (item.kind === "capture") {
+      const eligibility = getDuelCaptureEligibility(state, target.id);
+      if (!eligibility.allowed) {
+        return {
+          state: input,
+          accepted: false,
+          reason: eligibility.reason === "hp-too-high"
+            ? "capture-hp-too-high"
+            : eligibility.reason ?? "capture-not-allowed",
+        };
+      }
+      const species = target.species as WildSpeciesId;
+      const chance = experimentalCaptureChance({
+        catchRate: WILD_CATCH_RATE[species],
+        ballModifier: item.ballModifier,
+        statusModifier: 1,
+        hpRatio: target.hp / target.maxHp,
+        thresholdRatio: 0.1,
+      });
+      const random = createSeededRandom(
+        (state.seed ^ Math.imul(state.round, 0x9e3779b9) ^ target.hp) >>> 0,
+      );
+      const resolution = resolveCaptureRoll(random(), chance, target.hp, target.maxHp);
+      target.captureAttempted = true;
+      state.items[item.id] -= 1;
+      state.status = "finished";
+      state.winner = resolution.success ? "player" : null;
+      state.captureResult = {
+        success: resolution.success,
+        species,
+        level: target.level,
+        xpRatio: resolution.xpRatio,
+        chance,
+      };
+      appendLog(
+        state,
+        resolution.success
+          ? `${target.displayName} foi capturado!`
+          : `${target.displayName} escapou da Poké Ball e fugiu.`,
+      );
       return {
-        state: input,
-        accepted: false,
-        reason: "item-unavailable",
+        state,
+        accepted: true,
+        presentation: {
+          kind: "capture",
+          actorId: actor.id,
+          itemId: "poke-ball",
+          targetIds: [target.id],
+          success: resolution.success,
+          chance,
+          xpRatio: resolution.xpRatio,
+          targetFlees: resolution.targetFlees,
+        },
       };
     }
 
+    if (target.side !== actor.side) {
+      return { state: input, accepted: false, reason: "invalid-item-target" };
+    }
     if (target.hp >= target.maxHp) {
-      return {
-        state: input,
-        accepted: false,
-        reason: "target-full-hp",
-      };
+      return { state: input, accepted: false, reason: "target-full-hp" };
     }
-
-    const healed = Math.min(
-      item.heal,
-      target.maxHp - target.hp,
-    );
-
+    const healed = Math.min(item.heal, target.maxHp - target.hp);
     target.hp += healed;
     state.items[item.id] -= 1;
-
-    appendLog(
-      state,
-      `${target.displayName} recuperou ${healed} HP com ${item.name}.`,
-    );
-
+    appendLog(state, `${target.displayName} recuperou ${healed} HP com ${item.name}.`);
     resolveTurnEnd(state, actor);
     return {
       state,

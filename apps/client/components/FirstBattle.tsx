@@ -9,6 +9,7 @@ import {
   DUEL_MOVES,
   experienceProgress,
   getActiveDuelUnit,
+  getDuelCaptureEligibility,
   getReachableCells,
   manhattanDistance,
   resolveSimpleAiTurnDetailed,
@@ -30,6 +31,12 @@ import type { BattleSceneContext } from "@/lib/maps";
 export type BattleOutcome = {
   won: boolean;
   escaped: boolean;
+  capture?: {
+    success: boolean;
+    species: WildSpeciesId;
+    level: number;
+    xpRatio: number;
+  };
 };
 
 export type BattleEncounter =
@@ -340,6 +347,14 @@ export function FirstBattle({
     }
 
     if (command === "item-target" && selectedItem) {
+      const item = DUEL_ITEMS[selectedItem];
+      if (item.kind === "capture") {
+        return new Set(
+          state.units
+            .filter((unit) => getDuelCaptureEligibility(state, unit.id).allowed)
+            .map((unit) => unit.id),
+        );
+      }
       return new Set(
         state.units
           .filter(
@@ -581,9 +596,20 @@ export function FirstBattle({
 
     setBusy(true);
     resetCommand();
-    setUnitAnimation(targetId, "idle");
-    flashNotice(`${DUEL_ITEMS[itemId].name} usada.`);
-    await sleep(320);
+    const presentation = result.presentation;
+    if (presentation?.kind === "capture") {
+      flashNotice(
+        presentation.success
+          ? "Captura bem-sucedida!"
+          : "A captura falhou. O Pokémon fugiu!",
+      );
+      if (presentation.success) setUnitAnimation(targetId, "faint");
+      await sleep(520);
+    } else {
+      setUnitAnimation(targetId, "idle");
+      flashNotice(`${DUEL_ITEMS[itemId].name} usada.`);
+      await sleep(320);
+    }
     setState(result.state);
     setBusy(false);
   };
@@ -1131,7 +1157,11 @@ export function FirstBattle({
                             }}
                           >
                             <strong>{item.name}</strong>
-                            <span>×{amount} · +{item.heal} HP</span>
+                            <span>
+                              ×{amount} · {item.kind === "heal"
+                                ? `+${item.heal} HP`
+                                : "captura com HP ≤10%"}
+                            </span>
                           </button>
                         );
                       },
@@ -1210,16 +1240,26 @@ export function FirstBattle({
         {state.status === "finished" && !state.escaped && (
           <div className="battle-result">
             <span className="eyebrow">
-              {state.winner === "player" ? "VITÓRIA" : "DERROTA"}
+              {state.captureResult
+                ? state.captureResult.success
+                  ? "CAPTURADO"
+                  : "FUGIU"
+                : state.winner === "player"
+                  ? "VITÓRIA"
+                  : "DERROTA"}
             </span>
             <h3>
-              {state.winner === "player"
-                ? encounter.kind === "wild"
-                  ? `${rival.displayName} foi derrotado.`
-                  : `${player.displayName} venceu o primeiro duelo.`
-                : encounter.kind === "wild"
-                  ? `${player.displayName} foi derrotado.`
-                  : "Blue venceu desta vez."}
+              {state.captureResult
+                ? state.captureResult.success
+                  ? `${rival.displayName} foi capturado!`
+                  : `${rival.displayName} escapou da Poké Ball.`
+                : state.winner === "player"
+                  ? encounter.kind === "wild"
+                    ? `${rival.displayName} foi derrotado.`
+                    : `${player.displayName} venceu o primeiro duelo.`
+                  : encounter.kind === "wild"
+                    ? `${player.displayName} foi derrotado.`
+                    : "Blue venceu desta vez."}
             </h3>
             <p>
               {encounter.kind === "wild"
@@ -1234,6 +1274,14 @@ export function FirstBattle({
                 onComplete({
                   won: state.winner === "player",
                   escaped: false,
+                  capture: state.captureResult
+                    ? {
+                        success: state.captureResult.success,
+                        species: state.captureResult.species,
+                        level: state.captureResult.level,
+                        xpRatio: state.captureResult.xpRatio,
+                      }
+                    : undefined,
                 })
               }
             >

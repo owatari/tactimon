@@ -5,13 +5,20 @@ import {
   starterDisplayName,
   type PokemonProgression,
   type StarterSpeciesId,
+  type WildSpeciesId,
 } from "@tactimon/battle-engine";
+
+export type CapturedPokemon = {
+  species: WildSpeciesId;
+  level: number;
+};
 
 export type StoryState = {
   starter: StarterSpeciesId | null;
   rivalStarter: StarterSpeciesId | null;
   firstBattleComplete: boolean;
   playerPokemon: PokemonProgression | null;
+  capturedPokemon: CapturedPokemon[];
 };
 
 export const DEFAULT_STORY_STATE: StoryState = {
@@ -19,6 +26,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   rivalStarter: null,
   firstBattleComplete: false,
   playerPokemon: null,
+  capturedPokemon: [],
 };
 
 export const STARTER_META: Record<
@@ -54,6 +62,7 @@ export function chooseStarter(
     rivalStarter: rivalStarterFor(starter),
     firstBattleComplete: false,
     playerPokemon: createStarterProgression(starter),
+    capturedPokemon: [],
   };
 }
 
@@ -74,6 +83,19 @@ export function normalizeStoryState(
       : starter
         ? createStarterProgression(starter)
         : null,
+    capturedPokemon: Array.isArray(input?.capturedPokemon)
+      ? input.capturedPokemon
+          .filter(
+            (pokemon): pokemon is CapturedPokemon =>
+              (pokemon?.species === "pidgey" ||
+                pokemon?.species === "rattata") &&
+              Number.isFinite(pokemon?.level),
+          )
+          .map((pokemon) => ({
+            species: pokemon.species,
+            level: Math.max(1, Math.min(100, Math.trunc(pokemon.level))),
+          }))
+      : [],
   };
 }
 

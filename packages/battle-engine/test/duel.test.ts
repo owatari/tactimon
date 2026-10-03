@@ -315,3 +315,56 @@ describe("starter duel", () => {
     }
   });
 });
+
+
+describe("wild capture integration", () => {
+  it("uses a Poké Ball on a weakened wild Pokémon", () => {
+    let state = createWildDuel({
+      seed: 1,
+      player: { species: "bulbasaur", level: 5, moves: ["tackle", "growl"] },
+      wildSpecies: "pidgey",
+      wildLevel: 3,
+    });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const wild = state.units.find((unit) => unit.side === "rival")!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === wild.id ? { ...unit, hp: 1 } : unit,
+      ),
+    };
+    const result = applyDuelAction(state, {
+      kind: "use-item",
+      unitId: player.id,
+      itemId: "poke-ball",
+      targetId: wild.id,
+    });
+    expect(result.accepted).toBe(true);
+    expect(result.state.items["poke-ball"]).toBe(2);
+    expect(result.state.captureResult).not.toBeNull();
+    expect(result.state.status).toBe("finished");
+    expect(result.presentation?.kind).toBe("capture");
+  });
+
+  it("requires 10% HP or less before capture", () => {
+    let state = createWildDuel({
+      seed: 4,
+      player: { species: "squirtle", level: 5, moves: ["tackle", "tail-whip"] },
+      wildSpecies: "rattata",
+      wildLevel: 3,
+    });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const wild = state.units.find((unit) => unit.side === "rival")!;
+    state = { ...state, activeUnitId: player.id };
+    const result = applyDuelAction(state, {
+      kind: "use-item",
+      unitId: player.id,
+      itemId: "poke-ball",
+      targetId: wild.id,
+    });
+    expect(result.accepted).toBe(false);
+    expect(result.reason).toBe("capture-hp-too-high");
+    expect(result.state.items["poke-ball"]).toBe(3);
+  });
+});
