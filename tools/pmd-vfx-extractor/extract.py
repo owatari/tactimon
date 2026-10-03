@@ -369,6 +369,11 @@ def render_with_skytemple(
             "Do not let pip compile skytemple-rust from source."
         ) from exc
 
+    if rendered_dir.exists():
+        shutil.rmtree(rendered_dir)
+    if runtime_dir.exists():
+        shutil.rmtree(runtime_dir)
+
     rendered_dir.mkdir(
         parents=True,
         exist_ok=True,
@@ -829,7 +834,17 @@ def main() -> int:
                 "status": "dependency-missing",
                 "error": str(exc),
             }
-            print(str(exc))
+            (
+                output / "manifest.json"
+            ).write_text(
+                json.dumps(
+                    manifest,
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            raise SystemExit(str(exc))
 
     (
         output / "manifest.json"
