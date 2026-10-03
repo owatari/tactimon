@@ -40,6 +40,7 @@ WORLD_CONFIG = {
         "tileset_count": 68,
         "primary_tile_count": 640,
         "primary_metatile_count": 640,
+        "primary_palette_count": 7,
         "tileset_struct": "frlg",
     },
     "f3ae088181bf583e55daf962a92bb46f4f1d07b7": {
@@ -54,7 +55,11 @@ WORLD_CONFIG = {
         "tileset_count": 75,
         "primary_tile_count": 512,
         "primary_metatile_count": 512,
+        "primary_palette_count": 6,
         "tileset_struct": "emerald",
+        # Two compiled pointer constants sit between SecretBase and EliteFour.
+        "tileset_shift_from": 58,
+        "tileset_shift_bytes": 8,
     },
 }
 
@@ -486,6 +491,8 @@ def parse_tilesets(rom: bytes, config, metadata):
 
     for tileset_id in range(count):
         offset = table + tileset_id * 24
+        if tileset_id >= config.get("tileset_shift_from", count + 1):
+            offset += config.get("tileset_shift_bytes", 0)
         is_compressed = rom[offset]
         is_secondary = rom[offset + 1] != 0
 
@@ -552,17 +559,57 @@ def decode_tiles(raw: bytes):
     return tiles
 
 
-def render_metatile_atlas(
+def read_tiles_payload(
     rom: bytes,
     blocks,
     tileset,
+    all_tilesets,
+):
+    """Read compressed tiles from the LZ index or raw tiles directly from ROM."""
+    start = tileset["tiles_offset"]
+    if start is None:
+        return None
+
+    if tileset["is_compressed"]:
+        return read_block(blocks, start)
+
+    candidates = []
+    for item in all_tilesets:
+        for key in (
+            "tiles_offset",
+            "palettes_offset",
+            "metatiles_offset",
+            "attributes_offset",
+        ):
+            value = item.get(key)
+            if value is not None and value > start:
+                candidates.append(value)
+
+    end = min(candidates) if candidates else min(len(rom), start + 32768)
+    size = min(end - start, 32768)
+    size -= size % 32
+
+    if size <= 0:
+        return None
+
+    return rom[start : start + size]
+
+
+def render_metatile_atlas(
+    rom: bytes,
+    blocks,
+    all_tilesets,
+    tileset,
     primary_tileset,
     primary_tile_count: int,
+    primary_palette_count: int,
     output: Path,
 ):
-    own_raw = read_block(
+    own_raw = read_tiles_payload(
+        rom,
         blocks,
-        tileset["tiles_offset"],
+        tileset,
+        all_tilesets,
     )
     if own_raw is None:
         return None
@@ -571,9 +618,11 @@ def render_metatile_atlas(
     primary_tiles = []
 
     if primary_tileset is not None:
-        primary_raw = read_block(
+        primary_raw = read_tiles_payload(
+            rom,
             blocks,
-            primary_tileset["tiles_offset"],
+            primary_tileset,
+            all_tilesets,
         )
         if primary_raw is not None:
             primary_tiles = decode_tiles(primary_raw)
@@ -588,6 +637,26 @@ def render_metatile_atlas(
         16,
         transparent_zero=True,
     )
+
+    # The engine keeps primary palettes in the first slots and loads the
+    # secondary tileset's palette data only into the remaining slots.
+    if (
+        tileset["is_secondary"]
+        and primary_tileset is not None
+        and primary_tileset["palettes_offset"] is not None
+    ):
+        primary_palettes = decode_palette_set(
+            rom,
+            primary_tileset["palettes_offset"],
+            16,
+            transparent_zero=True,
+        )
+        palettes = [
+            primary_palettes[index]
+            if index < primary_palette_count
+            else palettes[index]
+            for index in range(16)
+        ]
 
     metatile_offset = tileset["metatiles_offset"]
     attributes_offset = tileset["attributes_offset"]
@@ -728,9 +797,11 @@ def extract_tilesets(
         root = output / directory
         root.mkdir(parents=True, exist_ok=True)
 
-        tiles_raw = read_block(
+        tiles_raw = read_tiles_payload(
+            rom,
             blocks,
-            tileset["tiles_offset"],
+            tileset,
+            tilesets,
         )
 
         if tiles_raw is None:
@@ -818,9 +889,11 @@ def extract_tilesets(
             stats = render_metatile_atlas(
                 rom,
                 blocks,
+                tilesets,
                 tileset,
                 primary_tileset,
                 config["primary_tile_count"],
+                config["primary_palette_count"],
                 preview,
             )
 
