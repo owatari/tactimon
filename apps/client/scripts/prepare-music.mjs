@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
 import {
   access,
+  readFile,
   readdir,
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -34,7 +35,23 @@ async function exists(path) {
 }
 
 async function runtimeReady() {
-  if (!(await exists(resolve(runtimeRoot, "manifest.json")))) {
+  const manifestPath = resolve(runtimeRoot, "manifest.json");
+  if (!(await exists(manifestPath))) {
+    return false;
+  }
+
+  let manifest;
+  try {
+    manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+  } catch {
+    return false;
+  }
+
+  if (
+    manifest.extractor !== "tactimon-pure-python-mp2k-v2" ||
+    !Array.isArray(manifest.tracks) ||
+    manifest.tracks.some((track) => track.sampleRate !== 32768)
+  ) {
     return false;
   }
 

@@ -23,7 +23,11 @@ from pathlib import Path
 FIRERED_SHA1 = "41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc"
 ROM_BASE = 0x08000000
 SONG_TABLE_OFFSET = 0x4A32CC
-OUTPUT_RATE = 13_379  # FireRed configures MP2K at SOUND_MODE_FREQ_13379.
+OUTPUT_RATE = 32_768
+FIXED_PCM_RATE = 13_379
+GBA_FPS = 16_777_216 / 280_896
+ENGINE_FRAME_SAMPLES = OUTPUT_RATE / GBA_FPS
+MAX_RELEASE_ENGINE_FRAMES = 240
 DEFAULT_SECONDS = 60.0
 MAX_TRACKS = 16
 
@@ -167,7 +171,7 @@ class TrackState:
     pattern_stack: list[int] = field(default_factory=list)
     repeat_count: int = 0
     voice: int = 0
-    volume: int = 127
+    volume: int = 0
     pan: int = 0
     bend: int = 0
     bend_range: int = 2
@@ -246,7 +250,7 @@ def read_tone(rom: Rom, voicegroup: int, voice: int, key: int) -> Tone:
         sustain=rom.u8(base + 10),
         release=rom.u8(base + 11),
         rhythm_pan=rhythm_pan,
-        rhythm=bool(parent_type & TONE_RHYTHM),
+        rhythm=(parent_type == TONE_RHYTHM),
     )
 
 
@@ -576,35 +580,142 @@ class SampleCache:
         return sample
 
 
-def _envelope(position: int, total: int, rate: int, tone: Tone) -> float:
-    # MP2K envelopes are updated per mixer block. A compact approximation is
-    # sufficient for an extracted browser asset while preserving the ROM's
-    # timbre/sample data.
-    attack_frames = max(1, int(rate * (0.003 + (255 - tone.attack) / 255 * 0.020)))
-    release_frames = max(1, int(rate * (0.012 + (255 - tone.release) / 255 * 0.080)))
-    attack = min(1.0, position / attack_frames)
-    left = total - position
-    release = min(1.0, max(0, left) / release_frames)
-    return attack * release
+def _clamp(value: int, low: int, high: int) -> int:
+    return low if value < low else high if value > high else value
 
 
-def _pan_gains(pan: int) -> tuple[float, float]:
-    p = max(-128, min(127, pan))
-    normalized = (p + 128) / 255.0
-    # Equal-power pan.
-    return math.cos(normalized * math.pi / 2), math.sin(normalized * math.pi / 2)
+def _pcm_envelope_levels(tone: Tone, gate_samples: int) -> list[float]:
+    hold_frames = max(1, math.ceil(gate_samples / ENGINE_FRAME_SAMPLES))
+    levels: list[float] = []
+    env = 0
+    state = "attack"
+
+    for frame in range(hold_frames + MAX_RELEASE_ENGINE_FRAMES):
+        released = frame >= hold_frames
+
+        if released:
+            env = (env * tone.release) >> 8
+            if env <= 0:
+                break
+        elif state == "attack":
+            env += tone.attack
+            if env >= 255:
+                env = 255
+                state = "decay"
+        elif state == "decay":
+            env = (env * tone.decay) >> 8
+            if env <= tone.sustain:
+                env = tone.sustain
+                state = "sustain"
+                if env == 0:
+                    break
+
+        levels.append(env / 255.0)
+
+    return levels or [0.0]
+
+
+def _psg_mix_parameters(event: NoteEvent, tone: Tone) -> tuple[int, int, int]:
+    vol = _clamp(event.volume * 2, 0, 254)
+    pan = _clamp(event.pan * 2, -128, 127)
+    rhythm_pan = _clamp(tone.rhythm_pan, -128, 127)
+
+    ml = ((127 - pan) * vol) >> 8
+    mr = ((pan + 128) * vol) >> 8
+    left = (((127 - rhythm_pan) * event.velocity) * ml) >> 14
+    right = (((rhythm_pan + 128) * event.velocity) * mr) >> 14
+
+    if right // 2 >= left:
+        pan_class = 1
+    elif left // 2 >= right:
+        pan_class = -1
+    else:
+        pan_class = 0
+
+    peak = _clamp((left + right) >> 4, 0, 15)
+    sustain = _clamp((peak * (tone.sustain & 0x0F) + 15) >> 4, 0, 15)
+    return peak, sustain, pan_class
+
+
+def _psg_envelope_levels(
+    event: NoteEvent,
+    tone: Tone,
+    gate_samples: int,
+) -> tuple[list[float], int]:
+    hold_frames = max(1, math.ceil(gate_samples / ENGINE_FRAME_SAMPLES))
+    attack = tone.attack & 0x07
+    decay = tone.decay & 0x07
+    release = tone.release & 0x07
+    peak, sustain, pan_class = _psg_mix_parameters(event, tone)
+
+    if peak <= 0:
+        return [0.0], pan_class
+
+    level = 0
+    state = "attack"
+    counter = attack
+    releasing = False
+    levels: list[float] = []
+
+    for frame in range(hold_frames + MAX_RELEASE_ENGINE_FRAMES):
+        if frame >= hold_frames and not releasing:
+            releasing = True
+            state = "release"
+            counter = release
+
+        if state == "release":
+            if release == 0:
+                break
+            counter -= 1
+            if counter <= 0:
+                level -= 1
+                counter = release
+                if level <= 0:
+                    break
+        elif state == "attack":
+            if attack == 0:
+                level = peak
+                state = "decay"
+                counter = decay
+            else:
+                counter -= 1
+                if counter <= 0:
+                    level += 1
+                    counter = attack
+                    if level >= peak:
+                        level = peak
+                        state = "decay"
+                        counter = decay
+        elif state == "decay":
+            if level <= sustain:
+                level = sustain
+                state = "sustain"
+            elif decay == 0:
+                level = sustain
+                state = "sustain"
+            else:
+                counter -= 1
+                if counter <= 0:
+                    level -= 1
+                    counter = decay
+                    if level <= sustain:
+                        level = sustain
+                        state = "sustain"
+
+        levels.append(_clamp(level, 0, 15) / 15.0)
+
+    return (levels or [0.0]), pan_class
 
 
 def _mix_pcm_note(
     left: array,
     right: array,
     start: int,
-    end: int,
+    gate_end: int,
+    limit_end: int,
     event: NoteEvent,
     tone: Tone,
     sample: Sample,
-    gain: float,
-    pan: int,
 ) -> None:
     pitch_semitones = (
         event.key_shift
@@ -613,22 +724,43 @@ def _mix_pcm_note(
     )
     pitch_key = tone.key if tone.rhythm else event.key
     if tone.type & TONE_FIX:
-        step = 1.0
+        step = FIXED_PCM_RATE / OUTPUT_RATE
     else:
         step = (
             sample.source_rate
             / OUTPUT_RATE
             * (2.0 ** ((pitch_key + pitch_semitones - 60.0) / 12.0))
         )
-    l_gain, r_gain = _pan_gains(pan + tone.rhythm_pan)
+
+    track_vol = _clamp(event.volume * 2, 0, 254)
+    cpan = _clamp(event.pan * 2 + tone.rhythm_pan, -128, 128)
+    lvol = _clamp(
+        (event.velocity * track_vol * (-cpan + 128)) >> 15,
+        0,
+        255,
+    ) / 255.0
+    rvol = _clamp(
+        (event.velocity * track_vol * (cpan + 128)) >> 15,
+        0,
+        255,
+    ) / 255.0
+
+    gate_samples = max(1, gate_end - start)
+    envelope = _pcm_envelope_levels(tone, gate_samples)
+    render_end = min(
+        limit_end,
+        start + math.ceil(len(envelope) * ENGINE_FRAME_SAMPLES),
+    )
+
     values = sample.values
     source_len = len(values)
     if source_len < 2:
         return
-    pos = 0.0
-    total = end - start
 
-    for frame in range(start, end):
+    pos = 0.0
+    master = (13.0 / 16.0) * 0.70
+
+    for frame in range(start, render_end):
         idx = int(pos)
         if idx >= source_len:
             if not sample.looped:
@@ -638,16 +770,36 @@ def _mix_pcm_note(
                 break
             pos = sample.loop_start + ((pos - sample.loop_start) % loop_len)
             idx = int(pos)
+
         next_idx = idx + 1
         if next_idx >= source_len:
             next_idx = sample.loop_start if sample.looped else idx
+
         frac = pos - idx
-        value = (values[idx] * (1.0 - frac) + values[next_idx] * frac) / 128.0
-        env = _envelope(frame - start, total, OUTPUT_RATE, tone)
-        mixed = value * gain * env
-        left[frame] += mixed * l_gain
-        right[frame] += mixed * r_gain
+        value = (
+            values[idx] * (1.0 - frac) + values[next_idx] * frac
+        ) / 128.0
+        local = frame - start
+        env_idx = min(
+            len(envelope) - 1,
+            int(local / ENGINE_FRAME_SAMPLES),
+        )
+        env = envelope[env_idx]
+        left[frame] += value * env * lvol * master
+        right[frame] += value * env * rvol * master
         pos += step
+
+
+def _noise_clock_rate(key: float) -> float:
+    if key < 76.0:
+        rate = 4096.0 * (8.0 ** ((key - 60.0) / 12.0))
+    elif key < 78.0:
+        rate = 65536.0 * (2.0 ** ((key - 76.0) / 2.0))
+    elif key < 80.0:
+        rate = 131072.0 * (2.0 ** (key - 78.0))
+    else:
+        rate = 524288.0
+    return max(4.5714, rate)
 
 
 def _mix_psg_note(
@@ -655,58 +807,107 @@ def _mix_psg_note(
     left: array,
     right: array,
     start: int,
-    end: int,
+    gate_end: int,
+    limit_end: int,
     event: NoteEvent,
     tone: Tone,
-    gain: float,
-    pan: int,
 ) -> None:
     channel = tone.type & TONE_CGB_MASK
-    semitone = (
-        event.key
-        + event.key_shift
-        + event.tune / 64.0
-        + (event.bend / 64.0) * event.bend_range
+    pitch_key = tone.key if tone.rhythm else event.key
+    pitch_units = (
+        event.tune
+        + event.bend * event.bend_range
+        + event.key_shift * 64
     )
-    frequency = 440.0 * (2.0 ** ((semitone - 69.0) / 12.0))
-    phase_step = frequency / OUTPUT_RATE
-    phase = 0.0
-    l_gain, r_gain = _pan_gains(pan + tone.rhythm_pan)
-    total = end - start
-    lfsr = 0x7FFF
-    duty_values = [0.125, 0.25, 0.5, 0.75]
-    duty = duty_values[(tone.wav_ptr if isinstance(tone.wav_ptr, int) else 2) & 3]
+    semitone = pitch_key + pitch_units / 64.0
 
-    wave_values: list[float] | None = None
-    if channel == 3 and isinstance(tone.wav_ptr, int) and 0 <= tone.wav_ptr < len(rom.data):
-        # CGB wave RAM stores 32 4-bit samples in 16 bytes.
-        try:
-            raw = rom.data[tone.wav_ptr : tone.wav_ptr + 16]
-            if len(raw) == 16:
-                wave_values = []
-                for packed in raw:
-                    wave_values.append(((packed >> 4) - 7.5) / 7.5)
-                    wave_values.append(((packed & 0x0F) - 7.5) / 7.5)
-        except Exception:
-            wave_values = None
+    gate_samples = max(1, gate_end - start)
+    envelope, pan_class = _psg_envelope_levels(event, tone, gate_samples)
+    render_end = min(
+        limit_end,
+        start + math.ceil(len(envelope) * ENGINE_FRAME_SAMPLES),
+    )
 
-    for frame in range(start, end):
+    duty_steps = [1, 2, 4, 6]
+    duty = duty_steps[tone.wav_ptr & 3]
+    square_step = (
+        3520.0
+        * (2.0 ** ((semitone - 69.0) / 12.0))
+        / OUTPUT_RATE
+    )
+    wave_step = (
+        (440.0 * 16.0)
+        * (2.0 ** ((semitone - 69.0) / 12.0))
+        / OUTPUT_RATE
+    )
+    noise_step = _noise_clock_rate(semitone) / OUTPUT_RATE
+
+    square_pos = 0.0
+    wave_pos = 0.0
+    noise_pos = 0.0
+    short_noise = bool(tone.wav_ptr & 1)
+    lfsr = 0x40 if short_noise else 0x4000
+    lfsr_mask = 0x60 if short_noise else 0x6000
+    noise_value = -0.5
+
+    wave_values: list[int] | None = None
+    wave_mean = 0.0
+    if (
+        channel == 3
+        and isinstance(tone.wav_ptr, int)
+        and 0 <= tone.wav_ptr <= len(rom.data) - 16
+    ):
+        raw = rom.data[tone.wav_ptr : tone.wav_ptr + 16]
+        wave_values = []
+        for packed in raw:
+            wave_values.append(packed >> 4)
+            wave_values.append(packed & 0x0F)
+        wave_mean = sum(wave_values) / len(wave_values)
+
+    for frame in range(start, render_end):
+        local = frame - start
+        env_idx = min(
+            len(envelope) - 1,
+            int(local / ENGINE_FRAME_SAMPLES),
+        )
+        env = envelope[env_idx]
+        if env <= 0:
+            continue
+
         if channel in {1, 2}:
-            value = 1.0 if phase < duty else -1.0
+            idx = int(square_pos) & 7
+            value = (8 - duty) / 8.0 if idx < duty else -duty / 8.0
+            square_pos = (square_pos + square_step) % 8.0
         elif channel == 3 and wave_values:
-            value = wave_values[int(phase * 32) & 31]
+            idx = int(wave_pos) & 31
+            next_idx = (idx + 1) & 31
+            frac = wave_pos - int(wave_pos)
+            nibble = (
+                wave_values[idx] * (1.0 - frac)
+                + wave_values[next_idx] * frac
+            )
+            value = (nibble - wave_mean) / 8.0
+            wave_pos = (wave_pos + wave_step) % 32.0
         elif channel == 4:
-            # Deterministic GBA-like noise approximation.
-            bit = (lfsr ^ (lfsr >> 1)) & 1
-            lfsr = (lfsr >> 1) | (bit << 14)
-            value = 1.0 if (lfsr & 1) else -1.0
+            noise_pos += noise_step
+            clocks = int(noise_pos)
+            noise_pos -= clocks
+            for _ in range(clocks):
+                if lfsr & 1:
+                    noise_value = 0.5
+                    lfsr = (lfsr >> 1) ^ lfsr_mask
+                else:
+                    noise_value = -0.5
+                    lfsr >>= 1
+            value = noise_value
         else:
-            value = math.sin(phase * math.tau)
-        env = _envelope(frame - start, total, OUTPUT_RATE, tone)
-        mixed = value * gain * 0.42 * env
-        left[frame] += mixed * l_gain
-        right[frame] += mixed * r_gain
-        phase = (phase + phase_step) % 1.0
+            continue
+
+        amplitude = value * env * 0.48
+        if pan_class != 1:
+            left[frame] += amplitude
+        if pan_class != -1:
+            right[frame] += amplitude
 
 
 def render_song(
@@ -732,26 +933,48 @@ def render_song(
             event.start_tick + max(1, event.duration_ticks),
         )
         start = int(tick_positions[event.start_tick] * OUTPUT_RATE)
-        end = min(frames, max(start + 1, int(tick_positions[end_tick] * OUTPUT_RATE)))
-        if start >= frames or end <= start:
+        gate_end = min(
+            frames,
+            max(start + 1, int(tick_positions[end_tick] * OUTPUT_RATE)),
+        )
+        if start >= frames or gate_end <= start:
             continue
+
         try:
-            tone = read_tone(rom, song.voicegroup, event.voice, event.key)
+            tone = read_tone(
+                rom,
+                song.voicegroup,
+                event.voice,
+                event.key,
+            )
         except ExtractError:
             skipped += 1
             continue
 
-        gain = (
-            max(0, min(127, event.velocity)) / 127.0
-            * max(0, min(127, event.volume)) / 127.0
-            * 0.24
-        )
         try:
             if tone.type & TONE_CGB_MASK:
-                _mix_psg_note(rom, left, right, start, end, event, tone, gain, event.pan)
+                _mix_psg_note(
+                    rom,
+                    left,
+                    right,
+                    start,
+                    gate_end,
+                    frames,
+                    event,
+                    tone,
+                )
             else:
                 sample = cache.load(tone)
-                _mix_pcm_note(left, right, start, end, event, tone, sample, gain, event.pan)
+                _mix_pcm_note(
+                    left,
+                    right,
+                    start,
+                    gate_end,
+                    frames,
+                    event,
+                    tone,
+                    sample,
+                )
         except ExtractError:
             skipped += 1
 
@@ -764,8 +987,12 @@ def render_song(
 
     pcm = array("h")
     for l_value, r_value in zip(left, right, strict=True):
-        pcm.append(int(max(-1.0, min(1.0, l_value * scale)) * 32767))
-        pcm.append(int(max(-1.0, min(1.0, r_value * scale)) * 32767))
+        pcm.append(
+            int(max(-1.0, min(1.0, l_value * scale)) * 32767)
+        )
+        pcm.append(
+            int(max(-1.0, min(1.0, r_value * scale)) * 32767)
+        )
 
     target.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(target), "wb") as handle:
@@ -782,7 +1009,6 @@ def render_song(
         "seconds": round(frames / OUTPUT_RATE, 3),
         "sampleRate": OUTPUT_RATE,
     }
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -862,7 +1088,7 @@ def main() -> int:
 
     manifest = {
         "source": "Pokemon FireRed local ROM / MP2K-Sappy",
-        "extractor": "tactimon-pure-python-mp2k",
+        "extractor": "tactimon-pure-python-mp2k-v2",
         "romSha1": actual_sha1,
         "tracks": rendered,
     }
