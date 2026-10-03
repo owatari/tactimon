@@ -26,10 +26,13 @@ type RuntimeManifest = {
   species: Record<StarterSpeciesId, RuntimeSpecies>;
 };
 
+type Facing = "up" | "down" | "left" | "right";
+
 type Props = {
   species: StarterSpeciesId;
   side: "player" | "rival";
   animation?: AnimationName;
+  facing?: Facing;
 };
 
 let manifestPromise: Promise<RuntimeManifest> | null = null;
@@ -55,6 +58,7 @@ export function PokemonBattleSprite({
   species,
   side,
   animation = "idle",
+  facing,
 }: Props) {
   const [manifest, setManifest] =
     useState<RuntimeManifest | null>(null);
@@ -130,7 +134,8 @@ export function PokemonBattleSprite({
     return <div className="pokemon-sprite-loading" />;
   }
 
-  const desiredDirection = side === "player" ? "right" : "left";
+  const desiredDirection =
+    facing ?? (side === "player" ? "right" : "left");
   const directionIndex = Math.max(
     0,
     manifest.directions.indexOf(desiredDirection),

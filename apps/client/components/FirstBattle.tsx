@@ -36,10 +36,12 @@ type CommandMode =
   | "item-target";
 
 type SpriteAnimation = "idle" | "walk" | "attack" | "hurt" | "faint";
+type Facing = "up" | "down" | "left" | "right";
 
 type UnitAnimationState = {
   name: SpriteAnimation;
   nonce: number;
+  facing?: Facing;
 };
 
 type VfxEvent = {
@@ -70,6 +72,21 @@ function primaryAttackMove(species: StarterSpeciesId): DuelMoveId {
 
 function primaryStatusMove(species: StarterSpeciesId): DuelMoveId {
   return species === "squirtle" ? "tail-whip" : "growl";
+}
+
+function facingBetween(from: DuelPoint, to: DuelPoint): Facing {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+
+  if (Math.abs(dx) >= Math.abs(dy) && dx !== 0) {
+    return dx > 0 ? "right" : "left";
+  }
+
+  if (dy !== 0) {
+    return dy > 0 ? "down" : "up";
+  }
+
+  return "right";
 }
 
 function findPath(
@@ -281,6 +298,7 @@ export function FirstBattle({
   const setUnitAnimation = (
     unitId: string,
     name: SpriteAnimation,
+    facing?: Facing,
   ) => {
     animationNonceRef.current += 1;
     setAnimations((current) => ({
@@ -288,6 +306,7 @@ export function FirstBattle({
       [unitId]: {
         name,
         nonce: animationNonceRef.current,
+        facing: facing ?? current[unitId]?.facing,
       },
     }));
   };
@@ -318,14 +337,19 @@ export function FirstBattle({
     destination: DuelPoint,
   ) => {
     const path = findPath(currentState, unit.id, destination);
-    setUnitAnimation(unit.id, "walk");
+    let previous = { ...unit.position };
+    let lastFacing: Facing =
+      unit.side === "player" ? "right" : "left";
 
     for (const step of path) {
+      lastFacing = facingBetween(previous, step);
+      setUnitAnimation(unit.id, "walk", lastFacing);
       setVisualPosition(unit.id, step);
       await sleep(STEP_ANIMATION_MS);
+      previous = step;
     }
 
-    setUnitAnimation(unit.id, "idle");
+    setUnitAnimation(unit.id, "idle", lastFacing);
   };
 
   const handleWalk = async (destination: DuelPoint) => {
@@ -386,7 +410,11 @@ export function FirstBattle({
 
     setBusy(true);
     resetCommand();
-    setUnitAnimation(actor.id, "attack");
+    setUnitAnimation(
+      actor.id,
+      "attack",
+      facingBetween(actor.position, target.position),
+    );
     await sleep(ATTACK_WINDUP_MS);
 
     vfxNonceRef.current += 1;
@@ -547,7 +575,14 @@ export function FirstBattle({
             ? primaryAttackMove(beforeRival.species)
             : primaryStatusMove(beforeRival.species);
 
-          setUnitAnimation(beforeRival.id, "attack");
+          setUnitAnimation(
+            beforeRival.id,
+            "attack",
+            facingBetween(
+              afterRival.position,
+              beforePlayer.position,
+            ),
+          );
           await sleep(ATTACK_WINDUP_MS);
 
           vfxNonceRef.current += 1;
@@ -749,6 +784,7 @@ export function FirstBattle({
                 animations[unit.id] ?? {
                   name: unit.hp > 0 ? "idle" : "faint",
                   nonce: 0,
+                  facing: unit.side === "player" ? "right" : "left",
                 };
               const targetable = targetableUnitIds.has(unit.id);
 
@@ -779,6 +815,7 @@ export function FirstBattle({
                       species={unit.species}
                       side={unit.side}
                       animation={animation.name}
+                      facing={animation.facing}
                     />
                     <span className="duel-unit-label">
                       {unit.displayName}
