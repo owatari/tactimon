@@ -25,17 +25,52 @@ Different dungeons/raids remain relevant through distinct TMs, Held unlock items
 
 ## Implemented early-game progression
 
-The current Route 1 prototype now persists starter progression:
+The current Route 1 prototype now persists starter progression.
 
-- starter begins at level 5;
-- wild victories award XP based on the defeated wild Pokémon's level;
-- the provisional XP requirement is `40 + level × 15` per level;
+### FireRed EXP
+
+Experience now follows the Generation III / FireRed rules for the currently implemented species.
+
+All three Kanto starters use the **Medium Slow** growth group. Tactimon stores cumulative EXP just like the core games. Generation III uses a lookup table; for Medium Slow the values follow:
+
+```text
+floor(6/5 × level³ - 15 × level² + 100 × level - 140)
+```
+
+with level 1 explicitly stored as 0 EXP. Examples:
+
+```text
+Lv. 5  = 135 total EXP
+Lv. 6  = 179 total EXP  (44 to level)
+Lv. 7  = 236 total EXP  (57 to level)
+Lv. 10 = 560 total EXP
+```
+
+Wild battle EXP uses the Generation I-IV flat formula for one participating Pokémon with no modifiers:
+
+```text
+floor(base EXP yield × defeated level / 7)
+```
+
+Current FireRed base EXP yields:
+
+- Pidgey: 55;
+- Rattata: 57.
+
+For example a level 3 Pidgey grants 23 EXP and a level 4 Rattata grants 32 EXP.
+
+Existing prototype saves that stored only within-level EXP are migrated to cumulative FireRed EXP when loaded.
+
+### Tactimon EV budget
+
+EV remains a Tactimon progression rule rather than species farming:
+
 - each level gained grants 6 EV points;
 - EV comes from leveling, not from species-specific EV yields;
-- the 6 EV points are automatically distributed with a curated starter profile for now;
-- the canonical 510 total / 252 per-stat EV limits remain enforced.
+- the points are automatically distributed with a curated starter profile for now;
+- the 510 total / 252 per-stat EV limits remain enforced.
 
-The exact XP and EV curves are tuning values and can change once the full Kanto level curve is established.
+The EXP curve is no longer provisional. The EV-per-level pacing is still a tuning value.
 
 ### Learning moves
 

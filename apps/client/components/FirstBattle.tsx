@@ -7,6 +7,7 @@ import {
   createWildDuel,
   DUEL_ITEMS,
   DUEL_MOVES,
+  experienceProgress,
   getActiveDuelUnit,
   getReachableCells,
   manhattanDistance,
@@ -721,6 +722,7 @@ export function FirstBattle({
   );
   const latestMessage =
     notice ?? state.log[state.log.length - 1] ?? "";
+  const playerXp = experienceProgress(progression);
 
   return (
     <div className="battle-overlay">
@@ -764,6 +766,7 @@ export function FirstBattle({
           {[player, rival].map((unit) => {
             const badges = stageBadges(unit);
             const healthTone = hpTone(unit.hp, unit.maxHp);
+            const isPlayer = unit.side === "player";
 
             return (
               <section
@@ -783,21 +786,29 @@ export function FirstBattle({
 
                 <div className="combatant-hud-body">
                   <div className="combatant-name-row">
-                    <div>
+                    <div className="combatant-identity">
                       <strong>{unit.displayName}</strong>
-                      <span>Lv. {unit.level}</span>
+                      <span className="combatant-level">Lv. {unit.level}</span>
+                      <span className={`combatant-type type-${unit.type}`}>
+                        {unit.type}
+                      </span>
                     </div>
                     <span className="combatant-side-label">
-                      {unit.side === "player"
-                        ? "YOU"
+                      {isPlayer
+                        ? "SEU POKÉMON"
                         : encounter.kind === "wild"
-                          ? "WILD"
+                          ? "SELVAGEM"
                           : "BLUE"}
                     </span>
                   </div>
 
-                  <div className="combatant-hp-row">
-                    <span>HP</span>
+                  <div className="combatant-resource-block">
+                    <div className="combatant-resource-heading">
+                      <span>HP</span>
+                      <strong>
+                        {unit.hp} / {unit.maxHp}
+                      </strong>
+                    </div>
                     <div className="combatant-hp-track">
                       <div
                         className={`combatant-hp-fill ${healthTone}`}
@@ -806,17 +817,39 @@ export function FirstBattle({
                         }}
                       />
                     </div>
-                    <strong>
-                      {unit.hp}/{unit.maxHp}
-                    </strong>
                   </div>
 
+                  {isPlayer && (
+                    <div className="combatant-resource-block xp-resource">
+                      <div className="combatant-resource-heading">
+                        <span>EXP</span>
+                        <strong>
+                          {playerXp.required > 0
+                            ? `${playerXp.current} / ${playerXp.required}`
+                            : "MAX"}
+                        </strong>
+                      </div>
+                      <div className="combatant-exp-track">
+                        <div
+                          className="combatant-exp-fill"
+                          style={{
+                            width: `${playerXp.percent}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   <div className="combatant-meta-row">
-                    <span>{unit.ap}/{unit.maxAp} AP</span>
-                    <span>{unit.mp}/{unit.maxMp} MP</span>
+                    <span className="resource-chip">
+                      {unit.ap}/{unit.maxAp} AP
+                    </span>
+                    <span className="resource-chip">
+                      {unit.mp}/{unit.maxMp} MP
+                    </span>
                     <span className="combatant-status-label">STATUS</span>
                     {badges.length === 0 ? (
-                      <span className="status-chip neutral">OK</span>
+                      <span className="status-chip neutral">NORMAL</span>
                     ) : (
                       badges.map((badge) => (
                         <span

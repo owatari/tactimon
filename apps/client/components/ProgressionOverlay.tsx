@@ -3,9 +3,8 @@
 import { useMemo, useState } from "react";
 import {
   DUEL_MOVES,
-  experienceForNextLevel,
+  experienceProgress,
   resolveMoveLearning,
-  type DuelMoveId,
   type PokemonProgression,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
@@ -41,7 +40,7 @@ export function ProgressionOverlay({
   const currentPending =
     reward.pendingMoves[pendingIndex] ?? null;
   const evLines = useMemo(() => evSummary(reward), [reward]);
-  const nextXp = experienceForNextLevel(progression.level);
+  const xp = experienceProgress(progression);
 
   const resolvePending = (replaceIndex: number | null) => {
     if (!currentPending) return;
@@ -70,15 +69,37 @@ export function ProgressionOverlay({
                 ? `Level ${reward.oldLevel} → ${reward.newLevel}`
                 : `Level ${reward.newLevel}`}
             </h2>
-            <p className="story-copy">
-              +{reward.xpGained} XP · {progression.experience}/{nextXp} para o
-              próximo nível
+            <p className="story-copy progression-reward-copy">
+              +{reward.xpGained} EXP da batalha
             </p>
           </div>
 
           <div className="level-orb">
             {progression.level}
           </div>
+        </div>
+
+        <div className="progression-exp-card">
+          <div className="progression-exp-heading">
+            <span>EXP</span>
+            <strong>
+              {xp.required > 0
+                ? `${xp.current} / ${xp.required}`
+                : "MAX"}
+            </strong>
+          </div>
+          <div className="progression-exp-track">
+            <div
+              className="progression-exp-fill"
+              style={{ width: `${xp.percent}%` }}
+            />
+          </div>
+          <small>
+            {progression.experience.toLocaleString("pt-BR")} EXP total
+            {xp.required > 0
+              ? ` · ${xp.required - xp.current} para o Lv. ${progression.level + 1}`
+              : ""}
+          </small>
         </div>
 
         {reward.levelsGained > 0 && (
@@ -123,8 +144,8 @@ export function ProgressionOverlay({
               {DUEL_MOVES[currentPending].name}
             </h3>
             <p>
-              Seu Pokémon já conhece 4 moves. Escolha um move para substituir,
-              ou não aprenda este move agora.
+              Seu Pokémon já conhece 4 moves. Escolha exatamente um move para
+              substituir, ou deixe de aprender este move.
             </p>
 
             <div className="replace-move-list">

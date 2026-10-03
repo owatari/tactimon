@@ -1,5 +1,6 @@
 import {
   createStarterProgression,
+  normalizePokemonProgression,
   rivalStarterFor,
   starterDisplayName,
   type PokemonProgression,
@@ -68,9 +69,11 @@ export function normalizeStoryState(
       (starter ? rivalStarterFor(starter) : null),
     firstBattleComplete:
       input?.firstBattleComplete ?? false,
-    playerPokemon:
-      input?.playerPokemon ??
-      (starter ? createStarterProgression(starter) : null),
+    playerPokemon: input?.playerPokemon
+      ? normalizePokemonProgression(input.playerPokemon)
+      : starter
+        ? createStarterProgression(starter)
+        : null,
   };
 }
 

@@ -2,38 +2,102 @@ import { describe, expect, it } from "vitest";
 import {
   createStarterProgression,
   experienceForNextLevel,
+  experienceProgress,
+  experienceRewardForWild,
+  fireRedExperienceAtLevel,
   grantWildBattleProgress,
+  normalizePokemonProgression,
   resolveMoveLearning,
 } from "../src/progression";
 
 describe("pokemon progression", () => {
-  it("gains levels and EV from wild victories", () => {
+  it("uses FireRed Medium Slow cumulative EXP for Kanto starters", () => {
+    expect(fireRedExperienceAtLevel("bulbasaur", 1)).toBe(0);
+    expect(fireRedExperienceAtLevel("bulbasaur", 5)).toBe(135);
+    expect(fireRedExperienceAtLevel("charmander", 6)).toBe(179);
+    expect(fireRedExperienceAtLevel("squirtle", 10)).toBe(560);
+    expect(fireRedExperienceAtLevel("squirtle", 100)).toBe(1_059_860);
+
+    expect(experienceForNextLevel(5, "charmander")).toBe(44);
+    expect(experienceForNextLevel(10, "charmander")).toBe(182);
+  });
+
+  it("uses Generation III base EXP yields for Route 1 wild Pokémon", () => {
+    expect(experienceRewardForWild("pidgey", 3)).toBe(23);
+    expect(experienceRewardForWild("pidgey", 5)).toBe(39);
+    expect(experienceRewardForWild("rattata", 3)).toBe(24);
+    expect(experienceRewardForWild("rattata", 4)).toBe(32);
+  });
+
+  it("starts a level 5 starter at the FireRed cumulative EXP threshold", () => {
+    const progression = createStarterProgression("charmander");
+    const xp = experienceProgress(progression);
+
+    expect(progression.experience).toBe(135);
+    expect(xp.current).toBe(0);
+    expect(xp.required).toBe(44);
+  });
+
+  it("gains levels and EV from repeated Route 1 wild victories", () => {
     let progression = createStarterProgression("charmander");
 
-    const first = grantWildBattleProgress(progression, 4);
+    const first = grantWildBattleProgress(progression, {
+      species: "pidgey",
+      level: 5,
+    });
     progression = first.progression;
 
-    expect(first.xpGained).toBe(128);
-    expect(first.newLevel).toBe(6);
+    expect(first.xpGained).toBe(39);
+    expect(first.newLevel).toBe(5);
+
+    const second = grantWildBattleProgress(progression, {
+      species: "rattata",
+      level: 4,
+    });
+    progression = second.progression;
+
+    expect(second.xpGained).toBe(32);
+    expect(second.newLevel).toBe(6);
     expect(
-      Object.values(first.evGained).reduce(
+      Object.values(second.evGained).reduce(
         (sum, value) => sum + value,
         0,
       ),
     ).toBe(6);
 
-    const second = grantWildBattleProgress(progression, 4);
+    const third = grantWildBattleProgress(progression, {
+      species: "pidgey",
+      level: 3,
+    });
+    progression = third.progression;
 
-    expect(second.newLevel).toBe(7);
-    expect(second.autoLearnedMoves).toEqual(["ember"]);
-    expect(second.progression.activeMoves).toContain("ember");
+    const fourth = grantWildBattleProgress(progression, {
+      species: "rattata",
+      level: 4,
+    });
+
+    expect(fourth.newLevel).toBe(7);
+    expect(fourth.autoLearnedMoves).toEqual(["ember"]);
+    expect(fourth.progression.activeMoves).toContain("ember");
+  });
+
+  it("migrates prototype per-level EXP into cumulative FireRed EXP", () => {
+    const migrated = normalizePokemonProgression({
+      ...createStarterProgression("bulbasaur"),
+      level: 5,
+      experience: 20,
+    });
+
+    expect(migrated.experience).toBe(142);
+    expect(experienceProgress(migrated).current).toBe(7);
   });
 
   it("queues a replacement choice instead of changing four active moves", () => {
     const progression = {
       ...createStarterProgression("bulbasaur"),
       level: 10,
-      experience: 0,
+      experience:
+        fireRedExperienceAtLevel("bulbasaur", 11) - 1,
       activeMoves: [
         "tackle",
         "growl",
@@ -47,7 +111,10 @@ describe("pokemon progression", () => {
         ...progression,
         activeMoves: [...progression.activeMoves],
       },
-      7,
+      {
+        species: "pidgey",
+        level: 2,
+      },
     );
 
     expect(reward.newLevel).toBe(11);
@@ -64,6 +131,7 @@ describe("pokemon progression", () => {
     const progression = {
       ...createStarterProgression("squirtle"),
       level: 11,
+      experience: fireRedExperienceAtLevel("squirtle", 11),
       activeMoves: [
         "tackle",
         "tail-whip",
@@ -105,10 +173,5 @@ describe("pokemon progression", () => {
     );
 
     expect(next.activeMoves).toEqual(progression.activeMoves);
-  });
-
-  it("uses a predictable next-level XP curve", () => {
-    expect(experienceForNextLevel(5)).toBe(115);
-    expect(experienceForNextLevel(10)).toBe(190);
   });
 });

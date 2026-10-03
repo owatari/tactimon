@@ -113,4 +113,18 @@ Current Route 1 table:
 
 The tactical arena is still generated from the local Route 1 map crop and collision. Wild battles allow `Run`.
 
-Winning a wild battle awards XP. Level-ups award EV budget and can teach moves from the current starter learnset. When a fifth active move would be learned, the post-battle UI asks which one existing move should be replaced, or allows declining the new move. It does not provide arbitrary move-loadout editing; that belongs to the future Move Tutor.
+Winning a wild battle uses FireRed's Generation III flat EXP calculation. Pidgey uses base EXP 55 and Rattata 57; all three starters currently use FireRed's Medium Slow cumulative growth curve. Level-ups award the Tactimon EV budget and can teach moves from the current starter learnset. When a fifth active move would be learned, the post-battle UI asks which one existing move should be replaced, or allows declining the new move. It does not provide arbitrary move-loadout editing; that belongs to the future Move Tutor.
+
+
+### Battle information HUD
+
+Battles open as a full-screen stage so combat information no longer gets squeezed out by the overworld page chrome. A dedicated strip above the arena always shows both Pokémon with:
+
+- SpriteCollab portrait;
+- level and type;
+- current/max HP and HP bar;
+- player EXP progress to the next level;
+- AP and MP;
+- visible stat-stage buffs/debuffs, or NORMAL when none are active.
+
+The contextual Move / Attack / Item / Run popup remains anchored to the active player Pokémon and does not replace the information HUD.

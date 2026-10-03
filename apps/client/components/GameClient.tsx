@@ -102,7 +102,10 @@ export function GameClient() {
 
     const reward = grantWildBattleProgress(
       story.playerPokemon,
-      session.encounter.level,
+      {
+        species: session.encounter.species,
+        level: session.encounter.level,
+      },
     );
 
     setStory((current) => ({
