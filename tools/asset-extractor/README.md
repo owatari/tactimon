@@ -1,10 +1,10 @@
 # Python ROM asset extractor
 
-This is the local extraction stage for Tactimon.
+This directory contains the local-only ROM extraction and conversion pipeline for Tactimon.
 
-It does not upload the ROM and does not put extracted payloads in Git.
+Nothing is uploaded. ROMs, raw extracted blocks and generated PNG assets remain under `local-assets/`, which is ignored by Git.
 
-## Usage
+## 1. Raw extraction
 
 Windows:
 
@@ -18,10 +18,72 @@ Linux/macOS:
 python3 tools/asset-extractor/extract.py local-assets/roms/emerald.gba --clean
 ```
 
-By default output is written to `local-assets/extracted/<game>/`.
+Repeat for FireRed if desired.
 
-## Current stage
+The raw stage validates the supported ROM and decompresses valid GBA LZ77 streams into:
 
-The first extractor validates the supported Emerald/FireRed ROM hashes and decodes validated GBA LZ77 type 0x10 streams. Each decoded block is recorded in a manifest with its original ROM offset.
+```text
+local-assets/extracted/emerald/lz77/
+local-assets/extracted/firered/lz77/
+```
 
-This intentionally separates raw ROM extraction from semantic mapping. Future modules can use known game pointer tables/specs to identify exactly which blocks are Pokémon sprites, palettes, tilesets, maps and UI assets without changing the local-only storage model.
+## 2. Convert raw blocks into assets
+
+Emerald:
+
+```bash
+python tools/asset-extractor/convert.py local-assets/roms/emerald.gba
+```
+
+FireRed:
+
+```bash
+python tools/asset-extractor/convert.py local-assets/roms/firered.gba
+```
+
+Generated assets are written to:
+
+```text
+local-assets/extracted/<game>/assets/
+├── asset-manifest.json
+└── pokemon/
+    ├── front/
+    │   ├── normal/
+    │   └── shiny/
+    └── back/
+        ├── normal/
+        └── shiny/
+```
+
+The converter reads the ROM's pointer tables, finds the corresponding already-extracted LZ77 blocks, decodes GBA 4bpp graphics and BGR555 palettes, and writes transparent RGBA PNGs.
+
+The current supported reference ROMs render all 440 Gen III internal species slots.
+
+## Diagnostic raw previews
+
+To render all plausible 4bpp blocks as PNG previews:
+
+```bash
+python tools/asset-extractor/convert.py local-assets/roms/firered.gba --raw-previews
+```
+
+These previews are useful for identifying tilesets, UI graphics and other compressed ROM resources before we add semantic table-specific extractors.
+
+You can limit preview generation while testing:
+
+```bash
+python tools/asset-extractor/convert.py local-assets/roms/firered.gba --raw-previews --max-previews 100
+```
+
+## Next semantic extractors
+
+The next stages will map FireRed/Emerald ROM tables into named local resources such as:
+
+- tilesets and palettes
+- overworld/player/NPC sprites
+- map layouts and metatiles
+- trainer graphics
+- UI/icon graphics
+- data tables needed by the game
+
+Pokemon battle sprite extraction is implemented first as a verified end-to-end conversion path.
