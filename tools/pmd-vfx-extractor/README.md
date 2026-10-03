@@ -141,3 +141,18 @@ python -m pip index versions skytemple-rust --index-url https://pypi.org/simple
 ```
 
 For Windows x64 + CPython 3.12 the install should resolve from the official PyPI. Windows ARM64 does not have a native `win_arm64` wheel in the 1.8.5 release; use an x64 CPython installation under Windows emulation in that case.
+
+
+## Why some exports used to contain only `_pieces/`
+
+Effect WAN files are not all self-contained. The unmodified Explorers of Sky archive uses `effect0292` as the shared image/palette base. Some effects contain only animation/metaframe data or palette deltas.
+
+The renderer now loads `effect0292` first and applies its image/palette data when required before exporting each WAN. Partial exports that fail before producing assembled root PNGs are deleted instead of leaving misleading `_pieces/` directories.
+
+After `--render-all`, inspect:
+
+```text
+local-assets/extracted/pmd-eos/vfx/rendered/_render-report.json
+```
+
+Successful WAN exports should contain assembled root files such as `A-00-00-N.png` (and sometimes `S-xx.png`), not only intermediate `_pieces/`.

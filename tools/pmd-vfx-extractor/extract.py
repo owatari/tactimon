@@ -353,6 +353,9 @@ def render_with_skytemple(
         from skytemple_files.graphics.effect_wan.handler import (
             EffectWanHandler,
         )
+        from skytemple_files.graphics.effect_wan.model import (
+            mergeWithBasePalette,
+        )
     except ImportError as exc:
         python_tag = (
             f"{sys.version_info.major}."
@@ -383,12 +386,29 @@ def render_with_skytemple(
         exist_ok=True,
     )
 
+    base_effect_path = entries_dir / "effect0292.sir0"
+    if not base_effect_path.exists():
+        raise RuntimeError(
+            "Shared effect base effect0292.sir0 is missing."
+        )
+
+    base_effect = EffectWanHandler.deserialize(
+        base_effect_path.read_bytes()
+    )
+    if (
+        base_effect.imgData is None
+        or base_effect.customPalette is None
+    ):
+        raise RuntimeError(
+            "effect0292 could not provide shared image/palette data."
+        )
+
     selected_indices = {
         info["archive_entry"]
         for info in move_vfx.values()
     }
     if render_all:
-        selected_indices.update(range(1, 290))
+        selected_indices.update(range(0, 290))
 
     render_results: dict[str, Any] = {}
     for index in sorted(selected_indices):
@@ -429,22 +449,60 @@ def render_with_skytemple(
                 model = EffectWanHandler.deserialize(
                     raw
                 )
+
+                # effect.bin uses effect0292 as a shared image/palette base.
+                # Several WAN entries only contain animation/meta-frame data
+                # or palette deltas, so exporting them in isolation leaves
+                # partial _pieces output or placeholder graphics.
+                if model.imgData is None:
+                    model.imgData = base_effect.imgData
+                    model.is256Color = base_effect.is256Color
+
+                if model.customPalette is None:
+                    model.customPalette = [
+                        [tuple(color) for color in row]
+                        for row in base_effect.customPalette
+                    ]
+                    model.paletteOffset = 0
+                elif model.paletteOffset != 0:
+                    mergeWithBasePalette(
+                        model,
+                        base_effect.customPalette,
+                    )
+
                 EffectWanHandler.export_sheets(
                     str(destination),
                     model,
                 )
 
-            pngs = sorted(
-                str(path.relative_to(rendered_dir))
-                for path in destination.rglob(
-                    "*.png"
-                )
+            root_pngs = sorted(
+                destination.glob("*.png")
             )
+            all_pngs = sorted(
+                destination.rglob("*.png")
+            )
+            pngs = [
+                str(path.relative_to(rendered_dir))
+                for path in all_pngs
+            ]
+
+            if index < 268 and not root_pngs:
+                raise RuntimeError(
+                    "WAN export produced no assembled root PNGs; "
+                    "only intermediate pieces were generated."
+                )
+
             render_results[str(index)] = {
                 "status": "ok",
+                "assembled_pngs": [
+                    str(path.relative_to(rendered_dir))
+                    for path in root_pngs
+                ],
                 "pngs": pngs,
             }
         except Exception as exc:
+            if destination.exists():
+                shutil.rmtree(destination)
             render_results[str(index)] = {
                 "status": "error",
                 "error": (
@@ -505,11 +563,26 @@ def render_with_skytemple(
             "note": info["note"],
         }
 
+    successful = sum(
+        1
+        for result in render_results.values()
+        if result.get("status") == "ok"
+    )
+    failed = sum(
+        1
+        for result in render_results.values()
+        if result.get("status") == "error"
+    )
+
     runtime_manifest = {
         "source": (
             "Pokemon Mystery Dungeon: "
             "Explorers of Sky (USA)"
         ),
+        "render_summary": {
+            "successful": successful,
+            "failed": failed,
+        },
         "moves": runtime_moves,
     }
     (
@@ -523,7 +596,29 @@ def render_with_skytemple(
         encoding="utf-8",
     )
 
+    report_path = rendered_dir / "_render-report.json"
+    report_path.write_text(
+        json.dumps(
+            {
+                "successful": successful,
+                "failed": failed,
+                "results": render_results,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    print(
+        f"Rendered effects: {successful} ok, {failed} failed. "
+        f"Report: {report_path}"
+    )
+
     return {
+        "successful": successful,
+        "failed": failed,
+        "report": str(report_path),
         "render_results": render_results,
         "runtime_manifest": runtime_manifest,
     }
