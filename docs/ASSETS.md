@@ -44,7 +44,7 @@ The client consumes only the generated runtime VFX copies; the `.nds` itself is 
 
 World metadata already exposes the original FireRed `music` id from each map header. The client forwards that id into a centralized music registry/manager, with explicit fallbacks for the currently playable maps when optional world metadata is unavailable.
 
-Music assets are generated from the developer-local FireRed ROM rather than from checked-in audio. The extractor under `tools/firered-music-extractor/` uses GBA Mus Ripper to recover Sappy MIDI/SoundFont data, then FluidSynth + FFmpeg to render browser-ready Ogg Vorbis files under:
+Music assets are generated from the developer-local FireRed ROM rather than from checked-in audio. The self-contained extractor under `tools/firered-music-extractor/` reads FireRed's MP2K/Sappy song table, sequence data, PCM samples, compressed samples, voicegroups and PSG instruments directly from the ROM, then renders browser-ready WAV files using only the Python standard library under:
 
 ```text
 local-assets/extracted/firered/music/runtime/

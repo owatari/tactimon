@@ -38,7 +38,7 @@ function fireRedTrack(
   return {
     id: `firered-${fireRedMusicId}`,
     fireRedMusicId,
-    url: `/game-assets/music/firered/${fireRedMusicId}.ogg`,
+    url: `/game-assets/music/firered/${fireRedMusicId}.wav`,
     loop: true,
     volume,
   };

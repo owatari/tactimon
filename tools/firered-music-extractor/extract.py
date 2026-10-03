@@ -1,17 +1,32 @@
 #!/usr/bin/env python3
-"""Extract and render FireRed music from a developer-local ROM."""
+"""Extract the FireRed music used by Tactimon directly from a local ROM.
+
+The supported FireRed ROM uses Nintendo's MP2K/Sappy sound driver.  This
+module reads its song table, interprets the sequence commands and renders the
+ROM's own PCM/PSG instruments to browser-playable WAV files using only the
+Python standard library.
+"""
 
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
-import shutil
-import subprocess
-import tempfile
+import math
+import struct
+import sys
+import wave
+from array import array
+from dataclasses import dataclass, field
 from pathlib import Path
 
 FIRERED_SHA1 = "41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc"
+ROM_BASE = 0x08000000
+SONG_TABLE_OFFSET = 0x4A32CC
+OUTPUT_RATE = 13_379  # FireRed configures MP2K at SOUND_MODE_FREQ_13379.
+DEFAULT_SECONDS = 60.0
+MAX_TRACKS = 16
+
 REQUIRED_TRACKS = {
     291: "route-1",
     297: "trainer-battle",
@@ -20,6 +35,53 @@ REQUIRED_TRACKS = {
     301: "oak-lab",
     314: "viridian-pewter",
 }
+
+# MP2K's gClockTable.  Wait commands use 0x80..0xB0 and note commands use
+# 0xCF..0xFF against this same table.
+CLOCK_TABLE = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    17, 18, 19, 20, 21, 22, 23, 24, 28, 30, 32, 36, 40, 42, 44,
+    48, 52, 54, 56, 60, 64, 66, 68, 72, 76, 78, 80, 84, 88, 90,
+    92, 96,
+]
+DELTA_TABLE = [0, 1, 4, 9, 16, 25, 36, 49, -64, -49, -36, -25, -16, -9, -4, -1]
+
+# Sequence commands.
+FINE = 0xB1
+GOTO = 0xB2
+PATT = 0xB3
+PEND = 0xB4
+REPT = 0xB5
+MEMACC = 0xB9
+PRIO = 0xBA
+TEMPO = 0xBB
+KEYSH = 0xBC
+VOICE = 0xBD
+VOL = 0xBE
+PAN = 0xBF
+BEND = 0xC0
+BENDR = 0xC1
+LFOS = 0xC2
+LFODL = 0xC3
+MOD = 0xC4
+MODT = 0xC5
+TUNE = 0xC8
+PORT = 0xCC
+XCMD = 0xCD
+EOT = 0xCE
+TIE = 0xCF
+
+# Tone flags / types.
+TONE_CGB_MASK = 0x07
+TONE_FIX = 0x08
+TONE_REVERSE = 0x10
+TONE_COMPRESSED = 0x20
+TONE_SPLIT = 0x40
+TONE_RHYTHM = 0x80
+
+
+class ExtractError(RuntimeError):
+    pass
 
 
 def sha1(path: Path) -> str:
@@ -30,72 +92,701 @@ def sha1(path: Path) -> str:
     return digest.hexdigest()
 
 
-def executable(value: str, label: str) -> Path:
-    found = shutil.which(value)
-    if found:
-        return Path(found).resolve()
-    candidate = Path(value)
-    if candidate.exists():
-        return candidate.resolve()
-    raise SystemExit(f"{label} not found: {value}")
+class Rom:
+    def __init__(self, data: bytes):
+        self.data = data
+
+    def check(self, offset: int, size: int = 1) -> None:
+        if offset < 0 or size < 0 or offset + size > len(self.data):
+            raise ExtractError(
+                f"ROM read out of range: offset=0x{offset:X}, size={size}"
+            )
+
+    def u8(self, offset: int) -> int:
+        self.check(offset)
+        return self.data[offset]
+
+    def s8(self, offset: int) -> int:
+        value = self.u8(offset)
+        return value - 256 if value >= 128 else value
+
+    def u16(self, offset: int) -> int:
+        self.check(offset, 2)
+        return struct.unpack_from("<H", self.data, offset)[0]
+
+    def u32(self, offset: int) -> int:
+        self.check(offset, 4)
+        return struct.unpack_from("<I", self.data, offset)[0]
+
+    def ptr(self, value: int) -> int:
+        offset = value - ROM_BASE
+        self.check(offset)
+        return offset
+
+    def ptr_at(self, offset: int) -> int:
+        return self.ptr(self.u32(offset))
 
 
-def companion(root: Path, name: str) -> Path:
-    for folder in (root, root.parent):
-        for suffix in ("", ".exe"):
-            candidate = folder / f"{name}{suffix}"
-            if candidate.exists():
-                return candidate.resolve()
-    raise SystemExit(
-        f"Missing {name} next to the GBA Mus Ripper build at {root}"
+@dataclass
+class Tone:
+    type: int
+    key: int
+    length: int
+    pan_sweep: int
+    wav_ptr: int
+    attack: int
+    decay: int
+    sustain: int
+    release: int
+    rhythm_pan: int = 0
+    rhythm: bool = False
+
+
+@dataclass
+class NoteEvent:
+    start_tick: int
+    duration_ticks: int
+    key: int
+    velocity: int
+    voice: int
+    volume: int
+    pan: int
+    bend: int
+    bend_range: int
+    key_shift: int
+    tune: int
+    tie: bool = False
+
+
+@dataclass
+class TrackState:
+    pc: int
+    wait: int = 0
+    ended: bool = False
+    running_status: int = 0
+    pattern_stack: list[int] = field(default_factory=list)
+    repeat_count: int = 0
+    voice: int = 0
+    volume: int = 127
+    pan: int = 0
+    bend: int = 0
+    bend_range: int = 2
+    key_shift: int = 0
+    tune: int = 0
+    last_key: int = 60
+    last_velocity: int = 127
+    active_ties: dict[int, NoteEvent] = field(default_factory=dict)
+
+
+@dataclass
+class Song:
+    track_count: int
+    voicegroup: int
+    tracks: list[int]
+
+
+def read_song(rom: Rom, music_id: int) -> Song:
+    entry = SONG_TABLE_OFFSET + music_id * 8
+    rom.check(entry, 8)
+    header_ptr = rom.u32(entry)
+    if not (ROM_BASE <= header_ptr < ROM_BASE + len(rom.data)):
+        raise ExtractError(
+            f"song {music_id}: invalid header pointer 0x{header_ptr:08X}"
+        )
+    header = rom.ptr(header_ptr)
+    track_count = rom.u8(header)
+    if not 1 <= track_count <= MAX_TRACKS:
+        raise ExtractError(
+            f"song {music_id}: invalid MP2K track count {track_count}"
+        )
+    voicegroup = rom.ptr_at(header + 4)
+    tracks = [rom.ptr_at(header + 8 + i * 4) for i in range(track_count)]
+    return Song(track_count=track_count, voicegroup=voicegroup, tracks=tracks)
+
+
+def read_tone(rom: Rom, voicegroup: int, voice: int, key: int) -> Tone:
+    base = voicegroup + voice * 12
+    rom.check(base, 12)
+    parent_type = rom.u8(base)
+    rhythm_pan = 0
+
+    if parent_type & TONE_SPLIT:
+        table = rom.ptr_at(base + 4)
+        keymap = rom.ptr_at(base + 8)
+        mapped = rom.u8(keymap + max(0, min(127, key)))
+        base = table + mapped * 12
+        rom.check(base, 12)
+    elif parent_type & TONE_RHYTHM:
+        table = rom.ptr_at(base + 4)
+        base = table + max(0, min(127, key)) * 12
+        rom.check(base, 12)
+        pan_sweep = rom.u8(base + 3)
+        if pan_sweep & 0x80:
+            rhythm_pan = (pan_sweep - 0xC0) * 2
+
+    tone_type = rom.u8(base)
+    wav_raw = rom.u32(base + 4)
+    wav_ptr = 0
+    if wav_raw:
+        # CGB square/noise tones store a tiny integer/duty value here rather
+        # than a ROM pointer; only turn pointer-looking values into offsets.
+        if ROM_BASE <= wav_raw < ROM_BASE + len(rom.data):
+            wav_ptr = wav_raw - ROM_BASE
+        else:
+            wav_ptr = wav_raw
+
+    return Tone(
+        type=tone_type,
+        key=rom.u8(base + 1),
+        length=rom.u8(base + 2),
+        pan_sweep=rom.u8(base + 3),
+        wav_ptr=wav_ptr,
+        attack=rom.u8(base + 8),
+        decay=rom.u8(base + 9),
+        sustain=rom.u8(base + 10),
+        release=rom.u8(base + 11),
+        rhythm_pan=rhythm_pan,
+        rhythm=bool(parent_type & TONE_RHYTHM),
     )
 
 
-def data_file(root: Path, name: str) -> Path:
-    for folder in (root, root.parent):
-        candidate = folder / name
-        if candidate.exists():
-            return candidate.resolve()
-    raise SystemExit(f"Missing {name} near the GBA Mus Ripper build")
+def _signed_center(value: int) -> int:
+    return value - 0x40
 
 
-def run(args: list[str]) -> None:
-    print("+", " ".join(args))
-    subprocess.run(args, check=True)
+def _close_tie(state: TrackState, key: int, tick: int) -> None:
+    event = state.active_ties.pop(key, None)
+    if event is not None:
+        event.duration_ticks = max(1, tick - event.start_tick)
 
 
-def make_ripper_shim(main_ripper: Path, target: Path) -> Path:
-    source_dir = main_ripper.parent
-    copies = {
-        "gba_mus_ripper.exe": main_ripper,
-        "sappy_detector": companion(source_dir, "sappy_detector"),
-        "sappy_detector.exe": companion(source_dir, "sappy_detector"),
-        "song_ripper.exe": companion(source_dir, "song_ripper"),
-        "sound_font_ripper.exe": companion(
-            source_dir,
-            "sound_font_ripper",
-        ),
-        "psg_data.raw": data_file(source_dir, "psg_data.raw"),
-        "goldensun_synth.raw": data_file(
-            source_dir,
-            "goldensun_synth.raw",
-        ),
+def _read_ptr_operand(rom: Rom, state: TrackState) -> int:
+    target = rom.ptr_at(state.pc)
+    state.pc += 4
+    return target
+
+
+def _skip_memacc(rom: Rom, state: TrackState) -> None:
+    # MEMACC has a 3-byte operand in MKS4AGB. It is used for conditional
+    # sequence logic, not by the FireRed BGM slice Tactimon renders. Consume
+    # it deterministically so a stray command cannot desynchronise parsing.
+    rom.check(state.pc, 3)
+    state.pc += 3
+
+
+def _handle_xcmd(rom: Rom, state: TrackState) -> None:
+    sub = rom.u8(state.pc)
+    state.pc += 1
+    if sub in {0x01, 0x0D}:
+        rom.check(state.pc, 4)
+        state.pc += 4
+    elif sub == 0x0C:  # xWAIT: u16 frame count
+        rom.check(state.pc, 2)
+        state.wait = max(state.wait, rom.u16(state.pc))
+        state.pc += 2
+    elif sub in {0x02, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B}:
+        rom.check(state.pc)
+        state.pc += 1
+    # 0x00/0x03 are no-op extension slots.
+
+
+def run_track_tick(
+    rom: Rom,
+    state: TrackState,
+    tick: int,
+    events: list[NoteEvent],
+    tempo_box: list[int],
+) -> None:
+    if state.ended:
+        return
+    if state.wait > 0:
+        state.wait -= 1
+        return
+
+    safety = 0
+    while not state.ended and state.wait == 0:
+        safety += 1
+        if safety > 4096:
+            raise ExtractError("MP2K sequence command loop without a wait")
+
+        byte = rom.u8(state.pc)
+        if byte < 0x80:
+            command = state.running_status
+            if command == 0:
+                raise ExtractError(
+                    f"MP2K data byte 0x{byte:02X} without running status"
+                )
+        else:
+            command = byte
+            state.pc += 1
+            if command >= VOICE:
+                state.running_status = command
+
+        if 0x80 <= command <= 0xB0:
+            state.wait = CLOCK_TABLE[command - 0x80]
+            # The real engine decrements a newly loaded wait at the end of the
+            # current tick. Representing that as N-1 here keeps event timing
+            # aligned to the logical tick counter used by this renderer.
+            state.wait = max(0, state.wait - 1)
+            return
+
+        if command >= TIE:
+            length = CLOCK_TABLE[command - TIE]
+            if rom.u8(state.pc) < 0x80:
+                state.last_key = rom.u8(state.pc)
+                state.pc += 1
+                if rom.u8(state.pc) < 0x80:
+                    state.last_velocity = rom.u8(state.pc)
+                    state.pc += 1
+                    if rom.u8(state.pc) < 0x80:
+                        length += rom.u8(state.pc)
+                        state.pc += 1
+            event = NoteEvent(
+                start_tick=tick,
+                duration_ticks=max(1, length),
+                key=state.last_key,
+                velocity=state.last_velocity,
+                voice=state.voice,
+                volume=state.volume,
+                pan=state.pan,
+                bend=state.bend,
+                bend_range=state.bend_range,
+                key_shift=state.key_shift,
+                tune=state.tune,
+                tie=(command == TIE),
+            )
+            events.append(event)
+            if command == TIE:
+                old = state.active_ties.get(state.last_key)
+                if old is not None:
+                    old.duration_ticks = max(1, tick - old.start_tick)
+                state.active_ties[state.last_key] = event
+            continue
+
+        if command == FINE or command in {0xB6, 0xB7, 0xB8, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB}:
+            for key in list(state.active_ties):
+                _close_tie(state, key, tick)
+            state.ended = True
+            return
+        if command == GOTO:
+            state.pc = _read_ptr_operand(rom, state)
+            continue
+        if command == PATT:
+            if len(state.pattern_stack) >= 3:
+                state.ended = True
+                return
+            return_pc = state.pc + 4
+            target = _read_ptr_operand(rom, state)
+            state.pattern_stack.append(return_pc)
+            state.pc = target
+            continue
+        if command == PEND:
+            if state.pattern_stack:
+                state.pc = state.pattern_stack.pop()
+            continue
+        if command == REPT:
+            count = rom.u8(state.pc)
+            if count == 0:
+                state.pc += 1
+                state.pc = _read_ptr_operand(rom, state)
+                continue
+            state.repeat_count += 1
+            if state.repeat_count < count:
+                state.pc += 1
+                state.pc = _read_ptr_operand(rom, state)
+            else:
+                state.repeat_count = 0
+                state.pc += 5
+            continue
+        if command == MEMACC:
+            _skip_memacc(rom, state)
+            continue
+        if command == PRIO:
+            state.pc += 1
+            continue
+        if command == TEMPO:
+            tempo_box[0] = max(1, rom.u8(state.pc) * 2)
+            state.pc += 1
+            continue
+        if command == KEYSH:
+            state.key_shift = rom.s8(state.pc)
+            state.pc += 1
+            continue
+        if command == VOICE:
+            state.voice = rom.u8(state.pc)
+            state.pc += 1
+            continue
+        if command == VOL:
+            state.volume = rom.u8(state.pc)
+            state.pc += 1
+            continue
+        if command == PAN:
+            state.pan = _signed_center(rom.u8(state.pc))
+            state.pc += 1
+            continue
+        if command == BEND:
+            state.bend = _signed_center(rom.u8(state.pc))
+            state.pc += 1
+            continue
+        if command == BENDR:
+            state.bend_range = rom.u8(state.pc)
+            state.pc += 1
+            continue
+        if command in {LFOS, LFODL, MOD, MODT}:
+            state.pc += 1
+            continue
+        if command == TUNE:
+            state.tune = _signed_center(rom.u8(state.pc))
+            state.pc += 1
+            continue
+        if command == PORT:
+            state.pc += 2
+            continue
+        if command == XCMD:
+            _handle_xcmd(rom, state)
+            continue
+        if command == EOT:
+            key = state.last_key
+            if rom.u8(state.pc) < 0x80:
+                key = rom.u8(state.pc)
+                state.last_key = key
+                state.pc += 1
+            _close_tie(state, key, tick)
+            continue
+
+        raise ExtractError(
+            f"unsupported MP2K command 0x{command:02X} at ROM 0x{state.pc:X}"
+        )
+
+
+def sequence_song(
+    rom: Rom,
+    song: Song,
+    max_seconds: float,
+) -> tuple[list[NoteEvent], list[float], float]:
+    states = [TrackState(pc=pc) for pc in song.tracks]
+    per_track_events: list[list[NoteEvent]] = [[] for _ in states]
+    tempo_box = [150]
+    tick_seconds: list[float] = []
+    elapsed = 0.0
+    tick = 0
+    max_ticks = 24 * 300 * 3  # hard safety cap even with pathological tempo.
+
+    while elapsed < max_seconds and tick < max_ticks:
+        if all(state.ended for state in states):
+            break
+        for state, events in zip(states, per_track_events, strict=True):
+            run_track_tick(rom, state, tick, events, tempo_box)
+        dt = 60.0 / (max(1, tempo_box[0]) * 24.0)
+        tick_seconds.append(dt)
+        elapsed += dt
+        tick += 1
+
+    for state in states:
+        for key in list(state.active_ties):
+            _close_tie(state, key, tick)
+
+    events = [event for track in per_track_events for event in track]
+    if not events:
+        raise ExtractError("song produced no notes")
+    return events, tick_seconds, elapsed
+
+
+def make_tick_positions(tick_seconds: list[float]) -> list[float]:
+    out = [0.0]
+    total = 0.0
+    for dt in tick_seconds:
+        total += dt
+        out.append(total)
+    return out
+
+
+def _decode_compressed_sample(rom: Rom, data_offset: int, sample_count: int) -> array:
+    result = array("b")
+    blocks = (sample_count + 63) // 64
+    for block in range(blocks):
+        start = data_offset + block * 33
+        rom.check(start, 33)
+        value = rom.s8(start)
+        result.append(value)
+        encoded = rom.data[start + 1 : start + 33]
+        # The first encoded byte contributes only its low nibble. This mirrors
+        # FireRed's SoundMainRAM_Unk2 decoder.
+        value = ((value + DELTA_TABLE[encoded[0] & 0x0F] + 128) % 256) - 128
+        result.append(value)
+        for packed in encoded[1:]:
+            value = ((value + DELTA_TABLE[(packed >> 4) & 0x0F] + 128) % 256) - 128
+            result.append(value)
+            value = ((value + DELTA_TABLE[packed & 0x0F] + 128) % 256) - 128
+            result.append(value)
+    del result[sample_count:]
+    return result
+
+
+@dataclass
+class Sample:
+    values: array
+    source_rate: float
+    loop_start: int
+    looped: bool
+
+
+class SampleCache:
+    def __init__(self, rom: Rom):
+        self.rom = rom
+        self.cache: dict[tuple[int, bool, bool], Sample] = {}
+
+    def load(self, tone: Tone) -> Sample:
+        if not isinstance(tone.wav_ptr, int) or tone.wav_ptr < 0 or tone.wav_ptr >= len(self.rom.data):
+            raise ExtractError(f"invalid sample pointer 0x{tone.wav_ptr:X}")
+        compressed = bool(tone.type & TONE_COMPRESSED)
+        reverse = bool(tone.type & TONE_REVERSE)
+        key = (tone.wav_ptr, compressed, reverse)
+        cached = self.cache.get(key)
+        if cached is not None:
+            return cached
+
+        offset = tone.wav_ptr
+        self.rom.check(offset, 16)
+        flags = self.rom.u8(offset + 3)
+        freq = self.rom.u32(offset + 4)
+        loop_start = self.rom.u32(offset + 8)
+        size = self.rom.u32(offset + 12)
+        if size <= 0 or size > 8_000_000:
+            raise ExtractError(f"invalid sample size {size} at ROM 0x{offset:X}")
+        data_offset = offset + 16
+        if compressed:
+            values = _decode_compressed_sample(self.rom, data_offset, size)
+        else:
+            self.rom.check(data_offset, size)
+            values = array("b", self.rom.data[data_offset : data_offset + size])
+        if reverse:
+            values = array("b", reversed(values))
+            loop_start = 0
+
+        source_rate = freq / 1024.0 if freq else OUTPUT_RATE
+        source_rate = max(100.0, min(192_000.0, source_rate))
+        sample = Sample(
+            values=values,
+            source_rate=source_rate,
+            loop_start=max(0, min(len(values) - 1, loop_start)),
+            looped=bool(flags & 0xC0) and loop_start < len(values),
+        )
+        self.cache[key] = sample
+        return sample
+
+
+def _envelope(position: int, total: int, rate: int, tone: Tone) -> float:
+    # MP2K envelopes are updated per mixer block. A compact approximation is
+    # sufficient for an extracted browser asset while preserving the ROM's
+    # timbre/sample data.
+    attack_frames = max(1, int(rate * (0.003 + (255 - tone.attack) / 255 * 0.020)))
+    release_frames = max(1, int(rate * (0.012 + (255 - tone.release) / 255 * 0.080)))
+    attack = min(1.0, position / attack_frames)
+    left = total - position
+    release = min(1.0, max(0, left) / release_frames)
+    return attack * release
+
+
+def _pan_gains(pan: int) -> tuple[float, float]:
+    p = max(-128, min(127, pan))
+    normalized = (p + 128) / 255.0
+    # Equal-power pan.
+    return math.cos(normalized * math.pi / 2), math.sin(normalized * math.pi / 2)
+
+
+def _mix_pcm_note(
+    left: array,
+    right: array,
+    start: int,
+    end: int,
+    event: NoteEvent,
+    tone: Tone,
+    sample: Sample,
+    gain: float,
+    pan: int,
+) -> None:
+    pitch_semitones = (
+        event.key_shift
+        + event.tune / 64.0
+        + (event.bend / 64.0) * event.bend_range
+    )
+    pitch_key = tone.key if tone.rhythm else event.key
+    if tone.type & TONE_FIX:
+        step = 1.0
+    else:
+        step = (
+            sample.source_rate
+            / OUTPUT_RATE
+            * (2.0 ** ((pitch_key + pitch_semitones - 60.0) / 12.0))
+        )
+    l_gain, r_gain = _pan_gains(pan + tone.rhythm_pan)
+    values = sample.values
+    source_len = len(values)
+    if source_len < 2:
+        return
+    pos = 0.0
+    total = end - start
+
+    for frame in range(start, end):
+        idx = int(pos)
+        if idx >= source_len:
+            if not sample.looped:
+                break
+            loop_len = source_len - sample.loop_start
+            if loop_len <= 0:
+                break
+            pos = sample.loop_start + ((pos - sample.loop_start) % loop_len)
+            idx = int(pos)
+        next_idx = idx + 1
+        if next_idx >= source_len:
+            next_idx = sample.loop_start if sample.looped else idx
+        frac = pos - idx
+        value = (values[idx] * (1.0 - frac) + values[next_idx] * frac) / 128.0
+        env = _envelope(frame - start, total, OUTPUT_RATE, tone)
+        mixed = value * gain * env
+        left[frame] += mixed * l_gain
+        right[frame] += mixed * r_gain
+        pos += step
+
+
+def _mix_psg_note(
+    rom: Rom,
+    left: array,
+    right: array,
+    start: int,
+    end: int,
+    event: NoteEvent,
+    tone: Tone,
+    gain: float,
+    pan: int,
+) -> None:
+    channel = tone.type & TONE_CGB_MASK
+    semitone = (
+        event.key
+        + event.key_shift
+        + event.tune / 64.0
+        + (event.bend / 64.0) * event.bend_range
+    )
+    frequency = 440.0 * (2.0 ** ((semitone - 69.0) / 12.0))
+    phase_step = frequency / OUTPUT_RATE
+    phase = 0.0
+    l_gain, r_gain = _pan_gains(pan + tone.rhythm_pan)
+    total = end - start
+    lfsr = 0x7FFF
+    duty_values = [0.125, 0.25, 0.5, 0.75]
+    duty = duty_values[(tone.wav_ptr if isinstance(tone.wav_ptr, int) else 2) & 3]
+
+    wave_values: list[float] | None = None
+    if channel == 3 and isinstance(tone.wav_ptr, int) and 0 <= tone.wav_ptr < len(rom.data):
+        # CGB wave RAM stores 32 4-bit samples in 16 bytes.
+        try:
+            raw = rom.data[tone.wav_ptr : tone.wav_ptr + 16]
+            if len(raw) == 16:
+                wave_values = []
+                for packed in raw:
+                    wave_values.append(((packed >> 4) - 7.5) / 7.5)
+                    wave_values.append(((packed & 0x0F) - 7.5) / 7.5)
+        except Exception:
+            wave_values = None
+
+    for frame in range(start, end):
+        if channel in {1, 2}:
+            value = 1.0 if phase < duty else -1.0
+        elif channel == 3 and wave_values:
+            value = wave_values[int(phase * 32) & 31]
+        elif channel == 4:
+            # Deterministic GBA-like noise approximation.
+            bit = (lfsr ^ (lfsr >> 1)) & 1
+            lfsr = (lfsr >> 1) | (bit << 14)
+            value = 1.0 if (lfsr & 1) else -1.0
+        else:
+            value = math.sin(phase * math.tau)
+        env = _envelope(frame - start, total, OUTPUT_RATE, tone)
+        mixed = value * gain * 0.42 * env
+        left[frame] += mixed * l_gain
+        right[frame] += mixed * r_gain
+        phase = (phase + phase_step) % 1.0
+
+
+def render_song(
+    rom: Rom,
+    song: Song,
+    events: list[NoteEvent],
+    tick_seconds: list[float],
+    duration: float,
+    target: Path,
+) -> dict[str, int | float]:
+    tick_positions = make_tick_positions(tick_seconds)
+    frames = max(1, int(min(duration, tick_positions[-1]) * OUTPUT_RATE))
+    left = array("f", [0.0]) * frames
+    right = array("f", [0.0]) * frames
+    cache = SampleCache(rom)
+    skipped = 0
+
+    for event in events:
+        if event.start_tick >= len(tick_positions) - 1:
+            continue
+        end_tick = min(
+            len(tick_positions) - 1,
+            event.start_tick + max(1, event.duration_ticks),
+        )
+        start = int(tick_positions[event.start_tick] * OUTPUT_RATE)
+        end = min(frames, max(start + 1, int(tick_positions[end_tick] * OUTPUT_RATE)))
+        if start >= frames or end <= start:
+            continue
+        try:
+            tone = read_tone(rom, song.voicegroup, event.voice, event.key)
+        except ExtractError:
+            skipped += 1
+            continue
+
+        gain = (
+            max(0, min(127, event.velocity)) / 127.0
+            * max(0, min(127, event.volume)) / 127.0
+            * 0.24
+        )
+        try:
+            if tone.type & TONE_CGB_MASK:
+                _mix_psg_note(rom, left, right, start, end, event, tone, gain, event.pan)
+            else:
+                sample = cache.load(tone)
+                _mix_pcm_note(left, right, start, end, event, tone, sample, gain, event.pan)
+        except ExtractError:
+            skipped += 1
+
+    peak = 0.0
+    for value in left:
+        peak = max(peak, abs(value))
+    for value in right:
+        peak = max(peak, abs(value))
+    scale = 0.92 / peak if peak > 0.92 else 1.0
+
+    pcm = array("h")
+    for l_value, r_value in zip(left, right, strict=True):
+        pcm.append(int(max(-1.0, min(1.0, l_value * scale)) * 32767))
+        pcm.append(int(max(-1.0, min(1.0, r_value * scale)) * 32767))
+
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with wave.open(str(target), "wb") as handle:
+        handle.setnchannels(2)
+        handle.setsampwidth(2)
+        handle.setframerate(OUTPUT_RATE)
+        if sys.byteorder != "little":
+            pcm.byteswap()
+        handle.writeframes(pcm.tobytes())
+
+    return {
+        "notes": len(events),
+        "skippedNotes": skipped,
+        "seconds": round(frames / OUTPUT_RATE, 3),
+        "sampleRate": OUTPUT_RATE,
     }
-
-    for name, source in copies.items():
-        destination = target / name
-        shutil.copy2(source, destination)
-        if name.endswith(".exe") or name == "sappy_detector":
-            destination.chmod(destination.stat().st_mode | 0o111)
-
-    return target / "gba_mus_ripper.exe"
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description=(
-            "Rip FireRed Sappy music and render browser-ready OGG files."
-        )
+        description="Extract FireRed MP2K/Sappy music directly to WAV."
     )
     parser.add_argument("rom", type=Path)
     parser.add_argument(
@@ -103,139 +794,75 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path("local-assets/extracted/firered/music"),
     )
-    parser.add_argument("--ripper", default="gba_mus_ripper")
-    parser.add_argument("--fluidsynth", default="fluidsynth")
-    parser.add_argument("--ffmpeg", default="ffmpeg")
     parser.add_argument(
-        "--skip-rip",
-        action="store_true",
-        help="Reuse an existing output/ripped directory.",
+        "--seconds",
+        type=float,
+        default=DEFAULT_SECONDS,
+        help=f"maximum rendered length per song (default {DEFAULT_SECONDS:g}s)",
     )
     parser.add_argument(
-        "--all",
-        action="store_true",
-        help="Render every songNNNN.mid produced by the ripper.",
+        "--tracks",
+        help="comma-separated music IDs; defaults to the tracks Tactimon uses",
     )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    rom = args.rom.resolve()
-    if not rom.exists():
-        raise SystemExit(f"ROM not found: {rom}")
-
-    actual_sha1 = sha1(rom)
+    rom_path = args.rom.resolve()
+    if not rom_path.exists():
+        raise SystemExit(f"ROM not found: {rom_path}")
+    actual_sha1 = sha1(rom_path)
     if actual_sha1 != FIRERED_SHA1:
         raise SystemExit(
             "Unsupported FireRed ROM SHA-1. "
             f"Expected {FIRERED_SHA1}, got {actual_sha1}."
         )
+    if args.seconds <= 1:
+        raise SystemExit("--seconds must be greater than 1")
 
-    output = args.output.resolve()
-    ripped = output / "ripped"
-    runtime = output / "runtime"
-    ripped.mkdir(parents=True, exist_ok=True)
+    rom = Rom(rom_path.read_bytes())
+    if args.tracks:
+        try:
+            selected = [int(value.strip()) for value in args.tracks.split(",") if value.strip()]
+        except ValueError as error:
+            raise SystemExit("--tracks must contain numeric music IDs") from error
+    else:
+        selected = list(REQUIRED_TRACKS)
+
+    runtime = args.output.resolve() / "runtime"
     runtime.mkdir(parents=True, exist_ok=True)
-
-    fluidsynth = executable(args.fluidsynth, "FluidSynth")
-    ffmpeg = executable(args.ffmpeg, "FFmpeg")
-
-    if not args.skip_rip:
-        main_ripper = executable(args.ripper, "GBA Mus Ripper")
-        with tempfile.TemporaryDirectory(
-            prefix="tactimon-gba-mus-ripper-"
-        ) as shim_dir:
-            shim = make_ripper_shim(
-                main_ripper,
-                Path(shim_dir),
-            )
-            run(
-                [
-                    str(shim),
-                    str(rom),
-                    "-o",
-                    str(ripped),
-                ]
-            )
-
-    midis = sorted(ripped.glob("song[0-9][0-9][0-9][0-9].mid"))
-    if not midis:
-        raise SystemExit(
-            f"No songNNNN.mid files found in {ripped}. "
-            "Run without --skip-rip first."
-        )
-
-    soundfonts = sorted(ripped.glob("*.sf2"))
-    if not soundfonts:
-        raise SystemExit(f"No .sf2 soundfont found in {ripped}.")
-    soundfont = soundfonts[0]
-
-    selected = (
-        midis
-        if args.all
-        else [
-            ripped / f"song{track_id:04d}.mid"
-            for track_id in REQUIRED_TRACKS
-        ]
-    )
-    missing = [path.name for path in selected if not path.exists()]
-    if missing:
-        raise SystemExit(
-            "Required ripped tracks are missing: " + ", ".join(missing)
-        )
-
     rendered = []
-    for midi in selected:
-        track_id = int(midi.stem.removeprefix("song"))
-        target = runtime / f"{track_id}.ogg"
-
-        with tempfile.TemporaryDirectory(
-            prefix="tactimon-music-render-"
-        ) as temp_dir:
-            wav = Path(temp_dir) / f"{track_id}.wav"
-            run(
-                [
-                    str(fluidsynth),
-                    "-ni",
-                    "-F",
-                    str(wav),
-                    "-r",
-                    "44100",
-                    str(soundfont),
-                    str(midi),
-                ]
-            )
-            run(
-                [
-                    str(ffmpeg),
-                    "-y",
-                    "-loglevel",
-                    "warning",
-                    "-i",
-                    str(wav),
-                    "-c:a",
-                    "libvorbis",
-                    "-q:a",
-                    "5",
-                    str(target),
-                ]
-            )
-
+    for music_id in selected:
+        name = REQUIRED_TRACKS.get(music_id, f"song-{music_id}")
+        print(f"Extracting {music_id} ({name}) from FireRed ROM...")
+        song = read_song(rom, music_id)
+        events, tick_seconds, duration = sequence_song(rom, song, args.seconds)
+        target = runtime / f"{music_id}.wav"
+        stats = render_song(
+            rom,
+            song,
+            events,
+            tick_seconds,
+            min(args.seconds, duration),
+            target,
+        )
+        print(
+            f"  -> {target.name}: {stats['seconds']}s, "
+            f"{stats['notes']} notes, {stats['skippedNotes']} skipped"
+        )
         rendered.append(
             {
-                "musicId": track_id,
-                "name": REQUIRED_TRACKS.get(
-                    track_id,
-                    f"song-{track_id}",
-                ),
+                "musicId": music_id,
+                "name": name,
                 "file": target.name,
-                "sourceMidi": midi.name,
+                **stats,
             }
         )
 
     manifest = {
-        "source": "Pokemon FireRed local ROM / Sappy",
+        "source": "Pokemon FireRed local ROM / MP2K-Sappy",
+        "extractor": "tactimon-pure-python-mp2k",
         "romSha1": actual_sha1,
         "tracks": rendered,
     }
@@ -243,7 +870,7 @@ def main() -> int:
         json.dumps(manifest, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(f"Rendered {len(rendered)} tracks to {runtime}")
+    print(f"Extracted {len(rendered)} tracks to {runtime}")
     return 0
 
 

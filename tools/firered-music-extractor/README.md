@@ -1,34 +1,31 @@
 # FireRed music extractor
 
-Normal use is intentionally one step:
+Normal use is one command:
 
 ```bash
 pnpm dev
 ```
 
-If the required music files do not exist, the client predev script finds the supported FireRed ROM in `local-assets/roms/`, extracts the music, then starts the game. If extraction cannot run, development stops with the actual missing-tool error instead of opening the game with broken audio URLs.
+If the music is missing, Tactimon finds the supported FireRed ROM in `local-assets/roms/`, reads the ROM's MP2K/Sappy song table and instruments, and renders the tracks directly to WAV before Next.js starts.
 
-The supported ROM SHA-1 is `41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc`.
+There is no GBA Mus Ripper, FluidSynth or FFmpeg dependency. The extractor is `tools/firered-music-extractor/extract.py` and uses only the Python standard library.
 
-The generated runtime tracks are:
+Supported FireRed SHA-1:
 
-- 291 — Route 1
-- 297 — Trainer battle / current rival battle
-- 298 — Wild battle
-- 300 — Pallet Town
-- 301 — Professor Oak's Lab
-- 314 — Viridian/Pewter
+```text
+41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc
+```
 
-Generated browser assets are written to:
+The runtime tracks currently generated are 291 (Route 1), 297 (trainer/rival battle), 298 (wild battle), 300 (Pallet Town), 301 (Professor Oak's Lab), and 314 (Viridian/Pewter). They are written to:
 
 ```text
 local-assets/extracted/firered/music/runtime/
 ```
 
-The extraction backend currently requires GBA Mus Ripper, FluidSynth and FFmpeg. When `gba_mus_ripper` is not on `PATH`, set `TACTIMON_GBA_MUS_RIPPER` to its executable path.
-
-To prepare only the music without starting Next.js:
+To run only the extraction:
 
 ```bash
 pnpm music
 ```
+
+The generated WAV files are local build artifacts and are not committed.

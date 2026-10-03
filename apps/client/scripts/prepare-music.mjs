@@ -39,7 +39,7 @@ async function runtimeReady() {
   }
 
   for (const id of REQUIRED_TRACKS) {
-    if (!(await exists(resolve(runtimeRoot, `${id}.ogg`)))) {
+    if (!(await exists(resolve(runtimeRoot, `${id}.wav`)))) {
       return false;
     }
   }
@@ -117,11 +117,7 @@ const rom = await findFireRedRom();
 const pythonCommands = process.env.PYTHON
   ? [process.env.PYTHON]
   : ["python3", "python"];
-const ripperArgs = process.env.TACTIMON_GBA_MUS_RIPPER
-  ? ["--ripper", process.env.TACTIMON_GBA_MUS_RIPPER]
-  : [];
-
-console.log("FireRed music missing. Extracting from ROM...");
+console.log("FireRed music missing. Extracting directly from ROM...");
 
 let lastError = null;
 for (const python of pythonCommands) {
@@ -129,7 +125,6 @@ for (const python of pythonCommands) {
     await run(python, [
       extractor,
       rom,
-      ...ripperArgs,
     ]);
     lastError = null;
     break;
@@ -141,9 +136,9 @@ for (const python of pythonCommands) {
 if (lastError || !(await runtimeReady())) {
   throw new Error(
     [
-      "Could not generate FireRed music.",
-      "The extractor output above tells which local tool is missing.",
-      "Required tools: GBA Mus Ripper, FluidSynth and FFmpeg.",
+      "Could not generate FireRed music from the local ROM.",
+      "The extractor uses only Python's standard library.",
+      "Check the ROM hash and the Python error above.",
     ].join(" "),
     { cause: lastError ?? undefined },
   );
