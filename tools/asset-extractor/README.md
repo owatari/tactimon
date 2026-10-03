@@ -35,6 +35,8 @@ local-assets/extracted/<game>/assets/
 ├── overworld/
 ├── ui/
 │   └── items/
+├── maps/
+│   └── layouts/
 └── tilesets/
     ├── 00_general/
     │   ├── tiles.4bpp
@@ -55,6 +57,17 @@ Trainer battle sprites are extracted from the ROM's compressed trainer tables an
 Player/NPC/object graphics are read from `ObjectEventGraphicsInfo`. Frame dimensions, palettes and exact frame counts come from ROM structures plus metadata generated from the matching pret decomp source.
 
 Each output PNG is a sprite sheet and the manifest records frame dimensions/count and source offsets.
+
+### Maps
+
+Named map layouts are exported under `maps/layouts/`. Each usable layout receives:
+
+- `map.bin` with the original packed map cells;
+- `layout.json` with decoded metatile/collision/elevation values;
+- `preview.png` reconstructed from the extracted primary + secondary tilesets;
+- `border.bin` when the layout stores explicit border dimensions.
+
+FireRed's layout table includes intentional empty/unused slots; those remain represented in the manifest instead of being silently renumbered.
 
 ### UI
 
@@ -83,6 +96,7 @@ Generate only one category:
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --trainers
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --overworld
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --tilesets
+python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --maps
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --ui
 ```
 
