@@ -29,6 +29,21 @@ describe("pokemon progression", () => {
     expect(experienceRewardForWild("rattata", 4)).toBe(32);
   });
 
+  it("applies partial XP rewards from failed capture attempts", () => {
+    const progression = createStarterProgression("bulbasaur");
+    const reward = grantWildBattleProgress(
+      progression,
+      {
+        species: "pidgey",
+        level: 5,
+      },
+      0.5,
+    );
+
+    expect(reward.xpGained).toBe(19);
+    expect(reward.progression.experience).toBe(154);
+  });
+
   it("starts a level 5 starter at the FireRed cumulative EXP threshold", () => {
     const progression = createStarterProgression("charmander");
     const xp = experienceProgress(progression);
