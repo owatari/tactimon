@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   applyDuelAction,
   createStarterDuel,
+  createWildDuel,
   DUEL_ITEMS,
   DUEL_MOVES,
   getActiveDuelUnit,
@@ -16,17 +17,36 @@ import {
   type DuelPoint,
   type DuelState,
   type DuelUnit,
+  type PokemonProgression,
   type StarterSpeciesId,
+  type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import { BattleVfx } from "@/components/BattleVfx";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import type { BattleSceneContext } from "@/lib/maps";
 
+export type BattleOutcome = {
+  won: boolean;
+  escaped: boolean;
+};
+
+export type BattleEncounter =
+  | {
+      kind: "trainer";
+    }
+  | {
+      kind: "wild";
+      species: WildSpeciesId;
+      level: number;
+    };
+
 type Props = {
   starter: StarterSpeciesId;
+  progression: PokemonProgression;
+  encounter: BattleEncounter;
   context: BattleSceneContext;
-  onComplete: (won: boolean) => void;
+  onComplete: (outcome: BattleOutcome) => void;
 };
 
 type CommandMode =
@@ -98,14 +118,6 @@ function stageBadges(unit: DuelUnit): Array<{
 
 function pointKey(point: DuelPoint): string {
   return `${point.x},${point.y}`;
-}
-
-function primaryAttackMove(species: StarterSpeciesId): DuelMoveId {
-  return species === "charmander" ? "scratch" : "tackle";
-}
-
-function primaryStatusMove(species: StarterSpeciesId): DuelMoveId {
-  return species === "squirtle" ? "tail-whip" : "growl";
 }
 
 function facingBetween(from: DuelPoint, to: DuelPoint): Facing {
@@ -199,19 +211,39 @@ function findPath(
 
 export function FirstBattle({
   starter,
+  progression,
+  encounter,
   context,
   onComplete,
 }: Props) {
-  const initialState = useMemo(
-    () =>
-      createStarterDuel(starter, {
+  const initialState = useMemo(() => {
+    const player = {
+      species: progression.species,
+      level: progression.level,
+      moves: progression.activeMoves,
+      evs: progression.evs,
+    };
+
+    if (encounter.kind === "wild") {
+      return createWildDuel({
         seed: context.seed,
         width: context.arenaWidth,
         height: context.arenaHeight,
         blocked: context.blocked,
-      }),
-    [context, starter],
-  );
+        player,
+        wildSpecies: encounter.species,
+        wildLevel: encounter.level,
+      });
+    }
+
+    return createStarterDuel(starter, {
+      seed: context.seed,
+      width: context.arenaWidth,
+      height: context.arenaHeight,
+      blocked: context.blocked,
+      player,
+    });
+  }, [context, encounter, progression, starter]);
 
   const [state, setState] = useState<DuelState>(initialState);
   const [command, setCommand] = useState<CommandMode>("root");
@@ -695,8 +727,16 @@ export function FirstBattle({
       <div className="battle-shell battle-shell-clean">
         <header className="battle-minimal-header">
           <div className="battle-minimal-title">
-            <span className="eyebrow">PRIMEIRO COMBATE</span>
-            <strong>Você vs. Blue</strong>
+            <span className="eyebrow">
+              {encounter.kind === "wild"
+                ? "ENCONTRO SELVAGEM"
+                : "PRIMEIRO COMBATE"}
+            </span>
+            <strong>
+              {encounter.kind === "wild"
+                ? `${rival.displayName} selvagem`
+                : "Você vs. Blue"}
+            </strong>
             <small>{context.mapLabel}</small>
           </div>
 
@@ -748,7 +788,11 @@ export function FirstBattle({
                       <span>Lv. {unit.level}</span>
                     </div>
                     <span className="combatant-side-label">
-                      {unit.side === "player" ? "YOU" : "BLUE"}
+                      {unit.side === "player"
+                        ? "YOU"
+                        : encounter.kind === "wild"
+                          ? "WILD"
+                          : "BLUE"}
                     </span>
                   </div>
 
@@ -1137,18 +1181,30 @@ export function FirstBattle({
             </span>
             <h3>
               {state.winner === "player"
-                ? `${player.displayName} venceu o primeiro duelo.`
-                : "Blue venceu desta vez."}
+                ? encounter.kind === "wild"
+                  ? `${rival.displayName} foi derrotado.`
+                  : `${player.displayName} venceu o primeiro duelo.`
+                : encounter.kind === "wild"
+                  ? `${player.displayName} foi derrotado.`
+                  : "Blue venceu desta vez."}
             </h3>
             <p>
-              O resultado não bloqueia a história; este combate é o
-              tutorial do sistema tático.
+              {encounter.kind === "wild"
+                ? state.winner === "player"
+                  ? "Vitórias selvagens concedem XP e podem gerar level up, EV e novos moves."
+                  : "Você retorna ao mapa sem receber recompensa."
+                : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
             </p>
             <button
               type="button"
-              onClick={() => onComplete(state.winner === "player")}
+              onClick={() =>
+                onComplete({
+                  won: state.winner === "player",
+                  escaped: false,
+                })
+              }
             >
-              Voltar ao laboratório
+              Continuar
             </button>
           </div>
         )}
@@ -1157,7 +1213,15 @@ export function FirstBattle({
           <div className="battle-result">
             <span className="eyebrow">ESCAPOU</span>
             <h3>Você saiu do combate.</h3>
-            <button type="button" onClick={() => onComplete(false)}>
+            <button
+              type="button"
+              onClick={() =>
+                onComplete({
+                  won: false,
+                  escaped: true,
+                })
+              }
+            >
               Voltar ao mapa
             </button>
           </div>

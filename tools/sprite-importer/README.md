@@ -40,6 +40,8 @@ For the current starter battle it imports:
 - Bulbasaur: SpriteCollab id `0001`
 - Charmander: SpriteCollab id `0004`
 - Squirtle: SpriteCollab id `0007`
+- Pidgey: SpriteCollab id `0016`
+- Rattata: SpriteCollab id `0019`
 
 The runtime importer reads each `AnimData.xml`, copies available `Idle`, `Walk`, `Attack`, `Hurt` and `Faint` sheets, and generates:
 

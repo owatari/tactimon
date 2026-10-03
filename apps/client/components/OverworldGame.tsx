@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { WildSpeciesId } from "@tactimon/battle-engine";
 import { renderForegroundLayer } from "@/lib/mapRenderer";
 import {
   BattleSceneContext,
@@ -32,6 +33,50 @@ const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
 const INTERACTION_DURATION_MS = 2200;
 
+const ROUTE_1_ENCOUNTER_RATE = 21;
+const ROUTE_1_WILD_SLOTS: Array<{
+  weight: number;
+  species: WildSpeciesId;
+  level: number;
+}> = [
+  { weight: 20, species: "pidgey", level: 3 },
+  { weight: 20, species: "rattata", level: 3 },
+  { weight: 10, species: "pidgey", level: 3 },
+  { weight: 10, species: "rattata", level: 3 },
+  { weight: 10, species: "pidgey", level: 2 },
+  { weight: 10, species: "rattata", level: 2 },
+  { weight: 5, species: "pidgey", level: 3 },
+  { weight: 5, species: "rattata", level: 3 },
+  { weight: 4, species: "pidgey", level: 4 },
+  { weight: 4, species: "rattata", level: 4 },
+  { weight: 1, species: "pidgey", level: 5 },
+  { weight: 1, species: "rattata", level: 4 },
+];
+
+function route1EncounterFromRoll(
+  roll: number,
+): {
+  species: WildSpeciesId;
+  level: number;
+} {
+  let cursor = Math.abs(Math.trunc(roll)) % 100;
+
+  for (const slot of ROUTE_1_WILD_SLOTS) {
+    if (cursor < slot.weight) {
+      return {
+        species: slot.species,
+        level: slot.level,
+      };
+    }
+    cursor -= slot.weight;
+  }
+
+  return {
+    species: "rattata",
+    level: 4,
+  };
+}
+
 const IDLE_FRAME: Record<Direction, number> = {
   south: 0,
   north: 1,
@@ -51,6 +96,13 @@ type Props = {
   paused: boolean;
   onRequestStarterChoice: () => void;
   onFirstBattleTrigger: (context: BattleSceneContext) => void;
+  onWildBattleTrigger: (
+    context: BattleSceneContext,
+    encounter: {
+      species: WildSpeciesId;
+      level: number;
+    },
+  ) => void;
 };
 
 type RuntimePlayer = {
@@ -242,6 +294,7 @@ export function OverworldGame({
   paused,
   onRequestStarterChoice,
   onFirstBattleTrigger,
+  onWildBattleTrigger,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -256,6 +309,8 @@ export function OverworldGame({
   const pausedRef = useRef(paused);
   const pendingWarpRef = useRef<WorldTransition | null>(null);
   const battleTriggerRef = useRef(false);
+  const wildBattleLockRef = useRef(false);
+  const wildEncounterCooldownRef = useRef(4);
 
   const playerRef = useRef(
     createPlayer(
@@ -298,6 +353,8 @@ export function OverworldGame({
     pausedRef.current = paused;
     if (paused) {
       pressedRef.current = [];
+    } else {
+      wildBattleLockRef.current = false;
     }
   }, [paused]);
 
@@ -397,6 +454,7 @@ export function OverworldGame({
   }, [
     onRequestStarterChoice,
     showInteraction,
+    onWildBattleTrigger,
   ]);
 
   const loadMap = useCallback(
@@ -660,6 +718,82 @@ export function OverworldGame({
       return true;
     };
 
+    const createBattleContext = (): BattleSceneContext | null => {
+      const player = playerRef.current;
+      const activeLayout = layoutRef.current;
+      const definition = WORLD_MAPS[mapIdRef.current];
+
+      if (!activeLayout || !definition) {
+        return null;
+      }
+
+      const arenaWidth = Math.min(9, activeLayout.width);
+      const arenaHeight = Math.min(7, activeLayout.height);
+      const cropX = Math.max(
+        0,
+        Math.min(
+          activeLayout.width - arenaWidth,
+          player.tileX - Math.floor(arenaWidth / 2),
+        ),
+      );
+      const cropY = Math.max(
+        0,
+        Math.min(
+          activeLayout.height - arenaHeight,
+          player.tileY - Math.floor(arenaHeight / 2),
+        ),
+      );
+
+      const blocked: Array<{ x: number; y: number }> = [];
+
+      for (let localY = 0; localY < arenaHeight; localY += 1) {
+        for (let localX = 0; localX < arenaWidth; localX += 1) {
+          const worldX = cropX + localX;
+          const worldY = cropY + localY;
+          const cell =
+            activeLayout.cells[
+              worldY * activeLayout.width + worldX
+            ];
+          const occupied =
+            worldObjectsRef.current.some(
+              (object) =>
+                object.x === worldX &&
+                object.y === worldY,
+            ) ||
+            storyObjectsRef.current.some(
+              (object) =>
+                object.x === worldX &&
+                object.y === worldY,
+            );
+
+          if (!cell || cell.collision !== 0 || occupied) {
+            blocked.push({ x: localX, y: localY });
+          }
+        }
+      }
+
+      const seedBuffer = new Uint32Array(1);
+      if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+        crypto.getRandomValues(seedBuffer);
+      } else {
+        seedBuffer[0] = Date.now() >>> 0;
+      }
+
+      return {
+        mapId: mapIdRef.current,
+        mapLabel: definition.label,
+        previewUrl: definition.previewUrl,
+        mapWidth: activeLayout.width,
+        mapHeight: activeLayout.height,
+        cropX,
+        cropY,
+        arenaWidth,
+        arenaHeight,
+        blocked,
+        seed: seedBuffer[0],
+      };
+    };
+
     const maybeTriggerLabBattle = () => {
       const player = playerRef.current;
       const currentStory = storyRef.current;
@@ -678,81 +812,68 @@ export function OverworldGame({
         player.tileX >= 5 &&
         player.tileX <= 7
       ) {
-        const activeLayout = layoutRef.current;
-        const definition = WORLD_MAPS[mapIdRef.current];
-
-        if (!activeLayout || !definition) {
-          return;
-        }
-
-        const arenaWidth = Math.min(9, activeLayout.width);
-        const arenaHeight = Math.min(7, activeLayout.height);
-        const cropX = Math.max(
-          0,
-          Math.min(
-            activeLayout.width - arenaWidth,
-            player.tileX - Math.floor(arenaWidth / 2),
-          ),
-        );
-        const cropY = Math.max(
-          0,
-          Math.min(
-            activeLayout.height - arenaHeight,
-            player.tileY - Math.floor(arenaHeight / 2),
-          ),
-        );
-
-        const blocked: Array<{ x: number; y: number }> = [];
-
-        for (let localY = 0; localY < arenaHeight; localY += 1) {
-          for (let localX = 0; localX < arenaWidth; localX += 1) {
-            const worldX = cropX + localX;
-            const worldY = cropY + localY;
-            const cell =
-              activeLayout.cells[
-                worldY * activeLayout.width + worldX
-              ];
-            const occupied =
-              worldObjectsRef.current.some(
-                (object) =>
-                  object.x === worldX &&
-                  object.y === worldY,
-              ) ||
-              storyObjectsRef.current.some(
-                (object) =>
-                  object.x === worldX &&
-                  object.y === worldY,
-              );
-
-            if (!cell || cell.collision !== 0 || occupied) {
-              blocked.push({ x: localX, y: localY });
-            }
-          }
-        }
-
-        const seedBuffer = new Uint32Array(1);
-        if (typeof crypto !== "undefined" && crypto.getRandomValues) {
-          crypto.getRandomValues(seedBuffer);
-        } else {
-          seedBuffer[0] = Date.now() >>> 0;
-        }
+        const context = createBattleContext();
+        if (!context) return;
 
         battleTriggerRef.current = true;
         resetInput();
-        onFirstBattleTrigger({
-          mapId: mapIdRef.current,
-          mapLabel: definition.label,
-          previewUrl: definition.previewUrl,
-          mapWidth: activeLayout.width,
-          mapHeight: activeLayout.height,
-          cropX,
-          cropY,
-          arenaWidth,
-          arenaHeight,
-          blocked,
-          seed: seedBuffer[0],
-        });
+        onFirstBattleTrigger(context);
       }
+    };
+
+    const maybeTriggerWildBattle = () => {
+      const activeLayout = layoutRef.current;
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+
+      if (
+        mapIdRef.current !== "route-1" ||
+        !activeLayout ||
+        !currentStory.playerPokemon ||
+        !currentStory.firstBattleComplete ||
+        wildBattleLockRef.current
+      ) {
+        return;
+      }
+
+      const cell =
+        activeLayout.cells[
+          player.tileY * activeLayout.width + player.tileX
+        ];
+
+      // FireRed General metatile 0x00D is plain tall grass.
+      if (!cell || cell.metatile !== 0x00d) {
+        return;
+      }
+
+      if (wildEncounterCooldownRef.current > 0) {
+        wildEncounterCooldownRef.current -= 1;
+        return;
+      }
+
+      const rollBuffer = new Uint32Array(1);
+      if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+        crypto.getRandomValues(rollBuffer);
+      } else {
+        rollBuffer[0] = Date.now() >>> 0;
+      }
+
+      const encounterRoll = rollBuffer[0] % 100;
+      if (encounterRoll >= ROUTE_1_ENCOUNTER_RATE) {
+        return;
+      }
+
+      const context = createBattleContext();
+      if (!context) return;
+
+      const encounter = route1EncounterFromRoll(
+        rollBuffer[0] >>> 8,
+      );
+
+      wildBattleLockRef.current = true;
+      wildEncounterCooldownRef.current = 5;
+      resetInput();
+      onWildBattleTrigger(context, encounter);
     };
 
     const renderScene = (
@@ -807,6 +928,7 @@ export function OverworldGame({
           }
 
           maybeTriggerLabBattle();
+          maybeTriggerWildBattle();
         }
       }
 
@@ -891,6 +1013,7 @@ export function OverworldGame({
   }, [
     loadMap,
     onFirstBattleTrigger,
+    onWildBattleTrigger,
     resetInput,
     showInteraction,
   ]);

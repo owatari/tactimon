@@ -1,6 +1,8 @@
 import {
+  createStarterProgression,
   rivalStarterFor,
   starterDisplayName,
+  type PokemonProgression,
   type StarterSpeciesId,
 } from "@tactimon/battle-engine";
 
@@ -8,12 +10,14 @@ export type StoryState = {
   starter: StarterSpeciesId | null;
   rivalStarter: StarterSpeciesId | null;
   firstBattleComplete: boolean;
+  playerPokemon: PokemonProgression | null;
 };
 
 export const DEFAULT_STORY_STATE: StoryState = {
   starter: null,
   rivalStarter: null,
   firstBattleComplete: false,
+  playerPokemon: null,
 };
 
 export const STARTER_META: Record<
@@ -48,6 +52,25 @@ export function chooseStarter(
     starter,
     rivalStarter: rivalStarterFor(starter),
     firstBattleComplete: false,
+    playerPokemon: createStarterProgression(starter),
+  };
+}
+
+export function normalizeStoryState(
+  input: Partial<StoryState> | null | undefined,
+): StoryState {
+  const starter = input?.starter ?? null;
+
+  return {
+    starter,
+    rivalStarter:
+      input?.rivalStarter ??
+      (starter ? rivalStarterFor(starter) : null),
+    firstBattleComplete:
+      input?.firstBattleComplete ?? false,
+    playerPokemon:
+      input?.playerPokemon ??
+      (starter ? createStarterProgression(starter) : null),
   };
 }
 

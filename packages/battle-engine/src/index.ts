@@ -4,3 +4,4 @@ export * from "./initiative";
 export * from "./stats";
 export * from "./equipment";
 export * from "./duel";
+export * from "./progression";

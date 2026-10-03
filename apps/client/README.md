@@ -100,3 +100,17 @@ Run    -> ask the battle engine to escape
 ```
 
 Every submenu contains a Back action. The persistent HUD is limited to compact player/rival cards with SpriteCollab portraits, HP, AP, MP and visible stat-stage buffs/debuffs.
+
+
+## Route 1 wild encounters and progression
+
+After the Oak/Blue tutorial battle, walking through FireRed's Route 1 tall-grass metatile can roll a wild encounter using FireRed's 21% land encounter rate and slot weights.
+
+Current Route 1 table:
+
+- Pidgey, level 2–5;
+- Rattata, level 2–4.
+
+The tactical arena is still generated from the local Route 1 map crop and collision. Wild battles allow `Run`.
+
+Winning a wild battle awards XP. Level-ups award EV budget and can teach moves from the current starter learnset. When a fifth active move would be learned, the post-battle UI asks which one existing move should be replaced, or allows declining the new move. It does not provide arbitrary move-loadout editing; that belongs to the future Move Tutor.

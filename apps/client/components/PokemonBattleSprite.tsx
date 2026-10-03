@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { StarterSpeciesId } from "@tactimon/battle-engine";
+import type { DuelSpeciesId } from "@tactimon/battle-engine";
 
 type AnimationName = "idle" | "walk" | "attack" | "hurt" | "faint";
 
@@ -23,13 +23,13 @@ type RuntimeSpecies = {
 type RuntimeManifest = {
   source: string;
   directions: string[];
-  species: Record<StarterSpeciesId, RuntimeSpecies>;
+  species: Record<DuelSpeciesId, RuntimeSpecies>;
 };
 
 type Facing = "up" | "down" | "left" | "right";
 
 type Props = {
-  species: StarterSpeciesId;
+  species: DuelSpeciesId;
   side: "player" | "rival";
   animation?: AnimationName;
   facing?: Facing;

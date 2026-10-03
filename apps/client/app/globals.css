@@ -1881,3 +1881,228 @@ h1 {
     font-size: 8px;
   }
 }
+
+
+/* Progression + move replacement */
+.progression-overlay {
+  z-index: 160;
+}
+
+.progression-panel {
+  width: min(720px, 100%);
+}
+
+.progression-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.level-orb {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  place-items: center;
+  border: 1px solid rgba(216, 242, 121, 0.35);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(216, 242, 121, 0.14), rgba(216, 242, 121, 0.03));
+  color: var(--accent-strong);
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.progression-section {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.progression-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.progression-chip {
+  padding: 5px 8px;
+  border: 1px solid rgba(216, 242, 121, 0.2);
+  border-radius: 999px;
+  background: rgba(216, 242, 121, 0.045);
+  color: var(--accent-strong);
+  font-size: 9px;
+}
+
+.progression-chip.muted {
+  color: var(--muted);
+}
+
+.learned-move-list {
+  display: grid;
+  gap: 7px;
+}
+
+.learned-move-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.learned-move-row strong {
+  font-size: 11px;
+}
+
+.learned-move-row span {
+  color: var(--muted);
+  font-size: 8px;
+  text-align: right;
+}
+
+.move-replace-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid rgba(255, 196, 92, 0.22);
+  border-radius: 11px;
+  background:
+    linear-gradient(180deg, rgba(73, 61, 28, 0.18), rgba(37, 31, 16, 0.12));
+}
+
+.move-replace-panel h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.move-replace-panel > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.replace-move-list {
+  display: grid;
+  gap: 6px;
+}
+
+.replace-move-list button,
+.skip-move-button,
+.progression-continue {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.replace-move-list button {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 10px;
+  text-align: left;
+}
+
+.replace-move-list button:hover,
+.skip-move-button:hover,
+.progression-continue:hover {
+  border-color: rgba(216, 242, 121, 0.36);
+  background: rgba(216, 242, 121, 0.07);
+}
+
+.replace-move-list button > span:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.replace-move-list small {
+  color: var(--muted);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.replace-arrow {
+  color: #ffd98b;
+  font-size: 9px;
+  text-align: right;
+}
+
+.skip-move-button,
+.progression-continue {
+  width: fit-content;
+  padding: 9px 12px;
+}
+
+.skip-move-button {
+  color: var(--muted);
+}
+
+.progression-continue {
+  margin-top: 18px;
+}
+
+/* CSS fallbacks for newly learned moves until dedicated PMD mappings are assigned. */
+.vfx-vine-whip,
+.vfx-razor-leaf,
+.vfx-seed-bomb,
+.vfx-ember,
+.vfx-flame-burst,
+.vfx-water-gun,
+.vfx-aqua-jet,
+.vfx-metal-claw,
+.vfx-bite {
+  border-radius: 50%;
+  animation: vfx-impact 380ms ease-out forwards;
+}
+
+.vfx-vine-whip,
+.vfx-razor-leaf,
+.vfx-seed-bomb {
+  background:
+    radial-gradient(circle, rgba(218,255,171,0.95) 0 8%, rgba(125,205,89,0.68) 9% 25%, transparent 48%);
+}
+
+.vfx-ember,
+.vfx-flame-burst {
+  background:
+    radial-gradient(circle, rgba(255,246,177,0.98) 0 7%, rgba(255,142,73,0.82) 8% 25%, rgba(203,62,38,0.4) 26% 38%, transparent 52%);
+}
+
+.vfx-water-gun,
+.vfx-aqua-jet {
+  background:
+    radial-gradient(circle, rgba(220,249,255,0.98) 0 7%, rgba(102,199,255,0.78) 8% 26%, transparent 50%);
+}
+
+.vfx-metal-claw,
+.vfx-bite {
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.96) 0 5%, rgba(190,201,213,0.72) 6% 22%, transparent 48%);
+}
+
+@media (max-width: 600px) {
+  .progression-title-row {
+    align-items: flex-start;
+  }
+
+  .learned-move-row,
+  .replace-move-list button {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .learned-move-row span,
+  .replace-arrow {
+    text-align: left;
+  }
+}

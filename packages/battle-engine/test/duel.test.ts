@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   applyDuelAction,
   createStarterDuel,
+  createWildDuel,
   getActiveDuelUnit,
   getReachableCells,
   manhattanDistance,
@@ -57,6 +58,63 @@ describe("starter duel", () => {
         ),
       ).toBe(false);
     }
+  });
+
+  it("creates Route 1-style wild battles with persistent player progression", () => {
+    const state = createWildDuel({
+      seed: 2026,
+      width: 9,
+      height: 7,
+      blocked: [{ x: 0, y: 0 }],
+      player: {
+        species: "squirtle",
+        level: 7,
+        moves: ["tackle", "tail-whip", "water-gun"],
+        evs: {
+          hp: 6,
+          attack: 0,
+          defense: 6,
+          specialAttack: 0,
+          specialDefense: 0,
+          speed: 0,
+        },
+      },
+      wildSpecies: "pidgey",
+      wildLevel: 3,
+    });
+
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const wild = state.units.find((unit) => unit.side === "rival")!;
+
+    expect(state.battleKind).toBe("wild");
+    expect(player.level).toBe(7);
+    expect(player.moves).toContain("water-gun");
+    expect(wild.species).toBe("pidgey");
+    expect(wild.level).toBe(3);
+  });
+
+  it("allows fleeing from a wild battle", () => {
+    let state = createWildDuel({
+      seed: 80,
+      player: {
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle", "growl"],
+      },
+      wildSpecies: "rattata",
+      wildLevel: 2,
+    });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    state = { ...state, activeUnitId: player.id };
+
+    const result = applyDuelAction(state, {
+      kind: "flee",
+      unitId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.escaped).toBe(true);
+    expect(result.state.status).toBe("finished");
   });
 
   it("uses four-direction movement, MP, and map obstacles", () => {

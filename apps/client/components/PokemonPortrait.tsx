@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { StarterSpeciesId } from "@tactimon/battle-engine";
+import type { DuelSpeciesId } from "@tactimon/battle-engine";
 
 type Props = {
-  species: StarterSpeciesId;
+  species: DuelSpeciesId;
   name: string;
 };
 

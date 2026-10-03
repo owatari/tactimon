@@ -9,7 +9,7 @@ export default function HomePage() {
           <h1>Kanto Overworld</h1>
         </div>
         <div className="build-badge">
-          Pallet · Oak Lab · Primeiro combate
+          Pallet · Route 1 · Wild battles · Progressão
         </div>
       </header>
 
@@ -18,7 +18,7 @@ export default function HomePage() {
       </section>
 
       <footer className="footer-note">
-        Overworld + história inicial + primeiro duelo tático.
+        Overworld + batalha tática + encontros selvagens + progressão inicial.
       </footer>
     </main>
   );

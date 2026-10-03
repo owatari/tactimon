@@ -8,6 +8,17 @@ export type StarterSpeciesId =
   | "charmander"
   | "squirtle";
 
+export type WildSpeciesId = "pidgey" | "rattata";
+export type DuelSpeciesId = StarterSpeciesId | WildSpeciesId;
+export type DuelType =
+  | "normal"
+  | "grass"
+  | "fire"
+  | "water"
+  | "flying"
+  | "dark"
+  | "steel";
+
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
@@ -16,10 +27,19 @@ export type DuelMoveId =
   | "tackle"
   | "scratch"
   | "growl"
-  | "tail-whip";
+  | "tail-whip"
+  | "vine-whip"
+  | "razor-leaf"
+  | "seed-bomb"
+  | "ember"
+  | "metal-claw"
+  | "flame-burst"
+  | "water-gun"
+  | "bite"
+  | "aqua-jet";
 
 export type DuelMoveTargeting = "single-enemy";
-export type DuelMoveMotion = "contact" | "status";
+export type DuelMoveMotion = "contact" | "status" | "projectile";
 export type DuelStatId = "attack" | "defense";
 
 export interface DuelPoint {
@@ -27,11 +47,38 @@ export interface DuelPoint {
   y: number;
 }
 
+export interface DuelEvSpread {
+  hp: number;
+  attack: number;
+  defense: number;
+  specialAttack: number;
+  specialDefense: number;
+  speed: number;
+}
+
+export interface DuelPokemonBuild {
+  species: DuelSpeciesId;
+  level: number;
+  moves: DuelMoveId[];
+  evs?: Partial<DuelEvSpread>;
+}
+
 export interface StarterDuelOptions {
   seed?: number;
   width?: number;
   height?: number;
   blocked?: readonly DuelPoint[];
+  player?: DuelPokemonBuild;
+}
+
+export interface WildDuelOptions {
+  seed?: number;
+  width?: number;
+  height?: number;
+  blocked?: readonly DuelPoint[];
+  player: DuelPokemonBuild;
+  wildSpecies: WildSpeciesId;
+  wildLevel: number;
 }
 
 export interface DuelItem {
@@ -44,8 +91,8 @@ export interface DuelItem {
 export interface DuelMove {
   id: DuelMoveId;
   name: string;
-  type: "normal";
-  category: "physical" | "status";
+  type: DuelType;
+  category: "physical" | "special" | "status";
   targeting: DuelMoveTargeting;
   motion: DuelMoveMotion;
   vfxId: DuelMoveId;
@@ -93,14 +140,16 @@ export type DuelPresentationEvent =
 export interface DuelUnit {
   id: string;
   side: DuelSide;
-  species: StarterSpeciesId;
+  species: DuelSpeciesId;
   displayName: string;
-  type: "grass" | "fire" | "water";
+  type: DuelType;
   level: number;
   hp: number;
   maxHp: number;
   attack: number;
   defense: number;
+  specialAttack: number;
+  specialDefense: number;
   speed: number;
   attackStage: number;
   defenseStage: number;
@@ -171,24 +220,27 @@ const LEVEL = 5;
 const FIXED_IV = 15;
 const MAX_STAGE = 6;
 
-const SPECIES: Record<
-  StarterSpeciesId,
-  {
-    name: string;
-    type: DuelUnit["type"];
-    hp: number;
-    attack: number;
-    defense: number;
-    speed: number;
-    moves: DuelMoveId[];
-  }
-> = {
+type SpeciesData = {
+  name: string;
+  type: DuelType;
+  hp: number;
+  attack: number;
+  defense: number;
+  specialAttack: number;
+  specialDefense: number;
+  speed: number;
+  moves: DuelMoveId[];
+};
+
+const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   bulbasaur: {
     name: "Bulbasaur",
     type: "grass",
     hp: 45,
     attack: 49,
     defense: 49,
+    specialAttack: 65,
+    specialDefense: 65,
     speed: 45,
     moves: ["tackle", "growl"],
   },
@@ -198,6 +250,8 @@ const SPECIES: Record<
     hp: 39,
     attack: 52,
     defense: 43,
+    specialAttack: 60,
+    specialDefense: 50,
     speed: 65,
     moves: ["scratch", "growl"],
   },
@@ -207,7 +261,31 @@ const SPECIES: Record<
     hp: 44,
     attack: 48,
     defense: 65,
+    specialAttack: 50,
+    specialDefense: 64,
     speed: 43,
+    moves: ["tackle", "tail-whip"],
+  },
+  pidgey: {
+    name: "Pidgey",
+    type: "flying",
+    hp: 40,
+    attack: 45,
+    defense: 40,
+    specialAttack: 35,
+    specialDefense: 35,
+    speed: 56,
+    moves: ["tackle", "growl"],
+  },
+  rattata: {
+    name: "Rattata",
+    type: "normal",
+    hp: 30,
+    attack: 56,
+    defense: 35,
+    specialAttack: 25,
+    specialDefense: 35,
+    speed: 72,
     moves: ["tackle", "tail-whip"],
   },
 };
@@ -258,7 +336,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     targeting: "single-enemy",
     motion: "status",
     vfxId: "growl",
-    description: "Intimida um inimigo próximo e reduz seu Attack em 1 estágio.",
+    description: "Reduz o Attack do alvo em 1 estágio.",
     power: null,
     apCost: 2,
     minRange: 1,
@@ -273,12 +351,138 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     targeting: "single-enemy",
     motion: "status",
     vfxId: "tail-whip",
-    description: "Distrai um inimigo próximo e reduz sua Defense em 1 estágio.",
+    description: "Reduz a Defense do alvo em 1 estágio.",
     power: null,
     apCost: 2,
     minRange: 1,
     maxRange: 3,
     effect: "defense-down",
+  },
+  "vine-whip": {
+    id: "vine-whip",
+    name: "Vine Whip",
+    type: "grass",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "vine-whip",
+    description: "Chicoteia um alvo a até 2 tiles de distância.",
+    power: 45,
+    apCost: 4,
+    minRange: 1,
+    maxRange: 2,
+  },
+  "razor-leaf": {
+    id: "razor-leaf",
+    name: "Razor Leaf",
+    type: "grass",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "razor-leaf",
+    description: "Lança folhas cortantes a média distância.",
+    power: 55,
+    apCost: 4,
+    minRange: 2,
+    maxRange: 4,
+  },
+  "seed-bomb": {
+    id: "seed-bomb",
+    name: "Seed Bomb",
+    type: "grass",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "seed-bomb",
+    description: "Projétil de sementes de alto impacto.",
+    power: 65,
+    apCost: 5,
+    minRange: 2,
+    maxRange: 4,
+  },
+  ember: {
+    id: "ember",
+    name: "Ember",
+    type: "fire",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "ember",
+    description: "Dispara brasas contra um alvo distante.",
+    power: 40,
+    apCost: 4,
+    minRange: 2,
+    maxRange: 4,
+  },
+  "metal-claw": {
+    id: "metal-claw",
+    name: "Metal Claw",
+    type: "steel",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "metal-claw",
+    description: "Ataque físico pesado contra um alvo adjacente.",
+    power: 50,
+    apCost: 4,
+    minRange: 1,
+    maxRange: 1,
+  },
+  "flame-burst": {
+    id: "flame-burst",
+    name: "Flame Burst",
+    type: "fire",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "flame-burst",
+    description: "Projétil de fogo mais forte para média distância.",
+    power: 65,
+    apCost: 5,
+    minRange: 2,
+    maxRange: 4,
+  },
+  "water-gun": {
+    id: "water-gun",
+    name: "Water Gun",
+    type: "water",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "water-gun",
+    description: "Jato d'água que alcança até 4 tiles.",
+    power: 40,
+    apCost: 4,
+    minRange: 2,
+    maxRange: 4,
+  },
+  bite: {
+    id: "bite",
+    name: "Bite",
+    type: "dark",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "bite",
+    description: "Mordida forte contra um alvo adjacente.",
+    power: 60,
+    apCost: 4,
+    minRange: 1,
+    maxRange: 1,
+  },
+  "aqua-jet": {
+    id: "aqua-jet",
+    name: "Aqua Jet",
+    type: "water",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "aqua-jet",
+    description: "Investida aquática rápida em curto alcance.",
+    power: 65,
+    apCost: 5,
+    minRange: 1,
+    maxRange: 2,
   },
 };
 
@@ -446,45 +650,66 @@ function stageMultiplier(stage: number): number {
 }
 
 function makeUnit(
-  species: StarterSpeciesId,
+  build: DuelPokemonBuild,
   side: DuelSide,
   position: DuelPoint,
 ): DuelUnit {
-  const base = SPECIES[species];
+  const base = SPECIES[build.species];
+  const evs = {
+    hp: build.evs?.hp ?? 0,
+    attack: build.evs?.attack ?? 0,
+    defense: build.evs?.defense ?? 0,
+    specialAttack: build.evs?.specialAttack ?? 0,
+    specialDefense: build.evs?.specialDefense ?? 0,
+    speed: build.evs?.speed ?? 0,
+  };
+  const level = Math.max(1, Math.min(100, Math.trunc(build.level)));
 
   const maxHp = calculateHpStat({
     base: base.hp,
     iv: FIXED_IV,
-    ev: 0,
-    level: LEVEL,
+    ev: evs.hp,
+    level,
   });
 
   return {
-    id: `${side}-${species}`,
+    id: `${side}-${build.species}`,
     side,
-    species,
+    species: build.species,
     displayName: base.name,
     type: base.type,
-    level: LEVEL,
+    level,
     hp: maxHp,
     maxHp,
     attack: calculateOtherStat({
       base: base.attack,
       iv: FIXED_IV,
-      ev: 0,
-      level: LEVEL,
+      ev: evs.attack,
+      level,
     }),
     defense: calculateOtherStat({
       base: base.defense,
       iv: FIXED_IV,
-      ev: 0,
-      level: LEVEL,
+      ev: evs.defense,
+      level,
+    }),
+    specialAttack: calculateOtherStat({
+      base: base.specialAttack,
+      iv: FIXED_IV,
+      ev: evs.specialAttack,
+      level,
+    }),
+    specialDefense: calculateOtherStat({
+      base: base.specialDefense,
+      iv: FIXED_IV,
+      ev: evs.specialDefense,
+      level,
     }),
     speed: calculateOtherStat({
       base: base.speed,
       iv: FIXED_IV,
-      ev: 0,
-      level: LEVEL,
+      ev: evs.speed,
+      level,
     }),
     attackStage: 0,
     defenseStage: 0,
@@ -493,15 +718,16 @@ function makeUnit(
     mp: 3,
     maxMp: 3,
     position,
-    moves: [...base.moves],
+    moves: [...build.moves].slice(0, 4),
   };
 }
 
-export function createStarterDuel(
-  playerStarter: StarterSpeciesId,
-  options: StarterDuelOptions = {},
-): DuelState {
-  const rivalStarter = rivalStarterFor(playerStarter);
+function normalizeArenaOptions(options: {
+  seed?: number;
+  width?: number;
+  height?: number;
+  blocked?: readonly DuelPoint[];
+}) {
   const width = Math.max(3, Math.trunc(options.width ?? 7));
   const height = Math.max(3, Math.trunc(options.height ?? 5));
   const seed = (options.seed ?? 1) >>> 0;
@@ -515,6 +741,17 @@ export function createStarterDuel(
     )
     .map((point) => ({ ...point }));
 
+  return { width, height, seed, blocked };
+}
+
+export function createStarterDuel(
+  playerStarter: StarterSpeciesId,
+  options: StarterDuelOptions = {},
+): DuelState {
+  const rivalStarter = rivalStarterFor(playerStarter);
+  const { width, height, seed, blocked } =
+    normalizeArenaOptions(options);
+
   const [playerPosition, rivalPosition] = pickSpawnPositions(
     width,
     height,
@@ -522,13 +759,24 @@ export function createStarterDuel(
     seed,
   );
 
+  const playerBuild: DuelPokemonBuild =
+    options.player ?? {
+      species: playerStarter,
+      level: LEVEL,
+      moves: SPECIES[playerStarter].moves,
+    };
+
   const player = makeUnit(
-    playerStarter,
+    playerBuild,
     "player",
     playerPosition,
   );
   const rival = makeUnit(
-    rivalStarter,
+    {
+      species: rivalStarter,
+      level: LEVEL,
+      moves: SPECIES[rivalStarter].moves,
+    },
     "rival",
     rivalPosition,
   );
@@ -553,6 +801,60 @@ export function createStarterDuel(
     units: [player, rival],
     log: [
       `Blue desafia você! ${rival.displayName} entra na arena.`,
+      `Posições sorteadas para esta batalha (seed ${seed}).`,
+      `${active.displayName} age primeiro pela Speed.`,
+    ],
+  };
+}
+
+export function createWildDuel(
+  options: WildDuelOptions,
+): DuelState {
+  const { width, height, seed, blocked } =
+    normalizeArenaOptions(options);
+
+  const [playerPosition, wildPosition] = pickSpawnPositions(
+    width,
+    height,
+    blocked,
+    seed,
+  );
+
+  const player = makeUnit(
+    options.player,
+    "player",
+    playerPosition,
+  );
+  const wild = makeUnit(
+    {
+      species: options.wildSpecies,
+      level: options.wildLevel,
+      moves: SPECIES[options.wildSpecies].moves,
+    },
+    "rival",
+    wildPosition,
+  );
+
+  const active =
+    player.speed >= wild.speed ? player : wild;
+
+  return {
+    width,
+    height,
+    seed,
+    blocked,
+    battleKind: "wild",
+    escaped: false,
+    items: {
+      potion: 1,
+    },
+    round: 1,
+    activeUnitId: active.id,
+    status: "active",
+    winner: null,
+    units: [player, wild],
+    log: [
+      `Um ${wild.displayName} selvagem apareceu!`,
       `Posições sorteadas para esta batalha (seed ${seed}).`,
       `${active.displayName} age primeiro pela Speed.`,
     ],
@@ -720,13 +1022,15 @@ function calculateDamage(
     return 0;
   }
 
-  const attack =
-    attacker.attack *
-    stageMultiplier(attacker.attackStage);
+  const isSpecial = move.category === "special";
+  const attack = isSpecial
+    ? attacker.specialAttack
+    : attacker.attack * stageMultiplier(attacker.attackStage);
   const defense = Math.max(
     1,
-    defender.defense *
-      stageMultiplier(defender.defenseStage),
+    isSpecial
+      ? defender.specialDefense
+      : defender.defense * stageMultiplier(defender.defenseStage),
   );
 
   return Math.max(
@@ -950,7 +1254,7 @@ export function applyDuelAction(
     delta: number;
   }> = [];
 
-  if (move.category === "physical") {
+  if (move.category !== "status") {
     damage = calculateDamage(actor, target, move);
     target.hp = Math.max(0, target.hp - damage);
 
@@ -1022,7 +1326,7 @@ export function applyDuelAction(
 function attackMoveFor(unit: DuelUnit): DuelMoveId {
   return unit.moves.find(
     (moveId) =>
-      DUEL_MOVES[moveId].category === "physical",
+      DUEL_MOVES[moveId].category !== "status",
   ) ?? unit.moves[0];
 }
 

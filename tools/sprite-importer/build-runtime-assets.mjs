@@ -11,6 +11,8 @@ const SPECIES = {
   bulbasaur: "0001",
   charmander: "0004",
   squirtle: "0007",
+  pidgey: "0016",
+  rattata: "0019",
 };
 
 const ANIMATIONS = ["Idle", "Walk", "Attack", "Hurt", "Faint"];
