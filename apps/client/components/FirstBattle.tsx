@@ -20,6 +20,7 @@ import {
 } from "@tactimon/battle-engine";
 import { BattleVfx } from "@/components/BattleVfx";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
+import { PokemonPortrait } from "@/components/PokemonPortrait";
 import type { BattleSceneContext } from "@/lib/maps";
 
 type Props = {
@@ -60,6 +61,39 @@ function sleep(ms: number): Promise<void> {
 
 function hpPercent(hp: number, maxHp: number): number {
   return Math.max(0, Math.min(100, (hp / maxHp) * 100));
+}
+
+function hpTone(hp: number, maxHp: number): "good" | "warn" | "danger" {
+  const percent = hpPercent(hp, maxHp);
+  if (percent <= 25) return "danger";
+  if (percent <= 50) return "warn";
+  return "good";
+}
+
+function stageBadges(unit: DuelUnit): Array<{
+  label: string;
+  tone: "buff" | "debuff";
+}> {
+  const badges: Array<{
+    label: string;
+    tone: "buff" | "debuff";
+  }> = [];
+
+  if (unit.attackStage !== 0) {
+    badges.push({
+      label: `ATK ${unit.attackStage > 0 ? "+" : ""}${unit.attackStage}`,
+      tone: unit.attackStage > 0 ? "buff" : "debuff",
+    });
+  }
+
+  if (unit.defenseStage !== 0) {
+    badges.push({
+      label: `DEF ${unit.defenseStage > 0 ? "+" : ""}${unit.defenseStage}`,
+      tone: unit.defenseStage > 0 ? "buff" : "debuff",
+    });
+  }
+
+  return badges;
 }
 
 function pointKey(point: DuelPoint): string {
@@ -637,29 +671,33 @@ export function FirstBattle({
     };
   }, [active?.side, busy, state]);
 
-  const prompt =
-    command === "walk"
-      ? "Escolha um tile destacado para andar."
-      : command === "move-target" && selectedMove
-        ? `Escolha quem receberá ${DUEL_MOVES[selectedMove].name}.`
-        : command === "item-target" && selectedItem
-          ? `Escolha quem receberá ${DUEL_ITEMS[selectedItem].name}.`
-          : command === "moves"
-            ? "Escolha um golpe."
-            : command === "items"
-              ? "Escolha um item."
-              : "Escolha sua próxima ação.";
+  const menuPosition =
+    visualPositions[player.id] ?? player.position;
+  const menuLeft = Math.max(
+    16,
+    Math.min(
+      84,
+      ((menuPosition.x + 0.5) / state.width) * 100,
+    ),
+  );
+  const menuTop = Math.max(
+    24,
+    Math.min(
+      88,
+      ((menuPosition.y + 0.15) / state.height) * 100,
+    ),
+  );
+  const latestMessage =
+    notice ?? state.log[state.log.length - 1] ?? "";
 
   return (
     <div className="battle-overlay">
-      <div className="battle-shell battle-shell-v2">
-        <header className="battle-header">
-          <div>
+      <div className="battle-shell battle-shell-clean">
+        <header className="battle-minimal-header">
+          <div className="battle-minimal-title">
             <span className="eyebrow">PRIMEIRO COMBATE</span>
-            <h2>Você vs. Blue</h2>
-            <small className="battle-location">
-              Arena gerada de {context.mapLabel}
-            </small>
+            <strong>Você vs. Blue</strong>
+            <small>{context.mapLabel}</small>
           </div>
 
           <div className="battle-round-cluster">
@@ -682,39 +720,78 @@ export function FirstBattle({
           </div>
         </header>
 
-        <div className="duel-status-row battle-party-row">
-          {[player, rival].map((unit) => (
-            <div
-              key={unit.id}
-              className={`duel-status-card ${unit.side} ${
-                active?.id === unit.id ? "active" : ""
-              }`}
-            >
-              <div className="duel-status-name">
-                <strong>{unit.displayName}</strong>
-                <span>Lv. {unit.level}</span>
-              </div>
-              <div className="hp-track">
-                <div
-                  className="hp-fill"
-                  style={{
-                    width: `${hpPercent(unit.hp, unit.maxHp)}%`,
-                  }}
+        <div className="battle-combatant-hud-row">
+          {[player, rival].map((unit) => {
+            const badges = stageBadges(unit);
+            const healthTone = hpTone(unit.hp, unit.maxHp);
+
+            return (
+              <section
+                key={unit.id}
+                className={[
+                  "combatant-hud",
+                  unit.side,
+                  active?.id === unit.id ? "active" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                <PokemonPortrait
+                  species={unit.species}
+                  name={unit.displayName}
                 />
-              </div>
-              <div className="resource-row">
-                <small>
-                  HP {unit.hp}/{unit.maxHp}
-                </small>
-                <small>AP {unit.ap}/{unit.maxAp}</small>
-                <small>MP {unit.mp}/{unit.maxMp}</small>
-              </div>
-            </div>
-          ))}
+
+                <div className="combatant-hud-body">
+                  <div className="combatant-name-row">
+                    <div>
+                      <strong>{unit.displayName}</strong>
+                      <span>Lv. {unit.level}</span>
+                    </div>
+                    <span className="combatant-side-label">
+                      {unit.side === "player" ? "YOU" : "BLUE"}
+                    </span>
+                  </div>
+
+                  <div className="combatant-hp-row">
+                    <span>HP</span>
+                    <div className="combatant-hp-track">
+                      <div
+                        className={`combatant-hp-fill ${healthTone}`}
+                        style={{
+                          width: `${hpPercent(unit.hp, unit.maxHp)}%`,
+                        }}
+                      />
+                    </div>
+                    <strong>
+                      {unit.hp}/{unit.maxHp}
+                    </strong>
+                  </div>
+
+                  <div className="combatant-meta-row">
+                    <span>{unit.ap}/{unit.maxAp} AP</span>
+                    <span>{unit.mp}/{unit.maxMp} MP</span>
+                    <span className="combatant-status-label">STATUS</span>
+                    {badges.length === 0 ? (
+                      <span className="status-chip neutral">OK</span>
+                    ) : (
+                      badges.map((badge) => (
+                        <span
+                          key={badge.label}
+                          className={`status-chip ${badge.tone}`}
+                        >
+                          {badge.label}
+                        </span>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </section>
+            );
+          })}
         </div>
 
         <div
-          className="duel-grid-shell"
+          className="duel-grid-shell clean-arena"
           style={{
             aspectRatio: `${state.width} / ${state.height}`,
           }}
@@ -840,6 +917,184 @@ export function FirstBattle({
               );
             })}
 
+            {isPlayerTurn && state.status === "active" && (
+              <div
+                className={`battle-action-popover mode-${command}`}
+                style={{
+                  left: `${menuLeft}%`,
+                  top: `${menuTop}%`,
+                }}
+              >
+                <div className="battle-action-popover-caret" />
+
+                {command === "root" && (
+                  <div className="battle-action-list">
+                    <button
+                      type="button"
+                      disabled={player.mp <= 0}
+                      onClick={() => setCommand("walk")}
+                    >
+                      <strong>Move</strong>
+                      <span>{player.mp} MP</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCommand("moves")}
+                    >
+                      <strong>Attack</strong>
+                      <span>{player.ap} AP</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCommand("items")}
+                    >
+                      <strong>Item</strong>
+                      <span>Potion ×{state.items.potion}</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="run-action"
+                      onClick={handleFlee}
+                    >
+                      <strong>Run</strong>
+                      <span>Escape</span>
+                    </button>
+                  </div>
+                )}
+
+                {command === "walk" && (
+                  <div className="battle-submenu">
+                    <div className="battle-submenu-copy">
+                      <span>MOVE</span>
+                      <strong>Escolha um tile verde</strong>
+                      <small>{reachable.length} destinos possíveis</small>
+                    </div>
+                    <button
+                      type="button"
+                      className="battle-menu-back"
+                      onClick={resetCommand}
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                )}
+
+                {command === "moves" && (
+                  <div className="battle-action-list">
+                    {player.moves.map((moveId) => {
+                      const move = DUEL_MOVES[moveId];
+                      const canPay = player.ap >= move.apCost;
+
+                      return (
+                        <button
+                          key={moveId}
+                          type="button"
+                          disabled={!canPay}
+                          onClick={() => {
+                            setSelectedMove(moveId);
+                            setCommand("move-target");
+                          }}
+                        >
+                          <strong>{move.name}</strong>
+                          <span>
+                            {move.apCost} AP · {move.minRange}–{move.maxRange}
+                          </span>
+                        </button>
+                      );
+                    })}
+                    <button
+                      type="button"
+                      className="battle-menu-back"
+                      onClick={resetCommand}
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                )}
+
+                {command === "move-target" && selectedMove && (
+                  <div className="battle-submenu">
+                    <div className="battle-submenu-copy">
+                      <span>ATTACK</span>
+                      <strong>{DUEL_MOVES[selectedMove].name}</strong>
+                      <small>
+                        {targetableUnitIds.size > 0
+                          ? "Escolha o alvo destacado"
+                          : "Nenhum alvo no alcance"}
+                      </small>
+                    </div>
+                    <button
+                      type="button"
+                      className="battle-menu-back"
+                      onClick={() => {
+                        setSelectedMove(null);
+                        setCommand("moves");
+                      }}
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                )}
+
+                {command === "items" && (
+                  <div className="battle-action-list">
+                    {(Object.keys(DUEL_ITEMS) as DuelItemId[]).map(
+                      (itemId) => {
+                        const item = DUEL_ITEMS[itemId];
+                        const amount = state.items[itemId] ?? 0;
+
+                        return (
+                          <button
+                            key={itemId}
+                            type="button"
+                            disabled={amount <= 0}
+                            onClick={() => {
+                              setSelectedItem(itemId);
+                              setCommand("item-target");
+                            }}
+                          >
+                            <strong>{item.name}</strong>
+                            <span>×{amount} · +{item.heal} HP</span>
+                          </button>
+                        );
+                      },
+                    )}
+                    <button
+                      type="button"
+                      className="battle-menu-back"
+                      onClick={resetCommand}
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                )}
+
+                {command === "item-target" && selectedItem && (
+                  <div className="battle-submenu">
+                    <div className="battle-submenu-copy">
+                      <span>ITEM</span>
+                      <strong>{DUEL_ITEMS[selectedItem].name}</strong>
+                      <small>
+                        {targetableUnitIds.size > 0
+                          ? "Escolha um aliado"
+                          : "Nenhum alvo precisa do item"}
+                      </small>
+                    </div>
+                    <button
+                      type="button"
+                      className="battle-menu-back"
+                      onClick={() => {
+                        setSelectedItem(null);
+                        setCommand("items");
+                      }}
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
             {vfx && (
               <div
                 className="battle-vfx-position"
@@ -871,219 +1126,9 @@ export function FirstBattle({
           )}
         </div>
 
-        <section className="battle-command-hud">
-          <div className="battle-command-context">
-            <span className="panel-label">COMANDO</span>
-            <strong>{prompt}</strong>
-            <div className="active-resource-strip">
-              <span>{player.displayName}</span>
-              <span>{player.ap} AP</span>
-              <span>{player.mp} MP</span>
-              <span>Potion ×{state.items.potion}</span>
-            </div>
-          </div>
-
-          <div className="battle-command-panel">
-            {command === "root" && (
-              <div className="command-grid">
-                <button
-                  type="button"
-                  className="command-button command-walk"
-                  disabled={!isPlayerTurn || player.mp <= 0}
-                  onClick={() => setCommand("walk")}
-                >
-                  <span className="command-index">01</span>
-                  <strong>Andar</strong>
-                  <small>Gaste MP para reposicionar.</small>
-                </button>
-                <button
-                  type="button"
-                  className="command-button command-move"
-                  disabled={!isPlayerTurn}
-                  onClick={() => setCommand("moves")}
-                >
-                  <span className="command-index">02</span>
-                  <strong>Move</strong>
-                  <small>Escolha golpe e depois o alvo.</small>
-                </button>
-                <button
-                  type="button"
-                  className="command-button command-item"
-                  disabled={!isPlayerTurn}
-                  onClick={() => setCommand("items")}
-                >
-                  <span className="command-index">03</span>
-                  <strong>Item</strong>
-                  <small>Use um item da mochila.</small>
-                </button>
-                <button
-                  type="button"
-                  className="command-button command-flee"
-                  disabled={!isPlayerTurn}
-                  onClick={handleFlee}
-                >
-                  <span className="command-index">04</span>
-                  <strong>Fugir</strong>
-                  <small>Tente abandonar o combate.</small>
-                </button>
-              </div>
-            )}
-
-            {command === "walk" && (
-              <div className="command-detail">
-                <div>
-                  <span className="panel-label">ANDAR</span>
-                  <strong>{reachable.length} destinos ao alcance</strong>
-                  <p>
-                    Clique em um tile verde. O custo é a distância
-                    percorrida e sai do MP atual.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  className="back-command"
-                  onClick={resetCommand}
-                >
-                  Voltar
-                </button>
-              </div>
-            )}
-
-            {command === "moves" && (
-              <div className="move-selection-grid">
-                {player.moves.map((moveId) => {
-                  const move = DUEL_MOVES[moveId];
-                  const canPay = player.ap >= move.apCost;
-
-                  return (
-                    <button
-                      key={moveId}
-                      type="button"
-                      className="move-card"
-                      disabled={!canPay}
-                      onClick={() => {
-                        setSelectedMove(moveId);
-                        setCommand("move-target");
-                      }}
-                    >
-                      <div>
-                        <strong>{move.name}</strong>
-                        <span>{move.type} · {move.category}</span>
-                      </div>
-                      <small className="move-description">
-                        {move.description}
-                      </small>
-                      <small>
-                        {move.apCost} AP · alcance {move.minRange}–
-                        {move.maxRange}
-                      </small>
-                    </button>
-                  );
-                })}
-                <button
-                  type="button"
-                  className="back-command"
-                  onClick={resetCommand}
-                >
-                  Voltar
-                </button>
-              </div>
-            )}
-
-            {command === "move-target" && selectedMove && (
-              <div className="command-detail target-detail">
-                <div>
-                  <span className="panel-label">ALVO</span>
-                  <strong>{DUEL_MOVES[selectedMove].name}</strong>
-                  <p>
-                    {targetableUnitIds.size > 0
-                      ? "Clique no Pokémon inimigo destacado."
-                      : "Nenhum inimigo está dentro do alcance. Volte e se mova primeiro."}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  className="back-command"
-                  onClick={() => {
-                    setSelectedMove(null);
-                    setCommand("moves");
-                  }}
-                >
-                  Voltar
-                </button>
-              </div>
-            )}
-
-            {command === "items" && (
-              <div className="item-selection-grid">
-                {(Object.keys(DUEL_ITEMS) as DuelItemId[]).map(
-                  (itemId) => {
-                    const item = DUEL_ITEMS[itemId];
-                    const amount = state.items[itemId] ?? 0;
-
-                    return (
-                      <button
-                        key={itemId}
-                        type="button"
-                        className="item-card"
-                        disabled={amount <= 0}
-                        onClick={() => {
-                          setSelectedItem(itemId);
-                          setCommand("item-target");
-                        }}
-                      >
-                        <div>
-                          <strong>{item.name}</strong>
-                          <span>×{amount}</span>
-                        </div>
-                        <small>Recupera {item.heal} HP.</small>
-                      </button>
-                    );
-                  },
-                )}
-                <button
-                  type="button"
-                  className="back-command"
-                  onClick={resetCommand}
-                >
-                  Voltar
-                </button>
-              </div>
-            )}
-
-            {command === "item-target" && selectedItem && (
-              <div className="command-detail target-detail">
-                <div>
-                  <span className="panel-label">ALVO DO ITEM</span>
-                  <strong>{DUEL_ITEMS[selectedItem].name}</strong>
-                  <p>
-                    {targetableUnitIds.size > 0
-                      ? "Clique em um Pokémon aliado destacado."
-                      : "Nenhum aliado precisa desse item agora."}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  className="back-command"
-                  onClick={() => {
-                    setSelectedItem(null);
-                    setCommand("items");
-                  }}
-                >
-                  Voltar
-                </button>
-              </div>
-            )}
-          </div>
-        </section>
-
-        <div className="battle-feed">
-          {state.log.slice(-4).map((entry, index) => (
-            <div key={`${entry}-${index}`}>{entry}</div>
-          ))}
+        <div className="battle-message-strip">
+          <span>{latestMessage}</span>
         </div>
-
-        {notice && <div className="battle-notice">{notice}</div>}
 
         {state.status === "finished" && !state.escaped && (
           <div className="battle-result">

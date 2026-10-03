@@ -135,6 +135,20 @@ export async function buildRuntimeSpriteAssets(
       };
     }
 
+    const portraitSource = join(
+      spriteCollabRoot,
+      "portrait",
+      id,
+      "Normal.png",
+    );
+    let portraitFile = null;
+
+    if (await exists(portraitSource)) {
+      const outputPortrait = join(speciesOutput, "portrait.png");
+      await copyFile(portraitSource, outputPortrait);
+      portraitFile = `${species}/portrait.png`;
+    }
+
     const creditsSource = join(sourceDir, "credits.txt");
     let creditsFile = null;
 
@@ -147,6 +161,7 @@ export async function buildRuntimeSpriteAssets(
     manifest.species[species] = {
       id,
       animations,
+      portraitFile,
       creditsFile,
     };
   }

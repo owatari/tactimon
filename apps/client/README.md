@@ -86,3 +86,17 @@ The battle renderer separates:
 Pokémon sprites come from SpriteCollab. Unit states can switch through `Idle`, `Walk`, `Attack`, `Hurt`, and `Faint`.
 
 Move VFX are optionally extracted from Pokémon Mystery Dungeon: Explorers of Sky. See `tools/pmd-vfx-extractor/README.md`. If rendered runtime VFX are not present, CSS fallback effects are used.
+
+
+## Compact battle HUD
+
+Battle commands are contextual instead of occupying a large bottom panel. On the player's turn a small list opens above the active Pokémon:
+
+```text
+Move   -> choose a reachable tile
+Attack -> choose a move -> choose a target
+Item   -> choose an item -> choose an ally
+Run    -> ask the battle engine to escape
+```
+
+Every submenu contains a Back action. The persistent HUD is limited to compact player/rival cards with SpriteCollab portraits, HP, AP, MP and visible stat-stage buffs/debuffs.
