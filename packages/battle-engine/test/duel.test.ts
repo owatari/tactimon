@@ -368,3 +368,140 @@ describe("wild capture integration", () => {
     expect(result.state.items["poke-ball"]).toBe(3);
   });
 });
+
+
+describe("multi-unit party battles", () => {
+  it("deploys every party member up to six on unique cells", () => {
+    const state = createWildDuel({
+      seed: 2027,
+      width: 13,
+      height: 7,
+      players: [
+        { species: "bulbasaur", level: 5, moves: ["tackle", "growl"] },
+        { species: "pidgey", level: 3, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 3, moves: ["tackle", "tail-whip"] },
+        { species: "pidgey", level: 4, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 4, moves: ["tackle", "tail-whip"] },
+        { species: "pidgey", level: 5, moves: ["tackle", "growl"] },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 4,
+    });
+
+    const players = state.units.filter((unit) => unit.side === "player");
+    expect(players).toHaveLength(6);
+    expect(new Set(players.map((unit) => unit.id)).size).toBe(6);
+    expect(
+      new Set(
+        state.units.map(
+          (unit) => `${unit.position.x},${unit.position.y}`,
+        ),
+      ).size,
+    ).toBe(state.units.length);
+    expect(state.turnOrder).toHaveLength(7);
+  });
+
+  it("cycles initiative through every living unit by speed", () => {
+    let state = createWildDuel({
+      seed: 44,
+      width: 13,
+      height: 7,
+      players: [
+        { species: "bulbasaur", level: 5, moves: ["tackle", "growl"] },
+        { species: "pidgey", level: 4, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 4, moves: ["tackle", "tail-whip"] },
+      ],
+      wildSpecies: "pidgey",
+      wildLevel: 3,
+    });
+
+    const firstRound = state.round;
+    const seen: string[] = [];
+
+    for (let index = 0; index < state.turnOrder.length; index += 1) {
+      const active = getActiveDuelUnit(state)!;
+      seen.push(active.id);
+      const result = applyDuelAction(state, {
+        kind: "end-turn",
+        unitId: active.id,
+      });
+      expect(result.accepted).toBe(true);
+      state = result.state;
+    }
+
+    expect(new Set(seen)).toEqual(new Set(state.turnOrder));
+    expect(state.round).toBe(firstRound + 1);
+  });
+
+  it("keeps battle active when one ally faints but teammates remain", () => {
+    let state = createWildDuel({
+      seed: 91,
+      width: 9,
+      height: 7,
+      players: [
+        { species: "bulbasaur", level: 5, moves: ["tackle", "growl"] },
+        { species: "pidgey", level: 3, moves: ["tackle", "growl"] },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 5,
+    });
+
+    const wild = state.units.find((unit) => unit.side === "rival")!;
+    const targets = state.units.filter((unit) => unit.side === "player");
+    const target = targets[0];
+    const teammate = targets[1];
+
+    state = {
+      ...state,
+      activeUnitId: wild.id,
+      units: state.units.map((unit) =>
+        unit.id === wild.id
+          ? { ...unit, position: { x: 3, y: 3 } }
+          : unit.id === target.id
+            ? { ...unit, hp: 1, position: { x: 4, y: 3 } }
+            : unit.id === teammate.id
+              ? { ...unit, position: { x: 1, y: 1 } }
+              : unit,
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: wild.id,
+      moveId: "tackle",
+      targetId: target.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find((unit) => unit.id === target.id)?.hp,
+    ).toBe(0);
+    expect(
+      result.state.units.find((unit) => unit.id === teammate.id)?.hp,
+    ).toBeGreaterThan(0);
+    expect(result.state.status).toBe("active");
+    expect(result.state.winner).toBeNull();
+  });
+
+  it("disables capture when all six party slots are occupied", () => {
+    const state = createWildDuel({
+      seed: 88,
+      width: 13,
+      height: 7,
+      captureAllowed: false,
+      players: [
+        { species: "bulbasaur", level: 5, moves: ["tackle", "growl"] },
+        { species: "pidgey", level: 2, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 2, moves: ["tackle", "tail-whip"] },
+        { species: "pidgey", level: 3, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 3, moves: ["tackle", "tail-whip"] },
+        { species: "pidgey", level: 4, moves: ["tackle", "growl"] },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 3,
+    });
+
+    expect(state.items["poke-ball"]).toBe(0);
+    expect(state.captureAllowed).toBe(false);
+  });
+});

@@ -82,7 +82,11 @@ export interface WildDuelOptions {
   width?: number;
   height?: number;
   blocked?: readonly DuelPoint[];
-  player: DuelPokemonBuild;
+  /** Backward-compatible single-member party input. */
+  player?: DuelPokemonBuild;
+  /** Every member is deployed at battle start, capped at six. */
+  players?: readonly DuelPokemonBuild[];
+  captureAllowed?: boolean;
   wildSpecies: WildSpeciesId;
   wildLevel: number;
 }
@@ -182,8 +186,11 @@ export interface DuelState {
   blocked: DuelPoint[];
   battleKind: DuelBattleKind;
   escaped: boolean;
+  captureAllowed: boolean;
   items: Record<DuelItemId, number>;
   round: number;
+  turnOrder: string[];
+  turnIndex: number;
   activeUnitId: string;
   status: DuelStatus;
   winner: DuelSide | null;
@@ -539,6 +546,12 @@ export function starterDisplayName(
   return SPECIES[species].name;
 }
 
+export function defaultMovesForSpecies(
+  species: DuelSpeciesId,
+): DuelMoveId[] {
+  return [...SPECIES[species].moves];
+}
+
 function pointKey(point: DuelPoint): string {
   return `${point.x},${point.y}`;
 }
@@ -697,6 +710,108 @@ function pickSpawnPositions(
   ];
 }
 
+function pickPartySpawnPositions(
+  width: number,
+  height: number,
+  blocked: readonly DuelPoint[],
+  seed: number,
+  partySize: number,
+): {
+  players: DuelPoint[];
+  rival: DuelPoint;
+} {
+  const [anchor, rival] = pickSpawnPositions(
+    width,
+    height,
+    blocked,
+    seed,
+  );
+  const blockedKeys = new Set(blocked.map(pointKey));
+  const reserved = new Set([
+    pointKey(anchor),
+    pointKey(rival),
+  ]);
+  const candidates = connectedOpenCells(
+    anchor,
+    width,
+    height,
+    blockedKeys,
+  )
+    .filter((point) => !reserved.has(pointKey(point)))
+    .sort((a, b) => {
+      const aBorder =
+        a.x === 0 ||
+        a.y === 0 ||
+        a.x === width - 1 ||
+        a.y === height - 1
+          ? 1
+          : 0;
+      const bBorder =
+        b.x === 0 ||
+        b.y === 0 ||
+        b.x === width - 1 ||
+        b.y === height - 1
+          ? 1
+          : 0;
+
+      return (
+        aBorder - bBorder ||
+        manhattanDistance(a, anchor) -
+          manhattanDistance(b, anchor) ||
+        manhattanDistance(b, rival) -
+          manhattanDistance(a, rival) ||
+        a.y - b.y ||
+        a.x - b.x
+      );
+    });
+
+  const players = [{ ...anchor }];
+  for (const point of candidates) {
+    if (players.length >= partySize) break;
+    players.push({ ...point });
+  }
+
+  if (players.length < partySize) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        const point = { x, y };
+        const key = pointKey(point);
+        if (
+          blockedKeys.has(key) ||
+          reserved.has(key) ||
+          players.some((item) => pointKey(item) === key)
+        ) {
+          continue;
+        }
+
+        players.push(point);
+        if (players.length >= partySize) break;
+      }
+      if (players.length >= partySize) break;
+    }
+  }
+
+  return {
+    players: players.slice(0, partySize),
+    rival: { ...rival },
+  };
+}
+
+function createTurnOrder(units: readonly DuelUnit[]): string[] {
+  return [...units]
+    .sort(
+      (a, b) =>
+        b.speed - a.speed ||
+        (a.side === b.side
+          ? 0
+          : a.side === "player"
+            ? -1
+            : 1) ||
+        a.id.localeCompare(b.id),
+    )
+    .map((unit) => unit.id);
+}
+
 function stageMultiplier(stage: number): number {
   const bounded = Math.max(-MAX_STAGE, Math.min(MAX_STAGE, stage));
   return bounded >= 0
@@ -708,6 +823,7 @@ function makeUnit(
   build: DuelPokemonBuild,
   side: DuelSide,
   position: DuelPoint,
+  slot = 0,
 ): DuelUnit {
   const base = SPECIES[build.species];
   const evs = {
@@ -728,7 +844,7 @@ function makeUnit(
   });
 
   return {
-    id: `${side}-${build.species}`,
+    id: `${side}-${slot}-${build.species}`,
     side,
     species: build.species,
     displayName: base.name,
@@ -826,6 +942,7 @@ export function createStarterDuel(
     playerBuild,
     "player",
     playerPosition,
+    0,
   );
   const rival = makeUnit(
     {
@@ -835,10 +952,13 @@ export function createStarterDuel(
     },
     "rival",
     rivalPosition,
+    0,
   );
-
-  const active =
-    player.speed >= rival.speed ? player : rival;
+  const units = [player, rival];
+  const turnOrder = createTurnOrder(units);
+  const active = units.find(
+    (unit) => unit.id === turnOrder[0],
+  )!;
 
   return {
     width,
@@ -847,16 +967,19 @@ export function createStarterDuel(
     blocked,
     battleKind: "trainer",
     escaped: false,
+    captureAllowed: false,
     items: {
       potion: 1,
       "poke-ball": 0,
     },
     round: 1,
+    turnOrder,
+    turnIndex: 0,
     activeUnitId: active.id,
     status: "active",
     winner: null,
     captureResult: null,
-    units: [player, rival],
+    units,
     log: [
       `Blue desafia você! ${rival.displayName} entra na arena.`,
       `Posições sorteadas para esta batalha (seed ${seed}).`,
@@ -870,18 +993,32 @@ export function createWildDuel(
 ): DuelState {
   const { width, height, seed, blocked } =
     normalizeArenaOptions(options);
+  const party = (
+    options.players && options.players.length > 0
+      ? [...options.players]
+      : options.player
+        ? [options.player]
+        : []
+  ).slice(0, 6);
 
-  const [playerPosition, wildPosition] = pickSpawnPositions(
+  if (party.length === 0) {
+    throw new Error("Wild duel requires at least one player Pokémon.");
+  }
+
+  const positions = pickPartySpawnPositions(
     width,
     height,
     blocked,
     seed,
+    party.length,
   );
-
-  const player = makeUnit(
-    options.player,
-    "player",
-    playerPosition,
+  const players = party.map((build, index) =>
+    makeUnit(
+      build,
+      "player",
+      positions.players[index],
+      index,
+    ),
   );
   const wild = makeUnit(
     {
@@ -890,11 +1027,15 @@ export function createWildDuel(
       moves: SPECIES[options.wildSpecies].moves,
     },
     "rival",
-    wildPosition,
+    positions.rival,
+    0,
   );
-
-  const active =
-    player.speed >= wild.speed ? player : wild;
+  const units = [...players, wild];
+  const turnOrder = createTurnOrder(units);
+  const active = units.find(
+    (unit) => unit.id === turnOrder[0],
+  )!;
+  const captureAllowed = options.captureAllowed ?? true;
 
   return {
     width,
@@ -903,19 +1044,24 @@ export function createWildDuel(
     blocked,
     battleKind: "wild",
     escaped: false,
+    captureAllowed,
     items: {
       potion: 1,
-      "poke-ball": 3,
+      "poke-ball": captureAllowed ? 3 : 0,
     },
     round: 1,
+    turnOrder,
+    turnIndex: 0,
     activeUnitId: active.id,
     status: "active",
     winner: null,
     captureResult: null,
-    units: [player, wild],
+    units,
     log: [
       `Um ${wild.displayName} selvagem apareceu!`,
-      `Posições sorteadas para esta batalha (seed ${seed}).`,
+      players.length > 1
+        ? `${players.length} Pokémon do seu time entram na arena.`
+        : `${players[0].displayName} entra na arena.`,
       `${active.displayName} age primeiro pela Speed.`,
     ],
   };
@@ -942,6 +1088,7 @@ function cloneState(state: DuelState): DuelState {
   return {
     ...state,
     blocked: state.blocked.map((point) => ({ ...point })),
+    turnOrder: [...state.turnOrder],
     items: { ...state.items },
     captureResult: state.captureResult ? { ...state.captureResult } : null,
     units: state.units.map((unit) => ({
@@ -1036,15 +1183,12 @@ export function getReachableCells(
   return result;
 }
 
-function nextLivingUnit(
+function sideHasLivingUnit(
   state: DuelState,
-  current: DuelUnit,
-): DuelUnit | null {
-  return (
-    state.units.find(
-      (unit) =>
-        unit.hp > 0 && unit.side !== current.side,
-    ) ?? null
+  side: DuelSide,
+): boolean {
+  return state.units.some(
+    (unit) => unit.side === side && unit.hp > 0,
   );
 }
 
@@ -1052,26 +1196,51 @@ function resolveTurnEnd(
   state: DuelState,
   current: DuelUnit,
 ): void {
-  const next = nextLivingUnit(state, current);
+  const opposingSide: DuelSide =
+    current.side === "player" ? "rival" : "player";
 
-  if (!next) {
+  if (!sideHasLivingUnit(state, opposingSide)) {
     state.status = "finished";
     state.winner = current.side;
     return;
   }
 
-  next.ap = next.maxAp;
-  next.mp = next.maxMp;
-  state.activeUnitId = next.id;
+  const orderLength = state.turnOrder.length;
+  const currentIndex = Math.max(
+    0,
+    state.turnOrder.indexOf(current.id),
+  );
 
-  if (next.side === "player") {
-    state.round += 1;
+  for (let step = 1; step <= orderLength; step += 1) {
+    const nextIndex =
+      (currentIndex + step) % orderLength;
+    const nextId = state.turnOrder[nextIndex];
+    const next = state.units.find(
+      (unit) => unit.id === nextId && unit.hp > 0,
+    );
+
+    if (!next) {
+      continue;
+    }
+
+    next.ap = next.maxAp;
+    next.mp = next.maxMp;
+    state.activeUnitId = next.id;
+    state.turnIndex = nextIndex;
+
+    if (nextIndex <= currentIndex) {
+      state.round += 1;
+    }
+
+    appendLog(
+      state,
+      `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
+    );
+    return;
   }
 
-  appendLog(
-    state,
-    `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
-  );
+  state.status = "finished";
+  state.winner = current.side;
 }
 
 function calculateDamage(
@@ -1126,7 +1295,10 @@ export function getDuelCaptureEligibility(
       captureAttempted: target.captureAttempted,
     },
     {
-      capturePolicy: state.battleKind === "wild" ? "allowed" : "forbidden",
+      capturePolicy:
+        state.battleKind === "wild" && state.captureAllowed
+          ? "allowed"
+          : "forbidden",
       captureHpThresholdRatio: 0.1,
     },
   );
@@ -1382,8 +1554,11 @@ export function applyDuelAction(
         state,
         `${target.displayName} desmaiou.`,
       );
-      state.status = "finished";
-      state.winner = actor.side;
+
+      if (!sideHasLivingUnit(state, target.side)) {
+        state.status = "finished";
+        state.winner = actor.side;
+      }
     }
   } else if (move.effect === "attack-down") {
     const before = target.attackStage;
@@ -1455,6 +1630,27 @@ function statusMoveFor(
   );
 }
 
+function bestAiTarget(
+  state: DuelState,
+  actor: DuelUnit,
+): DuelUnit | null {
+  return (
+    state.units
+      .filter(
+        (unit) =>
+          unit.hp > 0 &&
+          unit.side !== actor.side,
+      )
+      .sort(
+        (a, b) =>
+          manhattanDistance(actor.position, a.position) -
+            manhattanDistance(actor.position, b.position) ||
+          a.hp - b.hp ||
+          b.speed - a.speed,
+      )[0] ?? null
+  );
+}
+
 function bestAiDestination(
   state: DuelState,
   actor: DuelUnit,
@@ -1504,9 +1700,7 @@ export function resolveSimpleAiTurnDetailed(
     return { state, steps };
   }
 
-  const target = state.units.find(
-    (unit) => unit.side === "player" && unit.hp > 0,
-  );
+  const target = bestAiTarget(state, actor);
   if (!target) {
     return { state, steps };
   }
@@ -1539,9 +1733,7 @@ export function resolveSimpleAiTurnDetailed(
     return { state, steps };
   }
 
-  const currentTarget = state.units.find(
-    (unit) => unit.side === "player" && unit.hp > 0,
-  );
+  const currentTarget = bestAiTarget(state, actor);
   if (!currentTarget) {
     return { state, steps };
   }
@@ -1573,9 +1765,7 @@ export function resolveSimpleAiTurnDetailed(
   }
 
   const statusMoveId = statusMoveFor(actor);
-  const refreshedTarget = state.units.find(
-    (unit) => unit.side === "player" && unit.hp > 0,
-  );
+  const refreshedTarget = bestAiTarget(state, actor);
 
   if (statusMoveId && refreshedTarget) {
     const statusMove = DUEL_MOVES[statusMoveId];

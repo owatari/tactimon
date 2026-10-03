@@ -17,6 +17,7 @@ import {
   type DuelItemId,
   type DuelMoveId,
   type DuelPoint,
+  type DuelPokemonBuild,
   type DuelState,
   type DuelUnit,
   type PokemonProgression,
@@ -52,6 +53,7 @@ export type BattleEncounter =
 type Props = {
   starter: StarterSpeciesId;
   progression: PokemonProgression;
+  party: readonly DuelPokemonBuild[];
   encounter: BattleEncounter;
   context: BattleSceneContext;
   onComplete: (outcome: BattleOutcome) => void;
@@ -220,17 +222,22 @@ function findPath(
 export function FirstBattle({
   starter,
   progression,
+  party,
   encounter,
   context,
   onComplete,
 }: Props) {
   const initialState = useMemo(() => {
-    const player = {
+    const starterBuild: DuelPokemonBuild = {
       species: progression.species,
       level: progression.level,
       moves: progression.activeMoves,
       evs: progression.evs,
     };
+    const deployedParty =
+      party.length > 0
+        ? [...party].slice(0, 6)
+        : [starterBuild];
 
     if (encounter.kind === "wild") {
       return createWildDuel({
@@ -238,7 +245,8 @@ export function FirstBattle({
         width: context.arenaWidth,
         height: context.arenaHeight,
         blocked: context.blocked,
-        player,
+        players: deployedParty,
+        captureAllowed: deployedParty.length < 6,
         wildSpecies: encounter.species,
         wildLevel: encounter.level,
       });
@@ -249,9 +257,9 @@ export function FirstBattle({
       width: context.arenaWidth,
       height: context.arenaHeight,
       blocked: context.blocked,
-      player,
+      player: starterBuild,
     });
-  }, [context, encounter, progression, starter]);
+  }, [context, encounter, party, progression, starter]);
 
   const [state, setState] = useState<DuelState>(initialState);
   const [command, setCommand] = useState<CommandMode>("root");
@@ -280,8 +288,18 @@ export function FirstBattle({
   const vfxDoneRef = useRef<(() => void) | null>(null);
 
   const active = getActiveDuelUnit(state);
-  const player = state.units.find((unit) => unit.side === "player")!;
-  const rival = state.units.find((unit) => unit.side === "rival")!;
+  const playerUnits = state.units.filter(
+    (unit) => unit.side === "player",
+  );
+  const rivalUnits = state.units.filter(
+    (unit) => unit.side === "rival",
+  );
+  const starterUnit = playerUnits[0]!;
+  const player =
+    active?.side === "player"
+      ? active
+      : starterUnit;
+  const rival = rivalUnits[0]!;
   const isPlayerTurn =
     state.status === "active" && active?.side === "player" && !busy;
 
@@ -773,9 +791,9 @@ export function FirstBattle({
               Round {state.round} ·{" "}
               {state.status === "finished"
                 ? "Fim"
-                : active?.side === "player"
-                  ? "Seu turno"
-                  : "Turno do rival"}
+                : active
+                  ? `Turno de ${active.displayName}`
+                  : "Aguardando"}
             </div>
             <button
               type="button"
@@ -788,8 +806,15 @@ export function FirstBattle({
           </div>
         </header>
 
-        <div className="battle-combatant-hud-row">
-          {[player, rival].map((unit) => {
+        <div
+          className={[
+            "battle-combatant-hud-row",
+            state.units.length > 2 ? "multi-unit" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
+          {state.units.map((unit) => {
             const badges = stageBadges(unit);
             const healthTone = hpTone(unit.hp, unit.maxHp);
             const isPlayer = unit.side === "player";
@@ -845,7 +870,7 @@ export function FirstBattle({
                     </div>
                   </div>
 
-                  {isPlayer && (
+                  {isPlayer && unit.id === starterUnit.id && (
                     <div className="combatant-resource-block xp-resource">
                       <div className="combatant-resource-heading">
                         <span>EXP</span>
@@ -1052,7 +1077,12 @@ export function FirstBattle({
                       onClick={() => setCommand("items")}
                     >
                       <strong>Item</strong>
-                      <span>Potion ×{state.items.potion}</span>
+                      <span>
+                        Potion ×{state.items.potion}
+                        {state.items["poke-ball"] > 0
+                          ? ` · Ball ×${state.items["poke-ball"]}`
+                          : ""}
+                      </span>
                     </button>
                     <button
                       type="button"

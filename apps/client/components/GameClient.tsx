@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  defaultMovesForSpecies,
   grantWildBattleProgress,
+  type DuelPokemonBuild,
   type PokemonProgression,
   type ProgressionReward,
   type StarterSpeciesId,
@@ -48,6 +50,26 @@ export function GameClient() {
     mapId: "pallet-town",
     musicId: 300,
   });
+
+  const battleParty = useMemo<DuelPokemonBuild[]>(() => {
+    if (!story.playerPokemon) {
+      return [];
+    }
+
+    return [
+      {
+        species: story.playerPokemon.species,
+        level: story.playerPokemon.level,
+        moves: [...story.playerPokemon.activeMoves],
+        evs: story.playerPokemon.evs,
+      },
+      ...story.capturedPokemon.slice(0, 5).map((pokemon) => ({
+        species: pokemon.species,
+        level: pokemon.level,
+        moves: defaultMovesForSpecies(pokemon.species),
+      })),
+    ].slice(0, 6);
+  }, [story.capturedPokemon, story.playerPokemon]);
 
   useEffect(() => {
     try {
@@ -131,15 +153,17 @@ export function GameClient() {
     setStory((current) => ({
       ...current,
       playerPokemon: reward.progression,
-      capturedPokemon: outcome.capture?.success
-        ? [
-            ...current.capturedPokemon,
-            {
-              species: outcome.capture.species,
-              level: outcome.capture.level,
-            },
-          ]
-        : current.capturedPokemon,
+      capturedPokemon:
+        outcome.capture?.success &&
+        current.capturedPokemon.length < 5
+          ? [
+              ...current.capturedPokemon,
+              {
+                species: outcome.capture.species,
+                level: outcome.capture.level,
+              },
+            ]
+          : current.capturedPokemon,
     }));
     setProgressionReward(reward);
   };
@@ -220,6 +244,7 @@ export function GameClient() {
           <FirstBattle
             starter={story.starter}
             progression={story.playerPokemon}
+            party={battleParty}
             encounter={battleSession.encounter}
             context={battleSession.context}
             onComplete={handleBattleComplete}

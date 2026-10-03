@@ -2499,3 +2499,70 @@ h1 {
     transform: scale(1.45) !important;
   }
 }
+
+
+/* Battle stage v6: the whole six-Pokémon party deploys together. */
+.battle-combatant-hud-row.multi-unit {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  max-height: 205px;
+  overflow-y: auto;
+  align-items: stretch;
+  scrollbar-width: thin;
+}
+
+.battle-combatant-hud-row.multi-unit .combatant-hud {
+  min-height: 72px;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 7px;
+  padding: 6px 8px 6px 6px;
+}
+
+.battle-combatant-hud-row.multi-unit .combatant-hud.rival {
+  grid-template-columns: minmax(0, 1fr) 54px;
+}
+
+.battle-combatant-hud-row.multi-unit .battle-portrait-frame {
+  width: 54px;
+  height: 54px;
+}
+
+.battle-combatant-hud-row.multi-unit .combatant-identity strong {
+  font-size: 11px;
+}
+
+.battle-combatant-hud-row.multi-unit .combatant-resource-block {
+  gap: 3px;
+}
+
+.battle-combatant-hud-row.multi-unit .combatant-meta-row {
+  gap: 4px;
+}
+
+@media (max-width: 760px) {
+  .battle-combatant-hud-row.multi-unit {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    max-height: 158px;
+  }
+
+  .battle-combatant-hud-row.multi-unit .combatant-hud,
+  .battle-combatant-hud-row.multi-unit .combatant-hud.rival {
+    min-height: 62px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    padding: 5px;
+  }
+
+  .battle-combatant-hud-row.multi-unit .combatant-hud.rival .battle-portrait-frame,
+  .battle-combatant-hud-row.multi-unit .combatant-hud.rival .combatant-hud-body {
+    grid-column: auto;
+  }
+
+  .battle-combatant-hud-row.multi-unit .battle-portrait-frame {
+    width: 42px;
+    height: 42px;
+  }
+
+  .battle-combatant-hud-row.multi-unit .combatant-resource-block.xp-resource,
+  .battle-combatant-hud-row.multi-unit .combatant-meta-row {
+    display: none;
+  }
+}

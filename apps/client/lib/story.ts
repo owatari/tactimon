@@ -95,6 +95,7 @@ export function normalizeStoryState(
             species: pokemon.species,
             level: Math.max(1, Math.min(100, Math.trunc(pokemon.level))),
           }))
+          .slice(0, 5)
       : [],
   };
 }
