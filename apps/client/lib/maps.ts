@@ -82,6 +82,20 @@ export type WorldTransition = {
   spawn: { x: number; y: number };
 };
 
+export type BattleSceneContext = {
+  mapId: string;
+  mapLabel: string;
+  previewUrl: string;
+  mapWidth: number;
+  mapHeight: number;
+  cropX: number;
+  cropY: number;
+  arenaWidth: number;
+  arenaHeight: number;
+  blocked: Array<{ x: number; y: number }>;
+  seed: number;
+};
+
 const GENERAL_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/general/tiles.4bpp",
   palettesUrl: "/game-assets/tilesets/general/palettes.gbapal",

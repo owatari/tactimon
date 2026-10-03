@@ -14,5 +14,9 @@ coverage/
 *.zip
 roms/
 
-# Build/runtime copies synced from versioned extracted assets.
+# Local upstream checkout used to build runtime Pokémon animations.
+local-assets/spritecollab/*
+!local-assets/spritecollab/.gitkeep
+
+# Build/runtime copies synced from versioned extracted assets + local SpriteCollab.
 apps/client/public/game-assets/

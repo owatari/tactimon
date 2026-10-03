@@ -8,6 +8,7 @@ import {
 } from "react";
 import { renderForegroundLayer } from "@/lib/mapRenderer";
 import {
+  BattleSceneContext,
   DIRECTION_DELTA,
   Direction,
   MapLayout,
@@ -49,7 +50,7 @@ type Props = {
   story: StoryState;
   paused: boolean;
   onRequestStarterChoice: () => void;
-  onFirstBattleTrigger: () => void;
+  onFirstBattleTrigger: (context: BattleSceneContext) => void;
 };
 
 type RuntimePlayer = {
@@ -677,9 +678,80 @@ export function OverworldGame({
         player.tileX >= 5 &&
         player.tileX <= 7
       ) {
+        const activeLayout = layoutRef.current;
+        const definition = WORLD_MAPS[mapIdRef.current];
+
+        if (!activeLayout || !definition) {
+          return;
+        }
+
+        const arenaWidth = Math.min(9, activeLayout.width);
+        const arenaHeight = Math.min(7, activeLayout.height);
+        const cropX = Math.max(
+          0,
+          Math.min(
+            activeLayout.width - arenaWidth,
+            player.tileX - Math.floor(arenaWidth / 2),
+          ),
+        );
+        const cropY = Math.max(
+          0,
+          Math.min(
+            activeLayout.height - arenaHeight,
+            player.tileY - Math.floor(arenaHeight / 2),
+          ),
+        );
+
+        const blocked: Array<{ x: number; y: number }> = [];
+
+        for (let localY = 0; localY < arenaHeight; localY += 1) {
+          for (let localX = 0; localX < arenaWidth; localX += 1) {
+            const worldX = cropX + localX;
+            const worldY = cropY + localY;
+            const cell =
+              activeLayout.cells[
+                worldY * activeLayout.width + worldX
+              ];
+            const occupied =
+              worldObjectsRef.current.some(
+                (object) =>
+                  object.x === worldX &&
+                  object.y === worldY,
+              ) ||
+              storyObjectsRef.current.some(
+                (object) =>
+                  object.x === worldX &&
+                  object.y === worldY,
+              );
+
+            if (!cell || cell.collision !== 0 || occupied) {
+              blocked.push({ x: localX, y: localY });
+            }
+          }
+        }
+
+        const seedBuffer = new Uint32Array(1);
+        if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+          crypto.getRandomValues(seedBuffer);
+        } else {
+          seedBuffer[0] = Date.now() >>> 0;
+        }
+
         battleTriggerRef.current = true;
         resetInput();
-        onFirstBattleTrigger();
+        onFirstBattleTrigger({
+          mapId: mapIdRef.current,
+          mapLabel: definition.label,
+          previewUrl: definition.previewUrl,
+          mapWidth: activeLayout.width,
+          mapHeight: activeLayout.height,
+          cropX,
+          cropY,
+          arenaWidth,
+          arenaHeight,
+          blocked,
+          seed: seedBuffer[0],
+        });
       }
     };
 

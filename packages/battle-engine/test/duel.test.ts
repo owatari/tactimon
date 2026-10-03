@@ -4,6 +4,7 @@ import {
   createStarterDuel,
   getActiveDuelUnit,
   getReachableCells,
+  manhattanDistance,
   resolveSimpleAiTurn,
   rivalStarterFor,
 } from "../src/duel";
@@ -15,25 +16,86 @@ describe("starter duel", () => {
     expect(rivalStarterFor("squirtle")).toBe("bulbasaur");
   });
 
-  it("uses four-direction movement and MP", () => {
-    const state = createStarterDuel("bulbasaur");
+  it("uses the same random placement for the same seed", () => {
+    const first = createStarterDuel("bulbasaur", {
+      seed: 12345,
+      width: 9,
+      height: 7,
+    });
+    const second = createStarterDuel("bulbasaur", {
+      seed: 12345,
+      width: 9,
+      height: 7,
+    });
+
+    expect(first.units.map((unit) => unit.position)).toEqual(
+      second.units.map((unit) => unit.position),
+    );
+  });
+
+  it("never spawns units on blocked cells", () => {
+    const blocked = [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+    ];
+    const state = createStarterDuel("squirtle", {
+      seed: 55,
+      width: 7,
+      height: 5,
+      blocked,
+    });
+
+    for (const unit of state.units) {
+      expect(
+        blocked.some(
+          (cell) =>
+            cell.x === unit.position.x &&
+            cell.y === unit.position.y,
+        ),
+      ).toBe(false);
+    }
+  });
+
+  it("uses four-direction movement, MP, and map obstacles", () => {
+    const state = createStarterDuel("bulbasaur", {
+      seed: 77,
+      width: 7,
+      height: 5,
+      blocked: [{ x: 3, y: 2 }],
+    });
     const player = state.units.find((unit) => unit.side === "player")!;
     const reachable = getReachableCells(state, player.id);
 
-    expect(reachable.some((cell) => cell.x === 2 && cell.y === 2)).toBe(true);
-    expect(reachable.some((cell) => cell.x === 4 && cell.y === 2)).toBe(false);
+    expect(
+      reachable.every(
+        (cell) =>
+          manhattanDistance(player.position, cell) <= player.mp,
+      ),
+    ).toBe(true);
+    expect(
+      reachable.some((cell) => cell.x === 3 && cell.y === 2),
+    ).toBe(false);
   });
 
   it("rejects melee attacks outside range", () => {
-    let state = createStarterDuel("charmander");
+    let state = createStarterDuel("charmander", {
+      seed: 1,
+      width: 7,
+      height: 5,
+    });
     const player = state.units.find((unit) => unit.side === "player")!;
+    const rival = state.units.find((unit) => unit.side === "rival")!;
+    player.position = { x: 0, y: 0 };
+    rival.position = { x: 6, y: 4 };
     state = { ...state, activeUnitId: player.id };
 
     const result = applyDuelAction(state, {
       kind: "use-move",
       unitId: player.id,
       moveId: "scratch",
-      targetId: state.units.find((unit) => unit.side === "rival")!.id,
+      targetId: rival.id,
     });
 
     expect(result.accepted).toBe(false);
@@ -41,7 +103,11 @@ describe("starter duel", () => {
   });
 
   it("lets the rival AI move, act, and hand back the turn", () => {
-    let state = createStarterDuel("bulbasaur");
+    let state = createStarterDuel("bulbasaur", {
+      seed: 999,
+      width: 9,
+      height: 7,
+    });
     const rival = state.units.find((unit) => unit.side === "rival")!;
     state = { ...state, activeUnitId: rival.id };
 

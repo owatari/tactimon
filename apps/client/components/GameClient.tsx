@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { StarterSpeciesId } from "@tactimon/battle-engine";
+import type { BattleSceneContext } from "@/lib/maps";
 import { FirstBattle } from "@/components/FirstBattle";
 import { OverworldGame } from "@/components/OverworldGame";
 import { StarterChoice } from "@/components/StarterChoice";
@@ -19,7 +20,8 @@ export function GameClient() {
   );
   const [starterChoiceOpen, setStarterChoiceOpen] =
     useState(false);
-  const [battleActive, setBattleActive] = useState(false);
+  const [battleContext, setBattleContext] =
+    useState<BattleSceneContext | null>(null);
 
   useEffect(() => {
     try {
@@ -55,18 +57,18 @@ export function GameClient() {
       ...current,
       firstBattleComplete: true,
     }));
-    setBattleActive(false);
+    setBattleContext(null);
   };
 
   return (
     <div className="game-client">
       <OverworldGame
         story={story}
-        paused={starterChoiceOpen || battleActive}
+        paused={starterChoiceOpen || Boolean(battleContext)}
         onRequestStarterChoice={() => setStarterChoiceOpen(true)}
-        onFirstBattleTrigger={() => {
+        onFirstBattleTrigger={(context) => {
           if (story.starter && !story.firstBattleComplete) {
-            setBattleActive(true);
+            setBattleContext(context);
           }
         }}
       />
@@ -78,9 +80,10 @@ export function GameClient() {
         />
       )}
 
-      {battleActive && story.starter && (
+      {battleContext && story.starter && (
         <FirstBattle
           starter={story.starter}
+          context={battleContext}
           onComplete={handleBattleComplete}
         />
       )}

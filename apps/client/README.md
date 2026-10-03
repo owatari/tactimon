@@ -1,6 +1,6 @@
 # Tactimon client
 
-Playable Kanto overworld slice using the extracted FireRed assets committed under `local-assets/extracted/`.
+Playable Kanto overworld slice using the extracted FireRed world assets and SpriteCollab Pokémon animations.
 
 ## Run
 
@@ -11,87 +11,77 @@ pnpm install
 pnpm dev
 ```
 
-The `predev` hook copies only the assets required by the current client into `apps/client/public/game-assets`. That directory is a generated runtime copy and remains ignored by Git.
+Before the first run, put a SpriteCollab checkout at either:
 
-## Current slice
+```text
+local-assets/spritecollab/
+```
+
+or:
+
+```text
+local-assets/spritecollab/SpriteCollab/
+```
+
+For example:
+
+```bash
+git clone https://github.com/PMDCollab/SpriteCollab.git local-assets/spritecollab/SpriteCollab
+```
+
+The `predev` hook builds `apps/client/public/game-assets` from the versioned FireRed extraction plus the local SpriteCollab checkout.
+
+## Current overworld slice
 
 - Pallet Town, Route 1 and Viridian City
-- edge transitions between those three maps
-- held-key continuous grid movement
-- smooth per-tile interpolation
-- alternating walking frames
-- smooth camera follow with edge clamping
-- four-direction collision from decoded map cells
-- FireRed top-BG reconstruction for real roof/fence occlusion
-- keyboard controls
-- touch hold-to-walk d-pad
-
-### Rendering layers
-
-The committed `preview.png` stays as the base map. At runtime the client reads the extracted FireRed `tiles.4bpp`, `palettes.gbapal`, `metatiles.bin` and `attributes.bin` files and reconstructs a transparent foreground canvas.
-
-FireRed's metatile layer rules are respected:
-
-- NORMAL: top layer above players/NPCs
-- SPLIT: top layer above players/NPCs
-- COVERED: second layer remains below players/NPCs
-
-This means roofs, fences and other upper tiles occlude the trainer independently from collision.
-
-## Next world work
-
-The world engine now has the map-transition seam needed to replace the temporary hand-authored Pallet/Route 1/Viridian edge rules with ROM-extracted `MapConnections`. The next data layer is NPC/object events, warps, coord events and background events.
-
+- Professor Oak's Lab
+- smooth held-key four-direction movement
+- FireRed collision/elevation data
+- smooth camera follow
+- FireRed foreground reconstruction for roofs/fences
+- NPC/object placements from semantic world data
+- door warp into/out of Oak's Lab
+- keyboard and touch controls
 
 ## Semantic world data
 
-After pulling the latest extractor changes, regenerate the FireRed map data once:
+Regenerate FireRed semantic map data when the extractor changes:
 
 ```bash
 python tools/asset-extractor/convert_world.py local-assets/roms/firered.gba --maps
 ```
 
-When `maps/world/*/world.json` is present, the client also loads:
-
-- NPC/object placements from the ROM;
-- NPC collision;
-- basic interaction targeting with `E`, Space or Enter;
-- warp/connection metadata for the next transition pass.
-
-NPCs whose original ROM flag is non-zero are intentionally hidden for now until story flags are implemented.
-
+This exports NPC placements, warps, coordinate/background events and map connections under `maps/world/`.
 
 ## Oak Lab starter flow
 
-The first playable story slice now includes:
-
-1. walk to the laboratory door at Pallet Town;
-2. enter the real extracted `PalletTown_ProfessorOaksLab` map through a door warp;
-3. interact with Oak or one of the starter balls using `E`, Space or Enter;
-4. choose Bulbasaur, Charmander or Squirtle;
-5. Blue receives the classic counter starter;
-6. walk toward the laboratory exit;
-7. the original exit-row trigger starts the first tactical duel;
-8. win or lose, the tutorial story continues and the laboratory exit warp is enabled.
+1. enter Oak's Lab from Pallet Town;
+2. interact with Oak or a starter ball;
+3. choose Bulbasaur, Charmander or Squirtle;
+4. Blue receives the classic counter starter;
+5. approach the Lab exit;
+6. start the first tactical duel;
+7. after the duel, leave through the Lab door warp.
 
 Starter/battle completion state is persisted in browser local storage for now.
 
-## First tactical battle
+## Tactical battle scene
 
-The tutorial battle is powered by `@tactimon/battle-engine`, not by UI-only combat code.
+The battle is driven by `@tactimon/battle-engine`.
 
-Current rules in the prototype:
+For the current starter duel:
 
-- 7×5 grid;
-- one Pokémon per side;
+- arena size is derived from a 9×7 (or smaller) crop around the encounter location;
+- the arena background is the actual FireRed map preview from that location;
+- overworld collision and occupied object cells become blocked tactical cells;
+- player and enemy Pokémon spawn on seeded-random valid cells;
+- both spawns are kept in the same connected walkable region;
 - Speed determines the first turn;
-- 6 AP and 3 MP per turn;
+- each Pokémon starts a turn with 6 AP and 3 MP;
 - movement is four-directional;
 - distance is Manhattan;
-- Tackle/Scratch cost 4 AP and have range 1;
-- Growl/Tail Whip cost 2 AP and have range up to 3;
-- deterministic damage for reproducible tests;
-- simple deterministic rival AI;
-- the UI sends actions into the engine and renders the resulting state.
+- Tackle/Scratch cost 4 AP and range 1;
+- Growl/Tail Whip cost 2 AP and range up to 3;
+- rival AI uses the same movement/action rules.
 
-Battle Pokémon use abstract tactical tokens for now. FireRed battle sprites are intentionally not used; the visual layer can later be replaced by the SpriteCollab animation pipeline without changing battle rules.
+Pokémon visuals come from SpriteCollab runtime assets. FireRed Pokémon battle sprites are not used.

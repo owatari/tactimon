@@ -1,6 +1,10 @@
 import { access, copyFile, cp, mkdir, rm } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  buildRuntimeSpriteAssets,
+  findSpriteCollabRoot,
+} from "../../../tools/sprite-importer/build-runtime-assets.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../../..");
@@ -174,4 +178,21 @@ for (const [source, destination] of optionalFiles) {
   }
 }
 
-console.log("Tactimon client assets synced.");
+const spriteCollabRoot = await findSpriteCollabRoot(repoRoot);
+
+if (!spriteCollabRoot) {
+  throw new Error(
+    [
+      "SpriteCollab checkout not found.",
+      "Put it under local-assets/spritecollab/SpriteCollab",
+      "or copy the SpriteCollab repository contents directly into local-assets/spritecollab.",
+    ].join(" "),
+  );
+}
+
+await buildRuntimeSpriteAssets(
+  spriteCollabRoot,
+  resolve(publicRoot, "pokemon-sprites"),
+);
+
+console.log("Tactimon FireRed + SpriteCollab assets synced.");

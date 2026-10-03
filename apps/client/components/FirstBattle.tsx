@@ -13,9 +13,12 @@ import {
   type DuelState,
   type StarterSpeciesId,
 } from "@tactimon/battle-engine";
+import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
+import type { BattleSceneContext } from "@/lib/maps";
 
 type Props = {
   starter: StarterSpeciesId;
+  context: BattleSceneContext;
   onComplete: (won: boolean) => void;
 };
 
@@ -25,11 +28,18 @@ function hpPercent(hp: number, maxHp: number): number {
 
 export function FirstBattle({
   starter,
+  context,
   onComplete,
 }: Props) {
   const [state, setState] = useState<DuelState>(() =>
-    createStarterDuel(starter),
+    createStarterDuel(starter, {
+      seed: context.seed,
+      width: context.arenaWidth,
+      height: context.arenaHeight,
+      blocked: context.blocked,
+    }),
   );
+
   const active = getActiveDuelUnit(state);
   const player = state.units.find((unit) => unit.side === "player")!;
   const rival = state.units.find((unit) => unit.side === "rival")!;
@@ -47,6 +57,14 @@ export function FirstBattle({
   const reachableKeys = useMemo(
     () => new Set(reachable.map((cell) => `${cell.x},${cell.y}`)),
     [reachable],
+  );
+
+  const blockedKeys = useMemo(
+    () =>
+      new Set(
+        state.blocked.map((cell) => `${cell.x},${cell.y}`),
+      ),
+    [state.blocked],
   );
 
   useEffect(() => {
@@ -142,6 +160,9 @@ export function FirstBattle({
           <div>
             <span className="eyebrow">PRIMEIRO COMBATE</span>
             <h2>Você vs. Blue</h2>
+            <small className="battle-location">
+              Arena gerada de {context.mapLabel}
+            </small>
           </div>
           <div className="battle-turn">
             Round {state.round} ·{" "}
@@ -177,54 +198,88 @@ export function FirstBattle({
         </div>
 
         <div
-          className="duel-grid"
+          className="duel-grid-shell"
           style={{
-            gridTemplateColumns: `repeat(${state.width}, 1fr)`,
+            aspectRatio: `${state.width} / ${state.height}`,
           }}
         >
-          {Array.from({
-            length: state.width * state.height,
-          }).map((_, index) => {
-            const x = index % state.width;
-            const y = Math.floor(index / state.width);
-            const unit = state.units.find(
-              (candidate) =>
-                candidate.hp > 0 &&
-                candidate.position.x === x &&
-                candidate.position.y === y,
-            );
-            const reachableCell = reachableKeys.has(`${x},${y}`);
+          <div className="duel-map-crop" aria-hidden="true">
+            <div
+              className="duel-map-render"
+              style={{
+                width:
+                  `${(context.mapWidth / state.width) * 100}%`,
+                height:
+                  `${(context.mapHeight / state.height) * 100}%`,
+                left:
+                  `${(-context.cropX / state.width) * 100}%`,
+                top:
+                  `${(-context.cropY / state.height) * 100}%`,
+                backgroundImage: `url("${context.previewUrl}")`,
+              }}
+            />
+          </div>
 
-            return (
-              <button
-                key={index}
-                type="button"
-                className={[
-                  "duel-cell",
-                  reachableCell ? "reachable" : "",
-                  unit?.side === "player" ? "player-unit-cell" : "",
-                  unit?.side === "rival" ? "rival-unit-cell" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                onClick={() => moveTo(x, y)}
-              >
-                {unit && (
-                  <div className={`duel-token ${unit.side}`}>
-                    <strong>{unit.displayName.charAt(0)}</strong>
-                    <span>{unit.displayName}</span>
-                  </div>
-                )}
-              </button>
-            );
-          })}
+          <div
+            className="duel-grid"
+            style={{
+              gridTemplateColumns: `repeat(${state.width}, 1fr)`,
+            }}
+          >
+            {Array.from({
+              length: state.width * state.height,
+            }).map((_, index) => {
+              const x = index % state.width;
+              const y = Math.floor(index / state.width);
+              const key = `${x},${y}`;
+              const unit = state.units.find(
+                (candidate) =>
+                  candidate.hp > 0 &&
+                  candidate.position.x === x &&
+                  candidate.position.y === y,
+              );
+              const reachableCell = reachableKeys.has(key);
+              const blockedCell = blockedKeys.has(key);
+
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  className={[
+                    "duel-cell",
+                    reachableCell ? "reachable" : "",
+                    blockedCell ? "blocked-terrain" : "",
+                    unit?.side === "player" ? "player-unit-cell" : "",
+                    unit?.side === "rival" ? "rival-unit-cell" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  onClick={() => moveTo(x, y)}
+                  disabled={blockedCell}
+                >
+                  {unit && (
+                    <div className={`duel-unit ${unit.side}`}>
+                      <PokemonBattleSprite
+                        species={unit.species}
+                        side={unit.side}
+                      />
+                      <span className="duel-unit-label">
+                        {unit.displayName}
+                      </span>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="battle-actions">
           <div>
-            <span className="panel-label">Movimento</span>
+            <span className="panel-label">Arena local</span>
             <p>
-              Clique em um tile destacado. Distância Manhattan, 4 direções.
+              O terreno é um recorte do mapa do encontro. Paredes e objetos
+              bloqueados no overworld também bloqueiam movimento aqui.
             </p>
           </div>
 

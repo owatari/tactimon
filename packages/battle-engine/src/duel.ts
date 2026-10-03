@@ -21,6 +21,13 @@ export interface DuelPoint {
   y: number;
 }
 
+export interface StarterDuelOptions {
+  seed?: number;
+  width?: number;
+  height?: number;
+  blocked?: readonly DuelPoint[];
+}
+
 export interface DuelMove {
   id: DuelMoveId;
   name: string;
@@ -57,6 +64,8 @@ export interface DuelUnit {
 export interface DuelState {
   width: number;
   height: number;
+  seed: number;
+  blocked: DuelPoint[];
   round: number;
   activeUnitId: string;
   status: DuelStatus;
@@ -193,6 +202,143 @@ export function starterDisplayName(
   return SPECIES[species].name;
 }
 
+function pointKey(point: DuelPoint): string {
+  return `${point.x},${point.y}`;
+}
+
+function createSeededRandom(seed: number): () => number {
+  let value = (seed >>> 0) || 0x9e3779b9;
+
+  return () => {
+    value ^= value << 13;
+    value ^= value >>> 17;
+    value ^= value << 5;
+    value >>>= 0;
+    return value / 0x100000000;
+  };
+}
+
+function randomItem<T>(
+  values: readonly T[],
+  random: () => number,
+): T {
+  return values[
+    Math.min(
+      values.length - 1,
+      Math.floor(random() * values.length),
+    )
+  ];
+}
+
+function connectedOpenCells(
+  start: DuelPoint,
+  width: number,
+  height: number,
+  blockedKeys: ReadonlySet<string>,
+): DuelPoint[] {
+  const queue: DuelPoint[] = [{ ...start }];
+  const visited = new Set<string>([pointKey(start)]);
+  const result: DuelPoint[] = [{ ...start }];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current) break;
+
+    const neighbors = [
+      { x: current.x + 1, y: current.y },
+      { x: current.x - 1, y: current.y },
+      { x: current.x, y: current.y + 1 },
+      { x: current.x, y: current.y - 1 },
+    ];
+
+    for (const next of neighbors) {
+      const key = pointKey(next);
+
+      if (
+        next.x < 0 ||
+        next.y < 0 ||
+        next.x >= width ||
+        next.y >= height ||
+        blockedKeys.has(key) ||
+        visited.has(key)
+      ) {
+        continue;
+      }
+
+      visited.add(key);
+      queue.push(next);
+      result.push(next);
+    }
+  }
+
+  return result;
+}
+
+function pickSpawnPositions(
+  width: number,
+  height: number,
+  blocked: readonly DuelPoint[],
+  seed: number,
+): [DuelPoint, DuelPoint] {
+  const blockedKeys = new Set(blocked.map(pointKey));
+  const open: DuelPoint[] = [];
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const point = { x, y };
+      if (!blockedKeys.has(pointKey(point))) {
+        open.push(point);
+      }
+    }
+  }
+
+  if (open.length < 2) {
+    return [
+      { x: 0, y: 0 },
+      { x: Math.max(0, width - 1), y: Math.max(0, height - 1) },
+    ];
+  }
+
+  const random = createSeededRandom(seed);
+  const player = randomItem(open, random);
+  const connected = connectedOpenCells(
+    player,
+    width,
+    height,
+    blockedKeys,
+  ).filter(
+    (point) => pointKey(point) !== pointKey(player),
+  );
+
+  const minimumDistance = Math.max(
+    3,
+    Math.floor((width + height) / 4),
+  );
+
+  const preferredRivalCells = connected.filter(
+    (point) =>
+      manhattanDistance(point, player) >= minimumDistance,
+  );
+  const fallbackRivalCells =
+    connected.length > 0
+      ? connected
+      : open.filter(
+          (point) => pointKey(point) !== pointKey(player),
+        );
+
+  const rival = randomItem(
+    preferredRivalCells.length > 0
+      ? preferredRivalCells
+      : fallbackRivalCells,
+    random,
+  );
+
+  return [
+    { ...player },
+    { ...rival },
+  ];
+}
+
 function stageMultiplier(stage: number): number {
   const bounded = Math.max(-MAX_STAGE, Math.min(MAX_STAGE, stage));
   return bounded >= 0
@@ -254,25 +400,48 @@ function makeUnit(
 
 export function createStarterDuel(
   playerStarter: StarterSpeciesId,
+  options: StarterDuelOptions = {},
 ): DuelState {
   const rivalStarter = rivalStarterFor(playerStarter);
+  const width = Math.max(3, Math.trunc(options.width ?? 7));
+  const height = Math.max(3, Math.trunc(options.height ?? 5));
+  const seed = (options.seed ?? 1) >>> 0;
+  const blocked = (options.blocked ?? [])
+    .filter(
+      (point) =>
+        point.x >= 0 &&
+        point.y >= 0 &&
+        point.x < width &&
+        point.y < height,
+    )
+    .map((point) => ({ ...point }));
+
+  const [playerPosition, rivalPosition] = pickSpawnPositions(
+    width,
+    height,
+    blocked,
+    seed,
+  );
+
   const player = makeUnit(
     playerStarter,
     "player",
-    { x: 1, y: 2 },
+    playerPosition,
   );
   const rival = makeUnit(
     rivalStarter,
     "rival",
-    { x: 5, y: 2 },
+    rivalPosition,
   );
 
   const active =
     player.speed >= rival.speed ? player : rival;
 
   return {
-    width: 7,
-    height: 5,
+    width,
+    height,
+    seed,
+    blocked,
     round: 1,
     activeUnitId: active.id,
     status: "active",
@@ -280,6 +449,7 @@ export function createStarterDuel(
     units: [player, rival],
     log: [
       `Blue desafia você! ${rival.displayName} entra na arena.`,
+      `Posições sorteadas para esta batalha (seed ${seed}).`,
       `${active.displayName} age primeiro pela Speed.`,
     ],
   };
@@ -305,6 +475,7 @@ export function getActiveDuelUnit(
 function cloneState(state: DuelState): DuelState {
   return {
     ...state,
+    blocked: state.blocked.map((point) => ({ ...point })),
     units: state.units.map((unit) => ({
       ...unit,
       position: { ...unit.position },
@@ -330,10 +501,6 @@ function inBounds(
   );
 }
 
-function pointKey(point: DuelPoint): string {
-  return `${point.x},${point.y}`;
-}
-
 export function getReachableCells(
   state: DuelState,
   unitId: string,
@@ -353,6 +520,7 @@ export function getReachableCells(
       )
       .map((candidate) => pointKey(candidate.position)),
   );
+  const blocked = new Set(state.blocked.map(pointKey));
 
   const visited = new Map<string, number>();
   const queue: Array<{ point: DuelPoint; cost: number }> = [
@@ -380,7 +548,8 @@ export function getReachableCells(
       if (
         cost > unit.mp ||
         !inBounds(state, next) ||
-        occupied.has(key)
+        occupied.has(key) ||
+        blocked.has(key)
       ) {
         continue;
       }

@@ -2,8 +2,55 @@
 
 Upstream: https://github.com/PMDCollab/SpriteCollab
 
-The tool works from a developer-local checkout instead of vendoring the upstream repository. The upstream submission policy describes community submissions under CC BY-NC 4.0 with attribution and separately identifies official Chunsoft-made material, so provenance must be tracked per imported asset.
+Tactimon uses SpriteCollab as the Pokémon animation source. The upstream checkout stays developer-local; runtime copies are produced under the generated client asset directory and are not committed.
 
-Pipeline: scan `AnimData.xml`, retain cardinal gameplay directions, build animation metadata for Walk/Idle/Attack/Hurt/Sleep/etc., collect upstream credits, generate atlases outside source control, and ship attribution with distributable builds.
+## Local checkout
 
-This commit scans metadata only and copies no PNG assets.
+Either layout is accepted:
+
+```text
+local-assets/spritecollab/
+  sprite/
+  portrait/
+  ...
+```
+
+or:
+
+```text
+local-assets/spritecollab/
+  SpriteCollab/
+    sprite/
+    portrait/
+    ...
+```
+
+Example:
+
+```bash
+git clone https://github.com/PMDCollab/SpriteCollab.git local-assets/spritecollab/SpriteCollab
+```
+
+## Runtime build
+
+`apps/client/scripts/sync-assets.mjs` calls `build-runtime-assets.mjs` automatically during `predev` and `prebuild`.
+
+For the current starter battle it imports:
+
+- Bulbasaur: SpriteCollab id `0001`
+- Charmander: SpriteCollab id `0004`
+- Squirtle: SpriteCollab id `0007`
+
+The runtime importer reads each `AnimData.xml`, copies available `Idle`, `Walk`, `Attack`, `Hurt` and `Faint` sheets, and generates:
+
+```text
+apps/client/public/game-assets/pokemon-sprites/
+  manifest.json
+  bulbasaur/
+  charmander/
+  squirtle/
+```
+
+The manifest contains frame dimensions, frame durations and direction-row metadata so the client displays one animation frame at a time instead of rendering an entire sprite sheet.
+
+`scan-spritecollab.mjs` remains useful for scanning the full upstream catalog.
