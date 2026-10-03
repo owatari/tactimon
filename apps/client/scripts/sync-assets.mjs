@@ -39,6 +39,54 @@ const files = [
     "maps/viridian-city/preview.png",
   ],
   ["overworld/000_red_normal.png", "overworld/red-normal.png"],
+
+  ["tilesets/00_general/tiles.4bpp", "tilesets/general/tiles.4bpp"],
+  [
+    "tilesets/00_general/palettes.gbapal",
+    "tilesets/general/palettes.gbapal",
+  ],
+  [
+    "tilesets/00_general/metatiles.bin",
+    "tilesets/general/metatiles.bin",
+  ],
+  [
+    "tilesets/00_general/attributes.bin",
+    "tilesets/general/attributes.bin",
+  ],
+
+  [
+    "tilesets/01_pallettown/tiles.4bpp",
+    "tilesets/pallet-town/tiles.4bpp",
+  ],
+  [
+    "tilesets/01_pallettown/palettes.gbapal",
+    "tilesets/pallet-town/palettes.gbapal",
+  ],
+  [
+    "tilesets/01_pallettown/metatiles.bin",
+    "tilesets/pallet-town/metatiles.bin",
+  ],
+  [
+    "tilesets/01_pallettown/attributes.bin",
+    "tilesets/pallet-town/attributes.bin",
+  ],
+
+  [
+    "tilesets/02_viridiancity/tiles.4bpp",
+    "tilesets/viridian-city/tiles.4bpp",
+  ],
+  [
+    "tilesets/02_viridiancity/palettes.gbapal",
+    "tilesets/viridian-city/palettes.gbapal",
+  ],
+  [
+    "tilesets/02_viridiancity/metatiles.bin",
+    "tilesets/viridian-city/metatiles.bin",
+  ],
+  [
+    "tilesets/02_viridiancity/attributes.bin",
+    "tilesets/viridian-city/attributes.bin",
+  ],
 ];
 
 await rm(publicRoot, { recursive: true, force: true });

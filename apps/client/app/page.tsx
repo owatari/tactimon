@@ -6,9 +6,9 @@ export default function HomePage() {
       <header className="topbar">
         <div>
           <span className="eyebrow">TACTIMON ONLINE</span>
-          <h1>Overworld Prototype</h1>
+          <h1>Kanto Overworld</h1>
         </div>
-        <div className="build-badge">Kanto · v0.1</div>
+        <div className="build-badge">Pallet → Route 1 → Viridian</div>
       </header>
 
       <section className="game-card" aria-label="Tactimon overworld">
@@ -16,7 +16,8 @@ export default function HomePage() {
       </section>
 
       <footer className="footer-note">
-        Primeiro slice: Pallet Town, movimento 4-dir, colisão e câmera.
+        Overworld em construção: movimento contínuo, camadas reais do FireRed,
+        colisão e conexões entre mapas.
       </footer>
     </main>
   );

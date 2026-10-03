@@ -1,4 +1,7 @@
 export const TILE_SIZE = 16;
+export const WORLD_ZOOM = 3;
+
+export type Direction = "south" | "north" | "west" | "east";
 
 export type MapCell = {
   raw: number;
@@ -18,12 +21,49 @@ export type MapLayout = {
   cells: MapCell[];
 };
 
+export type TilesetAssetDefinition = {
+  tilesUrl: string;
+  palettesUrl: string;
+  metatilesUrl: string;
+  attributesUrl: string;
+};
+
 export type WorldMapDefinition = {
   id: string;
   label: string;
   layoutUrl: string;
   previewUrl: string;
   spawn: { x: number; y: number };
+  tilesets: {
+    primary: TilesetAssetDefinition;
+    secondary: TilesetAssetDefinition;
+  };
+};
+
+export type WorldTransition = {
+  mapId: string;
+  spawn: { x: number; y: number };
+};
+
+const GENERAL_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/general/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/general/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/general/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/general/attributes.bin",
+};
+
+const PALLET_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/pallet-town/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/pallet-town/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/pallet-town/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/pallet-town/attributes.bin",
+};
+
+const VIRIDIAN_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/viridian-city/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/viridian-city/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/viridian-city/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/viridian-city/attributes.bin",
 };
 
 export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
@@ -33,20 +73,32 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     layoutUrl: "/game-assets/maps/pallet-town/layout.json",
     previewUrl: "/game-assets/maps/pallet-town/preview.png",
     spawn: { x: 12, y: 17 },
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: PALLET_TILESET,
+    },
   },
   "route-1": {
     id: "route-1",
     label: "Route 1",
     layoutUrl: "/game-assets/maps/route-1/layout.json",
     previewUrl: "/game-assets/maps/route-1/preview.png",
-    spawn: { x: 10, y: 20 },
+    spawn: { x: 12, y: 37 },
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: PALLET_TILESET,
+    },
   },
   "viridian-city": {
     id: "viridian-city",
     label: "Viridian City",
     layoutUrl: "/game-assets/maps/viridian-city/layout.json",
     previewUrl: "/game-assets/maps/viridian-city/preview.png",
-    spawn: { x: 20, y: 20 },
+    spawn: { x: 23, y: 39 },
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: VIRIDIAN_TILESET,
+    },
   },
 };
 
@@ -58,3 +110,80 @@ export const PLAYER_SPRITE = {
   sheetWidth: 96,
   sheetHeight: 128,
 };
+
+export const DIRECTION_DELTA: Record<
+  Direction,
+  { x: number; y: number }
+> = {
+  south: { x: 0, y: 1 },
+  north: { x: 0, y: -1 },
+  west: { x: -1, y: 0 },
+  east: { x: 1, y: 0 },
+};
+
+/**
+ * First real overworld connections.
+ *
+ * These use the decoded FireRed layout edges. Later this table will be
+ * generated from MapConnections rather than maintained by hand.
+ */
+export function resolveWorldTransition(
+  mapId: string,
+  x: number,
+  y: number,
+  direction: Direction,
+): WorldTransition | null {
+  if (
+    mapId === "pallet-town" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 12 &&
+    x <= 13
+  ) {
+    return {
+      mapId: "route-1",
+      spawn: { x, y: 37 },
+    };
+  }
+
+  if (
+    mapId === "route-1" &&
+    direction === "south" &&
+    y >= 37 &&
+    x >= 12 &&
+    x <= 13
+  ) {
+    return {
+      mapId: "pallet-town",
+      spawn: { x, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "route-1" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 10 &&
+    x <= 13
+  ) {
+    return {
+      mapId: "viridian-city",
+      spawn: { x: x + 12, y: 39 },
+    };
+  }
+
+  if (
+    mapId === "viridian-city" &&
+    direction === "south" &&
+    y === 39 &&
+    x >= 22 &&
+    x <= 25
+  ) {
+    return {
+      mapId: "route-1",
+      spawn: { x: x - 12, y: 0 },
+    };
+  }
+
+  return null;
+}
