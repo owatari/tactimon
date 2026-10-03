@@ -1,4 +1,4 @@
-import type { BattleUnit, EncounterRules } from "./types.js";
+import type { BattleUnit, EncounterRules } from "./types";
 
 export interface CaptureEligibility {
   allowed: boolean;

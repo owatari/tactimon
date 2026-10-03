@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { failedCaptureXpRatio, getCaptureEligibility, resolveCaptureRoll } from "../src/capture.js";
-import type { BattleUnit, EncounterRules } from "../src/types.js";
+import { failedCaptureXpRatio, getCaptureEligibility, resolveCaptureRoll } from "../src/capture";
+import type { BattleUnit, EncounterRules } from "../src/types";
 
 const rules: EncounterRules = { capturePolicy: "allowed", captureHpThresholdRatio: 0.10 };
 const wild = (currentHp: number): BattleUnit => ({ id:"wild-1", ownerId:null, wild:true, boss:false, currentHp, maxHp:100, speed:50, position:{x:0,y:0}, captureAttempted:false });

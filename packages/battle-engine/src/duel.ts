@@ -1,7 +1,7 @@
 import {
   calculateHpStat,
   calculateOtherStat,
-} from "./stats.js";
+} from "./stats";
 
 export type StarterSpeciesId =
   | "bulbasaur"

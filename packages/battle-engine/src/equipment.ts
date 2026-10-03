@@ -1,4 +1,4 @@
-import type { EquipmentSlot, PokemonEquipment } from "./types.js";
+import type { EquipmentSlot, PokemonEquipment } from "./types";
 
 export function unlockHeld(equipment: PokemonEquipment, itemId: string): PokemonEquipment {
   if (equipment.unlockedHeldIds.includes(itemId)) return equipment;

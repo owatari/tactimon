@@ -6,7 +6,7 @@ import {
   getReachableCells,
   resolveSimpleAiTurn,
   rivalStarterFor,
-} from "../src/duel.js";
+} from "../src/duel";
 
 describe("starter duel", () => {
   it("selects the classic counter starter", () => {
