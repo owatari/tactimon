@@ -1,0 +1,61 @@
+{
+  "source": "Pokemon Mystery Dungeon: Explorers of Sky (USA)",
+  "render_summary": {
+    "successful": 290,
+    "failed": 0
+  },
+  "moves": {
+    "scratch": {
+      "file": "scratch.png",
+      "frame_width": 40,
+      "frame_height": 40,
+      "frames": 7,
+      "frame_duration_ms": 80,
+      "placement": "target",
+      "effect_animation_id": 138,
+      "archive_entry": 54,
+      "animation_index": 0,
+      "mapping": "canonical",
+      "note": "Scratch WAN used by EoS."
+    },
+    "growl": {
+      "file": "growl.png",
+      "frame_width": 72,
+      "frame_height": 72,
+      "frames": 12,
+      "frame_duration_ms": 80,
+      "placement": "target",
+      "effect_animation_id": 274,
+      "archive_entry": 121,
+      "animation_index": 0,
+      "mapping": "canonical",
+      "note": "Growl/Howl-style EoS effect referenced by the move animation table."
+    },
+    "tackle": {
+      "file": "tackle.png",
+      "frame_width": 16,
+      "frame_height": 16,
+      "frames": 10,
+      "frame_duration_ms": 80,
+      "placement": "target",
+      "effect_animation_id": 275,
+      "archive_entry": 120,
+      "animation_index": 1,
+      "mapping": "proxy",
+      "note": "Visible physical impact proxy; EoS Tackle's own effect entry is effectively sound/no visual."
+    },
+    "tail-whip": {
+      "file": "tail-whip.png",
+      "frame_width": 56,
+      "frame_height": 56,
+      "frames": 11,
+      "frame_duration_ms": 80,
+      "placement": "target",
+      "effect_animation_id": 287,
+      "archive_entry": 113,
+      "animation_index": 1,
+      "mapping": "proxy",
+      "note": "Defense-lowering visual proxy from EoS."
+    }
+  }
+}

@@ -1,0 +1,5728 @@
+{
+  "successful": 290,
+  "failed": 0,
+  "results": {
+    "0": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0000\\A-00-00-N.png",
+        "effect0000\\A-01-00-N.png",
+        "effect0000\\A-02-00-N.png",
+        "effect0000\\A-03-00-N.png",
+        "effect0000\\A-04-00-N.png",
+        "effect0000\\A-05-00-N.png",
+        "effect0000\\A-06-00-N-B.png",
+        "effect0000\\A-06-00-N-F.png",
+        "effect0000\\A-06-00-N.png",
+        "effect0000\\A-07-00-N.png",
+        "effect0000\\A-08-00-N.png",
+        "effect0000\\A-09-00-N.png",
+        "effect0000\\A-10-00-N.png",
+        "effect0000\\A-11-00-N.png",
+        "effect0000\\A-12-00-N-B.png",
+        "effect0000\\A-12-00-N-F.png",
+        "effect0000\\A-12-00-N.png",
+        "effect0000\\A-13-00-N-B.png",
+        "effect0000\\A-13-00-N-F.png",
+        "effect0000\\A-13-00-N.png",
+        "effect0000\\A-14-00-N-B.png",
+        "effect0000\\A-14-00-N-F.png",
+        "effect0000\\A-14-00-N.png",
+        "effect0000\\A-15-00-N.png",
+        "effect0000\\A-16-00-N.png",
+        "effect0000\\A-17-00-N.png",
+        "effect0000\\A-18-00-N.png",
+        "effect0000\\A-19-00-N.png",
+        "effect0000\\A-20-00-N.png",
+        "effect0000\\A-21-00-N-B.png",
+        "effect0000\\A-21-00-N-F.png",
+        "effect0000\\A-21-00-N.png",
+        "effect0000\\A-22-00-N.png",
+        "effect0000\\A-23-00-N-B.png",
+        "effect0000\\A-23-00-N-F.png",
+        "effect0000\\A-23-00-N.png",
+        "effect0000\\A-24-00-N-B.png",
+        "effect0000\\A-24-00-N-F.png",
+        "effect0000\\A-24-00-N.png",
+        "effect0000\\A-25-00-N.png",
+        "effect0000\\A-26-00-N.png",
+        "effect0000\\A-27-00-N.png",
+        "effect0000\\A-29-00-N.png",
+        "effect0000\\A-30-00-N.png",
+        "effect0000\\A-31-00-N-B.png",
+        "effect0000\\A-31-00-N-F.png",
+        "effect0000\\A-31-00-N.png",
+        "effect0000\\A-32-00-N.png",
+        "effect0000\\A-33-00-N-B.png",
+        "effect0000\\A-33-00-N-F.png",
+        "effect0000\\A-33-00-N.png",
+        "effect0000\\A-34-00-N.png",
+        "effect0000\\A-35-00-N.png",
+        "effect0000\\A-36-00-N-B.png",
+        "effect0000\\A-36-00-N-F.png",
+        "effect0000\\A-36-00-N.png",
+        "effect0000\\A-37-00-N.png",
+        "effect0000\\A-38-00-N.png",
+        "effect0000\\A-39-00-N.png",
+        "effect0000\\A-40-00-N.png",
+        "effect0000\\A-41-00-N-B.png",
+        "effect0000\\A-41-00-N-F.png",
+        "effect0000\\A-41-00-N.png",
+        "effect0000\\A-42-00-N-B.png",
+        "effect0000\\A-42-00-N-F.png",
+        "effect0000\\A-42-00-N.png",
+        "effect0000\\A-43-00-N-B.png",
+        "effect0000\\A-43-00-N-F.png",
+        "effect0000\\A-43-00-N.png",
+        "effect0000\\A-44-00-N-B.png",
+        "effect0000\\A-44-00-N-F.png",
+        "effect0000\\A-44-00-N.png",
+        "effect0000\\A-45-00-N.png",
+        "effect0000\\A-46-00-N.png",
+        "effect0000\\A-47-00-N.png",
+        "effect0000\\A-49-00-N.png"
+      ],
+      "pngs": [
+        "effect0000\\A-00-00-N.png",
+        "effect0000\\A-01-00-N.png",
+        "effect0000\\A-02-00-N.png",
+        "effect0000\\A-03-00-N.png",
+        "effect0000\\A-04-00-N.png",
+        "effect0000\\A-05-00-N.png",
+        "effect0000\\A-06-00-N-B.png",
+        "effect0000\\A-06-00-N-F.png",
+        "effect0000\\A-06-00-N.png",
+        "effect0000\\A-07-00-N.png",
+        "effect0000\\A-08-00-N.png",
+        "effect0000\\A-09-00-N.png",
+        "effect0000\\A-10-00-N.png",
+        "effect0000\\A-11-00-N.png",
+        "effect0000\\A-12-00-N-B.png",
+        "effect0000\\A-12-00-N-F.png",
+        "effect0000\\A-12-00-N.png",
+        "effect0000\\A-13-00-N-B.png",
+        "effect0000\\A-13-00-N-F.png",
+        "effect0000\\A-13-00-N.png",
+        "effect0000\\A-14-00-N-B.png",
+        "effect0000\\A-14-00-N-F.png",
+        "effect0000\\A-14-00-N.png",
+        "effect0000\\A-15-00-N.png",
+        "effect0000\\A-16-00-N.png",
+        "effect0000\\A-17-00-N.png",
+        "effect0000\\A-18-00-N.png",
+        "effect0000\\A-19-00-N.png",
+        "effect0000\\A-20-00-N.png",
+        "effect0000\\A-21-00-N-B.png",
+        "effect0000\\A-21-00-N-F.png",
+        "effect0000\\A-21-00-N.png",
+        "effect0000\\A-22-00-N.png",
+        "effect0000\\A-23-00-N-B.png",
+        "effect0000\\A-23-00-N-F.png",
+        "effect0000\\A-23-00-N.png",
+        "effect0000\\A-24-00-N-B.png",
+        "effect0000\\A-24-00-N-F.png",
+        "effect0000\\A-24-00-N.png",
+        "effect0000\\A-25-00-N.png",
+        "effect0000\\A-26-00-N.png",
+        "effect0000\\A-27-00-N.png",
+        "effect0000\\A-29-00-N.png",
+        "effect0000\\A-30-00-N.png",
+        "effect0000\\A-31-00-N-B.png",
+        "effect0000\\A-31-00-N-F.png",
+        "effect0000\\A-31-00-N.png",
+        "effect0000\\A-32-00-N.png",
+        "effect0000\\A-33-00-N-B.png",
+        "effect0000\\A-33-00-N-F.png",
+        "effect0000\\A-33-00-N.png",
+        "effect0000\\A-34-00-N.png",
+        "effect0000\\A-35-00-N.png",
+        "effect0000\\A-36-00-N-B.png",
+        "effect0000\\A-36-00-N-F.png",
+        "effect0000\\A-36-00-N.png",
+        "effect0000\\A-37-00-N.png",
+        "effect0000\\A-38-00-N.png",
+        "effect0000\\A-39-00-N.png",
+        "effect0000\\A-40-00-N.png",
+        "effect0000\\A-41-00-N-B.png",
+        "effect0000\\A-41-00-N-F.png",
+        "effect0000\\A-41-00-N.png",
+        "effect0000\\A-42-00-N-B.png",
+        "effect0000\\A-42-00-N-F.png",
+        "effect0000\\A-42-00-N.png",
+        "effect0000\\A-43-00-N-B.png",
+        "effect0000\\A-43-00-N-F.png",
+        "effect0000\\A-43-00-N.png",
+        "effect0000\\A-44-00-N-B.png",
+        "effect0000\\A-44-00-N-F.png",
+        "effect0000\\A-44-00-N.png",
+        "effect0000\\A-45-00-N.png",
+        "effect0000\\A-46-00-N.png",
+        "effect0000\\A-47-00-N.png",
+        "effect0000\\A-49-00-N.png"
+      ]
+    },
+    "1": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0001\\A-00-00-N.png",
+        "effect0001\\A-01-00-N.png",
+        "effect0001\\A-02-00-N.png",
+        "effect0001\\A-03-00-N.png",
+        "effect0001\\A-04-00-N.png",
+        "effect0001\\A-05-00-N.png",
+        "effect0001\\A-06-00-N.png",
+        "effect0001\\A-07-00-N.png",
+        "effect0001\\A-08-00-N.png",
+        "effect0001\\A-09-00-N.png",
+        "effect0001\\A-10-00-N.png",
+        "effect0001\\A-11-00-N.png",
+        "effect0001\\A-12-00-N.png",
+        "effect0001\\A-13-00-N.png",
+        "effect0001\\A-14-00-N.png",
+        "effect0001\\A-15-00-N.png",
+        "effect0001\\A-16-00-N-B.png",
+        "effect0001\\A-16-00-N-F.png",
+        "effect0001\\A-16-00-N.png",
+        "effect0001\\A-17-00-N-B.png",
+        "effect0001\\A-17-00-N-F.png",
+        "effect0001\\A-17-00-N.png",
+        "effect0001\\A-18-00-N-B.png",
+        "effect0001\\A-18-00-N-F.png",
+        "effect0001\\A-18-00-N.png",
+        "effect0001\\A-19-00-N-B.png",
+        "effect0001\\A-19-00-N-F.png",
+        "effect0001\\A-19-00-N.png",
+        "effect0001\\A-20-00-N-B.png",
+        "effect0001\\A-20-00-N-F.png",
+        "effect0001\\A-20-00-N.png",
+        "effect0001\\A-21-00-N.png",
+        "effect0001\\A-22-00-N.png",
+        "effect0001\\A-23-00-N-B.png",
+        "effect0001\\A-23-00-N-F.png",
+        "effect0001\\A-23-00-N.png",
+        "effect0001\\A-24-00-N-B.png",
+        "effect0001\\A-24-00-N-F.png",
+        "effect0001\\A-24-00-N.png",
+        "effect0001\\A-25-00-N.png"
+      ],
+      "pngs": [
+        "effect0001\\A-00-00-N.png",
+        "effect0001\\A-01-00-N.png",
+        "effect0001\\A-02-00-N.png",
+        "effect0001\\A-03-00-N.png",
+        "effect0001\\A-04-00-N.png",
+        "effect0001\\A-05-00-N.png",
+        "effect0001\\A-06-00-N.png",
+        "effect0001\\A-07-00-N.png",
+        "effect0001\\A-08-00-N.png",
+        "effect0001\\A-09-00-N.png",
+        "effect0001\\A-10-00-N.png",
+        "effect0001\\A-11-00-N.png",
+        "effect0001\\A-12-00-N.png",
+        "effect0001\\A-13-00-N.png",
+        "effect0001\\A-14-00-N.png",
+        "effect0001\\A-15-00-N.png",
+        "effect0001\\A-16-00-N-B.png",
+        "effect0001\\A-16-00-N-F.png",
+        "effect0001\\A-16-00-N.png",
+        "effect0001\\A-17-00-N-B.png",
+        "effect0001\\A-17-00-N-F.png",
+        "effect0001\\A-17-00-N.png",
+        "effect0001\\A-18-00-N-B.png",
+        "effect0001\\A-18-00-N-F.png",
+        "effect0001\\A-18-00-N.png",
+        "effect0001\\A-19-00-N-B.png",
+        "effect0001\\A-19-00-N-F.png",
+        "effect0001\\A-19-00-N.png",
+        "effect0001\\A-20-00-N-B.png",
+        "effect0001\\A-20-00-N-F.png",
+        "effect0001\\A-20-00-N.png",
+        "effect0001\\A-21-00-N.png",
+        "effect0001\\A-22-00-N.png",
+        "effect0001\\A-23-00-N-B.png",
+        "effect0001\\A-23-00-N-F.png",
+        "effect0001\\A-23-00-N.png",
+        "effect0001\\A-24-00-N-B.png",
+        "effect0001\\A-24-00-N-F.png",
+        "effect0001\\A-24-00-N.png",
+        "effect0001\\A-25-00-N.png"
+      ]
+    },
+    "2": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0002\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0002\\A-00-00-N.png"
+      ]
+    },
+    "3": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0003\\A-00-00-N.png",
+        "effect0003\\A-01-00-N.png",
+        "effect0003\\A-02-00-N.png",
+        "effect0003\\A-03-00-N.png",
+        "effect0003\\A-04-00-N.png",
+        "effect0003\\A-05-00-N.png",
+        "effect0003\\A-06-00-N.png",
+        "effect0003\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0003\\A-00-00-N.png",
+        "effect0003\\A-01-00-N.png",
+        "effect0003\\A-02-00-N.png",
+        "effect0003\\A-03-00-N.png",
+        "effect0003\\A-04-00-N.png",
+        "effect0003\\A-05-00-N.png",
+        "effect0003\\A-06-00-N.png",
+        "effect0003\\A-07-00-N.png"
+      ]
+    },
+    "4": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0004\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0004\\A-00-00-N.png"
+      ]
+    },
+    "5": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0005\\A-00-00-N.png",
+        "effect0005\\A-01-00-N.png",
+        "effect0005\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0005\\A-00-00-N.png",
+        "effect0005\\A-01-00-N.png",
+        "effect0005\\A-02-00-N.png"
+      ]
+    },
+    "6": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0006\\A-00-00-N.png",
+        "effect0006\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0006\\A-00-00-N.png",
+        "effect0006\\A-01-00-N.png"
+      ]
+    },
+    "7": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0007\\A-00-00-N.png",
+        "effect0007\\A-01-00-N.png",
+        "effect0007\\A-02-00-N.png",
+        "effect0007\\A-03-00-N.png",
+        "effect0007\\A-04-00-N.png",
+        "effect0007\\A-05-00-N.png",
+        "effect0007\\A-06-00-N-B.png",
+        "effect0007\\A-06-00-N-F.png",
+        "effect0007\\A-06-00-N.png",
+        "effect0007\\A-07-00-N.png",
+        "effect0007\\A-08-00-N.png"
+      ],
+      "pngs": [
+        "effect0007\\A-00-00-N.png",
+        "effect0007\\A-01-00-N.png",
+        "effect0007\\A-02-00-N.png",
+        "effect0007\\A-03-00-N.png",
+        "effect0007\\A-04-00-N.png",
+        "effect0007\\A-05-00-N.png",
+        "effect0007\\A-06-00-N-B.png",
+        "effect0007\\A-06-00-N-F.png",
+        "effect0007\\A-06-00-N.png",
+        "effect0007\\A-07-00-N.png",
+        "effect0007\\A-08-00-N.png"
+      ]
+    },
+    "8": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0008\\A-00-00-N.png",
+        "effect0008\\A-01-00-N.png",
+        "effect0008\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0008\\A-00-00-N.png",
+        "effect0008\\A-01-00-N.png",
+        "effect0008\\A-02-00-N.png"
+      ]
+    },
+    "9": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0009\\A-00-00-N-B.png",
+        "effect0009\\A-00-00-N-F.png",
+        "effect0009\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0009\\A-00-00-N-B.png",
+        "effect0009\\A-00-00-N-F.png",
+        "effect0009\\A-00-00-N.png"
+      ]
+    },
+    "10": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0010\\A-00-00-N-B.png",
+        "effect0010\\A-00-00-N-F.png",
+        "effect0010\\A-00-00-N.png",
+        "effect0010\\A-01-00-N-B.png",
+        "effect0010\\A-01-00-N-F.png",
+        "effect0010\\A-01-00-N.png",
+        "effect0010\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0010\\A-00-00-N-B.png",
+        "effect0010\\A-00-00-N-F.png",
+        "effect0010\\A-00-00-N.png",
+        "effect0010\\A-01-00-N-B.png",
+        "effect0010\\A-01-00-N-F.png",
+        "effect0010\\A-01-00-N.png",
+        "effect0010\\A-02-00-N.png"
+      ]
+    },
+    "11": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0011\\A-00-00-N.png",
+        "effect0011\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0011\\A-00-00-N.png",
+        "effect0011\\A-01-00-N.png"
+      ]
+    },
+    "12": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0012\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0012\\A-00-00-N.png"
+      ]
+    },
+    "13": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0013\\A-00-00-N.png",
+        "effect0013\\A-01-00-N.png",
+        "effect0013\\A-02-00-N.png",
+        "effect0013\\A-03-00-N.png",
+        "effect0013\\A-04-00-N.png",
+        "effect0013\\A-05-00-N.png",
+        "effect0013\\A-06-00-N.png",
+        "effect0013\\A-07-00-N.png",
+        "effect0013\\A-08-00-N.png",
+        "effect0013\\A-09-00-N.png",
+        "effect0013\\A-10-00-N.png",
+        "effect0013\\A-11-00-N.png",
+        "effect0013\\A-12-00-N.png",
+        "effect0013\\A-13-00-N.png",
+        "effect0013\\A-14-00-N.png",
+        "effect0013\\A-15-00-N.png",
+        "effect0013\\A-16-00-N.png",
+        "effect0013\\A-17-00-N.png",
+        "effect0013\\A-18-00-N.png",
+        "effect0013\\A-19-00-N.png",
+        "effect0013\\A-20-00-N.png",
+        "effect0013\\A-21-00-N.png",
+        "effect0013\\A-22-00-N.png",
+        "effect0013\\A-23-00-N.png",
+        "effect0013\\A-24-00-N.png",
+        "effect0013\\A-25-00-N.png",
+        "effect0013\\A-26-00-N.png",
+        "effect0013\\A-27-00-N.png",
+        "effect0013\\A-28-00-N.png",
+        "effect0013\\A-29-00-N.png",
+        "effect0013\\A-30-00-N.png",
+        "effect0013\\A-31-00-N.png",
+        "effect0013\\A-32-00-N.png",
+        "effect0013\\A-33-00-N.png",
+        "effect0013\\A-34-00-N.png",
+        "effect0013\\A-35-00-N.png",
+        "effect0013\\A-36-00-N.png",
+        "effect0013\\A-37-00-N.png",
+        "effect0013\\A-38-00-N.png",
+        "effect0013\\A-39-00-N.png",
+        "effect0013\\A-40-00-N.png",
+        "effect0013\\A-41-00-N.png",
+        "effect0013\\A-42-00-N.png",
+        "effect0013\\A-43-00-N.png",
+        "effect0013\\A-44-00-N.png",
+        "effect0013\\A-45-00-N.png",
+        "effect0013\\A-46-00-N.png",
+        "effect0013\\A-47-00-N.png",
+        "effect0013\\A-48-00-N.png",
+        "effect0013\\A-49-00-N.png",
+        "effect0013\\A-50-00-N.png",
+        "effect0013\\A-51-00-N.png",
+        "effect0013\\A-52-00-N.png",
+        "effect0013\\A-53-00-N.png",
+        "effect0013\\A-54-00-N.png",
+        "effect0013\\A-55-00-N.png"
+      ],
+      "pngs": [
+        "effect0013\\A-00-00-N.png",
+        "effect0013\\A-01-00-N.png",
+        "effect0013\\A-02-00-N.png",
+        "effect0013\\A-03-00-N.png",
+        "effect0013\\A-04-00-N.png",
+        "effect0013\\A-05-00-N.png",
+        "effect0013\\A-06-00-N.png",
+        "effect0013\\A-07-00-N.png",
+        "effect0013\\A-08-00-N.png",
+        "effect0013\\A-09-00-N.png",
+        "effect0013\\A-10-00-N.png",
+        "effect0013\\A-11-00-N.png",
+        "effect0013\\A-12-00-N.png",
+        "effect0013\\A-13-00-N.png",
+        "effect0013\\A-14-00-N.png",
+        "effect0013\\A-15-00-N.png",
+        "effect0013\\A-16-00-N.png",
+        "effect0013\\A-17-00-N.png",
+        "effect0013\\A-18-00-N.png",
+        "effect0013\\A-19-00-N.png",
+        "effect0013\\A-20-00-N.png",
+        "effect0013\\A-21-00-N.png",
+        "effect0013\\A-22-00-N.png",
+        "effect0013\\A-23-00-N.png",
+        "effect0013\\A-24-00-N.png",
+        "effect0013\\A-25-00-N.png",
+        "effect0013\\A-26-00-N.png",
+        "effect0013\\A-27-00-N.png",
+        "effect0013\\A-28-00-N.png",
+        "effect0013\\A-29-00-N.png",
+        "effect0013\\A-30-00-N.png",
+        "effect0013\\A-31-00-N.png",
+        "effect0013\\A-32-00-N.png",
+        "effect0013\\A-33-00-N.png",
+        "effect0013\\A-34-00-N.png",
+        "effect0013\\A-35-00-N.png",
+        "effect0013\\A-36-00-N.png",
+        "effect0013\\A-37-00-N.png",
+        "effect0013\\A-38-00-N.png",
+        "effect0013\\A-39-00-N.png",
+        "effect0013\\A-40-00-N.png",
+        "effect0013\\A-41-00-N.png",
+        "effect0013\\A-42-00-N.png",
+        "effect0013\\A-43-00-N.png",
+        "effect0013\\A-44-00-N.png",
+        "effect0013\\A-45-00-N.png",
+        "effect0013\\A-46-00-N.png",
+        "effect0013\\A-47-00-N.png",
+        "effect0013\\A-48-00-N.png",
+        "effect0013\\A-49-00-N.png",
+        "effect0013\\A-50-00-N.png",
+        "effect0013\\A-51-00-N.png",
+        "effect0013\\A-52-00-N.png",
+        "effect0013\\A-53-00-N.png",
+        "effect0013\\A-54-00-N.png",
+        "effect0013\\A-55-00-N.png"
+      ]
+    },
+    "14": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0014\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0014\\A-00-00-N.png"
+      ]
+    },
+    "15": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0015\\A-00-00-N.png",
+        "effect0015\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0015\\A-00-00-N.png",
+        "effect0015\\A-01-00-N.png"
+      ]
+    },
+    "16": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0016\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0016\\A-00-00-N.png"
+      ]
+    },
+    "17": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0017\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0017\\A-00-00-N.png"
+      ]
+    },
+    "18": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0018\\A-00-00-N.png",
+        "effect0018\\A-01-00-N.png",
+        "effect0018\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0018\\A-00-00-N.png",
+        "effect0018\\A-01-00-N.png",
+        "effect0018\\A-02-00-N.png"
+      ]
+    },
+    "19": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0019\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0019\\A-00-00-N.png"
+      ]
+    },
+    "20": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0020\\A-00-00-N.png",
+        "effect0020\\A-01-00-N.png",
+        "effect0020\\A-02-00-N.png",
+        "effect0020\\A-03-00-N.png",
+        "effect0020\\A-04-00-N.png",
+        "effect0020\\A-05-00-N.png",
+        "effect0020\\A-06-00-N.png"
+      ],
+      "pngs": [
+        "effect0020\\A-00-00-N.png",
+        "effect0020\\A-01-00-N.png",
+        "effect0020\\A-02-00-N.png",
+        "effect0020\\A-03-00-N.png",
+        "effect0020\\A-04-00-N.png",
+        "effect0020\\A-05-00-N.png",
+        "effect0020\\A-06-00-N.png"
+      ]
+    },
+    "21": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0021\\A-00-00-N-B.png",
+        "effect0021\\A-00-00-N-F.png",
+        "effect0021\\A-00-00-N.png",
+        "effect0021\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0021\\A-00-00-N-B.png",
+        "effect0021\\A-00-00-N-F.png",
+        "effect0021\\A-00-00-N.png",
+        "effect0021\\A-01-00-N.png"
+      ]
+    },
+    "22": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0022\\A-00-00-N.png",
+        "effect0022\\A-01-00-N.png",
+        "effect0022\\A-02-00-N.png",
+        "effect0022\\A-03-00-N.png"
+      ],
+      "pngs": [
+        "effect0022\\A-00-00-N.png",
+        "effect0022\\A-01-00-N.png",
+        "effect0022\\A-02-00-N.png",
+        "effect0022\\A-03-00-N.png"
+      ]
+    },
+    "23": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0023\\A-00-00-N.png",
+        "effect0023\\A-01-00-N.png",
+        "effect0023\\A-02-00-N.png",
+        "effect0023\\A-03-00-N.png",
+        "effect0023\\A-04-00-N.png",
+        "effect0023\\A-05-00-N.png",
+        "effect0023\\A-06-00-N.png",
+        "effect0023\\A-07-00-N.png",
+        "effect0023\\A-08-00-N.png",
+        "effect0023\\A-09-00-N.png",
+        "effect0023\\A-10-00-N.png",
+        "effect0023\\A-11-00-N.png",
+        "effect0023\\A-12-00-N.png",
+        "effect0023\\A-13-00-N.png",
+        "effect0023\\A-14-00-N.png",
+        "effect0023\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0023\\A-00-00-N.png",
+        "effect0023\\A-01-00-N.png",
+        "effect0023\\A-02-00-N.png",
+        "effect0023\\A-03-00-N.png",
+        "effect0023\\A-04-00-N.png",
+        "effect0023\\A-05-00-N.png",
+        "effect0023\\A-06-00-N.png",
+        "effect0023\\A-07-00-N.png",
+        "effect0023\\A-08-00-N.png",
+        "effect0023\\A-09-00-N.png",
+        "effect0023\\A-10-00-N.png",
+        "effect0023\\A-11-00-N.png",
+        "effect0023\\A-12-00-N.png",
+        "effect0023\\A-13-00-N.png",
+        "effect0023\\A-14-00-N.png",
+        "effect0023\\A-15-00-N.png"
+      ]
+    },
+    "24": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0024\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0024\\A-00-00-N.png"
+      ]
+    },
+    "25": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0025\\A-00-00-N.png",
+        "effect0025\\A-01-00-N-B.png",
+        "effect0025\\A-01-00-N-F.png",
+        "effect0025\\A-01-00-N.png",
+        "effect0025\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0025\\A-00-00-N.png",
+        "effect0025\\A-01-00-N-B.png",
+        "effect0025\\A-01-00-N-F.png",
+        "effect0025\\A-01-00-N.png",
+        "effect0025\\A-02-00-N.png"
+      ]
+    },
+    "26": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0026\\A-00-00-N.png",
+        "effect0026\\A-01-00-N.png",
+        "effect0026\\A-02-00-N.png",
+        "effect0026\\A-03-00-N.png",
+        "effect0026\\A-04-00-N.png",
+        "effect0026\\A-05-00-N.png",
+        "effect0026\\A-06-00-N.png",
+        "effect0026\\A-07-00-N.png",
+        "effect0026\\A-08-00-N-B.png",
+        "effect0026\\A-08-00-N-F.png",
+        "effect0026\\A-08-00-N.png",
+        "effect0026\\A-09-00-N-B.png",
+        "effect0026\\A-09-00-N-F.png",
+        "effect0026\\A-09-00-N.png",
+        "effect0026\\A-10-00-N-B.png",
+        "effect0026\\A-10-00-N-F.png",
+        "effect0026\\A-10-00-N.png",
+        "effect0026\\A-11-00-N-B.png",
+        "effect0026\\A-11-00-N-F.png",
+        "effect0026\\A-11-00-N.png",
+        "effect0026\\A-12-00-N-B.png",
+        "effect0026\\A-12-00-N-F.png",
+        "effect0026\\A-12-00-N.png",
+        "effect0026\\A-13-00-N-B.png",
+        "effect0026\\A-13-00-N-F.png",
+        "effect0026\\A-13-00-N.png",
+        "effect0026\\A-14-00-N-B.png",
+        "effect0026\\A-14-00-N-F.png",
+        "effect0026\\A-14-00-N.png",
+        "effect0026\\A-15-00-N-B.png",
+        "effect0026\\A-15-00-N-F.png",
+        "effect0026\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0026\\A-00-00-N.png",
+        "effect0026\\A-01-00-N.png",
+        "effect0026\\A-02-00-N.png",
+        "effect0026\\A-03-00-N.png",
+        "effect0026\\A-04-00-N.png",
+        "effect0026\\A-05-00-N.png",
+        "effect0026\\A-06-00-N.png",
+        "effect0026\\A-07-00-N.png",
+        "effect0026\\A-08-00-N-B.png",
+        "effect0026\\A-08-00-N-F.png",
+        "effect0026\\A-08-00-N.png",
+        "effect0026\\A-09-00-N-B.png",
+        "effect0026\\A-09-00-N-F.png",
+        "effect0026\\A-09-00-N.png",
+        "effect0026\\A-10-00-N-B.png",
+        "effect0026\\A-10-00-N-F.png",
+        "effect0026\\A-10-00-N.png",
+        "effect0026\\A-11-00-N-B.png",
+        "effect0026\\A-11-00-N-F.png",
+        "effect0026\\A-11-00-N.png",
+        "effect0026\\A-12-00-N-B.png",
+        "effect0026\\A-12-00-N-F.png",
+        "effect0026\\A-12-00-N.png",
+        "effect0026\\A-13-00-N-B.png",
+        "effect0026\\A-13-00-N-F.png",
+        "effect0026\\A-13-00-N.png",
+        "effect0026\\A-14-00-N-B.png",
+        "effect0026\\A-14-00-N-F.png",
+        "effect0026\\A-14-00-N.png",
+        "effect0026\\A-15-00-N-B.png",
+        "effect0026\\A-15-00-N-F.png",
+        "effect0026\\A-15-00-N.png"
+      ]
+    },
+    "27": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0027\\A-00-00-N-B.png",
+        "effect0027\\A-00-00-N-F.png",
+        "effect0027\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0027\\A-00-00-N-B.png",
+        "effect0027\\A-00-00-N-F.png",
+        "effect0027\\A-00-00-N.png"
+      ]
+    },
+    "28": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0028\\A-00-00-N-B.png",
+        "effect0028\\A-00-00-N-F.png",
+        "effect0028\\A-00-00-N.png",
+        "effect0028\\A-01-00-N.png",
+        "effect0028\\A-02-00-N.png",
+        "effect0028\\A-03-00-N.png",
+        "effect0028\\A-04-00-N.png",
+        "effect0028\\A-05-00-N.png"
+      ],
+      "pngs": [
+        "effect0028\\A-00-00-N-B.png",
+        "effect0028\\A-00-00-N-F.png",
+        "effect0028\\A-00-00-N.png",
+        "effect0028\\A-01-00-N.png",
+        "effect0028\\A-02-00-N.png",
+        "effect0028\\A-03-00-N.png",
+        "effect0028\\A-04-00-N.png",
+        "effect0028\\A-05-00-N.png"
+      ]
+    },
+    "29": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0029\\A-00-00-N.png",
+        "effect0029\\A-01-00-N.png",
+        "effect0029\\A-02-00-N.png",
+        "effect0029\\A-03-00-N.png"
+      ],
+      "pngs": [
+        "effect0029\\A-00-00-N.png",
+        "effect0029\\A-01-00-N.png",
+        "effect0029\\A-02-00-N.png",
+        "effect0029\\A-03-00-N.png"
+      ]
+    },
+    "30": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0030\\A-00-00-N.png",
+        "effect0030\\A-01-00-N-B.png",
+        "effect0030\\A-01-00-N-F.png",
+        "effect0030\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0030\\A-00-00-N.png",
+        "effect0030\\A-01-00-N-B.png",
+        "effect0030\\A-01-00-N-F.png",
+        "effect0030\\A-01-00-N.png"
+      ]
+    },
+    "31": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0031\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0031\\A-00-00-N.png"
+      ]
+    },
+    "32": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0032\\A-00-00-N.png",
+        "effect0032\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0032\\A-00-00-N.png",
+        "effect0032\\A-01-00-N.png"
+      ]
+    },
+    "33": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0033\\A-00-00-N.png",
+        "effect0033\\A-01-00-N.png",
+        "effect0033\\A-02-00-N.png",
+        "effect0033\\A-03-00-N-B.png",
+        "effect0033\\A-03-00-N-F.png",
+        "effect0033\\A-03-00-N.png"
+      ],
+      "pngs": [
+        "effect0033\\A-00-00-N.png",
+        "effect0033\\A-01-00-N.png",
+        "effect0033\\A-02-00-N.png",
+        "effect0033\\A-03-00-N-B.png",
+        "effect0033\\A-03-00-N-F.png",
+        "effect0033\\A-03-00-N.png"
+      ]
+    },
+    "34": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0034\\A-00-00-N.png",
+        "effect0034\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0034\\A-00-00-N.png",
+        "effect0034\\A-01-00-N.png"
+      ]
+    },
+    "35": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0035\\A-00-00-N.png",
+        "effect0035\\A-01-00-N.png",
+        "effect0035\\A-02-00-N.png",
+        "effect0035\\A-03-00-N.png"
+      ],
+      "pngs": [
+        "effect0035\\A-00-00-N.png",
+        "effect0035\\A-01-00-N.png",
+        "effect0035\\A-02-00-N.png",
+        "effect0035\\A-03-00-N.png"
+      ]
+    },
+    "36": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0036\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0036\\A-00-00-N.png"
+      ]
+    },
+    "37": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0037\\A-00-00-N.png",
+        "effect0037\\A-01-00-N.png",
+        "effect0037\\A-02-00-N.png",
+        "effect0037\\A-03-00-N.png",
+        "effect0037\\A-04-00-N.png",
+        "effect0037\\A-05-00-N.png",
+        "effect0037\\A-06-00-N.png",
+        "effect0037\\A-07-00-N.png",
+        "effect0037\\A-08-00-N.png",
+        "effect0037\\A-09-00-N.png"
+      ],
+      "pngs": [
+        "effect0037\\A-00-00-N.png",
+        "effect0037\\A-01-00-N.png",
+        "effect0037\\A-02-00-N.png",
+        "effect0037\\A-03-00-N.png",
+        "effect0037\\A-04-00-N.png",
+        "effect0037\\A-05-00-N.png",
+        "effect0037\\A-06-00-N.png",
+        "effect0037\\A-07-00-N.png",
+        "effect0037\\A-08-00-N.png",
+        "effect0037\\A-09-00-N.png"
+      ]
+    },
+    "38": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0038\\A-00-00-N.png",
+        "effect0038\\A-01-00-N.png",
+        "effect0038\\A-02-00-N.png",
+        "effect0038\\A-03-00-N.png",
+        "effect0038\\A-04-00-N.png"
+      ],
+      "pngs": [
+        "effect0038\\A-00-00-N.png",
+        "effect0038\\A-01-00-N.png",
+        "effect0038\\A-02-00-N.png",
+        "effect0038\\A-03-00-N.png",
+        "effect0038\\A-04-00-N.png"
+      ]
+    },
+    "39": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0039\\A-00-00-N.png",
+        "effect0039\\A-01-00-N.png",
+        "effect0039\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0039\\A-00-00-N.png",
+        "effect0039\\A-01-00-N.png",
+        "effect0039\\A-02-00-N.png"
+      ]
+    },
+    "40": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0040\\A-00-00-N.png",
+        "effect0040\\A-01-00-N.png",
+        "effect0040\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0040\\A-00-00-N.png",
+        "effect0040\\A-01-00-N.png",
+        "effect0040\\A-02-00-N.png"
+      ]
+    },
+    "41": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0041\\A-00-00-N.png",
+        "effect0041\\A-01-00-N.png",
+        "effect0041\\A-02-00-N.png",
+        "effect0041\\A-03-00-N.png",
+        "effect0041\\A-04-00-N.png",
+        "effect0041\\A-05-00-N.png",
+        "effect0041\\A-06-00-N.png",
+        "effect0041\\A-07-00-N.png",
+        "effect0041\\A-08-00-N.png"
+      ],
+      "pngs": [
+        "effect0041\\A-00-00-N.png",
+        "effect0041\\A-01-00-N.png",
+        "effect0041\\A-02-00-N.png",
+        "effect0041\\A-03-00-N.png",
+        "effect0041\\A-04-00-N.png",
+        "effect0041\\A-05-00-N.png",
+        "effect0041\\A-06-00-N.png",
+        "effect0041\\A-07-00-N.png",
+        "effect0041\\A-08-00-N.png"
+      ]
+    },
+    "42": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0042\\A-00-00-N.png",
+        "effect0042\\A-01-00-N.png",
+        "effect0042\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0042\\A-00-00-N.png",
+        "effect0042\\A-01-00-N.png",
+        "effect0042\\A-02-00-N.png"
+      ]
+    },
+    "43": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0043\\A-00-00-N.png",
+        "effect0043\\A-01-00-N.png",
+        "effect0043\\A-02-00-N.png",
+        "effect0043\\A-03-00-N.png",
+        "effect0043\\A-04-00-N.png",
+        "effect0043\\A-05-00-N.png",
+        "effect0043\\A-06-00-N.png",
+        "effect0043\\A-07-00-N.png",
+        "effect0043\\A-08-00-N.png",
+        "effect0043\\A-09-00-N.png",
+        "effect0043\\A-10-00-N.png"
+      ],
+      "pngs": [
+        "effect0043\\A-00-00-N.png",
+        "effect0043\\A-01-00-N.png",
+        "effect0043\\A-02-00-N.png",
+        "effect0043\\A-03-00-N.png",
+        "effect0043\\A-04-00-N.png",
+        "effect0043\\A-05-00-N.png",
+        "effect0043\\A-06-00-N.png",
+        "effect0043\\A-07-00-N.png",
+        "effect0043\\A-08-00-N.png",
+        "effect0043\\A-09-00-N.png",
+        "effect0043\\A-10-00-N.png"
+      ]
+    },
+    "44": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0044\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0044\\A-00-00-N.png"
+      ]
+    },
+    "45": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0045\\A-00-00-N.png",
+        "effect0045\\A-01-00-N.png",
+        "effect0045\\A-02-00-N.png",
+        "effect0045\\A-03-00-N.png",
+        "effect0045\\A-04-00-N.png",
+        "effect0045\\A-05-00-N.png",
+        "effect0045\\A-06-00-N.png",
+        "effect0045\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0045\\A-00-00-N.png",
+        "effect0045\\A-01-00-N.png",
+        "effect0045\\A-02-00-N.png",
+        "effect0045\\A-03-00-N.png",
+        "effect0045\\A-04-00-N.png",
+        "effect0045\\A-05-00-N.png",
+        "effect0045\\A-06-00-N.png",
+        "effect0045\\A-07-00-N.png"
+      ]
+    },
+    "46": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0046\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0046\\A-00-00-N.png"
+      ]
+    },
+    "47": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0047\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0047\\A-00-00-N.png"
+      ]
+    },
+    "48": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0048\\A-00-00-N-B.png",
+        "effect0048\\A-00-00-N-F.png",
+        "effect0048\\A-00-00-N.png",
+        "effect0048\\A-01-00-N-B.png",
+        "effect0048\\A-01-00-N-F.png",
+        "effect0048\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0048\\A-00-00-N-B.png",
+        "effect0048\\A-00-00-N-F.png",
+        "effect0048\\A-00-00-N.png",
+        "effect0048\\A-01-00-N-B.png",
+        "effect0048\\A-01-00-N-F.png",
+        "effect0048\\A-01-00-N.png"
+      ]
+    },
+    "49": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0049\\A-00-00-N-B.png",
+        "effect0049\\A-00-00-N-F.png",
+        "effect0049\\A-00-00-N.png",
+        "effect0049\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0049\\A-00-00-N-B.png",
+        "effect0049\\A-00-00-N-F.png",
+        "effect0049\\A-00-00-N.png",
+        "effect0049\\A-01-00-N.png"
+      ]
+    },
+    "50": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0050\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0050\\A-00-00-N.png"
+      ]
+    },
+    "51": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0051\\A-00-00-N.png",
+        "effect0051\\A-01-00-N-B.png",
+        "effect0051\\A-01-00-N-F.png",
+        "effect0051\\A-01-00-N.png",
+        "effect0051\\A-02-00-N.png",
+        "effect0051\\A-03-00-N.png",
+        "effect0051\\A-04-00-N.png",
+        "effect0051\\A-05-00-N.png"
+      ],
+      "pngs": [
+        "effect0051\\A-00-00-N.png",
+        "effect0051\\A-01-00-N-B.png",
+        "effect0051\\A-01-00-N-F.png",
+        "effect0051\\A-01-00-N.png",
+        "effect0051\\A-02-00-N.png",
+        "effect0051\\A-03-00-N.png",
+        "effect0051\\A-04-00-N.png",
+        "effect0051\\A-05-00-N.png"
+      ]
+    },
+    "52": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0052\\A-00-00-N.png",
+        "effect0052\\A-01-00-N.png",
+        "effect0052\\A-02-00-N.png",
+        "effect0052\\A-03-00-N.png",
+        "effect0052\\A-04-00-N.png",
+        "effect0052\\A-05-00-N.png",
+        "effect0052\\A-06-00-N.png",
+        "effect0052\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0052\\A-00-00-N.png",
+        "effect0052\\A-01-00-N.png",
+        "effect0052\\A-02-00-N.png",
+        "effect0052\\A-03-00-N.png",
+        "effect0052\\A-04-00-N.png",
+        "effect0052\\A-05-00-N.png",
+        "effect0052\\A-06-00-N.png",
+        "effect0052\\A-07-00-N.png"
+      ]
+    },
+    "53": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0053\\A-00-00-N.png",
+        "effect0053\\A-01-00-N-B.png",
+        "effect0053\\A-01-00-N-F.png",
+        "effect0053\\A-01-00-N.png",
+        "effect0053\\A-02-00-N.png",
+        "effect0053\\A-03-00-N.png"
+      ],
+      "pngs": [
+        "effect0053\\A-00-00-N.png",
+        "effect0053\\A-01-00-N-B.png",
+        "effect0053\\A-01-00-N-F.png",
+        "effect0053\\A-01-00-N.png",
+        "effect0053\\A-02-00-N.png",
+        "effect0053\\A-03-00-N.png"
+      ]
+    },
+    "54": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0054\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0054\\A-00-00-N.png"
+      ]
+    },
+    "55": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0055\\A-00-00-N-B.png",
+        "effect0055\\A-00-00-N-F.png",
+        "effect0055\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0055\\A-00-00-N-B.png",
+        "effect0055\\A-00-00-N-F.png",
+        "effect0055\\A-00-00-N.png"
+      ]
+    },
+    "56": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0056\\A-00-00-N.png",
+        "effect0056\\A-01-00-N.png",
+        "effect0056\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0056\\A-00-00-N.png",
+        "effect0056\\A-01-00-N.png",
+        "effect0056\\A-02-00-N.png"
+      ]
+    },
+    "57": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0057\\A-00-00-N-B.png",
+        "effect0057\\A-00-00-N-F.png",
+        "effect0057\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0057\\A-00-00-N-B.png",
+        "effect0057\\A-00-00-N-F.png",
+        "effect0057\\A-00-00-N.png"
+      ]
+    },
+    "58": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0058\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0058\\A-00-00-N.png"
+      ]
+    },
+    "59": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0059\\A-00-00-N.png",
+        "effect0059\\A-01-00-N.png",
+        "effect0059\\A-02-00-N.png",
+        "effect0059\\A-03-00-N.png",
+        "effect0059\\A-04-00-N.png",
+        "effect0059\\A-05-00-N.png",
+        "effect0059\\A-06-00-N.png"
+      ],
+      "pngs": [
+        "effect0059\\A-00-00-N.png",
+        "effect0059\\A-01-00-N.png",
+        "effect0059\\A-02-00-N.png",
+        "effect0059\\A-03-00-N.png",
+        "effect0059\\A-04-00-N.png",
+        "effect0059\\A-05-00-N.png",
+        "effect0059\\A-06-00-N.png"
+      ]
+    },
+    "60": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0060\\A-00-00-N.png",
+        "effect0060\\A-01-00-N.png",
+        "effect0060\\A-02-00-N.png",
+        "effect0060\\A-03-00-N.png",
+        "effect0060\\A-04-00-N.png",
+        "effect0060\\A-05-00-N.png",
+        "effect0060\\A-06-00-N.png",
+        "effect0060\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0060\\A-00-00-N.png",
+        "effect0060\\A-01-00-N.png",
+        "effect0060\\A-02-00-N.png",
+        "effect0060\\A-03-00-N.png",
+        "effect0060\\A-04-00-N.png",
+        "effect0060\\A-05-00-N.png",
+        "effect0060\\A-06-00-N.png",
+        "effect0060\\A-07-00-N.png"
+      ]
+    },
+    "61": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0061\\A-00-00-N.png",
+        "effect0061\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0061\\A-00-00-N.png",
+        "effect0061\\A-01-00-N.png"
+      ]
+    },
+    "62": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0062\\A-00-00-N.png",
+        "effect0062\\A-01-00-N.png",
+        "effect0062\\A-02-00-N.png",
+        "effect0062\\A-03-00-N.png",
+        "effect0062\\A-04-00-N.png",
+        "effect0062\\A-05-00-N.png",
+        "effect0062\\A-06-00-N.png",
+        "effect0062\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0062\\A-00-00-N.png",
+        "effect0062\\A-01-00-N.png",
+        "effect0062\\A-02-00-N.png",
+        "effect0062\\A-03-00-N.png",
+        "effect0062\\A-04-00-N.png",
+        "effect0062\\A-05-00-N.png",
+        "effect0062\\A-06-00-N.png",
+        "effect0062\\A-07-00-N.png"
+      ]
+    },
+    "63": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0063\\A-00-00-N.png",
+        "effect0063\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0063\\A-00-00-N.png",
+        "effect0063\\A-01-00-N.png"
+      ]
+    },
+    "64": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0064\\A-00-00-N.png",
+        "effect0064\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0064\\A-00-00-N.png",
+        "effect0064\\A-01-00-N.png"
+      ]
+    },
+    "65": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0065\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0065\\A-00-00-N.png"
+      ]
+    },
+    "66": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0066\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0066\\A-00-00-N.png"
+      ]
+    },
+    "67": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0067\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0067\\A-00-00-N.png"
+      ]
+    },
+    "68": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0068\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0068\\A-00-00-N.png"
+      ]
+    },
+    "69": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0069\\A-00-00-N.png",
+        "effect0069\\A-01-00-N.png",
+        "effect0069\\A-02-00-N.png",
+        "effect0069\\A-03-00-N.png",
+        "effect0069\\A-04-00-N.png",
+        "effect0069\\A-05-00-N.png",
+        "effect0069\\A-06-00-N.png",
+        "effect0069\\A-07-00-N.png",
+        "effect0069\\A-08-00-N-B.png",
+        "effect0069\\A-08-00-N-F.png",
+        "effect0069\\A-08-00-N.png",
+        "effect0069\\A-09-00-N-B.png",
+        "effect0069\\A-09-00-N-F.png",
+        "effect0069\\A-09-00-N.png",
+        "effect0069\\A-10-00-N-B.png",
+        "effect0069\\A-10-00-N-F.png",
+        "effect0069\\A-10-00-N.png",
+        "effect0069\\A-11-00-N-B.png",
+        "effect0069\\A-11-00-N-F.png",
+        "effect0069\\A-11-00-N.png",
+        "effect0069\\A-12-00-N-B.png",
+        "effect0069\\A-12-00-N-F.png",
+        "effect0069\\A-12-00-N.png",
+        "effect0069\\A-13-00-N-B.png",
+        "effect0069\\A-13-00-N-F.png",
+        "effect0069\\A-13-00-N.png",
+        "effect0069\\A-14-00-N-B.png",
+        "effect0069\\A-14-00-N-F.png",
+        "effect0069\\A-14-00-N.png",
+        "effect0069\\A-15-00-N-B.png",
+        "effect0069\\A-15-00-N-F.png",
+        "effect0069\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0069\\A-00-00-N.png",
+        "effect0069\\A-01-00-N.png",
+        "effect0069\\A-02-00-N.png",
+        "effect0069\\A-03-00-N.png",
+        "effect0069\\A-04-00-N.png",
+        "effect0069\\A-05-00-N.png",
+        "effect0069\\A-06-00-N.png",
+        "effect0069\\A-07-00-N.png",
+        "effect0069\\A-08-00-N-B.png",
+        "effect0069\\A-08-00-N-F.png",
+        "effect0069\\A-08-00-N.png",
+        "effect0069\\A-09-00-N-B.png",
+        "effect0069\\A-09-00-N-F.png",
+        "effect0069\\A-09-00-N.png",
+        "effect0069\\A-10-00-N-B.png",
+        "effect0069\\A-10-00-N-F.png",
+        "effect0069\\A-10-00-N.png",
+        "effect0069\\A-11-00-N-B.png",
+        "effect0069\\A-11-00-N-F.png",
+        "effect0069\\A-11-00-N.png",
+        "effect0069\\A-12-00-N-B.png",
+        "effect0069\\A-12-00-N-F.png",
+        "effect0069\\A-12-00-N.png",
+        "effect0069\\A-13-00-N-B.png",
+        "effect0069\\A-13-00-N-F.png",
+        "effect0069\\A-13-00-N.png",
+        "effect0069\\A-14-00-N-B.png",
+        "effect0069\\A-14-00-N-F.png",
+        "effect0069\\A-14-00-N.png",
+        "effect0069\\A-15-00-N-B.png",
+        "effect0069\\A-15-00-N-F.png",
+        "effect0069\\A-15-00-N.png"
+      ]
+    },
+    "70": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0070\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0070\\A-00-00-N.png"
+      ]
+    },
+    "71": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0071\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0071\\A-00-00-N.png"
+      ]
+    },
+    "72": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0072\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0072\\A-00-00-N.png"
+      ]
+    },
+    "73": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0073\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0073\\A-00-00-N.png"
+      ]
+    },
+    "74": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0074\\A-00-00-N-B.png",
+        "effect0074\\A-00-00-N-F.png",
+        "effect0074\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0074\\A-00-00-N-B.png",
+        "effect0074\\A-00-00-N-F.png",
+        "effect0074\\A-00-00-N.png"
+      ]
+    },
+    "75": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0075\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0075\\A-00-00-N.png"
+      ]
+    },
+    "76": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0076\\A-00-00-N.png",
+        "effect0076\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0076\\A-00-00-N.png",
+        "effect0076\\A-01-00-N.png"
+      ]
+    },
+    "77": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0077\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0077\\A-00-00-N.png"
+      ]
+    },
+    "78": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0078\\A-00-00-N.png",
+        "effect0078\\A-01-00-N.png",
+        "effect0078\\A-02-00-N.png",
+        "effect0078\\A-03-00-N.png",
+        "effect0078\\A-04-00-N.png",
+        "effect0078\\A-05-00-N.png",
+        "effect0078\\A-06-00-N.png",
+        "effect0078\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0078\\A-00-00-N.png",
+        "effect0078\\A-01-00-N.png",
+        "effect0078\\A-02-00-N.png",
+        "effect0078\\A-03-00-N.png",
+        "effect0078\\A-04-00-N.png",
+        "effect0078\\A-05-00-N.png",
+        "effect0078\\A-06-00-N.png",
+        "effect0078\\A-07-00-N.png"
+      ]
+    },
+    "79": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0079\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0079\\A-00-00-N.png"
+      ]
+    },
+    "80": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0080\\A-00-00-N.png",
+        "effect0080\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0080\\A-00-00-N.png",
+        "effect0080\\A-01-00-N.png"
+      ]
+    },
+    "81": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0081\\A-00-00-N.png",
+        "effect0081\\A-01-00-N.png",
+        "effect0081\\A-02-00-N.png",
+        "effect0081\\A-03-00-N.png",
+        "effect0081\\A-04-00-N.png",
+        "effect0081\\A-05-00-N.png",
+        "effect0081\\A-06-00-N.png",
+        "effect0081\\A-07-00-N.png",
+        "effect0081\\A-08-00-N.png",
+        "effect0081\\A-09-00-N.png",
+        "effect0081\\A-10-00-N.png",
+        "effect0081\\A-11-00-N.png",
+        "effect0081\\A-12-00-N.png",
+        "effect0081\\A-13-00-N.png",
+        "effect0081\\A-14-00-N.png",
+        "effect0081\\A-15-00-N.png",
+        "effect0081\\A-16-00-N.png",
+        "effect0081\\A-17-00-N.png",
+        "effect0081\\A-18-00-N.png",
+        "effect0081\\A-19-00-N.png",
+        "effect0081\\A-20-00-N.png",
+        "effect0081\\A-21-00-N.png",
+        "effect0081\\A-22-00-N.png",
+        "effect0081\\A-23-00-N.png"
+      ],
+      "pngs": [
+        "effect0081\\A-00-00-N.png",
+        "effect0081\\A-01-00-N.png",
+        "effect0081\\A-02-00-N.png",
+        "effect0081\\A-03-00-N.png",
+        "effect0081\\A-04-00-N.png",
+        "effect0081\\A-05-00-N.png",
+        "effect0081\\A-06-00-N.png",
+        "effect0081\\A-07-00-N.png",
+        "effect0081\\A-08-00-N.png",
+        "effect0081\\A-09-00-N.png",
+        "effect0081\\A-10-00-N.png",
+        "effect0081\\A-11-00-N.png",
+        "effect0081\\A-12-00-N.png",
+        "effect0081\\A-13-00-N.png",
+        "effect0081\\A-14-00-N.png",
+        "effect0081\\A-15-00-N.png",
+        "effect0081\\A-16-00-N.png",
+        "effect0081\\A-17-00-N.png",
+        "effect0081\\A-18-00-N.png",
+        "effect0081\\A-19-00-N.png",
+        "effect0081\\A-20-00-N.png",
+        "effect0081\\A-21-00-N.png",
+        "effect0081\\A-22-00-N.png",
+        "effect0081\\A-23-00-N.png"
+      ]
+    },
+    "82": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0082\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0082\\A-00-00-N.png"
+      ]
+    },
+    "83": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0083\\A-00-00-N.png",
+        "effect0083\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0083\\A-00-00-N.png",
+        "effect0083\\A-01-00-N.png"
+      ]
+    },
+    "84": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0084\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0084\\A-00-00-N.png"
+      ]
+    },
+    "85": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0085\\A-00-00-N-B.png",
+        "effect0085\\A-00-00-N-F.png",
+        "effect0085\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0085\\A-00-00-N-B.png",
+        "effect0085\\A-00-00-N-F.png",
+        "effect0085\\A-00-00-N.png"
+      ]
+    },
+    "86": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0086\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0086\\A-00-00-N.png"
+      ]
+    },
+    "87": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0087\\A-00-00-N.png",
+        "effect0087\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0087\\A-00-00-N.png",
+        "effect0087\\A-01-00-N.png"
+      ]
+    },
+    "88": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0088\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0088\\A-00-00-N.png"
+      ]
+    },
+    "89": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0089\\A-00-00-N.png",
+        "effect0089\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0089\\A-00-00-N.png",
+        "effect0089\\A-01-00-N.png"
+      ]
+    },
+    "90": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0090\\A-00-00-N.png",
+        "effect0090\\A-01-00-N-B.png",
+        "effect0090\\A-01-00-N-F.png",
+        "effect0090\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0090\\A-00-00-N.png",
+        "effect0090\\A-01-00-N-B.png",
+        "effect0090\\A-01-00-N-F.png",
+        "effect0090\\A-01-00-N.png"
+      ]
+    },
+    "91": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0091\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0091\\A-00-00-N.png"
+      ]
+    },
+    "92": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0092\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0092\\A-00-00-N.png"
+      ]
+    },
+    "93": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0093\\A-00-00-N.png",
+        "effect0093\\A-01-00-N.png",
+        "effect0093\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0093\\A-00-00-N.png",
+        "effect0093\\A-01-00-N.png",
+        "effect0093\\A-02-00-N.png"
+      ]
+    },
+    "94": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0094\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0094\\A-00-00-N.png"
+      ]
+    },
+    "95": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0095\\A-00-00-N-B.png",
+        "effect0095\\A-00-00-N-F.png",
+        "effect0095\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0095\\A-00-00-N-B.png",
+        "effect0095\\A-00-00-N-F.png",
+        "effect0095\\A-00-00-N.png"
+      ]
+    },
+    "96": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0096\\A-00-00-N.png",
+        "effect0096\\A-01-00-N-B.png",
+        "effect0096\\A-01-00-N-F.png",
+        "effect0096\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0096\\A-00-00-N.png",
+        "effect0096\\A-01-00-N-B.png",
+        "effect0096\\A-01-00-N-F.png",
+        "effect0096\\A-01-00-N.png"
+      ]
+    },
+    "97": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0097\\A-00-00-N.png",
+        "effect0097\\A-01-00-N.png",
+        "effect0097\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0097\\A-00-00-N.png",
+        "effect0097\\A-01-00-N.png",
+        "effect0097\\A-02-00-N.png"
+      ]
+    },
+    "98": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0098\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0098\\A-00-00-N.png"
+      ]
+    },
+    "99": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0099\\A-00-00-N.png",
+        "effect0099\\A-01-00-N-B.png",
+        "effect0099\\A-01-00-N-F.png",
+        "effect0099\\A-01-00-N.png",
+        "effect0099\\A-02-00-N.png",
+        "effect0099\\A-03-00-N.png",
+        "effect0099\\A-04-00-N.png",
+        "effect0099\\A-05-00-N-B.png",
+        "effect0099\\A-05-00-N-F.png",
+        "effect0099\\A-05-00-N.png",
+        "effect0099\\A-06-00-N.png",
+        "effect0099\\A-07-00-N.png",
+        "effect0099\\A-08-00-N-B.png",
+        "effect0099\\A-08-00-N-F.png",
+        "effect0099\\A-08-00-N.png",
+        "effect0099\\A-09-00-N.png",
+        "effect0099\\A-10-00-N.png"
+      ],
+      "pngs": [
+        "effect0099\\A-00-00-N.png",
+        "effect0099\\A-01-00-N-B.png",
+        "effect0099\\A-01-00-N-F.png",
+        "effect0099\\A-01-00-N.png",
+        "effect0099\\A-02-00-N.png",
+        "effect0099\\A-03-00-N.png",
+        "effect0099\\A-04-00-N.png",
+        "effect0099\\A-05-00-N-B.png",
+        "effect0099\\A-05-00-N-F.png",
+        "effect0099\\A-05-00-N.png",
+        "effect0099\\A-06-00-N.png",
+        "effect0099\\A-07-00-N.png",
+        "effect0099\\A-08-00-N-B.png",
+        "effect0099\\A-08-00-N-F.png",
+        "effect0099\\A-08-00-N.png",
+        "effect0099\\A-09-00-N.png",
+        "effect0099\\A-10-00-N.png"
+      ]
+    },
+    "100": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0100\\A-00-00-N.png",
+        "effect0100\\A-01-00-N.png",
+        "effect0100\\A-02-00-N.png",
+        "effect0100\\A-03-00-N.png",
+        "effect0100\\A-04-00-N.png",
+        "effect0100\\A-05-00-N.png",
+        "effect0100\\A-06-00-N.png",
+        "effect0100\\A-07-00-N.png",
+        "effect0100\\A-08-00-N.png",
+        "effect0100\\A-09-00-N.png",
+        "effect0100\\A-10-00-N.png",
+        "effect0100\\A-11-00-N.png",
+        "effect0100\\A-12-00-N.png",
+        "effect0100\\A-13-00-N.png",
+        "effect0100\\A-14-00-N.png",
+        "effect0100\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0100\\A-00-00-N.png",
+        "effect0100\\A-01-00-N.png",
+        "effect0100\\A-02-00-N.png",
+        "effect0100\\A-03-00-N.png",
+        "effect0100\\A-04-00-N.png",
+        "effect0100\\A-05-00-N.png",
+        "effect0100\\A-06-00-N.png",
+        "effect0100\\A-07-00-N.png",
+        "effect0100\\A-08-00-N.png",
+        "effect0100\\A-09-00-N.png",
+        "effect0100\\A-10-00-N.png",
+        "effect0100\\A-11-00-N.png",
+        "effect0100\\A-12-00-N.png",
+        "effect0100\\A-13-00-N.png",
+        "effect0100\\A-14-00-N.png",
+        "effect0100\\A-15-00-N.png"
+      ]
+    },
+    "101": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0101\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0101\\A-00-00-N.png"
+      ]
+    },
+    "102": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0102\\A-00-00-N.png",
+        "effect0102\\A-01-00-N.png",
+        "effect0102\\A-02-00-N.png",
+        "effect0102\\A-03-00-N.png",
+        "effect0102\\A-04-00-N.png",
+        "effect0102\\A-05-00-N.png"
+      ],
+      "pngs": [
+        "effect0102\\A-00-00-N.png",
+        "effect0102\\A-01-00-N.png",
+        "effect0102\\A-02-00-N.png",
+        "effect0102\\A-03-00-N.png",
+        "effect0102\\A-04-00-N.png",
+        "effect0102\\A-05-00-N.png"
+      ]
+    },
+    "103": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0103\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0103\\A-00-00-N.png"
+      ]
+    },
+    "104": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0104\\A-00-00-N.png",
+        "effect0104\\A-01-00-N.png",
+        "effect0104\\A-02-00-N.png",
+        "effect0104\\A-03-00-N.png",
+        "effect0104\\A-04-00-N.png",
+        "effect0104\\A-05-00-N.png",
+        "effect0104\\A-06-00-N.png",
+        "effect0104\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0104\\A-00-00-N.png",
+        "effect0104\\A-01-00-N.png",
+        "effect0104\\A-02-00-N.png",
+        "effect0104\\A-03-00-N.png",
+        "effect0104\\A-04-00-N.png",
+        "effect0104\\A-05-00-N.png",
+        "effect0104\\A-06-00-N.png",
+        "effect0104\\A-07-00-N.png"
+      ]
+    },
+    "105": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0105\\A-00-00-N.png",
+        "effect0105\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0105\\A-00-00-N.png",
+        "effect0105\\A-01-00-N.png"
+      ]
+    },
+    "106": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0106\\A-00-00-N.png",
+        "effect0106\\A-01-00-N.png",
+        "effect0106\\A-02-00-N.png",
+        "effect0106\\A-03-00-N.png",
+        "effect0106\\A-04-00-N.png",
+        "effect0106\\A-05-00-N.png",
+        "effect0106\\A-06-00-N.png",
+        "effect0106\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0106\\A-00-00-N.png",
+        "effect0106\\A-01-00-N.png",
+        "effect0106\\A-02-00-N.png",
+        "effect0106\\A-03-00-N.png",
+        "effect0106\\A-04-00-N.png",
+        "effect0106\\A-05-00-N.png",
+        "effect0106\\A-06-00-N.png",
+        "effect0106\\A-07-00-N.png"
+      ]
+    },
+    "107": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0107\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0107\\A-00-00-N.png"
+      ]
+    },
+    "108": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0108\\A-00-00-N.png",
+        "effect0108\\A-01-00-N.png",
+        "effect0108\\A-02-00-N.png",
+        "effect0108\\A-03-00-N.png",
+        "effect0108\\A-04-00-N.png",
+        "effect0108\\A-05-00-N.png",
+        "effect0108\\A-06-00-N.png",
+        "effect0108\\A-07-00-N-B.png",
+        "effect0108\\A-07-00-N-F.png",
+        "effect0108\\A-07-00-N.png",
+        "effect0108\\A-08-00-N-B.png",
+        "effect0108\\A-08-00-N-F.png",
+        "effect0108\\A-08-00-N.png",
+        "effect0108\\A-09-00-N.png",
+        "effect0108\\A-10-00-N.png",
+        "effect0108\\A-11-00-N.png",
+        "effect0108\\A-12-00-N.png",
+        "effect0108\\A-13-00-N.png",
+        "effect0108\\A-14-00-N-B.png",
+        "effect0108\\A-14-00-N-F.png",
+        "effect0108\\A-14-00-N.png",
+        "effect0108\\A-15-00-N.png",
+        "effect0108\\A-16-00-N.png"
+      ],
+      "pngs": [
+        "effect0108\\A-00-00-N.png",
+        "effect0108\\A-01-00-N.png",
+        "effect0108\\A-02-00-N.png",
+        "effect0108\\A-03-00-N.png",
+        "effect0108\\A-04-00-N.png",
+        "effect0108\\A-05-00-N.png",
+        "effect0108\\A-06-00-N.png",
+        "effect0108\\A-07-00-N-B.png",
+        "effect0108\\A-07-00-N-F.png",
+        "effect0108\\A-07-00-N.png",
+        "effect0108\\A-08-00-N-B.png",
+        "effect0108\\A-08-00-N-F.png",
+        "effect0108\\A-08-00-N.png",
+        "effect0108\\A-09-00-N.png",
+        "effect0108\\A-10-00-N.png",
+        "effect0108\\A-11-00-N.png",
+        "effect0108\\A-12-00-N.png",
+        "effect0108\\A-13-00-N.png",
+        "effect0108\\A-14-00-N-B.png",
+        "effect0108\\A-14-00-N-F.png",
+        "effect0108\\A-14-00-N.png",
+        "effect0108\\A-15-00-N.png",
+        "effect0108\\A-16-00-N.png"
+      ]
+    },
+    "109": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0109\\A-00-00-N.png",
+        "effect0109\\A-01-00-N.png",
+        "effect0109\\A-02-00-N.png",
+        "effect0109\\A-03-00-N.png",
+        "effect0109\\A-04-00-N.png",
+        "effect0109\\A-05-00-N.png"
+      ],
+      "pngs": [
+        "effect0109\\A-00-00-N.png",
+        "effect0109\\A-01-00-N.png",
+        "effect0109\\A-02-00-N.png",
+        "effect0109\\A-03-00-N.png",
+        "effect0109\\A-04-00-N.png",
+        "effect0109\\A-05-00-N.png"
+      ]
+    },
+    "110": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0110\\A-00-00-N.png",
+        "effect0110\\A-01-00-N.png",
+        "effect0110\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0110\\A-00-00-N.png",
+        "effect0110\\A-01-00-N.png",
+        "effect0110\\A-02-00-N.png"
+      ]
+    },
+    "111": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0111\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0111\\A-00-00-N.png"
+      ]
+    },
+    "112": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0112\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0112\\A-00-00-N.png"
+      ]
+    },
+    "113": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0113\\A-00-00-N.png",
+        "effect0113\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0113\\A-00-00-N.png",
+        "effect0113\\A-01-00-N.png"
+      ]
+    },
+    "114": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0114\\A-00-00-N.png",
+        "effect0114\\A-01-00-N-B.png",
+        "effect0114\\A-01-00-N-F.png",
+        "effect0114\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0114\\A-00-00-N.png",
+        "effect0114\\A-01-00-N-B.png",
+        "effect0114\\A-01-00-N-F.png",
+        "effect0114\\A-01-00-N.png"
+      ]
+    },
+    "115": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0115\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0115\\A-00-00-N.png"
+      ]
+    },
+    "116": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0116\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0116\\A-00-00-N.png"
+      ]
+    },
+    "117": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0117\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0117\\A-00-00-N.png"
+      ]
+    },
+    "118": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0118\\A-00-00-N.png",
+        "effect0118\\A-01-00-N.png",
+        "effect0118\\A-02-00-N.png",
+        "effect0118\\A-03-00-N.png",
+        "effect0118\\A-04-00-N.png",
+        "effect0118\\A-05-00-N.png",
+        "effect0118\\A-06-00-N.png",
+        "effect0118\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0118\\A-00-00-N.png",
+        "effect0118\\A-01-00-N.png",
+        "effect0118\\A-02-00-N.png",
+        "effect0118\\A-03-00-N.png",
+        "effect0118\\A-04-00-N.png",
+        "effect0118\\A-05-00-N.png",
+        "effect0118\\A-06-00-N.png",
+        "effect0118\\A-07-00-N.png"
+      ]
+    },
+    "119": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0119\\A-00-00-N.png",
+        "effect0119\\A-01-00-N.png",
+        "effect0119\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0119\\A-00-00-N.png",
+        "effect0119\\A-01-00-N.png",
+        "effect0119\\A-02-00-N.png"
+      ]
+    },
+    "120": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0120\\A-00-00-N.png",
+        "effect0120\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0120\\A-00-00-N.png",
+        "effect0120\\A-01-00-N.png"
+      ]
+    },
+    "121": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0121\\A-00-00-N.png",
+        "effect0121\\A-01-00-N.png",
+        "effect0121\\A-02-00-N.png",
+        "effect0121\\A-03-00-N.png",
+        "effect0121\\A-04-00-N.png",
+        "effect0121\\A-05-00-N.png",
+        "effect0121\\A-06-00-N.png",
+        "effect0121\\A-07-00-N.png",
+        "effect0121\\A-08-00-N.png",
+        "effect0121\\A-09-00-N.png",
+        "effect0121\\A-10-00-N.png",
+        "effect0121\\A-11-00-N.png",
+        "effect0121\\A-12-00-N.png",
+        "effect0121\\A-13-00-N.png",
+        "effect0121\\A-14-00-N.png",
+        "effect0121\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0121\\A-00-00-N.png",
+        "effect0121\\A-01-00-N.png",
+        "effect0121\\A-02-00-N.png",
+        "effect0121\\A-03-00-N.png",
+        "effect0121\\A-04-00-N.png",
+        "effect0121\\A-05-00-N.png",
+        "effect0121\\A-06-00-N.png",
+        "effect0121\\A-07-00-N.png",
+        "effect0121\\A-08-00-N.png",
+        "effect0121\\A-09-00-N.png",
+        "effect0121\\A-10-00-N.png",
+        "effect0121\\A-11-00-N.png",
+        "effect0121\\A-12-00-N.png",
+        "effect0121\\A-13-00-N.png",
+        "effect0121\\A-14-00-N.png",
+        "effect0121\\A-15-00-N.png"
+      ]
+    },
+    "122": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0122\\A-00-00-N.png",
+        "effect0122\\A-01-00-N.png",
+        "effect0122\\A-02-00-N.png",
+        "effect0122\\A-03-00-N.png",
+        "effect0122\\A-04-00-N.png",
+        "effect0122\\A-05-00-N.png",
+        "effect0122\\A-06-00-N.png",
+        "effect0122\\A-07-00-N.png",
+        "effect0122\\A-08-00-N.png",
+        "effect0122\\A-09-00-N.png",
+        "effect0122\\A-10-00-N.png",
+        "effect0122\\A-11-00-N.png",
+        "effect0122\\A-12-00-N.png",
+        "effect0122\\A-13-00-N.png",
+        "effect0122\\A-14-00-N.png",
+        "effect0122\\A-15-00-N.png",
+        "effect0122\\A-16-00-N.png",
+        "effect0122\\A-17-00-N.png",
+        "effect0122\\A-18-00-N.png",
+        "effect0122\\A-19-00-N.png",
+        "effect0122\\A-20-00-N.png",
+        "effect0122\\A-21-00-N.png",
+        "effect0122\\A-22-00-N.png",
+        "effect0122\\A-23-00-N.png"
+      ],
+      "pngs": [
+        "effect0122\\A-00-00-N.png",
+        "effect0122\\A-01-00-N.png",
+        "effect0122\\A-02-00-N.png",
+        "effect0122\\A-03-00-N.png",
+        "effect0122\\A-04-00-N.png",
+        "effect0122\\A-05-00-N.png",
+        "effect0122\\A-06-00-N.png",
+        "effect0122\\A-07-00-N.png",
+        "effect0122\\A-08-00-N.png",
+        "effect0122\\A-09-00-N.png",
+        "effect0122\\A-10-00-N.png",
+        "effect0122\\A-11-00-N.png",
+        "effect0122\\A-12-00-N.png",
+        "effect0122\\A-13-00-N.png",
+        "effect0122\\A-14-00-N.png",
+        "effect0122\\A-15-00-N.png",
+        "effect0122\\A-16-00-N.png",
+        "effect0122\\A-17-00-N.png",
+        "effect0122\\A-18-00-N.png",
+        "effect0122\\A-19-00-N.png",
+        "effect0122\\A-20-00-N.png",
+        "effect0122\\A-21-00-N.png",
+        "effect0122\\A-22-00-N.png",
+        "effect0122\\A-23-00-N.png"
+      ]
+    },
+    "123": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0123\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0123\\A-00-00-N.png"
+      ]
+    },
+    "124": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0124\\A-00-00-N.png",
+        "effect0124\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0124\\A-00-00-N.png",
+        "effect0124\\A-01-00-N.png"
+      ]
+    },
+    "125": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0125\\A-00-00-N.png",
+        "effect0125\\A-01-00-N-B.png",
+        "effect0125\\A-01-00-N-F.png",
+        "effect0125\\A-01-00-N.png",
+        "effect0125\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0125\\A-00-00-N.png",
+        "effect0125\\A-01-00-N-B.png",
+        "effect0125\\A-01-00-N-F.png",
+        "effect0125\\A-01-00-N.png",
+        "effect0125\\A-02-00-N.png"
+      ]
+    },
+    "126": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0126\\A-00-00-N.png",
+        "effect0126\\A-01-00-N.png",
+        "effect0126\\A-02-00-N.png",
+        "effect0126\\A-03-00-N.png",
+        "effect0126\\A-04-00-N.png",
+        "effect0126\\A-05-00-N.png",
+        "effect0126\\A-06-00-N.png",
+        "effect0126\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0126\\A-00-00-N.png",
+        "effect0126\\A-01-00-N.png",
+        "effect0126\\A-02-00-N.png",
+        "effect0126\\A-03-00-N.png",
+        "effect0126\\A-04-00-N.png",
+        "effect0126\\A-05-00-N.png",
+        "effect0126\\A-06-00-N.png",
+        "effect0126\\A-07-00-N.png"
+      ]
+    },
+    "127": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0127\\A-00-00-N.png",
+        "effect0127\\A-01-00-N.png",
+        "effect0127\\A-02-00-N.png",
+        "effect0127\\A-03-00-N.png",
+        "effect0127\\A-04-00-N.png",
+        "effect0127\\A-05-00-N.png",
+        "effect0127\\A-06-00-N.png",
+        "effect0127\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0127\\A-00-00-N.png",
+        "effect0127\\A-01-00-N.png",
+        "effect0127\\A-02-00-N.png",
+        "effect0127\\A-03-00-N.png",
+        "effect0127\\A-04-00-N.png",
+        "effect0127\\A-05-00-N.png",
+        "effect0127\\A-06-00-N.png",
+        "effect0127\\A-07-00-N.png"
+      ]
+    },
+    "128": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0128\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0128\\A-00-00-N.png"
+      ]
+    },
+    "129": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0129\\A-00-00-N.png",
+        "effect0129\\A-01-00-N.png",
+        "effect0129\\A-02-00-N.png",
+        "effect0129\\A-03-00-N.png",
+        "effect0129\\A-04-00-N.png",
+        "effect0129\\A-05-00-N.png",
+        "effect0129\\A-06-00-N.png",
+        "effect0129\\A-07-00-N.png",
+        "effect0129\\A-08-00-N.png",
+        "effect0129\\A-09-00-N.png"
+      ],
+      "pngs": [
+        "effect0129\\A-00-00-N.png",
+        "effect0129\\A-01-00-N.png",
+        "effect0129\\A-02-00-N.png",
+        "effect0129\\A-03-00-N.png",
+        "effect0129\\A-04-00-N.png",
+        "effect0129\\A-05-00-N.png",
+        "effect0129\\A-06-00-N.png",
+        "effect0129\\A-07-00-N.png",
+        "effect0129\\A-08-00-N.png",
+        "effect0129\\A-09-00-N.png"
+      ]
+    },
+    "130": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0130\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0130\\A-00-00-N.png"
+      ]
+    },
+    "131": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0131\\A-00-00-N.png",
+        "effect0131\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0131\\A-00-00-N.png",
+        "effect0131\\A-01-00-N.png"
+      ]
+    },
+    "132": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0132\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0132\\A-00-00-N.png"
+      ]
+    },
+    "133": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0133\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0133\\A-00-00-N.png"
+      ]
+    },
+    "134": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0134\\A-00-00-N.png",
+        "effect0134\\A-01-00-N.png",
+        "effect0134\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0134\\A-00-00-N.png",
+        "effect0134\\A-01-00-N.png",
+        "effect0134\\A-02-00-N.png"
+      ]
+    },
+    "135": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0135\\A-00-00-N.png",
+        "effect0135\\A-01-00-N-B.png",
+        "effect0135\\A-01-00-N-F.png",
+        "effect0135\\A-01-00-N.png",
+        "effect0135\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0135\\A-00-00-N.png",
+        "effect0135\\A-01-00-N-B.png",
+        "effect0135\\A-01-00-N-F.png",
+        "effect0135\\A-01-00-N.png",
+        "effect0135\\A-02-00-N.png"
+      ]
+    },
+    "136": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0136\\A-00-00-N.png",
+        "effect0136\\A-01-00-N.png",
+        "effect0136\\A-02-00-N.png",
+        "effect0136\\A-03-00-N.png",
+        "effect0136\\A-04-00-N.png",
+        "effect0136\\A-05-00-N.png",
+        "effect0136\\A-06-00-N.png",
+        "effect0136\\A-07-00-N.png",
+        "effect0136\\A-08-00-N.png",
+        "effect0136\\A-09-00-N.png",
+        "effect0136\\A-10-00-N.png",
+        "effect0136\\A-11-00-N.png",
+        "effect0136\\A-12-00-N.png",
+        "effect0136\\A-13-00-N.png",
+        "effect0136\\A-14-00-N.png",
+        "effect0136\\A-15-00-N.png",
+        "effect0136\\A-16-00-N.png",
+        "effect0136\\A-17-00-N.png",
+        "effect0136\\A-18-00-N.png",
+        "effect0136\\A-19-00-N.png",
+        "effect0136\\A-20-00-N.png",
+        "effect0136\\A-21-00-N.png",
+        "effect0136\\A-22-00-N.png",
+        "effect0136\\A-23-00-N.png",
+        "effect0136\\A-24-00-N.png",
+        "effect0136\\A-25-00-N.png",
+        "effect0136\\A-26-00-N.png",
+        "effect0136\\A-27-00-N.png",
+        "effect0136\\A-28-00-N.png",
+        "effect0136\\A-29-00-N.png",
+        "effect0136\\A-30-00-N.png",
+        "effect0136\\A-31-00-N.png"
+      ],
+      "pngs": [
+        "effect0136\\A-00-00-N.png",
+        "effect0136\\A-01-00-N.png",
+        "effect0136\\A-02-00-N.png",
+        "effect0136\\A-03-00-N.png",
+        "effect0136\\A-04-00-N.png",
+        "effect0136\\A-05-00-N.png",
+        "effect0136\\A-06-00-N.png",
+        "effect0136\\A-07-00-N.png",
+        "effect0136\\A-08-00-N.png",
+        "effect0136\\A-09-00-N.png",
+        "effect0136\\A-10-00-N.png",
+        "effect0136\\A-11-00-N.png",
+        "effect0136\\A-12-00-N.png",
+        "effect0136\\A-13-00-N.png",
+        "effect0136\\A-14-00-N.png",
+        "effect0136\\A-15-00-N.png",
+        "effect0136\\A-16-00-N.png",
+        "effect0136\\A-17-00-N.png",
+        "effect0136\\A-18-00-N.png",
+        "effect0136\\A-19-00-N.png",
+        "effect0136\\A-20-00-N.png",
+        "effect0136\\A-21-00-N.png",
+        "effect0136\\A-22-00-N.png",
+        "effect0136\\A-23-00-N.png",
+        "effect0136\\A-24-00-N.png",
+        "effect0136\\A-25-00-N.png",
+        "effect0136\\A-26-00-N.png",
+        "effect0136\\A-27-00-N.png",
+        "effect0136\\A-28-00-N.png",
+        "effect0136\\A-29-00-N.png",
+        "effect0136\\A-30-00-N.png",
+        "effect0136\\A-31-00-N.png"
+      ]
+    },
+    "137": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0137\\A-00-00-N.png",
+        "effect0137\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0137\\A-00-00-N.png",
+        "effect0137\\A-01-00-N.png"
+      ]
+    },
+    "138": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0138\\A-00-00-N.png",
+        "effect0138\\A-01-00-N.png",
+        "effect0138\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0138\\A-00-00-N.png",
+        "effect0138\\A-01-00-N.png",
+        "effect0138\\A-02-00-N.png"
+      ]
+    },
+    "139": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0139\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0139\\A-00-00-N.png"
+      ]
+    },
+    "140": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0140\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0140\\A-00-00-N.png"
+      ]
+    },
+    "141": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0141\\A-00-00-N.png",
+        "effect0141\\A-01-00-N.png",
+        "effect0141\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0141\\A-00-00-N.png",
+        "effect0141\\A-01-00-N.png",
+        "effect0141\\A-02-00-N.png"
+      ]
+    },
+    "142": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0142\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0142\\A-00-00-N.png"
+      ]
+    },
+    "143": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0143\\A-00-00-N.png",
+        "effect0143\\A-01-00-N-B.png",
+        "effect0143\\A-01-00-N-F.png",
+        "effect0143\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0143\\A-00-00-N.png",
+        "effect0143\\A-01-00-N-B.png",
+        "effect0143\\A-01-00-N-F.png",
+        "effect0143\\A-01-00-N.png"
+      ]
+    },
+    "144": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0144\\A-00-00-N-B.png",
+        "effect0144\\A-00-00-N-F.png",
+        "effect0144\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0144\\A-00-00-N-B.png",
+        "effect0144\\A-00-00-N-F.png",
+        "effect0144\\A-00-00-N.png"
+      ]
+    },
+    "145": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0145\\A-00-00-N.png",
+        "effect0145\\A-01-00-N-B.png",
+        "effect0145\\A-01-00-N-F.png",
+        "effect0145\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0145\\A-00-00-N.png",
+        "effect0145\\A-01-00-N-B.png",
+        "effect0145\\A-01-00-N-F.png",
+        "effect0145\\A-01-00-N.png"
+      ]
+    },
+    "146": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0146\\A-00-00-N.png",
+        "effect0146\\A-01-00-N.png",
+        "effect0146\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0146\\A-00-00-N.png",
+        "effect0146\\A-01-00-N.png",
+        "effect0146\\A-02-00-N.png"
+      ]
+    },
+    "147": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0147\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0147\\A-00-00-N.png"
+      ]
+    },
+    "148": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0148\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0148\\A-00-00-N.png"
+      ]
+    },
+    "149": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0149\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0149\\A-00-00-N.png"
+      ]
+    },
+    "150": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0150\\A-00-00-N.png",
+        "effect0150\\A-01-00-N.png",
+        "effect0150\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0150\\A-00-00-N.png",
+        "effect0150\\A-01-00-N.png",
+        "effect0150\\A-02-00-N.png"
+      ]
+    },
+    "151": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0151\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0151\\A-00-00-N.png"
+      ]
+    },
+    "152": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0152\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0152\\A-00-00-N.png"
+      ]
+    },
+    "153": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0153\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0153\\A-00-00-N.png"
+      ]
+    },
+    "154": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0154\\A-00-00-N-B.png",
+        "effect0154\\A-00-00-N-F.png",
+        "effect0154\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0154\\A-00-00-N-B.png",
+        "effect0154\\A-00-00-N-F.png",
+        "effect0154\\A-00-00-N.png"
+      ]
+    },
+    "155": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0155\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0155\\A-00-00-N.png"
+      ]
+    },
+    "156": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0156\\A-00-00-N-B.png",
+        "effect0156\\A-00-00-N-F.png",
+        "effect0156\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0156\\A-00-00-N-B.png",
+        "effect0156\\A-00-00-N-F.png",
+        "effect0156\\A-00-00-N.png"
+      ]
+    },
+    "157": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0157\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0157\\A-00-00-N.png"
+      ]
+    },
+    "158": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0158\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0158\\A-00-00-N.png"
+      ]
+    },
+    "159": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0159\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0159\\A-00-00-N.png"
+      ]
+    },
+    "160": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0160\\A-00-00-N.png",
+        "effect0160\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0160\\A-00-00-N.png",
+        "effect0160\\A-01-00-N.png"
+      ]
+    },
+    "161": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0161\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0161\\A-00-00-N.png"
+      ]
+    },
+    "162": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0162\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0162\\A-00-00-N.png"
+      ]
+    },
+    "163": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0163\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0163\\A-00-00-N.png"
+      ]
+    },
+    "164": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0164\\A-00-00-N.png",
+        "effect0164\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0164\\A-00-00-N.png",
+        "effect0164\\A-01-00-N.png"
+      ]
+    },
+    "165": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0165\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0165\\A-00-00-N.png"
+      ]
+    },
+    "166": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0166\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0166\\A-00-00-N.png"
+      ]
+    },
+    "167": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0167\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0167\\A-00-00-N.png"
+      ]
+    },
+    "168": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0168\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0168\\A-00-00-N.png"
+      ]
+    },
+    "169": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0169\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0169\\A-00-00-N.png"
+      ]
+    },
+    "170": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0170\\A-00-00-N.png",
+        "effect0170\\A-01-00-N.png",
+        "effect0170\\A-02-00-N.png",
+        "effect0170\\A-03-00-N.png",
+        "effect0170\\A-04-00-N.png",
+        "effect0170\\A-05-00-N.png",
+        "effect0170\\A-06-00-N.png",
+        "effect0170\\A-07-00-N.png",
+        "effect0170\\A-08-00-N.png",
+        "effect0170\\A-09-00-N.png",
+        "effect0170\\A-10-00-N.png",
+        "effect0170\\A-11-00-N.png",
+        "effect0170\\A-12-00-N.png",
+        "effect0170\\A-13-00-N.png",
+        "effect0170\\A-14-00-N.png",
+        "effect0170\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0170\\A-00-00-N.png",
+        "effect0170\\A-01-00-N.png",
+        "effect0170\\A-02-00-N.png",
+        "effect0170\\A-03-00-N.png",
+        "effect0170\\A-04-00-N.png",
+        "effect0170\\A-05-00-N.png",
+        "effect0170\\A-06-00-N.png",
+        "effect0170\\A-07-00-N.png",
+        "effect0170\\A-08-00-N.png",
+        "effect0170\\A-09-00-N.png",
+        "effect0170\\A-10-00-N.png",
+        "effect0170\\A-11-00-N.png",
+        "effect0170\\A-12-00-N.png",
+        "effect0170\\A-13-00-N.png",
+        "effect0170\\A-14-00-N.png",
+        "effect0170\\A-15-00-N.png"
+      ]
+    },
+    "171": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0171\\A-00-00-N.png",
+        "effect0171\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0171\\A-00-00-N.png",
+        "effect0171\\A-01-00-N.png"
+      ]
+    },
+    "172": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0172\\A-00-00-N-B.png",
+        "effect0172\\A-00-00-N-F.png",
+        "effect0172\\A-00-00-N.png",
+        "effect0172\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0172\\A-00-00-N-B.png",
+        "effect0172\\A-00-00-N-F.png",
+        "effect0172\\A-00-00-N.png",
+        "effect0172\\A-01-00-N.png"
+      ]
+    },
+    "173": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0173\\A-00-00-N.png",
+        "effect0173\\A-01-00-N.png",
+        "effect0173\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0173\\A-00-00-N.png",
+        "effect0173\\A-01-00-N.png",
+        "effect0173\\A-02-00-N.png"
+      ]
+    },
+    "174": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0174\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0174\\A-00-00-N.png"
+      ]
+    },
+    "175": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0175\\A-00-00-N.png",
+        "effect0175\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0175\\A-00-00-N.png",
+        "effect0175\\A-01-00-N.png"
+      ]
+    },
+    "176": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0176\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0176\\A-00-00-N.png"
+      ]
+    },
+    "177": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0177\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0177\\A-00-00-N.png"
+      ]
+    },
+    "178": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0178\\A-00-00-N.png",
+        "effect0178\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0178\\A-00-00-N.png",
+        "effect0178\\A-01-00-N.png"
+      ]
+    },
+    "179": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0179\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0179\\A-00-00-N.png"
+      ]
+    },
+    "180": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0180\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0180\\A-00-00-N.png"
+      ]
+    },
+    "181": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0181\\A-00-00-N.png",
+        "effect0181\\A-01-00-N-B.png",
+        "effect0181\\A-01-00-N-F.png",
+        "effect0181\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0181\\A-00-00-N.png",
+        "effect0181\\A-01-00-N-B.png",
+        "effect0181\\A-01-00-N-F.png",
+        "effect0181\\A-01-00-N.png"
+      ]
+    },
+    "182": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0182\\A-00-00-N.png",
+        "effect0182\\A-01-00-N.png",
+        "effect0182\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0182\\A-00-00-N.png",
+        "effect0182\\A-01-00-N.png",
+        "effect0182\\A-02-00-N.png"
+      ]
+    },
+    "183": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0183\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0183\\A-00-00-N.png"
+      ]
+    },
+    "184": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0184\\A-00-00-N.png",
+        "effect0184\\A-01-00-N.png",
+        "effect0184\\A-02-00-N.png",
+        "effect0184\\A-03-00-N.png",
+        "effect0184\\A-04-00-N.png",
+        "effect0184\\A-05-00-N.png",
+        "effect0184\\A-06-00-N.png",
+        "effect0184\\A-07-00-N.png",
+        "effect0184\\A-08-00-N.png",
+        "effect0184\\A-09-00-N.png",
+        "effect0184\\A-10-00-N.png",
+        "effect0184\\A-11-00-N.png",
+        "effect0184\\A-12-00-N.png",
+        "effect0184\\A-13-00-N.png",
+        "effect0184\\A-14-00-N.png",
+        "effect0184\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0184\\A-00-00-N.png",
+        "effect0184\\A-01-00-N.png",
+        "effect0184\\A-02-00-N.png",
+        "effect0184\\A-03-00-N.png",
+        "effect0184\\A-04-00-N.png",
+        "effect0184\\A-05-00-N.png",
+        "effect0184\\A-06-00-N.png",
+        "effect0184\\A-07-00-N.png",
+        "effect0184\\A-08-00-N.png",
+        "effect0184\\A-09-00-N.png",
+        "effect0184\\A-10-00-N.png",
+        "effect0184\\A-11-00-N.png",
+        "effect0184\\A-12-00-N.png",
+        "effect0184\\A-13-00-N.png",
+        "effect0184\\A-14-00-N.png",
+        "effect0184\\A-15-00-N.png"
+      ]
+    },
+    "185": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0185\\A-00-00-N-B.png",
+        "effect0185\\A-00-00-N-F.png",
+        "effect0185\\A-00-00-N.png",
+        "effect0185\\A-01-00-N-B.png",
+        "effect0185\\A-01-00-N-F.png",
+        "effect0185\\A-01-00-N.png",
+        "effect0185\\A-02-00-N-B.png",
+        "effect0185\\A-02-00-N-F.png",
+        "effect0185\\A-02-00-N.png",
+        "effect0185\\A-03-00-N-B.png",
+        "effect0185\\A-03-00-N-F.png",
+        "effect0185\\A-03-00-N.png",
+        "effect0185\\A-04-00-N-B.png",
+        "effect0185\\A-04-00-N-F.png",
+        "effect0185\\A-04-00-N.png",
+        "effect0185\\A-05-00-N-B.png",
+        "effect0185\\A-05-00-N-F.png",
+        "effect0185\\A-05-00-N.png",
+        "effect0185\\A-06-00-N-B.png",
+        "effect0185\\A-06-00-N-F.png",
+        "effect0185\\A-06-00-N.png",
+        "effect0185\\A-07-00-N-B.png",
+        "effect0185\\A-07-00-N-F.png",
+        "effect0185\\A-07-00-N.png",
+        "effect0185\\A-08-00-N.png",
+        "effect0185\\A-09-00-N.png",
+        "effect0185\\A-10-00-N.png",
+        "effect0185\\A-11-00-N.png",
+        "effect0185\\A-12-00-N.png",
+        "effect0185\\A-13-00-N.png",
+        "effect0185\\A-14-00-N.png",
+        "effect0185\\A-15-00-N.png",
+        "effect0185\\A-16-00-N.png",
+        "effect0185\\A-17-00-N.png",
+        "effect0185\\A-18-00-N.png",
+        "effect0185\\A-19-00-N.png",
+        "effect0185\\A-20-00-N.png",
+        "effect0185\\A-21-00-N.png",
+        "effect0185\\A-22-00-N.png",
+        "effect0185\\A-23-00-N.png"
+      ],
+      "pngs": [
+        "effect0185\\A-00-00-N-B.png",
+        "effect0185\\A-00-00-N-F.png",
+        "effect0185\\A-00-00-N.png",
+        "effect0185\\A-01-00-N-B.png",
+        "effect0185\\A-01-00-N-F.png",
+        "effect0185\\A-01-00-N.png",
+        "effect0185\\A-02-00-N-B.png",
+        "effect0185\\A-02-00-N-F.png",
+        "effect0185\\A-02-00-N.png",
+        "effect0185\\A-03-00-N-B.png",
+        "effect0185\\A-03-00-N-F.png",
+        "effect0185\\A-03-00-N.png",
+        "effect0185\\A-04-00-N-B.png",
+        "effect0185\\A-04-00-N-F.png",
+        "effect0185\\A-04-00-N.png",
+        "effect0185\\A-05-00-N-B.png",
+        "effect0185\\A-05-00-N-F.png",
+        "effect0185\\A-05-00-N.png",
+        "effect0185\\A-06-00-N-B.png",
+        "effect0185\\A-06-00-N-F.png",
+        "effect0185\\A-06-00-N.png",
+        "effect0185\\A-07-00-N-B.png",
+        "effect0185\\A-07-00-N-F.png",
+        "effect0185\\A-07-00-N.png",
+        "effect0185\\A-08-00-N.png",
+        "effect0185\\A-09-00-N.png",
+        "effect0185\\A-10-00-N.png",
+        "effect0185\\A-11-00-N.png",
+        "effect0185\\A-12-00-N.png",
+        "effect0185\\A-13-00-N.png",
+        "effect0185\\A-14-00-N.png",
+        "effect0185\\A-15-00-N.png",
+        "effect0185\\A-16-00-N.png",
+        "effect0185\\A-17-00-N.png",
+        "effect0185\\A-18-00-N.png",
+        "effect0185\\A-19-00-N.png",
+        "effect0185\\A-20-00-N.png",
+        "effect0185\\A-21-00-N.png",
+        "effect0185\\A-22-00-N.png",
+        "effect0185\\A-23-00-N.png"
+      ]
+    },
+    "186": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0186\\A-00-00-N.png",
+        "effect0186\\A-01-00-N-B.png",
+        "effect0186\\A-01-00-N-F.png",
+        "effect0186\\A-01-00-N.png",
+        "effect0186\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0186\\A-00-00-N.png",
+        "effect0186\\A-01-00-N-B.png",
+        "effect0186\\A-01-00-N-F.png",
+        "effect0186\\A-01-00-N.png",
+        "effect0186\\A-02-00-N.png"
+      ]
+    },
+    "187": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0187\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0187\\A-00-00-N.png"
+      ]
+    },
+    "188": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0188\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0188\\A-00-00-N.png"
+      ]
+    },
+    "189": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0189\\A-00-00-N-B.png",
+        "effect0189\\A-00-00-N-F.png",
+        "effect0189\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0189\\A-00-00-N-B.png",
+        "effect0189\\A-00-00-N-F.png",
+        "effect0189\\A-00-00-N.png"
+      ]
+    },
+    "190": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0190\\A-00-00-N.png",
+        "effect0190\\A-01-00-N.png",
+        "effect0190\\A-02-00-N.png",
+        "effect0190\\A-03-00-N.png",
+        "effect0190\\A-04-00-N.png",
+        "effect0190\\A-05-00-N.png",
+        "effect0190\\A-06-00-N.png",
+        "effect0190\\A-07-00-N.png",
+        "effect0190\\A-08-00-N.png",
+        "effect0190\\A-09-00-N.png",
+        "effect0190\\A-10-00-N.png",
+        "effect0190\\A-11-00-N.png",
+        "effect0190\\A-12-00-N.png",
+        "effect0190\\A-13-00-N.png",
+        "effect0190\\A-14-00-N.png",
+        "effect0190\\A-15-00-N.png",
+        "effect0190\\A-16-00-N.png",
+        "effect0190\\A-17-00-N.png",
+        "effect0190\\A-18-00-N.png",
+        "effect0190\\A-19-00-N.png",
+        "effect0190\\A-20-00-N.png",
+        "effect0190\\A-21-00-N.png",
+        "effect0190\\A-22-00-N.png",
+        "effect0190\\A-23-00-N.png"
+      ],
+      "pngs": [
+        "effect0190\\A-00-00-N.png",
+        "effect0190\\A-01-00-N.png",
+        "effect0190\\A-02-00-N.png",
+        "effect0190\\A-03-00-N.png",
+        "effect0190\\A-04-00-N.png",
+        "effect0190\\A-05-00-N.png",
+        "effect0190\\A-06-00-N.png",
+        "effect0190\\A-07-00-N.png",
+        "effect0190\\A-08-00-N.png",
+        "effect0190\\A-09-00-N.png",
+        "effect0190\\A-10-00-N.png",
+        "effect0190\\A-11-00-N.png",
+        "effect0190\\A-12-00-N.png",
+        "effect0190\\A-13-00-N.png",
+        "effect0190\\A-14-00-N.png",
+        "effect0190\\A-15-00-N.png",
+        "effect0190\\A-16-00-N.png",
+        "effect0190\\A-17-00-N.png",
+        "effect0190\\A-18-00-N.png",
+        "effect0190\\A-19-00-N.png",
+        "effect0190\\A-20-00-N.png",
+        "effect0190\\A-21-00-N.png",
+        "effect0190\\A-22-00-N.png",
+        "effect0190\\A-23-00-N.png"
+      ]
+    },
+    "191": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0191\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0191\\A-00-00-N.png"
+      ]
+    },
+    "192": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0192\\A-00-00-N-B.png",
+        "effect0192\\A-00-00-N-F.png",
+        "effect0192\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0192\\A-00-00-N-B.png",
+        "effect0192\\A-00-00-N-F.png",
+        "effect0192\\A-00-00-N.png"
+      ]
+    },
+    "193": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0193\\A-00-00-N-B.png",
+        "effect0193\\A-00-00-N-F.png",
+        "effect0193\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0193\\A-00-00-N-B.png",
+        "effect0193\\A-00-00-N-F.png",
+        "effect0193\\A-00-00-N.png"
+      ]
+    },
+    "194": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0194\\A-00-00-N.png",
+        "effect0194\\A-01-00-N.png",
+        "effect0194\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0194\\A-00-00-N.png",
+        "effect0194\\A-01-00-N.png",
+        "effect0194\\A-02-00-N.png"
+      ]
+    },
+    "195": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0195\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0195\\A-00-00-N.png"
+      ]
+    },
+    "196": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0196\\A-00-00-N-B.png",
+        "effect0196\\A-00-00-N-F.png",
+        "effect0196\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0196\\A-00-00-N-B.png",
+        "effect0196\\A-00-00-N-F.png",
+        "effect0196\\A-00-00-N.png"
+      ]
+    },
+    "197": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0197\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0197\\A-00-00-N.png"
+      ]
+    },
+    "198": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0198\\A-00-00-N-B.png",
+        "effect0198\\A-00-00-N-F.png",
+        "effect0198\\A-00-00-N.png",
+        "effect0198\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0198\\A-00-00-N-B.png",
+        "effect0198\\A-00-00-N-F.png",
+        "effect0198\\A-00-00-N.png",
+        "effect0198\\A-01-00-N.png"
+      ]
+    },
+    "199": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0199\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0199\\A-00-00-N.png"
+      ]
+    },
+    "200": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0200\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0200\\A-00-00-N.png"
+      ]
+    },
+    "201": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0201\\A-00-00-N-B.png",
+        "effect0201\\A-00-00-N-F.png",
+        "effect0201\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0201\\A-00-00-N-B.png",
+        "effect0201\\A-00-00-N-F.png",
+        "effect0201\\A-00-00-N.png"
+      ]
+    },
+    "202": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0202\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0202\\A-00-00-N.png"
+      ]
+    },
+    "203": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0203\\A-00-00-N.png",
+        "effect0203\\A-01-00-N.png",
+        "effect0203\\A-02-00-N.png",
+        "effect0203\\A-03-00-N.png",
+        "effect0203\\A-04-00-N.png",
+        "effect0203\\A-05-00-N.png",
+        "effect0203\\A-06-00-N.png",
+        "effect0203\\A-07-00-N.png",
+        "effect0203\\A-08-00-N.png",
+        "effect0203\\A-09-00-N.png",
+        "effect0203\\A-10-00-N.png",
+        "effect0203\\A-11-00-N.png",
+        "effect0203\\A-12-00-N.png",
+        "effect0203\\A-13-00-N.png",
+        "effect0203\\A-14-00-N.png",
+        "effect0203\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0203\\A-00-00-N.png",
+        "effect0203\\A-01-00-N.png",
+        "effect0203\\A-02-00-N.png",
+        "effect0203\\A-03-00-N.png",
+        "effect0203\\A-04-00-N.png",
+        "effect0203\\A-05-00-N.png",
+        "effect0203\\A-06-00-N.png",
+        "effect0203\\A-07-00-N.png",
+        "effect0203\\A-08-00-N.png",
+        "effect0203\\A-09-00-N.png",
+        "effect0203\\A-10-00-N.png",
+        "effect0203\\A-11-00-N.png",
+        "effect0203\\A-12-00-N.png",
+        "effect0203\\A-13-00-N.png",
+        "effect0203\\A-14-00-N.png",
+        "effect0203\\A-15-00-N.png"
+      ]
+    },
+    "204": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0204\\A-00-00-N-B.png",
+        "effect0204\\A-00-00-N-F.png",
+        "effect0204\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0204\\A-00-00-N-B.png",
+        "effect0204\\A-00-00-N-F.png",
+        "effect0204\\A-00-00-N.png"
+      ]
+    },
+    "205": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0205\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0205\\A-00-00-N.png"
+      ]
+    },
+    "206": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0206\\A-00-00-N.png",
+        "effect0206\\A-01-00-N.png",
+        "effect0206\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0206\\A-00-00-N.png",
+        "effect0206\\A-01-00-N.png",
+        "effect0206\\A-02-00-N.png"
+      ]
+    },
+    "207": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0207\\A-00-00-N.png",
+        "effect0207\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0207\\A-00-00-N.png",
+        "effect0207\\A-01-00-N.png"
+      ]
+    },
+    "208": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0208\\A-00-00-N-B.png",
+        "effect0208\\A-00-00-N-F.png",
+        "effect0208\\A-00-00-N.png",
+        "effect0208\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0208\\A-00-00-N-B.png",
+        "effect0208\\A-00-00-N-F.png",
+        "effect0208\\A-00-00-N.png",
+        "effect0208\\A-01-00-N.png"
+      ]
+    },
+    "209": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0209\\A-00-00-N.png",
+        "effect0209\\A-01-00-N.png",
+        "effect0209\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0209\\A-00-00-N.png",
+        "effect0209\\A-01-00-N.png",
+        "effect0209\\A-02-00-N.png"
+      ]
+    },
+    "210": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0210\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0210\\A-00-00-N.png"
+      ]
+    },
+    "211": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0211\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0211\\A-00-00-N.png"
+      ]
+    },
+    "212": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0212\\A-00-00-N.png",
+        "effect0212\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0212\\A-00-00-N.png",
+        "effect0212\\A-01-00-N.png"
+      ]
+    },
+    "213": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0213\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0213\\A-00-00-N.png"
+      ]
+    },
+    "214": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0214\\A-00-00-N.png",
+        "effect0214\\A-01-00-N.png",
+        "effect0214\\A-02-00-N.png",
+        "effect0214\\A-03-00-N.png",
+        "effect0214\\A-04-00-N.png",
+        "effect0214\\A-05-00-N.png",
+        "effect0214\\A-06-00-N.png",
+        "effect0214\\A-07-00-N.png",
+        "effect0214\\A-08-00-N.png",
+        "effect0214\\A-09-00-N.png",
+        "effect0214\\A-10-00-N.png",
+        "effect0214\\A-11-00-N.png",
+        "effect0214\\A-12-00-N.png",
+        "effect0214\\A-13-00-N.png",
+        "effect0214\\A-14-00-N.png",
+        "effect0214\\A-15-00-N.png",
+        "effect0214\\A-16-00-N.png",
+        "effect0214\\A-17-00-N.png",
+        "effect0214\\A-18-00-N.png",
+        "effect0214\\A-19-00-N.png",
+        "effect0214\\A-20-00-N.png",
+        "effect0214\\A-21-00-N.png",
+        "effect0214\\A-22-00-N.png",
+        "effect0214\\A-23-00-N.png"
+      ],
+      "pngs": [
+        "effect0214\\A-00-00-N.png",
+        "effect0214\\A-01-00-N.png",
+        "effect0214\\A-02-00-N.png",
+        "effect0214\\A-03-00-N.png",
+        "effect0214\\A-04-00-N.png",
+        "effect0214\\A-05-00-N.png",
+        "effect0214\\A-06-00-N.png",
+        "effect0214\\A-07-00-N.png",
+        "effect0214\\A-08-00-N.png",
+        "effect0214\\A-09-00-N.png",
+        "effect0214\\A-10-00-N.png",
+        "effect0214\\A-11-00-N.png",
+        "effect0214\\A-12-00-N.png",
+        "effect0214\\A-13-00-N.png",
+        "effect0214\\A-14-00-N.png",
+        "effect0214\\A-15-00-N.png",
+        "effect0214\\A-16-00-N.png",
+        "effect0214\\A-17-00-N.png",
+        "effect0214\\A-18-00-N.png",
+        "effect0214\\A-19-00-N.png",
+        "effect0214\\A-20-00-N.png",
+        "effect0214\\A-21-00-N.png",
+        "effect0214\\A-22-00-N.png",
+        "effect0214\\A-23-00-N.png"
+      ]
+    },
+    "215": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0215\\A-00-00-N.png",
+        "effect0215\\A-01-00-N.png",
+        "effect0215\\A-02-00-N.png",
+        "effect0215\\A-03-00-N.png",
+        "effect0215\\A-04-00-N.png",
+        "effect0215\\A-05-00-N.png",
+        "effect0215\\A-06-00-N.png",
+        "effect0215\\A-07-00-N.png",
+        "effect0215\\A-08-00-N.png",
+        "effect0215\\A-09-00-N.png",
+        "effect0215\\A-10-00-N.png",
+        "effect0215\\A-11-00-N.png",
+        "effect0215\\A-12-00-N.png",
+        "effect0215\\A-13-00-N.png",
+        "effect0215\\A-14-00-N.png",
+        "effect0215\\A-15-00-N.png",
+        "effect0215\\A-16-00-N.png",
+        "effect0215\\A-17-00-N.png",
+        "effect0215\\A-18-00-N.png",
+        "effect0215\\A-19-00-N.png",
+        "effect0215\\A-20-00-N.png",
+        "effect0215\\A-21-00-N.png",
+        "effect0215\\A-22-00-N.png",
+        "effect0215\\A-23-00-N.png"
+      ],
+      "pngs": [
+        "effect0215\\A-00-00-N.png",
+        "effect0215\\A-01-00-N.png",
+        "effect0215\\A-02-00-N.png",
+        "effect0215\\A-03-00-N.png",
+        "effect0215\\A-04-00-N.png",
+        "effect0215\\A-05-00-N.png",
+        "effect0215\\A-06-00-N.png",
+        "effect0215\\A-07-00-N.png",
+        "effect0215\\A-08-00-N.png",
+        "effect0215\\A-09-00-N.png",
+        "effect0215\\A-10-00-N.png",
+        "effect0215\\A-11-00-N.png",
+        "effect0215\\A-12-00-N.png",
+        "effect0215\\A-13-00-N.png",
+        "effect0215\\A-14-00-N.png",
+        "effect0215\\A-15-00-N.png",
+        "effect0215\\A-16-00-N.png",
+        "effect0215\\A-17-00-N.png",
+        "effect0215\\A-18-00-N.png",
+        "effect0215\\A-19-00-N.png",
+        "effect0215\\A-20-00-N.png",
+        "effect0215\\A-21-00-N.png",
+        "effect0215\\A-22-00-N.png",
+        "effect0215\\A-23-00-N.png"
+      ]
+    },
+    "216": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0216\\A-00-00-N-B.png",
+        "effect0216\\A-00-00-N-F.png",
+        "effect0216\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0216\\A-00-00-N-B.png",
+        "effect0216\\A-00-00-N-F.png",
+        "effect0216\\A-00-00-N.png"
+      ]
+    },
+    "217": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0217\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0217\\A-00-00-N.png"
+      ]
+    },
+    "218": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0218\\A-00-00-N.png",
+        "effect0218\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0218\\A-00-00-N.png",
+        "effect0218\\A-01-00-N.png"
+      ]
+    },
+    "219": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0219\\A-00-00-N-B.png",
+        "effect0219\\A-00-00-N-F.png",
+        "effect0219\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0219\\A-00-00-N-B.png",
+        "effect0219\\A-00-00-N-F.png",
+        "effect0219\\A-00-00-N.png"
+      ]
+    },
+    "220": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0220\\A-00-00-N.png",
+        "effect0220\\A-01-00-N.png",
+        "effect0220\\A-02-00-N.png",
+        "effect0220\\A-03-00-N.png",
+        "effect0220\\A-04-00-N.png",
+        "effect0220\\A-05-00-N.png",
+        "effect0220\\A-06-00-N.png",
+        "effect0220\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0220\\A-00-00-N.png",
+        "effect0220\\A-01-00-N.png",
+        "effect0220\\A-02-00-N.png",
+        "effect0220\\A-03-00-N.png",
+        "effect0220\\A-04-00-N.png",
+        "effect0220\\A-05-00-N.png",
+        "effect0220\\A-06-00-N.png",
+        "effect0220\\A-07-00-N.png"
+      ]
+    },
+    "221": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0221\\A-00-00-N.png",
+        "effect0221\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0221\\A-00-00-N.png",
+        "effect0221\\A-01-00-N.png"
+      ]
+    },
+    "222": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0222\\A-00-00-N.png",
+        "effect0222\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0222\\A-00-00-N.png",
+        "effect0222\\A-01-00-N.png"
+      ]
+    },
+    "223": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0223\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0223\\A-00-00-N.png"
+      ]
+    },
+    "224": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0224\\A-00-00-N-B.png",
+        "effect0224\\A-00-00-N-F.png",
+        "effect0224\\A-00-00-N.png",
+        "effect0224\\A-01-00-N-B.png",
+        "effect0224\\A-01-00-N-F.png",
+        "effect0224\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0224\\A-00-00-N-B.png",
+        "effect0224\\A-00-00-N-F.png",
+        "effect0224\\A-00-00-N.png",
+        "effect0224\\A-01-00-N-B.png",
+        "effect0224\\A-01-00-N-F.png",
+        "effect0224\\A-01-00-N.png"
+      ]
+    },
+    "225": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0225\\A-00-00-N-B.png",
+        "effect0225\\A-00-00-N-F.png",
+        "effect0225\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0225\\A-00-00-N-B.png",
+        "effect0225\\A-00-00-N-F.png",
+        "effect0225\\A-00-00-N.png"
+      ]
+    },
+    "226": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0226\\A-00-00-N.png",
+        "effect0226\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0226\\A-00-00-N.png",
+        "effect0226\\A-01-00-N.png"
+      ]
+    },
+    "227": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0227\\A-00-00-N.png",
+        "effect0227\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0227\\A-00-00-N.png",
+        "effect0227\\A-01-00-N.png"
+      ]
+    },
+    "228": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0228\\A-00-00-N-B.png",
+        "effect0228\\A-00-00-N-F.png",
+        "effect0228\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0228\\A-00-00-N-B.png",
+        "effect0228\\A-00-00-N-F.png",
+        "effect0228\\A-00-00-N.png"
+      ]
+    },
+    "229": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0229\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0229\\A-00-00-N.png"
+      ]
+    },
+    "230": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0230\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0230\\A-00-00-N.png"
+      ]
+    },
+    "231": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0231\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0231\\A-00-00-N.png"
+      ]
+    },
+    "232": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0232\\A-00-00-N-B.png",
+        "effect0232\\A-00-00-N-F.png",
+        "effect0232\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0232\\A-00-00-N-B.png",
+        "effect0232\\A-00-00-N-F.png",
+        "effect0232\\A-00-00-N.png"
+      ]
+    },
+    "233": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0233\\A-00-00-N.png",
+        "effect0233\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0233\\A-00-00-N.png",
+        "effect0233\\A-01-00-N.png"
+      ]
+    },
+    "234": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0234\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0234\\A-00-00-N.png"
+      ]
+    },
+    "235": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0235\\A-00-00-N.png",
+        "effect0235\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0235\\A-00-00-N.png",
+        "effect0235\\A-01-00-N.png"
+      ]
+    },
+    "236": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0236\\A-00-00-N.png",
+        "effect0236\\A-01-00-N.png",
+        "effect0236\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0236\\A-00-00-N.png",
+        "effect0236\\A-01-00-N.png",
+        "effect0236\\A-02-00-N.png"
+      ]
+    },
+    "237": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0237\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0237\\A-00-00-N.png"
+      ]
+    },
+    "238": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0238\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0238\\A-00-00-N.png"
+      ]
+    },
+    "239": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0239\\A-00-00-N.png",
+        "effect0239\\A-01-00-N.png",
+        "effect0239\\A-02-00-N.png",
+        "effect0239\\A-03-00-N.png"
+      ],
+      "pngs": [
+        "effect0239\\A-00-00-N.png",
+        "effect0239\\A-01-00-N.png",
+        "effect0239\\A-02-00-N.png",
+        "effect0239\\A-03-00-N.png"
+      ]
+    },
+    "240": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0240\\A-00-00-N.png",
+        "effect0240\\A-01-00-N.png",
+        "effect0240\\A-02-00-N.png",
+        "effect0240\\A-03-00-N.png",
+        "effect0240\\A-04-00-N.png",
+        "effect0240\\A-05-00-N.png",
+        "effect0240\\A-06-00-N.png",
+        "effect0240\\A-07-00-N.png",
+        "effect0240\\A-08-00-N.png",
+        "effect0240\\A-09-00-N.png",
+        "effect0240\\A-10-00-N.png",
+        "effect0240\\A-11-00-N.png",
+        "effect0240\\A-12-00-N.png",
+        "effect0240\\A-13-00-N.png",
+        "effect0240\\A-14-00-N.png",
+        "effect0240\\A-15-00-N.png"
+      ],
+      "pngs": [
+        "effect0240\\A-00-00-N.png",
+        "effect0240\\A-01-00-N.png",
+        "effect0240\\A-02-00-N.png",
+        "effect0240\\A-03-00-N.png",
+        "effect0240\\A-04-00-N.png",
+        "effect0240\\A-05-00-N.png",
+        "effect0240\\A-06-00-N.png",
+        "effect0240\\A-07-00-N.png",
+        "effect0240\\A-08-00-N.png",
+        "effect0240\\A-09-00-N.png",
+        "effect0240\\A-10-00-N.png",
+        "effect0240\\A-11-00-N.png",
+        "effect0240\\A-12-00-N.png",
+        "effect0240\\A-13-00-N.png",
+        "effect0240\\A-14-00-N.png",
+        "effect0240\\A-15-00-N.png"
+      ]
+    },
+    "241": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0241\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0241\\A-00-00-N.png"
+      ]
+    },
+    "242": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0242\\A-00-00-N.png",
+        "effect0242\\A-01-00-N.png",
+        "effect0242\\A-02-00-N.png",
+        "effect0242\\A-03-00-N.png",
+        "effect0242\\A-04-00-N.png",
+        "effect0242\\A-05-00-N.png",
+        "effect0242\\A-06-00-N.png",
+        "effect0242\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0242\\A-00-00-N.png",
+        "effect0242\\A-01-00-N.png",
+        "effect0242\\A-02-00-N.png",
+        "effect0242\\A-03-00-N.png",
+        "effect0242\\A-04-00-N.png",
+        "effect0242\\A-05-00-N.png",
+        "effect0242\\A-06-00-N.png",
+        "effect0242\\A-07-00-N.png"
+      ]
+    },
+    "243": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0243\\A-00-00-N.png",
+        "effect0243\\A-01-00-N.png",
+        "effect0243\\A-02-00-N.png",
+        "effect0243\\A-03-00-N.png",
+        "effect0243\\A-04-00-N.png",
+        "effect0243\\A-05-00-N.png",
+        "effect0243\\A-06-00-N.png",
+        "effect0243\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0243\\A-00-00-N.png",
+        "effect0243\\A-01-00-N.png",
+        "effect0243\\A-02-00-N.png",
+        "effect0243\\A-03-00-N.png",
+        "effect0243\\A-04-00-N.png",
+        "effect0243\\A-05-00-N.png",
+        "effect0243\\A-06-00-N.png",
+        "effect0243\\A-07-00-N.png"
+      ]
+    },
+    "244": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0244\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0244\\A-00-00-N.png"
+      ]
+    },
+    "245": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0245\\A-00-00-N.png",
+        "effect0245\\A-01-00-N-B.png",
+        "effect0245\\A-01-00-N-F.png",
+        "effect0245\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0245\\A-00-00-N.png",
+        "effect0245\\A-01-00-N-B.png",
+        "effect0245\\A-01-00-N-F.png",
+        "effect0245\\A-01-00-N.png"
+      ]
+    },
+    "246": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0246\\A-00-00-N.png",
+        "effect0246\\A-01-00-N.png",
+        "effect0246\\A-02-00-N.png",
+        "effect0246\\A-03-00-N.png"
+      ],
+      "pngs": [
+        "effect0246\\A-00-00-N.png",
+        "effect0246\\A-01-00-N.png",
+        "effect0246\\A-02-00-N.png",
+        "effect0246\\A-03-00-N.png"
+      ]
+    },
+    "247": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0247\\A-00-00-N.png",
+        "effect0247\\A-01-00-N.png",
+        "effect0247\\A-02-00-N.png",
+        "effect0247\\A-03-00-N.png",
+        "effect0247\\A-04-00-N.png",
+        "effect0247\\A-05-00-N.png",
+        "effect0247\\A-06-00-N.png",
+        "effect0247\\A-07-00-N.png"
+      ],
+      "pngs": [
+        "effect0247\\A-00-00-N.png",
+        "effect0247\\A-01-00-N.png",
+        "effect0247\\A-02-00-N.png",
+        "effect0247\\A-03-00-N.png",
+        "effect0247\\A-04-00-N.png",
+        "effect0247\\A-05-00-N.png",
+        "effect0247\\A-06-00-N.png",
+        "effect0247\\A-07-00-N.png"
+      ]
+    },
+    "248": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0248\\A-00-00-N.png",
+        "effect0248\\A-01-00-N.png",
+        "effect0248\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0248\\A-00-00-N.png",
+        "effect0248\\A-01-00-N.png",
+        "effect0248\\A-02-00-N.png"
+      ]
+    },
+    "249": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0249\\A-00-00-N.png",
+        "effect0249\\A-01-00-N.png",
+        "effect0249\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0249\\A-00-00-N.png",
+        "effect0249\\A-01-00-N.png",
+        "effect0249\\A-02-00-N.png"
+      ]
+    },
+    "250": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0250\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0250\\A-00-00-N.png"
+      ]
+    },
+    "251": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0251\\A-00-00-N.png",
+        "effect0251\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0251\\A-00-00-N.png",
+        "effect0251\\A-01-00-N.png"
+      ]
+    },
+    "252": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0252\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0252\\A-00-00-N.png"
+      ]
+    },
+    "253": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0253\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0253\\A-00-00-N.png"
+      ]
+    },
+    "254": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0254\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0254\\A-00-00-N.png"
+      ]
+    },
+    "255": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0255\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0255\\A-00-00-N.png"
+      ]
+    },
+    "256": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0256\\A-00-00-N.png"
+      ],
+      "pngs": [
+        "effect0256\\A-00-00-N.png"
+      ]
+    },
+    "257": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0257\\A-00-00-N-B.png",
+        "effect0257\\A-00-00-N-F.png",
+        "effect0257\\A-00-00-N.png",
+        "effect0257\\A-01-00-N-B.png",
+        "effect0257\\A-01-00-N-F.png",
+        "effect0257\\A-01-00-N.png",
+        "effect0257\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0257\\A-00-00-N-B.png",
+        "effect0257\\A-00-00-N-F.png",
+        "effect0257\\A-00-00-N.png",
+        "effect0257\\A-01-00-N-B.png",
+        "effect0257\\A-01-00-N-F.png",
+        "effect0257\\A-01-00-N.png",
+        "effect0257\\A-02-00-N.png"
+      ]
+    },
+    "258": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0258\\A-00-00-N.png",
+        "effect0258\\A-01-00-N.png"
+      ],
+      "pngs": [
+        "effect0258\\A-00-00-N.png",
+        "effect0258\\A-01-00-N.png"
+      ]
+    },
+    "259": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0259\\A-00-00-N.png",
+        "effect0259\\A-01-00-N.png",
+        "effect0259\\A-02-00-N.png"
+      ],
+      "pngs": [
+        "effect0259\\A-00-00-N.png",
+        "effect0259\\A-01-00-N.png",
+        "effect0259\\A-02-00-N.png"
+      ]
+    },
+    "260": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0260\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0260\\Atlas.png"
+      ]
+    },
+    "261": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0261\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0261\\Atlas.png"
+      ]
+    },
+    "262": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0262\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0262\\Atlas.png"
+      ]
+    },
+    "263": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0263\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0263\\Atlas.png"
+      ]
+    },
+    "264": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0264\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0264\\Atlas.png"
+      ]
+    },
+    "265": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0265\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0265\\Atlas.png"
+      ]
+    },
+    "266": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0266\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0266\\Atlas.png"
+      ]
+    },
+    "267": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0267\\Atlas.png"
+      ],
+      "pngs": [
+        "effect0267\\Atlas.png"
+      ]
+    },
+    "268": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0268\\F-00.png",
+        "effect0268\\F-01.png",
+        "effect0268\\F-02.png",
+        "effect0268\\F-03.png",
+        "effect0268\\F-04.png",
+        "effect0268\\F-05.png",
+        "effect0268\\F-06.png",
+        "effect0268\\F-07.png",
+        "effect0268\\F-08.png",
+        "effect0268\\F-09.png",
+        "effect0268\\F-10.png",
+        "effect0268\\F-11.png",
+        "effect0268\\F-12.png",
+        "effect0268\\F-13.png",
+        "effect0268\\F-14.png",
+        "effect0268\\F-15.png"
+      ],
+      "pngs": [
+        "effect0268\\F-00.png",
+        "effect0268\\F-01.png",
+        "effect0268\\F-02.png",
+        "effect0268\\F-03.png",
+        "effect0268\\F-04.png",
+        "effect0268\\F-05.png",
+        "effect0268\\F-06.png",
+        "effect0268\\F-07.png",
+        "effect0268\\F-08.png",
+        "effect0268\\F-09.png",
+        "effect0268\\F-10.png",
+        "effect0268\\F-11.png",
+        "effect0268\\F-12.png",
+        "effect0268\\F-13.png",
+        "effect0268\\F-14.png",
+        "effect0268\\F-15.png"
+      ]
+    },
+    "269": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0269\\F-00.png",
+        "effect0269\\F-01.png",
+        "effect0269\\F-02.png",
+        "effect0269\\F-03.png",
+        "effect0269\\F-04.png",
+        "effect0269\\F-05.png",
+        "effect0269\\F-06.png",
+        "effect0269\\F-07.png",
+        "effect0269\\F-08.png",
+        "effect0269\\F-09.png",
+        "effect0269\\F-10.png",
+        "effect0269\\F-11.png",
+        "effect0269\\F-12.png",
+        "effect0269\\F-13.png",
+        "effect0269\\F-14.png",
+        "effect0269\\F-15.png"
+      ],
+      "pngs": [
+        "effect0269\\F-00.png",
+        "effect0269\\F-01.png",
+        "effect0269\\F-02.png",
+        "effect0269\\F-03.png",
+        "effect0269\\F-04.png",
+        "effect0269\\F-05.png",
+        "effect0269\\F-06.png",
+        "effect0269\\F-07.png",
+        "effect0269\\F-08.png",
+        "effect0269\\F-09.png",
+        "effect0269\\F-10.png",
+        "effect0269\\F-11.png",
+        "effect0269\\F-12.png",
+        "effect0269\\F-13.png",
+        "effect0269\\F-14.png",
+        "effect0269\\F-15.png"
+      ]
+    },
+    "270": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0270\\F-00.png",
+        "effect0270\\F-01.png",
+        "effect0270\\F-02.png",
+        "effect0270\\F-03.png",
+        "effect0270\\F-04.png",
+        "effect0270\\F-05.png",
+        "effect0270\\F-06.png",
+        "effect0270\\F-07.png",
+        "effect0270\\F-08.png",
+        "effect0270\\F-09.png",
+        "effect0270\\F-10.png",
+        "effect0270\\F-11.png",
+        "effect0270\\F-12.png",
+        "effect0270\\F-13.png",
+        "effect0270\\F-14.png",
+        "effect0270\\F-15.png",
+        "effect0270\\F-16.png",
+        "effect0270\\F-17.png",
+        "effect0270\\F-18.png",
+        "effect0270\\F-19.png",
+        "effect0270\\F-20.png",
+        "effect0270\\F-21.png",
+        "effect0270\\F-22.png",
+        "effect0270\\F-23.png",
+        "effect0270\\F-24.png",
+        "effect0270\\F-25.png",
+        "effect0270\\F-26.png",
+        "effect0270\\F-27.png",
+        "effect0270\\F-28.png",
+        "effect0270\\F-29.png",
+        "effect0270\\F-30.png",
+        "effect0270\\F-31.png",
+        "effect0270\\F-32.png",
+        "effect0270\\F-33.png",
+        "effect0270\\F-34.png",
+        "effect0270\\F-35.png",
+        "effect0270\\F-36.png",
+        "effect0270\\F-37.png",
+        "effect0270\\F-38.png",
+        "effect0270\\F-39.png",
+        "effect0270\\F-40.png",
+        "effect0270\\F-41.png",
+        "effect0270\\F-42.png",
+        "effect0270\\F-43.png",
+        "effect0270\\F-44.png",
+        "effect0270\\F-45.png",
+        "effect0270\\F-46.png",
+        "effect0270\\F-47.png",
+        "effect0270\\F-48.png",
+        "effect0270\\F-49.png",
+        "effect0270\\F-50.png",
+        "effect0270\\F-51.png",
+        "effect0270\\F-52.png",
+        "effect0270\\F-53.png",
+        "effect0270\\F-54.png",
+        "effect0270\\F-55.png",
+        "effect0270\\F-56.png",
+        "effect0270\\F-57.png",
+        "effect0270\\F-58.png",
+        "effect0270\\F-59.png",
+        "effect0270\\F-60.png",
+        "effect0270\\F-61.png",
+        "effect0270\\F-62.png",
+        "effect0270\\F-63.png",
+        "effect0270\\F-64.png",
+        "effect0270\\F-65.png",
+        "effect0270\\F-66.png",
+        "effect0270\\F-67.png",
+        "effect0270\\F-68.png"
+      ],
+      "pngs": [
+        "effect0270\\F-00.png",
+        "effect0270\\F-01.png",
+        "effect0270\\F-02.png",
+        "effect0270\\F-03.png",
+        "effect0270\\F-04.png",
+        "effect0270\\F-05.png",
+        "effect0270\\F-06.png",
+        "effect0270\\F-07.png",
+        "effect0270\\F-08.png",
+        "effect0270\\F-09.png",
+        "effect0270\\F-10.png",
+        "effect0270\\F-11.png",
+        "effect0270\\F-12.png",
+        "effect0270\\F-13.png",
+        "effect0270\\F-14.png",
+        "effect0270\\F-15.png",
+        "effect0270\\F-16.png",
+        "effect0270\\F-17.png",
+        "effect0270\\F-18.png",
+        "effect0270\\F-19.png",
+        "effect0270\\F-20.png",
+        "effect0270\\F-21.png",
+        "effect0270\\F-22.png",
+        "effect0270\\F-23.png",
+        "effect0270\\F-24.png",
+        "effect0270\\F-25.png",
+        "effect0270\\F-26.png",
+        "effect0270\\F-27.png",
+        "effect0270\\F-28.png",
+        "effect0270\\F-29.png",
+        "effect0270\\F-30.png",
+        "effect0270\\F-31.png",
+        "effect0270\\F-32.png",
+        "effect0270\\F-33.png",
+        "effect0270\\F-34.png",
+        "effect0270\\F-35.png",
+        "effect0270\\F-36.png",
+        "effect0270\\F-37.png",
+        "effect0270\\F-38.png",
+        "effect0270\\F-39.png",
+        "effect0270\\F-40.png",
+        "effect0270\\F-41.png",
+        "effect0270\\F-42.png",
+        "effect0270\\F-43.png",
+        "effect0270\\F-44.png",
+        "effect0270\\F-45.png",
+        "effect0270\\F-46.png",
+        "effect0270\\F-47.png",
+        "effect0270\\F-48.png",
+        "effect0270\\F-49.png",
+        "effect0270\\F-50.png",
+        "effect0270\\F-51.png",
+        "effect0270\\F-52.png",
+        "effect0270\\F-53.png",
+        "effect0270\\F-54.png",
+        "effect0270\\F-55.png",
+        "effect0270\\F-56.png",
+        "effect0270\\F-57.png",
+        "effect0270\\F-58.png",
+        "effect0270\\F-59.png",
+        "effect0270\\F-60.png",
+        "effect0270\\F-61.png",
+        "effect0270\\F-62.png",
+        "effect0270\\F-63.png",
+        "effect0270\\F-64.png",
+        "effect0270\\F-65.png",
+        "effect0270\\F-66.png",
+        "effect0270\\F-67.png",
+        "effect0270\\F-68.png"
+      ]
+    },
+    "271": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0271\\F-00.png",
+        "effect0271\\F-01.png",
+        "effect0271\\F-02.png",
+        "effect0271\\F-03.png",
+        "effect0271\\F-04.png",
+        "effect0271\\F-05.png",
+        "effect0271\\F-06.png",
+        "effect0271\\F-07.png",
+        "effect0271\\F-08.png",
+        "effect0271\\F-09.png",
+        "effect0271\\F-10.png",
+        "effect0271\\F-11.png",
+        "effect0271\\F-12.png",
+        "effect0271\\F-13.png",
+        "effect0271\\F-14.png",
+        "effect0271\\F-15.png",
+        "effect0271\\F-16.png",
+        "effect0271\\F-17.png",
+        "effect0271\\F-18.png",
+        "effect0271\\F-19.png",
+        "effect0271\\F-20.png",
+        "effect0271\\F-21.png",
+        "effect0271\\F-22.png",
+        "effect0271\\F-23.png",
+        "effect0271\\F-24.png",
+        "effect0271\\F-25.png",
+        "effect0271\\F-26.png",
+        "effect0271\\F-27.png",
+        "effect0271\\F-28.png",
+        "effect0271\\F-29.png",
+        "effect0271\\F-30.png",
+        "effect0271\\F-31.png"
+      ],
+      "pngs": [
+        "effect0271\\F-00.png",
+        "effect0271\\F-01.png",
+        "effect0271\\F-02.png",
+        "effect0271\\F-03.png",
+        "effect0271\\F-04.png",
+        "effect0271\\F-05.png",
+        "effect0271\\F-06.png",
+        "effect0271\\F-07.png",
+        "effect0271\\F-08.png",
+        "effect0271\\F-09.png",
+        "effect0271\\F-10.png",
+        "effect0271\\F-11.png",
+        "effect0271\\F-12.png",
+        "effect0271\\F-13.png",
+        "effect0271\\F-14.png",
+        "effect0271\\F-15.png",
+        "effect0271\\F-16.png",
+        "effect0271\\F-17.png",
+        "effect0271\\F-18.png",
+        "effect0271\\F-19.png",
+        "effect0271\\F-20.png",
+        "effect0271\\F-21.png",
+        "effect0271\\F-22.png",
+        "effect0271\\F-23.png",
+        "effect0271\\F-24.png",
+        "effect0271\\F-25.png",
+        "effect0271\\F-26.png",
+        "effect0271\\F-27.png",
+        "effect0271\\F-28.png",
+        "effect0271\\F-29.png",
+        "effect0271\\F-30.png",
+        "effect0271\\F-31.png"
+      ]
+    },
+    "272": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0272\\F-00.png",
+        "effect0272\\F-01.png",
+        "effect0272\\F-02.png",
+        "effect0272\\F-03.png",
+        "effect0272\\F-04.png",
+        "effect0272\\F-05.png",
+        "effect0272\\F-06.png",
+        "effect0272\\F-07.png",
+        "effect0272\\F-08.png",
+        "effect0272\\F-09.png",
+        "effect0272\\F-10.png",
+        "effect0272\\F-11.png",
+        "effect0272\\F-12.png",
+        "effect0272\\F-13.png",
+        "effect0272\\F-14.png",
+        "effect0272\\F-15.png",
+        "effect0272\\F-16.png",
+        "effect0272\\F-17.png",
+        "effect0272\\F-18.png",
+        "effect0272\\F-19.png",
+        "effect0272\\F-20.png",
+        "effect0272\\F-21.png",
+        "effect0272\\F-22.png",
+        "effect0272\\F-23.png",
+        "effect0272\\F-24.png",
+        "effect0272\\F-25.png",
+        "effect0272\\F-26.png",
+        "effect0272\\F-27.png",
+        "effect0272\\F-28.png",
+        "effect0272\\F-29.png",
+        "effect0272\\F-30.png",
+        "effect0272\\F-31.png",
+        "effect0272\\F-32.png",
+        "effect0272\\F-33.png",
+        "effect0272\\F-34.png",
+        "effect0272\\F-35.png",
+        "effect0272\\F-36.png",
+        "effect0272\\F-37.png",
+        "effect0272\\F-38.png",
+        "effect0272\\F-39.png",
+        "effect0272\\F-40.png",
+        "effect0272\\F-41.png",
+        "effect0272\\F-42.png",
+        "effect0272\\F-43.png",
+        "effect0272\\F-44.png",
+        "effect0272\\F-45.png",
+        "effect0272\\F-46.png",
+        "effect0272\\F-47.png",
+        "effect0272\\F-48.png",
+        "effect0272\\F-49.png",
+        "effect0272\\F-50.png",
+        "effect0272\\F-51.png",
+        "effect0272\\F-52.png",
+        "effect0272\\F-53.png",
+        "effect0272\\F-54.png",
+        "effect0272\\F-55.png",
+        "effect0272\\F-56.png",
+        "effect0272\\F-57.png",
+        "effect0272\\F-58.png",
+        "effect0272\\F-59.png",
+        "effect0272\\F-60.png",
+        "effect0272\\F-61.png",
+        "effect0272\\F-62.png"
+      ],
+      "pngs": [
+        "effect0272\\F-00.png",
+        "effect0272\\F-01.png",
+        "effect0272\\F-02.png",
+        "effect0272\\F-03.png",
+        "effect0272\\F-04.png",
+        "effect0272\\F-05.png",
+        "effect0272\\F-06.png",
+        "effect0272\\F-07.png",
+        "effect0272\\F-08.png",
+        "effect0272\\F-09.png",
+        "effect0272\\F-10.png",
+        "effect0272\\F-11.png",
+        "effect0272\\F-12.png",
+        "effect0272\\F-13.png",
+        "effect0272\\F-14.png",
+        "effect0272\\F-15.png",
+        "effect0272\\F-16.png",
+        "effect0272\\F-17.png",
+        "effect0272\\F-18.png",
+        "effect0272\\F-19.png",
+        "effect0272\\F-20.png",
+        "effect0272\\F-21.png",
+        "effect0272\\F-22.png",
+        "effect0272\\F-23.png",
+        "effect0272\\F-24.png",
+        "effect0272\\F-25.png",
+        "effect0272\\F-26.png",
+        "effect0272\\F-27.png",
+        "effect0272\\F-28.png",
+        "effect0272\\F-29.png",
+        "effect0272\\F-30.png",
+        "effect0272\\F-31.png",
+        "effect0272\\F-32.png",
+        "effect0272\\F-33.png",
+        "effect0272\\F-34.png",
+        "effect0272\\F-35.png",
+        "effect0272\\F-36.png",
+        "effect0272\\F-37.png",
+        "effect0272\\F-38.png",
+        "effect0272\\F-39.png",
+        "effect0272\\F-40.png",
+        "effect0272\\F-41.png",
+        "effect0272\\F-42.png",
+        "effect0272\\F-43.png",
+        "effect0272\\F-44.png",
+        "effect0272\\F-45.png",
+        "effect0272\\F-46.png",
+        "effect0272\\F-47.png",
+        "effect0272\\F-48.png",
+        "effect0272\\F-49.png",
+        "effect0272\\F-50.png",
+        "effect0272\\F-51.png",
+        "effect0272\\F-52.png",
+        "effect0272\\F-53.png",
+        "effect0272\\F-54.png",
+        "effect0272\\F-55.png",
+        "effect0272\\F-56.png",
+        "effect0272\\F-57.png",
+        "effect0272\\F-58.png",
+        "effect0272\\F-59.png",
+        "effect0272\\F-60.png",
+        "effect0272\\F-61.png",
+        "effect0272\\F-62.png"
+      ]
+    },
+    "273": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0273\\F-00.png",
+        "effect0273\\F-01.png",
+        "effect0273\\F-02.png",
+        "effect0273\\F-03.png",
+        "effect0273\\F-04.png",
+        "effect0273\\F-05.png",
+        "effect0273\\F-06.png",
+        "effect0273\\F-07.png",
+        "effect0273\\F-08.png",
+        "effect0273\\F-09.png",
+        "effect0273\\F-10.png",
+        "effect0273\\F-11.png",
+        "effect0273\\F-12.png",
+        "effect0273\\F-13.png",
+        "effect0273\\F-14.png",
+        "effect0273\\F-15.png",
+        "effect0273\\F-16.png",
+        "effect0273\\F-17.png",
+        "effect0273\\F-18.png",
+        "effect0273\\F-19.png",
+        "effect0273\\F-20.png",
+        "effect0273\\F-21.png"
+      ],
+      "pngs": [
+        "effect0273\\F-00.png",
+        "effect0273\\F-01.png",
+        "effect0273\\F-02.png",
+        "effect0273\\F-03.png",
+        "effect0273\\F-04.png",
+        "effect0273\\F-05.png",
+        "effect0273\\F-06.png",
+        "effect0273\\F-07.png",
+        "effect0273\\F-08.png",
+        "effect0273\\F-09.png",
+        "effect0273\\F-10.png",
+        "effect0273\\F-11.png",
+        "effect0273\\F-12.png",
+        "effect0273\\F-13.png",
+        "effect0273\\F-14.png",
+        "effect0273\\F-15.png",
+        "effect0273\\F-16.png",
+        "effect0273\\F-17.png",
+        "effect0273\\F-18.png",
+        "effect0273\\F-19.png",
+        "effect0273\\F-20.png",
+        "effect0273\\F-21.png"
+      ]
+    },
+    "274": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0274\\F-00.png",
+        "effect0274\\F-01.png",
+        "effect0274\\F-02.png",
+        "effect0274\\F-03.png",
+        "effect0274\\F-04.png",
+        "effect0274\\F-05.png",
+        "effect0274\\F-06.png",
+        "effect0274\\F-07.png",
+        "effect0274\\F-08.png",
+        "effect0274\\F-09.png",
+        "effect0274\\F-10.png",
+        "effect0274\\F-11.png",
+        "effect0274\\F-12.png",
+        "effect0274\\F-13.png",
+        "effect0274\\F-14.png",
+        "effect0274\\F-15.png",
+        "effect0274\\F-16.png",
+        "effect0274\\F-17.png",
+        "effect0274\\F-18.png",
+        "effect0274\\F-19.png",
+        "effect0274\\F-20.png",
+        "effect0274\\F-21.png",
+        "effect0274\\F-22.png",
+        "effect0274\\F-23.png",
+        "effect0274\\F-24.png",
+        "effect0274\\F-25.png",
+        "effect0274\\F-26.png",
+        "effect0274\\F-27.png",
+        "effect0274\\F-28.png",
+        "effect0274\\F-29.png",
+        "effect0274\\F-30.png",
+        "effect0274\\F-31.png"
+      ],
+      "pngs": [
+        "effect0274\\F-00.png",
+        "effect0274\\F-01.png",
+        "effect0274\\F-02.png",
+        "effect0274\\F-03.png",
+        "effect0274\\F-04.png",
+        "effect0274\\F-05.png",
+        "effect0274\\F-06.png",
+        "effect0274\\F-07.png",
+        "effect0274\\F-08.png",
+        "effect0274\\F-09.png",
+        "effect0274\\F-10.png",
+        "effect0274\\F-11.png",
+        "effect0274\\F-12.png",
+        "effect0274\\F-13.png",
+        "effect0274\\F-14.png",
+        "effect0274\\F-15.png",
+        "effect0274\\F-16.png",
+        "effect0274\\F-17.png",
+        "effect0274\\F-18.png",
+        "effect0274\\F-19.png",
+        "effect0274\\F-20.png",
+        "effect0274\\F-21.png",
+        "effect0274\\F-22.png",
+        "effect0274\\F-23.png",
+        "effect0274\\F-24.png",
+        "effect0274\\F-25.png",
+        "effect0274\\F-26.png",
+        "effect0274\\F-27.png",
+        "effect0274\\F-28.png",
+        "effect0274\\F-29.png",
+        "effect0274\\F-30.png",
+        "effect0274\\F-31.png"
+      ]
+    },
+    "275": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0275\\F-00.png",
+        "effect0275\\F-01.png",
+        "effect0275\\F-02.png",
+        "effect0275\\F-03.png",
+        "effect0275\\F-04.png",
+        "effect0275\\F-05.png",
+        "effect0275\\F-06.png",
+        "effect0275\\F-07.png",
+        "effect0275\\F-08.png",
+        "effect0275\\F-09.png",
+        "effect0275\\F-10.png",
+        "effect0275\\F-11.png",
+        "effect0275\\F-12.png",
+        "effect0275\\F-13.png",
+        "effect0275\\F-14.png",
+        "effect0275\\F-15.png",
+        "effect0275\\F-16.png",
+        "effect0275\\F-17.png",
+        "effect0275\\F-18.png",
+        "effect0275\\F-19.png",
+        "effect0275\\F-20.png",
+        "effect0275\\F-21.png",
+        "effect0275\\F-22.png",
+        "effect0275\\F-23.png",
+        "effect0275\\F-24.png",
+        "effect0275\\F-25.png",
+        "effect0275\\F-26.png",
+        "effect0275\\F-27.png",
+        "effect0275\\F-28.png",
+        "effect0275\\F-29.png",
+        "effect0275\\F-30.png",
+        "effect0275\\F-31.png"
+      ],
+      "pngs": [
+        "effect0275\\F-00.png",
+        "effect0275\\F-01.png",
+        "effect0275\\F-02.png",
+        "effect0275\\F-03.png",
+        "effect0275\\F-04.png",
+        "effect0275\\F-05.png",
+        "effect0275\\F-06.png",
+        "effect0275\\F-07.png",
+        "effect0275\\F-08.png",
+        "effect0275\\F-09.png",
+        "effect0275\\F-10.png",
+        "effect0275\\F-11.png",
+        "effect0275\\F-12.png",
+        "effect0275\\F-13.png",
+        "effect0275\\F-14.png",
+        "effect0275\\F-15.png",
+        "effect0275\\F-16.png",
+        "effect0275\\F-17.png",
+        "effect0275\\F-18.png",
+        "effect0275\\F-19.png",
+        "effect0275\\F-20.png",
+        "effect0275\\F-21.png",
+        "effect0275\\F-22.png",
+        "effect0275\\F-23.png",
+        "effect0275\\F-24.png",
+        "effect0275\\F-25.png",
+        "effect0275\\F-26.png",
+        "effect0275\\F-27.png",
+        "effect0275\\F-28.png",
+        "effect0275\\F-29.png",
+        "effect0275\\F-30.png",
+        "effect0275\\F-31.png"
+      ]
+    },
+    "276": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0276\\F-00.png",
+        "effect0276\\F-01.png",
+        "effect0276\\F-02.png",
+        "effect0276\\F-03.png",
+        "effect0276\\F-04.png",
+        "effect0276\\F-05.png",
+        "effect0276\\F-06.png",
+        "effect0276\\F-07.png",
+        "effect0276\\F-08.png",
+        "effect0276\\F-09.png",
+        "effect0276\\F-10.png",
+        "effect0276\\F-11.png",
+        "effect0276\\F-12.png",
+        "effect0276\\F-13.png",
+        "effect0276\\F-14.png",
+        "effect0276\\F-15.png",
+        "effect0276\\F-16.png",
+        "effect0276\\F-17.png",
+        "effect0276\\F-18.png",
+        "effect0276\\F-19.png",
+        "effect0276\\F-20.png",
+        "effect0276\\F-21.png"
+      ],
+      "pngs": [
+        "effect0276\\F-00.png",
+        "effect0276\\F-01.png",
+        "effect0276\\F-02.png",
+        "effect0276\\F-03.png",
+        "effect0276\\F-04.png",
+        "effect0276\\F-05.png",
+        "effect0276\\F-06.png",
+        "effect0276\\F-07.png",
+        "effect0276\\F-08.png",
+        "effect0276\\F-09.png",
+        "effect0276\\F-10.png",
+        "effect0276\\F-11.png",
+        "effect0276\\F-12.png",
+        "effect0276\\F-13.png",
+        "effect0276\\F-14.png",
+        "effect0276\\F-15.png",
+        "effect0276\\F-16.png",
+        "effect0276\\F-17.png",
+        "effect0276\\F-18.png",
+        "effect0276\\F-19.png",
+        "effect0276\\F-20.png",
+        "effect0276\\F-21.png"
+      ]
+    },
+    "277": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0277\\F-00.png",
+        "effect0277\\F-01.png",
+        "effect0277\\F-02.png",
+        "effect0277\\F-03.png",
+        "effect0277\\F-04.png",
+        "effect0277\\F-05.png",
+        "effect0277\\F-06.png",
+        "effect0277\\F-07.png",
+        "effect0277\\F-08.png",
+        "effect0277\\F-09.png",
+        "effect0277\\F-10.png",
+        "effect0277\\F-11.png",
+        "effect0277\\F-12.png",
+        "effect0277\\F-13.png",
+        "effect0277\\F-14.png",
+        "effect0277\\F-15.png",
+        "effect0277\\F-16.png",
+        "effect0277\\F-17.png",
+        "effect0277\\F-18.png",
+        "effect0277\\F-19.png",
+        "effect0277\\F-20.png",
+        "effect0277\\F-21.png",
+        "effect0277\\F-22.png"
+      ],
+      "pngs": [
+        "effect0277\\F-00.png",
+        "effect0277\\F-01.png",
+        "effect0277\\F-02.png",
+        "effect0277\\F-03.png",
+        "effect0277\\F-04.png",
+        "effect0277\\F-05.png",
+        "effect0277\\F-06.png",
+        "effect0277\\F-07.png",
+        "effect0277\\F-08.png",
+        "effect0277\\F-09.png",
+        "effect0277\\F-10.png",
+        "effect0277\\F-11.png",
+        "effect0277\\F-12.png",
+        "effect0277\\F-13.png",
+        "effect0277\\F-14.png",
+        "effect0277\\F-15.png",
+        "effect0277\\F-16.png",
+        "effect0277\\F-17.png",
+        "effect0277\\F-18.png",
+        "effect0277\\F-19.png",
+        "effect0277\\F-20.png",
+        "effect0277\\F-21.png",
+        "effect0277\\F-22.png"
+      ]
+    },
+    "278": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0278\\F-00.png",
+        "effect0278\\F-01.png",
+        "effect0278\\F-02.png",
+        "effect0278\\F-03.png",
+        "effect0278\\F-04.png",
+        "effect0278\\F-05.png",
+        "effect0278\\F-06.png",
+        "effect0278\\F-07.png",
+        "effect0278\\F-08.png",
+        "effect0278\\F-09.png",
+        "effect0278\\F-10.png",
+        "effect0278\\F-11.png",
+        "effect0278\\F-12.png",
+        "effect0278\\F-13.png",
+        "effect0278\\F-14.png",
+        "effect0278\\F-15.png",
+        "effect0278\\F-16.png",
+        "effect0278\\F-17.png"
+      ],
+      "pngs": [
+        "effect0278\\F-00.png",
+        "effect0278\\F-01.png",
+        "effect0278\\F-02.png",
+        "effect0278\\F-03.png",
+        "effect0278\\F-04.png",
+        "effect0278\\F-05.png",
+        "effect0278\\F-06.png",
+        "effect0278\\F-07.png",
+        "effect0278\\F-08.png",
+        "effect0278\\F-09.png",
+        "effect0278\\F-10.png",
+        "effect0278\\F-11.png",
+        "effect0278\\F-12.png",
+        "effect0278\\F-13.png",
+        "effect0278\\F-14.png",
+        "effect0278\\F-15.png",
+        "effect0278\\F-16.png",
+        "effect0278\\F-17.png"
+      ]
+    },
+    "279": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0279\\F-00.png",
+        "effect0279\\F-01.png",
+        "effect0279\\F-02.png",
+        "effect0279\\F-03.png",
+        "effect0279\\F-04.png",
+        "effect0279\\F-05.png",
+        "effect0279\\F-06.png",
+        "effect0279\\F-07.png",
+        "effect0279\\F-08.png",
+        "effect0279\\F-09.png",
+        "effect0279\\F-10.png",
+        "effect0279\\F-11.png",
+        "effect0279\\F-12.png",
+        "effect0279\\F-13.png",
+        "effect0279\\F-14.png",
+        "effect0279\\F-15.png",
+        "effect0279\\F-16.png",
+        "effect0279\\F-17.png",
+        "effect0279\\F-18.png",
+        "effect0279\\F-19.png",
+        "effect0279\\F-20.png",
+        "effect0279\\F-21.png"
+      ],
+      "pngs": [
+        "effect0279\\F-00.png",
+        "effect0279\\F-01.png",
+        "effect0279\\F-02.png",
+        "effect0279\\F-03.png",
+        "effect0279\\F-04.png",
+        "effect0279\\F-05.png",
+        "effect0279\\F-06.png",
+        "effect0279\\F-07.png",
+        "effect0279\\F-08.png",
+        "effect0279\\F-09.png",
+        "effect0279\\F-10.png",
+        "effect0279\\F-11.png",
+        "effect0279\\F-12.png",
+        "effect0279\\F-13.png",
+        "effect0279\\F-14.png",
+        "effect0279\\F-15.png",
+        "effect0279\\F-16.png",
+        "effect0279\\F-17.png",
+        "effect0279\\F-18.png",
+        "effect0279\\F-19.png",
+        "effect0279\\F-20.png",
+        "effect0279\\F-21.png"
+      ]
+    },
+    "280": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0280\\F-00.png",
+        "effect0280\\F-01.png",
+        "effect0280\\F-02.png",
+        "effect0280\\F-03.png",
+        "effect0280\\F-04.png",
+        "effect0280\\F-05.png",
+        "effect0280\\F-06.png",
+        "effect0280\\F-07.png",
+        "effect0280\\F-08.png",
+        "effect0280\\F-09.png",
+        "effect0280\\F-10.png",
+        "effect0280\\F-11.png",
+        "effect0280\\F-12.png",
+        "effect0280\\F-13.png",
+        "effect0280\\F-14.png",
+        "effect0280\\F-15.png",
+        "effect0280\\F-16.png",
+        "effect0280\\F-17.png"
+      ],
+      "pngs": [
+        "effect0280\\F-00.png",
+        "effect0280\\F-01.png",
+        "effect0280\\F-02.png",
+        "effect0280\\F-03.png",
+        "effect0280\\F-04.png",
+        "effect0280\\F-05.png",
+        "effect0280\\F-06.png",
+        "effect0280\\F-07.png",
+        "effect0280\\F-08.png",
+        "effect0280\\F-09.png",
+        "effect0280\\F-10.png",
+        "effect0280\\F-11.png",
+        "effect0280\\F-12.png",
+        "effect0280\\F-13.png",
+        "effect0280\\F-14.png",
+        "effect0280\\F-15.png",
+        "effect0280\\F-16.png",
+        "effect0280\\F-17.png"
+      ]
+    },
+    "281": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0281\\F-00.png",
+        "effect0281\\F-01.png",
+        "effect0281\\F-02.png",
+        "effect0281\\F-03.png",
+        "effect0281\\F-04.png",
+        "effect0281\\F-05.png",
+        "effect0281\\F-06.png",
+        "effect0281\\F-07.png",
+        "effect0281\\F-08.png",
+        "effect0281\\F-09.png",
+        "effect0281\\F-10.png",
+        "effect0281\\F-11.png",
+        "effect0281\\F-12.png",
+        "effect0281\\F-13.png",
+        "effect0281\\F-14.png",
+        "effect0281\\F-15.png",
+        "effect0281\\F-16.png",
+        "effect0281\\F-17.png",
+        "effect0281\\F-18.png",
+        "effect0281\\F-19.png",
+        "effect0281\\F-20.png",
+        "effect0281\\F-21.png"
+      ],
+      "pngs": [
+        "effect0281\\F-00.png",
+        "effect0281\\F-01.png",
+        "effect0281\\F-02.png",
+        "effect0281\\F-03.png",
+        "effect0281\\F-04.png",
+        "effect0281\\F-05.png",
+        "effect0281\\F-06.png",
+        "effect0281\\F-07.png",
+        "effect0281\\F-08.png",
+        "effect0281\\F-09.png",
+        "effect0281\\F-10.png",
+        "effect0281\\F-11.png",
+        "effect0281\\F-12.png",
+        "effect0281\\F-13.png",
+        "effect0281\\F-14.png",
+        "effect0281\\F-15.png",
+        "effect0281\\F-16.png",
+        "effect0281\\F-17.png",
+        "effect0281\\F-18.png",
+        "effect0281\\F-19.png",
+        "effect0281\\F-20.png",
+        "effect0281\\F-21.png"
+      ]
+    },
+    "282": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0282\\F-00.png",
+        "effect0282\\F-01.png",
+        "effect0282\\F-02.png",
+        "effect0282\\F-03.png",
+        "effect0282\\F-04.png",
+        "effect0282\\F-05.png",
+        "effect0282\\F-06.png",
+        "effect0282\\F-07.png",
+        "effect0282\\F-08.png",
+        "effect0282\\F-09.png",
+        "effect0282\\F-10.png",
+        "effect0282\\F-11.png",
+        "effect0282\\F-12.png",
+        "effect0282\\F-13.png",
+        "effect0282\\F-14.png",
+        "effect0282\\F-15.png",
+        "effect0282\\F-16.png",
+        "effect0282\\F-17.png"
+      ],
+      "pngs": [
+        "effect0282\\F-00.png",
+        "effect0282\\F-01.png",
+        "effect0282\\F-02.png",
+        "effect0282\\F-03.png",
+        "effect0282\\F-04.png",
+        "effect0282\\F-05.png",
+        "effect0282\\F-06.png",
+        "effect0282\\F-07.png",
+        "effect0282\\F-08.png",
+        "effect0282\\F-09.png",
+        "effect0282\\F-10.png",
+        "effect0282\\F-11.png",
+        "effect0282\\F-12.png",
+        "effect0282\\F-13.png",
+        "effect0282\\F-14.png",
+        "effect0282\\F-15.png",
+        "effect0282\\F-16.png",
+        "effect0282\\F-17.png"
+      ]
+    },
+    "283": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0283\\F-00.png",
+        "effect0283\\F-01.png",
+        "effect0283\\F-02.png",
+        "effect0283\\F-03.png",
+        "effect0283\\F-04.png",
+        "effect0283\\F-05.png",
+        "effect0283\\F-06.png",
+        "effect0283\\F-07.png",
+        "effect0283\\F-08.png",
+        "effect0283\\F-09.png",
+        "effect0283\\F-10.png",
+        "effect0283\\F-11.png",
+        "effect0283\\F-12.png",
+        "effect0283\\F-13.png",
+        "effect0283\\F-14.png",
+        "effect0283\\F-15.png"
+      ],
+      "pngs": [
+        "effect0283\\F-00.png",
+        "effect0283\\F-01.png",
+        "effect0283\\F-02.png",
+        "effect0283\\F-03.png",
+        "effect0283\\F-04.png",
+        "effect0283\\F-05.png",
+        "effect0283\\F-06.png",
+        "effect0283\\F-07.png",
+        "effect0283\\F-08.png",
+        "effect0283\\F-09.png",
+        "effect0283\\F-10.png",
+        "effect0283\\F-11.png",
+        "effect0283\\F-12.png",
+        "effect0283\\F-13.png",
+        "effect0283\\F-14.png",
+        "effect0283\\F-15.png"
+      ]
+    },
+    "284": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0284\\F-00.png",
+        "effect0284\\F-01.png",
+        "effect0284\\F-02.png",
+        "effect0284\\F-03.png",
+        "effect0284\\F-04.png",
+        "effect0284\\F-05.png",
+        "effect0284\\F-06.png",
+        "effect0284\\F-07.png",
+        "effect0284\\F-08.png",
+        "effect0284\\F-09.png",
+        "effect0284\\F-10.png",
+        "effect0284\\F-11.png",
+        "effect0284\\F-12.png",
+        "effect0284\\F-13.png",
+        "effect0284\\F-14.png",
+        "effect0284\\F-15.png"
+      ],
+      "pngs": [
+        "effect0284\\F-00.png",
+        "effect0284\\F-01.png",
+        "effect0284\\F-02.png",
+        "effect0284\\F-03.png",
+        "effect0284\\F-04.png",
+        "effect0284\\F-05.png",
+        "effect0284\\F-06.png",
+        "effect0284\\F-07.png",
+        "effect0284\\F-08.png",
+        "effect0284\\F-09.png",
+        "effect0284\\F-10.png",
+        "effect0284\\F-11.png",
+        "effect0284\\F-12.png",
+        "effect0284\\F-13.png",
+        "effect0284\\F-14.png",
+        "effect0284\\F-15.png"
+      ]
+    },
+    "285": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0285\\F-00.png",
+        "effect0285\\F-01.png",
+        "effect0285\\F-02.png",
+        "effect0285\\F-03.png",
+        "effect0285\\F-04.png",
+        "effect0285\\F-05.png",
+        "effect0285\\F-06.png",
+        "effect0285\\F-07.png",
+        "effect0285\\F-08.png",
+        "effect0285\\F-09.png",
+        "effect0285\\F-10.png",
+        "effect0285\\F-11.png",
+        "effect0285\\F-12.png",
+        "effect0285\\F-13.png"
+      ],
+      "pngs": [
+        "effect0285\\F-00.png",
+        "effect0285\\F-01.png",
+        "effect0285\\F-02.png",
+        "effect0285\\F-03.png",
+        "effect0285\\F-04.png",
+        "effect0285\\F-05.png",
+        "effect0285\\F-06.png",
+        "effect0285\\F-07.png",
+        "effect0285\\F-08.png",
+        "effect0285\\F-09.png",
+        "effect0285\\F-10.png",
+        "effect0285\\F-11.png",
+        "effect0285\\F-12.png",
+        "effect0285\\F-13.png"
+      ]
+    },
+    "286": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0286\\F-00.png",
+        "effect0286\\F-01.png",
+        "effect0286\\F-02.png",
+        "effect0286\\F-03.png",
+        "effect0286\\F-04.png",
+        "effect0286\\F-05.png",
+        "effect0286\\F-06.png",
+        "effect0286\\F-07.png",
+        "effect0286\\F-08.png",
+        "effect0286\\F-09.png",
+        "effect0286\\F-10.png",
+        "effect0286\\F-11.png",
+        "effect0286\\F-12.png",
+        "effect0286\\F-13.png",
+        "effect0286\\F-14.png",
+        "effect0286\\F-15.png",
+        "effect0286\\F-16.png",
+        "effect0286\\F-17.png",
+        "effect0286\\F-18.png",
+        "effect0286\\F-19.png",
+        "effect0286\\F-20.png",
+        "effect0286\\F-21.png",
+        "effect0286\\F-22.png",
+        "effect0286\\F-23.png",
+        "effect0286\\F-24.png",
+        "effect0286\\F-25.png",
+        "effect0286\\F-26.png",
+        "effect0286\\F-27.png",
+        "effect0286\\F-28.png",
+        "effect0286\\F-29.png",
+        "effect0286\\F-30.png",
+        "effect0286\\F-31.png",
+        "effect0286\\F-32.png",
+        "effect0286\\F-33.png",
+        "effect0286\\F-34.png",
+        "effect0286\\F-35.png"
+      ],
+      "pngs": [
+        "effect0286\\F-00.png",
+        "effect0286\\F-01.png",
+        "effect0286\\F-02.png",
+        "effect0286\\F-03.png",
+        "effect0286\\F-04.png",
+        "effect0286\\F-05.png",
+        "effect0286\\F-06.png",
+        "effect0286\\F-07.png",
+        "effect0286\\F-08.png",
+        "effect0286\\F-09.png",
+        "effect0286\\F-10.png",
+        "effect0286\\F-11.png",
+        "effect0286\\F-12.png",
+        "effect0286\\F-13.png",
+        "effect0286\\F-14.png",
+        "effect0286\\F-15.png",
+        "effect0286\\F-16.png",
+        "effect0286\\F-17.png",
+        "effect0286\\F-18.png",
+        "effect0286\\F-19.png",
+        "effect0286\\F-20.png",
+        "effect0286\\F-21.png",
+        "effect0286\\F-22.png",
+        "effect0286\\F-23.png",
+        "effect0286\\F-24.png",
+        "effect0286\\F-25.png",
+        "effect0286\\F-26.png",
+        "effect0286\\F-27.png",
+        "effect0286\\F-28.png",
+        "effect0286\\F-29.png",
+        "effect0286\\F-30.png",
+        "effect0286\\F-31.png",
+        "effect0286\\F-32.png",
+        "effect0286\\F-33.png",
+        "effect0286\\F-34.png",
+        "effect0286\\F-35.png"
+      ]
+    },
+    "287": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0287\\F-00.png",
+        "effect0287\\F-01.png",
+        "effect0287\\F-02.png",
+        "effect0287\\F-03.png",
+        "effect0287\\F-04.png",
+        "effect0287\\F-05.png",
+        "effect0287\\F-06.png",
+        "effect0287\\F-07.png",
+        "effect0287\\F-08.png",
+        "effect0287\\F-09.png",
+        "effect0287\\F-10.png",
+        "effect0287\\F-11.png",
+        "effect0287\\F-12.png",
+        "effect0287\\F-13.png",
+        "effect0287\\F-14.png",
+        "effect0287\\F-15.png",
+        "effect0287\\F-16.png",
+        "effect0287\\F-17.png",
+        "effect0287\\F-18.png",
+        "effect0287\\F-19.png",
+        "effect0287\\F-20.png",
+        "effect0287\\F-21.png",
+        "effect0287\\F-22.png",
+        "effect0287\\F-23.png",
+        "effect0287\\F-24.png",
+        "effect0287\\F-25.png",
+        "effect0287\\F-26.png",
+        "effect0287\\F-27.png",
+        "effect0287\\F-28.png",
+        "effect0287\\F-29.png",
+        "effect0287\\F-30.png",
+        "effect0287\\F-31.png",
+        "effect0287\\F-32.png",
+        "effect0287\\F-33.png",
+        "effect0287\\F-34.png",
+        "effect0287\\F-35.png",
+        "effect0287\\F-36.png",
+        "effect0287\\F-37.png",
+        "effect0287\\F-38.png",
+        "effect0287\\F-39.png",
+        "effect0287\\F-40.png",
+        "effect0287\\F-41.png",
+        "effect0287\\F-42.png",
+        "effect0287\\F-43.png",
+        "effect0287\\F-44.png",
+        "effect0287\\F-45.png",
+        "effect0287\\F-46.png",
+        "effect0287\\F-47.png",
+        "effect0287\\F-48.png",
+        "effect0287\\F-49.png",
+        "effect0287\\F-50.png",
+        "effect0287\\F-51.png",
+        "effect0287\\F-52.png",
+        "effect0287\\F-53.png",
+        "effect0287\\F-54.png",
+        "effect0287\\F-55.png",
+        "effect0287\\F-56.png",
+        "effect0287\\F-57.png",
+        "effect0287\\F-58.png",
+        "effect0287\\F-59.png",
+        "effect0287\\F-60.png",
+        "effect0287\\F-61.png",
+        "effect0287\\F-62.png",
+        "effect0287\\F-63.png",
+        "effect0287\\F-64.png",
+        "effect0287\\F-65.png",
+        "effect0287\\F-66.png",
+        "effect0287\\F-67.png",
+        "effect0287\\F-68.png",
+        "effect0287\\F-69.png",
+        "effect0287\\F-70.png"
+      ],
+      "pngs": [
+        "effect0287\\F-00.png",
+        "effect0287\\F-01.png",
+        "effect0287\\F-02.png",
+        "effect0287\\F-03.png",
+        "effect0287\\F-04.png",
+        "effect0287\\F-05.png",
+        "effect0287\\F-06.png",
+        "effect0287\\F-07.png",
+        "effect0287\\F-08.png",
+        "effect0287\\F-09.png",
+        "effect0287\\F-10.png",
+        "effect0287\\F-11.png",
+        "effect0287\\F-12.png",
+        "effect0287\\F-13.png",
+        "effect0287\\F-14.png",
+        "effect0287\\F-15.png",
+        "effect0287\\F-16.png",
+        "effect0287\\F-17.png",
+        "effect0287\\F-18.png",
+        "effect0287\\F-19.png",
+        "effect0287\\F-20.png",
+        "effect0287\\F-21.png",
+        "effect0287\\F-22.png",
+        "effect0287\\F-23.png",
+        "effect0287\\F-24.png",
+        "effect0287\\F-25.png",
+        "effect0287\\F-26.png",
+        "effect0287\\F-27.png",
+        "effect0287\\F-28.png",
+        "effect0287\\F-29.png",
+        "effect0287\\F-30.png",
+        "effect0287\\F-31.png",
+        "effect0287\\F-32.png",
+        "effect0287\\F-33.png",
+        "effect0287\\F-34.png",
+        "effect0287\\F-35.png",
+        "effect0287\\F-36.png",
+        "effect0287\\F-37.png",
+        "effect0287\\F-38.png",
+        "effect0287\\F-39.png",
+        "effect0287\\F-40.png",
+        "effect0287\\F-41.png",
+        "effect0287\\F-42.png",
+        "effect0287\\F-43.png",
+        "effect0287\\F-44.png",
+        "effect0287\\F-45.png",
+        "effect0287\\F-46.png",
+        "effect0287\\F-47.png",
+        "effect0287\\F-48.png",
+        "effect0287\\F-49.png",
+        "effect0287\\F-50.png",
+        "effect0287\\F-51.png",
+        "effect0287\\F-52.png",
+        "effect0287\\F-53.png",
+        "effect0287\\F-54.png",
+        "effect0287\\F-55.png",
+        "effect0287\\F-56.png",
+        "effect0287\\F-57.png",
+        "effect0287\\F-58.png",
+        "effect0287\\F-59.png",
+        "effect0287\\F-60.png",
+        "effect0287\\F-61.png",
+        "effect0287\\F-62.png",
+        "effect0287\\F-63.png",
+        "effect0287\\F-64.png",
+        "effect0287\\F-65.png",
+        "effect0287\\F-66.png",
+        "effect0287\\F-67.png",
+        "effect0287\\F-68.png",
+        "effect0287\\F-69.png",
+        "effect0287\\F-70.png"
+      ]
+    },
+    "288": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0288\\F-00.png",
+        "effect0288\\F-01.png",
+        "effect0288\\F-02.png",
+        "effect0288\\F-03.png"
+      ],
+      "pngs": [
+        "effect0288\\F-00.png",
+        "effect0288\\F-01.png",
+        "effect0288\\F-02.png",
+        "effect0288\\F-03.png"
+      ]
+    },
+    "289": {
+      "status": "ok",
+      "assembled_pngs": [
+        "effect0289\\F-00.png",
+        "effect0289\\F-01.png",
+        "effect0289\\F-02.png",
+        "effect0289\\F-03.png",
+        "effect0289\\F-04.png",
+        "effect0289\\F-05.png",
+        "effect0289\\F-06.png",
+        "effect0289\\F-07.png",
+        "effect0289\\F-08.png",
+        "effect0289\\F-09.png",
+        "effect0289\\F-10.png",
+        "effect0289\\F-11.png",
+        "effect0289\\F-12.png",
+        "effect0289\\F-13.png",
+        "effect0289\\F-14.png",
+        "effect0289\\F-15.png",
+        "effect0289\\F-16.png"
+      ],
+      "pngs": [
+        "effect0289\\F-00.png",
+        "effect0289\\F-01.png",
+        "effect0289\\F-02.png",
+        "effect0289\\F-03.png",
+        "effect0289\\F-04.png",
+        "effect0289\\F-05.png",
+        "effect0289\\F-06.png",
+        "effect0289\\F-07.png",
+        "effect0289\\F-08.png",
+        "effect0289\\F-09.png",
+        "effect0289\\F-10.png",
+        "effect0289\\F-11.png",
+        "effect0289\\F-12.png",
+        "effect0289\\F-13.png",
+        "effect0289\\F-14.png",
+        "effect0289\\F-15.png",
+        "effect0289\\F-16.png"
+      ]
+    }
+  }
+}
