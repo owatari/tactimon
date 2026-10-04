@@ -22,6 +22,7 @@ import { MartOverlay } from "@/components/MartOverlay";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
 import { StarterChoice } from "@/components/StarterChoice";
+import { StorageOverlay } from "@/components/StorageOverlay";
 import {
   buyMartItem,
   type MartPurchaseResult,
@@ -29,8 +30,13 @@ import {
 import {
   chooseStarter,
   DEFAULT_STORY_STATE,
+  depositCapturedPokemon,
   healStoryParty,
   normalizeStoryState,
+  placeCapturedPokemon,
+  storyCanCapturePokemon,
+  withdrawBoxedPokemon,
+  type PokemonStorageActionResult,
   type StoryState,
 } from "@/lib/story";
 
@@ -165,6 +171,8 @@ export function GameClient() {
   const [starterChoiceOpen, setStarterChoiceOpen] =
     useState(false);
   const [martOpen, setMartOpen] = useState(false);
+  const [storageOpen, setStorageOpen] =
+    useState(false);
   const [battleSession, setBattleSession] =
     useState<BattleSession | null>(null);
   const [progressionQueue, setProgressionQueue] =
@@ -398,23 +406,22 @@ export function GameClient() {
         session.partyIndices,
       );
 
-      if (
-        !outcome.capture?.success ||
-        next.capturedPokemon.length >= 5
-      ) {
+      if (!outcome.capture?.success) {
         return next;
       }
 
-      return {
-        ...next,
-        capturedPokemon: [
-          ...next.capturedPokemon,
-          createPokemonProgression(
-            outcome.capture.species,
-            outcome.capture.level,
-          ),
-        ].slice(0, 5),
-      };
+      const captured = createPokemonProgression(
+        outcome.capture.species,
+        outcome.capture.level,
+      );
+
+      return placeCapturedPokemon(
+        next,
+        {
+          ...captured,
+          species: outcome.capture.species,
+        },
+      ).story;
     });
 
     setProgressionQueue(
@@ -462,6 +469,46 @@ export function GameClient() {
     return preview;
   };
 
+  const handleStorageDeposit = (
+    capturedIndex: number,
+  ): PokemonStorageActionResult => {
+    const preview = depositCapturedPokemon(
+      story,
+      capturedIndex,
+    );
+
+    if (preview.accepted) {
+      setStory((current) =>
+        depositCapturedPokemon(
+          current,
+          capturedIndex,
+        ).story,
+      );
+    }
+
+    return preview;
+  };
+
+  const handleStorageWithdraw = (
+    boxedIndex: number,
+  ): PokemonStorageActionResult => {
+    const preview = withdrawBoxedPokemon(
+      story,
+      boxedIndex,
+    );
+
+    if (preview.accepted) {
+      setStory((current) =>
+        withdrawBoxedPokemon(
+          current,
+          boxedIndex,
+        ).story,
+      );
+    }
+
+    return preview;
+  };
+
   const finishProgression = (
     progression: PokemonProgression,
   ) => {
@@ -503,6 +550,7 @@ export function GameClient() {
   const paused =
     starterChoiceOpen ||
     martOpen ||
+    storageOpen ||
     Boolean(battleSession) ||
     progressionQueue.length > 0;
   const battleMusicKind = battleSession
@@ -591,6 +639,9 @@ export function GameClient() {
         onPokemonCenterHeal={() =>
           setStory((current) => healStoryParty(current))
         }
+        onPokemonStorageOpen={() =>
+          setStorageOpen(true)
+        }
       />
 
       {starterChoiceOpen && !story.starter && (
@@ -609,6 +660,17 @@ export function GameClient() {
         />
       )}
 
+      {storageOpen && (
+        <StorageOverlay
+          starter={story.playerPokemon}
+          party={story.capturedPokemon}
+          storage={story.boxedPokemon}
+          onDeposit={handleStorageDeposit}
+          onWithdraw={handleStorageWithdraw}
+          onClose={() => setStorageOpen(false)}
+        />
+      )}
+
       {battleSession &&
         story.starter &&
         story.playerPokemon &&
@@ -617,7 +679,7 @@ export function GameClient() {
             starter={story.starter}
             progression={deployedParty[0].pokemon}
             party={battleParty}
-            partySize={partyProgressions.length}
+            captureAllowed={storyCanCapturePokemon(story)}
             inventory={story.inventory}
             encounter={battleSession.encounter}
             context={battleSession.context}

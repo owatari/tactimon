@@ -67,7 +67,7 @@ type Props = {
   starter: StarterSpeciesId;
   progression: PokemonProgression;
   party: readonly DuelPokemonBuild[];
-  partySize: number;
+  captureAllowed: boolean;
   inventory: DuelInventory;
   encounter: BattleEncounter;
   context: BattleSceneContext;
@@ -238,7 +238,7 @@ export function FirstBattle({
   starter,
   progression,
   party,
-  partySize,
+  captureAllowed,
   inventory,
   encounter,
   context,
@@ -264,7 +264,7 @@ export function FirstBattle({
         height: context.arenaHeight,
         blocked: context.blocked,
         players: deployedParty,
-        captureAllowed: partySize < 6,
+        captureAllowed,
         items: inventory,
         wildSpecies: encounter.species,
         wildLevel: encounter.level,
@@ -301,7 +301,7 @@ export function FirstBattle({
     encounter,
     inventory,
     party,
-    partySize,
+    captureAllowed,
     progression,
     starter,
   ]);
@@ -1457,7 +1457,7 @@ export function FirstBattle({
             <p>
               {state.captureResult
                 ? state.captureResult.success
-                  ? "O Pokémon foi adicionado ao seu time. A EXP da captura é dividida entre todos os Pokémon que entraram na arena."
+                  ? "O Pokémon foi capturado. Ele irá para sua party ou para o PC conforme houver espaço. A EXP da captura é dividida entre todos os Pokémon que entraram na arena."
                   : `O Pokémon fugiu. Você recebe ${Math.round(
                       state.captureResult.xpRatio * 100,
                     )}% da recompensa total, dividida entre todos os Pokémon que entraram na arena.`

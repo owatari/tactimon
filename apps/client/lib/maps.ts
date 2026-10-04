@@ -320,6 +320,19 @@ export function resolveWorldTransition(
  * registry is generated for the client this fallback table can be replaced
  * by target_map + target warp lookup without changing the movement engine.
  */
+export function isPokemonStoragePcAt(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  // FireRed's MB_PC metatile in LAYOUT_POKEMON_CENTER_1F.
+  return (
+    mapId === "viridian-pokemon-center" &&
+    x === 11 &&
+    y === 1
+  );
+}
+
 export function resolveWarpTransitionAt(
   mapId: string,
   x: number,

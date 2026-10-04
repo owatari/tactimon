@@ -38,6 +38,7 @@ function damagedStory(): StoryState {
         currentHp: 0,
       },
     ],
+    boxedPokemon: [],
     defeatedTrainerIds: [],
     money: 3_000,
     inventory: {

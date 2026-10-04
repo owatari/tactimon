@@ -17,6 +17,7 @@ import {
   Direction,
   MapLayout,
   PLAYER_SPRITE,
+  isPokemonStoragePcAt,
   resolveWarpTransitionAt,
   resolveWorldTransition,
   TILE_SIZE,
@@ -129,6 +130,7 @@ type Props = {
   ) => void;
   onMartOpen: () => void;
   onPokemonCenterHeal: () => void;
+  onPokemonStorageOpen: () => void;
 };
 
 type RuntimePlayer = {
@@ -518,6 +520,7 @@ export function OverworldGame({
   onTrainerBattleTrigger,
   onMartOpen,
   onPokemonCenterHeal,
+  onPokemonStorageOpen,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -786,6 +789,17 @@ export function OverworldGame({
     const targetX = player.tileX + delta.x;
     const targetY = player.tileY + delta.y;
 
+    if (
+      isPokemonStoragePcAt(
+        mapIdRef.current,
+        targetX,
+        targetY,
+      )
+    ) {
+      onPokemonStorageOpen();
+      return;
+    }
+
     const storyObject = storyObjectsRef.current.find(
       (candidate) =>
         candidate.x === targetX && candidate.y === targetY,
@@ -873,6 +887,7 @@ export function OverworldGame({
   }, [
     onMartOpen,
     onPokemonCenterHeal,
+    onPokemonStorageOpen,
     onRequestStarterChoice,
     showInteraction,
     triggerTrainerBattle,

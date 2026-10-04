@@ -15,12 +15,18 @@ export type CapturedPokemon = PokemonProgression & {
   species: WildSpeciesId;
 };
 
+export const POKEMON_STORAGE_BOX_COUNT = 14;
+export const POKEMON_PER_BOX = 30;
+export const POKEMON_STORAGE_CAPACITY =
+  POKEMON_STORAGE_BOX_COUNT * POKEMON_PER_BOX;
+
 export type StoryState = {
   starter: StarterSpeciesId | null;
   rivalStarter: StarterSpeciesId | null;
   firstBattleComplete: boolean;
   playerPokemon: PokemonProgression | null;
   capturedPokemon: CapturedPokemon[];
+  boxedPokemon: CapturedPokemon[];
   defeatedTrainerIds: string[];
   money: number;
   inventory: DuelInventory;
@@ -32,6 +38,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   firstBattleComplete: false,
   playerPokemon: null,
   capturedPokemon: [],
+  boxedPokemon: [],
   defeatedTrainerIds: [],
   money: 3000,
   inventory: {
@@ -74,6 +81,7 @@ export function chooseStarter(
     firstBattleComplete: false,
     playerPokemon: createStarterProgression(starter),
     capturedPokemon: [],
+    boxedPokemon: [],
     defeatedTrainerIds: [],
     money: 3000,
     inventory: {
@@ -194,6 +202,12 @@ export function normalizeStoryState(
   )
     ? (input as { capturedPokemon: unknown[] }).capturedPokemon
     : [];
+  const rawBoxed = Array.isArray(
+    (input as { boxedPokemon?: unknown } | null | undefined)
+      ?.boxedPokemon,
+  )
+    ? (input as { boxedPokemon: unknown[] }).boxedPokemon
+    : [];
 
   return {
     starter,
@@ -214,6 +228,13 @@ export function normalizeStoryState(
           pokemon !== null,
       )
       .slice(0, 5),
+    boxedPokemon: rawBoxed
+      .map(normalizeCapturedPokemon)
+      .filter(
+        (pokemon): pokemon is CapturedPokemon =>
+          pokemon !== null,
+      )
+      .slice(0, POKEMON_STORAGE_CAPACITY),
     defeatedTrainerIds: Array.isArray(
       input?.defeatedTrainerIds,
     )
@@ -283,5 +304,163 @@ export function healStoryParty(
         species: pokemon.species,
       }),
     ),
+  };
+}
+
+
+export type PokemonStorageFailureReason =
+  | "invalid-index"
+  | "party-full"
+  | "storage-full";
+
+export type PokemonStorageActionResult = {
+  accepted: boolean;
+  story: StoryState;
+  reason?: PokemonStorageFailureReason;
+};
+
+export type CapturedPokemonPlacementResult = {
+  accepted: boolean;
+  story: StoryState;
+  destination?: "party" | "storage";
+  reason?: "storage-full";
+};
+
+export function storyCanCapturePokemon(
+  story: StoryState,
+): boolean {
+  return (
+    story.capturedPokemon.length < 5 ||
+    story.boxedPokemon.length <
+      POKEMON_STORAGE_CAPACITY
+  );
+}
+
+export function placeCapturedPokemon(
+  story: StoryState,
+  pokemon: CapturedPokemon,
+): CapturedPokemonPlacementResult {
+  if (story.capturedPokemon.length < 5) {
+    return {
+      accepted: true,
+      destination: "party",
+      story: {
+        ...story,
+        capturedPokemon: [
+          ...story.capturedPokemon,
+          pokemon,
+        ],
+      },
+    };
+  }
+
+  if (
+    story.boxedPokemon.length <
+    POKEMON_STORAGE_CAPACITY
+  ) {
+    return {
+      accepted: true,
+      destination: "storage",
+      story: {
+        ...story,
+        boxedPokemon: [
+          ...story.boxedPokemon,
+          pokemon,
+        ],
+      },
+    };
+  }
+
+  return {
+    accepted: false,
+    story,
+    reason: "storage-full",
+  };
+}
+
+export function depositCapturedPokemon(
+  story: StoryState,
+  capturedIndex: number,
+): PokemonStorageActionResult {
+  if (
+    !Number.isInteger(capturedIndex) ||
+    capturedIndex < 0 ||
+    capturedIndex >= story.capturedPokemon.length
+  ) {
+    return {
+      accepted: false,
+      story,
+      reason: "invalid-index",
+    };
+  }
+
+  if (
+    story.boxedPokemon.length >=
+    POKEMON_STORAGE_CAPACITY
+  ) {
+    return {
+      accepted: false,
+      story,
+      reason: "storage-full",
+    };
+  }
+
+  const pokemon = story.capturedPokemon[capturedIndex];
+  const capturedPokemon = story.capturedPokemon.filter(
+    (_, index) => index !== capturedIndex,
+  );
+
+  return {
+    accepted: true,
+    story: {
+      ...story,
+      capturedPokemon,
+      boxedPokemon: [
+        ...story.boxedPokemon,
+        pokemon,
+      ],
+    },
+  };
+}
+
+export function withdrawBoxedPokemon(
+  story: StoryState,
+  boxedIndex: number,
+): PokemonStorageActionResult {
+  if (
+    !Number.isInteger(boxedIndex) ||
+    boxedIndex < 0 ||
+    boxedIndex >= story.boxedPokemon.length
+  ) {
+    return {
+      accepted: false,
+      story,
+      reason: "invalid-index",
+    };
+  }
+
+  if (story.capturedPokemon.length >= 5) {
+    return {
+      accepted: false,
+      story,
+      reason: "party-full",
+    };
+  }
+
+  const pokemon = story.boxedPokemon[boxedIndex];
+  const boxedPokemon = story.boxedPokemon.filter(
+    (_, index) => index !== boxedIndex,
+  );
+
+  return {
+    accepted: true,
+    story: {
+      ...story,
+      capturedPokemon: [
+        ...story.capturedPokemon,
+        pokemon,
+      ],
+      boxedPokemon,
+    },
   };
 }
