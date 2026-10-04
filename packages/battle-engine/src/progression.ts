@@ -203,7 +203,8 @@ function boundedLevel(level: number): number {
 /**
  * Generation III uses a lookup table. For Medium Slow, its table follows
  * floor(6/5*n^3 - 15*n^2 + 100*n - 140), except level 1 is explicitly 0.
- * All three Kanto starters use Medium Slow in FireRed.
+ * The Kanto starters and Pidgey use Medium Slow in FireRed; Rattata uses
+ * Medium Fast.
  */
 export function fireRedExperienceAtLevel(
   species: DuelSpeciesId,

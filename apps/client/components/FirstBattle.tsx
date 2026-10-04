@@ -1300,13 +1300,13 @@ export function FirstBattle({
             <p>
               {state.captureResult
                 ? state.captureResult.success
-                  ? "O Pokémon foi adicionado ao seu time e o combate concede a recompensa completa de XP."
-                  : `O Pokémon fugiu, mas você recebe ${Math.round(
+                  ? "O Pokémon foi adicionado ao seu time. A EXP da captura é dividida entre todos os Pokémon que entraram na arena."
+                  : `O Pokémon fugiu. Você recebe ${Math.round(
                       state.captureResult.xpRatio * 100,
-                    )}% da recompensa de XP pelo progresso da captura.`
+                    )}% da recompensa total, dividida entre todos os Pokémon que entraram na arena.`
                 : encounter.kind === "wild"
                   ? state.winner === "player"
-                    ? "Vitórias selvagens concedem XP e podem gerar level up, EV e novos moves."
+                    ? "A EXP da vitória é dividida entre todos os Pokémon que entraram na arena e pode gerar level up, EV e novos moves."
                     : "Você retorna ao mapa sem receber recompensa."
                   : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
             </p>

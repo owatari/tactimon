@@ -69,6 +69,19 @@ describe("pokemon progression", () => {
     expect(rewards.map((reward) => reward.xpGained)).toEqual([9, 9]);
   });
 
+  it("normalizes a captured Pokémon into persistent progression", () => {
+    const pidgey = normalizePokemonProgression({
+      species: "pidgey",
+      level: 3,
+    });
+
+    expect(pidgey.experience).toBe(
+      fireRedExperienceAtLevel("pidgey", 3),
+    );
+    expect(pidgey.activeMoves).toEqual(["tackle"]);
+    expect(pidgey.evs.speed).toBe(0);
+  });
+
   it("uses Generation III base EXP yields for Route 1 wild Pokémon", () => {
     expect(experienceRewardForWild("pidgey", 3)).toBe(23);
     expect(experienceRewardForWild("pidgey", 5)).toBe(39);
