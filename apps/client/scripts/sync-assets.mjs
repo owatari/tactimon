@@ -80,6 +80,14 @@ const files = [
     "maps/cerulean-city/preview.png",
   ],
   [
+    "maps/layouts/111_route24_layout/layout.json",
+    "maps/route-24/layout.json",
+  ],
+  [
+    "maps/layouts/111_route24_layout/preview.png",
+    "maps/route-24/preview.png",
+  ],
+  [
     "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
     "maps/cerulean-pokemon-center/layout.json",
   ],

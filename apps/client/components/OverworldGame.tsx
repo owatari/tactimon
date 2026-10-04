@@ -42,6 +42,10 @@ import {
   type StoryState,
 } from "@/lib/story";
 import {
+  CERULEAN_RIVAL_CHALLENGE_TEXT,
+  CERULEAN_RIVAL_TRAINER_ID,
+  ceruleanRivalEncounter,
+  isCeruleanRivalTriggerAt,
   resolveOverworldTrainers,
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
@@ -1450,6 +1454,20 @@ export function OverworldGame({
           return false;
         }
 
+        if (
+          mapIdRef.current === "cerulean-city" &&
+          edgeTransition.mapId === "route-24" &&
+          !storyRef.current.defeatedTrainerIds.includes(
+            CERULEAN_RIVAL_TRAINER_ID,
+          )
+        ) {
+          showInteraction(
+            "Blue está esperando na saída norte de Cerulean. Enfrente-o antes de seguir para a Route 24.",
+          );
+          player.blockedUntil = now + 500;
+          return false;
+        }
+
         void loadMap(
           edgeTransition.mapId,
           edgeTransition.spawn,
@@ -1579,6 +1597,45 @@ export function OverworldGame({
         resetInput();
         onFirstBattleTrigger(context);
       }
+    };
+
+    const maybeTriggerCeruleanRivalBattle = () => {
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+
+      if (
+        !isCeruleanRivalTriggerAt(
+          mapIdRef.current,
+          player.tileX,
+          player.tileY,
+          currentStory.defeatedTrainerIds,
+        ) ||
+        !currentStory.firstBattleComplete ||
+        !currentStory.playerPokemon ||
+        !storyHasHealthyPokemon(currentStory) ||
+        trainerBattleLockRef.current
+      ) {
+        return;
+      }
+
+      const encounter = ceruleanRivalEncounter(
+        currentStory.rivalStarter,
+      );
+      if (!encounter) {
+        return;
+      }
+
+      const context = createBattleContext();
+      if (!context) {
+        return;
+      }
+
+      trainerBattleLockRef.current = true;
+      resetInput();
+      showInteraction(
+        CERULEAN_RIVAL_CHALLENGE_TEXT,
+      );
+      onTrainerBattleTrigger(context, encounter);
     };
 
     const maybeTriggerWildBattle = () => {
@@ -1799,6 +1856,7 @@ export function OverworldGame({
             player,
           );
           maybeTriggerLabBattle();
+          maybeTriggerCeruleanRivalBattle();
           maybeTriggerTrainerBattle();
           maybeTriggerWildBattle();
         }
@@ -1887,6 +1945,7 @@ export function OverworldGame({
     createBattleContext,
     loadMap,
     onFirstBattleTrigger,
+    onTrainerBattleTrigger,
     onWildBattleTrigger,
     resetInput,
     showInteraction,

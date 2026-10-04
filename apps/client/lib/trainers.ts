@@ -1,4 +1,7 @@
-import type { DuelPokemonBuild } from "@tactimon/battle-engine";
+import type {
+  DuelPokemonBuild,
+  StarterSpeciesId,
+} from "@tactimon/battle-engine";
 import type { StoryBadgeId } from "@/lib/story";
 import type {
   Direction,
@@ -1072,4 +1075,120 @@ export function resolveOverworldTrainers(
   }
 
   return result;
+}
+
+
+export const CERULEAN_RIVAL_TRAINER_ID =
+  "cerulean-rival";
+
+export const CERULEAN_RIVAL_CHALLENGE_TEXT =
+  "Blue: Você ainda está por aqui? Deixe-me ver o que você capturou!";
+
+export function ceruleanRivalParty(
+  rivalStarter: StarterSpeciesId | null,
+): DuelPokemonBuild[] | null {
+  if (!rivalStarter) {
+    return null;
+  }
+
+  const common: DuelPokemonBuild[] = [
+    {
+      species: "pidgeotto",
+      level: 17,
+      moves: [
+        "tackle",
+        "sand-attack",
+        "gust",
+        "quick-attack",
+      ],
+    },
+    {
+      species: "abra",
+      level: 16,
+      moves: ["teleport"],
+    },
+    {
+      species: "rattata",
+      level: 15,
+      moves: [
+        "tackle",
+        "tail-whip",
+        "quick-attack",
+      ],
+    },
+  ];
+
+  const starter: DuelPokemonBuild =
+    rivalStarter === "squirtle"
+      ? {
+          species: "squirtle",
+          level: 18,
+          moves: [
+            "tackle",
+            "tail-whip",
+            "withdraw",
+            "water-gun",
+          ],
+        }
+      : rivalStarter === "bulbasaur"
+        ? {
+            species: "bulbasaur",
+            level: 18,
+            moves: [
+              "sleep-powder",
+              "poison-powder",
+              "vine-whip",
+              "leech-seed",
+            ],
+          }
+        : {
+            species: "charmander",
+            level: 18,
+            moves: [
+              "metal-claw",
+              "ember",
+              "growl",
+              "scratch",
+            ],
+          };
+
+  return [...common, starter];
+}
+
+export function ceruleanRivalEncounter(
+  rivalStarter: StarterSpeciesId | null,
+): {
+  id: string;
+  name: string;
+  rewardMoney: number;
+  party: DuelPokemonBuild[];
+} | null {
+  const party = ceruleanRivalParty(rivalStarter);
+  if (!party) {
+    return null;
+  }
+
+  return {
+    id: CERULEAN_RIVAL_TRAINER_ID,
+    name: "Blue",
+    rewardMoney: trainerPrizeMoney(party, 4),
+    party,
+  };
+}
+
+export function isCeruleanRivalTriggerAt(
+  mapId: string,
+  x: number,
+  y: number,
+  defeatedTrainerIds: readonly string[],
+): boolean {
+  return (
+    mapId === "cerulean-city" &&
+    y === 6 &&
+    x >= 22 &&
+    x <= 24 &&
+    !defeatedTrainerIds.includes(
+      CERULEAN_RIVAL_TRAINER_ID,
+    )
+  );
 }

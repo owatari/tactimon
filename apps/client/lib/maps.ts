@@ -414,6 +414,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: CERULEAN_TILESET,
     },
   },
+  "route-24": {
+    id: "route-24",
+    label: "Route 24",
+    layoutUrl: "/game-assets/maps/route-24/layout.json",
+    previewUrl: "/game-assets/maps/route-24/preview.png",
+    worldUrl: null,
+    spawn: { x: 11, y: 39 },
+    fallbackMusicId: 292,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: CERULEAN_TILESET,
+    },
+  },
   "cerulean-pokemon-center": {
     id: "cerulean-pokemon-center",
     label: "Cerulean Pokémon Center",
@@ -801,6 +814,32 @@ export function resolveWorldTransition(
     return {
       mapId: "route-3",
       spawn: { x: x + 60, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-city" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 12 &&
+    x <= 35
+  ) {
+    return {
+      mapId: "route-24",
+      spawn: { x: x - 12, y: 39 },
+    };
+  }
+
+  if (
+    mapId === "route-24" &&
+    direction === "south" &&
+    y === 39 &&
+    x >= 0 &&
+    x <= 23
+  ) {
+    return {
+      mapId: "cerulean-city",
+      spawn: { x: x + 12, y: 0 },
     };
   }
 
