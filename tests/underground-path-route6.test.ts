@@ -10,6 +10,10 @@ import {
 import {
   resolveOverworldPickups,
 } from "../apps/client/lib/overworldPickups";
+import {
+  OVERWORLD_TRAINERS,
+  trainerPrizeMoney,
+} from "../apps/client/lib/trainers";
 
 describe("Underground Path and Route 6", () => {
   it("registers the canonical path chain and Route 6", () => {
@@ -97,6 +101,73 @@ describe("Underground Path and Route 6", () => {
       species: "meowth",
       level: 16,
     });
+  });
+
+  it("places all six FireRed Route 6 trainers", () => {
+    const route6 = OVERWORLD_TRAINERS.filter(
+      (trainer) => trainer.mapId === "route-6",
+    );
+
+    expect(route6).toHaveLength(6);
+    expect(
+      route6.map((trainer) => [
+        trainer.id,
+        trainer.preferredPosition,
+        trainer.facing,
+        trainer.sightRange,
+      ]),
+    ).toEqual(
+      expect.arrayContaining([
+        ["route6-keigo", { x: 3, y: 16 }, "east", 5],
+        ["route6-ricky", { x: 12, y: 21 }, "east", 0],
+        ["route6-nancy", { x: 13, y: 21 }, "west", 0],
+        ["route6-elijah", { x: 20, y: 25 }, "west", 3],
+        ["route6-isabelle", { x: 13, y: 32 }, "west", 3],
+        ["route6-jeff", { x: 13, y: 33 }, "west", 3],
+      ]),
+    );
+  });
+
+  it("uses FireRed Route 6 parties and prize factors", () => {
+    const byId = new Map(
+      OVERWORLD_TRAINERS.map(
+        (trainer) => [trainer.id, trainer],
+      ),
+    );
+
+    expect(
+      byId.get("route6-elijah")?.party.map(
+        (pokemon) => [pokemon.species, pokemon.level],
+      ),
+    ).toEqual([["butterfree", 20]]);
+
+    expect(
+      byId.get("route6-jeff")?.party.map(
+        (pokemon) => [pokemon.species, pokemon.level],
+      ),
+    ).toEqual([
+      ["spearow", 16],
+      ["raticate", 16],
+    ]);
+
+    const expectedMoney: Record<string, number> = {
+      "route6-keigo": 192,
+      "route6-ricky": 400,
+      "route6-nancy": 320,
+      "route6-elijah": 240,
+      "route6-isabelle": 320,
+      "route6-jeff": 320,
+    };
+
+    for (const [id, money] of Object.entries(expectedMoney)) {
+      const trainer = byId.get(id)!;
+      expect(
+        trainerPrizeMoney(
+          trainer.party,
+          trainer.moneyMultiplier,
+        ),
+      ).toBe(money);
+    }
   });
 
   it("does not expose Route 6's Sitrus Berry as a common overworld held reward", () => {

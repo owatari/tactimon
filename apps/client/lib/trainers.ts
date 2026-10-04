@@ -1394,6 +1394,186 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ],
   },
   {
+    id: "route6-keigo",
+    mapId: "route-6",
+    name: "Bug Catcher Keigo",
+    preferredPosition: { x: 3, y: 16 },
+    facing: "east",
+    sightRange: 5,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Keigo: Não existe lugar melhor para treinar meus Pokémon Bug!",
+    defeatedText:
+      "Keigo: Eles ainda precisam ficar mais fortes.",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "weedle",
+        level: 16,
+        moves: ["poison-sting", "string-shot"],
+      },
+      {
+        species: "caterpie",
+        level: 16,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "weedle",
+        level: 16,
+        moves: ["poison-sting", "string-shot"],
+      },
+    ],
+  },
+  {
+    id: "route6-ricky",
+    mapId: "route-6",
+    name: "Camper Ricky",
+    preferredPosition: { x: 12, y: 21 },
+    facing: "east",
+    sightRange: 0,
+    spriteUrl: "/game-assets/overworld/039_camper.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Ricky: Meu Pokémon favorito é o que eu comecei minha jornada!",
+    defeatedText:
+      "Ricky: Preciso treinar mais com ele.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "squirtle",
+        level: 20,
+        moves: ["tackle", "tail-whip", "withdraw", "water-gun"],
+      },
+    ],
+  },
+  {
+    id: "route6-nancy",
+    mapId: "route-6",
+    name: "Picnicker Nancy",
+    preferredPosition: { x: 13, y: 21 },
+    facing: "west",
+    sightRange: 0,
+    spriteUrl: "/game-assets/overworld/040_picnicker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Nancy: Ei! Você está interrompendo nosso encontro!",
+    defeatedText:
+      "Nancy: Ricky vai ficar chateado quando souber.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "rattata",
+        level: 16,
+        moves: ["tackle", "tail-whip", "quick-attack"],
+      },
+      {
+        species: "pikachu",
+        level: 16,
+        moves: ["thunder-shock", "growl", "tail-whip"],
+      },
+    ],
+  },
+  {
+    id: "route6-elijah",
+    mapId: "route-6",
+    name: "Bug Catcher Elijah",
+    preferredPosition: { x: 20, y: 25 },
+    facing: "west",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Elijah: Meus Pokémon Bug evoluíram. Quer ver?",
+    defeatedText:
+      "Elijah: Evoluir não basta sem uma boa estratégia.",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "butterfree",
+        level: 20,
+        moves: ["poison-powder", "stun-spore", "sleep-powder", "supersonic"],
+      },
+    ],
+  },
+  {
+    id: "route6-isabelle",
+    mapId: "route-6",
+    name: "Picnicker Isabelle",
+    preferredPosition: { x: 13, y: 32 },
+    facing: "west",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/040_picnicker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Isabelle: Estou treinando meus Pokémon Flying por aqui!",
+    defeatedText:
+      "Isabelle: Ainda temos muito espaço para melhorar.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "pidgey",
+        level: 16,
+        moves: ["tackle", "sand-attack", "gust", "quick-attack"],
+      },
+      {
+        species: "pidgey",
+        level: 16,
+        moves: ["tackle", "sand-attack", "gust", "quick-attack"],
+      },
+      {
+        species: "pidgey",
+        level: 16,
+        moves: ["tackle", "sand-attack", "gust", "quick-attack"],
+      },
+    ],
+  },
+  {
+    id: "route6-jeff",
+    mapId: "route-6",
+    name: "Camper Jeff",
+    preferredPosition: { x: 13, y: 33 },
+    facing: "west",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/039_camper.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Jeff: A estrada para Vermilion é minha área de treino!",
+    defeatedText:
+      "Jeff: Você está pronto para os Treinadores de Vermilion.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "spearow",
+        level: 16,
+        moves: ["peck", "growl", "leer"],
+      },
+      {
+        species: "raticate",
+        level: 16,
+        moves: ["tackle", "tail-whip", "quick-attack", "hyper-fang"],
+      },
+    ],
+  },
+  {
     id: CERULEAN_ROCKET_TRAINER_ID,
     mapId: "cerulean-city",
     name: "Team Rocket Grunt",
