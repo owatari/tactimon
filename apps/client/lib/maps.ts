@@ -318,6 +318,28 @@ const GENERIC_BUILDING_2_TILESET: TilesetAssetDefinition = {
     "/game-assets/tilesets/generic-building-2/attributes.bin",
 };
 
+const UNDERGROUND_PATH_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/underground-path/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/underground-path/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/underground-path/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/underground-path/attributes.bin",
+};
+
+const VERMILION_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/vermilion-city/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/vermilion-city/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/vermilion-city/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/vermilion-city/attributes.bin",
+};
+
 const CAVE_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/cave/tiles.4bpp",
   palettesUrl: "/game-assets/tilesets/cave/palettes.gbapal",
@@ -491,6 +513,64 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: CERULEAN_TILESET,
+    },
+  },
+  "underground-path-north-entrance": {
+    id: "underground-path-north-entrance",
+    label: "Underground Path",
+    layoutUrl:
+      "/game-assets/maps/underground-path-north-entrance/layout.json",
+    previewUrl:
+      "/game-assets/maps/underground-path-north-entrance/preview.png",
+    worldUrl: null,
+    spawn: { x: 6, y: 7 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "underground-path-tunnel": {
+    id: "underground-path-tunnel",
+    label: "Underground Path",
+    layoutUrl:
+      "/game-assets/maps/underground-path-tunnel/layout.json",
+    previewUrl:
+      "/game-assets/maps/underground-path-tunnel/preview.png",
+    worldUrl: null,
+    spawn: { x: 4, y: 4 },
+    fallbackMusicId: 291,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: UNDERGROUND_PATH_TILESET,
+    },
+  },
+  "underground-path-south-entrance": {
+    id: "underground-path-south-entrance",
+    label: "Underground Path",
+    layoutUrl:
+      "/game-assets/maps/underground-path-south-entrance/layout.json",
+    previewUrl:
+      "/game-assets/maps/underground-path-south-entrance/preview.png",
+    worldUrl: null,
+    spawn: { x: 6, y: 7 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "route-6": {
+    id: "route-6",
+    label: "Route 6",
+    layoutUrl: "/game-assets/maps/route-6/layout.json",
+    previewUrl: "/game-assets/maps/route-6/preview.png",
+    worldUrl: null,
+    spawn: { x: 19, y: 14 },
+    fallbackMusicId: 293,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: VERMILION_TILESET,
     },
   },
   "cerulean-pokemon-center": {
@@ -1209,6 +1289,96 @@ export function resolveWarpTransitionAt(
   }
   if (mapId === "mt-moon-b2f" && x === 5 && y === 10) {
     return { mapId: "mt-moon-b1f", spawn: { x: 39, y: 4 } };
+  }
+
+  if (
+    mapId === "route-5" &&
+    x === 31 &&
+    y === 31
+  ) {
+    return {
+      mapId: "underground-path-north-entrance",
+      spawn: { x: 6, y: 7 },
+    };
+  }
+
+  if (
+    mapId === "underground-path-north-entrance" &&
+    y === 8 &&
+    x >= 5 &&
+    x <= 7
+  ) {
+    return {
+      mapId: "route-5",
+      spawn: { x: 31, y: 30 },
+    };
+  }
+
+  if (
+    mapId === "underground-path-north-entrance" &&
+    x === 7 &&
+    y === 4
+  ) {
+    return {
+      mapId: "underground-path-tunnel",
+      spawn: { x: 4, y: 4 },
+    };
+  }
+
+  if (
+    mapId === "underground-path-tunnel" &&
+    x === 4 &&
+    y === 3
+  ) {
+    return {
+      mapId: "underground-path-north-entrance",
+      spawn: { x: 7, y: 5 },
+    };
+  }
+
+  if (
+    mapId === "underground-path-tunnel" &&
+    x === 3 &&
+    y === 60
+  ) {
+    return {
+      mapId: "underground-path-south-entrance",
+      spawn: { x: 7, y: 5 },
+    };
+  }
+
+  if (
+    mapId === "underground-path-south-entrance" &&
+    x === 7 &&
+    y === 4
+  ) {
+    return {
+      mapId: "underground-path-tunnel",
+      spawn: { x: 3, y: 59 },
+    };
+  }
+
+  if (
+    mapId === "underground-path-south-entrance" &&
+    y === 8 &&
+    x >= 5 &&
+    x <= 7
+  ) {
+    return {
+      mapId: "route-6",
+      spawn: { x: 19, y: 14 },
+    };
+  }
+
+  if (
+    mapId === "route-6" &&
+    x === 19 &&
+    y === 13
+  ) {
+    return {
+      mapId: "underground-path-south-entrance",
+      spawn: { x: 6, y: 7 },
+    };
   }
 
   if (

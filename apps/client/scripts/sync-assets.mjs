@@ -96,6 +96,38 @@ const files = [
     "maps/route-5/preview.png",
   ],
   [
+    "maps/layouts/171_undergroundpath_entrance_layout/layout.json",
+    "maps/underground-path-north-entrance/layout.json",
+  ],
+  [
+    "maps/layouts/171_undergroundpath_entrance_layout/preview.png",
+    "maps/underground-path-north-entrance/preview.png",
+  ],
+  [
+    "maps/layouts/173_undergroundpath_northsouthtunnel_layout/layout.json",
+    "maps/underground-path-tunnel/layout.json",
+  ],
+  [
+    "maps/layouts/173_undergroundpath_northsouthtunnel_layout/preview.png",
+    "maps/underground-path-tunnel/preview.png",
+  ],
+  [
+    "maps/layouts/171_undergroundpath_entrance_layout/layout.json",
+    "maps/underground-path-south-entrance/layout.json",
+  ],
+  [
+    "maps/layouts/171_undergroundpath_entrance_layout/preview.png",
+    "maps/underground-path-south-entrance/preview.png",
+  ],
+  [
+    "maps/layouts/093_route6_layout/layout.json",
+    "maps/route-6/layout.json",
+  ],
+  [
+    "maps/layouts/093_route6_layout/preview.png",
+    "maps/route-6/preview.png",
+  ],
+  [
     "maps/layouts/111_route24_layout/layout.json",
     "maps/route-24/layout.json",
   ],
@@ -471,6 +503,40 @@ const files = [
   [
     "tilesets/42_genericbuilding2/attributes.bin",
     "tilesets/generic-building-2/attributes.bin",
+  ],
+
+  [
+    "tilesets/46_undergroundpath/tiles.4bpp",
+    "tilesets/underground-path/tiles.4bpp",
+  ],
+  [
+    "tilesets/46_undergroundpath/palettes.gbapal",
+    "tilesets/underground-path/palettes.gbapal",
+  ],
+  [
+    "tilesets/46_undergroundpath/metatiles.bin",
+    "tilesets/underground-path/metatiles.bin",
+  ],
+  [
+    "tilesets/46_undergroundpath/attributes.bin",
+    "tilesets/underground-path/attributes.bin",
+  ],
+
+  [
+    "tilesets/06_vermilioncity/tiles.4bpp",
+    "tilesets/vermilion-city/tiles.4bpp",
+  ],
+  [
+    "tilesets/06_vermilioncity/palettes.gbapal",
+    "tilesets/vermilion-city/palettes.gbapal",
+  ],
+  [
+    "tilesets/06_vermilioncity/metatiles.bin",
+    "tilesets/vermilion-city/metatiles.bin",
+  ],
+  [
+    "tilesets/06_vermilioncity/attributes.bin",
+    "tilesets/vermilion-city/attributes.bin",
   ],
 
   ["tilesets/15_cave/tiles.4bpp", "tilesets/cave/tiles.4bpp"],

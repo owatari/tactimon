@@ -225,6 +225,10 @@ export const LAND_ENCOUNTERS: Readonly<
     encounterRate: 21,
     slots: ROUTE_5_SLOTS,
   },
+  "route-6": {
+    encounterRate: 21,
+    slots: ROUTE_5_SLOTS,
+  },
   "route-24": {
     encounterRate: 21,
     slots: ROUTE_24_SLOTS,
