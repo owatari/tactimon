@@ -905,3 +905,66 @@ describe("Route 2 bug Pokémon", () => {
     }
   });
 });
+
+
+describe("dynamic Speed initiative", () => {
+  it("recalculates turn order at the start of the next round", () => {
+    let state = createWildDuel({
+      seed: 904,
+      player: {
+        species: "caterpie",
+        level: 5,
+        moves: ["tackle", "string-shot"],
+      },
+      wildSpecies: "weedle",
+      wildLevel: 5,
+    });
+
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    expect(state.turnOrder[0]).toBe(wild.id);
+
+    state = {
+      ...state,
+      activeUnitId: wild.id,
+      turnIndex: 0,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, speedStage: 2 }
+          : unit,
+      ),
+    };
+
+    const firstEnd = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: wild.id,
+    });
+
+    expect(firstEnd.accepted).toBe(true);
+    expect(
+      getActiveDuelUnit(firstEnd.state)?.id,
+    ).toBe(player.id);
+
+    const secondEnd = applyDuelAction(
+      firstEnd.state,
+      {
+        kind: "end-turn",
+        unitId: player.id,
+      },
+    );
+
+    expect(secondEnd.accepted).toBe(true);
+    expect(secondEnd.state.round).toBe(2);
+    expect(secondEnd.state.turnOrder[0]).toBe(
+      player.id,
+    );
+    expect(
+      getActiveDuelUnit(secondEnd.state)?.id,
+    ).toBe(player.id);
+  });
+});

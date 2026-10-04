@@ -138,6 +138,13 @@ function stageBadges(unit: DuelUnit): Array<{
     });
   }
 
+  if (unit.speedStage !== 0) {
+    badges.push({
+      label: `SPD ${unit.speedStage > 0 ? "+" : ""}${unit.speedStage}`,
+      tone: unit.speedStage > 0 ? "buff" : "debuff",
+    });
+  }
+
   return badges;
 }
 
