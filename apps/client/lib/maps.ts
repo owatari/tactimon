@@ -586,6 +586,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: VERMILION_TILESET,
     },
   },
+  "ss-anne-exterior": {
+    id: "ss-anne-exterior",
+    label: "S.S. Anne",
+    layoutUrl: "/game-assets/maps/ss-anne-exterior/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-exterior/preview.png",
+    worldUrl: null,
+    spawn: { x: 32, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: VERMILION_TILESET,
+    },
+  },
   "vermilion-pokemon-center": {
     id: "vermilion-pokemon-center",
     label: "Vermilion Pokémon Center",
@@ -1265,6 +1278,19 @@ export function isVictoryRoadLeagueGateAt(
   );
 }
 
+export function isSsAnneBoardingWarpAt(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  return (
+    mapId === "vermilion-city" &&
+    y === 34 &&
+    x >= 22 &&
+    x <= 24
+  );
+}
+
 export function isPokemonStoragePcAt(
   mapId: string,
   x: number,
@@ -1520,6 +1546,25 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "route-25",
       spawn: { x: 51, y: 5 },
+    };
+  }
+
+  if (isSsAnneBoardingWarpAt(mapId, x, y)) {
+    return {
+      mapId: "ss-anne-exterior",
+      spawn: { x: 32, y: 6 },
+    };
+  }
+
+  if (
+    mapId === "ss-anne-exterior" &&
+    y === 5 &&
+    x >= 31 &&
+    x <= 33
+  ) {
+    return {
+      mapId: "vermilion-city",
+      spawn: { x: x - 9, y: 33 },
     };
   }
 

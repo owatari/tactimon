@@ -24,6 +24,7 @@ import {
   isLedgeCell,
   isLedgeForDirection,
   isPokemonStoragePcAt,
+  isSsAnneBoardingWarpAt,
   isVictoryRoadLeagueGateAt,
   resolveWarpTransitionAt,
   resolveWorldTransition,
@@ -1650,6 +1651,24 @@ export function OverworldGame({
         nextX,
         nextY,
       );
+
+      if (
+        isSsAnneBoardingWarpAt(
+          mapIdRef.current,
+          nextX,
+          nextY,
+        ) &&
+        !hasStoryKeyItem(
+          storyRef.current,
+          "ss-ticket",
+        )
+      ) {
+        showInteraction(
+          "Marinheiro: Bem-vindo ao S.S. Anne! Você precisa do S.S. Ticket para embarcar.",
+        );
+        player.blockedUntil = now + 500;
+        return false;
+      }
 
       if (
         warp?.mapId === "cerulean-house2" &&

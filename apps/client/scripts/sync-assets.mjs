@@ -136,6 +136,14 @@ const files = [
     "maps/vermilion-city/preview.png",
   ],
   [
+    "maps/layouts/118_ssanne_exterior_layout/layout.json",
+    "maps/ss-anne-exterior/layout.json",
+  ],
+  [
+    "maps/layouts/118_ssanne_exterior_layout/preview.png",
+    "maps/ss-anne-exterior/preview.png",
+  ],
+  [
     "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
     "maps/vermilion-pokemon-center/layout.json",
   ],
