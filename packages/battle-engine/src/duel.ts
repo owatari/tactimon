@@ -98,6 +98,9 @@ export type DuelMoveId =
   | "gust"
   | "quick-attack"
   | "fury-attack"
+  | "feather-dance"
+  | "agility"
+  | "scary-face"
   | "teleport"
   | "withdraw"
   | "sleep-powder"
@@ -274,10 +277,13 @@ export interface DuelMove {
   secondaryEffectChance?: number;
   effect?:
     | "attack-down"
+    | "attack-down-2"
     | "defense-down"
     | "defense-down-2"
     | "defense-up"
     | "speed-down"
+    | "speed-down-2"
+    | "speed-up-2"
     | "heal-self"
     | "drain-half"
     | "fixed-damage-20"
@@ -1399,6 +1405,57 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 20,
     minRange: 1,
     maxRange: 1,
+  },
+  "feather-dance": {
+    id: "feather-dance",
+    name: "Feather Dance",
+    type: "flying",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Dança com plumas e reduz o Attack do alvo em 2 estágios.",
+    power: null,
+    apCost: 2,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 3,
+    effect: "attack-down-2",
+  },
+  agility: {
+    id: "agility",
+    name: "Agility",
+    type: "psychic",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "double-team",
+    description:
+      "Aumenta a própria Speed em 2 estágios.",
+    power: null,
+    apCost: 2,
+    maxPp: 30,
+    minRange: 0,
+    maxRange: 0,
+    effect: "speed-up-2",
+  },
+  "scary-face": {
+    id: "scary-face",
+    name: "Scary Face",
+    type: "normal",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "leer",
+    description:
+      "Assusta o alvo e reduz sua Speed em 2 estágios.",
+    power: null,
+    apCost: 2,
+    maxPp: 10,
+    minRange: 1,
+    maxRange: 3,
+    effect: "speed-down-2",
   },
   teleport: {
     id: "teleport",
@@ -4067,11 +4124,16 @@ export function applyDuelAction(
         }
       }
     }
-  } else if (move.effect === "attack-down") {
+  } else if (
+    move.effect === "attack-down" ||
+    move.effect === "attack-down-2"
+  ) {
     const before = target.attackStage;
+    const stageDrop =
+      move.effect === "attack-down-2" ? 2 : 1;
     target.attackStage = Math.max(
       -MAX_STAGE,
-      target.attackStage - 1,
+      target.attackStage - stageDrop,
     );
     statChanges.push({
       stat: "attack",
@@ -4079,7 +4141,9 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} reduziu o Attack de ${target.displayName}.`,
+      move.effect === "attack-down-2"
+        ? `${move.name} reduziu muito o Attack de ${target.displayName}.`
+        : `${move.name} reduziu o Attack de ${target.displayName}.`,
     );
   } else if (move.effect === "defense-down") {
     const before = target.defenseStage;
@@ -4123,11 +4187,16 @@ export function applyDuelAction(
       state,
       `${move.name} aumentou a Defense de ${target.displayName}.`,
     );
-  } else if (move.effect === "speed-down") {
+  } else if (
+    move.effect === "speed-down" ||
+    move.effect === "speed-down-2"
+  ) {
     const before = target.speedStage;
+    const stageDrop =
+      move.effect === "speed-down-2" ? 2 : 1;
     target.speedStage = Math.max(
       -MAX_STAGE,
-      target.speedStage - 1,
+      target.speedStage - stageDrop,
     );
     statChanges.push({
       stat: "speed",
@@ -4135,7 +4204,23 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} reduziu a Speed de ${target.displayName}.`,
+      move.effect === "speed-down-2"
+        ? `${move.name} reduziu muito a Speed de ${target.displayName}.`
+        : `${move.name} reduziu a Speed de ${target.displayName}.`,
+    );
+  } else if (move.effect === "speed-up-2") {
+    const before = actor.speedStage;
+    actor.speedStage = Math.min(
+      MAX_STAGE,
+      actor.speedStage + 2,
+    );
+    statChanges.push({
+      stat: "speed",
+      delta: actor.speedStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} aumentou muito a Speed de ${actor.displayName}.`,
     );
   } else if (move.effect === "heal-self") {
     const healed = Math.min(
@@ -4392,13 +4477,21 @@ function aiStatusUtility(
     return 0;
   }
 
-  if (move.effect === "attack-down") {
+  if (
+    move.effect === "attack-down" ||
+    move.effect === "attack-down-2"
+  ) {
     if (target.attackStage <= -4) return -Infinity;
     const physicalBias =
       target.attack >= target.specialAttack ? 18 : -8;
+    const severity =
+      move.effect === "attack-down-2" ? 20 : 0;
     return Math.max(
       0,
-      66 + target.attackStage * 18 + physicalBias,
+      66 +
+        target.attackStage * 18 +
+        physicalBias +
+        severity,
     );
   }
 
@@ -4415,15 +4508,33 @@ function aiStatusUtility(
     );
   }
 
-  if (move.effect === "speed-down") {
+  if (
+    move.effect === "speed-down" ||
+    move.effect === "speed-down-2"
+  ) {
     if (target.speedStage <= -4) return -Infinity;
     const speedLead =
       effectiveSpeed(target) > effectiveSpeed(actor)
         ? 20
         : 0;
+    const severity =
+      move.effect === "speed-down-2" ? 18 : 0;
     return Math.max(
       0,
-      48 + target.speedStage * 15 + speedLead,
+      48 +
+        target.speedStage * 15 +
+        speedLead +
+        severity,
+    );
+  }
+
+  if (move.effect === "speed-up-2") {
+    if (actor.speedStage >= 4) return -Infinity;
+    return Math.max(
+      0,
+      58 -
+        Math.max(0, actor.speedStage) * 14 +
+        (actor.speedStage < 0 ? 20 : 0),
     );
   }
 
