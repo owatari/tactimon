@@ -481,7 +481,7 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       "Marcos: Uau! Você me assustou! ...Ah, é só uma criança!",
     defeatedText:
       "Marcos: Crianças como você não deveriam andar por aqui no escuro.",
-    moneyMultiplier: 10,
+    moneyMultiplier: 9,
     party: [
       {
         species: "geodude",
