@@ -2,7 +2,7 @@ import type { BattleUnit, EncounterRules } from "./types";
 
 export interface CaptureEligibility {
   allowed: boolean;
-  reason?: "encounter-forbids-capture" | "target-not-wild" | "target-is-boss" | "already-attempted" | "hp-too-high" | "target-fainted";
+  reason?: "encounter-forbids-capture" | "target-not-wild" | "target-is-boss" | "already-attempted" | "hp-too-high" | "target-fainted" | "multiple-wilds";
 }
 
 export interface FailureXpPoint { hpRatio: number; xpRatio: number; }
