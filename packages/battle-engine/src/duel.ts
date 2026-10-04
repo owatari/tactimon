@@ -156,6 +156,7 @@ export type DuelMoveId =
   | "bubble"
   | "icicle-spear"
   | "horn-attack"
+  | "horn-drill"
   | "low-kick"
   | "focus-energy"
   | "karate-chop"
@@ -329,6 +330,7 @@ export interface DuelMove {
     | "rain-dance"
     | "drain-half"
     | "fixed-damage-20"
+    | "ohko"
     | "teleport";
 }
 
@@ -2368,6 +2370,24 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 1,
   },
+  "horn-drill": {
+    id: "horn-drill",
+    name: "Horn Drill",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "horn-attack",
+    description:
+      "Golpe OHKO: falha contra alvos de nível maior e usa a chance canônica do FireRed.",
+    power: 1,
+    accuracy: 30,
+    apCost: 6,
+    maxPp: 5,
+    minRange: 1,
+    maxRange: 1,
+    effect: "ohko",
+  },
   "low-kick": {
     id: "low-kick",
     name: "Low Kick",
@@ -3140,13 +3160,35 @@ function accuracyStageMultiplier(stage: number): number {
 }
 
 export function getDuelMoveHitChance(
-  attacker: Pick<DuelUnit, "accuracyStage">,
-  defender: Pick<DuelUnit, "evasionStage">,
+  attacker: Pick<
+    DuelUnit,
+    "accuracyStage" | "level"
+  >,
+  defender: Pick<
+    DuelUnit,
+    "evasionStage" | "level"
+  >,
   move: Pick<
     DuelMove,
-    "accuracy" | "alwaysHits" | "targeting"
+    "accuracy" | "alwaysHits" | "targeting" | "effect"
   >,
 ): number {
+  if (move.effect === "ohko") {
+    if (attacker.level < defender.level) {
+      return 0;
+    }
+
+    // FireRed uses Random() % 100 + 1 < accuracy + level difference.
+    // Converting that strict comparison to a percentage subtracts one.
+    const threshold =
+      (move.accuracy ?? 30) +
+      (attacker.level - defender.level);
+    return Math.max(
+      0,
+      Math.min(100, threshold - 1),
+    );
+  }
+
   if (move.targeting === "self" || move.alwaysHits) {
     return 100;
   }
@@ -3788,6 +3830,16 @@ function moveAccuracySucceeds(
   target: DuelUnit,
   move: DuelMove,
 ): boolean {
+  if (
+    move.effect === "ohko" &&
+    calculateTypeEffectiveness(
+      move.type,
+      target.types,
+    ) === 0
+  ) {
+    return true;
+  }
+
   const chance = getDuelMoveHitChance(
     actor,
     target,
@@ -4035,6 +4087,19 @@ function calculateDamage(
     );
     return {
       damage: typeEffectiveness === 0 ? 0 : 20,
+      sameTypeAttackBonus: false,
+      typeEffectiveness,
+    };
+  }
+
+  if (move.effect === "ohko") {
+    const typeEffectiveness = calculateTypeEffectiveness(
+      move.type,
+      defender.types,
+    );
+    return {
+      damage:
+        typeEffectiveness === 0 ? 0 : defender.hp,
       sameTypeAttackBonus: false,
       typeEffectiveness,
     };
@@ -4488,7 +4553,10 @@ export function applyDuelAction(
   if (!moveAccuracySucceeds(state, actor, target, move)) {
     appendLog(
       state,
-      `${actor.displayName} usou ${move.name}, mas errou.`,
+      move.effect === "ohko" &&
+        actor.level < target.level
+        ? `${move.name} falhou: ${target.displayName} tem nível maior.`
+        : `${actor.displayName} usou ${move.name}, mas errou.`,
     );
     return {
       state,
