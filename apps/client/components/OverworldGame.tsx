@@ -40,6 +40,9 @@ import {
 } from "@/lib/trainers";
 import { resolveNpcDialogue } from "@/lib/npcDialogues";
 import {
+  resolveOverworldPickups,
+} from "@/lib/overworldPickups";
+import {
   LAND_ENCOUNTERS,
   resolveLandEncounter,
 } from "@/lib/wildEncounters";
@@ -406,34 +409,28 @@ function martStoryObjects(): StoryObject[] {
   ];
 }
 
-function viridianPickupStoryObjects(
+function mapPickupStoryObjects(
+  mapId: string,
   story: StoryState,
-): StoryObject[] {
-  if (
-    story.collectedItemIds.includes(
-      "viridian-city-potion",
-    )
-  ) {
-    return [];
-  }
-
-  return [
-    {
-      id: "viridian-city-potion",
-      kind: "pickup",
-      pickupId: "viridian-city-potion",
-      itemId: "potion",
-      itemName: "Potion",
-      label: "Item Ball",
-      x: 17,
-      y: 5,
-      spriteUrl: "/game-assets/overworld/092_item_ball.png",
-      frameWidth: 16,
-      frameHeight: 16,
-      sheetWidth: 16,
-      sheetHeight: 16,
-    },
-  ];
+): PickupStoryObject[] {
+  return resolveOverworldPickups(
+    mapId,
+    story.collectedItemIds,
+  ).map((pickup) => ({
+    id: pickup.id,
+    kind: "pickup",
+    pickupId: pickup.id,
+    itemId: pickup.itemId,
+    itemName: pickup.itemName,
+    label: "Item Ball",
+    x: pickup.x,
+    y: pickup.y,
+    spriteUrl: "/game-assets/overworld/092_item_ball.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+  }));
 }
 
 function pokemonCenterStoryObjects(): StoryObject[] {
@@ -508,9 +505,7 @@ function mapStoryObjects(
         ? martStoryObjects()
         : mapId === "viridian-pokemon-center"
           ? pokemonCenterStoryObjects()
-          : mapId === "viridian-city"
-            ? viridianPickupStoryObjects(story)
-            : [];
+          : mapPickupStoryObjects(mapId, story);
 
   for (const trainer of resolveOverworldTrainers(
     mapId,

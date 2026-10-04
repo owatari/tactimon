@@ -62,6 +62,161 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       },
     ],
   },
+  {
+    id: "viridian-forest-rick",
+    mapId: "viridian-forest",
+    name: "Bug Catcher Rick",
+    preferredPosition: { x: 47, y: 45 },
+    facing: "west",
+    sightRange: 5,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Rick: Ei! Você tem Pokémon! Vamos batalhar!",
+    defeatedText:
+      "Rick: Não! Caterpie não deu conta!",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "weedle",
+        level: 6,
+        moves: ["poison-sting", "string-shot"],
+      },
+      {
+        species: "caterpie",
+        level: 6,
+        moves: ["tackle", "string-shot"],
+      },
+    ],
+  },
+  {
+    id: "viridian-forest-doug",
+    mapId: "viridian-forest",
+    name: "Bug Catcher Doug",
+    preferredPosition: { x: 47, y: 29 },
+    facing: "west",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Doug: Ei! Um Treinador Pokémon não foge de uma batalha!",
+    defeatedText:
+      "Doug: Hã? Fiquei sem Pokémon!",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "weedle",
+        level: 7,
+        moves: ["poison-sting", "string-shot"],
+      },
+      {
+        species: "kakuna",
+        level: 7,
+        moves: ["harden"],
+      },
+      {
+        species: "weedle",
+        level: 7,
+        moves: ["poison-sting", "string-shot"],
+      },
+    ],
+  },
+  {
+    id: "viridian-forest-sammy",
+    mapId: "viridian-forest",
+    name: "Bug Catcher Sammy",
+    preferredPosition: { x: 7, y: 22 },
+    facing: "west",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Sammy: Ei, espere! Qual é a pressa?",
+    defeatedText:
+      "Sammy: Eu desisto! Você manda bem!",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "weedle",
+        level: 9,
+        moves: ["poison-sting", "string-shot"],
+      },
+    ],
+  },
+  {
+    id: "viridian-forest-anthony",
+    mapId: "viridian-forest",
+    name: "Bug Catcher Anthony",
+    preferredPosition: { x: 43, y: 6 },
+    facing: "south",
+    sightRange: 1,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Anthony: Posso ser pequeno, mas não pegue leve comigo!",
+    defeatedText:
+      "Anthony: Ah, não. Nada deu certo.",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "caterpie",
+        level: 7,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "caterpie",
+        level: 8,
+        moves: ["tackle", "string-shot"],
+      },
+    ],
+  },
+  {
+    id: "viridian-forest-charlie",
+    mapId: "viridian-forest",
+    name: "Bug Catcher Charlie",
+    preferredPosition: { x: 16, y: 5 },
+    facing: "north",
+    sightRange: 1,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Charlie: Você sabia que Pokémon evoluem?",
+    defeatedText:
+      "Charlie: Ah! Eu perdi!",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "metapod",
+        level: 7,
+        moves: ["harden"],
+      },
+      {
+        species: "caterpie",
+        level: 7,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "metapod",
+        level: 7,
+        moves: ["harden"],
+      },
+    ],
+  },
 ];
 
 export function trainerPrizeMoney(
