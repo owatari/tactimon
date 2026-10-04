@@ -120,6 +120,45 @@ function isWalkablePlacement(
   return Boolean(cell && cell.collision === 0);
 }
 
+function openSightTiles(
+  layout: MapLayout,
+  origin: { x: number; y: number },
+  facing: Direction,
+  maxRange: number,
+  occupied: ReadonlySet<string>,
+): number {
+  const delta =
+    facing === "north"
+      ? { x: 0, y: -1 }
+      : facing === "south"
+        ? { x: 0, y: 1 }
+        : facing === "west"
+          ? { x: -1, y: 0 }
+          : { x: 1, y: 0 };
+
+  let open = 0;
+
+  for (let distance = 1; distance <= maxRange; distance += 1) {
+    const x = origin.x + delta.x * distance;
+    const y = origin.y + delta.y * distance;
+
+    if (
+      !isWalkablePlacement(
+        layout,
+        x,
+        y,
+        occupied,
+      )
+    ) {
+      break;
+    }
+
+    open += 1;
+  }
+
+  return open;
+}
+
 export function resolveOverworldTrainers(
   mapId: string,
   layout: MapLayout | null,
@@ -143,9 +182,9 @@ export function resolveOverworldTrainers(
       continue;
     }
 
-    const position = placementCandidates(
+    const candidates = placementCandidates(
       trainer.preferredPosition,
-    ).find((candidate) =>
+    ).filter((candidate) =>
       isWalkablePlacement(
         layout,
         candidate.x,
@@ -153,6 +192,18 @@ export function resolveOverworldTrainers(
         occupied,
       ),
     );
+    const position =
+      candidates.find(
+        (candidate) =>
+          openSightTiles(
+            layout,
+            candidate,
+            trainer.facing,
+            trainer.sightRange,
+            occupied,
+          ) >= Math.min(3, trainer.sightRange),
+      ) ??
+      candidates[0];
 
     if (!position) {
       continue;
