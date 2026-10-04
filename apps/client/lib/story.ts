@@ -7,6 +7,7 @@ import {
   rivalStarterFor,
   starterDisplayName,
   type DuelInventory,
+  type DuelItemId,
   type PokemonProgression,
   type StarterSpeciesId,
   type WildSpeciesId,
