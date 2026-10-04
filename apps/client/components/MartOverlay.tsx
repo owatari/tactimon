@@ -6,6 +6,7 @@ import type {
   DuelItemId,
 } from "@tactimon/battle-engine";
 import {
+  MART_MAX_ITEM_QUANTITY,
   VIRIDIAN_MART_ITEMS,
   type MartPurchaseResult,
 } from "@/lib/mart";
@@ -29,6 +30,14 @@ function purchaseMessage(
 
   if (result.reason === "insufficient-funds") {
     return "Você não tem dinheiro suficiente.";
+  }
+
+  if (result.reason === "invalid-quantity") {
+    return "Escolha uma quantidade válida.";
+  }
+
+  if (result.reason === "unknown-item") {
+    return "Esse item não está disponível nesta loja.";
   }
 
   return "Não há espaço para mais desse item.";
@@ -75,10 +84,10 @@ export function MartOverlay({
             const amount = inventory[item.id] ?? 0;
             const canBuyOne =
               money >= item.price &&
-              amount < 999;
+              amount < MART_MAX_ITEM_QUANTITY;
             const canBuyFive =
               money >= item.price * 5 &&
-              amount <= 994;
+              amount <= MART_MAX_ITEM_QUANTITY - 5;
 
             return (
               <article
