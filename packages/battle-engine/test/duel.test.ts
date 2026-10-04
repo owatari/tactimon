@@ -917,7 +917,7 @@ describe("dynamic Speed initiative", () => {
         moves: ["tackle", "string-shot"],
       },
       wildSpecies: "weedle",
-      wildLevel: 5,
+      wildLevel: 6,
     });
 
     const player = state.units.find(
@@ -927,6 +927,7 @@ describe("dynamic Speed initiative", () => {
       (unit) => unit.side === "rival",
     )!;
 
+    expect(wild.speed).toBeGreaterThan(player.speed);
     expect(state.turnOrder[0]).toBe(wild.id);
 
     state = {
