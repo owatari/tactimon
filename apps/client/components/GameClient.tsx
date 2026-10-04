@@ -527,14 +527,7 @@ export function GameClient() {
       return;
     }
 
-    if (outcome.escaped || !story.playerPokemon) {
-      return;
-    }
-
-    const xpRatio =
-      outcome.capture?.xpRatio ??
-      (outcome.won ? 1 : 0);
-    if (xpRatio <= 0) {
+    if (!story.playerPokemon) {
       return;
     }
 
@@ -561,8 +554,12 @@ export function GameClient() {
       rewardEnemies.push({
         species: session.encounter.species,
         level: session.encounter.level,
-        xpRatio,
+        xpRatio: 1,
       });
+    }
+
+    if (rewardEnemies.length === 0) {
+      return;
     }
 
     const rewards =
