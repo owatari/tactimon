@@ -809,6 +809,11 @@ await cp(
   ),
   { recursive: true },
 );
+await cp(
+  resolve(sourceRoot, "ui/items"),
+  resolve(fireRedPublicRoot, "ui/items"),
+  { recursive: true },
+);
 
 for (const [source, destination] of optionalFiles) {
   const from = resolve(sourceRoot, source);
