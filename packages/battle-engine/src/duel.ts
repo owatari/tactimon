@@ -1310,7 +1310,7 @@ export function getDuelCaptureEligibility(
         state.battleKind === "wild" && state.captureAllowed
           ? "allowed"
           : "forbidden",
-      captureHpThresholdRatio: 0.1,
+      captureHpThresholdRatio: 0.5,
     },
   );
 }
@@ -1396,7 +1396,7 @@ export function applyDuelAction(
         ballModifier: item.ballModifier,
         statusModifier: 1,
         hpRatio: target.hp / target.maxHp,
-        thresholdRatio: 0.1,
+        thresholdRatio: 0.5,
       });
       const random = createSeededRandom(
         (state.seed ^ Math.imul(state.round, 0x9e3779b9) ^ target.hp) >>> 0,

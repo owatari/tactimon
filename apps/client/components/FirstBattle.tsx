@@ -1191,7 +1191,7 @@ export function FirstBattle({
                               ×{amount} · {item.kind === "heal"
                                 ? `+${item.heal} HP`
                                 : state.captureAllowed
-                                  ? "captura com HP ≤10%"
+                                  ? "captura com HP ≤50%"
                                   : "party 6/6"}
                             </span>
                           </button>
@@ -1217,7 +1217,7 @@ export function FirstBattle({
                         {DUEL_ITEMS[selectedItem].kind === "capture"
                           ? targetableUnitIds.size > 0
                             ? "Escolha o Pokémon selvagem"
-                            : "Reduza o alvo para 10% de HP ou menos"
+                            : "Reduza o alvo para 50% de HP ou menos"
                           : targetableUnitIds.size > 0
                             ? "Escolha um aliado"
                             : "Nenhum alvo precisa do item"}

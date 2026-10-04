@@ -49,7 +49,7 @@ export interface CaptureChanceInput {
 }
 
 export function experimentalCaptureChance(input: CaptureChanceInput): number {
-  const threshold = input.thresholdRatio ?? 0.10;
+  const threshold = input.thresholdRatio ?? 0.50;
   const legalHp = Math.max(0, Math.min(threshold, input.hpRatio));
   const species = Math.max(1, Math.min(255, input.catchRate)) / 255;
   const baseAtThreshold = 0.05 + 0.60 * Math.pow(species, 0.55);

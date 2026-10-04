@@ -368,7 +368,7 @@ describe("wild capture integration", () => {
     expect(result.presentation?.kind).toBe("capture");
   });
 
-  it("requires 10% HP or less before capture", () => {
+  it("requires 50% HP or less before capture", () => {
     let state = createWildDuel({
       seed: 4,
       player: { species: "squirtle", level: 5, moves: ["tackle", "tail-whip"] },
@@ -377,7 +377,15 @@ describe("wild capture integration", () => {
     });
     const player = state.units.find((unit) => unit.side === "player")!;
     const wild = state.units.find((unit) => unit.side === "rival")!;
-    state = { ...state, activeUnitId: player.id };
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === wild.id
+          ? { ...unit, hp: Math.floor(unit.maxHp * 0.51) + 1 }
+          : unit,
+      ),
+    };
     const result = applyDuelAction(state, {
       kind: "use-item",
       unitId: player.id,
