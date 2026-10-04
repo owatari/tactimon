@@ -708,6 +708,8 @@ export function OverworldGame({
     null,
   );
   const dialoguePageIndexRef = useRef(0);
+  const dialogueCompletionRef =
+    useRef<(() => void) | null>(null);
 
   const mapDefinition = WORLD_MAPS[mapId];
   const visibleObjects = renderableObjects(worldData);
@@ -738,6 +740,7 @@ export function OverworldGame({
       pressedRef.current = [];
       dialogueRef.current = null;
       dialoguePageIndexRef.current = 0;
+      dialogueCompletionRef.current = null;
       setDialogue(null);
       setDialoguePageIndex(0);
     } else {
@@ -768,9 +771,14 @@ export function OverworldGame({
   }, []);
 
   const showDialogue = useCallback(
-    (presentation: DialoguePresentation) => {
+    (
+      presentation: DialoguePresentation,
+      onComplete?: () => void,
+    ) => {
       dialogueRef.current = presentation;
       dialoguePageIndexRef.current = 0;
+      dialogueCompletionRef.current =
+        onComplete ?? null;
       setDialogue(presentation);
       setDialoguePageIndex(0);
       resetInput();
@@ -813,10 +821,14 @@ export function OverworldGame({
       return true;
     }
 
+    const onComplete =
+      dialogueCompletionRef.current;
     dialogueRef.current = null;
     dialoguePageIndexRef.current = 0;
+    dialogueCompletionRef.current = null;
     setDialoguePageIndex(0);
     setDialogue(null);
+    onComplete?.();
     return true;
   }, []);
 
@@ -950,7 +962,14 @@ export function OverworldGame({
       const currentStory = storyRef.current;
 
       if (trainer.defeated) {
-        showInteraction(trainer.defeatedText);
+        showInteraction(
+          trainer.defeatedText.replace(
+            /^[^:]+:\s*/,
+            "",
+          ),
+          `trainer:${trainer.trainerId}:defeated`,
+          trainer.trainerName,
+        );
         return;
       }
 
@@ -983,20 +1002,34 @@ export function OverworldGame({
 
       trainerBattleLockRef.current = true;
       resetInput();
-      showInteraction(trainer.challengeText);
-      onTrainerBattleTrigger(context, {
-        id: trainer.trainerId,
-        name: trainer.trainerName,
-        rewardMoney: trainer.rewardMoney,
-        badgeId: trainer.badgeId,
-        party: trainer.party,
-      });
+      showDialogue(
+        onDialogueInteraction({
+          kind: "text",
+          id: `trainer:${trainer.trainerId}:challenge`,
+          speaker: trainer.trainerName,
+          text: trainer.challengeText.replace(
+            /^[^:]+:\s*/,
+            "",
+          ),
+        }),
+        () => {
+          onTrainerBattleTrigger(context, {
+            id: trainer.trainerId,
+            name: trainer.trainerName,
+            rewardMoney: trainer.rewardMoney,
+            badgeId: trainer.badgeId,
+            party: trainer.party,
+          });
+        },
+      );
     },
     [
       createBattleContext,
       onTrainerBattleTrigger,
       resetInput,
+      showDialogue,
       showInteraction,
+      onDialogueInteraction,
     ],
   );
 
