@@ -152,6 +152,30 @@ const files = [
     "maps/ss-anne-1f-corridor/preview.png",
   ],
   [
+    "maps/layouts/120_ssanne_2f_corridor_layout/layout.json",
+    "maps/ss-anne-2f-corridor/layout.json",
+  ],
+  [
+    "maps/layouts/120_ssanne_2f_corridor_layout/preview.png",
+    "maps/ss-anne-2f-corridor/preview.png",
+  ],
+  [
+    "maps/layouts/121_ssanne_3f_corridor_layout/layout.json",
+    "maps/ss-anne-3f-corridor/layout.json",
+  ],
+  [
+    "maps/layouts/121_ssanne_3f_corridor_layout/preview.png",
+    "maps/ss-anne-3f-corridor/preview.png",
+  ],
+  [
+    "maps/layouts/123_ssanne_deck_layout/layout.json",
+    "maps/ss-anne-deck/layout.json",
+  ],
+  [
+    "maps/layouts/123_ssanne_deck_layout/preview.png",
+    "maps/ss-anne-deck/preview.png",
+  ],
+  [
     "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
     "maps/vermilion-pokemon-center/layout.json",
   ],

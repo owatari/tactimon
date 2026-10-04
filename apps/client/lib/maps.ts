@@ -619,6 +619,36 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: SS_ANNE_TILESET,
     },
   },
+  "ss-anne-2f-corridor": {
+    id: "ss-anne-2f-corridor",
+    label: "S.S. Anne 2F",
+    layoutUrl: "/game-assets/maps/ss-anne-2f-corridor/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-2f-corridor/preview.png",
+    worldUrl: null,
+    spawn: { x: 2, y: 3 },
+    fallbackMusicId: 304,
+    tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
+  },
+  "ss-anne-3f-corridor": {
+    id: "ss-anne-3f-corridor",
+    label: "S.S. Anne 3F",
+    layoutUrl: "/game-assets/maps/ss-anne-3f-corridor/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-3f-corridor/preview.png",
+    worldUrl: null,
+    spawn: { x: 18, y: 3 },
+    fallbackMusicId: 304,
+    tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
+  },
+  "ss-anne-deck": {
+    id: "ss-anne-deck",
+    label: "S.S. Anne Deck",
+    layoutUrl: "/game-assets/maps/ss-anne-deck/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-deck/preview.png",
+    worldUrl: null,
+    spawn: { x: 16, y: 10 },
+    fallbackMusicId: 304,
+    tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
+  },
   "vermilion-pokemon-center": {
     id: "vermilion-pokemon-center",
     label: "Vermilion Pokémon Center",
@@ -1630,6 +1660,32 @@ export function resolveWarpTransitionAt(
       mapId: "ss-anne-exterior",
       spawn: { x: 33, y: 15 },
     };
+  }
+
+  if (mapId === "ss-anne-1f-corridor" && x === 3 && y === 8) {
+    return { mapId: "ss-anne-2f-corridor", spawn: { x: 2, y: 3 } };
+  }
+  if (mapId === "ss-anne-2f-corridor" && x === 2 && y === 2) {
+    return { mapId: "ss-anne-1f-corridor", spawn: { x: 3, y: 9 } };
+  }
+  if (mapId === "ss-anne-2f-corridor" && x === 3 && y === 12) {
+    return { mapId: "ss-anne-3f-corridor", spawn: { x: 18, y: 3 } };
+  }
+  if (mapId === "ss-anne-3f-corridor" && x === 18 && y === 2) {
+    return { mapId: "ss-anne-2f-corridor", spawn: { x: 3, y: 11 } };
+  }
+  if (
+    mapId === "ss-anne-3f-corridor" &&
+    ((x === 1 && y === 4) || (x === 0 && y === 5))
+  ) {
+    return { mapId: "ss-anne-deck", spawn: { x: 16, y: 10 } };
+  }
+  if (
+    mapId === "ss-anne-deck" &&
+    x === 16 &&
+    (y === 8 || y === 9)
+  ) {
+    return { mapId: "ss-anne-3f-corridor", spawn: { x: 1, y: 5 } };
   }
 
   if (
