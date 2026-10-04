@@ -102,6 +102,16 @@ type CommandMode =
   | "items"
   | "item-target";
 
+const FIRE_RED_ITEM_ICON: Record<
+  DuelItemId,
+  string
+> = {
+  potion:
+    "/game-assets/firered/ui/items/013_potion.png",
+  "poke-ball":
+    "/game-assets/firered/ui/items/004_poke_ball.png",
+};
+
 type SpriteAnimation = "idle" | "walk" | "attack" | "hurt" | "faint";
 type Facing = "up" | "down" | "left" | "right";
 
@@ -1706,7 +1716,14 @@ export function FirstBattle({
                               setCommand("item-target");
                             }}
                           >
-                            <strong>{item.name}</strong>
+                            <span className="battle-item-choice-name">
+                              <img
+                                src={FIRE_RED_ITEM_ICON[itemId]}
+                                alt=""
+                                aria-hidden="true"
+                              />
+                              <strong>{item.name}</strong>
+                            </span>
                             <span>
                               ×{amount} ·{" "}
                               {item.kind === "heal"
