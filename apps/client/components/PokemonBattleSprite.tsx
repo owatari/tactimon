@@ -80,6 +80,15 @@ export function PokemonBattleSprite({
   }, [onAnimationComplete]);
 
   useEffect(() => {
+    if (
+      failed &&
+      animation === "faint"
+    ) {
+      onAnimationCompleteRef.current?.();
+    }
+  }, [animation, failed]);
+
+  useEffect(() => {
     let active = true;
 
     loadManifest()

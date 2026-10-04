@@ -171,6 +171,22 @@ export function isCounterCell(
   return getMapCell(layout, x, y)?.behavior === MB_COUNTER;
 }
 
+export function isLedgeCell(
+  layout: MapLayout | null,
+  x: number,
+  y: number,
+): boolean {
+  const behavior = getMapCell(
+    layout,
+    x,
+    y,
+  )?.behavior;
+
+  return Object.values(
+    JUMP_BEHAVIOR_BY_DIRECTION,
+  ).includes(behavior ?? -1);
+}
+
 export function isLedgeForDirection(
   layout: MapLayout | null,
   x: number,

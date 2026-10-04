@@ -21,6 +21,7 @@ import {
   getMapCell,
   hydrateMapBehaviors,
   isCounterCell,
+  isLedgeCell,
   isLedgeForDirection,
   isPokemonStoragePcAt,
   isVictoryRoadLeagueGateAt,
@@ -1332,6 +1333,10 @@ export function OverworldGame({
       }
 
       player.facing = direction;
+      savePlayerPosition(
+        mapIdRef.current,
+        player,
+      );
 
       const edgeTransition = resolveWorldTransition(
         mapIdRef.current,
@@ -1418,19 +1423,12 @@ export function OverworldGame({
         return true;
       }
 
-      const nextCell = getMapCell(
-        activeLayout,
-        nextX,
-        nextY,
-      );
       if (
-        nextCell?.behavior !== undefined &&
-        Object.values({
-          east: 0x38,
-          west: 0x39,
-          north: 0x3a,
-          south: 0x3b,
-        }).includes(nextCell.behavior)
+        isLedgeCell(
+          activeLayout,
+          nextX,
+          nextY,
+        )
       ) {
         // A directional ledge approached from the wrong side remains blocked.
         player.blockedUntil = now + BLOCKED_RETRY_MS;

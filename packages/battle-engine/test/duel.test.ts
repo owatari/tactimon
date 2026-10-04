@@ -1310,3 +1310,86 @@ describe("move PP", () => {
     )).toBe(true);
   });
 });
+
+
+describe("defeated unit cleanup rules", () => {
+  it("does not let a fainted unit block tiles, receive turns, or be targeted", () => {
+    let state = createTrainerDuel({
+      seed: 601,
+      width: 6,
+      height: 4,
+      players: [{
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle"],
+      }],
+      rivals: [
+        {
+          species: "pidgey",
+          level: 5,
+          moves: ["tackle"],
+        },
+        {
+          species: "rattata",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const fainted = state.units.find(
+      (unit) => unit.species === "pidgey",
+    )!;
+    const survivor = state.units.find(
+      (unit) => unit.species === "rattata",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      turnOrder: [player.id, fainted.id, survivor.id],
+      turnIndex: 0,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 0, y: 1 },
+              mp: 3,
+            }
+          : unit.id === fainted.id
+            ? {
+                ...unit,
+                hp: 0,
+                position: { x: 1, y: 1 },
+              }
+            : {
+                ...unit,
+                position: { x: 4, y: 1 },
+              },
+      ),
+    };
+
+    expect(
+      getReachableCells(state, player.id),
+    ).toContainEqual({ x: 1, y: 1 });
+
+    const rejected = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "tackle",
+      targetId: fainted.id,
+    });
+    expect(rejected.accepted).toBe(false);
+
+    const ended = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: player.id,
+    });
+    expect(ended.accepted).toBe(true);
+    expect(
+      getActiveDuelUnit(ended.state)?.id,
+    ).toBe(survivor.id);
+  });
+});
