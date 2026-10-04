@@ -119,6 +119,13 @@ const VIRIDIAN_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/viridian-city/attributes.bin",
 };
 
+const PEWTER_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/pewter-city/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/pewter-city/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/pewter-city/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/pewter-city/attributes.bin",
+};
+
 const BUILDING_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/building/tiles.4bpp",
   palettesUrl: "/game-assets/tilesets/building/palettes.gbapal",
@@ -210,6 +217,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: VIRIDIAN_TILESET,
+    },
+  },
+  "pewter-city": {
+    id: "pewter-city",
+    label: "Pewter City",
+    layoutUrl: "/game-assets/maps/pewter-city/layout.json",
+    previewUrl: "/game-assets/maps/pewter-city/preview.png",
+    worldUrl: null,
+    spawn: { x: 21, y: 39 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: PEWTER_TILESET,
     },
   },
   "route-22": {
@@ -424,6 +444,32 @@ export function resolveWorldTransition(
     return {
       mapId: "viridian-city",
       spawn: { x: x + 12, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "route-2" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 8 &&
+    x <= 11
+  ) {
+    return {
+      mapId: "pewter-city",
+      spawn: { x: x + 12, y: 39 },
+    };
+  }
+
+  if (
+    mapId === "pewter-city" &&
+    direction === "south" &&
+    y === 39 &&
+    x >= 20 &&
+    x <= 23
+  ) {
+    return {
+      mapId: "route-2",
+      spawn: { x: x - 12, y: 0 },
     };
   }
 

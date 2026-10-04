@@ -48,6 +48,14 @@ const files = [
     "maps/route-2/preview.png",
   ],
   [
+    "maps/layouts/079_pewtercity_layout/layout.json",
+    "maps/pewter-city/layout.json",
+  ],
+  [
+    "maps/layouts/079_pewtercity_layout/preview.png",
+    "maps/pewter-city/preview.png",
+  ],
+  [
     "maps/layouts/109_route22_layout/layout.json",
     "maps/route-22/layout.json",
   ],
@@ -159,6 +167,23 @@ const files = [
   [
     "tilesets/02_viridiancity/attributes.bin",
     "tilesets/viridian-city/attributes.bin",
+  ],
+
+  [
+    "tilesets/03_pewtercity/tiles.4bpp",
+    "tilesets/pewter-city/tiles.4bpp",
+  ],
+  [
+    "tilesets/03_pewtercity/palettes.gbapal",
+    "tilesets/pewter-city/palettes.gbapal",
+  ],
+  [
+    "tilesets/03_pewtercity/metatiles.bin",
+    "tilesets/pewter-city/metatiles.bin",
+  ],
+  [
+    "tilesets/03_pewtercity/attributes.bin",
+    "tilesets/pewter-city/attributes.bin",
   ],
 
   ["tilesets/12_building/tiles.4bpp", "tilesets/building/tiles.4bpp"],
