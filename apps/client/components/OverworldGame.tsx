@@ -725,11 +725,13 @@ function mapStoryObjects(
         ? billStoryObjects(story)
         : mapId === "viridian-mart" ||
           mapId === "pewter-mart" ||
-          mapId === "cerulean-mart"
+          mapId === "cerulean-mart" ||
+          mapId === "vermilion-mart"
         ? martStoryObjects(mapId)
         : mapId === "viridian-pokemon-center" ||
             mapId === "pewter-pokemon-center" ||
             mapId === "cerulean-pokemon-center" ||
+            mapId === "vermilion-pokemon-center" ||
             mapId === "route-4-pokemon-center"
           ? pokemonCenterStoryObjects(mapId)
           : mapPickupStoryObjects(mapId, story);

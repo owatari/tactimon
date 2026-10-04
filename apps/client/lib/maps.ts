@@ -573,6 +573,45 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: VERMILION_TILESET,
     },
   },
+  "vermilion-city": {
+    id: "vermilion-city",
+    label: "Vermilion City",
+    layoutUrl: "/game-assets/maps/vermilion-city/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-city/preview.png",
+    worldUrl: null,
+    spawn: { x: 24, y: 0 },
+    fallbackMusicId: 313,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: VERMILION_TILESET,
+    },
+  },
+  "vermilion-pokemon-center": {
+    id: "vermilion-pokemon-center",
+    label: "Vermilion Pokémon Center",
+    layoutUrl: "/game-assets/maps/vermilion-pokemon-center/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-pokemon-center/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 7 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: POKEMON_CENTER_TILESET,
+    },
+  },
+  "vermilion-mart": {
+    id: "vermilion-mart",
+    label: "Vermilion Poké Mart",
+    layoutUrl: "/game-assets/maps/vermilion-mart/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-mart/preview.png",
+    worldUrl: null,
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: MART_TILESET,
+    },
+  },
   "cerulean-pokemon-center": {
     id: "cerulean-pokemon-center",
     label: "Cerulean Pokémon Center",
@@ -1042,6 +1081,32 @@ export function resolveWorldTransition(
   }
 
   if (
+    mapId === "route-6" &&
+    direction === "south" &&
+    y === 39 &&
+    x >= 0 &&
+    x <= 23
+  ) {
+    return {
+      mapId: "vermilion-city",
+      spawn: { x: x + 12, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "vermilion-city" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 12 &&
+    x <= 35
+  ) {
+    return {
+      mapId: "route-6",
+      spawn: { x: x - 12, y: 39 },
+    };
+  }
+
+  if (
     mapId === "route-4" &&
     direction === "east" &&
     x === 107 &&
@@ -1140,8 +1205,16 @@ export function resolveWhiteOutRespawn(
     | "viridian-city"
     | "pewter-city"
     | "cerulean-city"
+    | "vermilion-city"
     | "route-4",
 ): WhiteOutRespawn {
+  if (healLocationId === "vermilion-city") {
+    return {
+      mapId: "vermilion-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
   if (healLocationId === "cerulean-city") {
     return {
       mapId: "cerulean-pokemon-center",
@@ -1202,6 +1275,7 @@ export function isPokemonStoragePcAt(
     (mapId === "viridian-pokemon-center" ||
       mapId === "pewter-pokemon-center" ||
       mapId === "cerulean-pokemon-center" ||
+      mapId === "vermilion-pokemon-center" ||
       mapId === "route-4-pokemon-center") &&
     x === 11 &&
     y === 1
@@ -1446,6 +1520,52 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "route-25",
       spawn: { x: 51, y: 5 },
+    };
+  }
+
+  if (
+    mapId === "vermilion-city" &&
+    x === 15 &&
+    y === 6
+  ) {
+    return {
+      mapId: "vermilion-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
+  if (
+    mapId === "vermilion-pokemon-center" &&
+    y === 8 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "vermilion-city",
+      spawn: { x: 15, y: 7 },
+    };
+  }
+
+  if (
+    mapId === "vermilion-city" &&
+    x === 29 &&
+    y === 17
+  ) {
+    return {
+      mapId: "vermilion-mart",
+      spawn: { x: 4, y: 6 },
+    };
+  }
+
+  if (
+    mapId === "vermilion-mart" &&
+    y === 7 &&
+    x >= 3 &&
+    x <= 5
+  ) {
+    return {
+      mapId: "vermilion-city",
+      spawn: { x: 29, y: 18 },
     };
   }
 

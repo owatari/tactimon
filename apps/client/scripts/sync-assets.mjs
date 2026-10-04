@@ -128,6 +128,30 @@ const files = [
     "maps/route-6/preview.png",
   ],
   [
+    "maps/layouts/083_vermilioncity_layout/layout.json",
+    "maps/vermilion-city/layout.json",
+  ],
+  [
+    "maps/layouts/083_vermilioncity_layout/preview.png",
+    "maps/vermilion-city/preview.png",
+  ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
+    "maps/vermilion-pokemon-center/layout.json",
+  ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/preview.png",
+    "maps/vermilion-pokemon-center/preview.png",
+  ],
+  [
+    "maps/layouts/009_mart_layout/layout.json",
+    "maps/vermilion-mart/layout.json",
+  ],
+  [
+    "maps/layouts/009_mart_layout/preview.png",
+    "maps/vermilion-mart/preview.png",
+  ],
+  [
     "maps/layouts/111_route24_layout/layout.json",
     "maps/route-24/layout.json",
   ],

@@ -332,6 +332,15 @@ export function GameClient() {
           ),
         );
       } else if (
+        next.mapId === "vermilion-pokemon-center"
+      ) {
+        setStory((current) =>
+          registerStoryHealLocation(
+            current,
+            "vermilion-city",
+          ),
+        );
+      } else if (
         next.mapId === "cerulean-pokemon-center"
       ) {
         setStory((current) =>
@@ -929,8 +938,11 @@ export function GameClient() {
             moneyLost={pendingWhiteOut.moneyLost}
             locationLabel={
               pendingWhiteOut.healLocationId ===
-                "cerulean-city"
-                ? "Cerulean Pokémon Center"
+                "vermilion-city"
+                ? "Vermilion Pokémon Center"
+                : pendingWhiteOut.healLocationId ===
+                    "cerulean-city"
+                  ? "Cerulean Pokémon Center"
                 : pendingWhiteOut.healLocationId ===
                     "route-4"
                   ? "Route 4 Pokémon Center"
