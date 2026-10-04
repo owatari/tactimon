@@ -3079,3 +3079,465 @@ h1 {
 .battle-speed-2 .vfx-bite {
   animation-duration: 190ms;
 }
+
+
+/* FireRed interface pass: use pixel proportions, opaque game panels, no glass UI. */
+.battle-overlay {
+  padding: 0;
+  overflow: auto;
+  background: #182840;
+  backdrop-filter: none;
+  image-rendering: pixelated;
+}
+
+.battle-shell-clean {
+  width: max-content;
+  min-width: min(100%, 720px);
+  max-width: none;
+  max-height: none;
+  padding: 10px 12px 12px;
+  overflow: visible;
+  gap: 8px;
+  border: 4px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow:
+    inset 0 0 0 3px #98b8c8,
+    inset 0 0 0 6px #e8f0e0;
+  font-family:
+    "Courier New",
+    ui-monospace,
+    monospace;
+}
+
+.battle-minimal-header,
+.battle-combatant-hud-row,
+.battle-message-strip,
+.battle-selection-dock {
+  width: min(960px, calc(100vw - 32px));
+  color: #182838;
+}
+
+.battle-minimal-header {
+  padding: 6px 8px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+  box-shadow: inset 0 0 0 2px #a8c0d0;
+}
+
+.battle-minimal-title .eyebrow,
+.battle-minimal-title small,
+.battle-turn,
+.combatant-side-label,
+.combatant-status-label,
+.battle-selection-dock-title span {
+  color: #506878;
+  opacity: 1;
+}
+
+.battle-control-toggle,
+.end-turn-compact,
+.battle-zoom-control button,
+.battle-selection-dock-grid button,
+.battle-selection-dock-back {
+  border: 2px solid #203850 !important;
+  border-radius: 0 !important;
+  background: #f8f8e8 !important;
+  color: #182838 !important;
+  box-shadow: inset -2px -2px 0 #a8b8a8;
+  font-family: inherit;
+}
+
+.battle-control-toggle.active {
+  background: #f8d850 !important;
+}
+
+.battle-zoom-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 28px;
+}
+
+.battle-zoom-control button {
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.battle-zoom-control span {
+  min-width: 50px;
+  color: #203850;
+  font-size: 8px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.battle-arena-scroll {
+  width: min(960px, calc(100vw - 32px));
+  max-height: min(65vh, 720px);
+  margin: 0 auto;
+  overflow: auto;
+  border: 3px solid #203850;
+  background: #000;
+  scrollbar-width: thin;
+}
+
+.clean-arena {
+  max-width: none !important;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.duel-map-crop {
+  overflow: hidden;
+}
+
+.duel-map-render {
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.duel-grid {
+  gap: 0;
+}
+
+.duel-cell {
+  border: 1px solid rgba(24, 40, 56, 0.12);
+  border-radius: 0;
+}
+
+.duel-cell.reachable {
+  background: rgba(80, 200, 120, 0.22);
+  border-color: rgba(24, 128, 64, 0.55);
+}
+
+.duel-cell.move-range:not(.blocked-terrain) {
+  background: rgba(248, 216, 80, 0.18);
+  border-color: rgba(176, 120, 24, 0.48);
+}
+
+.duel-cell.target-cell {
+  background: rgba(248, 88, 64, 0.26);
+  border-color: #d83828;
+  box-shadow: inset 0 0 0 1px #fff0d8;
+}
+
+.battle-combatant-hud-row.multi-unit {
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr) !important;
+  grid-auto-flow: row dense;
+  max-height: 190px;
+  gap: 4px 8px;
+  padding: 4px;
+  overflow-y: auto;
+  border: 3px solid #203850;
+  background: #d8e8d0;
+}
+
+.battle-combatant-hud-row.multi-unit .combatant-hud.player {
+  grid-column: 1;
+}
+
+.battle-combatant-hud-row.multi-unit .combatant-hud.rival {
+  grid-column: 2;
+}
+
+.combatant-hud,
+.battle-combatant-hud-row.multi-unit .combatant-hud {
+  min-height: 62px;
+  border: 2px solid #405868;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow: inset -2px -2px 0 #c0c8b8;
+}
+
+.combatant-hud.active {
+  border-color: #d85828;
+  background: #fff8c8;
+}
+
+.battle-portrait-frame {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.battle-portrait-image.firered-rom-sprite {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.combatant-name-row strong,
+.combatant-resource-heading strong,
+.combatant-level,
+.combatant-type,
+.resource-chip,
+.status-chip {
+  color: #182838 !important;
+}
+
+.combatant-type {
+  padding: 1px 4px;
+  border: 1px solid #506878;
+  border-radius: 0;
+  background: #e0e8d8;
+  text-transform: uppercase;
+}
+
+.combatant-hp-track,
+.combatant-exp-track {
+  height: 7px;
+  border: 1px solid #203850;
+  border-radius: 0;
+  background: #607060;
+}
+
+.combatant-hp-fill.good {
+  background: #58c858;
+}
+
+.combatant-hp-fill.warn {
+  background: #e8c840;
+}
+
+.combatant-hp-fill.danger {
+  background: #e85848;
+}
+
+.combatant-exp-fill {
+  background: #4898d0;
+}
+
+.battle-action-popover,
+.battle-selection-dock {
+  border: 3px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow:
+    inset 0 0 0 2px #a8c0d0,
+    4px 4px 0 rgba(24, 40, 56, 0.4);
+  backdrop-filter: none;
+}
+
+.battle-action-popover-caret {
+  background: #f8f8e8;
+  border-color: #203850;
+}
+
+.battle-action-list button {
+  color: #182838;
+}
+
+.battle-action-list button span {
+  color: #506878;
+}
+
+.battle-action-list button:hover:not(:disabled),
+.battle-menu-back:hover:not(:disabled),
+.battle-selection-dock-grid button:hover:not(:disabled) {
+  background: #f8e878 !important;
+}
+
+.battle-message-strip {
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 3px solid #203850;
+  border-left: 3px solid #203850;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow: inset 0 0 0 2px #a8c0d0;
+  font-size: 10px;
+}
+
+.duel-unit-label {
+  padding: 1px 3px;
+  border: 1px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  font-size: 7px;
+  backdrop-filter: none;
+}
+
+.pokemon-battle-sprite-frame {
+  transform:
+    translateX(-50%)
+    scale(var(--pokemon-visual-scale, 1));
+}
+
+.move-effectiveness-preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 7px);
+  z-index: 25;
+  min-width: 82px;
+  transform: translateX(-50%);
+  padding: 3px 5px;
+  border: 2px solid #203850;
+  background: #f8f8e8;
+  color: #182838;
+  font-size: 7px;
+  font-weight: 900;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 2px 2px 0 rgba(24, 40, 56, 0.45);
+}
+
+.move-effectiveness-preview.super {
+  background: #b8e890;
+}
+
+.move-effectiveness-preview.resisted {
+  background: #f0d080;
+}
+
+.move-effectiveness-preview.immune {
+  background: #c8c8c8;
+}
+
+.battle-busy-indicator {
+  border: 2px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  backdrop-filter: none;
+}
+
+/* Post battle is a full FireRed-like result screen, not a floating AI card. */
+.battle-result {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: clamp(28px, 7vh, 72px)
+    clamp(24px, 10vw, 140px);
+  align-content: center;
+  justify-items: start;
+  gap: 12px;
+  border: 12px solid #203850;
+  border-radius: 0;
+  background:
+    linear-gradient(
+      180deg,
+      #d8e8d0 0 58%,
+      #f8f8e8 58% 100%
+    );
+  color: #182838;
+  box-shadow:
+    inset 0 0 0 5px #90a8b8,
+    inset 0 0 0 9px #f8f8e8;
+  font-family:
+    "Courier New",
+    ui-monospace,
+    monospace;
+}
+
+.battle-result .eyebrow {
+  color: #b83828;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.battle-result h3 {
+  max-width: 720px;
+  color: #182838;
+  font-size: clamp(20px, 3vw, 32px);
+  letter-spacing: 0;
+}
+
+.battle-result p {
+  max-width: 760px;
+  color: #304858;
+  font-size: clamp(11px, 1.4vw, 15px);
+  line-height: 1.65;
+}
+
+.battle-result button {
+  min-width: 150px;
+  padding: 10px 16px;
+  border: 3px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow: inset -3px -3px 0 #a8b8a8;
+  font: inherit;
+  font-weight: 900;
+}
+
+/* FireRed-styled overworld HUD/dialogue instead of glass/pill UI. */
+.location-chip,
+.control-hint,
+.world-resource-chip,
+.interaction-toast {
+  border: 3px solid #203850 !important;
+  border-radius: 0 !important;
+  background: #f8f8e8 !important;
+  color: #182838 !important;
+  box-shadow:
+    inset 0 0 0 2px #a8c0d0,
+    3px 3px 0 rgba(24, 40, 56, 0.35);
+  backdrop-filter: none !important;
+  font-family:
+    "Courier New",
+    ui-monospace,
+    monospace;
+}
+
+.dialogue-panel {
+  padding: 10px 12px;
+  border: 4px solid #203850;
+  background: #f8f8e8;
+  box-shadow: inset 0 0 0 3px #a8c0d0;
+  color: #182838;
+}
+
+.dialogue-speaker,
+.dialogue-continue {
+  color: #304858;
+}
+
+.story-panel,
+.mart-panel,
+.storage-panel,
+.progression-panel {
+  border: 5px solid #203850 !important;
+  border-radius: 0 !important;
+  background: #f8f8e8 !important;
+  color: #182838 !important;
+  box-shadow:
+    inset 0 0 0 3px #a8c0d0,
+    6px 6px 0 rgba(24, 40, 56, 0.45) !important;
+  backdrop-filter: none !important;
+  font-family:
+    "Courier New",
+    ui-monospace,
+    monospace;
+}
+
+@media (max-width: 760px) {
+  .battle-combatant-hud-row.multi-unit {
+    grid-template-columns:
+      minmax(150px, 1fr)
+      minmax(150px, 1fr) !important;
+    max-height: 150px;
+  }
+
+  .battle-result {
+    padding: 28px 22px;
+    border-width: 7px;
+  }
+}
