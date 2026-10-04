@@ -43,6 +43,7 @@ import {
 } from "@/lib/mart";
 import {
   applyStoryWhiteOut,
+  chooseMtMoonFossil,
   chooseStarter,
   collectOverworldItem,
   DEFAULT_STORY_STATE,
@@ -792,6 +793,26 @@ export function GameClient() {
         onPokemonStorageOpen={() =>
           setStorageOpen(true)
         }
+        onMtMoonFossilChoice={(fossil) => {
+          const preview = chooseMtMoonFossil(
+            story,
+            fossil,
+          );
+
+          if (preview.accepted) {
+            setStory((current) =>
+              chooseMtMoonFossil(
+                current,
+                fossil,
+              ).story,
+            );
+          }
+
+          return {
+            accepted: preview.accepted,
+            reason: preview.reason,
+          };
+        }}
         onOverworldItemPickup={(pickupId, itemId) => {
           const preview = collectOverworldItem(
             story,

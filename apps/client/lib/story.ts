@@ -30,6 +30,7 @@ export type StoryHealLocationId =
   | "route-4";
 
 export type StoryBadgeId = "boulder";
+export type MtMoonFossilId = "dome" | "helix";
 
 export type StoryState = {
   starter: StarterSpeciesId | null;
@@ -41,6 +42,7 @@ export type StoryState = {
   collectedItemIds: string[];
   defeatedTrainerIds: string[];
   badgeIds: StoryBadgeId[];
+  mtMoonFossil: MtMoonFossilId | null;
   healLocationId: StoryHealLocationId;
   money: number;
   inventory: DuelInventory;
@@ -56,6 +58,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   collectedItemIds: [],
   defeatedTrainerIds: [],
   badgeIds: [],
+  mtMoonFossil: null,
   healLocationId: "pallet-town",
   money: 3000,
   inventory: {
@@ -102,6 +105,7 @@ export function chooseStarter(
     collectedItemIds: [],
     defeatedTrainerIds: [],
     badgeIds: [],
+    mtMoonFossil: null,
     healLocationId: "pallet-town",
     money: 3000,
     inventory: {
@@ -310,6 +314,11 @@ export function normalizeStoryState(
           ),
         )
       : [],
+    mtMoonFossil:
+      input?.mtMoonFossil === "dome" ||
+      input?.mtMoonFossil === "helix"
+        ? input.mtMoonFossil
+        : null,
     healLocationId:
       input?.healLocationId === "route-4"
         ? "route-4"
@@ -656,5 +665,41 @@ export function applyStoryWhiteOut(
     },
     moneyLost,
     healLocationId: story.healLocationId,
+  };
+}
+
+
+export type MtMoonFossilChoiceResult = {
+  accepted: boolean;
+  story: StoryState;
+  reason?: "miguel-not-defeated" | "already-chosen";
+};
+
+export function chooseMtMoonFossil(
+  story: StoryState,
+  fossil: MtMoonFossilId,
+): MtMoonFossilChoiceResult {
+  if (!story.defeatedTrainerIds.includes("mtmoon-miguel")) {
+    return {
+      accepted: false,
+      story,
+      reason: "miguel-not-defeated",
+    };
+  }
+
+  if (story.mtMoonFossil) {
+    return {
+      accepted: false,
+      story,
+      reason: "already-chosen",
+    };
+  }
+
+  return {
+    accepted: true,
+    story: {
+      ...story,
+      mtMoonFossil: fossil,
+    },
   };
 }

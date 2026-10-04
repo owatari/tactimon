@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 import { resolveWarpTransitionAt, WORLD_MAPS } from "../apps/client/lib/maps";
 import { LAND_ENCOUNTERS, resolveLandEncounter } from "../apps/client/lib/wildEncounters";
 import { OVERWORLD_TRAINERS } from "../apps/client/lib/trainers";
+import {
+  chooseMtMoonFossil,
+  DEFAULT_STORY_STATE,
+  normalizeStoryState,
+} from "../apps/client/lib/story";
 
 describe("Mt. Moon", () => {
   it("registers all three extracted cave floors", () => {
@@ -72,6 +77,39 @@ describe("Mt. Moon", () => {
         (pokemon) => pokemon.species,
       ),
     ).toEqual(["grimer", "voltorb", "koffing"]);
+  });
+
+  it("persists exactly one fossil after Miguel is defeated", () => {
+    const afterMiguel = {
+      ...DEFAULT_STORY_STATE,
+      defeatedTrainerIds: ["mtmoon-miguel"],
+    };
+
+    const dome = chooseMtMoonFossil(afterMiguel, "dome");
+    expect(dome.accepted).toBe(true);
+    expect(dome.story.mtMoonFossil).toBe("dome");
+
+    const second = chooseMtMoonFossil(dome.story, "helix");
+    expect(second.accepted).toBe(false);
+    expect(second.reason).toBe("already-chosen");
+    expect(second.story.mtMoonFossil).toBe("dome");
+
+    expect(
+      normalizeStoryState({
+        ...afterMiguel,
+        mtMoonFossil: "helix",
+      }).mtMoonFossil,
+    ).toBe("helix");
+  });
+
+  it("does not allow taking a fossil before beating Miguel", () => {
+    const result = chooseMtMoonFossil(
+      DEFAULT_STORY_STATE,
+      "helix",
+    );
+    expect(result.accepted).toBe(false);
+    expect(result.reason).toBe("miguel-not-defeated");
+    expect(result.story.mtMoonFossil).toBeNull();
   });
 
   it("places the supported canonical 1F trainers at ROM coordinates", () => {

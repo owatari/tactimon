@@ -37,6 +37,7 @@ import {
 import {
   storyHasHealthyPokemon,
   storyStarterSummary,
+  type MtMoonFossilId,
   type StoryBadgeId,
   type StoryState,
 } from "@/lib/story";
@@ -113,6 +114,12 @@ type Props = {
   onMartOpen: () => void;
   onPokemonCenterHeal: () => void;
   onPokemonStorageOpen: () => void;
+  onMtMoonFossilChoice: (
+    fossil: MtMoonFossilId,
+  ) => {
+    accepted: boolean;
+    reason?: "miguel-not-defeated" | "already-chosen";
+  };
   onOverworldItemPickup: (
     pickupId: string,
     itemId: DuelItemId,
@@ -193,13 +200,20 @@ type PickupStoryObject = StoryObjectBase & {
   itemName: string;
 };
 
+type FossilStoryObject = StoryObjectBase & {
+  kind: "fossil";
+  fossilId: MtMoonFossilId;
+  fossilName: string;
+};
+
 type StoryObject =
   | StaticStoryObject
   | TrainerStoryObject
   | MartClerkStoryObject
   | PokemonCenterNurseStoryObject
   | DialogueStoryObject
-  | PickupStoryObject;
+  | PickupStoryObject
+  | FossilStoryObject;
 
 function createPlayer(
   x: number,
@@ -538,6 +552,48 @@ function mapPickupStoryObjects(
   }));
 }
 
+function mtMoonFossilStoryObjects(
+  story: StoryState,
+): FossilStoryObject[] {
+  if (
+    story.mtMoonFossil ||
+    !story.defeatedTrainerIds.includes("mtmoon-miguel")
+  ) {
+    return [];
+  }
+
+  return [
+    {
+      id: "mt-moon-dome-fossil",
+      kind: "fossil",
+      fossilId: "dome",
+      fossilName: "Dome Fossil",
+      label: "Dome Fossil",
+      x: 13,
+      y: 7,
+      spriteUrl: "/game-assets/overworld/098_fossil.png",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 16,
+      sheetHeight: 16,
+    },
+    {
+      id: "mt-moon-helix-fossil",
+      kind: "fossil",
+      fossilId: "helix",
+      fossilName: "Helix Fossil",
+      label: "Helix Fossil",
+      x: 14,
+      y: 7,
+      spriteUrl: "/game-assets/overworld/098_fossil.png",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 16,
+      sheetHeight: 16,
+    },
+  ];
+}
+
 function pokemonCenterStoryObjects(
   mapId: string,
 ): StoryObject[] {
@@ -621,6 +677,10 @@ function mapStoryObjects(
     ...mapDialogueStoryObjects(mapId),
   );
 
+  if (mapId === "mt-moon-b2f") {
+    objects.push(...mtMoonFossilStoryObjects(story));
+  }
+
   for (const trainer of resolveOverworldTrainers(
     mapId,
     layout,
@@ -645,6 +705,7 @@ export function OverworldGame({
   onMartOpen,
   onPokemonCenterHeal,
   onPokemonStorageOpen,
+  onMtMoonFossilChoice,
   onOverworldItemPickup,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -1022,6 +1083,21 @@ export function OverworldGame({
         return;
       }
 
+      if (storyObject.kind === "fossil") {
+        const result = onMtMoonFossilChoice(
+          storyObject.fossilId,
+        );
+
+        showInteraction(
+          result.accepted
+            ? `Você escolheu o ${storyObject.fossilName}. Miguel ficará com o outro fóssil.`
+            : result.reason === "miguel-not-defeated"
+              ? "Miguel ainda não concordou em dividir os fósseis."
+              : "Você já escolheu um fóssil em Mt. Moon.",
+        );
+        return;
+      }
+
       if (storyObject.kind === "pickup") {
         const result = onOverworldItemPickup(
           storyObject.pickupId,
@@ -1076,6 +1152,7 @@ export function OverworldGame({
     }
   }, [
     onMartOpen,
+    onMtMoonFossilChoice,
     onPokemonCenterHeal,
     onPokemonStorageOpen,
     onOverworldItemPickup,
