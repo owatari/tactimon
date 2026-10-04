@@ -262,6 +262,13 @@ const SEA_COTTAGE_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/sea-cottage/attributes.bin",
 };
 
+const BURGLED_HOUSE_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/burgled-house/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/burgled-house/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/burgled-house/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/burgled-house/attributes.bin",
+};
+
 const LAB_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/lab/tiles.4bpp",
   palettesUrl: "/game-assets/tilesets/lab/palettes.gbapal",
@@ -458,6 +465,32 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: BUILDING_TILESET,
       secondary: SEA_COTTAGE_TILESET,
+    },
+  },
+  "cerulean-house2": {
+    id: "cerulean-house2",
+    label: "Burgled House",
+    layoutUrl: "/game-assets/maps/cerulean-house2/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-house2/preview.png",
+    worldUrl: null,
+    spawn: { x: 3, y: 6 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: BURGLED_HOUSE_TILESET,
+    },
+  },
+  "route-5": {
+    id: "route-5",
+    label: "Route 5",
+    layoutUrl: "/game-assets/maps/route-5/layout.json",
+    previewUrl: "/game-assets/maps/route-5/preview.png",
+    worldUrl: null,
+    spawn: { x: 24, y: 0 },
+    fallbackMusicId: 293,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: CERULEAN_TILESET,
     },
   },
   "cerulean-pokemon-center": {
@@ -903,6 +936,32 @@ export function resolveWorldTransition(
   }
 
   if (
+    mapId === "cerulean-city" &&
+    direction === "south" &&
+    y === 39 &&
+    x >= 0 &&
+    x <= 47
+  ) {
+    return {
+      mapId: "route-5",
+      spawn: { x, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "route-5" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 0 &&
+    x <= 47
+  ) {
+    return {
+      mapId: "cerulean-city",
+      spawn: { x, y: 39 },
+    };
+  }
+
+  if (
     mapId === "route-4" &&
     direction === "east" &&
     x === 107 &&
@@ -1150,6 +1209,51 @@ export function resolveWarpTransitionAt(
   }
   if (mapId === "mt-moon-b2f" && x === 5 && y === 10) {
     return { mapId: "mt-moon-b1f", spawn: { x: 39, y: 4 } };
+  }
+
+  if (
+    mapId === "cerulean-city" &&
+    x === 30 &&
+    y === 11
+  ) {
+    return {
+      mapId: "cerulean-house2",
+      spawn: { x: 3, y: 6 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-city" &&
+    x === 31 &&
+    (y === 8 || y === 9)
+  ) {
+    return {
+      mapId: "cerulean-house2",
+      spawn: { x: 4, y: 2 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-house2" &&
+    y === 7 &&
+    x >= 2 &&
+    x <= 4
+  ) {
+    return {
+      mapId: "cerulean-city",
+      spawn: { x: 30, y: 12 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-house2" &&
+    x === 4 &&
+    y === 1
+  ) {
+    return {
+      mapId: "cerulean-city",
+      spawn: { x: 31, y: 8 },
+    };
   }
 
   if (

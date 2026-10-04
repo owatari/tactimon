@@ -93,6 +93,21 @@ const ROUTE_4_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 1, species: "ekans", level: 12 },
 ];
 
+const ROUTE_5_SLOTS: readonly LandEncounterSlot[] = [
+  { weight: 20, species: "meowth", level: 10 },
+  { weight: 20, species: "pidgey", level: 13 },
+  { weight: 10, species: "oddish", level: 13 },
+  { weight: 10, species: "meowth", level: 12 },
+  { weight: 10, species: "oddish", level: 15 },
+  { weight: 10, species: "pidgey", level: 15 },
+  { weight: 5, species: "oddish", level: 16 },
+  { weight: 5, species: "pidgey", level: 16 },
+  { weight: 4, species: "pidgey", level: 15 },
+  { weight: 4, species: "meowth", level: 14 },
+  { weight: 1, species: "pidgey", level: 15 },
+  { weight: 1, species: "meowth", level: 16 },
+];
+
 const ROUTE_24_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 20, species: "weedle", level: 7 },
   { weight: 20, species: "caterpie", level: 7 },
@@ -205,6 +220,10 @@ export const LAND_ENCOUNTERS: Readonly<
   "route-4": {
     encounterRate: 21,
     slots: ROUTE_4_SLOTS,
+  },
+  "route-5": {
+    encounterRate: 21,
+    slots: ROUTE_5_SLOTS,
   },
   "route-24": {
     encounterRate: 21,

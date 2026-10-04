@@ -28,6 +28,8 @@ export type OverworldTrainerDefinition = {
   party: readonly DuelPokemonBuild[];
 };
 
+export const CERULEAN_ROCKET_TRAINER_ID =
+  "cerulean-rocket";
 export const ROUTE24_ROCKET_TRAINER_ID =
   "route24-rocket";
 export const ROUTE24_NUGGET_REWARD_ID =
@@ -1391,6 +1393,36 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       },
     ],
   },
+  {
+    id: CERULEAN_ROCKET_TRAINER_ID,
+    mapId: "cerulean-city",
+    name: "Team Rocket Grunt",
+    preferredPosition: { x: 33, y: 6 },
+    facing: "south",
+    sightRange: 0,
+    spriteUrl: "/game-assets/overworld/049_rocket_m.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Rocket: Ei, fique fora do nosso caminho! A Team Rocket não precisa de curiosos.",
+    defeatedText:
+      "Rocket: Certo, certo! Vou sair daqui. Não espere nenhum prêmio roubado de mim.",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "machop",
+        level: 17,
+        moves: ["low-kick", "leer", "focus-energy", "karate-chop"],
+      },
+      {
+        species: "drowzee",
+        level: 17,
+        moves: ["hypnosis", "disable", "confusion", "headbutt"],
+      },
+    ],
+  },
 ];
 
 export function trainerPrizeMoney(
@@ -1689,6 +1721,25 @@ export function isCeruleanRivalTriggerAt(
     x <= 24 &&
     !defeatedTrainerIds.includes(
       CERULEAN_RIVAL_TRAINER_ID,
+    )
+  );
+}
+
+
+export function isCeruleanRocketTriggerAt(
+  mapId: string,
+  x: number,
+  y: number,
+  hasSsTicket: boolean,
+  defeatedTrainerIds: readonly string[],
+): boolean {
+  return (
+    mapId === "cerulean-city" &&
+    x === 33 &&
+    (y === 5 || y === 7) &&
+    hasSsTicket &&
+    !defeatedTrainerIds.includes(
+      CERULEAN_ROCKET_TRAINER_ID,
     )
   );
 }

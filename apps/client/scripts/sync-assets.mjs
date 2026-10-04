@@ -80,6 +80,22 @@ const files = [
     "maps/cerulean-city/preview.png",
   ],
   [
+    "maps/layouts/181_ceruleancity_house2_layout/layout.json",
+    "maps/cerulean-house2/layout.json",
+  ],
+  [
+    "maps/layouts/181_ceruleancity_house2_layout/preview.png",
+    "maps/cerulean-house2/preview.png",
+  ],
+  [
+    "maps/layouts/092_route5_layout/layout.json",
+    "maps/route-5/layout.json",
+  ],
+  [
+    "maps/layouts/092_route5_layout/preview.png",
+    "maps/route-5/preview.png",
+  ],
+  [
     "maps/layouts/111_route24_layout/layout.json",
     "maps/route-24/layout.json",
   ],
@@ -345,6 +361,23 @@ const files = [
   [
     "tilesets/27_ceruleangym/attributes.bin",
     "tilesets/cerulean-gym/attributes.bin",
+  ],
+
+  [
+    "tilesets/54_burgledhouse/tiles.4bpp",
+    "tilesets/burgled-house/tiles.4bpp",
+  ],
+  [
+    "tilesets/54_burgledhouse/palettes.gbapal",
+    "tilesets/burgled-house/palettes.gbapal",
+  ],
+  [
+    "tilesets/54_burgledhouse/metatiles.bin",
+    "tilesets/burgled-house/metatiles.bin",
+  ],
+  [
+    "tilesets/54_burgledhouse/attributes.bin",
+    "tilesets/burgled-house/attributes.bin",
   ],
 
   [

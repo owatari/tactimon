@@ -35,6 +35,7 @@ import {
   WorldTransition,
 } from "@/lib/maps";
 import {
+  hasStoryKeyItem,
   storyHasHealthyPokemon,
   storyStarterSummary,
   type MtMoonFossilId,
@@ -44,8 +45,10 @@ import {
 import {
   CERULEAN_RIVAL_CHALLENGE_TEXT,
   CERULEAN_RIVAL_TRAINER_ID,
+  CERULEAN_ROCKET_TRAINER_ID,
   ceruleanRivalEncounter,
   isCeruleanRivalTriggerAt,
+  isCeruleanRocketTriggerAt,
   resolveOverworldTrainers,
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
@@ -745,6 +748,16 @@ function mapStoryObjects(
     worldObjects,
     story.defeatedTrainerIds,
   )) {
+    if (
+      trainer.id === CERULEAN_ROCKET_TRAINER_ID &&
+      (
+        !hasStoryKeyItem(story, "ss-ticket") ||
+        trainer.defeated
+      )
+    ) {
+      continue;
+    }
+
     objects.push(trainerStoryObject(trainer));
   }
 
@@ -1539,6 +1552,20 @@ export function OverworldGame({
           return false;
         }
 
+        if (
+          mapIdRef.current === "cerulean-city" &&
+          edgeTransition.mapId === "route-5" &&
+          !storyRef.current.defeatedTrainerIds.includes(
+            CERULEAN_ROCKET_TRAINER_ID,
+          )
+        ) {
+          showInteraction(
+            "A rota sul só fica segura depois de expulsar o Rocket que está atrás da casa arrombada.",
+          );
+          player.blockedUntil = now + 500;
+          return false;
+        }
+
         void loadMap(
           edgeTransition.mapId,
           edgeTransition.spawn,
@@ -1621,6 +1648,21 @@ export function OverworldGame({
         nextX,
         nextY,
       );
+
+      if (
+        warp?.mapId === "cerulean-house2" &&
+        mapIdRef.current === "cerulean-city" &&
+        !hasStoryKeyItem(
+          storyRef.current,
+          "ss-ticket",
+        )
+      ) {
+        showInteraction(
+          "Policial: A casa foi arrombada. A passagem fica isolada até terminarmos de verificar a ocorrência.",
+        );
+        player.blockedUntil = now + 500;
+        return false;
+      }
 
       if (!warp && !canWalk(activeLayout, nextX, nextY)) {
         player.blockedUntil = now + BLOCKED_RETRY_MS;
@@ -1707,6 +1749,44 @@ export function OverworldGame({
         CERULEAN_RIVAL_CHALLENGE_TEXT,
       );
       onTrainerBattleTrigger(context, encounter);
+    };
+
+    const maybeTriggerCeruleanRocketBattle = () => {
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+
+      if (
+        !isCeruleanRocketTriggerAt(
+          mapIdRef.current,
+          player.tileX,
+          player.tileY,
+          hasStoryKeyItem(
+            currentStory,
+            "ss-ticket",
+          ),
+          currentStory.defeatedTrainerIds,
+        ) ||
+        !currentStory.firstBattleComplete ||
+        !currentStory.playerPokemon ||
+        !storyHasHealthyPokemon(currentStory) ||
+        trainerBattleLockRef.current
+      ) {
+        return;
+      }
+
+      const rocket = storyObjectsRef.current.find(
+        (
+          object,
+        ): object is TrainerStoryObject =>
+          object.kind === "trainer" &&
+          object.trainerId ===
+            CERULEAN_ROCKET_TRAINER_ID,
+      );
+      if (!rocket) {
+        return;
+      }
+
+      triggerTrainerBattle(rocket);
     };
 
     const maybeTriggerWildBattle = () => {
@@ -1928,6 +2008,7 @@ export function OverworldGame({
           );
           maybeTriggerLabBattle();
           maybeTriggerCeruleanRivalBattle();
+          maybeTriggerCeruleanRocketBattle();
           maybeTriggerTrainerBattle();
           maybeTriggerWildBattle();
         }

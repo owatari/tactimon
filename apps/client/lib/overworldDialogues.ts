@@ -31,6 +31,26 @@ export const OVERWORLD_DIALOGUES:
         "Garoto: Uau, essa é a Boulder Badge! Brock não é só forte; as pessoas gostam e respeitam ele. Quero me tornar um Líder de Ginásio como ele.",
     },
     {
+      id: "cerulean-house2-hiker",
+      mapId: "cerulean-house2",
+      label: "Morador",
+      x: 1,
+      y: 2,
+      spriteUrl: "/game-assets/overworld/056_hiker.png",
+      dialogue:
+        "Morador: A Team Rocket arrombou a parede e roubou meu material sobre técnicas de escavação. O ladrão fugiu para os fundos!",
+    },
+    {
+      id: "cerulean-house2-lass",
+      mapId: "cerulean-house2",
+      label: "Garota",
+      x: 7,
+      y: 6,
+      spriteUrl: "/game-assets/overworld/022_lass.png",
+      dialogue:
+        "Garota: A Team Rocket cavou um buraco na parede. Eles realmente não prestam!",
+    },
+    {
       id: "pewter-gym-guy",
       mapId: "pewter-gym",
       label: "Gym Guide",
