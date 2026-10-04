@@ -1939,6 +1939,87 @@ export function resolvePlayerOverworldTrainers(
   }));
 }
 
+export const ROUTE22_EARLY_RIVAL_TRAINER_ID =
+  "route22-rival-early";
+
+export const ROUTE22_EARLY_RIVAL_CHALLENGE_TEXT =
+  "Blue: Ei! Você vai para a Pokémon League? Esquece! Sem insígnias o guarda não deixa passar. Aliás, seus Pokémon ficaram mais fortes?";
+
+export function route22EarlyRivalParty(
+  rivalStarter: StarterSpeciesId | null,
+): DuelPokemonBuild[] | null {
+  if (!rivalStarter) {
+    return null;
+  }
+
+  const starter: DuelPokemonBuild =
+    rivalStarter === "squirtle"
+      ? {
+          species: "squirtle",
+          level: 9,
+          moves: ["tackle", "tail-whip"],
+        }
+      : rivalStarter === "bulbasaur"
+        ? {
+            species: "bulbasaur",
+            level: 9,
+            moves: ["tackle", "growl"],
+          }
+        : {
+            species: "charmander",
+            level: 9,
+            moves: ["scratch", "growl"],
+          };
+
+  return [
+    {
+      species: "pidgey",
+      level: 9,
+      moves: ["tackle", "sand-attack"],
+    },
+    starter,
+  ];
+}
+
+export function route22EarlyRivalEncounter(
+  rivalStarter: StarterSpeciesId | null,
+): {
+  id: string;
+  name: string;
+  rewardMoney: number;
+  party: DuelPokemonBuild[];
+} | null {
+  const party = route22EarlyRivalParty(
+    rivalStarter,
+  );
+  if (!party) {
+    return null;
+  }
+
+  return {
+    id: ROUTE22_EARLY_RIVAL_TRAINER_ID,
+    name: "Blue",
+    rewardMoney: trainerPrizeMoney(
+      party,
+      4,
+    ),
+    party,
+  };
+}
+
+export function isRoute22EarlyRivalTriggerTile(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  return (
+    mapId === "route-22" &&
+    x === 33 &&
+    y >= 4 &&
+    y <= 6
+  );
+}
+
 export const CERULEAN_RIVAL_TRAINER_ID =
   "cerulean-rival";
 
