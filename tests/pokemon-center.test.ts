@@ -135,6 +135,29 @@ describe("Viridian Pokémon Center", () => {
 });
 
 
+describe("Pokémon Center Sleep", () => {
+  it("clears Sleep and its persistent counter", () => {
+    const story = damagedStory();
+    if (!story.playerPokemon) {
+      throw new Error("Starter missing");
+    }
+
+    story.playerPokemon = {
+      ...story.playerPokemon,
+      status: "sleep",
+      sleepTurnsRemaining: 4,
+    };
+
+    const healed = healStoryParty(story);
+
+    expect(healed.playerPokemon?.status).toBe(null);
+    expect(
+      healed.playerPokemon?.sleepTurnsRemaining,
+    ).toBe(0);
+  });
+});
+
+
 describe("Pokémon Center PP", () => {
   it("restores every active move to full PP", () => {
     const story = damagedStory();

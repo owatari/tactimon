@@ -368,6 +368,40 @@ describe("persistent progression health", () => {
 });
 
 
+describe("persistent Sleep progression", () => {
+  it("preserves a valid Sleep counter and clears stale counters for other statuses", () => {
+    const sleeping = normalizePokemonProgression({
+      species: "oddish",
+      level: 10,
+      status: "sleep",
+      sleepTurnsRemaining: 4,
+    });
+    expect(sleeping.status).toBe("sleep");
+    expect(sleeping.sleepTurnsRemaining).toBe(4);
+
+    const awake = normalizePokemonProgression({
+      species: "oddish",
+      level: 10,
+      status: "poison",
+      sleepTurnsRemaining: 4,
+    });
+    expect(awake.status).toBe("poison");
+    expect(awake.sleepTurnsRemaining).toBe(0);
+  });
+
+  it("migrates legacy Sleep saves without a counter to a finite value", () => {
+    const sleeping = normalizePokemonProgression({
+      species: "oddish",
+      level: 10,
+      status: "sleep",
+    });
+
+    expect(sleeping.status).toBe("sleep");
+    expect(sleeping.sleepTurnsRemaining).toBe(2);
+  });
+});
+
+
 describe("Route 2 species progression", () => {
   it("uses Medium Fast growth and FireRed moves for Caterpie", () => {
     const caterpie = createPokemonProgression("caterpie", 4);

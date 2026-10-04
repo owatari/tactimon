@@ -3619,6 +3619,235 @@ describe("move accuracy and evasion", () => {
 });
 
 
+describe("FireRed integer accuracy", () => {
+  it("truncates stage-adjusted accuracy before the 1-100 roll", () => {
+    const state = createTrainerDuel({
+      seed: 1928,
+      players: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["hydro-pump"],
+        },
+      ],
+      rivals: [
+        {
+          species: "pidgeot",
+          level: 47,
+          moves: ["wing-attack"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    expect(
+      getDuelMoveHitChance(
+        { ...player, accuracyStage: -5 },
+        rival,
+        DUEL_MOVES["hydro-pump"],
+      ),
+    ).toBe(28);
+    expect(
+      getDuelMoveHitChance(
+        { ...player, accuracyStage: -4 },
+        rival,
+        DUEL_MOVES["hydro-pump"],
+      ),
+    ).toBe(34);
+  });
+});
+
+describe("persistent FireRed Sleep", () => {
+  it("applies Sleep Powder for a deterministic 2-5 turn counter", () => {
+    let state = createTrainerDuel({
+      seed: 1929,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "oddish",
+          level: 20,
+          moves: ["sleep-powder"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const originalAccuracy =
+      DUEL_MOVES["sleep-powder"].accuracy;
+    DUEL_MOVES["sleep-powder"].accuracy = 100;
+    try {
+      const result = applyDuelAction(state, {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "sleep-powder",
+        targetId: rival.id,
+      });
+
+      expect(result.accepted).toBe(true);
+      const sleeping = result.state.units.find(
+        (unit) => unit.id === rival.id,
+      )!;
+      expect(sleeping.status).toBe("sleep");
+      expect(
+        sleeping.sleepTurnsRemaining,
+      ).toBeGreaterThanOrEqual(2);
+      expect(
+        sleeping.sleepTurnsRemaining,
+      ).toBeLessThanOrEqual(5);
+      if (result.presentation?.kind === "move") {
+        expect(
+          result.presentation.results[0].statusApplied,
+        ).toBe("sleep");
+      }
+    } finally {
+      DUEL_MOVES["sleep-powder"].accuracy =
+        originalAccuracy;
+    }
+  });
+
+  it("skips a sleeping activation and decrements its counter", () => {
+    let state = createTrainerDuel({
+      seed: 1930,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "pikachu",
+          level: 20,
+          moves: ["thunder-shock"],
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      turnIndex: state.turnOrder.indexOf(player.id),
+      units: state.units.map((unit) =>
+        unit.id === rival.id
+          ? {
+              ...unit,
+              status: "sleep",
+              sleepTurnsRemaining: 3,
+            }
+          : unit,
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    const sleeping = result.state.units.find(
+      (unit) => unit.id === rival.id,
+    )!;
+    expect(sleeping.status).toBe("sleep");
+    expect(sleeping.sleepTurnsRemaining).toBe(2);
+    expect(result.state.activeUnitId).toBe(player.id);
+    expect(result.state.round).toBe(2);
+  });
+
+  it("wakes at counter one and can act on that same activation", () => {
+    let state = createTrainerDuel({
+      seed: 1931,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "pikachu",
+          level: 20,
+          moves: ["thunder-shock"],
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      turnIndex: state.turnOrder.indexOf(player.id),
+      units: state.units.map((unit) =>
+        unit.id === rival.id
+          ? {
+              ...unit,
+              status: "sleep",
+              sleepTurnsRemaining: 1,
+            }
+          : unit,
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    const awakened = result.state.units.find(
+      (unit) => unit.id === rival.id,
+    )!;
+    expect(awakened.status).toBe(null);
+    expect(awakened.sleepTurnsRemaining).toBe(0);
+    expect(result.state.activeUnitId).toBe(rival.id);
+    expect(awakened.ap).toBe(awakened.maxAp);
+    expect(awakened.mp).toBe(awakened.maxMp);
+    expect(result.state.round).toBe(1);
+  });
+});
+
+
 describe("Rain Dance weather", () => {
   it("starts five rounds of rain and consumes exactly one PP", () => {
     let state = createTrainerDuel({

@@ -86,6 +86,67 @@ function progressedStory() {
   return story;
 }
 
+describe("Sleep save persistence", () => {
+  it("round-trips the remaining Sleep counter", () => {
+    const story = chooseStarter("bulbasaur");
+    if (!story.playerPokemon) {
+      throw new Error("Starter missing");
+    }
+
+    const sleeping = {
+      ...story,
+      playerPokemon: {
+        ...story.playerPokemon,
+        status: "sleep" as const,
+        sleepTurnsRemaining: 4,
+      },
+    };
+    const restored = parseStorySave(
+      serializeStorySave(sleeping),
+    );
+
+    expect(restored).not.toBeNull();
+    expect(restored?.playerPokemon?.status).toBe(
+      "sleep",
+    );
+    expect(
+      restored?.playerPokemon?.sleepTurnsRemaining,
+    ).toBe(4);
+  });
+
+  it("migrates an old Sleep save without a counter", () => {
+    const story = chooseStarter("bulbasaur");
+    if (!story.playerPokemon) {
+      throw new Error("Starter missing");
+    }
+
+    const legacy = {
+      ...story,
+      playerPokemon: {
+        ...story.playerPokemon,
+        status: "sleep" as const,
+      },
+    };
+    delete (
+      legacy.playerPokemon as {
+        sleepTurnsRemaining?: number;
+      }
+    ).sleepTurnsRemaining;
+
+    const restored = parseStorySave(
+      JSON.stringify(legacy),
+    );
+
+    expect(restored?.playerPokemon?.status).toBe(
+      "sleep",
+    );
+    expect(
+      restored?.playerPokemon?.sleepTurnsRemaining,
+    ).toBe(2);
+  });
+});
+
+
 describe("story persistence", () => {
   it("round-trips full gameplay progression", () => {
     const story = progressedStory();
