@@ -147,10 +147,12 @@ export function isVermilionGymLocksOpen(
 
 export function isVermilionGymBeamWalkable(
   story: StoryState,
+  mapId: string,
   x: number,
   y: number,
 ): boolean {
   return (
+    mapId === "vermilion-gym" &&
     isVermilionGymLocksOpen(story) &&
     (y === 6 || y === 7) &&
     x >= 4 &&
