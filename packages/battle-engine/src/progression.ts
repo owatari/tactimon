@@ -1335,8 +1335,9 @@ export function grantWildBattlesProgressToParty(
   enemies: readonly {
     species: WildSpeciesId;
     level: number;
+    xpRatio?: number;
   }[],
-  xpRatio = 1,
+  defaultXpRatio = 1,
 ): ProgressionReward[] {
   if (
     party.length === 0 ||
@@ -1345,20 +1346,33 @@ export function grantWildBattlesProgressToParty(
     return [];
   }
 
-  const ratio =
-    Math.max(0, Math.min(1, xpRatio));
-  const xpPerParticipant = Math.floor(
-    enemies.reduce(
-      (total, enemy) =>
+  const defaultRatio = Math.max(
+    0,
+    Math.min(1, defaultXpRatio),
+  );
+  const totalXp = enemies.reduce(
+    (total, enemy) => {
+      const ratio = Math.max(
+        0,
+        Math.min(
+          1,
+          enemy.xpRatio ?? defaultRatio,
+        ),
+      );
+
+      return (
         total +
         experienceRewardForWild(
           enemy.species,
           enemy.level,
-        ),
-      0,
-    ) *
-      ratio /
-      party.length,
+        ) *
+          ratio
+      );
+    },
+    0,
+  );
+  const xpPerParticipant = Math.floor(
+    totalXp / party.length,
   );
 
   return party.map((progression) =>
