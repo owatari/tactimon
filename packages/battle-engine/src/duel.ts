@@ -29,6 +29,7 @@ export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
 export type DuelItemId = "potion" | "poke-ball";
+export type DuelInventory = Record<DuelItemId, number>;
 export type DuelMoveId =
   | "tackle"
   | "scratch"
@@ -77,6 +78,7 @@ export interface TrainerDuelOptions {
   players: readonly DuelPokemonBuild[];
   rivals: readonly DuelPokemonBuild[];
   trainerName?: string;
+  items?: Partial<DuelInventory>;
 }
 
 export interface StarterDuelOptions {
@@ -90,6 +92,7 @@ export interface StarterDuelOptions {
   players?: readonly DuelPokemonBuild[];
   /** Optional explicit rival party; defaults to Blue's counter starter. */
   rivals?: readonly DuelPokemonBuild[];
+  items?: Partial<DuelInventory>;
 }
 
 export interface WildDuelOptions {
@@ -102,6 +105,7 @@ export interface WildDuelOptions {
   /** Every member is deployed at battle start, capped at six. */
   players?: readonly DuelPokemonBuild[];
   captureAllowed?: boolean;
+  items?: Partial<DuelInventory>;
   wildSpecies: WildSpeciesId;
   wildLevel: number;
 }
@@ -202,7 +206,7 @@ export interface DuelState {
   battleKind: DuelBattleKind;
   escaped: boolean;
   captureAllowed: boolean;
-  items: Record<DuelItemId, number>;
+  items: DuelInventory;
   round: number;
   turnOrder: string[];
   turnIndex: number;
@@ -354,6 +358,24 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   pidgey: 255,
   rattata: 255,
 };
+
+function normalizeDuelItems(
+  input: Partial<DuelInventory> | undefined,
+  fallback: DuelInventory,
+): DuelInventory {
+  const normalize = (value: unknown, fallbackValue: number) =>
+    typeof value === "number" && Number.isFinite(value)
+      ? Math.max(0, Math.min(999, Math.trunc(value)))
+      : fallbackValue;
+
+  return {
+    potion: normalize(input?.potion, fallback.potion),
+    "poke-ball": normalize(
+      input?.["poke-ball"],
+      fallback["poke-ball"],
+    ),
+  };
+}
 
 export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
   tackle: {
@@ -1049,10 +1071,13 @@ export function createTrainerDuel(
     battleKind: "trainer",
     escaped: false,
     captureAllowed: false,
-    items: {
-      potion: 1,
-      "poke-ball": 0,
-    },
+    items: normalizeDuelItems(
+      options.items,
+      {
+        potion: 1,
+        "poke-ball": 0,
+      },
+    ),
     round: 1,
     turnOrder,
     turnIndex: 0,
@@ -1115,6 +1140,9 @@ export function createStarterDuel(
       : {}),
     ...(options.blocked !== undefined
       ? { blocked: options.blocked }
+      : {}),
+    ...(options.items !== undefined
+      ? { items: options.items }
       : {}),
     players: party,
     rivals,
@@ -1189,10 +1217,13 @@ export function createWildDuel(
     battleKind: "wild",
     escaped: false,
     captureAllowed,
-    items: {
-      potion: 1,
-      "poke-ball": captureAllowed ? 3 : 0,
-    },
+    items: normalizeDuelItems(
+      options.items,
+      {
+        potion: 1,
+        "poke-ball": captureAllowed ? 3 : 0,
+      },
+    ),
     round: 1,
     turnOrder,
     turnIndex: 0,

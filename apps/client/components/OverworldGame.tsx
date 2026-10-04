@@ -121,6 +121,7 @@ type Props = {
     trainer: {
       id: string;
       name: string;
+      rewardMoney: number;
       party: readonly DuelPokemonBuild[];
     },
   ) => void;
@@ -165,6 +166,7 @@ type TrainerStoryObject = StoryObjectBase & {
   kind: "trainer";
   trainerId: string;
   trainerName: string;
+  rewardMoney: number;
   party: readonly DuelPokemonBuild[];
   facing: Direction;
   sightRange: number;
@@ -345,6 +347,7 @@ function trainerStoryObject(
     sheetHeight: trainer.sheetHeight,
     trainerId: trainer.id,
     trainerName: trainer.name,
+    rewardMoney: trainer.rewardMoney,
     party: trainer.party,
     facing: trainer.facing,
     sightRange: trainer.sightRange,
@@ -624,6 +627,7 @@ export function OverworldGame({
       onTrainerBattleTrigger(context, {
         id: trainer.trainerId,
         name: trainer.trainerName,
+        rewardMoney: trainer.rewardMoney,
         party: trainer.party,
       });
     },
@@ -1396,6 +1400,11 @@ export function OverworldGame({
       <div className="world-hud">
         <div key={mapId} className="location-chip location-enter">
           {mapDefinition.label}
+        </div>
+        <div className="world-resource-chip">
+          <strong>₽{story.money.toLocaleString("pt-BR")}</strong>
+          <span>Potion ×{story.inventory.potion}</span>
+          <span>Ball ×{story.inventory["poke-ball"]}</span>
         </div>
         <div className="control-hint">
           WASD / setas · E/Space interage

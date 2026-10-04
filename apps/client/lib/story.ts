@@ -4,6 +4,7 @@ import {
   normalizePokemonProgression,
   rivalStarterFor,
   starterDisplayName,
+  type DuelInventory,
   type PokemonProgression,
   type StarterSpeciesId,
   type WildSpeciesId,
@@ -20,6 +21,8 @@ export type StoryState = {
   playerPokemon: PokemonProgression | null;
   capturedPokemon: CapturedPokemon[];
   defeatedTrainerIds: string[];
+  money: number;
+  inventory: DuelInventory;
 };
 
 export const DEFAULT_STORY_STATE: StoryState = {
@@ -29,6 +32,11 @@ export const DEFAULT_STORY_STATE: StoryState = {
   playerPokemon: null,
   capturedPokemon: [],
   defeatedTrainerIds: [],
+  money: 3000,
+  inventory: {
+    potion: 1,
+    "poke-ball": 5,
+  },
 };
 
 export const STARTER_META: Record<
@@ -66,6 +74,11 @@ export function chooseStarter(
     playerPokemon: createStarterProgression(starter),
     capturedPokemon: [],
     defeatedTrainerIds: [],
+    money: 3000,
+    inventory: {
+      potion: 1,
+      "poke-ball": 5,
+    },
   };
 }
 
@@ -119,6 +132,52 @@ function normalizeCapturedPokemon(
   };
 }
 
+function normalizeMoney(value: unknown): number {
+  if (
+    typeof value !== "number" ||
+    !Number.isFinite(value)
+  ) {
+    return 3000;
+  }
+
+  return Math.max(
+    0,
+    Math.min(999_999, Math.trunc(value)),
+  );
+}
+
+function normalizeInventory(
+  value: unknown,
+): DuelInventory {
+  const candidate =
+    value && typeof value === "object"
+      ? (value as Partial<DuelInventory>)
+      : {};
+
+  const normalizeCount = (
+    count: unknown,
+    fallback: number,
+  ) =>
+    typeof count === "number" &&
+    Number.isFinite(count)
+      ? Math.max(
+          0,
+          Math.min(999, Math.trunc(count)),
+        )
+      : fallback;
+
+  return {
+    potion: normalizeCount(
+      candidate.potion,
+      1,
+    ),
+    "poke-ball": normalizeCount(
+      candidate["poke-ball"],
+      5,
+    ),
+  };
+}
+
 export function normalizeStoryState(
   input: Partial<StoryState> | null | undefined,
 ): StoryState {
@@ -162,6 +221,8 @@ export function normalizeStoryState(
           ),
         ).slice(0, 128)
       : [],
+    money: normalizeMoney(input?.money),
+    inventory: normalizeInventory(input?.inventory),
   };
 }
 

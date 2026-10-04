@@ -692,3 +692,75 @@ describe("multi-unit party battles", () => {
     expect(state.captureAllowed).toBe(false);
   });
 });
+
+
+describe("persistent battle inventory", () => {
+  it("starts from the supplied inventory and consumes that exact balance", () => {
+    let state = createWildDuel({
+      seed: 314,
+      players: [
+        {
+          species: "bulbasaur",
+          level: 5,
+          moves: ["tackle", "growl"],
+        },
+      ],
+      items: {
+        potion: 4,
+        "poke-ball": 2,
+      },
+      wildSpecies: "pidgey",
+      wildLevel: 3,
+    });
+
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      items: { ...state.items },
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              hp: Math.max(1, unit.maxHp - 5),
+            }
+          : unit,
+      ),
+    };
+
+    expect(state.items).toEqual({
+      potion: 4,
+      "poke-ball": 2,
+    });
+
+    const result = applyDuelAction(state, {
+      kind: "use-item",
+      unitId: player.id,
+      itemId: "potion",
+      targetId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.items).toEqual({
+      potion: 3,
+      "poke-ball": 2,
+    });
+  });
+
+  it("keeps Poké Balls in trainer battles without allowing capture", () => {
+    const state = createStarterDuel("bulbasaur", {
+      items: {
+        potion: 2,
+        "poke-ball": 5,
+      },
+    });
+
+    expect(state.items).toEqual({
+      potion: 2,
+      "poke-ball": 5,
+    });
+    expect(state.captureAllowed).toBe(false);
+  });
+});

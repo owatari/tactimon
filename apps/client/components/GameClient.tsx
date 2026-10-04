@@ -187,6 +187,11 @@ export function GameClient() {
       return;
     }
 
+    setStory((current) => ({
+      ...current,
+      inventory: { ...outcome.inventory },
+    }));
+
     const partySnapshot = story.playerPokemon
       ? [
           story.playerPokemon,
@@ -205,6 +210,14 @@ export function GameClient() {
           : [];
       const trainerId =
         session.encounter.trainerId;
+      const prizeMoney = outcome.won
+        ? Math.max(
+            0,
+            Math.trunc(
+              session.encounter.rewardMoney ?? 0,
+            ),
+          )
+        : 0;
 
       setStory((current) => {
         let next = applyPartyProgressionRewards(
@@ -225,12 +238,23 @@ export function GameClient() {
               ],
             };
           }
-          return next;
+
+          return {
+            ...next,
+            money: Math.min(
+              999_999,
+              next.money + prizeMoney,
+            ),
+          };
         }
 
         return {
           ...next,
           firstBattleComplete: true,
+          money: Math.min(
+            999_999,
+            next.money + prizeMoney,
+          ),
         };
       });
 
@@ -359,7 +383,11 @@ export function GameClient() {
           ) {
             setBattleSession({
               context,
-              encounter: { kind: "trainer" },
+              encounter: {
+                kind: "trainer",
+                trainerName: "Blue",
+                rewardMoney: 80,
+              },
             });
           }
         }}
@@ -392,6 +420,7 @@ export function GameClient() {
                 kind: "trainer",
                 trainerId: trainer.id,
                 trainerName: trainer.name,
+                rewardMoney: trainer.rewardMoney,
                 rivals: trainer.party,
               },
             });
@@ -413,6 +442,7 @@ export function GameClient() {
             starter={story.starter}
             progression={story.playerPokemon}
             party={battleParty}
+            inventory={story.inventory}
             encounter={battleSession.encounter}
             context={battleSession.context}
             onComplete={handleBattleComplete}

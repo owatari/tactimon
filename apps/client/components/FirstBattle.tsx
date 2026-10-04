@@ -15,6 +15,7 @@ import {
   manhattanDistance,
   resolveSimpleAiTurnDetailed,
   type DuelActionResult,
+  type DuelInventory,
   type DuelItemId,
   type DuelMoveId,
   type DuelPoint,
@@ -34,6 +35,7 @@ import type { BattleSceneContext } from "@/lib/maps";
 export type BattleOutcome = {
   won: boolean;
   escaped: boolean;
+  inventory: DuelInventory;
   defeatedEnemies: Array<{
     species: DuelSpeciesId;
     level: number;
@@ -51,6 +53,7 @@ export type BattleEncounter =
       kind: "trainer";
       trainerId?: string;
       trainerName?: string;
+      rewardMoney?: number;
       rivals?: readonly DuelPokemonBuild[];
     }
   | {
@@ -63,6 +66,7 @@ type Props = {
   starter: StarterSpeciesId;
   progression: PokemonProgression;
   party: readonly DuelPokemonBuild[];
+  inventory: DuelInventory;
   encounter: BattleEncounter;
   context: BattleSceneContext;
   onComplete: (outcome: BattleOutcome) => void;
@@ -232,6 +236,7 @@ export function FirstBattle({
   starter,
   progression,
   party,
+  inventory,
   encounter,
   context,
   onComplete,
@@ -256,6 +261,7 @@ export function FirstBattle({
         blocked: context.blocked,
         players: deployedParty,
         captureAllowed: deployedParty.length < 6,
+        items: inventory,
         wildSpecies: encounter.species,
         wildLevel: encounter.level,
       });
@@ -272,6 +278,7 @@ export function FirstBattle({
         blocked: context.blocked,
         players: deployedParty,
         rivals: encounter.rivals,
+        items: inventory,
         trainerName:
           encounter.trainerName ?? "Treinador rival",
       });
@@ -283,8 +290,16 @@ export function FirstBattle({
       height: context.arenaHeight,
       blocked: context.blocked,
       players: deployedParty,
+      items: inventory,
     });
-  }, [context, encounter, party, progression, starter]);
+  }, [
+    context,
+    encounter,
+    inventory,
+    party,
+    progression,
+    starter,
+  ]);
 
   const [state, setState] = useState<DuelState>(initialState);
   const [command, setCommand] = useState<CommandMode>("root");
@@ -1300,8 +1315,13 @@ export function FirstBattle({
 
                 {command === "items" && (
                   <div className="battle-action-list">
-                    {(Object.keys(DUEL_ITEMS) as DuelItemId[]).map(
-                      (itemId) => {
+                    {(Object.keys(DUEL_ITEMS) as DuelItemId[])
+                      .filter(
+                        (itemId) =>
+                          DUEL_ITEMS[itemId].kind !== "capture" ||
+                          state.battleKind === "wild",
+                      )
+                      .map((itemId) => {
                         const item = DUEL_ITEMS[itemId];
                         const amount = state.items[itemId] ?? 0;
 
@@ -1446,12 +1466,21 @@ export function FirstBattle({
                       ? "A batalha termina somente quando todos os Pokémon de um dos treinadores forem derrotados."
                       : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
             </p>
+            {encounter.kind === "trainer" &&
+              state.winner === "player" &&
+              (encounter.rewardMoney ?? 0) > 0 && (
+                <p>
+                  Prêmio de vitória: ₽
+                  {(encounter.rewardMoney ?? 0).toLocaleString("pt-BR")}
+                </p>
+              )}
             <button
               type="button"
               onClick={() =>
                 onComplete({
                   won: state.winner === "player",
                   escaped: false,
+                  inventory: { ...state.items },
                   defeatedEnemies,
                   capture: state.captureResult
                     ? {
@@ -1479,6 +1508,7 @@ export function FirstBattle({
                 onComplete({
                   won: false,
                   escaped: true,
+                  inventory: { ...state.items },
                   defeatedEnemies,
                 })
               }

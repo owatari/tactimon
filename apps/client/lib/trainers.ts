@@ -19,6 +19,7 @@ export type OverworldTrainerDefinition = {
   sheetHeight: number;
   challengeText: string;
   defeatedText: string;
+  moneyMultiplier: number;
   party: readonly DuelPokemonBuild[];
 };
 
@@ -27,6 +28,7 @@ export type OverworldTrainerInstance =
     x: number;
     y: number;
     defeated: boolean;
+    rewardMoney: number;
   };
 
 export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
@@ -46,6 +48,7 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       "Youngster: Ei! Vamos ver como o seu time luta!",
     defeatedText:
       "Youngster: Seu time é forte. Vou treinar mais.",
+    moneyMultiplier: 4,
     party: [
       {
         species: "pidgey",
@@ -60,6 +63,26 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ],
   },
 ];
+
+export function trainerPrizeMoney(
+  party: readonly DuelPokemonBuild[],
+  multiplier: number,
+): number {
+  const last = party[party.length - 1];
+  if (!last) {
+    return 0;
+  }
+
+  // FireRed: 4 × last Pokémon level × trainer-class money factor.
+  return Math.max(
+    0,
+    Math.trunc(
+      4 *
+        Math.max(1, Math.trunc(last.level)) *
+        Math.max(0, Math.trunc(multiplier)),
+    ),
+  );
+}
 
 function pointKey(x: number, y: number): string {
   return `${x},${y}`;
@@ -215,6 +238,10 @@ export function resolveOverworldTrainers(
       x: position.x,
       y: position.y,
       defeated: defeated.has(trainer.id),
+      rewardMoney: trainerPrizeMoney(
+        trainer.party,
+        trainer.moneyMultiplier,
+      ),
     });
   }
 
