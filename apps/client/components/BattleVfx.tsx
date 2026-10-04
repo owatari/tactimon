@@ -25,6 +25,7 @@ type RuntimeManifest = {
 type Props = {
   moveId: DuelMoveId;
   nonce: number;
+  speed?: 1 | 2;
   onComplete?: () => void;
 };
 
@@ -46,6 +47,7 @@ function loadManifest(): Promise<RuntimeManifest | null> {
 export function BattleVfx({
   moveId,
   nonce,
+  speed = 1,
   onComplete,
 }: Props) {
   const [manifest, setManifest] = useState<RuntimeManifest | null>(null);
@@ -75,7 +77,7 @@ export function BattleVfx({
     if (!data) {
       const timeout = window.setTimeout(() => {
         onCompleteRef.current?.();
-      }, 420);
+      }, 420 / speed);
 
       return () => window.clearTimeout(timeout);
     }
@@ -87,7 +89,10 @@ export function BattleVfx({
     const advance = () => {
       if (cancelled) return;
 
-      const duration = Math.max(45, data.frame_duration_ms);
+      const duration = Math.max(
+        24,
+        data.frame_duration_ms / speed,
+      );
       timeout = window.setTimeout(() => {
         if (cancelled) return;
 
@@ -110,7 +115,7 @@ export function BattleVfx({
         window.clearTimeout(timeout);
       }
     };
-  }, [data, nonce]);
+  }, [data, nonce, speed]);
 
   if (!data) {
     return (

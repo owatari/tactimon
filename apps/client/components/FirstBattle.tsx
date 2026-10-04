@@ -266,6 +266,8 @@ export function FirstBattle({
   const [selectedMove, setSelectedMove] = useState<DuelMoveId | null>(null);
   const [selectedItem, setSelectedItem] = useState<DuelItemId | null>(null);
   const [busy, setBusy] = useState(false);
+  const [autoBattle, setAutoBattle] = useState(false);
+  const [battleSpeed, setBattleSpeed] = useState<1 | 2>(1);
   const [notice, setNotice] = useState<string | null>(null);
   const [vfx, setVfx] = useState<VfxEvent | null>(null);
   const [animations, setAnimations] = useState<
@@ -283,6 +285,7 @@ export function FirstBattle({
   );
 
   const aiRunningRef = useRef(false);
+  const battleSpeedRef = useRef<1 | 2>(1);
   const animationNonceRef = useRef(0);
   const vfxNonceRef = useRef(0);
   const vfxDoneRef = useRef<(() => void) | null>(null);
@@ -301,7 +304,10 @@ export function FirstBattle({
       : starterUnit;
   const rival = rivalUnits[0]!;
   const isPlayerTurn =
-    state.status === "active" && active?.side === "player" && !busy;
+    state.status === "active" &&
+    active?.side === "player" &&
+    !busy &&
+    !autoBattle;
 
   const blockedKeys = useMemo(
     () => new Set(state.blocked.map(pointKey)),
@@ -425,11 +431,31 @@ export function FirstBattle({
     setSelectedItem(null);
   };
 
+  const wait = (ms: number): Promise<void> =>
+    sleep(ms / battleSpeedRef.current);
+
+  const toggleBattleSpeed = () => {
+    const next: 1 | 2 =
+      battleSpeedRef.current === 1 ? 2 : 1;
+    battleSpeedRef.current = next;
+    setBattleSpeed(next);
+  };
+
+  const toggleAutoBattle = () => {
+    setAutoBattle((current) => {
+      const next = !current;
+      if (next) {
+        resetCommand();
+      }
+      return next;
+    });
+  };
+
   const flashNotice = (message: string) => {
     setNotice(message);
     window.setTimeout(() => {
       setNotice((current) => (current === message ? null : current));
-    }, 1800);
+    }, 1800 / battleSpeedRef.current);
   };
 
   const playVfx = (
@@ -462,7 +488,7 @@ export function FirstBattle({
       lastFacing = facingBetween(previous, step);
       setUnitAnimation(unit.id, "walk", lastFacing);
       setVisualPosition(unit.id, step);
-      await sleep(STEP_ANIMATION_MS);
+      await wait(STEP_ANIMATION_MS);
       previous = step;
     }
 
@@ -500,7 +526,7 @@ export function FirstBattle({
       "attack",
       facingBetween(actor.position, target.position),
     );
-    await sleep(ATTACK_WINDUP_MS);
+    await wait(ATTACK_WINDUP_MS);
 
     if ((targetResult?.damage ?? 0) > 0) {
       setUnitAnimation(target.id, "hurt");
@@ -523,7 +549,7 @@ export function FirstBattle({
     }
 
     setUnitAnimation(actor.id, "idle");
-    await sleep(100);
+    await wait(100);
   };
 
   const handleWalk = async (destination: DuelPoint) => {
@@ -622,11 +648,11 @@ export function FirstBattle({
           : "A captura falhou. O Pokémon fugiu!",
       );
       if (presentation.success) setUnitAnimation(targetId, "faint");
-      await sleep(520);
+      await wait(520);
     } else {
       setUnitAnimation(targetId, "idle");
       flashNotice(`${DUEL_ITEMS[itemId].name} usada.`);
-      await sleep(320);
+      await wait(320);
     }
     setState(result.state);
     setBusy(false);
@@ -683,70 +709,98 @@ export function FirstBattle({
   };
 
   useEffect(() => {
+    const shouldAutomate =
+      state.status === "active" &&
+      Boolean(active) &&
+      (active?.side === "rival" || autoBattle);
+
     if (
-      state.status !== "active" ||
-      active?.side !== "rival" ||
+      !shouldAutomate ||
       busy ||
-      aiRunningRef.current
+      aiRunningRef.current ||
+      !active
     ) {
       return;
     }
 
     aiRunningRef.current = true;
+    let started = false;
     const timer = window.setTimeout(() => {
+      started = true;
       void (async () => {
         setBusy(true);
 
-        const turn = resolveSimpleAiTurnDetailed(state);
-        let visualState = state;
+        try {
+          const turn = resolveSimpleAiTurnDetailed(
+            state,
+            active.side,
+          );
+          let visualState = state;
 
-        for (const step of turn.steps) {
-          const presentation = step.presentation;
+          for (const step of turn.steps) {
+            const presentation = step.presentation;
 
-          if (presentation?.kind === "movement") {
-            const actorBefore = visualState.units.find(
-              (unit) => unit.id === presentation.actorId,
-            );
+            if (presentation?.kind === "movement") {
+              const actorBefore = visualState.units.find(
+                (unit) =>
+                  unit.id === presentation.actorId,
+              );
 
-            if (actorBefore) {
-              await animatePath(
+              if (actorBefore) {
+                await animatePath(
+                  visualState,
+                  actorBefore,
+                  presentation.to,
+                );
+                setVisualPosition(
+                  actorBefore.id,
+                  presentation.to,
+                );
+              }
+
+              setState(step.state);
+            } else if (
+              presentation?.kind === "move"
+            ) {
+              await animateResolvedMove(
                 visualState,
-                actorBefore,
-                presentation.to,
+                step,
               );
-              setVisualPosition(
-                actorBefore.id,
-                presentation.to,
-              );
+            } else {
+              setState(step.state);
             }
 
-            setState(step.state);
-          } else if (presentation?.kind === "move") {
-            await animateResolvedMove(visualState, step);
-          } else {
-            setState(step.state);
+            visualState = step.state;
           }
 
-          visualState = step.state;
-        }
-
-        for (const unit of turn.state.units) {
-          setVisualPosition(unit.id, unit.position);
-          if (unit.hp <= 0) {
-            setUnitAnimation(unit.id, "faint");
+          for (const unit of turn.state.units) {
+            setVisualPosition(
+              unit.id,
+              unit.position,
+            );
+            if (unit.hp <= 0) {
+              setUnitAnimation(
+                unit.id,
+                "faint",
+              );
+            }
           }
-        }
 
-        setState(turn.state);
-        setBusy(false);
-        aiRunningRef.current = false;
+          setState(turn.state);
+        } finally {
+          setBusy(false);
+          aiRunningRef.current = false;
+        }
       })();
-    }, 380);
+    }, 380 / battleSpeedRef.current);
 
     return () => {
       window.clearTimeout(timer);
+      if (!started) {
+        aiRunningRef.current = false;
+      }
     };
-  }, [active?.side, busy, state]);
+  }, [active?.id, active?.side, autoBattle, busy, state]);
 
   const menuPosition =
     visualPositions[player.id] ?? player.position;
@@ -795,14 +849,41 @@ export function FirstBattle({
                   ? `Turno de ${active.displayName}`
                   : "Aguardando"}
             </div>
-            <button
-              type="button"
-              className="end-turn-compact"
-              disabled={!isPlayerTurn}
-              onClick={endTurn}
-            >
-              Encerrar turno
-            </button>
+            <div className="battle-control-row">
+              <button
+                type="button"
+                className={[
+                  "battle-control-toggle",
+                  autoBattle ? "active" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                disabled={state.status === "finished"}
+                onClick={toggleAutoBattle}
+              >
+                Auto {autoBattle ? "ON" : "OFF"}
+              </button>
+              <button
+                type="button"
+                className={[
+                  "battle-control-toggle",
+                  battleSpeed === 2 ? "active" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                onClick={toggleBattleSpeed}
+              >
+                {battleSpeed}× Speed
+              </button>
+              <button
+                type="button"
+                className="end-turn-compact"
+                disabled={!isPlayerTurn}
+                onClick={endTurn}
+              >
+                Encerrar turno
+              </button>
+            </div>
           </div>
         </header>
 
@@ -1036,6 +1117,7 @@ export function FirstBattle({
                       side={unit.side}
                       animation={animation.name}
                       facing={animation.facing}
+                      speed={battleSpeed}
                     />
                     <span className="duel-unit-label">
                       {unit.displayName}
@@ -1251,6 +1333,7 @@ export function FirstBattle({
                 <BattleVfx
                   moveId={vfx.moveId}
                   nonce={vfx.nonce}
+                  speed={battleSpeed}
                   onComplete={() => {
                     const done = vfxDoneRef.current;
                     vfxDoneRef.current = null;
@@ -1264,7 +1347,9 @@ export function FirstBattle({
 
           {busy && (
             <div className="battle-busy-indicator">
-              Resolvendo ação…
+              {autoBattle
+                ? `Auto Battle · ${battleSpeed}×`
+                : "Resolvendo ação…"}
             </div>
           )}
         </div>

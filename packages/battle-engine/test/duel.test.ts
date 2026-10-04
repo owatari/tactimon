@@ -320,6 +320,33 @@ describe("starter duel", () => {
     ).toBe(true);
   });
 
+  it("can automate a player turn with the same tactical AI", () => {
+    let state = createStarterDuel("bulbasaur", {
+      seed: 1337,
+      width: 9,
+      height: 7,
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "player",
+    );
+
+    expect(turn.steps.length).toBeGreaterThan(0);
+    if (turn.state.status === "active") {
+      expect(
+        getActiveDuelUnit(turn.state)?.side,
+      ).toBe("rival");
+    }
+  });
+
   it("lets the rival AI move, act, and hand back the turn", () => {
     let state = createStarterDuel("bulbasaur", {
       seed: 999,

@@ -1695,6 +1695,7 @@ function bestAiDestination(
 
 export function resolveSimpleAiTurnDetailed(
   input: DuelState,
+  side: DuelSide = "rival",
 ): DuelAiTurnResult {
   let state = input;
   const steps: DuelActionResult[] = [];
@@ -1712,7 +1713,7 @@ export function resolveSimpleAiTurnDetailed(
   if (
     state.status !== "active" ||
     !actor ||
-    actor.side !== "rival"
+    actor.side !== side
   ) {
     return { state, steps };
   }
@@ -1746,7 +1747,7 @@ export function resolveSimpleAiTurnDetailed(
     }
   }
 
-  if (!actor || actor.side !== "rival") {
+  if (!actor || actor.side !== side) {
     return { state, steps };
   }
 
@@ -1777,7 +1778,7 @@ export function resolveSimpleAiTurnDetailed(
   }
 
   actor = getActiveDuelUnit(state);
-  if (!actor || actor.side !== "rival") {
+  if (!actor || actor.side !== side) {
     return { state, steps };
   }
 
@@ -1807,7 +1808,7 @@ export function resolveSimpleAiTurnDetailed(
   actor = getActiveDuelUnit(state);
   if (
     state.status === "active" &&
-    actor?.side === "rival"
+    actor?.side === side
   ) {
     run({
       kind: "end-turn",
@@ -1820,6 +1821,7 @@ export function resolveSimpleAiTurnDetailed(
 
 export function resolveSimpleAiTurn(
   input: DuelState,
+  side: DuelSide = "rival",
 ): DuelState {
-  return resolveSimpleAiTurnDetailed(input).state;
+  return resolveSimpleAiTurnDetailed(input, side).state;
 }

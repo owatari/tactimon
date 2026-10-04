@@ -33,6 +33,7 @@ type Props = {
   side: "player" | "rival";
   animation?: AnimationName;
   facing?: Facing;
+  speed?: 1 | 2;
 };
 
 let manifestPromise: Promise<RuntimeManifest> | null = null;
@@ -59,6 +60,7 @@ export function PokemonBattleSprite({
   side,
   animation = "idle",
   facing,
+  speed = 1,
 }: Props) {
   const [manifest, setManifest] =
     useState<RuntimeManifest | null>(null);
@@ -111,7 +113,7 @@ export function PokemonBattleSprite({
         currentFrame = (currentFrame + 1) % data.frames;
         setFrame(currentFrame);
         advance();
-      }, Math.max(50, duration * (1000 / 60)));
+      }, Math.max(25, (duration * (1000 / 60)) / speed));
     };
 
     advance();
@@ -120,7 +122,7 @@ export function PokemonBattleSprite({
       cancelled = true;
       if (timeout) clearTimeout(timeout);
     };
-  }, [data]);
+  }, [data, speed]);
 
   if (failed) {
     return (

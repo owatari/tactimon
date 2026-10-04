@@ -2566,3 +2566,52 @@ h1 {
     display: none;
   }
 }
+
+
+/* Battle automation + speed controls */
+.battle-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.battle-control-toggle {
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.battle-control-toggle:hover:not(:disabled) {
+  border-color: rgba(216, 242, 121, 0.4);
+  color: var(--text);
+}
+
+.battle-control-toggle.active {
+  border-color: rgba(216, 242, 121, 0.48);
+  background: rgba(216, 242, 121, 0.1);
+  color: var(--accent-strong);
+}
+
+.battle-control-toggle:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+@media (max-width: 820px) {
+  .battle-control-row {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .battle-control-toggle {
+    padding: 6px 8px;
+    font-size: 8px;
+  }
+}
