@@ -3313,6 +3313,344 @@ describe("Horn Drill OHKO", () => {
 });
 
 
+describe("FireRed Future Sight", () => {
+  it("matches FireRed move data", () => {
+    expect(DUEL_MOVES["future-sight"]).toMatchObject({
+      type: "psychic",
+      category: "special",
+      power: 80,
+      accuracy: 90,
+      maxPp: 15,
+      effect: "future-sight",
+    });
+  });
+
+  it("stores setup damage and lands when the counter 3 reaches zero", () => {
+    let state = createTrainerDuel({
+      seed: 1938,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["future-sight"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const initialHp = target.hp;
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      turnIndex: state.turnOrder.indexOf(actor.id),
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              accuracyStage: 6,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              evasionStage: -6,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const setup = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "future-sight",
+      targetId: target.id,
+    });
+    expect(setup.accepted).toBe(true);
+    const setupTarget = setup.state.units.find(
+      (unit) => unit.id === target.id,
+    )!;
+    expect(setupTarget.futureSight?.roundsRemaining).toBe(3);
+    expect(setupTarget.futureSight?.damage).toBeGreaterThan(0);
+    expect(setupTarget.hp).toBe(initialHp);
+    expect(
+      setup.state.units.find(
+        (unit) => unit.id === actor.id,
+      )?.movePp["future-sight"],
+    ).toBe(DUEL_MOVES["future-sight"].maxPp - 1);
+
+    // The decomp stores damage now, so later stat changes must not alter it.
+    state = {
+      ...setup.state,
+      units: setup.state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              specialAttackStage: -6,
+              accuracyStage: 6,
+            }
+          : unit.id === target.id
+            ? {
+                ...unit,
+                specialDefenseStage: 6,
+                evasionStage: -6,
+              }
+            : unit,
+      ),
+    };
+
+    const counters: number[] = [];
+    for (let round = 0; round < 3; round += 1) {
+      for (let step = 0; step < 2; step += 1) {
+        const active = getActiveDuelUnit(state)!;
+        const ended = applyDuelAction(state, {
+          kind: "end-turn",
+          unitId: active.id,
+        });
+        expect(ended.accepted).toBe(true);
+        state = ended.state;
+      }
+      counters.push(
+        state.units.find(
+          (unit) => unit.id === target.id,
+        )?.futureSight?.roundsRemaining ?? 0,
+      );
+    }
+
+    expect(counters).toEqual([2, 1, 0]);
+    const finalTarget = state.units.find(
+      (unit) => unit.id === target.id,
+    )!;
+    const storedDamage =
+      setupTarget.futureSight?.damage ?? 0;
+    expect(finalTarget.futureSight).toBeNull();
+    expect(finalTarget.hp).toBe(
+      initialHp - storedDamage,
+    );
+  });
+
+  it("keeps Future Sight typeless at impact like FireRed", () => {
+    let state = createTrainerDuel({
+      seed: 1939,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["future-sight"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const initialHp = target.hp;
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      turnIndex: state.turnOrder.indexOf(actor.id),
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              accuracyStage: 6,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              type: "dark",
+              types: ["dark"],
+              evasionStage: -6,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const setup = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "future-sight",
+      targetId: target.id,
+    });
+    state = setup.state;
+
+    for (let i = 0; i < 6; i += 1) {
+      const active = getActiveDuelUnit(state)!;
+      const ended = applyDuelAction(state, {
+        kind: "end-turn",
+        unitId: active.id,
+      });
+      expect(ended.accepted).toBe(true);
+      state = ended.state;
+    }
+
+    expect(
+      state.units.find(
+        (unit) => unit.id === target.id,
+      )?.hp,
+    ).toBeLessThan(initialHp);
+  });
+
+  it("does not stack a second Future Sight on the same target and still spends PP", () => {
+    let state = createTrainerDuel({
+      seed: 1940,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["future-sight"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              ap: 12,
+              maxAp: 12,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const first = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "future-sight",
+      targetId: target.id,
+    });
+    const second = applyDuelAction(first.state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "future-sight",
+      targetId: target.id,
+    });
+
+    expect(first.accepted).toBe(true);
+    expect(second.accepted).toBe(true);
+    expect(second.reason).toBe(
+      "future-sight-already-pending",
+    );
+    expect(
+      second.state.units.find(
+        (unit) => unit.id === actor.id,
+      )?.movePp["future-sight"],
+    ).toBe(DUEL_MOVES["future-sight"].maxPp - 2);
+  });
+
+  it("finishes the battle immediately when delayed damage defeats the last rival", () => {
+    let state = createTrainerDuel({
+      seed: 1941,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["future-sight"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const lastId = state.turnOrder[state.turnOrder.length - 1];
+    state = {
+      ...state,
+      activeUnitId: lastId,
+      turnIndex: state.turnOrder.length - 1,
+      units: state.units.map((unit) =>
+        unit.id === target.id
+          ? {
+              ...unit,
+              hp: 1,
+              futureSight: {
+                attackerId: actor.id,
+                moveId: "future-sight" as const,
+                damage: 10,
+                roundsRemaining: 1,
+              },
+            }
+          : unit.id === actor.id
+            ? {
+                ...unit,
+                accuracyStage: 6,
+              }
+            : unit,
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: lastId,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.status).toBe("finished");
+    expect(result.state.winner).toBe("player");
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === target.id,
+      )?.hp,
+    ).toBe(0);
+  });
+});
+
+
 describe("Solar Beam charge turns", () => {
   it("uses FireRed data and completes Exeggcute's late-rival moveset", () => {
     expect(DUEL_MOVES["solar-beam"]).toMatchObject({
