@@ -6,7 +6,10 @@ import {
   useRef,
   useState,
 } from "react";
-import type { WildSpeciesId } from "@tactimon/battle-engine";
+import type {
+  DuelPokemonBuild,
+  WildSpeciesId,
+} from "@tactimon/battle-engine";
 import { renderForegroundLayer } from "@/lib/mapRenderer";
 import {
   BattleSceneContext,
@@ -27,6 +30,10 @@ import {
   storyStarterSummary,
   type StoryState,
 } from "@/lib/story";
+import {
+  resolveOverworldTrainers,
+  type OverworldTrainerInstance,
+} from "@/lib/trainers";
 
 const STEP_DURATION_MS = 142;
 const BLOCKED_RETRY_MS = 90;
@@ -107,6 +114,14 @@ type Props = {
       level: number;
     },
   ) => void;
+  onTrainerBattleTrigger: (
+    context: BattleSceneContext,
+    trainer: {
+      id: string;
+      name: string;
+      party: readonly DuelPokemonBuild[];
+    },
+  ) => void;
 };
 
 type RuntimePlayer = {
@@ -127,9 +142,8 @@ type RuntimePlayer = {
   blockedUntil: number;
 };
 
-type StoryObject = {
+type StoryObjectBase = {
   id: string;
-  kind: "oak" | "rival" | "starter";
   label: string;
   x: number;
   y: number;
@@ -138,8 +152,28 @@ type StoryObject = {
   frameHeight: number;
   sheetWidth: number;
   sheetHeight: number;
+};
+
+type StaticStoryObject = StoryObjectBase & {
+  kind: "oak" | "rival" | "starter";
   starter?: "bulbasaur" | "charmander" | "squirtle";
 };
+
+type TrainerStoryObject = StoryObjectBase & {
+  kind: "trainer";
+  trainerId: string;
+  trainerName: string;
+  party: readonly DuelPokemonBuild[];
+  facing: Direction;
+  sightRange: number;
+  challengeText: string;
+  defeatedText: string;
+  defeated: boolean;
+};
+
+type StoryObject =
+  | StaticStoryObject
+  | TrainerStoryObject;
 
 function createPlayer(
   x: number,
@@ -228,8 +262,8 @@ function displayObjectName(object: WorldObject): string {
     .join(" ");
 }
 
-function labStoryObjects(story: StoryState): StoryObject[] {
-  const objects: StoryObject[] = [
+function labStoryObjects(story: StoryState): StaticStoryObject[] {
+  const objects: StaticStoryObject[] = [
     {
       id: "oak",
       kind: "oak",
@@ -293,6 +327,54 @@ function labStoryObjects(story: StoryState): StoryObject[] {
   return objects;
 }
 
+function trainerStoryObject(
+  trainer: OverworldTrainerInstance,
+): TrainerStoryObject {
+  return {
+    id: `trainer-${trainer.id}`,
+    kind: "trainer",
+    label: trainer.name,
+    x: trainer.x,
+    y: trainer.y,
+    spriteUrl: trainer.spriteUrl,
+    frameWidth: trainer.frameWidth,
+    frameHeight: trainer.frameHeight,
+    sheetWidth: trainer.sheetWidth,
+    sheetHeight: trainer.sheetHeight,
+    trainerId: trainer.id,
+    trainerName: trainer.name,
+    party: trainer.party,
+    facing: trainer.facing,
+    sightRange: trainer.sightRange,
+    challengeText: trainer.challengeText,
+    defeatedText: trainer.defeatedText,
+    defeated: trainer.defeated,
+  };
+}
+
+function mapStoryObjects(
+  mapId: string,
+  story: StoryState,
+  layout: MapLayout | null,
+  worldObjects: readonly WorldObject[],
+): StoryObject[] {
+  const objects: StoryObject[] =
+    mapId === "oak-lab"
+      ? [...labStoryObjects(story)]
+      : [];
+
+  for (const trainer of resolveOverworldTrainers(
+    mapId,
+    layout,
+    worldObjects,
+    story.defeatedTrainerIds,
+  )) {
+    objects.push(trainerStoryObject(trainer));
+  }
+
+  return objects;
+}
+
 export function OverworldGame({
   story,
   paused,
@@ -300,6 +382,7 @@ export function OverworldGame({
   onMapAudioContextChange,
   onFirstBattleTrigger,
   onWildBattleTrigger,
+  onTrainerBattleTrigger,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -315,6 +398,7 @@ export function OverworldGame({
   const pendingWarpRef = useRef<WorldTransition | null>(null);
   const battleTriggerRef = useRef(false);
   const wildBattleLockRef = useRef(false);
+  const trainerBattleLockRef = useRef(false);
   const wildEncounterCooldownRef = useRef(4);
 
   const playerRef = useRef(
@@ -339,15 +423,21 @@ export function OverworldGame({
 
   const mapDefinition = WORLD_MAPS[mapId];
   const visibleObjects = renderableObjects(worldData);
-  const storyObjects =
-    mapId === "oak-lab" ? labStoryObjects(story) : [];
+  const storyObjects = mapStoryObjects(
+    mapId,
+    story,
+    layout,
+    visibleObjects,
+  );
 
   useEffect(() => {
     storyRef.current = story;
-    storyObjectsRef.current =
-      mapIdRef.current === "oak-lab"
-        ? labStoryObjects(story)
-        : [];
+    storyObjectsRef.current = mapStoryObjects(
+      mapIdRef.current,
+      story,
+      layoutRef.current,
+      worldObjectsRef.current,
+    );
 
     if (story.firstBattleComplete) {
       battleTriggerRef.current = false;
@@ -360,6 +450,7 @@ export function OverworldGame({
       pressedRef.current = [];
     } else {
       wildBattleLockRef.current = false;
+      trainerBattleLockRef.current = false;
     }
   }, [paused]);
 
@@ -394,6 +485,147 @@ export function OverworldGame({
       setInteraction(null);
     }, INTERACTION_DURATION_MS);
   }, []);
+
+  const createBattleContext =
+    useCallback((): BattleSceneContext | null => {
+      const player = playerRef.current;
+      const activeLayout = layoutRef.current;
+      const definition = WORLD_MAPS[mapIdRef.current];
+
+      if (!activeLayout || !definition) {
+        return null;
+      }
+
+      const arenaWidth = Math.min(13, activeLayout.width);
+      const arenaHeight = Math.min(7, activeLayout.height);
+      const cropX = Math.max(
+        0,
+        Math.min(
+          activeLayout.width - arenaWidth,
+          player.tileX - Math.floor(arenaWidth / 2),
+        ),
+      );
+      const cropY = Math.max(
+        0,
+        Math.min(
+          activeLayout.height - arenaHeight,
+          player.tileY - Math.floor(arenaHeight / 2),
+        ),
+      );
+
+      const blocked: Array<{ x: number; y: number }> = [];
+
+      for (
+        let localY = 0;
+        localY < arenaHeight;
+        localY += 1
+      ) {
+        for (
+          let localX = 0;
+          localX < arenaWidth;
+          localX += 1
+        ) {
+          const worldX = cropX + localX;
+          const worldY = cropY + localY;
+          const cell =
+            activeLayout.cells[
+              worldY * activeLayout.width + worldX
+            ];
+          const occupied =
+            worldObjectsRef.current.some(
+              (object) =>
+                object.x === worldX &&
+                object.y === worldY,
+            ) ||
+            storyObjectsRef.current.some(
+              (object) =>
+                object.x === worldX &&
+                object.y === worldY,
+            );
+
+          if (
+            !cell ||
+            cell.collision !== 0 ||
+            occupied
+          ) {
+            blocked.push({
+              x: localX,
+              y: localY,
+            });
+          }
+        }
+      }
+
+      const seedBuffer = new Uint32Array(1);
+      if (
+        typeof crypto !== "undefined" &&
+        crypto.getRandomValues
+      ) {
+        crypto.getRandomValues(seedBuffer);
+      } else {
+        seedBuffer[0] = Date.now() >>> 0;
+      }
+
+      return {
+        mapId: mapIdRef.current,
+        mapLabel: definition.label,
+        previewUrl: definition.previewUrl,
+        mapWidth: activeLayout.width,
+        mapHeight: activeLayout.height,
+        cropX,
+        cropY,
+        arenaWidth,
+        arenaHeight,
+        blocked,
+        seed: seedBuffer[0],
+      };
+    }, []);
+
+  const triggerTrainerBattle = useCallback(
+    (trainer: TrainerStoryObject) => {
+      const currentStory = storyRef.current;
+
+      if (trainer.defeated) {
+        showInteraction(trainer.defeatedText);
+        return;
+      }
+
+      if (
+        !currentStory.starter ||
+        !currentStory.playerPokemon ||
+        !currentStory.firstBattleComplete
+      ) {
+        showInteraction(
+          `${trainer.trainerName}: Volte quando tiver começado sua jornada.`,
+        );
+        return;
+      }
+
+      if (trainerBattleLockRef.current) {
+        return;
+      }
+
+      const context = createBattleContext();
+      if (!context) {
+        return;
+      }
+
+      trainerBattleLockRef.current = true;
+      resetInput();
+      showInteraction(trainer.challengeText);
+      onTrainerBattleTrigger(context, {
+        id: trainer.trainerId,
+        name: trainer.trainerName,
+        party: trainer.party,
+      });
+    },
+    [
+      createBattleContext,
+      onTrainerBattleTrigger,
+      resetInput,
+      showInteraction,
+    ],
+  );
 
   const interact = useCallback(() => {
     if (pausedRef.current) {
@@ -440,6 +672,11 @@ export function OverworldGame({
         return;
       }
 
+      if (storyObject.kind === "trainer") {
+        triggerTrainerBattle(storyObject);
+        return;
+      }
+
       showInteraction(
         `${storyObject.label} ficou no laboratório de Oak.`,
       );
@@ -459,7 +696,7 @@ export function OverworldGame({
   }, [
     onRequestStarterChoice,
     showInteraction,
-    onWildBattleTrigger,
+    triggerTrainerBattle,
   ]);
 
   const loadMap = useCallback(
@@ -503,10 +740,12 @@ export function OverworldGame({
         layoutRef.current = nextLayout;
         worldObjectsRef.current =
           renderableObjects(nextWorldData);
-        storyObjectsRef.current =
-          nextMapId === "oak-lab"
-            ? labStoryObjects(storyRef.current)
-            : [];
+        storyObjectsRef.current = mapStoryObjects(
+          nextMapId,
+          storyRef.current,
+          nextLayout,
+          worldObjectsRef.current,
+        );
         playerRef.current = createPlayer(
           spawn.x,
           spawn.y,
@@ -729,82 +968,6 @@ export function OverworldGame({
       return true;
     };
 
-    const createBattleContext = (): BattleSceneContext | null => {
-      const player = playerRef.current;
-      const activeLayout = layoutRef.current;
-      const definition = WORLD_MAPS[mapIdRef.current];
-
-      if (!activeLayout || !definition) {
-        return null;
-      }
-
-      const arenaWidth = Math.min(13, activeLayout.width);
-      const arenaHeight = Math.min(7, activeLayout.height);
-      const cropX = Math.max(
-        0,
-        Math.min(
-          activeLayout.width - arenaWidth,
-          player.tileX - Math.floor(arenaWidth / 2),
-        ),
-      );
-      const cropY = Math.max(
-        0,
-        Math.min(
-          activeLayout.height - arenaHeight,
-          player.tileY - Math.floor(arenaHeight / 2),
-        ),
-      );
-
-      const blocked: Array<{ x: number; y: number }> = [];
-
-      for (let localY = 0; localY < arenaHeight; localY += 1) {
-        for (let localX = 0; localX < arenaWidth; localX += 1) {
-          const worldX = cropX + localX;
-          const worldY = cropY + localY;
-          const cell =
-            activeLayout.cells[
-              worldY * activeLayout.width + worldX
-            ];
-          const occupied =
-            worldObjectsRef.current.some(
-              (object) =>
-                object.x === worldX &&
-                object.y === worldY,
-            ) ||
-            storyObjectsRef.current.some(
-              (object) =>
-                object.x === worldX &&
-                object.y === worldY,
-            );
-
-          if (!cell || cell.collision !== 0 || occupied) {
-            blocked.push({ x: localX, y: localY });
-          }
-        }
-      }
-
-      const seedBuffer = new Uint32Array(1);
-      if (typeof crypto !== "undefined" && crypto.getRandomValues) {
-        crypto.getRandomValues(seedBuffer);
-      } else {
-        seedBuffer[0] = Date.now() >>> 0;
-      }
-
-      return {
-        mapId: mapIdRef.current,
-        mapLabel: definition.label,
-        previewUrl: definition.previewUrl,
-        mapWidth: activeLayout.width,
-        mapHeight: activeLayout.height,
-        cropX,
-        cropY,
-        arenaWidth,
-        arenaHeight,
-        blocked,
-        seed: seedBuffer[0],
-      };
-    };
-
     const maybeTriggerLabBattle = () => {
       const player = playerRef.current;
       const currentStory = storyRef.current;
@@ -887,6 +1050,83 @@ export function OverworldGame({
       onWildBattleTrigger(context, encounter);
     };
 
+    const maybeTriggerTrainerBattle = () => {
+      const activeLayout = layoutRef.current;
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+
+      if (
+        !activeLayout ||
+        !currentStory.firstBattleComplete ||
+        trainerBattleLockRef.current
+      ) {
+        return;
+      }
+
+      for (const object of storyObjectsRef.current) {
+        if (
+          object.kind !== "trainer" ||
+          object.defeated
+        ) {
+          continue;
+        }
+
+        const delta =
+          DIRECTION_DELTA[object.facing];
+
+        for (
+          let distance = 1;
+          distance <= object.sightRange;
+          distance += 1
+        ) {
+          const x =
+            object.x + delta.x * distance;
+          const y =
+            object.y + delta.y * distance;
+
+          if (
+            x < 0 ||
+            y < 0 ||
+            x >= activeLayout.width ||
+            y >= activeLayout.height
+          ) {
+            break;
+          }
+
+          if (
+            player.tileX === x &&
+            player.tileY === y
+          ) {
+            triggerTrainerBattle(object);
+            return;
+          }
+
+          const cell =
+            activeLayout.cells[
+              y * activeLayout.width + x
+            ];
+
+          if (
+            !cell ||
+            cell.collision !== 0 ||
+            worldObjectsRef.current.some(
+              (worldObject) =>
+                worldObject.x === x &&
+                worldObject.y === y,
+            ) ||
+            storyObjectsRef.current.some(
+              (storyObject) =>
+                storyObject.id !== object.id &&
+                storyObject.x === x &&
+                storyObject.y === y,
+            )
+          ) {
+            break;
+          }
+        }
+      }
+    };
+
     const renderScene = (
       now: number,
       deltaTime: number,
@@ -939,6 +1179,7 @@ export function OverworldGame({
           }
 
           maybeTriggerLabBattle();
+          maybeTriggerTrainerBattle();
           maybeTriggerWildBattle();
         }
       }
@@ -1022,11 +1263,13 @@ export function OverworldGame({
 
     return () => cancelAnimationFrame(animationFrame);
   }, [
+    createBattleContext,
     loadMap,
     onFirstBattleTrigger,
     onWildBattleTrigger,
     resetInput,
     showInteraction,
+    triggerTrainerBattle,
   ]);
 
   const handlePadPointerDown = (

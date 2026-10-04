@@ -44,6 +44,7 @@ export type BattleOutcome = {
 export type BattleEncounter =
   | {
       kind: "trainer";
+      trainerId?: string;
       trainerName?: string;
       rivals?: readonly DuelPokemonBuild[];
     }

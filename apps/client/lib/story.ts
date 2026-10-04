@@ -19,6 +19,7 @@ export type StoryState = {
   firstBattleComplete: boolean;
   playerPokemon: PokemonProgression | null;
   capturedPokemon: CapturedPokemon[];
+  defeatedTrainerIds: string[];
 };
 
 export const DEFAULT_STORY_STATE: StoryState = {
@@ -27,6 +28,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   firstBattleComplete: false,
   playerPokemon: null,
   capturedPokemon: [],
+  defeatedTrainerIds: [],
 };
 
 export const STARTER_META: Record<
@@ -63,6 +65,7 @@ export function chooseStarter(
     firstBattleComplete: false,
     playerPokemon: createStarterProgression(starter),
     capturedPokemon: [],
+    defeatedTrainerIds: [],
   };
 }
 
@@ -146,6 +149,19 @@ export function normalizeStoryState(
           pokemon !== null,
       )
       .slice(0, 5),
+    defeatedTrainerIds: Array.isArray(
+      input?.defeatedTrainerIds,
+    )
+      ? Array.from(
+          new Set(
+            input.defeatedTrainerIds.filter(
+              (id): id is string =>
+                typeof id === "string" &&
+                id.length > 0,
+            ),
+          ),
+        ).slice(0, 128)
+      : [],
   };
 }
 

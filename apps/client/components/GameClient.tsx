@@ -136,6 +136,24 @@ export function GameClient() {
     }
 
     if (session.encounter.kind === "trainer") {
+      const trainerId = session.encounter.trainerId;
+
+      if (trainerId) {
+        if (outcome.won) {
+          setStory((current) => ({
+            ...current,
+            defeatedTrainerIds:
+              current.defeatedTrainerIds.includes(trainerId)
+                ? current.defeatedTrainerIds
+                : [
+                    ...current.defeatedTrainerIds,
+                    trainerId,
+                  ],
+          }));
+        }
+        return;
+      }
+
       setStory((current) => ({
         ...current,
         firstBattleComplete: true,
@@ -311,6 +329,24 @@ export function GameClient() {
                 kind: "wild",
                 species: encounter.species,
                 level: encounter.level,
+              },
+            });
+          }
+        }}
+        onTrainerBattleTrigger={(context, trainer) => {
+          if (
+            story.starter &&
+            story.playerPokemon &&
+            story.firstBattleComplete &&
+            !story.defeatedTrainerIds.includes(trainer.id)
+          ) {
+            setBattleSession({
+              context,
+              encounter: {
+                kind: "trainer",
+                trainerId: trainer.id,
+                trainerName: trainer.name,
+                rivals: trainer.party,
               },
             });
           }
