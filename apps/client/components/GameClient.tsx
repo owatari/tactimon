@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   createPokemonProgression,
+  grantTrainerBattleProgressToParty,
   grantWildBattleProgressToParty,
   type DuelPokemonBuild,
   type PokemonProgression,
@@ -39,6 +40,57 @@ type ProgressionQueueEntry = {
   position: number;
   total: number;
 };
+
+function applyPartyProgressionRewards(
+  current: StoryState,
+  rewards: readonly ProgressionReward[],
+): StoryState {
+  const nextStarter =
+    rewards[0]?.progression ??
+    current.playerPokemon;
+  const nextCaptured = current.capturedPokemon.map(
+    (pokemon, index) => {
+      const reward = rewards[index + 1];
+      if (!reward) {
+        return pokemon;
+      }
+
+      return {
+        ...reward.progression,
+        species: pokemon.species,
+      };
+    },
+  );
+
+  return {
+    ...current,
+    playerPokemon: nextStarter,
+    capturedPokemon: nextCaptured.slice(0, 5),
+  };
+}
+
+function progressionQueueFor(
+  rewards: readonly ProgressionReward[],
+): ProgressionQueueEntry[] {
+  const visible = rewards
+    .map((reward, partyIndex) => ({
+      partyIndex,
+      reward,
+    }))
+    .filter(
+      ({ reward }) =>
+        reward.xpGained > 0 ||
+        reward.levelsGained > 0 ||
+        reward.autoLearnedMoves.length > 0 ||
+        reward.pendingMoves.length > 0,
+    );
+
+  return visible.map((entry, index) => ({
+    ...entry,
+    position: index + 1,
+    total: visible.length,
+  }));
+}
 
 export function GameClient() {
   const [story, setStory] = useState<StoryState>(
@@ -135,29 +187,56 @@ export function GameClient() {
       return;
     }
 
+    const partySnapshot = story.playerPokemon
+      ? [
+          story.playerPokemon,
+          ...story.capturedPokemon,
+        ].slice(0, 6)
+      : [];
+
     if (session.encounter.kind === "trainer") {
-      const trainerId = session.encounter.trainerId;
+      const rewards =
+        partySnapshot.length > 0 &&
+        outcome.defeatedEnemies.length > 0
+          ? grantTrainerBattleProgressToParty(
+              partySnapshot,
+              outcome.defeatedEnemies,
+            )
+          : [];
+      const trainerId =
+        session.encounter.trainerId;
 
-      if (trainerId) {
-        if (outcome.won) {
-          setStory((current) => ({
-            ...current,
-            defeatedTrainerIds:
-              current.defeatedTrainerIds.includes(trainerId)
-                ? current.defeatedTrainerIds
-                : [
-                    ...current.defeatedTrainerIds,
-                    trainerId,
-                  ],
-          }));
+      setStory((current) => {
+        let next = applyPartyProgressionRewards(
+          current,
+          rewards,
+        );
+
+        if (trainerId) {
+          if (
+            outcome.won &&
+            !next.defeatedTrainerIds.includes(trainerId)
+          ) {
+            next = {
+              ...next,
+              defeatedTrainerIds: [
+                ...next.defeatedTrainerIds,
+                trainerId,
+              ],
+            };
+          }
+          return next;
         }
-        return;
-      }
 
-      setStory((current) => ({
-        ...current,
-        firstBattleComplete: true,
-      }));
+        return {
+          ...next,
+          firstBattleComplete: true,
+        };
+      });
+
+      setProgressionQueue(
+        progressionQueueFor(rewards),
+      );
       return;
     }
 
@@ -172,10 +251,6 @@ export function GameClient() {
       return;
     }
 
-    const partySnapshot = [
-      story.playerPokemon,
-      ...story.capturedPokemon,
-    ].slice(0, 6);
     const rewards = grantWildBattleProgressToParty(
       partySnapshot,
       {
@@ -186,61 +261,32 @@ export function GameClient() {
     );
 
     setStory((current) => {
-      const nextStarter =
-        rewards[0]?.progression ??
-        current.playerPokemon;
-      const nextCaptured = current.capturedPokemon.map(
-        (pokemon, index) => {
-          const reward = rewards[index + 1];
-          if (!reward) {
-            return pokemon;
-          }
-
-          return {
-            ...reward.progression,
-            species: pokemon.species,
-          };
-        },
+      const next = applyPartyProgressionRewards(
+        current,
+        rewards,
       );
 
       if (
-        outcome.capture?.success &&
-        nextCaptured.length < 5
+        !outcome.capture?.success ||
+        next.capturedPokemon.length >= 5
       ) {
-        nextCaptured.push(
+        return next;
+      }
+
+      return {
+        ...next,
+        capturedPokemon: [
+          ...next.capturedPokemon,
           createPokemonProgression(
             outcome.capture.species,
             outcome.capture.level,
           ),
-        );
-      }
-
-      return {
-        ...current,
-        playerPokemon: nextStarter,
-        capturedPokemon: nextCaptured.slice(0, 5),
+        ].slice(0, 5),
       };
     });
 
-    const visibleRewards = rewards
-      .map((reward, partyIndex) => ({
-        partyIndex,
-        reward,
-      }))
-      .filter(
-        ({ reward }) =>
-          reward.xpGained > 0 ||
-          reward.levelsGained > 0 ||
-          reward.autoLearnedMoves.length > 0 ||
-          reward.pendingMoves.length > 0,
-      );
-
     setProgressionQueue(
-      visibleRewards.map((entry, index) => ({
-        ...entry,
-        position: index + 1,
-        total: visibleRewards.length,
-      })),
+      progressionQueueFor(rewards),
     );
   };
 

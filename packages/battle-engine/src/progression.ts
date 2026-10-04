@@ -165,9 +165,12 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
  * experience formula.
  */
 export const GEN_III_BASE_EXPERIENCE: Record<
-  WildSpeciesId,
+  DuelSpeciesId,
   number
 > = {
+  bulbasaur: 64,
+  charmander: 65,
+  squirtle: 66,
   pidgey: 55,
   rattata: 57,
 };
@@ -369,13 +372,35 @@ export function normalizePokemonProgression(
  * current early prototype, so every other multiplier is 1.
  */
 export function experienceRewardForWild(
-  species: WildSpeciesId,
+  species: DuelSpeciesId,
   enemyLevel: number,
 ): number {
   const baseExperience = GEN_III_BASE_EXPERIENCE[species];
   const level = boundedLevel(enemyLevel);
 
   return Math.floor((baseExperience * level) / 7);
+}
+
+export function experienceRewardForTrainer(
+  species: DuelSpeciesId,
+  enemyLevel: number,
+  participants = 1,
+): number {
+  const base = experienceRewardForWild(
+    species,
+    enemyLevel,
+  );
+  const shared = Math.max(
+    1,
+    Math.floor(
+      base /
+        Math.max(1, Math.trunc(participants)),
+    ),
+  );
+
+  // FireRed divides the base reward between participants first,
+  // then applies the trainer-battle 150% multiplier.
+  return Math.floor((shared * 150) / 100);
 }
 
 export function totalEv(evs: EvSpread): number {
@@ -439,26 +464,17 @@ function movesLearnedAtLevel(
     .map((entry) => entry.moveId);
 }
 
-export function grantWildBattleProgress(
+function grantExperience(
   input: PokemonProgression,
-  enemy: {
-    species: WildSpeciesId;
-    level: number;
-  },
-  xpRatio = 1,
+  requestedXp: number,
 ): ProgressionReward {
   const progression = normalizePokemonProgression(input);
   const oldLevel = progression.level;
   const experienceBefore = progression.experience;
-  const requestedXp =
+  const awardedXp =
     progression.level >= 100
       ? 0
-      : Math.floor(
-          experienceRewardForWild(
-            enemy.species,
-            enemy.level,
-          ) * Math.max(0, Math.min(1, xpRatio)),
-        );
+      : Math.max(0, Math.trunc(requestedXp));
   const level100Cap = fireRedExperienceAtLevel(
     progression.species,
     100,
@@ -466,7 +482,7 @@ export function grantWildBattleProgress(
 
   progression.experience = Math.min(
     level100Cap,
-    progression.experience + requestedXp,
+    progression.experience + awardedXp,
   );
 
   const xpGained =
@@ -526,6 +542,27 @@ export function grantWildBattleProgress(
   };
 }
 
+export function grantWildBattleProgress(
+  input: PokemonProgression,
+  enemy: {
+    species: WildSpeciesId;
+    level: number;
+  },
+  xpRatio = 1,
+): ProgressionReward {
+  const requestedXp = Math.floor(
+    experienceRewardForWild(
+      enemy.species,
+      enemy.level,
+    ) * Math.max(0, Math.min(1, xpRatio)),
+  );
+
+  return grantExperience(
+    input,
+    requestedXp,
+  );
+}
+
 export function grantWildBattleProgressToParty(
   party: readonly PokemonProgression[],
   enemy: {
@@ -546,6 +583,36 @@ export function grantWildBattleProgressToParty(
       progression,
       enemy,
       participantRatio,
+    ),
+  );
+}
+
+export function grantTrainerBattleProgressToParty(
+  party: readonly PokemonProgression[],
+  enemies: readonly {
+    species: DuelSpeciesId;
+    level: number;
+  }[],
+): ProgressionReward[] {
+  if (party.length === 0) {
+    return [];
+  }
+
+  const xpPerParticipant = enemies.reduce(
+    (total, enemy) =>
+      total +
+      experienceRewardForTrainer(
+        enemy.species,
+        enemy.level,
+        party.length,
+      ),
+    0,
+  );
+
+  return party.map((progression) =>
+    grantExperience(
+      progression,
+      xpPerParticipant,
     ),
   );
 }

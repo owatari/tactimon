@@ -4,8 +4,10 @@ import {
   createStarterProgression,
   experienceForNextLevel,
   experienceProgress,
+  experienceRewardForTrainer,
   experienceRewardForWild,
   fireRedExperienceAtLevel,
+  grantTrainerBattleProgressToParty,
   grantWildBattleProgress,
   grantWildBattleProgressToParty,
   normalizePokemonProgression,
@@ -80,6 +82,75 @@ describe("pokemon progression", () => {
     );
     expect(pidgey.activeMoves).toEqual(["tackle"]);
     expect(pidgey.evs.speed).toBe(0);
+  });
+
+  it("applies FireRed trainer EXP after participant division", () => {
+    expect(
+      experienceRewardForTrainer(
+        "charmander",
+        5,
+        1,
+      ),
+    ).toBe(69);
+    expect(
+      experienceRewardForTrainer(
+        "pidgey",
+        4,
+        2,
+      ),
+    ).toBe(22);
+    expect(
+      experienceRewardForTrainer(
+        "rattata",
+        4,
+        2,
+      ),
+    ).toBe(24);
+  });
+
+  it("rewards every deployed party member for each defeated trainer Pokémon", () => {
+    const rewards =
+      grantTrainerBattleProgressToParty(
+        [
+          createStarterProgression("bulbasaur"),
+          createPokemonProgression("rattata", 5),
+        ],
+        [
+          {
+            species: "pidgey",
+            level: 4,
+          },
+          {
+            species: "rattata",
+            level: 4,
+          },
+        ],
+      );
+
+    expect(rewards).toHaveLength(2);
+    expect(
+      rewards.map((reward) => reward.xpGained),
+    ).toEqual([46, 46]);
+    expect(rewards[0].newLevel).toBe(6);
+    expect(rewards[1].newLevel).toBe(5);
+  });
+
+  it("awards trainer EXP for a defeated rival starter", () => {
+    const [reward] =
+      grantTrainerBattleProgressToParty(
+        [
+          createStarterProgression("bulbasaur"),
+        ],
+        [
+          {
+            species: "charmander",
+            level: 5,
+          },
+        ],
+      );
+
+    expect(reward.xpGained).toBe(69);
+    expect(reward.newLevel).toBe(6);
   });
 
   it("uses Generation III base EXP yields for Route 1 wild Pokémon", () => {

@@ -21,6 +21,7 @@ import {
   type DuelPokemonBuild,
   type DuelState,
   type DuelUnit,
+  type DuelSpeciesId,
   type PokemonProgression,
   type StarterSpeciesId,
   type WildSpeciesId,
@@ -33,6 +34,10 @@ import type { BattleSceneContext } from "@/lib/maps";
 export type BattleOutcome = {
   won: boolean;
   escaped: boolean;
+  defeatedEnemies: Array<{
+    species: DuelSpeciesId;
+    level: number;
+  }>;
   capture?: {
     success: boolean;
     species: WildSpeciesId;
@@ -327,6 +332,16 @@ export function FirstBattle({
     encounter.kind === "trainer"
       ? encounter.trainerName ?? "Blue"
       : null;
+  const defeatedEnemies = state.units
+    .filter(
+      (unit) =>
+        unit.side === "rival" &&
+        unit.hp <= 0,
+    )
+    .map((unit) => ({
+      species: unit.species,
+      level: unit.level,
+    }));
   const isPlayerTurn =
     state.status === "active" &&
     active?.side === "player" &&
@@ -1425,9 +1440,11 @@ export function FirstBattle({
                   ? state.winner === "player"
                     ? "A EXP da vitória é dividida entre todos os Pokémon que entraram na arena e pode gerar level up, EV e novos moves."
                     : "Você retorna ao mapa sem receber recompensa."
-                  : encounter.rivals?.length
-                    ? "A batalha termina somente quando todos os Pokémon de um dos treinadores forem derrotados."
-                    : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
+                  : defeatedEnemies.length > 0
+                    ? `A EXP de treinador dos ${defeatedEnemies.length} Pokémon derrotados será dividida entre todos os seus Pokémon que entraram na arena.`
+                    : encounter.rivals?.length
+                      ? "A batalha termina somente quando todos os Pokémon de um dos treinadores forem derrotados."
+                      : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
             </p>
             <button
               type="button"
@@ -1435,6 +1452,7 @@ export function FirstBattle({
                 onComplete({
                   won: state.winner === "player",
                   escaped: false,
+                  defeatedEnemies,
                   capture: state.captureResult
                     ? {
                         success: state.captureResult.success,
@@ -1461,6 +1479,7 @@ export function FirstBattle({
                 onComplete({
                   won: false,
                   escaped: true,
+                  defeatedEnemies,
                 })
               }
             >
