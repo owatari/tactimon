@@ -891,6 +891,196 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       },
     ],
   },
+  {
+    id: "route24-cale",
+    mapId: "route-24",
+    name: "Bug Catcher Cale",
+    preferredPosition: { x: 12, y: 31 },
+    facing: "west",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Cale: Esta é a Nugget Bridge! Vença os cinco Treinadores e ganhe um prêmio fabuloso!",
+    defeatedText:
+      "Cale: Eu fiz o meu melhor. Não tenho arrependimentos!",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "caterpie",
+        level: 10,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "weedle",
+        level: 10,
+        moves: ["poison-sting", "string-shot"],
+      },
+      {
+        species: "metapod",
+        level: 10,
+        moves: ["harden"],
+      },
+      {
+        species: "kakuna",
+        level: 10,
+        moves: ["harden"],
+      },
+    ],
+  },
+  {
+    id: "route24-ali",
+    mapId: "route-24",
+    name: "Lass Ali",
+    preferredPosition: { x: 10, y: 28 },
+    facing: "east",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Ali: Eu sou a segunda! Agora ficou sério!",
+    defeatedText:
+      "Ali: Eu fiz o meu melhor. Não tenho arrependimentos!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "pidgey",
+        level: 12,
+        moves: ["tackle", "sand-attack", "gust"],
+      },
+      {
+        species: "oddish",
+        level: 12,
+        moves: ["absorb", "sweet-scent"],
+      },
+      {
+        species: "bellsprout",
+        level: 12,
+        moves: ["vine-whip", "growth", "wrap"],
+      },
+    ],
+  },
+  {
+    id: "route24-timmy",
+    mapId: "route-24",
+    name: "Youngster Timmy",
+    preferredPosition: { x: 12, y: 25 },
+    facing: "west",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Timmy: Aqui está o número 3! Não vou facilitar!",
+    defeatedText:
+      "Timmy: Eu fiz o meu melhor. Não tenho arrependimentos!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "sandshrew",
+        level: 14,
+        moves: ["scratch", "defense-curl", "sand-attack"],
+      },
+      {
+        species: "ekans",
+        level: 14,
+        moves: ["bind", "leer", "poison-sting", "bite"],
+      },
+    ],
+  },
+  {
+    id: "route24-reli",
+    mapId: "route-24",
+    name: "Lass Reli",
+    preferredPosition: { x: 10, y: 22 },
+    facing: "east",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Reli: Eu sou a número 4! Já está cansando?",
+    defeatedText:
+      "Reli: Eu fiz o meu melhor, então não tenho arrependimentos!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "nidoran-m",
+        level: 16,
+        moves: ["peck", "leer"],
+      },
+      {
+        species: "nidoran-f",
+        level: 16,
+        moves: ["scratch", "growl", "tail-whip"],
+      },
+    ],
+  },
+  {
+    id: "route24-ethan",
+    mapId: "route-24",
+    name: "Camper Ethan",
+    preferredPosition: { x: 12, y: 19 },
+    facing: "west",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/039_camper.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Ethan: Certo! Eu sou o número 5! Vou passar por cima de você!",
+    defeatedText:
+      "Ethan: Eu fiz o meu melhor. Não tenho arrependimentos!",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "mankey",
+        level: 18,
+        moves: ["scratch", "leer"],
+      },
+    ],
+  },
+  {
+    id: "route24-shane",
+    mapId: "route-24",
+    name: "Camper Shane",
+    preferredPosition: { x: 5, y: 21 },
+    facing: "north",
+    sightRange: 5,
+    spriteUrl: "/game-assets/overworld/039_camper.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Shane: Eu vi sua façanha lá da grama!",
+    defeatedText:
+      "Shane: Eu me escondi porque as pessoas na ponte me assustaram.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "rattata",
+        level: 14,
+        moves: ["tackle", "tail-whip", "quick-attack"],
+      },
+      {
+        species: "ekans",
+        level: 14,
+        moves: ["bind", "leer", "poison-sting", "bite"],
+      },
+    ],
+  },
 ];
 
 export function trainerPrizeMoney(
