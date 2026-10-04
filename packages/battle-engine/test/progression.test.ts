@@ -643,3 +643,25 @@ describe("Cerulean Gym trainer species", () => {
     ]);
   });
 });
+
+
+describe("Cerulean rival species", () => {
+  it("uses FireRed growth and EXP for Pidgeotto and Abra", () => {
+    expect(fireRedExperienceAtLevel("pidgeotto", 17)).toBe(3_120);
+    expect(fireRedExperienceAtLevel("abra", 16)).toBe(2_535);
+    expect(experienceRewardForTrainer("pidgeotto", 17, 1)).toBe(411);
+    expect(experienceRewardForTrainer("abra", 16, 1)).toBe(249);
+  });
+
+  it("creates their canonical early move sets", () => {
+    expect(createPokemonProgression("pidgeotto", 17).activeMoves).toEqual([
+      "tackle",
+      "sand-attack",
+      "gust",
+      "quick-attack",
+    ]);
+    expect(createPokemonProgression("abra", 16).activeMoves).toEqual([
+      "teleport",
+    ]);
+  });
+});

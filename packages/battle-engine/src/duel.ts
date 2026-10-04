@@ -34,6 +34,8 @@ export type WildSpeciesId =
   | "clefairy"
   | "geodude";
 export type TrainerSpeciesId =
+  | "pidgeotto"
+  | "abra"
   | "onix"
   | "sandshrew"
   | "grimer"
@@ -78,6 +80,13 @@ export type DuelMoveId =
   | "scratch"
   | "growl"
   | "tail-whip"
+  | "sand-attack"
+  | "gust"
+  | "quick-attack"
+  | "teleport"
+  | "withdraw"
+  | "sleep-powder"
+  | "leech-seed"
   | "string-shot"
   | "poison-sting"
   | "stun-spore"
@@ -222,7 +231,8 @@ export interface DuelMove {
     | "defense-down"
     | "defense-up"
     | "speed-down"
-    | "heal-self";
+    | "heal-self"
+    | "trainer-teleport-fail";
 }
 
 export type DuelPresentationEvent =
@@ -590,6 +600,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 35,
     speed: 56,
     moves: ["tackle", "growl"],
+  },
+  pidgeotto: {
+    name: "Pidgeotto",
+    type: "flying",
+    types: ["normal", "flying"],
+    hp: 63,
+    attack: 60,
+    defense: 55,
+    specialAttack: 50,
+    specialDefense: 50,
+    speed: 71,
+    moves: ["tackle", "sand-attack", "gust", "quick-attack"],
+  },
+  abra: {
+    name: "Abra",
+    type: "psychic",
+    types: ["psychic"],
+    hp: 25,
+    attack: 20,
+    defense: 15,
+    specialAttack: 105,
+    specialDefense: 55,
+    speed: 90,
+    moves: ["teleport"],
   },
   rattata: {
     name: "Rattata",
@@ -1067,6 +1101,117 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 3,
     effect: "defense-down",
+  },
+  "sand-attack": {
+    id: "sand-attack",
+    name: "Sand Attack",
+    type: "ground",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "tail-whip",
+    description:
+      "Ofusca o alvo; Accuracy ainda não é uma estatística tática do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 3,
+  },
+  gust: {
+    id: "gust",
+    name: "Gust",
+    type: "flying",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "razor-leaf",
+    description: "Rajada Flying de médio alcance.",
+    power: 40,
+    apCost: 4,
+    maxPp: 35,
+    minRange: 1,
+    maxRange: 4,
+  },
+  "quick-attack": {
+    id: "quick-attack",
+    name: "Quick Attack",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Investida rápida contra um alvo próximo.",
+    power: 40,
+    apCost: 3,
+    maxPp: 30,
+    minRange: 1,
+    maxRange: 2,
+  },
+  teleport: {
+    id: "teleport",
+    name: "Teleport",
+    type: "psychic",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Em batalha de Treinador, a tentativa de fuga falha.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 0,
+    maxRange: 0,
+    effect: "trainer-teleport-fail",
+  },
+  withdraw: {
+    id: "withdraw",
+    name: "Withdraw",
+    type: "water",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "harden",
+    description: "Aumenta a Defense do usuário em 1 estágio.",
+    power: null,
+    apCost: 2,
+    maxPp: 40,
+    minRange: 0,
+    maxRange: 0,
+    effect: "defense-up",
+  },
+  "sleep-powder": {
+    id: "sleep-powder",
+    name: "Sleep Powder",
+    type: "grass",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "stun-spore",
+    description:
+      "Pó sonífero; Sleep ainda não é um status persistente do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 3,
+  },
+  "leech-seed": {
+    id: "leech-seed",
+    name: "Leech Seed",
+    type: "grass",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "seed-bomb",
+    description:
+      "Planta sementes drenantes; o efeito volátil ainda não está modelado.",
+    power: null,
+    apCost: 2,
+    maxPp: 10,
+    minRange: 1,
+    maxRange: 3,
   },
   "string-shot": {
     id: "string-shot",
@@ -3204,6 +3349,11 @@ export function applyDuelAction(
       state,
       `${actor.displayName} recuperou ${healed} HP com ${move.name}.`,
     );
+  } else if (move.effect === "trainer-teleport-fail") {
+    appendLog(
+      state,
+      `${actor.displayName} tentou usar ${move.name}, mas não pode fugir de uma batalha de Treinador.`,
+    );
   }
 
   return {
@@ -3407,6 +3557,10 @@ function aiStatusUtility(
       Math.max(1, actor.maxHp);
     if (missingRatio <= 0) return -Infinity;
     return 35 + missingRatio * 120;
+  }
+
+  if (move.effect === "trainer-teleport-fail") {
+    return 1;
   }
 
   return -Infinity;

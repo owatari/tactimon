@@ -1567,3 +1567,85 @@ describe("Cerulean Gym battle moves", () => {
     }
   });
 });
+
+
+describe("Cerulean rival moves", () => {
+  it("keeps trainer Teleport in battle and logs the failed escape", () => {
+    let state = createTrainerDuel({
+      seed: 1301,
+      players: [
+        {
+          species: "abra",
+          level: 16,
+          moves: ["teleport"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 15,
+          moves: ["tackle"],
+        },
+      ],
+    });
+
+    const abra = state.units.find(
+      (unit) => unit.species === "abra",
+    )!;
+    state = { ...state, activeUnitId: abra.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: abra.id,
+      moveId: "teleport",
+      targetId: abra.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.escaped).toBe(false);
+    expect(result.state.status).toBe("active");
+    expect(
+      result.state.log.some((entry) =>
+        entry.includes("não pode fugir de uma batalha de Treinador"),
+      ),
+    ).toBe(true);
+  });
+
+  it("models Withdraw as a self Defense boost", () => {
+    let state = createTrainerDuel({
+      seed: 1302,
+      players: [
+        {
+          species: "squirtle",
+          level: 18,
+          moves: ["withdraw"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 15,
+          moves: ["tackle"],
+        },
+      ],
+    });
+
+    const squirtle = state.units.find(
+      (unit) => unit.species === "squirtle",
+    )!;
+    state = { ...state, activeUnitId: squirtle.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: squirtle.id,
+      moveId: "withdraw",
+      targetId: squirtle.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find((unit) => unit.id === squirtle.id)
+        ?.defenseStage,
+    ).toBe(1);
+  });
+});
