@@ -3845,6 +3845,98 @@ describe("persistent FireRed Sleep", () => {
     expect(awakened.mp).toBe(awakened.maxMp);
     expect(result.state.round).toBe(1);
   });
+  it("skips the fastest sleeping combatant when a battle starts", () => {
+    const state = createTrainerDuel({
+      seed: 1932,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "pikachu",
+          level: 20,
+          moves: ["thunder-shock"],
+          status: "sleep",
+          sleepTurnsRemaining: 3,
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    expect(player.status).toBe("sleep");
+    expect(player.sleepTurnsRemaining).toBe(2);
+    expect(state.activeUnitId).toBe(rival.id);
+    expect(state.round).toBe(1);
+    expect(state.status).toBe("active");
+  });
+
+  it("scans a full 6x10 arena of sleeping combatants without ending the battle", () => {
+    let state = createWildDuel({
+      seed: 1933,
+      width: 13,
+      height: 9,
+      players: [
+        { species: "pikachu", level: 20, moves: ["thunder-shock"] },
+        { species: "pidgeotto", level: 20, moves: ["gust"] },
+        { species: "rattata", level: 20, moves: ["tackle"] },
+        { species: "bulbasaur", level: 20, moves: ["tackle"] },
+        { species: "charmander", level: 20, moves: ["scratch"] },
+        { species: "squirtle", level: 20, moves: ["tackle"] },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 10,
+      wilds: Array.from({ length: 10 }, () => ({
+        species: "rattata" as const,
+        level: 10,
+      })),
+    });
+    const activeId = state.activeUnitId;
+    state = {
+      ...state,
+      units: state.units.map((unit) =>
+        unit.id === activeId
+          ? unit
+          : {
+              ...unit,
+              status: "sleep",
+              sleepTurnsRemaining: 5,
+            },
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: activeId,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.units).toHaveLength(16);
+    expect(result.state.status).toBe("active");
+    expect(result.state.winner).toBeNull();
+    expect(result.state.round).toBe(2);
+    expect(result.state.activeUnitId).toBe(activeId);
+    expect(
+      result.state.units
+        .filter((unit) => unit.id !== activeId)
+        .every(
+          (unit) =>
+            unit.status === "sleep" &&
+            unit.sleepTurnsRemaining === 4,
+        ),
+    ).toBe(true);
+  });
+
 });
 
 
