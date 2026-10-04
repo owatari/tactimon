@@ -544,3 +544,28 @@ describe("Mt. Moon species progression", () => {
     expect(createPokemonProgression("clefairy", 8).activeMoves).toEqual(["pound", "growl"]);
   });
 });
+
+
+describe("Mt. Moon trainer species", () => {
+  it("uses FireRed stats progression inputs for Rocket and Miguel species", () => {
+    expect(createPokemonProgression("sandshrew", 11).activeMoves).toEqual([
+      "scratch",
+      "defense-curl",
+    ]);
+    expect(createPokemonProgression("grimer", 12).activeMoves).toEqual([
+      "pound",
+      "harden",
+    ]);
+    expect(createPokemonProgression("voltorb", 12).activeMoves).toEqual([
+      "tackle",
+    ]);
+    expect(createPokemonProgression("koffing", 12).activeMoves).toEqual([
+      "tackle",
+    ]);
+
+    expect(experienceRewardForTrainer("sandshrew", 11, 1)).toBe(219);
+    expect(experienceRewardForTrainer("grimer", 12, 1)).toBe(231);
+    expect(experienceRewardForTrainer("voltorb", 12, 1)).toBe(264);
+    expect(experienceRewardForTrainer("koffing", 12, 1)).toBe(293);
+  });
+});

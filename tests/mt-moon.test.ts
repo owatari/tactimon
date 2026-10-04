@@ -43,6 +43,37 @@ describe("Mt. Moon", () => {
     expect(resolveLandEncounter("mt-moon-b1f", 0)).toEqual({ species: "paras", level: 7 });
     expect(resolveLandEncounter("mt-moon-b2f", 99)).toEqual({ species: "clefairy", level: 12 });
   });
+  it("places all canonical B2F Rocket and fossil trainers", () => {
+    const trainers = OVERWORLD_TRAINERS.filter(
+      (trainer) => trainer.mapId === "mt-moon-b2f",
+    );
+
+    expect(trainers).toHaveLength(5);
+    expect(
+      trainers.map((trainer) => [
+        trainer.id,
+        trainer.preferredPosition,
+      ]),
+    ).toEqual(
+      expect.arrayContaining([
+        ["mtmoon-rocket-grunt-1", { x: 12, y: 20 }],
+        ["mtmoon-rocket-grunt-2", { x: 18, y: 27 }],
+        ["mtmoon-rocket-grunt-3", { x: 35, y: 12 }],
+        ["mtmoon-rocket-grunt-4", { x: 37, y: 21 }],
+        ["mtmoon-miguel", { x: 13, y: 11 }],
+      ]),
+    );
+
+    expect(
+      trainers.find((trainer) => trainer.id === "mtmoon-rocket-grunt-2")?.party,
+    ).toHaveLength(3);
+    expect(
+      trainers.find((trainer) => trainer.id === "mtmoon-miguel")?.party.map(
+        (pokemon) => pokemon.species,
+      ),
+    ).toEqual(["grimer", "voltorb", "koffing"]);
+  });
+
   it("places the supported canonical 1F trainers at ROM coordinates", () => {
     // Trainer content that needs Magnemite/Voltorb and Oddish/Bellsprout
     // is intentionally added when those species enter the engine.

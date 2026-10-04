@@ -33,7 +33,11 @@ export type WildSpeciesId =
   | "clefairy"
   | "geodude";
 export type TrainerSpeciesId =
-  | "onix";
+  | "onix"
+  | "sandshrew"
+  | "grimer"
+  | "voltorb"
+  | "koffing";
 export type DuelSpeciesId =
   | StarterSpeciesId
   | WildSpeciesId
@@ -752,6 +756,54 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 65,
     speed: 35,
     moves: ["pound", "growl"],
+  },
+  sandshrew: {
+    name: "Sandshrew",
+    type: "ground",
+    types: ["ground"],
+    hp: 50,
+    attack: 75,
+    defense: 85,
+    specialAttack: 20,
+    specialDefense: 30,
+    speed: 40,
+    moves: ["scratch", "defense-curl"],
+  },
+  grimer: {
+    name: "Grimer",
+    type: "poison",
+    types: ["poison"],
+    hp: 80,
+    attack: 80,
+    defense: 50,
+    specialAttack: 40,
+    specialDefense: 50,
+    speed: 25,
+    moves: ["pound", "harden"],
+  },
+  voltorb: {
+    name: "Voltorb",
+    type: "electric",
+    types: ["electric"],
+    hp: 40,
+    attack: 30,
+    defense: 50,
+    specialAttack: 55,
+    specialDefense: 55,
+    speed: 100,
+    moves: ["tackle"],
+  },
+  koffing: {
+    name: "Koffing",
+    type: "poison",
+    types: ["poison"],
+    hp: 40,
+    attack: 65,
+    defense: 95,
+    specialAttack: 60,
+    specialDefense: 45,
+    speed: 35,
+    moves: ["tackle"],
   },
   geodude: {
     name: "Geodude",

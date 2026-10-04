@@ -27,8 +27,12 @@ const SPECIES = {
   zubat: "0041",
   paras: "0046",
   mankey: "0056",
+  sandshrew: "0027",
   geodude: "0074",
+  grimer: "0088",
   onix: "0095",
+  voltorb: "0100",
+  koffing: "0109",
 };
 
 const ANIMATIONS = ["Idle", "Walk", "Attack", "Hurt", "Faint"];

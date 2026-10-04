@@ -168,6 +168,21 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "growl" },
     { level: 25, moveId: "defense-curl" },
   ],
+  sandshrew: [
+    { level: 1, moveId: "scratch" },
+    { level: 6, moveId: "defense-curl" },
+    { level: 17, moveId: "poison-sting" },
+  ],
+  grimer: [
+    { level: 1, moveId: "pound" },
+    { level: 4, moveId: "harden" },
+  ],
+  voltorb: [
+    { level: 1, moveId: "tackle" },
+  ],
+  koffing: [
+    { level: 1, moveId: "tackle" },
+  ],
   geodude: [
     { level: 1, moveId: "tackle" },
     { level: 1, moveId: "defense-curl" },
@@ -328,6 +343,38 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
   zubat: ["speed", "speed", "attack", "speed", "specialDefense", "speed"],
   paras: ["attack", "defense", "attack", "specialDefense", "attack", "hp"],
   clefairy: ["hp", "specialDefense", "hp", "specialAttack", "hp", "defense"],
+  sandshrew: [
+    "defense",
+    "attack",
+    "defense",
+    "attack",
+    "defense",
+    "hp",
+  ],
+  grimer: [
+    "hp",
+    "attack",
+    "hp",
+    "defense",
+    "attack",
+    "hp",
+  ],
+  voltorb: [
+    "speed",
+    "specialAttack",
+    "speed",
+    "specialDefense",
+    "speed",
+    "defense",
+  ],
+  koffing: [
+    "defense",
+    "specialAttack",
+    "defense",
+    "attack",
+    "defense",
+    "hp",
+  ],
   geodude: [
     "defense",
     "attack",
@@ -366,6 +413,10 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   zubat: ["astonish"],
   paras: ["scratch"],
   clefairy: ["pound", "growl"],
+  sandshrew: ["scratch", "defense-curl"],
+  grimer: ["pound", "harden"],
+  voltorb: ["tackle"],
+  koffing: ["tackle"],
   geodude: ["tackle", "defense-curl"],
   onix: ["tackle", "bind"],
 };
@@ -398,6 +449,10 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   zubat: 54,
   paras: 70,
   clefairy: 68,
+  sandshrew: 93,
+  grimer: 90,
+  voltorb: 103,
+  koffing: 114,
   geodude: 86,
   onix: 108,
 };
@@ -425,6 +480,10 @@ export const POKEMON_GROWTH_RATE: Record<
   zubat: "medium-fast",
   paras: "medium-fast",
   clefairy: "fast",
+  sandshrew: "medium-fast",
+  grimer: "medium-fast",
+  voltorb: "medium-fast",
+  koffing: "medium-fast",
   geodude: "medium-slow",
   onix: "medium-fast",
 };
