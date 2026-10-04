@@ -3165,15 +3165,21 @@ function inBounds(
   );
 }
 
-export function getReachableCells(
+function reachableCellsWithCosts(
   state: DuelState,
   unitId: string,
-): DuelPoint[] {
+): {
+  cells: DuelPoint[];
+  costs: Map<string, number>;
+} {
   const unit = state.units.find(
     (candidate) => candidate.id === unitId,
   );
   if (!unit || unit.hp <= 0 || unit.mp <= 0) {
-    return [];
+    return {
+      cells: [],
+      costs: new Map(),
+    };
   }
 
   const occupied = new Set(
@@ -3193,10 +3199,11 @@ export function getReachableCells(
   visited.set(pointKey(unit.position), 0);
 
   const result: DuelPoint[] = [];
+  let queueIndex = 0;
 
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (!current) break;
+  while (queueIndex < queue.length) {
+    const current = queue[queueIndex];
+    queueIndex += 1;
 
     const neighbors = [
       { x: current.point.x + 1, y: current.point.y },
@@ -3229,7 +3236,20 @@ export function getReachableCells(
     }
   }
 
-  return result;
+  return {
+    cells: result,
+    costs: visited,
+  };
+}
+
+export function getReachableCells(
+  state: DuelState,
+  unitId: string,
+): DuelPoint[] {
+  return reachableCellsWithCosts(
+    state,
+    unitId,
+  ).cells;
 }
 
 function sideHasLivingUnit(
@@ -3766,8 +3786,11 @@ export function applyDuelAction(
   }
 
   if (action.kind === "move") {
-    const reachable = getReachableCells(state, actor.id);
-    const target = reachable.find(
+    const reachable = reachableCellsWithCosts(
+      state,
+      actor.id,
+    );
+    const target = reachable.cells.find(
       (cell) =>
         cell.x === action.to.x && cell.y === action.to.y,
     );
@@ -3781,10 +3804,16 @@ export function applyDuelAction(
     }
 
     const from = { ...actor.position };
-    const cost = manhattanDistance(
-      actor.position,
-      action.to,
-    );
+    const cost =
+      reachable.costs.get(pointKey(action.to));
+    if (cost === undefined || cost <= 0) {
+      return {
+        state: input,
+        accepted: false,
+        reason: "cell-not-reachable",
+      };
+    }
+
     actor.position = { ...action.to };
     actor.mp -= cost;
 
