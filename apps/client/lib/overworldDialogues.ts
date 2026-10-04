@@ -11,6 +11,26 @@ export type OverworldDialogueDefinition = {
 export const OVERWORLD_DIALOGUES:
   readonly OverworldDialogueDefinition[] = [
     {
+      id: "route4-woman",
+      mapId: "route-4",
+      label: "Mulher",
+      x: 9,
+      y: 8,
+      spriteUrl: "/game-assets/overworld/023_woman_1.png",
+      dialogue:
+        "Mulher: Ai! Tropecei em um Pokémon rochoso, Geodude!",
+    },
+    {
+      id: "route4-boy",
+      mapId: "route-4",
+      label: "Garoto",
+      x: 15,
+      y: 14,
+      spriteUrl: "/game-assets/overworld/019_boy.png",
+      dialogue:
+        "Garoto: Uau, essa é a Boulder Badge! Brock não é só forte; as pessoas gostam e respeitam ele. Quero me tornar um Líder de Ginásio como ele.",
+    },
+    {
       id: "pewter-gym-guy",
       mapId: "pewter-gym",
       label: "Gym Guide",

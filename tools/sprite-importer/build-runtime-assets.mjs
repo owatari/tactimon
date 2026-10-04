@@ -26,6 +26,7 @@ const SPECIES = {
   jigglypuff: "0039",
   zubat: "0041",
   paras: "0046",
+  parasect: "0047",
   mankey: "0056",
   sandshrew: "0027",
   geodude: "0074",

@@ -341,6 +341,41 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ],
   },
   {
+    id: "route4-crissy",
+    mapId: "route-4",
+    name: "Lass Crissy",
+    preferredPosition: { x: 75, y: 3 },
+    facing: "east",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Crissy: Vim ao Mt. Moon procurando Pokémon cogumelo.",
+    defeatedText:
+      "Crissy: Talvez não haja mais cogumelos por aqui. Acho que capturei todos.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "paras",
+        level: 31,
+        moves: ["scratch", "stun-spore", "poison-powder"],
+      },
+      {
+        species: "paras",
+        level: 31,
+        moves: ["scratch", "stun-spore", "poison-powder"],
+      },
+      {
+        species: "parasect",
+        level: 31,
+        moves: ["scratch", "stun-spore", "poison-powder"],
+      },
+    ],
+  },
+  {
     id: "mtmoon-iris",
     mapId: "mt-moon-1f",
     name: "Lass Iris",

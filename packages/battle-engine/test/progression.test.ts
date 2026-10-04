@@ -540,7 +540,10 @@ describe("Mt. Moon species progression", () => {
 
   it("creates playable early cave movesets", () => {
     expect(createPokemonProgression("zubat", 8).activeMoves).toEqual(["astonish"]);
-    expect(createPokemonProgression("paras", 8).activeMoves).toEqual(["scratch"]);
+    expect(createPokemonProgression("paras", 8).activeMoves).toEqual([
+      "scratch",
+      "stun-spore",
+    ]);
     expect(createPokemonProgression("clefairy", 8).activeMoves).toEqual(["pound", "growl"]);
   });
 });
@@ -567,5 +570,37 @@ describe("Mt. Moon trainer species", () => {
     expect(experienceRewardForTrainer("grimer", 12, 1)).toBe(231);
     expect(experienceRewardForTrainer("voltorb", 12, 1)).toBe(264);
     expect(experienceRewardForTrainer("koffing", 12, 1)).toBe(293);
+  });
+});
+
+
+describe("Route 4 Crissy species", () => {
+  it("supports Parasect with FireRed growth, EXP, PP and usable powder moves", () => {
+    expect(fireRedExperienceAtLevel("parasect", 31)).toBe(29_791);
+    expect(experienceRewardForTrainer("parasect", 31, 1)).toBe(850);
+
+    expect(createPokemonProgression("paras", 31).activeMoves).toEqual([
+      "scratch",
+      "stun-spore",
+      "poison-powder",
+    ]);
+    expect(createPokemonProgression("parasect", 31).activeMoves).toEqual([
+      "scratch",
+      "stun-spore",
+      "poison-powder",
+    ]);
+
+    expect(DUEL_MOVES["stun-spore"]).toMatchObject({
+      maxPp: 30,
+      minRange: 1,
+      secondaryStatus: "paralysis",
+      secondaryEffectChance: 75,
+    });
+    expect(DUEL_MOVES["poison-powder"]).toMatchObject({
+      maxPp: 35,
+      minRange: 1,
+      secondaryStatus: "poison",
+      secondaryEffectChance: 75,
+    });
   });
 });

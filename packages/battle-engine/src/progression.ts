@@ -162,6 +162,13 @@ export const POKEMON_LEARNSETS: Record<
   ],
   paras: [
     { level: 1, moveId: "scratch" },
+    { level: 7, moveId: "stun-spore" },
+    { level: 13, moveId: "poison-powder" },
+  ],
+  parasect: [
+    { level: 1, moveId: "scratch" },
+    { level: 1, moveId: "stun-spore" },
+    { level: 1, moveId: "poison-powder" },
   ],
   clefairy: [
     { level: 1, moveId: "pound" },
@@ -342,6 +349,7 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
   ],
   zubat: ["speed", "speed", "attack", "speed", "specialDefense", "speed"],
   paras: ["attack", "defense", "attack", "specialDefense", "attack", "hp"],
+  parasect: ["attack", "defense", "attack", "specialDefense", "attack", "defense"],
   clefairy: ["hp", "specialDefense", "hp", "specialAttack", "hp", "defense"],
   sandshrew: [
     "defense",
@@ -411,7 +419,8 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   "nidoran-m": ["peck", "leer"],
   jigglypuff: ["pound", "defense-curl"],
   zubat: ["astonish"],
-  paras: ["scratch"],
+  paras: ["scratch", "stun-spore", "poison-powder"],
+  parasect: ["scratch", "stun-spore", "poison-powder"],
   clefairy: ["pound", "growl"],
   sandshrew: ["scratch", "defense-curl"],
   grimer: ["pound", "harden"],
@@ -448,6 +457,7 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   jigglypuff: 76,
   zubat: 54,
   paras: 70,
+  parasect: 128,
   clefairy: 68,
   sandshrew: 93,
   grimer: 90,
@@ -479,6 +489,7 @@ export const POKEMON_GROWTH_RATE: Record<
   jigglypuff: "fast",
   zubat: "medium-fast",
   paras: "medium-fast",
+  parasect: "medium-fast",
   clefairy: "fast",
   sandshrew: "medium-fast",
   grimer: "medium-fast",

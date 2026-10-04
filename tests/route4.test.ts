@@ -8,6 +8,8 @@ import {
   LAND_ENCOUNTERS,
   resolveLandEncounter,
 } from "../apps/client/lib/wildEncounters";
+import { OVERWORLD_DIALOGUES } from "../apps/client/lib/overworldDialogues";
+import { OVERWORLD_TRAINERS } from "../apps/client/lib/trainers";
 
 describe("Route 4 west of Mt. Moon", () => {
   it("registers the extracted Route 4 layout with canonical music", () => {
@@ -71,6 +73,44 @@ describe("Route 4 west of Mt. Moon", () => {
       species: "ekans",
       level: 12,
     });
+  });
+
+  it("populates the canonical Route 4 NPCs and Crissy encounter", () => {
+    const route4Dialogues = OVERWORLD_DIALOGUES.filter(
+      (dialogue) => dialogue.mapId === "route-4",
+    );
+    expect(
+      route4Dialogues.map((dialogue) => [
+        dialogue.id,
+        { x: dialogue.x, y: dialogue.y },
+      ]),
+    ).toEqual(
+      expect.arrayContaining([
+        ["route4-woman", { x: 9, y: 8 }],
+        ["route4-boy", { x: 15, y: 14 }],
+      ]),
+    );
+
+    const crissy = OVERWORLD_TRAINERS.find(
+      (trainer) => trainer.id === "route4-crissy",
+    );
+    expect(crissy).toMatchObject({
+      mapId: "route-4",
+      preferredPosition: { x: 75, y: 3 },
+      facing: "east",
+      sightRange: 4,
+      moneyMultiplier: 4,
+    });
+    expect(
+      crissy?.party.map((pokemon) => [
+        pokemon.species,
+        pokemon.level,
+      ]),
+    ).toEqual([
+      ["paras", 31],
+      ["paras", 31],
+      ["parasect", 31],
+    ]);
   });
 
   it("opens the canonical Mt. Moon entrance", () => {

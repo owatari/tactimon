@@ -30,6 +30,7 @@ export type WildSpeciesId =
   | "jigglypuff"
   | "zubat"
   | "paras"
+  | "parasect"
   | "clefairy"
   | "geodude";
 export type TrainerSpeciesId =
@@ -74,6 +75,8 @@ export type DuelMoveId =
   | "tail-whip"
   | "string-shot"
   | "poison-sting"
+  | "stun-spore"
+  | "poison-powder"
   | "peck"
   | "leer"
   | "harden"
@@ -743,7 +746,19 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 45,
     specialDefense: 55,
     speed: 25,
-    moves: ["scratch"],
+    moves: ["scratch", "stun-spore", "poison-powder"],
+  },
+  parasect: {
+    name: "Parasect",
+    type: "bug",
+    types: ["bug", "grass"],
+    hp: 60,
+    attack: 95,
+    defense: 80,
+    specialAttack: 60,
+    specialDefense: 80,
+    speed: 30,
+    moves: ["scratch", "stun-spore", "poison-powder"],
   },
   clefairy: {
     name: "Clefairy",
@@ -864,6 +879,7 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   jigglypuff: 170,
   zubat: 255,
   paras: 190,
+  parasect: 75,
   clefairy: 150,
   geodude: 255,
 };
@@ -1013,6 +1029,42 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxRange: 3,
     secondaryStatus: "poison",
     secondaryEffectChance: 30,
+  },
+  "stun-spore": {
+    id: "stun-spore",
+    name: "Stun Spore",
+    type: "grass",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Espalha esporos com 75% de chance de paralisar o alvo.",
+    power: null,
+    apCost: 2,
+    maxPp: 30,
+    minRange: 1,
+    maxRange: 3,
+    secondaryStatus: "paralysis",
+    secondaryEffectChance: 75,
+  },
+  "poison-powder": {
+    id: "poison-powder",
+    name: "PoisonPowder",
+    type: "poison",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "poison-sting",
+    description:
+      "Espalha pó venenoso com 75% de chance de envenenar o alvo.",
+    power: null,
+    apCost: 2,
+    maxPp: 35,
+    minRange: 1,
+    maxRange: 3,
+    secondaryStatus: "poison",
+    secondaryEffectChance: 75,
   },
   peck: {
     id: "peck",
