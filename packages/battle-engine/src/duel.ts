@@ -59,7 +59,16 @@ export type TrainerSpeciesId =
   | "shellder"
   | "goldeen"
   | "staryu"
-  | "starmie";
+  | "starmie"
+  | "pidgeot"
+  | "rhyhorn"
+  | "growlithe"
+  | "exeggcute"
+  | "gyarados"
+  | "alakazam"
+  | "blastoise"
+  | "venusaur"
+  | "charizard";
 export type DuelSpeciesId =
   | StarterSpeciesId
   | WildSpeciesId
@@ -684,6 +693,18 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 71,
     moves: ["tackle", "sand-attack", "gust", "quick-attack"],
   },
+  pidgeot: {
+    name: "Pidgeot",
+    type: "flying",
+    types: ["normal", "flying"],
+    hp: 83,
+    attack: 80,
+    defense: 75,
+    specialAttack: 70,
+    specialDefense: 70,
+    speed: 91,
+    moves: ["gust", "quick-attack", "feather-dance", "agility"],
+  },
   abra: {
     name: "Abra",
     type: "psychic",
@@ -864,6 +885,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 58,
     moves: ["bubble", "withdraw", "water-gun", "bite"],
   },
+  blastoise: {
+    name: "Blastoise",
+    type: "water",
+    types: ["water"],
+    hp: 79,
+    attack: 83,
+    defense: 100,
+    specialAttack: 85,
+    specialDefense: 105,
+    speed: 78,
+    moves: ["water-gun", "bite", "rapid-spin", "withdraw"],
+  },
+  gyarados: {
+    name: "Gyarados",
+    type: "water",
+    types: ["water", "flying"],
+    hp: 95,
+    attack: 125,
+    defense: 79,
+    specialAttack: 60,
+    specialDefense: 100,
+    speed: 81,
+    moves: ["bite", "leer"],
+  },
   ivysaur: {
     name: "Ivysaur",
     type: "grass",
@@ -875,6 +920,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 80,
     speed: 60,
     moves: ["leech-seed", "vine-whip", "poison-powder", "sleep-powder"],
+  },
+  venusaur: {
+    name: "Venusaur",
+    type: "grass",
+    types: ["grass", "poison"],
+    hp: 80,
+    attack: 82,
+    defense: 83,
+    specialAttack: 100,
+    specialDefense: 100,
+    speed: 80,
+    moves: ["razor-leaf", "sweet-scent", "growth", "sleep-powder"],
+  },
+  exeggcute: {
+    name: "Exeggcute",
+    type: "grass",
+    types: ["grass", "psychic"],
+    hp: 60,
+    attack: 40,
+    defense: 80,
+    specialAttack: 60,
+    specialDefense: 45,
+    speed: 40,
+    moves: ["hypnosis", "leech-seed", "confusion", "stun-spore"],
   },
   charmeleon: {
     name: "Charmeleon",
@@ -888,6 +957,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 80,
     moves: ["growl", "ember", "metal-claw", "smokescreen"],
   },
+  growlithe: {
+    name: "Growlithe",
+    type: "fire",
+    types: ["fire"],
+    hp: 55,
+    attack: 70,
+    defense: 45,
+    specialAttack: 70,
+    specialDefense: 50,
+    speed: 60,
+    moves: ["bite", "ember", "leer", "agility"],
+  },
+  charizard: {
+    name: "Charizard",
+    type: "fire",
+    types: ["fire", "flying"],
+    hp: 78,
+    attack: 84,
+    defense: 78,
+    specialAttack: 109,
+    specialDefense: 85,
+    speed: 100,
+    moves: ["ember", "metal-claw", "scary-face", "smokescreen"],
+  },
   kadabra: {
     name: "Kadabra",
     type: "psychic",
@@ -899,6 +992,18 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 70,
     speed: 105,
     moves: ["teleport", "kinesis", "confusion", "disable"],
+  },
+  alakazam: {
+    name: "Alakazam",
+    type: "psychic",
+    types: ["psychic"],
+    hp: 55,
+    attack: 50,
+    defense: 45,
+    specialAttack: 135,
+    specialDefense: 85,
+    speed: 120,
+    moves: ["confusion", "disable", "recover", "kinesis"],
   },
   metapod: {
     name: "Metapod",
@@ -1189,6 +1294,18 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 45,
     speed: 70,
     moves: ["tackle", "bind", "rock-tomb"],
+  },
+  rhyhorn: {
+    name: "Rhyhorn",
+    type: "ground",
+    types: ["ground", "rock"],
+    hp: 80,
+    attack: 85,
+    defense: 95,
+    specialAttack: 30,
+    specialDefense: 30,
+    speed: 25,
+    moves: ["horn-attack", "tail-whip", "fury-attack", "scary-face"],
   },
 };
 
