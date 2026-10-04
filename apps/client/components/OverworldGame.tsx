@@ -23,7 +23,6 @@ import {
   isCounterCell,
   isLedgeCell,
   isLedgeForDirection,
-  isMtMoonEntranceAt,
   isPokemonStoragePcAt,
   isVictoryRoadLeagueGateAt,
   resolveWarpTransitionAt,
@@ -1399,20 +1398,6 @@ export function OverworldGame({
       }
 
       if (
-        isMtMoonEntranceAt(
-          mapIdRef.current,
-          nextX,
-          nextY,
-        )
-      ) {
-        showInteraction(
-          "A entrada de Mt. Moon está aberta, mas o interior ainda está sendo importado.",
-        );
-        player.blockedUntil = now + 500;
-        return false;
-      }
-
-      if (
         isLedgeForDirection(
           activeLayout,
           nextX,
@@ -1541,8 +1526,17 @@ export function OverworldGame({
           player.tileY * activeLayout.width + player.tileX
         ];
 
-      // FireRed General metatile 0x00D is plain tall grass.
-      if (!cell || cell.metatile !== 0x00d) {
+      if (!cell) {
+        return;
+      }
+
+      const terrain = encounterTable.terrain ?? "grass";
+      // Grass encounters keep the FireRed 0x00D metatile rule. Cave tables
+      // instead roll on any walkable cave-floor tile.
+      if (
+        (terrain === "grass" && cell.metatile !== 0x00d) ||
+        (terrain === "cave" && cell.collision !== 0)
+      ) {
         return;
       }
 

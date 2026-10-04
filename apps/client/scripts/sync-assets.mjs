@@ -79,6 +79,12 @@ const files = [
     "maps/layouts/007_pokemoncenter_1f_layout/preview.png",
     "maps/route-4-pokemon-center/preview.png",
   ],
+  ["maps/layouts/113_mtmoon_1f_layout/layout.json", "maps/mt-moon-1f/layout.json"],
+  ["maps/layouts/113_mtmoon_1f_layout/preview.png", "maps/mt-moon-1f/preview.png"],
+  ["maps/layouts/114_mtmoon_b1f_layout/layout.json", "maps/mt-moon-b1f/layout.json"],
+  ["maps/layouts/114_mtmoon_b1f_layout/preview.png", "maps/mt-moon-b1f/preview.png"],
+  ["maps/layouts/115_mtmoon_b2f_layout/layout.json", "maps/mt-moon-b2f/layout.json"],
+  ["maps/layouts/115_mtmoon_b2f_layout/preview.png", "maps/mt-moon-b2f/preview.png"],
   [
     "maps/layouts/009_mart_layout/layout.json",
     "maps/pewter-mart/layout.json",
@@ -343,6 +349,11 @@ const files = [
     "tilesets/42_genericbuilding2/attributes.bin",
     "tilesets/generic-building-2/attributes.bin",
   ],
+
+  ["tilesets/15_cave/tiles.4bpp", "tilesets/cave/tiles.4bpp"],
+  ["tilesets/15_cave/palettes.gbapal", "tilesets/cave/palettes.gbapal"],
+  ["tilesets/15_cave/metatiles.bin", "tilesets/cave/metatiles.bin"],
+  ["tilesets/15_cave/attributes.bin", "tilesets/cave/attributes.bin"],
 
   [
     "tilesets/34_viridianforest/tiles.4bpp",

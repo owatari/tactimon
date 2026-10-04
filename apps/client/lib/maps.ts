@@ -297,6 +297,13 @@ const GENERIC_BUILDING_2_TILESET: TilesetAssetDefinition = {
     "/game-assets/tilesets/generic-building-2/attributes.bin",
 };
 
+const CAVE_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/cave/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/cave/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/cave/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/cave/attributes.bin",
+};
+
 const VIRIDIAN_FOREST_TILESET: TilesetAssetDefinition = {
   tilesUrl:
     "/game-assets/tilesets/viridian-forest/tiles.4bpp",
@@ -401,6 +408,36 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       primary: BUILDING_TILESET,
       secondary: POKEMON_CENTER_TILESET,
     },
+  },
+  "mt-moon-1f": {
+    id: "mt-moon-1f",
+    label: "Mt. Moon 1F",
+    layoutUrl: "/game-assets/maps/mt-moon-1f/layout.json",
+    previewUrl: "/game-assets/maps/mt-moon-1f/preview.png",
+    worldUrl: null,
+    spawn: { x: 18, y: 37 },
+    fallbackMusicId: 288,
+    tilesets: { primary: GENERAL_TILESET, secondary: CAVE_TILESET },
+  },
+  "mt-moon-b1f": {
+    id: "mt-moon-b1f",
+    label: "Mt. Moon B1F",
+    layoutUrl: "/game-assets/maps/mt-moon-b1f/layout.json",
+    previewUrl: "/game-assets/maps/mt-moon-b1f/preview.png",
+    worldUrl: null,
+    spawn: { x: 3, y: 3 },
+    fallbackMusicId: 288,
+    tilesets: { primary: GENERAL_TILESET, secondary: CAVE_TILESET },
+  },
+  "mt-moon-b2f": {
+    id: "mt-moon-b2f",
+    label: "Mt. Moon B2F",
+    layoutUrl: "/game-assets/maps/mt-moon-b2f/layout.json",
+    previewUrl: "/game-assets/maps/mt-moon-b2f/preview.png",
+    worldUrl: null,
+    spawn: { x: 25, y: 21 },
+    fallbackMusicId: 288,
+    tilesets: { primary: GENERAL_TILESET, secondary: CAVE_TILESET },
   },
   "pewter-mart": {
     id: "pewter-mart",
@@ -840,14 +877,6 @@ export function isPokemonStoragePcAt(
   );
 }
 
-export function isMtMoonEntranceAt(
-  mapId: string,
-  x: number,
-  y: number,
-): boolean {
-  return mapId === "route-4" && x === 19 && y === 5;
-}
-
 export function resolveWarpTransitionAt(
   mapId: string,
   x: number,
@@ -874,6 +903,61 @@ export function resolveWarpTransitionAt(
       mapId: "pallet-town",
       spawn: { x: 16, y: 14 },
     };
+  }
+
+  if (mapId === "route-4" && x === 19 && y === 5) {
+    return { mapId: "mt-moon-1f", spawn: { x: 18, y: 37 } };
+  }
+  if (mapId === "mt-moon-1f" && x === 18 && y === 37) {
+    return { mapId: "route-4", spawn: { x: 19, y: 5 } };
+  }
+  if (mapId === "route-4" && x === 32 && y === 5) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 45, y: 4 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 45 && y === 4) {
+    return { mapId: "route-4", spawn: { x: 32, y: 5 } };
+  }
+  if (mapId === "mt-moon-1f" && x === 5 && y === 6) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 3, y: 3 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 3 && y === 3) {
+    return { mapId: "mt-moon-1f", spawn: { x: 5, y: 6 } };
+  }
+  if (mapId === "mt-moon-1f" && x === 19 && y === 14) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 25, y: 4 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 25 && y === 4) {
+    return { mapId: "mt-moon-1f", spawn: { x: 19, y: 14 } };
+  }
+  if (mapId === "mt-moon-1f" && x === 31 && y === 16) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 43, y: 21 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 43 && y === 21) {
+    return { mapId: "mt-moon-1f", spawn: { x: 31, y: 16 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 22 && y === 18) {
+    return { mapId: "mt-moon-b2f", spawn: { x: 25, y: 21 } };
+  }
+  if (mapId === "mt-moon-b2f" && x === 25 && y === 21) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 22, y: 18 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 17 && y === 5) {
+    return { mapId: "mt-moon-b2f", spawn: { x: 31, y: 11 } };
+  }
+  if (mapId === "mt-moon-b2f" && x === 31 && y === 11) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 17, y: 5 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 26 && y === 36) {
+    return { mapId: "mt-moon-b2f", spawn: { x: 17, y: 31 } };
+  }
+  if (mapId === "mt-moon-b2f" && x === 17 && y === 31) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 26, y: 36 } };
+  }
+  if (mapId === "mt-moon-b1f" && x === 39 && y === 4) {
+    return { mapId: "mt-moon-b2f", spawn: { x: 5, y: 10 } };
+  }
+  if (mapId === "mt-moon-b2f" && x === 5 && y === 10) {
+    return { mapId: "mt-moon-b1f", spawn: { x: 39, y: 4 } };
   }
 
   if (

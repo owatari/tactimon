@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  isMtMoonEntranceAt,
+  resolveWarpTransitionAt,
   resolveWorldTransition,
   WORLD_MAPS,
 } from "../apps/client/lib/maps";
@@ -73,12 +73,12 @@ describe("Route 4 west of Mt. Moon", () => {
     });
   });
 
-  it("marks the canonical Mt. Moon entrance for the next content slice", () => {
+  it("opens the canonical Mt. Moon entrance", () => {
     expect(
-      isMtMoonEntranceAt("route-4", 19, 5),
-    ).toBe(true);
-    expect(
-      isMtMoonEntranceAt("route-4", 18, 5),
-    ).toBe(false);
+      resolveWarpTransitionAt("route-4", 19, 5),
+    ).toEqual({
+      mapId: "mt-moon-1f",
+      spawn: { x: 18, y: 37 },
+    });
   });
 });
