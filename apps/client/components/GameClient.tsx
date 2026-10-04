@@ -10,7 +10,7 @@ import {
 import {
   createPokemonProgression,
   grantTrainerBattleProgressToParty,
-  grantWildBattleProgressToParty,
+  grantWildBattlesProgressToParty,
   normalizeDuelMajorStatus,
   normalizeDuelMovePp,
   type DuelItemId,
@@ -538,14 +538,25 @@ export function GameClient() {
       return;
     }
 
-    const rewards = grantWildBattleProgressToParty(
-      partySnapshot,
-      {
-        species: session.encounter.species,
-        level: session.encounter.level,
-      },
-      xpRatio,
-    );
+    const defeatedWilds =
+      outcome.defeatedEnemies.length > 0
+        ? outcome.defeatedEnemies
+        : [
+            {
+              species: session.encounter.species,
+              level: session.encounter.level,
+            },
+          ];
+    const rewards =
+      grantWildBattlesProgressToParty(
+        partySnapshot,
+        defeatedWilds.map((enemy) => ({
+          species:
+            enemy.species as typeof session.encounter.species,
+          level: enemy.level,
+        })),
+        xpRatio,
+      );
 
     setStory((current) => {
       const next = applyPartyProgressionRewards(
@@ -831,6 +842,10 @@ export function GameClient() {
                 kind: "wild",
                 species: encounter.species,
                 level: encounter.level,
+                wilds: encounter.members,
+                areaLevel: encounter.areaLevel,
+                equivalentPartyStrength:
+                  encounter.equivalentPartyStrength,
               },
             });
           }
