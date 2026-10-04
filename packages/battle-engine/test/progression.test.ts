@@ -712,3 +712,27 @@ describe("Route 25 trainer species", () => {
     ]);
   });
 });
+
+
+describe("Cerulean Rocket and Route 5 species", () => {
+  it("uses FireRed progression inputs for Drowzee and Meowth", () => {
+    expect(fireRedExperienceAtLevel("drowzee", 17)).toBe(4_913);
+    expect(fireRedExperienceAtLevel("meowth", 10)).toBe(1_000);
+    expect(experienceRewardForTrainer("drowzee", 17, 1)).toBe(370);
+    expect(experienceRewardForWild("meowth", 10)).toBe(98);
+  });
+
+  it("creates the relevant FireRed move sets", () => {
+    expect(createPokemonProgression("drowzee", 17).activeMoves).toEqual([
+      "hypnosis",
+      "disable",
+      "confusion",
+      "headbutt",
+    ]);
+    expect(createPokemonProgression("meowth", 10).activeMoves).toEqual([
+      "scratch",
+      "growl",
+      "bite",
+    ]);
+  });
+});

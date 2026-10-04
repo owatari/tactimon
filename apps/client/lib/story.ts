@@ -158,6 +158,7 @@ function normalizeCapturedPokemon(
     (candidate.species !== "pidgey" &&
       candidate.species !== "abra" &&
       candidate.species !== "oddish" &&
+      candidate.species !== "meowth" &&
       candidate.species !== "rattata" &&
       candidate.species !== "caterpie" &&
       candidate.species !== "weedle" &&

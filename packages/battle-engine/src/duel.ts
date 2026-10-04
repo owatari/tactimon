@@ -18,6 +18,7 @@ export type WildSpeciesId =
   | "pidgey"
   | "abra"
   | "oddish"
+  | "meowth"
   | "rattata"
   | "caterpie"
   | "weedle"
@@ -40,6 +41,7 @@ export type TrainerSpeciesId =
   | "bellsprout"
   | "machop"
   | "slowpoke"
+  | "drowzee"
   | "onix"
   | "sandshrew"
   | "grimer"
@@ -120,6 +122,9 @@ export type DuelMoveId =
   | "focus-energy"
   | "karate-chop"
   | "confusion"
+  | "hypnosis"
+  | "disable"
+  | "headbutt"
   | "recover"
   | "water-pulse"
   | "swift"
@@ -651,6 +656,18 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 30,
     moves: ["absorb", "sweet-scent"],
   },
+  meowth: {
+    name: "Meowth",
+    type: "normal",
+    types: ["normal"],
+    hp: 40,
+    attack: 45,
+    defense: 35,
+    specialAttack: 40,
+    specialDefense: 40,
+    speed: 90,
+    moves: ["scratch", "growl", "bite"],
+  },
   bellsprout: {
     name: "Bellsprout",
     type: "grass",
@@ -746,6 +763,18 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 40,
     speed: 15,
     moves: ["tackle", "growl", "water-gun", "confusion"],
+  },
+  drowzee: {
+    name: "Drowzee",
+    type: "psychic",
+    types: ["psychic"],
+    hp: 60,
+    attack: 48,
+    defense: 45,
+    specialAttack: 43,
+    specialDefense: 90,
+    speed: 42,
+    moves: ["hypnosis", "disable", "confusion", "headbutt"],
   },
   metapod: {
     name: "Metapod",
@@ -1036,6 +1065,7 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   pidgey: 255,
   abra: 200,
   oddish: 255,
+  meowth: 255,
   rattata: 255,
   caterpie: 255,
   weedle: 255,
@@ -1742,6 +1772,54 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 25,
     minRange: 1,
     maxRange: 4,
+  },
+  hypnosis: {
+    id: "hypnosis",
+    name: "Hypnosis",
+    type: "psychic",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Induz Sleep no jogo original; Sleep ainda não é um status persistente do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 3,
+  },
+  disable: {
+    id: "disable",
+    name: "Disable",
+    type: "normal",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Bloqueia um golpe no jogo original; Disable ainda não é um efeito volátil do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 3,
+  },
+  headbutt: {
+    id: "headbutt",
+    name: "Headbutt",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description:
+      "Cabeçada forte de contato; flinch ainda não é modelado.",
+    power: 70,
+    apCost: 5,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 1,
   },
   recover: {
     id: "recover",
