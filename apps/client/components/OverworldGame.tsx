@@ -34,6 +34,7 @@ import {
   resolveOverworldTrainers,
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
+import { resolveNpcDialogue } from "@/lib/npcDialogues";
 
 const STEP_DURATION_MS = 142;
 const BLOCKED_RETRY_MS = 90;
@@ -771,8 +772,16 @@ export function OverworldGame({
     );
 
     if (object) {
+      const dialogue = resolveNpcDialogue(
+        mapIdRef.current,
+        object.x,
+        object.y,
+        storyRef.current.firstBattleComplete,
+      );
+
       showInteraction(
-        `${displayObjectName(object)} · diálogo ainda não importado`,
+        dialogue ??
+          `${displayObjectName(object)} · diálogo ainda não importado`,
       );
     }
   }, [
