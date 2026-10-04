@@ -3574,3 +3574,22 @@ h1 {
     height: 76px;
   }
 }
+
+
+.battle-item-choice-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.battle-item-choice-name img {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.pokemon-battle-sprite-frame {
+  transform-origin: 50% 100%;
+}
