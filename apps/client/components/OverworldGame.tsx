@@ -138,6 +138,7 @@ type Props = {
     },
   ) => void;
   onMartOpen: () => void;
+  onOverworldStep: () => void;
   onPokemonStorageOpen: () => void;
   onDialogueInteraction: (
     request: DialogueInteractionRequest,
@@ -669,6 +670,7 @@ export function OverworldGame({
   onWildBattleTrigger,
   onTrainerBattleTrigger,
   onMartOpen,
+  onOverworldStep,
   onPokemonStorageOpen,
   onDialogueInteraction,
 }: Props) {
@@ -1190,6 +1192,7 @@ export function OverworldGame({
     advanceDialogue,
     onDialogueInteraction,
     onMartOpen,
+    onOverworldStep,
     onPokemonStorageOpen,
     onRequestStarterChoice,
     showDialogue,
@@ -1993,6 +1996,7 @@ export function OverworldGame({
             mapIdRef.current,
             player,
           );
+          onOverworldStep();
           maybeTriggerLabBattle();
           maybeTriggerCeruleanRivalBattle();
           maybeTriggerSsAnneRivalBattle();
