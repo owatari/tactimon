@@ -278,12 +278,26 @@ describe("Vermilion Gym progression", () => {
     expect(
       isVermilionGymBeamWalkable(
         unlocked!.story,
+        "vermilion-gym",
         5,
         6,
       ),
     ).toBe(true);
     expect(
-      isVermilionGymBeamWalkable(playerB, 5, 6),
+      isVermilionGymBeamWalkable(
+        playerB,
+        "vermilion-gym",
+        5,
+        6,
+      ),
+    ).toBe(false);
+    expect(
+      isVermilionGymBeamWalkable(
+        unlocked!.story,
+        "cerulean-gym",
+        5,
+        6,
+      ),
     ).toBe(false);
     expect(isVermilionGymLocksOpen(playerB)).toBe(
       false,
