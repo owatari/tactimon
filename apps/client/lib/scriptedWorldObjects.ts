@@ -186,6 +186,48 @@ const STATIC_SCRIPTED_WORLD_OBJECTS:
     },
   ];
 
+const CUT_TREE_LOCATIONS = [
+  { id: "viridian-cut-tree-south", mapId: "viridian-city", x: 11, y: 24 },
+  { id: "viridian-cut-tree-north", mapId: "viridian-city", x: 18, y: 5 },
+  { id: "pewter-cut-tree", mapId: "pewter-city", x: 30, y: 5 },
+  { id: "cerulean-cut-tree-south", mapId: "cerulean-city", x: 26, y: 32 },
+  { id: "cerulean-cut-tree-east", mapId: "cerulean-city", x: 50, y: 18 },
+  { id: "route-2-cut-tree-south-1", mapId: "route-2", x: 16, y: 62 },
+  { id: "route-2-cut-tree-south-2", mapId: "route-2", x: 15, y: 69 },
+  { id: "route-2-cut-tree-north", mapId: "route-2", x: 11, y: 13 },
+  { id: "route-2-cut-tree-middle", mapId: "route-2", x: 18, y: 26 },
+  { id: "route-2-cut-tree-gate", mapId: "route-2", x: 6, y: 85 },
+  { id: "route-25-cut-tree", mapId: "route-25", x: 30, y: 3 },
+] as const;
+
+const CUT_TREE_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  CUT_TREE_LOCATIONS.map((tree) => ({
+    id: tree.id,
+    mapId: tree.mapId,
+    label: "Cut Tree",
+    x: tree.x,
+    y: tree.y,
+    spriteUrl: "/game-assets/overworld/095_cut_tree.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    visibleWhen: {
+      kind: "event" as const,
+      namespace: "obstacle" as const,
+      id: tree.id,
+      completed: false,
+    },
+    request: {
+      kind: "script" as const,
+      id: "cut",
+      context: {
+        obstacleId: tree.id,
+      },
+    },
+  }));
+
 const POKEMON_CENTER_MAP_IDS = [
   "viridian-pokemon-center",
   "pewter-pokemon-center",
@@ -270,6 +312,7 @@ const VERMILION_GYM_TRASH_OBJECTS:
 export const SCRIPTED_WORLD_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] = [
     ...STATIC_SCRIPTED_WORLD_OBJECTS,
+    ...CUT_TREE_OBJECTS,
     ...CENTER_NURSES,
     ...PICKUP_OBJECTS,
     ...VERMILION_GYM_TRASH_OBJECTS,

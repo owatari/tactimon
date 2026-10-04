@@ -81,6 +81,38 @@ describe("scripted world object registry", () => {
     ).toContain("sea-cottage-bill");
   });
 
+  it("places canonical FireRed Cut trees on implemented maps", () => {
+    const expected = {
+      "route-2": [
+        [16, 62],
+        [15, 69],
+        [11, 13],
+        [18, 26],
+        [6, 85],
+      ],
+      "viridian-city": [
+        [11, 24],
+        [18, 5],
+      ],
+      "pewter-city": [[30, 5]],
+      "cerulean-city": [
+        [26, 32],
+        [50, 18],
+      ],
+      "vermilion-city": [[19, 24]],
+      "route-25": [[30, 3]],
+    } as const;
+
+    for (const [mapId, positions] of Object.entries(expected)) {
+      const trees = resolveScriptedWorldObjects(mapId)
+        .filter((object) => object.request.kind === "script" && object.request.id === "cut");
+
+      expect(
+        trees.map((tree) => [tree.x, tree.y]),
+      ).toEqual(expect.arrayContaining(positions));
+    }
+  });
+
   it("supports non-blocking future scripted events without a new runtime kind", () => {
     const base =
       resolveScriptedWorldObjects("vermilion-city")
