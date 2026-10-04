@@ -1,8 +1,4 @@
 import { describe, expect, it } from "vitest";
-import type {
-  DuelInventory,
-  DuelItemId,
-} from "../packages/battle-engine/src/duel";
 import {
   MART_MAX_ITEM_QUANTITY,
   buyMartItem,
@@ -13,7 +9,7 @@ import {
 const inventory = (
   potion = 1,
   pokeBall = 5,
-): DuelInventory => ({
+) => ({
   potion,
   "poke-ball": pokeBall,
 });
@@ -103,14 +99,11 @@ describe("Viridian Mart", () => {
   );
 
   it("rejects unknown catalog items", () => {
-    const unknownItem =
-      "antidote" as DuelItemId;
-
     expect(
       validateMartPurchase(
         99_999,
         inventory(),
-        unknownItem,
+        "antidote" as never,
         1,
       ),
     ).toEqual({
