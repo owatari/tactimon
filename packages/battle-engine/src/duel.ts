@@ -1008,6 +1008,15 @@ export function createTrainerDuel(
     party.length,
     rivalParty.length,
   );
+  if (
+    positions.players.length < party.length ||
+    positions.rivals.length < rivalParty.length
+  ) {
+    throw new Error(
+      "Trainer duel arena does not have enough open cells for both teams.",
+    );
+  }
+
   const players = party.map((build, index) =>
     makeUnit(
       build,
@@ -1095,10 +1104,18 @@ export function createStarterDuel(
   ).slice(0, 6);
 
   return createTrainerDuel({
-    seed: options.seed,
-    width: options.width,
-    height: options.height,
-    blocked: options.blocked,
+    ...(options.seed !== undefined
+      ? { seed: options.seed }
+      : {}),
+    ...(options.width !== undefined
+      ? { width: options.width }
+      : {}),
+    ...(options.height !== undefined
+      ? { height: options.height }
+      : {}),
+    ...(options.blocked !== undefined
+      ? { blocked: options.blocked }
+      : {}),
     players: party,
     rivals,
     trainerName: "Blue",
@@ -1130,6 +1147,15 @@ export function createWildDuel(
     party.length,
     1,
   );
+  if (
+    positions.players.length < party.length ||
+    positions.rivals.length < 1
+  ) {
+    throw new Error(
+      "Wild duel arena does not have enough open cells for the encounter.",
+    );
+  }
+
   const players = party.map((build, index) =>
     makeUnit(
       build,
