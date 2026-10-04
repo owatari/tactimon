@@ -6,7 +6,7 @@
     "dev": "pnpm --filter @tactimon/client dev",
     "music": "pnpm --filter @tactimon/client prepare:music",
     "build": "pnpm -r build",
-    "test": "pnpm -r test",
+    "test": "vitest run tests/mart.test.ts && pnpm -r test",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
