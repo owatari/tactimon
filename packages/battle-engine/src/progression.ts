@@ -25,7 +25,8 @@ export type EvSpread = Record<EvStat, number>;
 export type GrowthRate =
   | "medium-slow"
   | "medium-fast"
-  | "fast";
+  | "fast"
+  | "slow";
 
 export interface PokemonProgression {
   species: DuelSpeciesId;
@@ -197,6 +198,34 @@ export const POKEMON_LEARNSETS: Record<
   onix: [
     { level: 1, moveId: "tackle" },
     { level: 8, moveId: "bind" },
+  ],
+  horsea: [
+    { level: 1, moveId: "bubble" },
+    { level: 15, moveId: "leer" },
+    { level: 22, moveId: "water-gun" },
+  ],
+  shellder: [
+    { level: 1, moveId: "tackle" },
+    { level: 8, moveId: "icicle-spear" },
+    { level: 36, moveId: "leer" },
+  ],
+  goldeen: [
+    { level: 1, moveId: "peck" },
+    { level: 1, moveId: "tail-whip" },
+    { level: 15, moveId: "horn-attack" },
+  ],
+  staryu: [
+    { level: 1, moveId: "tackle" },
+    { level: 1, moveId: "harden" },
+    { level: 6, moveId: "water-gun" },
+    { level: 15, moveId: "recover" },
+    { level: 24, moveId: "swift" },
+  ],
+  starmie: [
+    { level: 1, moveId: "water-gun" },
+    { level: 1, moveId: "rapid-spin" },
+    { level: 1, moveId: "recover" },
+    { level: 1, moveId: "swift" },
   ],
 };
 
@@ -399,6 +428,46 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
     "defense",
     "speed",
   ],
+  horsea: [
+    "specialAttack",
+    "specialAttack",
+    "speed",
+    "specialAttack",
+    "defense",
+    "specialAttack",
+  ],
+  shellder: [
+    "defense",
+    "defense",
+    "attack",
+    "defense",
+    "hp",
+    "defense",
+  ],
+  goldeen: [
+    "attack",
+    "speed",
+    "attack",
+    "specialDefense",
+    "attack",
+    "speed",
+  ],
+  staryu: [
+    "speed",
+    "specialAttack",
+    "speed",
+    "specialAttack",
+    "defense",
+    "speed",
+  ],
+  starmie: [
+    "speed",
+    "speed",
+    "specialAttack",
+    "speed",
+    "specialAttack",
+    "speed",
+  ],
 };
 
 const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
@@ -428,6 +497,11 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   koffing: ["tackle"],
   geodude: ["tackle", "defense-curl"],
   onix: ["tackle", "bind"],
+  horsea: ["bubble", "leer"],
+  shellder: ["tackle", "icicle-spear"],
+  goldeen: ["peck", "tail-whip", "horn-attack"],
+  staryu: ["tackle", "harden", "water-gun", "recover"],
+  starmie: ["water-gun", "rapid-spin", "recover", "swift"],
 };
 
 /**
@@ -465,6 +539,11 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   koffing: 114,
   geodude: 86,
   onix: 108,
+  horsea: 83,
+  shellder: 97,
+  goldeen: 111,
+  staryu: 106,
+  starmie: 207,
 };
 
 export const POKEMON_GROWTH_RATE: Record<
@@ -497,6 +576,11 @@ export const POKEMON_GROWTH_RATE: Record<
   koffing: "medium-fast",
   geodude: "medium-slow",
   onix: "medium-fast",
+  horsea: "medium-fast",
+  shellder: "slow",
+  goldeen: "medium-fast",
+  staryu: "slow",
+  starmie: "slow",
 };
 
 export const STARTER_GROWTH_RATE: Record<
@@ -548,6 +632,8 @@ export function fireRedExperienceAtLevel(
       return n * n * n;
     case "fast":
       return Math.floor((4 * n * n * n) / 5);
+    case "slow":
+      return Math.floor((5 * n * n * n) / 4);
   }
 }
 

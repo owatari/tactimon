@@ -31,9 +31,14 @@ const SPECIES = {
   sandshrew: "0027",
   geodude: "0074",
   grimer: "0088",
+  shellder: "0090",
   onix: "0095",
   voltorb: "0100",
   koffing: "0109",
+  horsea: "0116",
+  goldeen: "0118",
+  staryu: "0120",
+  starmie: "0121",
 };
 
 const ANIMATIONS = ["Idle", "Walk", "Attack", "Hurt", "Faint"];

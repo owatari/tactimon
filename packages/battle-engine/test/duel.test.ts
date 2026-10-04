@@ -1462,3 +1462,108 @@ describe("AI utility planning", () => {
     expect(usedMoves).not.toContain("tail-whip");
   });
 });
+
+
+describe("Cerulean Gym battle moves", () => {
+  it("lets Recover restore half max HP without exceeding full HP", () => {
+    let state = createTrainerDuel({
+      seed: 1201,
+      players: [
+        {
+          species: "staryu",
+          level: 18,
+          moves: ["recover", "water-pulse"],
+        },
+      ],
+      rivals: [
+        {
+          species: "geodude",
+          level: 12,
+          moves: ["tackle"],
+        },
+      ],
+      trainerName: "Misty",
+    });
+
+    const staryu = state.units.find(
+      (unit) => unit.species === "staryu",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: staryu.id,
+      units: state.units.map((unit) =>
+        unit.id === staryu.id
+          ? { ...unit, hp: Math.max(1, unit.maxHp - 12) }
+          : unit,
+      ),
+    };
+    const before = state.units.find(
+      (unit) => unit.id === staryu.id,
+    )!;
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: staryu.id,
+      moveId: "recover",
+      targetId: staryu.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    const after = result.state.units.find(
+      (unit) => unit.id === staryu.id,
+    )!;
+    expect(after.hp).toBe(
+      Math.min(
+        before.maxHp,
+        before.hp + Math.max(1, Math.floor(before.maxHp / 2)),
+      ),
+    );
+  });
+
+  it("makes Water Pulse strongly effective against Rock/Ground", () => {
+    let state = createTrainerDuel({
+      seed: 1202,
+      width: 9,
+      height: 7,
+      players: [
+        {
+          species: "staryu",
+          level: 18,
+          moves: ["water-pulse"],
+        },
+      ],
+      rivals: [
+        {
+          species: "geodude",
+          level: 12,
+          moves: ["tackle"],
+        },
+      ],
+    });
+
+    const staryu = state.units.find(
+      (unit) => unit.species === "staryu",
+    )!;
+    const geodude = state.units.find(
+      (unit) => unit.species === "geodude",
+    )!;
+    staryu.position = { x: 2, y: 2 };
+    geodude.position = { x: 5, y: 2 };
+    state = { ...state, activeUnitId: staryu.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: staryu.id,
+      moveId: "water-pulse",
+      targetId: geodude.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    if (result.presentation?.kind === "move") {
+      expect(
+        result.presentation.results[0].typeEffectiveness,
+      ).toBe(4);
+      expect(result.presentation.results[0].damage).toBeGreaterThan(0);
+    }
+  });
+});

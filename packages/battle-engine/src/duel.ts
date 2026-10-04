@@ -38,7 +38,12 @@ export type TrainerSpeciesId =
   | "sandshrew"
   | "grimer"
   | "voltorb"
-  | "koffing";
+  | "koffing"
+  | "horsea"
+  | "shellder"
+  | "goldeen"
+  | "staryu"
+  | "starmie";
 export type DuelSpeciesId =
   | StarterSpeciesId
   | WildSpeciesId
@@ -91,6 +96,13 @@ export type DuelMoveId =
   | "metal-claw"
   | "flame-burst"
   | "water-gun"
+  | "bubble"
+  | "icicle-spear"
+  | "horn-attack"
+  | "recover"
+  | "water-pulse"
+  | "swift"
+  | "rapid-spin"
   | "bite"
   | "aqua-jet"
   | "pound"
@@ -209,7 +221,8 @@ export interface DuelMove {
     | "attack-down"
     | "defense-down"
     | "defense-up"
-    | "speed-down";
+    | "speed-down"
+    | "heal-self";
 }
 
 export type DuelPresentationEvent =
@@ -820,6 +833,66 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 35,
     moves: ["tackle"],
   },
+  horsea: {
+    name: "Horsea",
+    type: "water",
+    types: ["water"],
+    hp: 30,
+    attack: 40,
+    defense: 70,
+    specialAttack: 70,
+    specialDefense: 25,
+    speed: 60,
+    moves: ["bubble", "leer"],
+  },
+  shellder: {
+    name: "Shellder",
+    type: "water",
+    types: ["water"],
+    hp: 30,
+    attack: 65,
+    defense: 100,
+    specialAttack: 45,
+    specialDefense: 25,
+    speed: 40,
+    moves: ["tackle", "icicle-spear"],
+  },
+  goldeen: {
+    name: "Goldeen",
+    type: "water",
+    types: ["water"],
+    hp: 45,
+    attack: 67,
+    defense: 60,
+    specialAttack: 35,
+    specialDefense: 50,
+    speed: 63,
+    moves: ["peck", "tail-whip", "horn-attack"],
+  },
+  staryu: {
+    name: "Staryu",
+    type: "water",
+    types: ["water"],
+    hp: 30,
+    attack: 45,
+    defense: 55,
+    specialAttack: 70,
+    specialDefense: 55,
+    speed: 85,
+    moves: ["tackle", "harden", "recover", "water-pulse"],
+  },
+  starmie: {
+    name: "Starmie",
+    type: "water",
+    types: ["water", "psychic"],
+    hp: 60,
+    attack: 75,
+    defense: 85,
+    specialAttack: 100,
+    specialDefense: 85,
+    speed: 115,
+    moves: ["swift", "recover", "rapid-spin", "water-pulse"],
+  },
   geodude: {
     name: "Geodude",
     type: "rock",
@@ -1287,6 +1360,112 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 25,
     minRange: 1,
     maxRange: 4,
+  },
+  bubble: {
+    id: "bubble",
+    name: "Bubble",
+    type: "water",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "water-gun",
+    description: "Rajada leve de bolhas d'água.",
+    power: 20,
+    apCost: 3,
+    maxPp: 30,
+    minRange: 1,
+    maxRange: 4,
+  },
+  "icicle-spear": {
+    id: "icicle-spear",
+    name: "Icicle Spear",
+    type: "ice",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "rock-tomb",
+    description: "Dispara uma lança de gelo contra o alvo.",
+    power: 10,
+    apCost: 3,
+    maxPp: 30,
+    minRange: 1,
+    maxRange: 4,
+  },
+  "horn-attack": {
+    id: "horn-attack",
+    name: "Horn Attack",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Ataca com o chifre em alcance adjacente.",
+    power: 65,
+    apCost: 5,
+    maxPp: 25,
+    minRange: 1,
+    maxRange: 1,
+  },
+  recover: {
+    id: "recover",
+    name: "Recover",
+    type: "normal",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "harden",
+    description: "Recupera metade do HP máximo do usuário.",
+    power: null,
+    apCost: 3,
+    maxPp: 20,
+    minRange: 0,
+    maxRange: 0,
+    effect: "heal-self",
+  },
+  "water-pulse": {
+    id: "water-pulse",
+    name: "Water Pulse",
+    type: "water",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "water-gun",
+    description: "Pulso de água de médio alcance.",
+    power: 60,
+    apCost: 5,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 4,
+  },
+  swift: {
+    id: "swift",
+    name: "Swift",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "razor-leaf",
+    description: "Dispara estrelas contra um alvo distante.",
+    power: 60,
+    apCost: 4,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 4,
+  },
+  "rapid-spin": {
+    id: "rapid-spin",
+    name: "Rapid Spin",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Gira rapidamente e acerta um inimigo adjacente.",
+    power: 20,
+    apCost: 3,
+    maxPp: 40,
+    minRange: 1,
+    maxRange: 1,
   },
   bite: {
     id: "bite",
@@ -3015,6 +3194,16 @@ export function applyDuelAction(
       state,
       `${move.name} reduziu a Speed de ${target.displayName}.`,
     );
+  } else if (move.effect === "heal-self") {
+    const healed = Math.min(
+      Math.max(1, Math.floor(actor.maxHp / 2)),
+      actor.maxHp - actor.hp,
+    );
+    actor.hp += healed;
+    appendLog(
+      state,
+      `${actor.displayName} recuperou ${healed} HP com ${move.name}.`,
+    );
   }
 
   return {
@@ -3210,6 +3399,14 @@ function aiStatusUtility(
       54 - Math.max(0, actor.defenseStage) * 12 +
         hpPressure,
     );
+  }
+
+  if (move.effect === "heal-self") {
+    const missingRatio =
+      (actor.maxHp - actor.hp) /
+      Math.max(1, actor.maxHp);
+    if (missingRatio <= 0) return -Infinity;
+    return 35 + missingRatio * 120;
   }
 
   return -Infinity;

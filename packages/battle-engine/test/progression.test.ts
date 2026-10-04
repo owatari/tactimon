@@ -604,3 +604,42 @@ describe("Route 4 Crissy species", () => {
     });
   });
 });
+
+
+describe("Cerulean Gym trainer species", () => {
+  it("uses FireRed growth groups and trainer EXP yields", () => {
+    expect(fireRedExperienceAtLevel("horsea", 16)).toBe(4_096);
+    expect(fireRedExperienceAtLevel("shellder", 16)).toBe(5_120);
+    expect(fireRedExperienceAtLevel("goldeen", 19)).toBe(6_859);
+    expect(fireRedExperienceAtLevel("staryu", 18)).toBe(7_290);
+    expect(fireRedExperienceAtLevel("starmie", 21)).toBe(11_576);
+
+    expect(experienceRewardForTrainer("horsea", 16, 1)).toBe(284);
+    expect(experienceRewardForTrainer("shellder", 16, 1)).toBe(332);
+    expect(experienceRewardForTrainer("goldeen", 19, 1)).toBe(451);
+    expect(experienceRewardForTrainer("staryu", 18, 1)).toBe(408);
+    expect(experienceRewardForTrainer("starmie", 21, 1)).toBe(931);
+  });
+
+  it("creates playable FireRed-derived move sets", () => {
+    expect(createPokemonProgression("horsea", 16).activeMoves).toEqual([
+      "bubble",
+      "leer",
+    ]);
+    expect(createPokemonProgression("shellder", 16).activeMoves).toEqual([
+      "tackle",
+      "icicle-spear",
+    ]);
+    expect(createPokemonProgression("goldeen", 19).activeMoves).toEqual([
+      "peck",
+      "tail-whip",
+      "horn-attack",
+    ]);
+    expect(createPokemonProgression("starmie", 21).activeMoves).toEqual([
+      "water-gun",
+      "rapid-spin",
+      "recover",
+      "swift",
+    ]);
+  });
+});
