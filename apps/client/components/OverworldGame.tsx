@@ -118,6 +118,8 @@ type Props = {
   onMartOpen: () => void;
   onPokemonCenterHeal: () => void;
   onPokemonStorageOpen: () => void;
+  onBillInteract: () => string;
+  onBillComputerInteract: () => string;
   onMtMoonFossilChoice: (
     fossil: MtMoonFossilId,
   ) => {
@@ -210,6 +212,10 @@ type FossilStoryObject = StoryObjectBase & {
   fossilName: string;
 };
 
+type BillStoryObject = StoryObjectBase & {
+  kind: "bill";
+};
+
 type StoryObject =
   | StaticStoryObject
   | TrainerStoryObject
@@ -217,7 +223,8 @@ type StoryObject =
   | PokemonCenterNurseStoryObject
   | DialogueStoryObject
   | PickupStoryObject
-  | FossilStoryObject;
+  | FossilStoryObject
+  | BillStoryObject;
 
 function createPlayer(
   x: number,
@@ -598,6 +605,49 @@ function mtMoonFossilStoryObjects(
   ];
 }
 
+function billStoryObjects(
+  story: StoryState,
+): BillStoryObject[] {
+  const stage = story.billStage ?? "unmet";
+
+  if (stage === "teleporter-ready") {
+    return [];
+  }
+
+  if (stage === "unmet") {
+    return [
+      {
+        id: "sea-cottage-bill-clefairy",
+        kind: "bill",
+        label: "Bill",
+        x: 10,
+        y: 6,
+        spriteUrl:
+          "/game-assets/overworld/113_clefairy.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        sheetWidth: 96,
+        sheetHeight: 32,
+      },
+    ];
+  }
+
+  return [
+    {
+      id: "sea-cottage-bill",
+      kind: "bill",
+      label: "Bill",
+      x: 7,
+      y: 5,
+      spriteUrl: "/game-assets/overworld/073_bill.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+    },
+  ];
+}
+
 function pokemonCenterStoryObjects(
   mapId: string,
 ): StoryObject[] {
@@ -668,7 +718,9 @@ function mapStoryObjects(
   const objects: StoryObject[] =
     mapId === "oak-lab"
       ? [...labStoryObjects(story)]
-      : mapId === "viridian-mart" ||
+      : mapId === "sea-cottage"
+        ? billStoryObjects(story)
+        : mapId === "viridian-mart" ||
           mapId === "pewter-mart" ||
           mapId === "cerulean-mart"
         ? martStoryObjects(mapId)
@@ -711,6 +763,8 @@ export function OverworldGame({
   onMartOpen,
   onPokemonCenterHeal,
   onPokemonStorageOpen,
+  onBillInteract,
+  onBillComputerInteract,
   onMtMoonFossilChoice,
   onOverworldItemPickup,
 }: Props) {
@@ -1000,6 +1054,16 @@ export function OverworldGame({
     const targetY = player.tileY + delta.y;
 
     if (
+      mapIdRef.current === "sea-cottage" &&
+      player.facing === "north" &&
+      targetX === 4 &&
+      targetY === 5
+    ) {
+      showInteraction(onBillComputerInteract());
+      return;
+    }
+
+    if (
       isPokemonStoragePcAt(
         mapIdRef.current,
         targetX,
@@ -1071,6 +1135,11 @@ export function OverworldGame({
 
       if (storyObject.kind === "trainer") {
         triggerTrainerBattle(storyObject);
+        return;
+      }
+
+      if (storyObject.kind === "bill") {
+        showInteraction(onBillInteract());
         return;
       }
 
@@ -1157,6 +1226,8 @@ export function OverworldGame({
       );
     }
   }, [
+    onBillComputerInteract,
+    onBillInteract,
     onMartOpen,
     onMtMoonFossilChoice,
     onPokemonCenterHeal,

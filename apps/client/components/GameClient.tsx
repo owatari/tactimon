@@ -54,7 +54,9 @@ import {
   DEFAULT_STORY_STATE,
   depositCapturedPokemon,
   healStoryParty,
+  interactWithBill,
   normalizeStoryState,
+  runBillCellSeparator,
   placeCapturedPokemon,
   registerStoryHealLocation,
   storyCanCapturePokemon,
@@ -820,6 +822,20 @@ export function GameClient() {
         onPokemonStorageOpen={() =>
           setStorageOpen(true)
         }
+        onBillInteract={() => {
+          const preview = interactWithBill(story);
+          setStory((current) =>
+            interactWithBill(current).story,
+          );
+          return preview.message;
+        }}
+        onBillComputerInteract={() => {
+          const preview = runBillCellSeparator(story);
+          setStory((current) =>
+            runBillCellSeparator(current).story,
+          );
+          return preview.message;
+        }}
         onMtMoonFossilChoice={(fossil) => {
           const preview = chooseMtMoonFossil(
             story,

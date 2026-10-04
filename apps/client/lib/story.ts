@@ -34,6 +34,11 @@ export type StoryBadgeId = "boulder" | "cascade";
 export type MtMoonFossilId = "dome" | "helix";
 export type StoryValuableId = "nugget";
 export type StoryValuables = Record<StoryValuableId, number>;
+export type StoryKeyItemId = "ss-ticket";
+export type BillStoryStage =
+  | "unmet"
+  | "teleporter-ready"
+  | "helped";
 
 export type StoryState = {
   starter: StarterSpeciesId | null;
@@ -50,6 +55,8 @@ export type StoryState = {
   money: number;
   inventory: DuelInventory;
   valuables?: StoryValuables;
+  keyItemIds?: StoryKeyItemId[];
+  billStage?: BillStoryStage;
 };
 
 export const DEFAULT_STORY_STATE: StoryState = {
@@ -72,6 +79,8 @@ export const DEFAULT_STORY_STATE: StoryState = {
   valuables: {
     nugget: 0,
   },
+  keyItemIds: [],
+  billStage: "unmet",
 };
 
 export const STARTER_META: Record<
@@ -122,6 +131,8 @@ export function chooseStarter(
     valuables: {
       nugget: 0,
     },
+    keyItemIds: [],
+    billStage: "unmet",
   };
 }
 
@@ -234,6 +245,32 @@ function normalizeValuables(
       : 0;
 
   return { nugget };
+}
+
+function normalizeKeyItemIds(
+  value: unknown,
+): StoryKeyItemId[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return Array.from(
+    new Set(
+      value.filter(
+        (item): item is StoryKeyItemId =>
+          item === "ss-ticket",
+      ),
+    ),
+  );
+}
+
+function normalizeBillStage(
+  value: unknown,
+): BillStoryStage {
+  return value === "teleporter-ready" ||
+    value === "helped"
+    ? value
+    : "unmet";
 }
 
 function normalizeInventory(
@@ -366,6 +403,13 @@ export function normalizeStoryState(
     money: normalizeMoney(input?.money),
     inventory: normalizeInventory(input?.inventory),
     valuables: normalizeValuables(input?.valuables),
+    keyItemIds: normalizeKeyItemIds(input?.keyItemIds),
+    billStage:
+      normalizeKeyItemIds(input?.keyItemIds).includes(
+        "ss-ticket",
+      )
+        ? "helped"
+        : normalizeBillStage(input?.billStage),
   };
 }
 
@@ -585,6 +629,94 @@ export function withdrawBoxedPokemon(
   };
 }
 
+
+export type StoryScriptInteractionResult = {
+  story: StoryState;
+  message: string;
+};
+
+export function hasStoryKeyItem(
+  story: StoryState,
+  itemId: StoryKeyItemId,
+): boolean {
+  return (story.keyItemIds ?? []).includes(itemId);
+}
+
+export function interactWithBill(
+  story: StoryState,
+): StoryScriptInteractionResult {
+  const stage = story.billStage ?? "unmet";
+
+  if (stage === "unmet") {
+    return {
+      story: {
+        ...story,
+        billStage: "teleporter-ready",
+      },
+      message:
+        "Bill: Eu sou o Bill! Um experimento deu errado e eu me misturei com um Pokémon. Vou entrar no teleporter; use meu PC e execute o Cell Separator!",
+    };
+  }
+
+  if (stage === "teleporter-ready") {
+    return {
+      story,
+      message:
+        "Bill está dentro do teleporter. Use o computador à esquerda para executar o Cell Separator.",
+    };
+  }
+
+  if (!hasStoryKeyItem(story, "ss-ticket")) {
+    return {
+      story: {
+        ...story,
+        keyItemIds: [
+          ...(story.keyItemIds ?? []),
+          "ss-ticket",
+        ],
+      },
+      message:
+        "Bill: Yeehah! Obrigado! Pegue este S.S. Ticket. O S.S. Anne está em Vermilion City; vá à festa no meu lugar!",
+    };
+  }
+
+  return {
+    story,
+    message:
+      "Bill: O S.S. Anne está em Vermilion City. Há muitos Treinadores a bordo — aproveite a viagem!",
+  };
+}
+
+export function runBillCellSeparator(
+  story: StoryState,
+): StoryScriptInteractionResult {
+  const stage = story.billStage ?? "unmet";
+
+  if (stage === "unmet") {
+    return {
+      story,
+      message:
+        "O monitor mostra o teleporter. Bill ainda precisa entrar na máquina antes de iniciar a separação.",
+    };
+  }
+
+  if (stage === "teleporter-ready") {
+    return {
+      story: {
+        ...story,
+        billStage: "helped",
+      },
+      message:
+        "Você executou o Cell Separator. O sistema concluiu a separação e Bill voltou ao normal!",
+    };
+  }
+
+  return {
+    story,
+    message:
+      "O Cell Separator está ocioso. Bill já voltou ao normal.",
+  };
+}
 
 export type StoryValuableCollectionResult = {
   accepted: boolean;

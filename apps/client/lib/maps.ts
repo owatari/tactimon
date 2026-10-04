@@ -255,6 +255,13 @@ const BUILDING_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/building/attributes.bin",
 };
 
+const SEA_COTTAGE_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/sea-cottage/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/sea-cottage/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/sea-cottage/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/sea-cottage/attributes.bin",
+};
+
 const LAB_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/lab/tiles.4bpp",
   palettesUrl: "/game-assets/tilesets/lab/palettes.gbapal",
@@ -438,6 +445,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: CERULEAN_TILESET,
+    },
+  },
+  "sea-cottage": {
+    id: "sea-cottage",
+    label: "Sea Cottage",
+    layoutUrl: "/game-assets/maps/sea-cottage/layout.json",
+    previewUrl: "/game-assets/maps/sea-cottage/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 8 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: SEA_COTTAGE_TILESET,
     },
   },
   "cerulean-pokemon-center": {
@@ -1130,6 +1150,29 @@ export function resolveWarpTransitionAt(
   }
   if (mapId === "mt-moon-b2f" && x === 5 && y === 10) {
     return { mapId: "mt-moon-b1f", spawn: { x: 39, y: 4 } };
+  }
+
+  if (
+    mapId === "route-25" &&
+    x === 51 &&
+    y === 4
+  ) {
+    return {
+      mapId: "sea-cottage",
+      spawn: { x: 7, y: 8 },
+    };
+  }
+
+  if (
+    mapId === "sea-cottage" &&
+    y === 9 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "route-25",
+      spawn: { x: 51, y: 5 },
+    };
   }
 
   if (

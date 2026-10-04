@@ -96,6 +96,14 @@ const files = [
     "maps/route-25/preview.png",
   ],
   [
+    "maps/layouts/168_route25_seacottage_layout/layout.json",
+    "maps/sea-cottage/layout.json",
+  ],
+  [
+    "maps/layouts/168_route25_seacottage_layout/preview.png",
+    "maps/sea-cottage/preview.png",
+  ],
+  [
     "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
     "maps/cerulean-pokemon-center/layout.json",
   ],
@@ -337,6 +345,23 @@ const files = [
   [
     "tilesets/27_ceruleangym/attributes.bin",
     "tilesets/cerulean-gym/attributes.bin",
+  ],
+
+  [
+    "tilesets/44_seacottage/tiles.4bpp",
+    "tilesets/sea-cottage/tiles.4bpp",
+  ],
+  [
+    "tilesets/44_seacottage/palettes.gbapal",
+    "tilesets/sea-cottage/palettes.gbapal",
+  ],
+  [
+    "tilesets/44_seacottage/metatiles.bin",
+    "tilesets/sea-cottage/metatiles.bin",
+  ],
+  [
+    "tilesets/44_seacottage/attributes.bin",
+    "tilesets/sea-cottage/attributes.bin",
   ],
 
   ["tilesets/12_building/tiles.4bpp", "tilesets/building/tiles.4bpp"],
