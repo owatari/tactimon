@@ -106,6 +106,7 @@ export type DuelMoveId =
   | "tail-whip"
   | "sand-attack"
   | "gust"
+  | "wing-attack"
   | "quick-attack"
   | "fury-attack"
   | "feather-dance"
@@ -118,6 +119,7 @@ export type DuelMoveId =
   | "absorb"
   | "sweet-scent"
   | "growth"
+  | "synthesis"
   | "wrap"
   | "string-shot"
   | "poison-sting"
@@ -141,9 +143,12 @@ export type DuelMoveId =
   | "razor-leaf"
   | "seed-bomb"
   | "ember"
+  | "flame-wheel"
+  | "flamethrower"
   | "metal-claw"
   | "flame-burst"
   | "water-gun"
+  | "hydro-pump"
   | "bubble"
   | "icicle-spear"
   | "horn-attack"
@@ -718,7 +723,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 70,
     specialDefense: 70,
     speed: 91,
-    moves: ["gust", "quick-attack", "feather-dance", "agility"],
+    moves: ["feather-dance", "wing-attack", "gust", "quick-attack"],
   },
   abra: {
     name: "Abra",
@@ -946,7 +951,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 100,
     specialDefense: 100,
     speed: 80,
-    moves: ["razor-leaf", "sweet-scent", "growth", "sleep-powder"],
+    moves: ["razor-leaf", "sweet-scent", "growth", "synthesis"],
   },
   exeggcute: {
     name: "Exeggcute",
@@ -982,7 +987,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 70,
     specialDefense: 50,
     speed: 60,
-    moves: ["bite", "ember", "leer", "agility"],
+    moves: ["flame-wheel", "take-down", "leer", "agility"],
   },
   charizard: {
     name: "Charizard",
@@ -1524,6 +1529,21 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 4,
   },
+  "wing-attack": {
+    id: "wing-attack",
+    name: "Wing Attack",
+    type: "flying",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "gust",
+    description: "Golpe Flying de contato com 60 power.",
+    power: 60,
+    apCost: 4,
+    maxPp: 35,
+    minRange: 1,
+    maxRange: 1,
+  },
   "quick-attack": {
     id: "quick-attack",
     name: "Quick Attack",
@@ -1720,6 +1740,23 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 0,
     maxRange: 0,
     effect: "special-attack-up",
+  },
+  synthesis: {
+    id: "synthesis",
+    name: "Synthesis",
+    type: "grass",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "recover",
+    description:
+      "Recupera metade do HP máximo em clima neutro.",
+    power: null,
+    apCost: 3,
+    maxPp: 5,
+    minRange: 0,
+    maxRange: 0,
+    effect: "heal-self",
   },
   wrap: {
     id: "wrap",
@@ -2101,6 +2138,42 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     secondaryStatus: "burn",
     secondaryEffectChance: 10,
   },
+  "flame-wheel": {
+    id: "flame-wheel",
+    name: "Flame Wheel",
+    type: "fire",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "ember",
+    description:
+      "Golpe Fire de 60 power com 10% de chance de Burn.",
+    power: 60,
+    apCost: 4,
+    maxPp: 25,
+    minRange: 1,
+    maxRange: 1,
+    secondaryStatus: "burn",
+    secondaryEffectChance: 10,
+  },
+  flamethrower: {
+    id: "flamethrower",
+    name: "Flamethrower",
+    type: "fire",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "flame-burst",
+    description:
+      "Ataque Fire de 95 power com 10% de chance de Burn.",
+    power: 95,
+    apCost: 5,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 4,
+    secondaryStatus: "burn",
+    secondaryEffectChance: 10,
+  },
   "metal-claw": {
     id: "metal-claw",
     name: "Metal Claw",
@@ -2143,6 +2216,21 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     power: 40,
     apCost: 4,
     maxPp: 25,
+    minRange: 1,
+    maxRange: 4,
+  },
+  "hydro-pump": {
+    id: "hydro-pump",
+    name: "Hydro Pump",
+    type: "water",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "water-gun",
+    description: "Ataque Water de 120 power e 5 PP.",
+    power: 120,
+    apCost: 6,
+    maxPp: 5,
     minRange: 1,
     maxRange: 4,
   },
