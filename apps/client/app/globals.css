@@ -2646,6 +2646,7 @@ h1 {
 
 .duel-unit-position {
   overflow: visible;
+  container-type: size;
 }
 
 .duel-unit {

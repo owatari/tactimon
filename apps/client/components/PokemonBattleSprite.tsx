@@ -179,8 +179,10 @@ export function PokemonBattleSprite({
       <div
         className="pokemon-battle-sprite-frame"
         style={{
-          width: `${frameWidthPercent}%`,
-          height: `${frameHeightPercent}%`,
+          width:
+            `min(${frameWidthPercent}cqw, ${frameWidthPercent}cqh)`,
+          height:
+            `min(${frameHeightPercent}cqw, ${frameHeightPercent}cqh)`,
           backgroundImage:
             `url("/game-assets/pokemon-sprites/${data.file}")`,
           backgroundSize:
