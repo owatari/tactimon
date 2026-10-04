@@ -2779,6 +2779,151 @@ describe("late rival psychic mechanics", () => {
 });
 
 
+describe("recoil moves", () => {
+  it("charges Take Down recoil from actual HP damage and consumes one PP", () => {
+    let state = createTrainerDuel({
+      seed: 1911,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "rhyhorn",
+          level: 45,
+          moves: ["take-down"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const playerHpBefore = player.hp;
+    const rivalHpBefore = rival.hp;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 3, y: 2 },
+            },
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "take-down",
+      targetId: rival.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.presentation?.kind).toBe("move");
+    const damage =
+      result.presentation?.kind === "move"
+        ? result.presentation.results[0].damage
+        : 0;
+    const expectedRecoil = Math.max(
+      1,
+      Math.floor(
+        Math.min(damage, rivalHpBefore) / 4,
+      ),
+    );
+    const updatedPlayer = result.state.units.find(
+      (unit) => unit.id === player.id,
+    )!;
+
+    expect(updatedPlayer.hp).toBe(
+      playerHpBefore - expectedRecoil,
+    );
+    expect(updatedPlayer.movePp["take-down"]).toBe(
+      DUEL_MOVES["take-down"].maxPp - 1,
+    );
+  });
+
+  it("lets Take Down recoil faint the attacker and resolve the winner", () => {
+    let state = createTrainerDuel({
+      seed: 1912,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "rhyhorn",
+          level: 45,
+          moves: ["take-down"],
+          currentHp: 1,
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 3, y: 2 },
+            },
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "take-down",
+      targetId: rival.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.hp,
+    ).toBe(0);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === rival.id,
+      )?.hp,
+    ).toBeGreaterThan(0);
+    expect(result.state.status).toBe("finished");
+    expect(result.state.winner).toBe("rival");
+  });
+});
+
+
 describe("battle movement and deployment scale", () => {
   it("derives MP from species Speed instead of giving every Pokémon 3", () => {
     expect(
