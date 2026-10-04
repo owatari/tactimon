@@ -5,7 +5,9 @@ import {
 } from "../apps/client/lib/maps";
 import {
   LAND_ENCOUNTERS,
+  resolveAreaWildLevel,
   resolveLandEncounter,
+  resolveWildPackSize,
 } from "../apps/client/lib/wildEncounters";
 
 describe("Route 2", () => {
@@ -77,5 +79,40 @@ describe("Route 2", () => {
       species: "rattata",
       level: 4,
     });
+  });
+});
+
+
+describe("scaled wild packs", () => {
+  it("uses party count and relative level as the same encounter-strength measure", () => {
+    const areaLevel = resolveAreaWildLevel("route-1");
+    expect(areaLevel).not.toBeNull();
+    const area = areaLevel ?? 3;
+
+    const underleveledSolo =
+      resolveWildPackSize(area, [1], 0);
+    const overleveledSolo =
+      resolveWildPackSize(area, [15], 0);
+    const threeAtLevel =
+      resolveWildPackSize(
+        area,
+        [area, area, area],
+        0,
+      );
+    const sixAtLevel =
+      resolveWildPackSize(
+        area,
+        [area, area, area, area, area, area],
+        0,
+      );
+
+    expect(underleveledSolo).toBeGreaterThanOrEqual(1);
+    expect(underleveledSolo).toBeLessThanOrEqual(2);
+    expect(overleveledSolo).toBeGreaterThanOrEqual(8);
+    expect(overleveledSolo).toBeLessThanOrEqual(10);
+    expect(threeAtLevel).toBeGreaterThanOrEqual(6);
+    expect(threeAtLevel).toBeLessThanOrEqual(8);
+    expect(sixAtLevel).toBeGreaterThanOrEqual(8);
+    expect(sixAtLevel).toBeLessThanOrEqual(10);
   });
 });
