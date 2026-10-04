@@ -66,7 +66,8 @@ import {
 } from "@/lib/overworldDialogues";
 import {
   LAND_ENCOUNTERS,
-  resolveLandEncounter,
+  resolveScaledWildEncounter,
+  type WildEncounter,
 } from "@/lib/wildEncounters";
 import {
   projectPlayerWorldDefinitions,
@@ -121,6 +122,9 @@ type Props = {
     encounter: {
       species: WildSpeciesId;
       level: number;
+      members: readonly WildEncounter[];
+      areaLevel: number;
+      equivalentPartyStrength: number;
     },
   ) => void;
   onTrainerBattleTrigger: (
@@ -1805,18 +1809,38 @@ export function OverworldGame({
       const context = createBattleContext();
       if (!context) return;
 
-      const encounter = resolveLandEncounter(
-        mapIdRef.current,
-        rollBuffer[0] >>> 8,
-      );
+      const partyLevels = [
+        currentStory.playerPokemon,
+        ...currentStory.capturedPokemon,
+      ]
+        .slice(0, 6)
+        .filter(
+          (pokemon) =>
+            pokemon.currentHp > 0,
+        )
+        .map((pokemon) => pokemon.level);
+      const encounter =
+        resolveScaledWildEncounter(
+          mapIdRef.current,
+          rollBuffer[0] >>> 8,
+          partyLevels,
+        );
       if (!encounter) {
         return;
       }
 
+      const primary = encounter.members[0];
       wildBattleLockRef.current = true;
       wildEncounterCooldownRef.current = 5;
       resetInput();
-      onWildBattleTrigger(context, encounter);
+      onWildBattleTrigger(context, {
+        species: primary.species,
+        level: primary.level,
+        members: encounter.members,
+        areaLevel: encounter.areaLevel,
+        equivalentPartyStrength:
+          encounter.equivalentPartyStrength,
+      });
     };
 
     const maybeTriggerTrainerBattle = () => {
