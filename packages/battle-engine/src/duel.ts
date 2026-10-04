@@ -1108,7 +1108,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 135,
     specialDefense: 85,
     speed: 120,
-    moves: ["confusion", "disable", "recover", "kinesis"],
+    moves: ["psychic", "calm-mind", "future-sight", "disable"],
   },
   metapod: {
     name: "Metapod",

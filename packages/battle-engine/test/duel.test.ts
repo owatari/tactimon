@@ -3644,13 +3644,12 @@ describe("FireRed Disable", () => {
       state,
       "player",
     );
+    const aiMove = ai.steps.find(
+      (step) => step.presentation?.kind === "move",
+    )?.presentation;
     expect(
-      ai.steps.find(
-        (step) => step.presentation?.kind === "move",
-      )?.presentation?.kind === "move"
-        ? ai.steps.find(
-            (step) => step.presentation?.kind === "move",
-          )!.presentation!.moveId
+      aiMove?.kind === "move"
+        ? aiMove.moveId
         : null,
     ).toBe("struggle");
   });
@@ -4279,7 +4278,7 @@ describe("Solar Beam charge turns", () => {
 
 
 describe("late-rival direct move sets", () => {
-  it("uses canonical direct moves for Charizard and Gyarados", () => {
+  it("uses canonical direct moves for Charizard, Gyarados, and Alakazam", () => {
     expect(defaultMovesForSpecies("charizard")).toEqual([
       "flamethrower",
       "wing-attack",
@@ -4291,6 +4290,12 @@ describe("late-rival direct move sets", () => {
       "twister",
       "leer",
       "rain-dance",
+    ]);
+    expect(defaultMovesForSpecies("alakazam")).toEqual([
+      "psychic",
+      "calm-mind",
+      "future-sight",
+      "disable",
     ]);
   });
 
