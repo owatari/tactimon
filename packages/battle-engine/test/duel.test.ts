@@ -2626,6 +2626,159 @@ describe("special stat stages", () => {
 });
 
 
+describe("late rival psychic mechanics", () => {
+  it("raises both special stages with Calm Mind and consumes one PP", () => {
+    let state = createTrainerDuel({
+      seed: 1909,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["calm-mind", "psychic"],
+        },
+      ],
+      rivals: [
+        {
+          species: "pidgeot",
+          level: 47,
+          moves: ["gust"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "calm-mind",
+      targetId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    const updated = result.state.units.find(
+      (unit) => unit.id === player.id,
+    )!;
+    expect(updated.specialAttackStage).toBe(1);
+    expect(updated.specialDefenseStage).toBe(1);
+    expect(updated.movePp["calm-mind"]).toBe(
+      DUEL_MOVES["calm-mind"].maxPp - 1,
+    );
+    if (result.presentation?.kind === "move") {
+      expect(result.presentation.results[0].statChanges).toEqual([
+        { stat: "special-attack", delta: 1 },
+        { stat: "special-defense", delta: 1 },
+      ]);
+    }
+
+    expect(rival.specialDefenseStage).toBe(0);
+  });
+
+  it("lets Psychic lower Special Defense through its secondary effect", () => {
+    let state = createTrainerDuel({
+      seed: 1910,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["psychic"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const originalChance =
+      DUEL_MOVES.psychic.secondaryEffectChance;
+    DUEL_MOVES.psychic.secondaryEffectChance = 100;
+    try {
+      const result = applyDuelAction(state, {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "psychic",
+        targetId: rival.id,
+      });
+
+      expect(result.accepted).toBe(true);
+      expect(
+        result.state.units.find(
+          (unit) => unit.id === rival.id,
+        )?.specialDefenseStage,
+      ).toBe(-1);
+      expect(
+        result.state.units.find(
+          (unit) => unit.id === player.id,
+        )?.movePp.psychic,
+      ).toBe(DUEL_MOVES.psychic.maxPp - 1);
+      if (result.presentation?.kind === "move") {
+        expect(
+          result.presentation.results[0].damage,
+        ).toBeGreaterThan(0);
+        expect(
+          result.presentation.results[0].statChanges,
+        ).toEqual([
+          { stat: "special-defense", delta: -1 },
+        ]);
+      }
+    } finally {
+      DUEL_MOVES.psychic.secondaryEffectChance =
+        originalChance;
+    }
+  });
+});
+
+
 describe("battle movement and deployment scale", () => {
   it("derives MP from species Speed instead of giving every Pokémon 3", () => {
     expect(
