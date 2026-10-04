@@ -1,4 +1,5 @@
 import {
+  createPokemonProgression,
   createStarterProgression,
   normalizePokemonProgression,
   rivalStarterFor,
@@ -8,9 +9,8 @@ import {
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 
-export type CapturedPokemon = {
+export type CapturedPokemon = PokemonProgression & {
   species: WildSpeciesId;
-  level: number;
 };
 
 export type StoryState = {
@@ -66,10 +66,66 @@ export function chooseStarter(
   };
 }
 
+function normalizeCapturedPokemon(
+  input: unknown,
+): CapturedPokemon | null {
+  if (!input || typeof input !== "object") {
+    return null;
+  }
+
+  const candidate = input as {
+    species?: unknown;
+    level?: unknown;
+    experience?: unknown;
+    evs?: PokemonProgression["evs"];
+    activeMoves?: PokemonProgression["activeMoves"];
+  };
+
+  if (
+    (candidate.species !== "pidgey" &&
+      candidate.species !== "rattata") ||
+    typeof candidate.level !== "number" ||
+    !Number.isFinite(candidate.level)
+  ) {
+    return null;
+  }
+
+  const level = Math.max(
+    1,
+    Math.min(100, Math.trunc(candidate.level)),
+  );
+  const base = createPokemonProgression(
+    candidate.species,
+    level,
+  );
+  const normalized = normalizePokemonProgression({
+    ...base,
+    experience:
+      typeof candidate.experience === "number"
+        ? candidate.experience
+        : base.experience,
+    evs: candidate.evs ?? base.evs,
+    activeMoves: Array.isArray(candidate.activeMoves)
+      ? candidate.activeMoves
+      : base.activeMoves,
+  });
+
+  return {
+    ...normalized,
+    species: candidate.species,
+  };
+}
+
 export function normalizeStoryState(
   input: Partial<StoryState> | null | undefined,
 ): StoryState {
   const starter = input?.starter ?? null;
+  const rawCaptured = Array.isArray(
+    (input as { capturedPokemon?: unknown } | null | undefined)
+      ?.capturedPokemon,
+  )
+    ? (input as { capturedPokemon: unknown[] }).capturedPokemon
+    : [];
 
   return {
     starter,
@@ -83,20 +139,13 @@ export function normalizeStoryState(
       : starter
         ? createStarterProgression(starter)
         : null,
-    capturedPokemon: Array.isArray(input?.capturedPokemon)
-      ? input.capturedPokemon
-          .filter(
-            (pokemon): pokemon is CapturedPokemon =>
-              (pokemon?.species === "pidgey" ||
-                pokemon?.species === "rattata") &&
-              Number.isFinite(pokemon?.level),
-          )
-          .map((pokemon) => ({
-            species: pokemon.species,
-            level: Math.max(1, Math.min(100, Math.trunc(pokemon.level))),
-          }))
-          .slice(0, 5)
-      : [],
+    capturedPokemon: rawCaptured
+      .map(normalizeCapturedPokemon)
+      .filter(
+        (pokemon): pokemon is CapturedPokemon =>
+          pokemon !== null,
+      )
+      .slice(0, 5),
   };
 }
 

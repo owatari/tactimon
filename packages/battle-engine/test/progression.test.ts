@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  createPokemonProgression,
   createStarterProgression,
   experienceForNextLevel,
   experienceProgress,
   experienceRewardForWild,
   fireRedExperienceAtLevel,
   grantWildBattleProgress,
+  grantWildBattleProgressToParty,
   normalizePokemonProgression,
   resolveMoveLearning,
 } from "../src/progression";
@@ -20,6 +22,51 @@ describe("pokemon progression", () => {
 
     expect(experienceForNextLevel(5, "charmander")).toBe(44);
     expect(experienceForNextLevel(10, "charmander")).toBe(182);
+  });
+
+  it("uses each captured species' FireRed growth rate", () => {
+    expect(fireRedExperienceAtLevel("pidgey", 5)).toBe(135);
+    expect(fireRedExperienceAtLevel("rattata", 5)).toBe(125);
+    expect(experienceForNextLevel(5, "rattata")).toBe(91);
+
+    const rattata = createPokemonProgression("rattata", 5);
+    expect(rattata.experience).toBe(125);
+    expect(rattata.activeMoves).toEqual(["tackle", "tail-whip"]);
+  });
+
+  it("splits wild EXP across every deployed party member", () => {
+    const rewards = grantWildBattleProgressToParty(
+      [
+        createStarterProgression("bulbasaur"),
+        createPokemonProgression("rattata", 5),
+      ],
+      {
+        species: "pidgey",
+        level: 5,
+      },
+    );
+
+    expect(rewards).toHaveLength(2);
+    expect(rewards[0].xpGained).toBe(19);
+    expect(rewards[1].xpGained).toBe(19);
+    expect(rewards[0].progression.experience).toBe(154);
+    expect(rewards[1].progression.experience).toBe(144);
+  });
+
+  it("also splits partial capture XP across the deployed party", () => {
+    const rewards = grantWildBattleProgressToParty(
+      [
+        createStarterProgression("bulbasaur"),
+        createPokemonProgression("pidgey", 5),
+      ],
+      {
+        species: "pidgey",
+        level: 5,
+      },
+      0.5,
+    );
+
+    expect(rewards.map((reward) => reward.xpGained)).toEqual([9, 9]);
   });
 
   it("uses Generation III base EXP yields for Route 1 wild Pokémon", () => {

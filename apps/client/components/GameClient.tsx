@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  defaultMovesForSpecies,
-  grantWildBattleProgress,
+  createPokemonProgression,
+  grantWildBattleProgressToParty,
   type DuelPokemonBuild,
   type PokemonProgression,
   type ProgressionReward,
@@ -33,6 +33,13 @@ type BattleSession = {
   encounter: BattleEncounter;
 };
 
+type ProgressionQueueEntry = {
+  partyIndex: number;
+  reward: ProgressionReward;
+  position: number;
+  total: number;
+};
+
 export function GameClient() {
   const [story, setStory] = useState<StoryState>(
     DEFAULT_STORY_STATE,
@@ -41,8 +48,8 @@ export function GameClient() {
     useState(false);
   const [battleSession, setBattleSession] =
     useState<BattleSession | null>(null);
-  const [progressionReward, setProgressionReward] =
-    useState<ProgressionReward | null>(null);
+  const [progressionQueue, setProgressionQueue] =
+    useState<ProgressionQueueEntry[]>([]);
   const [mapAudioContext, setMapAudioContext] = useState<{
     mapId: string;
     musicId: number | null;
@@ -51,25 +58,27 @@ export function GameClient() {
     musicId: 300,
   });
 
-  const battleParty = useMemo<DuelPokemonBuild[]>(() => {
+  const partyProgressions = useMemo<PokemonProgression[]>(() => {
     if (!story.playerPokemon) {
       return [];
     }
 
     return [
-      {
-        species: story.playerPokemon.species,
-        level: story.playerPokemon.level,
-        moves: [...story.playerPokemon.activeMoves],
-        evs: story.playerPokemon.evs,
-      },
-      ...story.capturedPokemon.slice(0, 5).map((pokemon) => ({
-        species: pokemon.species,
-        level: pokemon.level,
-        moves: defaultMovesForSpecies(pokemon.species),
-      })),
+      story.playerPokemon,
+      ...story.capturedPokemon,
     ].slice(0, 6);
   }, [story.capturedPokemon, story.playerPokemon]);
+
+  const battleParty = useMemo<DuelPokemonBuild[]>(
+    () =>
+      partyProgressions.map((pokemon) => ({
+        species: pokemon.species,
+        level: pokemon.level,
+        moves: [...pokemon.activeMoves],
+        evs: pokemon.evs,
+      })),
+    [partyProgressions],
+  );
 
   useEffect(() => {
     try {
@@ -138,11 +147,19 @@ export function GameClient() {
       return;
     }
 
-    const xpRatio = outcome.capture?.xpRatio ?? (outcome.won ? 1 : 0);
-    if (xpRatio <= 0) return;
+    const xpRatio =
+      outcome.capture?.xpRatio ??
+      (outcome.won ? 1 : 0);
+    if (xpRatio <= 0) {
+      return;
+    }
 
-    const reward = grantWildBattleProgress(
+    const partySnapshot = [
       story.playerPokemon,
+      ...story.capturedPokemon,
+    ].slice(0, 6);
+    const rewards = grantWildBattleProgressToParty(
+      partySnapshot,
       {
         species: session.encounter.species,
         level: session.encounter.level,
@@ -150,38 +167,107 @@ export function GameClient() {
       xpRatio,
     );
 
-    setStory((current) => ({
-      ...current,
-      playerPokemon: reward.progression,
-      capturedPokemon:
+    setStory((current) => {
+      const nextStarter =
+        rewards[0]?.progression ??
+        current.playerPokemon;
+      const nextCaptured = current.capturedPokemon.map(
+        (pokemon, index) => {
+          const reward = rewards[index + 1];
+          if (!reward) {
+            return pokemon;
+          }
+
+          return {
+            ...reward.progression,
+            species: pokemon.species,
+          };
+        },
+      );
+
+      if (
         outcome.capture?.success &&
-        current.capturedPokemon.length < 5
-          ? [
-              ...current.capturedPokemon,
-              {
-                species: outcome.capture.species,
-                level: outcome.capture.level,
-              },
-            ]
-          : current.capturedPokemon,
-    }));
-    setProgressionReward(reward);
+        nextCaptured.length < 5
+      ) {
+        nextCaptured.push(
+          createPokemonProgression(
+            outcome.capture.species,
+            outcome.capture.level,
+          ),
+        );
+      }
+
+      return {
+        ...current,
+        playerPokemon: nextStarter,
+        capturedPokemon: nextCaptured.slice(0, 5),
+      };
+    });
+
+    const visibleRewards = rewards
+      .map((reward, partyIndex) => ({
+        partyIndex,
+        reward,
+      }))
+      .filter(
+        ({ reward }) =>
+          reward.xpGained > 0 ||
+          reward.levelsGained > 0 ||
+          reward.autoLearnedMoves.length > 0 ||
+          reward.pendingMoves.length > 0,
+      );
+
+    setProgressionQueue(
+      visibleRewards.map((entry, index) => ({
+        ...entry,
+        position: index + 1,
+        total: visibleRewards.length,
+      })),
+    );
   };
 
   const finishProgression = (
     progression: PokemonProgression,
   ) => {
-    setStory((current) => ({
-      ...current,
-      playerPokemon: progression,
-    }));
-    setProgressionReward(null);
+    const currentEntry = progressionQueue[0];
+    if (!currentEntry) {
+      return;
+    }
+
+    setStory((current) => {
+      if (currentEntry.partyIndex === 0) {
+        return {
+          ...current,
+          playerPokemon: progression,
+        };
+      }
+
+      const capturedIndex =
+        currentEntry.partyIndex - 1;
+
+      return {
+        ...current,
+        capturedPokemon: current.capturedPokemon.map(
+          (pokemon, index) =>
+            index === capturedIndex
+              ? {
+                  ...progression,
+                  species: pokemon.species,
+                }
+              : pokemon,
+        ),
+      };
+    });
+
+    setProgressionQueue((current) =>
+      current.slice(1),
+    );
   };
 
   const paused =
     starterChoiceOpen ||
     Boolean(battleSession) ||
-    Boolean(progressionReward);
+    progressionQueue.length > 0;
   const battleMusicKind = battleSession
     ? battleSession.encounter.kind === "wild"
       ? "wild"
@@ -251,9 +337,12 @@ export function GameClient() {
           />
         )}
 
-      {progressionReward && (
+      {progressionQueue[0] && (
         <ProgressionOverlay
-          reward={progressionReward}
+          key={`${progressionQueue[0].partyIndex}-${progressionQueue[0].reward.experienceAfter}`}
+          reward={progressionQueue[0].reward}
+          position={progressionQueue[0].position}
+          total={progressionQueue[0].total}
           onComplete={finishProgression}
         />
       )}

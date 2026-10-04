@@ -1,5 +1,6 @@
 import type {
   DuelMoveId,
+  DuelSpeciesId,
   StarterSpeciesId,
   WildSpeciesId,
 } from "./duel";
@@ -14,10 +15,10 @@ export type EvStat =
 
 export type EvSpread = Record<EvStat, number>;
 
-export type GrowthRate = "medium-slow";
+export type GrowthRate = "medium-slow" | "medium-fast";
 
 export interface PokemonProgression {
-  species: StarterSpeciesId;
+  species: DuelSpeciesId;
   level: number;
   /**
    * Cumulative EXP, matching the core-series representation.
@@ -55,8 +56,8 @@ export interface LearnsetEntry {
   moveId: DuelMoveId;
 }
 
-export const STARTER_LEARNSETS: Record<
-  StarterSpeciesId,
+export const POKEMON_LEARNSETS: Record<
+  DuelSpeciesId,
   LearnsetEntry[]
 > = {
   bulbasaur: [
@@ -80,6 +81,22 @@ export const STARTER_LEARNSETS: Record<
     { level: 9, moveId: "bite" },
     { level: 11, moveId: "aqua-jet" },
   ],
+  pidgey: [
+    { level: 1, moveId: "tackle" },
+  ],
+  rattata: [
+    { level: 1, moveId: "tackle" },
+    { level: 1, moveId: "tail-whip" },
+  ],
+};
+
+export const STARTER_LEARNSETS: Record<
+  StarterSpeciesId,
+  LearnsetEntry[]
+> = {
+  bulbasaur: POKEMON_LEARNSETS.bulbasaur,
+  charmander: POKEMON_LEARNSETS.charmander,
+  squirtle: POKEMON_LEARNSETS.squirtle,
 };
 
 const ZERO_EVS: EvSpread = {
@@ -91,7 +108,7 @@ const ZERO_EVS: EvSpread = {
   speed: 0,
 };
 
-const AUTO_EV_CYCLES: Record<StarterSpeciesId, EvStat[]> = {
+const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
   bulbasaur: [
     "hp",
     "specialAttack",
@@ -116,12 +133,30 @@ const AUTO_EV_CYCLES: Record<StarterSpeciesId, EvStat[]> = {
     "hp",
     "specialDefense",
   ],
+  pidgey: [
+    "speed",
+    "attack",
+    "speed",
+    "specialDefense",
+    "speed",
+    "attack",
+  ],
+  rattata: [
+    "speed",
+    "attack",
+    "speed",
+    "attack",
+    "speed",
+    "defense",
+  ],
 };
 
-const INITIAL_MOVES: Record<StarterSpeciesId, DuelMoveId[]> = {
+const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   bulbasaur: ["tackle", "growl"],
   charmander: ["scratch", "growl"],
   squirtle: ["tackle", "tail-whip"],
+  pidgey: ["tackle"],
+  rattata: ["tackle", "tail-whip"],
 };
 
 /**
@@ -137,13 +172,24 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   rattata: 57,
 };
 
-export const STARTER_GROWTH_RATE: Record<
-  StarterSpeciesId,
+export const POKEMON_GROWTH_RATE: Record<
+  DuelSpeciesId,
   GrowthRate
 > = {
   bulbasaur: "medium-slow",
   charmander: "medium-slow",
   squirtle: "medium-slow",
+  pidgey: "medium-slow",
+  rattata: "medium-fast",
+};
+
+export const STARTER_GROWTH_RATE: Record<
+  StarterSpeciesId,
+  GrowthRate
+> = {
+  bulbasaur: POKEMON_GROWTH_RATE.bulbasaur,
+  charmander: POKEMON_GROWTH_RATE.charmander,
+  squirtle: POKEMON_GROWTH_RATE.squirtle,
 };
 
 const MAX_EV_PER_STAT = 252;
@@ -160,11 +206,11 @@ function boundedLevel(level: number): number {
  * All three Kanto starters use Medium Slow in FireRed.
  */
 export function fireRedExperienceAtLevel(
-  species: StarterSpeciesId,
+  species: DuelSpeciesId,
   level: number,
 ): number {
   const n = boundedLevel(level);
-  const growthRate = STARTER_GROWTH_RATE[species];
+  const growthRate = POKEMON_GROWTH_RATE[species];
 
   if (n <= 1) {
     return 0;
@@ -181,12 +227,14 @@ export function fireRedExperienceAtLevel(
             140,
         ),
       );
+    case "medium-fast":
+      return n * n * n;
   }
 }
 
 export function experienceForNextLevel(
   level: number,
-  species: StarterSpeciesId = "bulbasaur",
+  species: DuelSpeciesId = "bulbasaur",
 ): number {
   const currentLevel = boundedLevel(level);
   if (currentLevel >= 100) {
@@ -239,18 +287,25 @@ export function experienceProgress(
   };
 }
 
-export function createStarterProgression(
-  species: StarterSpeciesId,
-): PokemonProgression {
-  const level = 5;
+export function createPokemonProgression<T extends DuelSpeciesId>(
+  species: T,
+  level: number,
+): PokemonProgression & { species: T } {
+  const bounded = boundedLevel(level);
 
   return {
     species,
-    level,
-    experience: fireRedExperienceAtLevel(species, level),
+    level: bounded,
+    experience: fireRedExperienceAtLevel(species, bounded),
     evs: { ...ZERO_EVS },
     activeMoves: [...INITIAL_MOVES[species]],
   };
+}
+
+export function createStarterProgression(
+  species: StarterSpeciesId,
+): PokemonProgression {
+  return createPokemonProgression(species, 5);
 }
 
 /**
@@ -258,16 +313,18 @@ export function createStarterProgression(
  * stored only progress within the current level.
  */
 export function normalizePokemonProgression(
-  input: PokemonProgression,
+  input: Partial<PokemonProgression> &
+    Pick<PokemonProgression, "species" | "level">,
 ): PokemonProgression {
   const level = boundedLevel(input.level);
+  const base = createPokemonProgression(input.species, level);
   const levelStart = fireRedExperienceAtLevel(
     input.species,
     level,
   );
   const rawExperience = Math.max(
     0,
-    Math.trunc(input.experience ?? 0),
+    Math.trunc(input.experience ?? levelStart),
   );
 
   const oldPrototypeRequirement = 40 + level * 15;
@@ -288,14 +345,18 @@ export function normalizePokemonProgression(
       : rawExperience;
 
   return {
-    ...input,
+    species: input.species,
     level,
     experience: migratedExperience,
     evs: {
       ...ZERO_EVS,
       ...input.evs,
     },
-    activeMoves: [...input.activeMoves].slice(0, 4),
+    activeMoves:
+      Array.isArray(input.activeMoves) &&
+      input.activeMoves.length > 0
+        ? [...input.activeMoves].slice(0, 4)
+        : [...base.activeMoves],
   };
 }
 
@@ -369,10 +430,10 @@ function grantAutoEv(
 }
 
 function movesLearnedAtLevel(
-  species: StarterSpeciesId,
+  species: DuelSpeciesId,
   level: number,
 ): DuelMoveId[] {
-  return STARTER_LEARNSETS[species]
+  return POKEMON_LEARNSETS[species]
     .filter((entry) => entry.level === level)
     .map((entry) => entry.moveId);
 }
@@ -463,6 +524,31 @@ export function grantWildBattleProgress(
     pendingMoves,
   };
 }
+
+export function grantWildBattleProgressToParty(
+  party: readonly PokemonProgression[],
+  enemy: {
+    species: WildSpeciesId;
+    level: number;
+  },
+  xpRatio = 1,
+): ProgressionReward[] {
+  if (party.length === 0) {
+    return [];
+  }
+
+  const participantRatio =
+    Math.max(0, Math.min(1, xpRatio)) / party.length;
+
+  return party.map((progression) =>
+    grantWildBattleProgress(
+      progression,
+      enemy,
+      participantRatio,
+    ),
+  );
+}
+
 
 export function resolveMoveLearning(
   input: PokemonProgression,

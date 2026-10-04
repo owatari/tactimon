@@ -543,10 +543,16 @@ export function rivalStarterFor(
   }
 }
 
+export function speciesDisplayName(
+  species: DuelSpeciesId,
+): string {
+  return SPECIES[species].name;
+}
+
 export function starterDisplayName(
   species: StarterSpeciesId,
 ): string {
-  return SPECIES[species].name;
+  return speciesDisplayName(species);
 }
 
 export function defaultMovesForSpecies(

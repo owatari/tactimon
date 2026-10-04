@@ -5,12 +5,15 @@ import {
   DUEL_MOVES,
   experienceProgress,
   resolveMoveLearning,
+  speciesDisplayName,
   type PokemonProgression,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
 
 type Props = {
   reward: ProgressionReward;
+  position?: number;
+  total?: number;
   onComplete: (progression: PokemonProgression) => void;
 };
 
@@ -31,6 +34,8 @@ function evSummary(reward: ProgressionReward): string[] {
 
 export function ProgressionOverlay({
   reward,
+  position = 1,
+  total = 1,
   onComplete,
 }: Props) {
   const [progression, setProgression] =
@@ -60,7 +65,10 @@ export function ProgressionOverlay({
   return (
     <div className="story-overlay progression-overlay">
       <section className="story-panel progression-panel">
-        <span className="eyebrow">PROGRESSÃO</span>
+        <span className="eyebrow">
+          PROGRESSÃO · {speciesDisplayName(progression.species)}
+          {total > 1 ? ` · ${position}/${total}` : ""}
+        </span>
 
         <div className="progression-title-row">
           <div>
