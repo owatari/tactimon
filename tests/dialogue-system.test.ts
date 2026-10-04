@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   resolveDialogueScript,
   resolveWorldObjectDialogueId,
+  resolveWorldObjectDialogueRequest,
   runDialogueInteraction,
 } from "../apps/client/lib/dialogueSystem";
 import {
@@ -265,5 +266,97 @@ describe("registered stateful dialogue scripts", () => {
     expect(
       result.presentation.pages[0].text,
     ).toContain("contexto inválido");
+  });
+});
+
+
+describe("complete world NPC dialogue coverage", () => {
+  it("registers the raw NPCs already shipped in Pallet, Route 1 and Oak Lab", () => {
+    const expected = [
+      ["pallet-town", 3, 10, "pallet-woman"],
+      ["pallet-town", 13, 17, "pallet-fat-man"],
+      ["route-1", 6, 28, "route1-mart-clerk"],
+      ["route-1", 19, 16, "route1-boy"],
+      ["oak-lab", 3, 11, "oak-lab-aide-1"],
+      ["oak-lab", 11, 10, "oak-lab-aide-2"],
+      ["oak-lab", 2, 10, "oak-lab-aide-3"],
+      [
+        "viridian-city",
+        8,
+        26,
+        "viridian-dream-eater-tutor",
+      ],
+    ] as const;
+
+    for (const [mapId, x, y, dialogueId] of expected) {
+      expect(
+        resolveWorldObjectDialogueId(
+          mapId,
+          x,
+          y,
+        ),
+      ).toBe(dialogueId);
+
+      const presentation = runDialogueInteraction(
+        normalizeStoryState(DEFAULT_STORY_STATE),
+        resolveWorldObjectDialogueRequest(
+          mapId,
+          x,
+          y,
+          "NPC",
+        ),
+      ).presentation;
+
+      expect(presentation.pages.length).toBeGreaterThan(0);
+      expect(
+        presentation.pages.some((page) =>
+          /não importado|ainda não tem/i.test(
+            page.text,
+          ),
+        ),
+      ).toBe(false);
+    }
+  });
+
+  it("gives every future raw world NPC an in-world fallback dialogue", () => {
+    const request = resolveWorldObjectDialogueRequest(
+      "future-route",
+      42,
+      17,
+      "Youngster",
+    );
+
+    expect(request.kind).toBe("text");
+
+    const result = runDialogueInteraction(
+      normalizeStoryState(DEFAULT_STORY_STATE),
+      request,
+    );
+
+    expect(result.presentation.pages).toEqual([
+      expect.objectContaining({
+        speaker: "Youngster",
+      }),
+    ]);
+    expect(
+      result.presentation.pages[0].text.length,
+    ).toBeGreaterThan(20);
+    expect(
+      result.presentation.pages[0].text,
+    ).not.toMatch(/não importado|contexto inválido/i);
+  });
+
+  it("keeps unknown future script ids inside the game world instead of showing developer placeholders", () => {
+    const result = runDialogueInteraction(
+      normalizeStoryState(DEFAULT_STORY_STATE),
+      {
+        kind: "script",
+        id: "future-npc-script",
+      },
+    );
+
+    expect(
+      result.presentation.pages[0].text,
+    ).not.toMatch(/não importado|registro central|contexto inválido/i);
   });
 });
