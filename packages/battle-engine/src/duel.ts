@@ -1764,16 +1764,16 @@ export function resolveSimpleAiTurnDetailed(
     actor.ap >= attackMove.apCost &&
     distance <= attackMove.maxRange
   ) {
-    run({
+    const attackResult = run({
       kind: "use-move",
       unitId: actor.id,
       moveId: attackMoveId,
       targetId: currentTarget.id,
     });
-  }
 
-  if (state.status === "finished") {
-    return { state, steps };
+    if (attackResult.state.status === "finished") {
+      return { state, steps };
+    }
   }
 
   actor = getActiveDuelUnit(state);
