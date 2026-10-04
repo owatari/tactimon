@@ -177,6 +177,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: PALLET_TILESET,
     },
   },
+  "route-2": {
+    id: "route-2",
+    label: "Route 2",
+    layoutUrl: "/game-assets/maps/route-2/layout.json",
+    previewUrl: "/game-assets/maps/route-2/preview.png",
+    worldUrl: null,
+    spawn: { x: 9, y: 79 },
+    fallbackMusicId: 291,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: VIRIDIAN_TILESET,
+    },
+  },
   "viridian-city": {
     id: "viridian-city",
     label: "Viridian City",
@@ -307,6 +320,32 @@ export function resolveWorldTransition(
     return {
       mapId: "route-1",
       spawn: { x: x - 12, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "viridian-city" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 19 &&
+    x <= 23
+  ) {
+    return {
+      mapId: "route-2",
+      spawn: { x: x - 12, y: 79 },
+    };
+  }
+
+  if (
+    mapId === "route-2" &&
+    direction === "south" &&
+    y === 79 &&
+    x >= 7 &&
+    x <= 11
+  ) {
+    return {
+      mapId: "viridian-city",
+      spawn: { x: x + 12, y: 0 },
     };
   }
 

@@ -28,6 +28,7 @@ const FIRE_RED_TRACK_IDS = {
 const FALLBACK_MAP_MUSIC: Record<string, number> = {
   "pallet-town": FIRE_RED_TRACK_IDS.pallet,
   "route-1": FIRE_RED_TRACK_IDS.route1,
+  "route-2": FIRE_RED_TRACK_IDS.route1,
   "viridian-city": FIRE_RED_TRACK_IDS.viridian,
   "oak-lab": FIRE_RED_TRACK_IDS.oakLab,
   "viridian-mart": FIRE_RED_TRACK_IDS.pokeCenter,

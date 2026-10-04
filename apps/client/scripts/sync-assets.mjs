@@ -40,6 +40,14 @@ const files = [
     "maps/route-1/preview.png",
   ],
   [
+    "maps/layouts/089_route2_layout/layout.json",
+    "maps/route-2/layout.json",
+  ],
+  [
+    "maps/layouts/089_route2_layout/preview.png",
+    "maps/route-2/preview.png",
+  ],
+  [
     "maps/layouts/078_viridiancity_layout/layout.json",
     "maps/viridian-city/layout.json",
   ],

@@ -38,6 +38,10 @@ import {
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
 import { resolveNpcDialogue } from "@/lib/npcDialogues";
+import {
+  LAND_ENCOUNTERS,
+  resolveLandEncounter,
+} from "@/lib/wildEncounters";
 
 const STEP_DURATION_MS = 142;
 const BLOCKED_RETRY_MS = 90;
@@ -45,50 +49,6 @@ const CAMERA_RESPONSE_MS = 72;
 const INTERACTION_DURATION_MS = 2200;
 const BATTLE_ARENA_MAX_WIDTH = 17;
 const BATTLE_ARENA_MAX_HEIGHT = 9;
-
-const ROUTE_1_ENCOUNTER_RATE = 21;
-const ROUTE_1_WILD_SLOTS: Array<{
-  weight: number;
-  species: WildSpeciesId;
-  level: number;
-}> = [
-  { weight: 20, species: "pidgey", level: 3 },
-  { weight: 20, species: "rattata", level: 3 },
-  { weight: 10, species: "pidgey", level: 3 },
-  { weight: 10, species: "rattata", level: 3 },
-  { weight: 10, species: "pidgey", level: 2 },
-  { weight: 10, species: "rattata", level: 2 },
-  { weight: 5, species: "pidgey", level: 3 },
-  { weight: 5, species: "rattata", level: 3 },
-  { weight: 4, species: "pidgey", level: 4 },
-  { weight: 4, species: "rattata", level: 4 },
-  { weight: 1, species: "pidgey", level: 5 },
-  { weight: 1, species: "rattata", level: 4 },
-];
-
-function route1EncounterFromRoll(
-  roll: number,
-): {
-  species: WildSpeciesId;
-  level: number;
-} {
-  let cursor = Math.abs(Math.trunc(roll)) % 100;
-
-  for (const slot of ROUTE_1_WILD_SLOTS) {
-    if (cursor < slot.weight) {
-      return {
-        species: slot.species,
-        level: slot.level,
-      };
-    }
-    cursor -= slot.weight;
-  }
-
-  return {
-    species: "rattata",
-    level: 4,
-  };
-}
 
 const IDLE_FRAME: Record<Direction, number> = {
   south: 0,
@@ -1280,8 +1240,11 @@ export function OverworldGame({
       const player = playerRef.current;
       const currentStory = storyRef.current;
 
+      const encounterTable =
+        LAND_ENCOUNTERS[mapIdRef.current];
+
       if (
-        mapIdRef.current !== "route-1" ||
+        !encounterTable ||
         !activeLayout ||
         !currentStory.playerPokemon ||
         !currentStory.firstBattleComplete ||
@@ -1314,16 +1277,22 @@ export function OverworldGame({
       }
 
       const encounterRoll = rollBuffer[0] % 100;
-      if (encounterRoll >= ROUTE_1_ENCOUNTER_RATE) {
+      if (
+        encounterRoll >= encounterTable.encounterRate
+      ) {
         return;
       }
 
       const context = createBattleContext();
       if (!context) return;
 
-      const encounter = route1EncounterFromRoll(
+      const encounter = resolveLandEncounter(
+        mapIdRef.current,
         rollBuffer[0] >>> 8,
       );
+      if (!encounter) {
+        return;
+      }
 
       wildBattleLockRef.current = true;
       wildEncounterCooldownRef.current = 5;
