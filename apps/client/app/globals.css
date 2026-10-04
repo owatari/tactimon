@@ -3646,3 +3646,99 @@ h1 {
     grid-column: 1 / -1;
   }
 }
+
+
+/* Keep level/EXP/move-learning in the same full-screen FireRed presentation
+   instead of returning to a floating post-battle card. */
+.progression-overlay {
+  padding: 0;
+  background: #182840;
+}
+
+.progression-overlay .progression-panel {
+  display: grid;
+  width: 100vw;
+  min-height: 100vh;
+  max-width: none;
+  margin: 0;
+  padding:
+    clamp(24px, 6vh, 60px)
+    clamp(22px, 9vw, 128px);
+  align-content: center;
+  gap: 12px;
+  border: 12px solid #203850 !important;
+  background:
+    linear-gradient(
+      180deg,
+      #d8e8d0 0 58%,
+      #f8f8e8 58% 100%
+    ) !important;
+  box-shadow:
+    inset 0 0 0 5px #90a8b8,
+    inset 0 0 0 9px #f8f8e8 !important;
+}
+
+.progression-overlay .progression-title-row {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.progression-overlay .battle-portrait-frame {
+  width: 104px;
+  height: 104px;
+}
+
+.progression-exp-card,
+.progression-section,
+.move-replace-panel {
+  border: 2px solid #405868;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow: inset -2px -2px 0 #c0c8b8;
+}
+
+.progression-chip,
+.learned-move-row,
+.replace-move-list button {
+  border-radius: 0;
+}
+
+.progression-continue,
+.skip-move-button,
+.replace-move-list button {
+  border: 2px solid #203850 !important;
+  border-radius: 0 !important;
+  background: #f8f8e8 !important;
+  color: #182838 !important;
+  box-shadow: inset -2px -2px 0 #a8b8a8;
+}
+
+.progression-continue:hover,
+.skip-move-button:hover,
+.replace-move-list button:hover {
+  background: #f8e878 !important;
+}
+
+@media (max-width: 620px) {
+  .progression-overlay .progression-panel {
+    padding: 22px 18px;
+    border-width: 7px !important;
+  }
+
+  .progression-overlay .progression-title-row {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+
+  .progression-overlay .battle-portrait-frame {
+    width: 76px;
+    height: 76px;
+  }
+
+  .progression-overlay .level-orb {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
