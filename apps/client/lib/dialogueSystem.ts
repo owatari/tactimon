@@ -559,11 +559,44 @@ const DIALOGUE_DEFINITIONS: Record<
       },
     ],
   },
-  "viridian-npc-33-26": one(
-    "viridian-npc-33-26",
-    "Caterpie não é venenoso, mas Weedle é. Cuidado com o Poison Sting.",
-    "Youngster",
-  ),
+  "viridian-npc-33-26": {
+    id: "viridian-npc-33-26",
+    variants: [
+      {
+        pages: [
+          {
+            id: "question",
+            speaker: "Youngster",
+            text:
+              "Quer saber a diferença entre os dois Pokémon lagarta daqui?",
+            choices: [
+              {
+                id: "yes",
+                label: "Sim",
+                request: {
+                  kind: "text",
+                  id: "viridian-caterpillar-yes",
+                  speaker: "Youngster",
+                  text:
+                    "Caterpie não é venenoso, mas Weedle é. Cuidado para seu Pokémon não levar Poison Sting.",
+                },
+              },
+              {
+                id: "no",
+                label: "Não",
+                request: {
+                  kind: "text",
+                  id: "viridian-caterpillar-no",
+                  speaker: "Youngster",
+                  text: "Ah, tudo bem então!",
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   "viridian-npc-21-6": {
     id: "viridian-npc-21-6",
     variants: [
