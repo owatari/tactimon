@@ -417,6 +417,19 @@ export interface DuelAiTurnResult {
   steps: DuelActionResult[];
 }
 
+export interface DuelAiTurnOptions {
+  /**
+   * The shared DuelState inventory belongs to the player. Enable this only
+   * when automating the player side.
+   */
+  useItems?: boolean;
+  /**
+   * Throw a Poké Ball as soon as a wild target is capture-eligible.
+   * This is intentionally independent from full Auto Battle.
+   */
+  autoCapture?: boolean;
+}
+
 const LEVEL = 5;
 const FIXED_IV = 15;
 const MAX_STAGE = 6;
@@ -4489,6 +4502,7 @@ function chooseAiCandidate(
     requireInRange: boolean;
     statusAlreadyUsed: boolean;
     damageAlreadyUsed: boolean;
+    ignoreAp?: boolean;
   },
 ): AiCandidate | null {
   const enemies = state.units.filter(
@@ -4510,7 +4524,10 @@ function chooseAiCandidate(
 
   for (const moveId of candidateMoveIds) {
     const move = DUEL_MOVES[moveId];
-    if (!move || actor.ap < move.apCost) {
+    if (
+      !move ||
+      (!options.ignoreAp && actor.ap < move.apCost)
+    ) {
       continue;
     }
     if (
@@ -4601,15 +4618,148 @@ function aiMovementDestination(
   return null;
 }
 
+function aiBestIncomingDamage(
+  state: DuelState,
+  actor: DuelUnit,
+  ally: DuelUnit,
+): number {
+  let best = 0;
+
+  for (const enemy of state.units) {
+    if (
+      enemy.hp <= 0 ||
+      enemy.side === actor.side
+    ) {
+      continue;
+    }
+
+    for (const moveId of enemy.moves) {
+      if (getDuelMovePp(enemy, moveId) <= 0) {
+        continue;
+      }
+      const move = DUEL_MOVES[moveId];
+      if (!move || move.category === "status") {
+        continue;
+      }
+
+      best = Math.max(
+        best,
+        calculateDamage(enemy, ally, move).damage,
+      );
+    }
+  }
+
+  return best;
+}
+
+function chooseAiItemAction(
+  state: DuelState,
+  actor: DuelUnit,
+  options: DuelAiTurnOptions,
+): DuelAction | null {
+  // DuelState currently stores the player's bag, not a trainer-owned bag.
+  if (actor.side !== "player") {
+    return null;
+  }
+
+  if (
+    options.autoCapture &&
+    state.battleKind === "wild" &&
+    state.captureAllowed &&
+    (state.items["poke-ball"] ?? 0) > 0
+  ) {
+    const target = state.units
+      .filter(
+        (unit) =>
+          unit.side !== actor.side &&
+          unit.hp > 0 &&
+          getDuelCaptureEligibility(
+            state,
+            unit.id,
+          ).allowed,
+      )
+      .sort(
+        (a, b) =>
+          a.hp / Math.max(1, a.maxHp) -
+          b.hp / Math.max(1, b.maxHp),
+      )[0];
+
+    if (target) {
+      return {
+        kind: "use-item",
+        unitId: actor.id,
+        itemId: "poke-ball",
+        targetId: target.id,
+      };
+    }
+  }
+
+  if (
+    !options.useItems ||
+    (state.items.potion ?? 0) <= 0
+  ) {
+    return null;
+  }
+
+  const target = state.units
+    .filter(
+      (unit) =>
+        unit.side === actor.side &&
+        unit.hp > 0 &&
+        unit.hp < unit.maxHp,
+    )
+    .map((unit) => {
+      const hpRatio =
+        unit.hp / Math.max(1, unit.maxHp);
+      const incoming = aiBestIncomingDamage(
+        state,
+        actor,
+        unit,
+      );
+      const threatened = incoming >= unit.hp;
+      const missing = unit.maxHp - unit.hp;
+      const usefulHeal = Math.min(
+        DUEL_ITEMS.potion.heal,
+        missing,
+      );
+
+      return {
+        unit,
+        hpRatio,
+        threatened,
+        score:
+          (1 - hpRatio) * 150 +
+          (threatened ? 100 : 0) +
+          usefulHeal * 2,
+      };
+    })
+    .filter(
+      ({ hpRatio, threatened }) =>
+        hpRatio <= 0.4 || threatened,
+    )
+    .sort((a, b) => b.score - a.score)[0]?.unit;
+
+  return target
+    ? {
+        kind: "use-item",
+        unitId: actor.id,
+        itemId: "potion",
+        targetId: target.id,
+      }
+    : null;
+}
+
 export function resolveSimpleAiTurnDetailed(
   input: DuelState,
   side: DuelSide = "rival",
+  options: DuelAiTurnOptions = {},
 ): DuelAiTurnResult {
   let state = input;
   const steps: DuelActionResult[] = [];
   let actor = getActiveDuelUnit(state);
   let statusUsed = false;
   let damageUsed = false;
+  let movementActions = 0;
 
   const run = (action: DuelAction): DuelActionResult => {
     const result = applyDuelAction(state, action);
@@ -4628,45 +4778,12 @@ export function resolveSimpleAiTurnDetailed(
     return { state, steps };
   }
 
-  // Plan against every living opponent. The plan may intentionally spend
-  // the whole MP budget walking around obstacles toward a superior attack.
-  const strategicPlan = chooseAiCandidate(
-    state,
-    actor,
-    {
-      requireInRange: false,
-      statusAlreadyUsed: false,
-      damageAlreadyUsed: false,
-    },
-  );
-
-  if (
-    strategicPlan &&
-    strategicPlan.path.length > 0
-  ) {
-    const destination = aiMovementDestination(
-      state,
-      actor,
-      strategicPlan.path,
-    );
-
-    if (destination) {
-      run({
-        kind: "move",
-        unitId: actor.id,
-        to: destination,
-      });
-      actor = getActiveDuelUnit(state);
-    }
-  }
-
-  // Spend remaining AP on the best tactical actions available now. A status
-  // move is used at most once per turn. After committing to damage, the AI
-  // keeps offensive pressure instead of dumping leftover AP into a debuff.
+  // Re-evaluate after every accepted action. This lets the same turn choose
+  // attack -> move, move -> attack, attack -> attack, or an emergency item.
   for (
-    let actionIndex = 0;
-    actionIndex < 3;
-    actionIndex += 1
+    let decisionIndex = 0;
+    decisionIndex < 8;
+    decisionIndex += 1
   ) {
     actor = getActiveDuelUnit(state);
     if (
@@ -4677,7 +4794,19 @@ export function resolveSimpleAiTurnDetailed(
       return { state, steps };
     }
 
-    const candidate = chooseAiCandidate(
+    const itemAction = chooseAiItemAction(
+      state,
+      actor,
+      options,
+    );
+    if (itemAction) {
+      const itemResult = run(itemAction);
+      if (itemResult.accepted) {
+        return { state, steps };
+      }
+    }
+
+    const inRange = chooseAiCandidate(
       state,
       actor,
       {
@@ -4686,30 +4815,118 @@ export function resolveSimpleAiTurnDetailed(
         damageAlreadyUsed: damageUsed,
       },
     );
-    if (!candidate || candidate.score <= 0) {
-      break;
+    const strategic = chooseAiCandidate(
+      state,
+      actor,
+      {
+        requireInRange: false,
+        statusAlreadyUsed: statusUsed,
+        damageAlreadyUsed: damageUsed,
+      },
+    );
+
+    const canMoveForStrategic =
+      actor.mp > 0 &&
+      strategic !== null &&
+      strategic.path.length > 0;
+    const shouldMoveBeforeAction =
+      canMoveForStrategic &&
+      (
+        !inRange ||
+        strategic.score >
+          inRange.score + 28 ||
+        (
+          inRange.move.category === "status" &&
+          strategic.move.category !== "status" &&
+          strategic.score > inRange.score
+        )
+      );
+
+    if (
+      shouldMoveBeforeAction &&
+      strategic
+    ) {
+      const destination = aiMovementDestination(
+        state,
+        actor,
+        strategic.path,
+      );
+
+      if (destination) {
+        const movement = run({
+          kind: "move",
+          unitId: actor.id,
+          to: destination,
+        });
+        if (movement.accepted) {
+          movementActions += 1;
+          continue;
+        }
+      }
     }
 
-    const result = run({
-      kind: "use-move",
-      unitId: actor.id,
-      moveId: candidate.move.id,
-      targetId: candidate.target.id,
-    });
+    if (inRange && inRange.score > 0) {
+      const result = run({
+        kind: "use-move",
+        unitId: actor.id,
+        moveId: inRange.move.id,
+        targetId: inRange.target.id,
+      });
 
-    if (!result.accepted) {
-      break;
+      if (!result.accepted) {
+        break;
+      }
+
+      if (inRange.move.category === "status") {
+        statusUsed = true;
+      } else {
+        damageUsed = true;
+      }
+
+      continue;
     }
 
-    if (candidate.move.category === "status") {
-      statusUsed = true;
-    } else {
-      damageUsed = true;
+    // AP may already have been spent on an attack. MP is independent, so use
+    // remaining movement to set up the next attack instead of wasting it.
+    if (
+      actor.mp > 0 &&
+      movementActions < 2
+    ) {
+      const futurePlan = chooseAiCandidate(
+        state,
+        actor,
+        {
+          requireInRange: false,
+          statusAlreadyUsed: statusUsed,
+          damageAlreadyUsed: damageUsed,
+          ignoreAp: true,
+        },
+      );
+
+      if (
+        futurePlan &&
+        futurePlan.path.length > 0
+      ) {
+        const destination = aiMovementDestination(
+          state,
+          actor,
+          futurePlan.path,
+        );
+        if (destination) {
+          const movement = run({
+            kind: "move",
+            unitId: actor.id,
+            to: destination,
+          });
+          if (movement.accepted) {
+            movementActions += 1;
+            continue;
+          }
+        }
+      }
     }
 
-    if (result.state.status === "finished") {
-      return { state, steps };
-    }
+    break;
   }
 
   actor = getActiveDuelUnit(state);
