@@ -12,6 +12,7 @@ import {
   grantTrainerBattleProgressToParty,
   grantWildBattleProgressToParty,
   type DuelItemId,
+  type DuelMajorStatus,
   type DuelPokemonBuild,
   type PokemonProgression,
   type ProgressionReward,
@@ -123,6 +124,7 @@ function applyBattleHealth(
   current: StoryState,
   partyIndices: readonly number[],
   playerHp: readonly number[],
+  playerStatuses: readonly DuelMajorStatus[],
 ): StoryState {
   let playerPokemon = current.playerPokemon;
   const capturedPokemon = [...current.capturedPokemon];
@@ -137,12 +139,17 @@ function applyBattleHealth(
     }
 
     const currentHp = Math.max(0, Math.trunc(hp));
+    const status: DuelMajorStatus =
+      playerStatuses[outcomeIndex] === "poison"
+        ? "poison"
+        : null;
 
     if (partyIndex === 0) {
       if (playerPokemon) {
         playerPokemon = {
           ...playerPokemon,
           currentHp,
+          status,
         };
       }
       return;
@@ -154,6 +161,7 @@ function applyBattleHealth(
       capturedPokemon[capturedIndex] = {
         ...existing,
         currentHp,
+        status,
       };
     }
   });
@@ -246,6 +254,7 @@ export function GameClient() {
         moves: [...pokemon.activeMoves],
         evs: pokemon.evs,
         currentHp: pokemon.currentHp,
+        status: pokemon.status,
       })),
     [deployedParty],
   );
@@ -319,6 +328,7 @@ export function GameClient() {
         current,
         session.partyIndices,
         outcome.playerHp,
+        outcome.playerStatuses,
       ),
       inventory: { ...outcome.inventory },
     }));
@@ -337,8 +347,13 @@ export function GameClient() {
         }
 
         const hp = outcome.playerHp[outcomeIndex];
+        const status: DuelMajorStatus =
+          outcome.playerStatuses[outcomeIndex] === "poison"
+            ? "poison"
+            : null;
         return {
           ...pokemon,
+          status,
           currentHp:
             typeof hp === "number" && Number.isFinite(hp)
               ? Math.max(0, Math.trunc(hp))
@@ -460,6 +475,7 @@ export function GameClient() {
         {
           ...captured,
           species: outcome.capture.species,
+          status: outcome.capture.status,
         },
       ).story;
     });

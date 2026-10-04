@@ -114,6 +114,7 @@ function normalizeCapturedPokemon(
     experience?: unknown;
     evs?: PokemonProgression["evs"];
     currentHp?: unknown;
+    status?: unknown;
     activeMoves?: PokemonProgression["activeMoves"];
   };
 
@@ -152,6 +153,7 @@ function normalizeCapturedPokemon(
       typeof candidate.currentHp === "number"
         ? candidate.currentHp
         : base.currentHp,
+    status: candidate.status === "poison" ? "poison" : null,
     activeMoves: Array.isArray(candidate.activeMoves)
       ? candidate.activeMoves
       : base.activeMoves,
@@ -321,6 +323,7 @@ function healPokemonProgression(
   return {
     ...pokemon,
     currentHp: calculateDuelPokemonMaxHp(pokemon),
+    status: null,
   };
 }
 

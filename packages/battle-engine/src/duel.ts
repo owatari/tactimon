@@ -41,6 +41,7 @@ export type DuelType =
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
+export type DuelMajorStatus = "poison" | null;
 export type DuelItemId = "potion" | "poke-ball";
 export type DuelInventory = Record<DuelItemId, number>;
 export type DuelMoveId =
@@ -94,6 +95,8 @@ export interface DuelPokemonBuild {
   evs?: Partial<DuelEvSpread>;
   /** Persistent HP carried between battles. Omit to start at full HP. */
   currentHp?: number;
+  /** Persistent major status carried between battles. */
+  status?: DuelMajorStatus;
 }
 
 export interface TrainerDuelOptions {
@@ -153,6 +156,8 @@ export interface DuelMove {
   apCost: number;
   minRange: number;
   maxRange: number;
+  secondaryStatus?: Exclude<DuelMajorStatus, null>;
+  secondaryEffectChance?: number;
   effect?:
     | "attack-down"
     | "defense-down"
@@ -183,6 +188,7 @@ export type DuelPresentationEvent =
           stat: DuelStatId;
           delta: number;
         }>;
+        statusApplied?: Exclude<DuelMajorStatus, null>;
       }>;
     }
   | {
@@ -212,6 +218,7 @@ export interface DuelUnit {
   level: number;
   hp: number;
   maxHp: number;
+  status: DuelMajorStatus;
   attack: number;
   defense: number;
   specialAttack: number;
@@ -250,6 +257,7 @@ export interface DuelState {
     level: number;
     xpRatio: number;
     chance: number;
+    status: DuelMajorStatus;
   } | null;
   units: DuelUnit[];
   log: string[];
@@ -301,6 +309,7 @@ const MAX_STAGE = 6;
 type SpeciesData = {
   name: string;
   type: DuelType;
+  statusImmunities?: readonly Exclude<DuelMajorStatus, null>[];
   hp: number;
   attack: number;
   defense: number;
@@ -314,6 +323,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   bulbasaur: {
     name: "Bulbasaur",
     type: "grass",
+    statusImmunities: ["poison"],
     hp: 45,
     attack: 49,
     defense: 49,
@@ -380,6 +390,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   weedle: {
     name: "Weedle",
     type: "bug",
+    statusImmunities: ["poison"],
     hp: 40,
     attack: 35,
     defense: 30,
@@ -424,6 +435,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   kakuna: {
     name: "Kakuna",
     type: "bug",
+    statusImmunities: ["poison"],
     hp: 45,
     attack: 25,
     defense: 50,
@@ -576,11 +588,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "projectile",
     vfxId: "poison-sting",
     description:
-      "Dispara um ferrão venenoso contra um alvo a curta distância.",
+      "Dispara um ferrão venenoso com 30% de chance de envenenar.",
     power: 15,
     apCost: 3,
     minRange: 1,
     maxRange: 3,
+    secondaryStatus: "poison",
+    secondaryEffectChance: 30,
   },
   peck: {
     id: "peck",
@@ -1170,6 +1184,7 @@ function makeUnit(
     level,
     hp: currentHp,
     maxHp,
+    status: build.status === "poison" ? "poison" : null,
     attack: calculateOtherStat({
       base: base.attack,
       iv: FIXED_IV,
@@ -1599,16 +1614,84 @@ function sideHasLivingUnit(
   );
 }
 
+function isMajorStatusImmune(
+  unit: DuelUnit,
+  status: Exclude<DuelMajorStatus, null>,
+): boolean {
+  return (
+    SPECIES[unit.species].statusImmunities?.includes(status) ??
+    false
+  );
+}
+
+function secondaryStatusSucceeds(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): boolean {
+  const chance = Math.max(
+    0,
+    Math.min(100, Math.trunc(move.secondaryEffectChance ?? 0)),
+  );
+  if (!move.secondaryStatus || chance <= 0) {
+    return false;
+  }
+
+  const seed =
+    (
+      Math.imul(state.seed + 1, 0x9e3779b1) ^
+      Math.imul(state.round + 1, 0x85ebca6b) ^
+      Math.imul(state.turnIndex + 1, 0xc2b2ae35) ^
+      Math.imul(actor.ap + 1, 0x27d4eb2d) ^
+      Math.imul(target.hp + 1, 0x165667b1)
+    ) >>> 0;
+
+  return createSeededRandom(seed)() < chance / 100;
+}
+
+function applyEndTurnMajorStatus(
+  state: DuelState,
+  current: DuelUnit,
+): void {
+  if (current.status !== "poison" || current.hp <= 0) {
+    return;
+  }
+
+  const damage = Math.max(
+    1,
+    Math.floor(current.maxHp / 8),
+  );
+  current.hp = Math.max(0, current.hp - damage);
+  appendLog(
+    state,
+    `Poison causou ${damage} de dano em ${current.displayName}.`,
+  );
+
+  if (current.hp <= 0) {
+    appendLog(
+      state,
+      `${current.displayName} desmaiou por causa do Poison.`,
+    );
+  }
+}
+
 function resolveTurnEnd(
   state: DuelState,
   current: DuelUnit,
 ): void {
-  const opposingSide: DuelSide =
-    current.side === "player" ? "rival" : "player";
+  applyEndTurnMajorStatus(state, current);
 
-  if (!sideHasLivingUnit(state, opposingSide)) {
+  const playerAlive = sideHasLivingUnit(state, "player");
+  const rivalAlive = sideHasLivingUnit(state, "rival");
+
+  if (!playerAlive || !rivalAlive) {
     state.status = "finished";
-    state.winner = current.side;
+    state.winner = playerAlive
+      ? "player"
+      : rivalAlive
+        ? "rival"
+        : null;
     return;
   }
 
@@ -1810,7 +1893,7 @@ export function applyDuelAction(
       const chance = experimentalCaptureChance({
         catchRate: WILD_CATCH_RATE[species],
         ballModifier: item.ballModifier,
-        statusModifier: 1,
+        statusModifier: target.status === "poison" ? 1.5 : 1,
         hpRatio: target.hp / target.maxHp,
         thresholdRatio: 0.5,
       });
@@ -1828,6 +1911,7 @@ export function applyDuelAction(
         level: target.level,
         xpRatio: resolution.xpRatio,
         chance,
+        status: target.status,
       };
       appendLog(
         state,
@@ -1967,6 +2051,7 @@ export function applyDuelAction(
   actor.ap -= move.apCost;
 
   let damage = 0;
+  let statusApplied: Exclude<DuelMajorStatus, null> | undefined;
   const statChanges: Array<{
     stat: DuelStatId;
     delta: number;
@@ -1980,6 +2065,21 @@ export function applyDuelAction(
       state,
       `${actor.displayName} usou ${move.name}: ${damage} de dano.`,
     );
+
+    if (
+      target.hp > 0 &&
+      move.secondaryStatus &&
+      target.status === null &&
+      !isMajorStatusImmune(target, move.secondaryStatus) &&
+      secondaryStatusSucceeds(state, actor, target, move)
+    ) {
+      target.status = move.secondaryStatus;
+      statusApplied = move.secondaryStatus;
+      appendLog(
+        state,
+        `${target.displayName} foi envenenado.`,
+      );
+    }
 
     if (target.hp <= 0) {
       appendLog(
@@ -2066,6 +2166,7 @@ export function applyDuelAction(
           damage,
           fainted: target.hp <= 0,
           statChanges,
+          ...(statusApplied ? { statusApplied } : {}),
         },
       ],
     },

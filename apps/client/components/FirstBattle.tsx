@@ -17,6 +17,7 @@ import {
   type DuelActionResult,
   type DuelInventory,
   type DuelItemId,
+  type DuelMajorStatus,
   type DuelMoveId,
   type DuelPoint,
   type DuelPokemonBuild,
@@ -37,6 +38,7 @@ export type BattleOutcome = {
   escaped: boolean;
   inventory: DuelInventory;
   playerHp: number[];
+  playerStatuses: DuelMajorStatus[];
   defeatedEnemies: Array<{
     species: DuelSpeciesId;
     level: number;
@@ -46,6 +48,7 @@ export type BattleOutcome = {
     species: WildSpeciesId;
     level: number;
     xpRatio: number;
+    status: DuelMajorStatus;
   };
 };
 
@@ -142,6 +145,13 @@ function stageBadges(unit: DuelUnit): Array<{
     badges.push({
       label: `SPD ${unit.speedStage > 0 ? "+" : ""}${unit.speedStage}`,
       tone: unit.speedStage > 0 ? "buff" : "debuff",
+    });
+  }
+
+  if (unit.status === "poison") {
+    badges.push({
+      label: "PSN",
+      tone: "debuff",
     });
   }
 
@@ -258,6 +268,7 @@ export function FirstBattle({
       moves: progression.activeMoves,
       evs: progression.evs,
       currentHp: progression.currentHp,
+      status: progression.status,
     };
     const deployedParty =
       party.length > 0
@@ -1504,6 +1515,7 @@ export function FirstBattle({
                   escaped: false,
                   inventory: { ...state.items },
                   playerHp: playerUnits.map((unit) => unit.hp),
+                  playerStatuses: playerUnits.map((unit) => unit.status),
                   defeatedEnemies,
                   capture: state.captureResult
                     ? {
@@ -1511,6 +1523,7 @@ export function FirstBattle({
                         species: state.captureResult.species,
                         level: state.captureResult.level,
                         xpRatio: state.captureResult.xpRatio,
+                        status: state.captureResult.status,
                       }
                     : undefined,
                 })
@@ -1533,6 +1546,7 @@ export function FirstBattle({
                   escaped: true,
                   inventory: { ...state.items },
                   playerHp: playerUnits.map((unit) => unit.hp),
+                  playerStatuses: playerUnits.map((unit) => unit.status),
                   defeatedEnemies,
                 })
               }

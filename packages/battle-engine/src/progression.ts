@@ -1,5 +1,6 @@
 import {
   calculateDuelPokemonMaxHp,
+  type DuelMajorStatus,
   type DuelMoveId,
   type DuelSpeciesId,
   type StarterSpeciesId,
@@ -29,6 +30,8 @@ export interface PokemonProgression {
   evs: EvSpread;
   /** Current persistent HP. Zero means fainted. */
   currentHp: number;
+  /** Persistent non-volatile status. */
+  status: DuelMajorStatus;
   activeMoves: DuelMoveId[];
 }
 
@@ -419,6 +422,7 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
       level: bounded,
       evs,
     }),
+    status: null,
     activeMoves: [...INITIAL_MOVES[species]],
   };
 }
@@ -489,6 +493,7 @@ export function normalizePokemonProgression(
     experience: migratedExperience,
     evs,
     currentHp,
+    status: input.status === "poison" ? "poison" : null,
     activeMoves:
       Array.isArray(input.activeMoves) &&
       input.activeMoves.length > 0
