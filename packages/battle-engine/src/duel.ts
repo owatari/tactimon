@@ -4872,7 +4872,9 @@ function shortestAiPathToRange(
 function aiThreatScore(unit: DuelUnit): number {
   const physical =
     unit.attack * stageMultiplier(unit.attackStage);
-  const special = unit.specialAttack;
+  const special =
+    unit.specialAttack *
+    stageMultiplier(unit.specialAttackStage);
   const speed = effectiveSpeed(unit);
 
   return (
@@ -4898,7 +4900,12 @@ function aiStatusUtility(
   ) {
     if (target.attackStage <= -4) return -Infinity;
     const physicalBias =
-      target.attack >= target.specialAttack ? 18 : -8;
+      target.attack *
+        stageMultiplier(target.attackStage) >=
+      target.specialAttack *
+        stageMultiplier(target.specialAttackStage)
+        ? 18
+        : -8;
     const severity =
       move.effect === "attack-down-2" ? 20 : 0;
     return Math.max(
