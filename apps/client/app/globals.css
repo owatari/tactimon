@@ -1825,6 +1825,91 @@ h1 {
   font-size: 8px;
 }
 
+.battle-selection-dock {
+  display: grid;
+  width: min(920px, 100%);
+  gap: 7px;
+  margin: 8px auto 0;
+  padding: 8px;
+  border: 1px solid rgba(216, 242, 121, 0.14);
+  border-radius: 10px;
+  background: rgba(14, 18, 12, 0.92);
+}
+
+.battle-selection-dock-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 2px;
+}
+
+.battle-selection-dock-title strong {
+  font-size: 10px;
+}
+
+.battle-selection-dock-title span {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.battle-selection-dock-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.battle-selection-dock-grid button,
+.battle-selection-dock-back {
+  min-height: 38px;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.battle-selection-dock-grid button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.battle-selection-dock-grid button:hover:not(:disabled),
+.battle-selection-dock-back:hover:not(:disabled) {
+  border-color: rgba(216, 242, 121, 0.35);
+  background: rgba(216, 242, 121, 0.065);
+}
+
+.battle-selection-dock-grid button:disabled {
+  opacity: 0.34;
+  cursor: not-allowed;
+}
+
+.battle-selection-dock-grid button strong {
+  font-size: 10px;
+}
+
+.battle-selection-dock-grid button span,
+.battle-selection-dock-back {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.battle-selection-dock-back {
+  justify-self: start;
+  min-height: 30px;
+}
+
+@media (max-width: 720px) {
+  .battle-selection-dock-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .battle-message-strip {
   display: flex;
   width: min(920px, 100%);
