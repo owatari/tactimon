@@ -918,7 +918,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Dispara uma descarga com 10% de chance de paralisar.",
     power: 40,
     apCost: 4,
-    minRange: 2,
+    minRange: 1,
     maxRange: 4,
     secondaryStatus: "paralysis",
     secondaryEffectChance: 10,
@@ -948,7 +948,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Lança folhas cortantes a média distância.",
     power: 55,
     apCost: 4,
-    minRange: 2,
+    minRange: 1,
     maxRange: 4,
   },
   "seed-bomb": {
@@ -962,7 +962,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Projétil de sementes de alto impacto.",
     power: 65,
     apCost: 5,
-    minRange: 2,
+    minRange: 1,
     maxRange: 4,
   },
   ember: {
@@ -977,7 +977,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Dispara brasas com 10% de chance de causar Burn.",
     power: 40,
     apCost: 4,
-    minRange: 2,
+    minRange: 1,
     maxRange: 4,
     secondaryStatus: "burn",
     secondaryEffectChance: 10,
@@ -1007,7 +1007,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Projétil de fogo mais forte para média distância.",
     power: 65,
     apCost: 5,
-    minRange: 2,
+    minRange: 1,
     maxRange: 4,
   },
   "water-gun": {
@@ -1021,7 +1021,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Jato d'água que alcança até 4 tiles.",
     power: 40,
     apCost: 4,
-    minRange: 2,
+    minRange: 1,
     maxRange: 4,
   },
   bite: {
@@ -2640,112 +2640,430 @@ export function applyDuelAction(
   };
 }
 
-function bestAiAttackMove(
-  actor: DuelUnit,
-  target: DuelUnit,
-  requireInRange: boolean,
-): DuelMoveId | null {
-  const distance = manhattanDistance(
-    actor.position,
-    target.position,
-  );
+type AiCandidate = {
+  move: DuelMove;
+  target: DuelUnit;
+  score: number;
+  damage: number;
+  path: DuelPoint[];
+};
 
-  const candidates = actor.moves
-    .map((moveId) => DUEL_MOVES[moveId])
-    .filter(
-      (move) =>
-        move.category !== "status" &&
-        actor.ap >= move.apCost &&
-        (!requireInRange ||
-          (distance >= move.minRange &&
-            distance <= move.maxRange)),
-    )
-    .map((move) => ({
-      move,
-      result: calculateDamage(actor, target, move),
-    }))
-    .filter(({ result }) => result.damage > 0)
-    .sort(
-      (a, b) =>
-        b.result.damage - a.result.damage ||
-        b.result.typeEffectiveness -
-          a.result.typeEffectiveness ||
-        a.move.apCost - b.move.apCost ||
-        a.move.id.localeCompare(b.move.id),
-    );
-
-  return candidates[0]?.move.id ?? null;
+function aiNeighbors(point: DuelPoint): DuelPoint[] {
+  // Stable order keeps identical states deterministic.
+  return [
+    { x: point.x + 1, y: point.y },
+    { x: point.x, y: point.y + 1 },
+    { x: point.x - 1, y: point.y },
+    { x: point.x, y: point.y - 1 },
+  ];
 }
 
-function statusMoveFor(
-  unit: DuelUnit,
-): DuelMoveId | null {
-  return (
-    unit.moves.find(
-      (moveId) =>
-        DUEL_MOVES[moveId].category === "status",
-    ) ?? null
-  );
-}
-
-function bestAiTarget(
-  state: DuelState,
-  actor: DuelUnit,
-): DuelUnit | null {
-  return (
-    state.units
-      .filter(
-        (unit) =>
-          unit.hp > 0 &&
-          unit.side !== actor.side,
-      )
-      .sort(
-        (a, b) =>
-          manhattanDistance(actor.position, a.position) -
-            manhattanDistance(actor.position, b.position) ||
-          a.hp - b.hp ||
-          b.speed - a.speed,
-      )[0] ?? null
-  );
-}
-
-function bestAiDestination(
+function shortestAiPathToRange(
   state: DuelState,
   actor: DuelUnit,
   target: DuelUnit,
   move: DuelMove,
-): DuelPoint | null {
-  const reachable = getReachableCells(state, actor.id);
+): DuelPoint[] | null {
+  if (move.targeting === "self") {
+    return [];
+  }
+
+  const inMoveRange = (point: DuelPoint) => {
+    const distance = manhattanDistance(
+      point,
+      target.position,
+    );
+    return (
+      distance >= move.minRange &&
+      distance <= move.maxRange
+    );
+  };
+
+  if (inMoveRange(actor.position)) {
+    return [];
+  }
+
+  const blocked = new Set(state.blocked.map(pointKey));
+  const occupied = new Set(
+    state.units
+      .filter(
+        (unit) =>
+          unit.hp > 0 &&
+          unit.id !== actor.id,
+      )
+      .map((unit) => pointKey(unit.position)),
+  );
+  const startKey = pointKey(actor.position);
+  const queue: DuelPoint[] = [{ ...actor.position }];
+  const previous = new Map<string, string | null>([
+    [startKey, null],
+  ]);
+  const points = new Map<string, DuelPoint>([
+    [startKey, { ...actor.position }],
+  ]);
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current) break;
+
+    for (const next of aiNeighbors(current)) {
+      const key = pointKey(next);
+      if (
+        !inBounds(state, next) ||
+        blocked.has(key) ||
+        occupied.has(key) ||
+        previous.has(key)
+      ) {
+        continue;
+      }
+
+      previous.set(key, pointKey(current));
+      points.set(key, next);
+
+      if (inMoveRange(next)) {
+        const reversed: DuelPoint[] = [];
+        let cursor: string | null = key;
+
+        while (cursor && cursor !== startKey) {
+          const point = points.get(cursor);
+          if (!point) break;
+          reversed.push(point);
+          cursor = previous.get(cursor) ?? null;
+        }
+
+        return reversed.reverse();
+      }
+
+      queue.push(next);
+    }
+  }
+
+  return null;
+}
+
+function aiThreatScore(unit: DuelUnit): number {
+  const physical =
+    unit.attack * stageMultiplier(unit.attackStage);
+  const special = unit.specialAttack;
+  const speed = effectiveSpeed(unit);
 
   return (
-    reachable
-      .map((point) => {
-        const targetDistance = manhattanDistance(
-          point,
-          target.position,
-        );
-        return {
-          point,
-          targetDistance,
-          movementDistance: manhattanDistance(
-            actor.position,
-            point,
-          ),
-          canAttack:
-            targetDistance >= move.minRange &&
-            targetDistance <= move.maxRange,
-        };
-      })
-      .sort(
-        (a, b) =>
-          Number(b.canAttack) - Number(a.canAttack) ||
-          (a.canAttack && b.canAttack
-            ? a.movementDistance - b.movementDistance
-            : a.targetDistance - b.targetDistance) ||
-          a.point.y - b.point.y ||
-          a.point.x - b.point.x,
-      )[0]?.point ?? null
+    Math.max(physical, special) * 0.45 +
+    speed * 0.3 +
+    (unit.hp / Math.max(1, unit.maxHp)) * 25
   );
+}
+
+function aiStatusUtility(
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): number {
+  if (move.category !== "status") {
+    return 0;
+  }
+
+  if (move.effect === "attack-down") {
+    if (target.attackStage <= -MAX_STAGE) return -Infinity;
+    const physicalBias =
+      target.attack >= target.specialAttack ? 18 : -8;
+    return Math.max(
+      0,
+      66 + target.attackStage * 13 + physicalBias,
+    );
+  }
+
+  if (move.effect === "defense-down") {
+    if (target.defenseStage <= -MAX_STAGE) return -Infinity;
+    return Math.max(
+      0,
+      64 + target.defenseStage * 13,
+    );
+  }
+
+  if (move.effect === "speed-down") {
+    if (target.speedStage <= -MAX_STAGE) return -Infinity;
+    const speedLead =
+      effectiveSpeed(target) > effectiveSpeed(actor)
+        ? 20
+        : 0;
+    return Math.max(
+      0,
+      48 + target.speedStage * 11 + speedLead,
+    );
+  }
+
+  if (move.effect === "defense-up") {
+    if (actor.defenseStage >= MAX_STAGE) return -Infinity;
+    const hpPressure =
+      actor.hp / Math.max(1, actor.maxHp) < 0.5
+        ? 18
+        : 0;
+    return Math.max(
+      0,
+      54 - Math.max(0, actor.defenseStage) * 12 +
+        hpPressure,
+    );
+  }
+
+  return -Infinity;
+}
+
+function aiSecondaryStatusUtility(
+  target: DuelUnit,
+  move: DuelMove,
+): number {
+  if (
+    !move.secondaryStatus ||
+    !move.secondaryEffectChance ||
+    target.status !== null ||
+    isMajorStatusImmune(target, move.secondaryStatus)
+  ) {
+    return 0;
+  }
+
+  const statusValue =
+    move.secondaryStatus === "burn"
+      ? 72
+      : move.secondaryStatus === "paralysis"
+        ? 66
+        : 58;
+
+  return (
+    statusValue *
+    (move.secondaryEffectChance / 100)
+  );
+}
+
+function scoreAiCandidate(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+  path: DuelPoint[],
+): { score: number; damage: number } {
+  const livingAllies = state.units.filter(
+    (unit) =>
+      unit.hp > 0 && unit.side === actor.side,
+  ).length;
+  const livingEnemies = state.units.filter(
+    (unit) =>
+      unit.hp > 0 && unit.side !== actor.side,
+  ).length;
+  const pathCost = path.length;
+  const futureTurnPenalty =
+    Math.max(0, pathCost - actor.mp) * 8;
+  const positioningScore =
+    pathCost === 0
+      ? 14
+      : -pathCost * 9 - futureTurnPenalty;
+  const resourceScore = -move.apCost * 3;
+  const targetThreat = aiThreatScore(target) * 0.16;
+  const numbersPressure =
+    (livingEnemies - livingAllies) * 5;
+
+  if (move.category === "status") {
+    const utility = aiStatusUtility(
+      actor,
+      target,
+      move,
+    );
+    if (!Number.isFinite(utility) || utility <= 0) {
+      return { score: -Infinity, damage: 0 };
+    }
+
+    const nearlyDefeatedPenalty =
+      target.side !== actor.side &&
+      target.hp / Math.max(1, target.maxHp) <= 0.2
+        ? 30
+        : 0;
+
+    return {
+      damage: 0,
+      score:
+        utility +
+        positioningScore +
+        resourceScore +
+        targetThreat +
+        numbersPressure -
+        nearlyDefeatedPenalty,
+    };
+  }
+
+  const result = calculateDamage(
+    actor,
+    target,
+    move,
+  );
+  if (result.damage <= 0) {
+    return { score: -Infinity, damage: 0 };
+  }
+
+  const hpRatio =
+    target.hp / Math.max(1, target.maxHp);
+  const damageRatio =
+    Math.min(1.5, result.damage / Math.max(1, target.maxHp));
+  const knockoutScore =
+    result.damage >= target.hp
+      ? 230 + Math.max(0, 40 - target.hp)
+      : 0;
+  const stabScore =
+    result.sameTypeAttackBonus ? 14 : 0;
+  const matchupScore =
+    result.typeEffectiveness >= 4
+      ? 72
+      : result.typeEffectiveness >= 2
+        ? 42
+        : result.typeEffectiveness < 1
+          ? -28
+          : 0;
+  const lowHpFocus =
+    (1 - hpRatio) * 38;
+  const secondaryUtility =
+    aiSecondaryStatusUtility(target, move);
+  const riderUtility =
+    move.effect === "speed-down" &&
+    target.speedStage > -MAX_STAGE
+      ? Math.max(
+          0,
+          22 + target.speedStage * 5,
+        )
+      : 0;
+
+  return {
+    damage: result.damage,
+    score:
+      result.damage * 7 +
+      damageRatio * 125 +
+      (move.power ?? 0) * 0.35 +
+      knockoutScore +
+      stabScore +
+      matchupScore +
+      lowHpFocus +
+      secondaryUtility +
+      riderUtility +
+      positioningScore +
+      resourceScore +
+      targetThreat +
+      numbersPressure,
+  };
+}
+
+function compareAiCandidates(
+  a: AiCandidate,
+  b: AiCandidate,
+): number {
+  return (
+    b.score - a.score ||
+    b.damage - a.damage ||
+    a.path.length - b.path.length ||
+    a.target.hp - b.target.hp ||
+    a.move.apCost - b.move.apCost ||
+    a.move.id.localeCompare(b.move.id) ||
+    a.target.id.localeCompare(b.target.id)
+  );
+}
+
+function chooseAiCandidate(
+  state: DuelState,
+  actor: DuelUnit,
+  options: {
+    requireInRange: boolean;
+    statusAlreadyUsed: boolean;
+  },
+): AiCandidate | null {
+  const enemies = state.units.filter(
+    (unit) =>
+      unit.hp > 0 &&
+      unit.side !== actor.side,
+  );
+  const candidates: AiCandidate[] = [];
+
+  for (const moveId of actor.moves) {
+    const move = DUEL_MOVES[moveId];
+    if (!move || actor.ap < move.apCost) {
+      continue;
+    }
+    if (
+      options.statusAlreadyUsed &&
+      move.category === "status"
+    ) {
+      continue;
+    }
+
+    const targets =
+      move.targeting === "self"
+        ? [actor]
+        : enemies;
+
+    for (const target of targets) {
+      const path = shortestAiPathToRange(
+        state,
+        actor,
+        target,
+        move,
+      );
+      if (!path) continue;
+      if (
+        options.requireInRange &&
+        path.length > 0
+      ) {
+        continue;
+      }
+
+      const scored = scoreAiCandidate(
+        state,
+        actor,
+        target,
+        move,
+        path,
+      );
+      if (!Number.isFinite(scored.score)) {
+        continue;
+      }
+
+      candidates.push({
+        move,
+        target,
+        path,
+        score: scored.score,
+        damage: scored.damage,
+      });
+    }
+  }
+
+  candidates.sort(compareAiCandidates);
+  return candidates[0] ?? null;
+}
+
+function aiMovementDestination(
+  state: DuelState,
+  actor: DuelUnit,
+  path: readonly DuelPoint[],
+): DuelPoint | null {
+  if (actor.mp <= 0 || path.length === 0) {
+    return null;
+  }
+
+  const reachable = new Set(
+    getReachableCells(state, actor.id).map(pointKey),
+  );
+  const maxIndex = Math.min(
+    path.length,
+    actor.mp,
+  ) - 1;
+
+  for (
+    let index = maxIndex;
+    index >= 0;
+    index -= 1
+  ) {
+    if (reachable.has(pointKey(path[index]))) {
+      return path[index];
+    }
+  }
+
+  return null;
 }
 
 export function resolveSimpleAiTurnDetailed(
@@ -2755,6 +3073,7 @@ export function resolveSimpleAiTurnDetailed(
   let state = input;
   const steps: DuelActionResult[] = [];
   let actor = getActiveDuelUnit(state);
+  let statusUsed = false;
 
   const run = (action: DuelAction): DuelActionResult => {
     const result = applyDuelAction(state, action);
@@ -2773,35 +3092,25 @@ export function resolveSimpleAiTurnDetailed(
     return { state, steps };
   }
 
-  const target = bestAiTarget(state, actor);
-  if (!target) {
-    return { state, steps };
-  }
-
-  const preferredAttackMoveId = bestAiAttackMove(
+  // Plan against every living opponent. The plan may intentionally spend
+  // the whole MP budget walking around obstacles toward a superior attack.
+  const strategicPlan = chooseAiCandidate(
+    state,
     actor,
-    target,
-    false,
-  );
-  const preferredAttackMove = preferredAttackMoveId
-    ? DUEL_MOVES[preferredAttackMoveId]
-    : null;
-  const initialDistance = manhattanDistance(
-    actor.position,
-    target.position,
+    {
+      requireInRange: false,
+      statusAlreadyUsed: false,
+    },
   );
 
   if (
-    preferredAttackMove &&
-    (initialDistance < preferredAttackMove.minRange ||
-      initialDistance > preferredAttackMove.maxRange) &&
-    actor.mp > 0
+    strategicPlan &&
+    strategicPlan.path.length > 0
   ) {
-    const destination = bestAiDestination(
+    const destination = aiMovementDestination(
       state,
       actor,
-      target,
-      preferredAttackMove,
+      strategicPlan.path,
     );
 
     if (destination) {
@@ -2814,66 +3123,51 @@ export function resolveSimpleAiTurnDetailed(
     }
   }
 
-  if (!actor || actor.side !== side) {
-    return { state, steps };
-  }
-
-  const currentTarget = bestAiTarget(state, actor);
-  if (!currentTarget) {
-    return { state, steps };
-  }
-
-  const attackMoveId = bestAiAttackMove(
-    actor,
-    currentTarget,
-    true,
-  );
-
-  if (attackMoveId) {
-    const attackResult = run({
-      kind: "use-move",
-      unitId: actor.id,
-      moveId: attackMoveId,
-      targetId: currentTarget.id,
-    });
-
-    if (attackResult.state.status === "finished") {
+  // Spend remaining AP on the best tactical actions available now. A status
+  // move is used at most once per turn, preventing deterministic debuff spam.
+  for (
+    let actionIndex = 0;
+    actionIndex < 3;
+    actionIndex += 1
+  ) {
+    actor = getActiveDuelUnit(state);
+    if (
+      state.status !== "active" ||
+      !actor ||
+      actor.side !== side
+    ) {
       return { state, steps };
     }
-  }
 
-  actor = getActiveDuelUnit(state);
-  if (!actor || actor.side !== side) {
-    return { state, steps };
-  }
+    const candidate = chooseAiCandidate(
+      state,
+      actor,
+      {
+        requireInRange: true,
+        statusAlreadyUsed: statusUsed,
+      },
+    );
+    if (!candidate || candidate.score <= 0) {
+      break;
+    }
 
-  const statusMoveId = statusMoveFor(actor);
+    const result = run({
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: candidate.move.id,
+      targetId: candidate.target.id,
+    });
 
-  if (statusMoveId) {
-    const statusMove = DUEL_MOVES[statusMoveId];
-    const statusTarget =
-      statusMove.targeting === "self"
-        ? actor
-        : bestAiTarget(state, actor);
+    if (!result.accepted) {
+      break;
+    }
 
-    if (statusTarget) {
-      const statusDistance = manhattanDistance(
-        actor.position,
-        statusTarget.position,
-      );
+    if (candidate.move.category === "status") {
+      statusUsed = true;
+    }
 
-      if (
-        actor.ap >= statusMove.apCost &&
-        statusDistance >= statusMove.minRange &&
-        statusDistance <= statusMove.maxRange
-      ) {
-        run({
-          kind: "use-move",
-          unitId: actor.id,
-          moveId: statusMoveId,
-          targetId: statusTarget.id,
-        });
-      }
+    if (result.state.status === "finished") {
+      return { state, steps };
     }
   }
 

@@ -5,6 +5,7 @@ import {
   createStarterDuel,
   createTrainerDuel,
   createWildDuel,
+  DUEL_MOVES,
   getActiveDuelUnit,
   getReachableCells,
   manhattanDistance,
@@ -1079,5 +1080,140 @@ describe("Viridian Forest self-target moves", () => {
           step.presentation.moveId === "harden",
       ),
     ).toBe(true);
+  });
+});
+
+
+describe("tactical AI and move ranges", () => {
+  it("lets every enemy-targeting offensive move hit from range 1", () => {
+    for (const move of Object.values(DUEL_MOVES)) {
+      if (
+        move.targeting === "single-enemy" &&
+        move.category !== "status"
+      ) {
+        expect(move.minRange).toBe(1);
+      }
+    }
+  });
+
+  it("walks around a nearby resistant target to exploit a better matchup", () => {
+    let state = createTrainerDuel({
+      seed: 404,
+      width: 9,
+      height: 5,
+      players: [
+        {
+          species: "pidgey",
+          level: 5,
+          moves: ["tackle"],
+        },
+        {
+          species: "squirtle",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 5,
+          moves: ["growl", "vine-whip"],
+        },
+      ],
+    });
+
+    const actor = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const pidgey = state.units.find(
+      (unit) => unit.species === "pidgey",
+    )!;
+    const squirtle = state.units.find(
+      (unit) => unit.species === "squirtle",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              position: { x: 0, y: 2 },
+              ap: 6,
+              mp: 3,
+            }
+          : unit.id === pidgey.id
+            ? {
+                ...unit,
+                position: { x: 1, y: 2 },
+              }
+            : unit.id === squirtle.id
+              ? {
+                  ...unit,
+                  position: { x: 3, y: 2 },
+                }
+              : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+    const attack = turn.steps.find(
+      (step) =>
+        step.presentation?.kind === "move" &&
+        step.presentation.moveId === "vine-whip",
+    );
+
+    expect(
+      turn.steps.some(
+        (step) =>
+          step.presentation?.kind === "movement",
+      ),
+    ).toBe(true);
+    expect(
+      attack?.presentation?.kind === "move"
+        ? attack.presentation.targetIds[0]
+        : null,
+    ).toBe(squirtle.id);
+  });
+
+  it("does not repeatedly spend a turn stacking status moves", () => {
+    let state = createWildDuel({
+      seed: 405,
+      player: {
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle"],
+      },
+      wildSpecies: "kakuna",
+      wildLevel: 5,
+    });
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: wild.id,
+      units: state.units.map((unit) =>
+        unit.id === wild.id
+          ? { ...unit, ap: 6 }
+          : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+    const hardens = turn.steps.filter(
+      (step) =>
+        step.presentation?.kind === "move" &&
+        step.presentation.moveId === "harden",
+    );
+
+    expect(hardens).toHaveLength(1);
   });
 });
