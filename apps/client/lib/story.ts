@@ -36,6 +36,7 @@ export type MtMoonFossilId = "dome" | "helix";
 export type StoryValuableId = "nugget";
 export type StoryValuables = Record<StoryValuableId, number>;
 export type StoryKeyItemId = "ss-ticket";
+export type StoryFieldTechniqueId = "cut";
 export type BillStoryStage =
   | "unmet"
   | "teleporter-ready"
@@ -57,6 +58,7 @@ export type StoryState = {
   inventory: DuelInventory;
   valuables?: StoryValuables;
   keyItemIds?: StoryKeyItemId[];
+  fieldTechniqueIds?: StoryFieldTechniqueId[];
   billStage?: BillStoryStage;
 };
 
@@ -81,6 +83,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
     nugget: 0,
   },
   keyItemIds: [],
+  fieldTechniqueIds: [],
   billStage: "unmet",
 };
 
@@ -133,6 +136,7 @@ export function chooseStarter(
       nugget: 0,
     },
     keyItemIds: [],
+    fieldTechniqueIds: [],
     billStage: "unmet",
   };
 }
@@ -261,6 +265,23 @@ function normalizeKeyItemIds(
       value.filter(
         (item): item is StoryKeyItemId =>
           item === "ss-ticket",
+      ),
+    ),
+  );
+}
+
+function normalizeFieldTechniqueIds(
+  value: unknown,
+): StoryFieldTechniqueId[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return Array.from(
+    new Set(
+      value.filter(
+        (technique): technique is StoryFieldTechniqueId =>
+          technique === "cut",
       ),
     ),
   );
@@ -408,6 +429,9 @@ export function normalizeStoryState(
     inventory: normalizeInventory(input?.inventory),
     valuables: normalizeValuables(input?.valuables),
     keyItemIds: normalizeKeyItemIds(input?.keyItemIds),
+    fieldTechniqueIds: normalizeFieldTechniqueIds(
+      input?.fieldTechniqueIds,
+    ),
     billStage:
       normalizeKeyItemIds(input?.keyItemIds).includes(
         "ss-ticket",
@@ -644,6 +668,39 @@ export function hasStoryKeyItem(
   itemId: StoryKeyItemId,
 ): boolean {
   return (story.keyItemIds ?? []).includes(itemId);
+}
+
+export function hasStoryFieldTechnique(
+  story: StoryState,
+  techniqueId: StoryFieldTechniqueId,
+): boolean {
+  return (story.fieldTechniqueIds ?? []).includes(
+    techniqueId,
+  );
+}
+
+export function interactWithSsAnneCaptain(
+  story: StoryState,
+): StoryScriptInteractionResult {
+  if (hasStoryFieldTechnique(story, "cut")) {
+    return {
+      story,
+      message:
+        "Capitão: Agora que melhorei, o S.S. Anne partirá em breve. Use Cut nas pequenas árvores de Vermilion!",
+    };
+  }
+
+  return {
+    story: {
+      ...story,
+      fieldTechniqueIds: [
+        ...(story.fieldTechniqueIds ?? []),
+        "cut",
+      ],
+    },
+    message:
+      "Você ajudou o Capitão a se recuperar. Ele ensinou a técnica de campo Cut! Agora pequenas árvores podem ser cortadas.",
+  };
 }
 
 export function interactWithBill(

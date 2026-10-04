@@ -55,6 +55,7 @@ import {
   depositCapturedPokemon,
   healStoryParty,
   interactWithBill,
+  interactWithSsAnneCaptain,
   normalizeStoryState,
   runBillCellSeparator,
   placeCapturedPokemon,
@@ -842,6 +843,13 @@ export function GameClient() {
           const preview = runBillCellSeparator(story);
           setStory((current) =>
             runBillCellSeparator(current).story,
+          );
+          return preview.message;
+        }}
+        onSsAnneCaptainInteract={() => {
+          const preview = interactWithSsAnneCaptain(story);
+          setStory((current) =>
+            interactWithSsAnneCaptain(current).story,
           );
           return preview.message;
         }}

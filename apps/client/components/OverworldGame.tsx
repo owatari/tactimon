@@ -48,6 +48,7 @@ import {
   CERULEAN_RIVAL_TRAINER_ID,
   CERULEAN_ROCKET_TRAINER_ID,
   SS_ANNE_RIVAL_CHALLENGE_TEXT,
+  SS_ANNE_RIVAL_TRAINER_ID,
   ceruleanRivalEncounter,
   isCeruleanRivalTriggerAt,
   isCeruleanRocketTriggerAt,
@@ -127,6 +128,7 @@ type Props = {
   onPokemonStorageOpen: () => void;
   onBillInteract: () => string;
   onBillComputerInteract: () => string;
+  onSsAnneCaptainInteract: () => string;
   onMtMoonFossilChoice: (
     fossil: MtMoonFossilId,
   ) => {
@@ -223,6 +225,10 @@ type BillStoryObject = StoryObjectBase & {
   kind: "bill";
 };
 
+type SsAnneCaptainStoryObject = StoryObjectBase & {
+  kind: "ss-anne-captain";
+};
+
 type StoryObject =
   | StaticStoryObject
   | TrainerStoryObject
@@ -231,7 +237,8 @@ type StoryObject =
   | DialogueStoryObject
   | PickupStoryObject
   | FossilStoryObject
-  | BillStoryObject;
+  | BillStoryObject
+  | SsAnneCaptainStoryObject;
 
 function createPlayer(
   x: number,
@@ -655,6 +662,23 @@ function billStoryObjects(
   ];
 }
 
+function ssAnneCaptainStoryObjects(): SsAnneCaptainStoryObject[] {
+  return [
+    {
+      id: "ss-anne-captain",
+      kind: "ss-anne-captain",
+      label: "Captain",
+      x: 5,
+      y: 4,
+      spriteUrl: "/game-assets/overworld/063_captain.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+    },
+  ];
+}
+
 function pokemonCenterStoryObjects(
   mapId: string,
 ): StoryObject[] {
@@ -727,7 +751,9 @@ function mapStoryObjects(
       ? [...labStoryObjects(story)]
       : mapId === "sea-cottage"
         ? billStoryObjects(story)
-        : mapId === "viridian-mart" ||
+        : mapId === "ss-anne-captains-office"
+          ? ssAnneCaptainStoryObjects()
+          : mapId === "viridian-mart" ||
           mapId === "pewter-mart" ||
           mapId === "cerulean-mart" ||
           mapId === "vermilion-mart"
@@ -784,6 +810,7 @@ export function OverworldGame({
   onPokemonStorageOpen,
   onBillInteract,
   onBillComputerInteract,
+  onSsAnneCaptainInteract,
   onMtMoonFossilChoice,
   onOverworldItemPickup,
 }: Props) {
@@ -1162,6 +1189,11 @@ export function OverworldGame({
         return;
       }
 
+      if (storyObject.kind === "ss-anne-captain") {
+        showInteraction(onSsAnneCaptainInteract());
+        return;
+      }
+
       if (storyObject.kind === "mart-clerk") {
         onMartOpen();
         return;
@@ -1251,6 +1283,7 @@ export function OverworldGame({
     onMtMoonFossilChoice,
     onPokemonCenterHeal,
     onPokemonStorageOpen,
+    onSsAnneCaptainInteract,
     onOverworldItemPickup,
     onRequestStarterChoice,
     showInteraction,
@@ -1668,6 +1701,19 @@ export function OverworldGame({
       ) {
         showInteraction(
           "Marinheiro: Bem-vindo ao S.S. Anne! Você precisa do S.S. Ticket para embarcar.",
+        );
+        player.blockedUntil = now + 500;
+        return false;
+      }
+
+      if (
+        warp?.mapId === "ss-anne-captains-office" &&
+        !storyRef.current.defeatedTrainerIds.includes(
+          SS_ANNE_RIVAL_TRAINER_ID,
+        )
+      ) {
+        showInteraction(
+          "Blue está bloqueando o caminho para o Capitão. Vença-o primeiro.",
         );
         player.blockedUntil = now + 500;
         return false;

@@ -8,7 +8,7 @@ describe("S.S. Anne upper decks", () => {
     expect(WORLD_MAPS["ss-anne-deck"]).toBeDefined();
   });
 
-  it("connects the public ship floors without opening the captain office", () => {
+  it("connects the public ship floors and Captain's Office", () => {
     expect(resolveWarpTransitionAt("ss-anne-1f-corridor", 3, 8)).toEqual({
       mapId: "ss-anne-2f-corridor", spawn: { x: 2, y: 3 },
     });
@@ -18,6 +18,13 @@ describe("S.S. Anne upper decks", () => {
     expect(resolveWarpTransitionAt("ss-anne-3f-corridor", 1, 4)).toEqual({
       mapId: "ss-anne-deck", spawn: { x: 16, y: 10 },
     });
-    expect(resolveWarpTransitionAt("ss-anne-2f-corridor", 30, 2)).toBeNull();
+    expect(resolveWarpTransitionAt("ss-anne-2f-corridor", 30, 2)).toEqual({
+      mapId: "ss-anne-captains-office",
+      spawn: { x: 3, y: 6 },
+    });
+    expect(resolveWarpTransitionAt("ss-anne-captains-office", 3, 7)).toEqual({
+      mapId: "ss-anne-2f-corridor",
+      spawn: { x: 29, y: 2 },
+    });
   });
 });

@@ -176,6 +176,14 @@ const files = [
     "maps/ss-anne-deck/preview.png",
   ],
   [
+    "maps/layouts/171_ssanne_captainsoffice_layout/layout.json",
+    "maps/ss-anne-captains-office/layout.json",
+  ],
+  [
+    "maps/layouts/171_ssanne_captainsoffice_layout/preview.png",
+    "maps/ss-anne-captains-office/preview.png",
+  ],
+  [
     "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
     "maps/vermilion-pokemon-center/layout.json",
   ],

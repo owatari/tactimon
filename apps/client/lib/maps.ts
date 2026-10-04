@@ -649,6 +649,16 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     fallbackMusicId: 304,
     tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
   },
+  "ss-anne-captains-office": {
+    id: "ss-anne-captains-office",
+    label: "S.S. Anne Captain's Office",
+    layoutUrl: "/game-assets/maps/ss-anne-captains-office/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-captains-office/preview.png",
+    worldUrl: null,
+    spawn: { x: 3, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
+  },
   "vermilion-pokemon-center": {
     id: "vermilion-pokemon-center",
     label: "Vermilion Pokémon Center",
@@ -1686,6 +1696,28 @@ export function resolveWarpTransitionAt(
     (y === 8 || y === 9)
   ) {
     return { mapId: "ss-anne-3f-corridor", spawn: { x: 1, y: 5 } };
+  }
+
+  if (
+    mapId === "ss-anne-2f-corridor" &&
+    x === 30 &&
+    y === 2
+  ) {
+    return {
+      mapId: "ss-anne-captains-office",
+      spawn: { x: 3, y: 6 },
+    };
+  }
+
+  if (
+    mapId === "ss-anne-captains-office" &&
+    x === 3 &&
+    y === 7
+  ) {
+    return {
+      mapId: "ss-anne-2f-corridor",
+      spawn: { x: 29, y: 2 },
+    };
   }
 
   if (
