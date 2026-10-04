@@ -425,8 +425,7 @@ export interface DuelAiTurnResult {
 
 export interface DuelAiTurnOptions {
   /**
-   * The shared DuelState inventory belongs to the player. Enable this only
-   * when automating the player side.
+   * Spend items from the active side's own battle bag when tactically useful.
    */
   useItems?: boolean;
   /**
