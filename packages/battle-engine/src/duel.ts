@@ -150,6 +150,8 @@ export type DuelMoveId =
   | "focus-energy"
   | "karate-chop"
   | "confusion"
+  | "psychic"
+  | "calm-mind"
   | "hypnosis"
   | "disable"
   | "headbutt"
@@ -285,6 +287,10 @@ export interface DuelMove {
   minRange: number;
   maxRange: number;
   secondaryStatus?: Exclude<DuelMajorStatus, null>;
+  secondaryStatChange?: {
+    stat: "special-defense";
+    delta: -1;
+  };
   secondaryEffectChance?: number;
   effect?:
     | "attack-down"
@@ -293,6 +299,7 @@ export interface DuelMove {
     | "defense-down-2"
     | "defense-up"
     | "special-attack-up"
+    | "calm-mind"
     | "speed-down"
     | "speed-down-2"
     | "speed-up-2"
@@ -2227,6 +2234,44 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 4,
   },
+  psychic: {
+    id: "psychic",
+    name: "Psychic",
+    type: "psychic",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "confusion",
+    description:
+      "Ataque Psychic de 90 power com 10% de chance de reduzir Special Defense.",
+    power: 90,
+    apCost: 5,
+    maxPp: 10,
+    minRange: 1,
+    maxRange: 4,
+    secondaryStatChange: {
+      stat: "special-defense",
+      delta: -1,
+    },
+    secondaryEffectChance: 10,
+  },
+  "calm-mind": {
+    id: "calm-mind",
+    name: "Calm Mind",
+    type: "psychic",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "harden",
+    description:
+      "Aumenta Special Attack e Special Defense do usuário em 1 estágio.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 0,
+    maxRange: 0,
+    effect: "calm-mind",
+  },
   hypnosis: {
     id: "hypnosis",
     name: "Hypnosis",
@@ -3486,7 +3531,7 @@ function statusRollSucceeds(
   return createSeededRandom(seed)() < chance / 100;
 }
 
-function secondaryStatusSucceeds(
+function secondaryEffectSucceeds(
   state: DuelState,
   actor: DuelUnit,
   target: DuelUnit,
@@ -3496,7 +3541,7 @@ function secondaryStatusSucceeds(
     0,
     Math.min(100, Math.trunc(move.secondaryEffectChance ?? 0)),
   );
-  if (!move.secondaryStatus || chance <= 0) {
+  if (chance <= 0) {
     return false;
   }
 
@@ -3505,6 +3550,18 @@ function secondaryStatusSucceeds(
     actor,
     target.hp,
     chance,
+  );
+}
+
+function secondaryStatusSucceeds(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): boolean {
+  return (
+    Boolean(move.secondaryStatus) &&
+    secondaryEffectSucceeds(state, actor, target, move)
   );
 }
 
@@ -4167,6 +4224,34 @@ export function applyDuelAction(
     if (
       target.hp > 0 &&
       typeEffectiveness > 0 &&
+      move.secondaryStatChange?.stat ===
+        "special-defense" &&
+      secondaryEffectSucceeds(
+        state,
+        actor,
+        target,
+        move,
+      )
+    ) {
+      const before = target.specialDefenseStage;
+      target.specialDefenseStage = Math.max(
+        -MAX_STAGE,
+        target.specialDefenseStage +
+          move.secondaryStatChange.delta,
+      );
+      statChanges.push({
+        stat: "special-defense",
+        delta: target.specialDefenseStage - before,
+      });
+      appendLog(
+        state,
+        `${move.name} reduziu a Special Defense de ${target.displayName}.`,
+      );
+    }
+
+    if (
+      target.hp > 0 &&
+      typeEffectiveness > 0 &&
       move.effect === "speed-down"
     ) {
       const before = target.speedStage;
@@ -4327,6 +4412,37 @@ export function applyDuelAction(
     appendLog(
       state,
       `${move.name} aumentou o Special Attack de ${actor.displayName}.`,
+    );
+  } else if (move.effect === "calm-mind") {
+    const beforeSpecialAttack =
+      actor.specialAttackStage;
+    const beforeSpecialDefense =
+      actor.specialDefenseStage;
+    actor.specialAttackStage = Math.min(
+      MAX_STAGE,
+      actor.specialAttackStage + 1,
+    );
+    actor.specialDefenseStage = Math.min(
+      MAX_STAGE,
+      actor.specialDefenseStage + 1,
+    );
+    statChanges.push(
+      {
+        stat: "special-attack",
+        delta:
+          actor.specialAttackStage -
+          beforeSpecialAttack,
+      },
+      {
+        stat: "special-defense",
+        delta:
+          actor.specialDefenseStage -
+          beforeSpecialDefense,
+      },
+    );
+    appendLog(
+      state,
+      `${move.name} aumentou o Special Attack e a Special Defense de ${actor.displayName}.`,
     );
   } else if (
     move.effect === "speed-down" ||
@@ -4708,6 +4824,33 @@ function aiStatusUtility(
     );
   }
 
+  if (move.effect === "calm-mind") {
+    if (
+      actor.specialAttackStage >= 4 &&
+      actor.specialDefenseStage >= 4
+    ) {
+      return -Infinity;
+    }
+    const specialMoves = actor.moves.filter(
+      (moveId) =>
+        DUEL_MOVES[moveId]?.category === "special" &&
+        getDuelMovePp(actor, moveId) > 0,
+    ).length;
+    const offensiveValue =
+      actor.specialAttackStage < 4
+        ? 24 + specialMoves * 8
+        : 0;
+    const defensiveValue =
+      actor.specialDefenseStage < 4 ? 30 : 0;
+    return (
+      38 +
+      offensiveValue +
+      defensiveValue -
+      Math.max(0, actor.specialAttackStage) * 6 -
+      Math.max(0, actor.specialDefenseStage) * 5
+    );
+  }
+
   if (move.effect === "heal-self") {
     const missingRatio =
       (actor.maxHp - actor.hp) /
@@ -4756,6 +4899,22 @@ function aiSecondaryStatusUtility(
     statusValue *
     (move.secondaryEffectChance / 100)
   );
+}
+
+function aiSecondaryStatUtility(
+  target: DuelUnit,
+  move: DuelMove,
+): number {
+  if (
+    move.secondaryStatChange?.stat !==
+      "special-defense" ||
+    !move.secondaryEffectChance ||
+    target.specialDefenseStage <= -MAX_STAGE
+  ) {
+    return 0;
+  }
+
+  return 48 * (move.secondaryEffectChance / 100);
 }
 
 function aiThreatToTeam(
@@ -4947,7 +5106,8 @@ function scoreAiCandidate(
     result.typeEffectiveness,
   );
   const secondaryUtility =
-    aiSecondaryStatusUtility(target, move);
+    aiSecondaryStatusUtility(target, move) +
+    aiSecondaryStatUtility(target, move);
   const riderUtility =
     move.effect === "speed-down" &&
     target.speedStage > -MAX_STAGE
