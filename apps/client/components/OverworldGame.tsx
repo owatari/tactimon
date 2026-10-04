@@ -33,6 +33,7 @@ import {
   WorldTransition,
 } from "@/lib/maps";
 import {
+  applyStoryOverworldStep,
   hasStoryKeyItem,
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
@@ -142,7 +143,9 @@ type Props = {
     },
   ) => void;
   onMartOpen: () => void;
-  onOverworldStep: () => void;
+  onOverworldStep: (
+    nextStory: StoryState,
+  ) => void;
   onPokemonStorageOpen: () => void;
   onDialogueInteraction: (
     request: DialogueInteractionRequest,
@@ -2052,7 +2055,19 @@ export function OverworldGame({
             mapIdRef.current,
             player,
           );
-          onOverworldStep();
+          const nextStory =
+            applyStoryOverworldStep(
+              storyRef.current,
+            );
+          storyRef.current = nextStory;
+          onOverworldStep(nextStory);
+
+          if (
+            !storyHasHealthyPokemon(nextStory)
+          ) {
+            return;
+          }
+
           maybeTriggerLabBattle();
           maybeTriggerRoute22RivalBattle();
           maybeTriggerCeruleanRivalBattle();
