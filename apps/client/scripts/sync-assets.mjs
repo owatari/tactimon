@@ -136,6 +136,14 @@ const files = [
     "maps/vermilion-city/preview.png",
   ],
   [
+    "maps/layouts/024_vermilioncity_gym_layout/layout.json",
+    "maps/vermilion-gym/layout.json",
+  ],
+  [
+    "maps/layouts/024_vermilioncity_gym_layout/preview.png",
+    "maps/vermilion-gym/preview.png",
+  ],
+  [
     "maps/layouts/118_ssanne_exterior_layout/layout.json",
     "maps/ss-anne-exterior/layout.json",
   ],
@@ -465,6 +473,23 @@ const files = [
   [
     "tilesets/27_ceruleangym/attributes.bin",
     "tilesets/cerulean-gym/attributes.bin",
+  ],
+
+  [
+    "tilesets/28_vermiliongym/tiles.4bpp",
+    "tilesets/vermilion-gym/tiles.4bpp",
+  ],
+  [
+    "tilesets/28_vermiliongym/palettes.gbapal",
+    "tilesets/vermilion-gym/palettes.gbapal",
+  ],
+  [
+    "tilesets/28_vermiliongym/metatiles.bin",
+    "tilesets/vermilion-gym/metatiles.bin",
+  ],
+  [
+    "tilesets/28_vermiliongym/attributes.bin",
+    "tilesets/vermilion-gym/attributes.bin",
   ],
 
   [
