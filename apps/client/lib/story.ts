@@ -27,6 +27,7 @@ export type StoryHealLocationId =
   | "pallet-town"
   | "viridian-city"
   | "pewter-city"
+  | "cerulean-city"
   | "route-4";
 
 export type StoryBadgeId = "boulder";
@@ -321,9 +322,11 @@ export function normalizeStoryState(
         ? input.mtMoonFossil
         : null,
     healLocationId:
-      input?.healLocationId === "route-4"
-        ? "route-4"
-        : input?.healLocationId === "pewter-city"
+      input?.healLocationId === "cerulean-city"
+        ? "cerulean-city"
+        : input?.healLocationId === "route-4"
+          ? "route-4"
+          : input?.healLocationId === "pewter-city"
           ? "pewter-city"
           : input?.healLocationId === "viridian-city"
             ? "viridian-city"

@@ -407,6 +407,32 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: CERULEAN_TILESET,
     },
   },
+  "cerulean-pokemon-center": {
+    id: "cerulean-pokemon-center",
+    label: "Cerulean Pokémon Center",
+    layoutUrl: "/game-assets/maps/cerulean-pokemon-center/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-pokemon-center/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 7 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: POKEMON_CENTER_TILESET,
+    },
+  },
+  "cerulean-mart": {
+    id: "cerulean-mart",
+    label: "Cerulean Poké Mart",
+    layoutUrl: "/game-assets/maps/cerulean-mart/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-mart/preview.png",
+    worldUrl: null,
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: MART_TILESET,
+    },
+  },
   "route-4-pokemon-center": {
     id: "route-4-pokemon-center",
     label: "Route 4 Pokémon Center",
@@ -856,8 +882,16 @@ export function resolveWhiteOutRespawn(
     | "pallet-town"
     | "viridian-city"
     | "pewter-city"
+    | "cerulean-city"
     | "route-4",
 ): WhiteOutRespawn {
+  if (healLocationId === "cerulean-city") {
+    return {
+      mapId: "cerulean-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
   if (healLocationId === "route-4") {
     return {
       mapId: "route-4-pokemon-center",
@@ -910,6 +944,7 @@ export function isPokemonStoragePcAt(
   return (
     (mapId === "viridian-pokemon-center" ||
       mapId === "pewter-pokemon-center" ||
+      mapId === "cerulean-pokemon-center" ||
       mapId === "route-4-pokemon-center") &&
     x === 11 &&
     y === 1
@@ -997,6 +1032,52 @@ export function resolveWarpTransitionAt(
   }
   if (mapId === "mt-moon-b2f" && x === 5 && y === 10) {
     return { mapId: "mt-moon-b1f", spawn: { x: 39, y: 4 } };
+  }
+
+  if (
+    mapId === "cerulean-city" &&
+    x === 22 &&
+    y === 19
+  ) {
+    return {
+      mapId: "cerulean-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-pokemon-center" &&
+    y === 8 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "cerulean-city",
+      spawn: { x: 22, y: 20 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-city" &&
+    x === 29 &&
+    y === 28
+  ) {
+    return {
+      mapId: "cerulean-mart",
+      spawn: { x: 4, y: 6 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-mart" &&
+    y === 7 &&
+    x >= 3 &&
+    x <= 5
+  ) {
+    return {
+      mapId: "cerulean-city",
+      spawn: { x: 29, y: 29 },
+    };
   }
 
   if (

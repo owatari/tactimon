@@ -665,10 +665,12 @@ function mapStoryObjects(
     mapId === "oak-lab"
       ? [...labStoryObjects(story)]
       : mapId === "viridian-mart" ||
-          mapId === "pewter-mart"
+          mapId === "pewter-mart" ||
+          mapId === "cerulean-mart"
         ? martStoryObjects(mapId)
         : mapId === "viridian-pokemon-center" ||
             mapId === "pewter-pokemon-center" ||
+            mapId === "cerulean-pokemon-center" ||
             mapId === "route-4-pokemon-center"
           ? pokemonCenterStoryObjects(mapId)
           : mapPickupStoryObjects(mapId, story);
