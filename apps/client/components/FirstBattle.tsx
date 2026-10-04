@@ -1144,6 +1144,9 @@ export function FirstBattle({
                 : active
                   ? `Turno de ${active.displayName}`
                   : "Aguardando"}
+              {state.weather === "rain"
+                ? ` · Chuva ${state.weatherTurnsRemaining}`
+                : ""}
             </div>
             <div className="battle-control-row">
               <button
