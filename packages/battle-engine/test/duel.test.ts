@@ -3313,6 +3313,289 @@ describe("Horn Drill OHKO", () => {
 });
 
 
+describe("Solar Beam charge turns", () => {
+  it("uses FireRed data and completes Exeggcute's late-rival moveset", () => {
+    expect(DUEL_MOVES["solar-beam"]).toMatchObject({
+      type: "grass",
+      category: "special",
+      power: 120,
+      accuracy: 100,
+      maxPp: 10,
+      effect: "solar-beam",
+    });
+    expect(defaultMovesForSpecies("exeggcute")).toEqual([
+      "solar-beam",
+      "sleep-powder",
+      "poison-powder",
+      "stun-spore",
+    ]);
+  });
+
+  it("spends PP once, charges for one activation, then forces the release", () => {
+    let state = createTrainerDuel({
+      seed: 1935,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "exeggcute",
+          level: 45,
+          moves: ["solar-beam"],
+        },
+      ],
+      rivals: [
+        {
+          species: "geodude",
+          level: 45,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const targetHp = target.hp;
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      turnIndex: state.turnOrder.indexOf(actor.id),
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const charged = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "solar-beam",
+      targetId: target.id,
+    });
+
+    expect(charged.accepted).toBe(true);
+    expect(
+      charged.state.units.find(
+        (unit) => unit.id === target.id,
+      )?.hp,
+    ).toBe(targetHp);
+    expect(
+      charged.state.units.find(
+        (unit) => unit.id === actor.id,
+      )?.chargingMove,
+    ).toEqual({
+      moveId: "solar-beam",
+      targetId: target.id,
+    });
+    expect(
+      charged.state.units.find(
+        (unit) => unit.id === actor.id,
+      )?.movePp["solar-beam"],
+    ).toBe(DUEL_MOVES["solar-beam"].maxPp - 1);
+    if (charged.presentation?.kind === "move") {
+      expect(charged.presentation.charging).toBe(true);
+      expect(charged.presentation.results[0].damage).toBe(0);
+    }
+
+    const targetTurn = applyDuelAction(
+      charged.state,
+      {
+        kind: "end-turn",
+        unitId: target.id,
+      },
+    );
+    expect(targetTurn.accepted).toBe(true);
+    expect(targetTurn.state.activeUnitId).toBe(actor.id);
+
+    const blocked = applyDuelAction(
+      targetTurn.state,
+      {
+        kind: "end-turn",
+        unitId: actor.id,
+      },
+    );
+    expect(blocked.accepted).toBe(false);
+    expect(blocked.reason).toBe("must-release-charge");
+
+    const released = applyDuelAction(
+      targetTurn.state,
+      {
+        kind: "release-charge",
+        unitId: actor.id,
+      },
+    );
+
+    expect(released.accepted).toBe(true);
+    const releasedActor = released.state.units.find(
+      (unit) => unit.id === actor.id,
+    )!;
+    const releasedTarget = released.state.units.find(
+      (unit) => unit.id === target.id,
+    )!;
+    expect(releasedActor.chargingMove).toBeNull();
+    expect(releasedActor.movePp["solar-beam"]).toBe(
+      DUEL_MOVES["solar-beam"].maxPp - 1,
+    );
+    expect(releasedTarget.hp).toBeLessThan(targetHp);
+    if (released.presentation?.kind === "move") {
+      expect(released.presentation.charging).toBeUndefined();
+      expect(
+        released.presentation.results[0].damage,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("halves Solar Beam damage in rain", () => {
+    const base = createTrainerDuel({
+      seed: 1936,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "exeggcute",
+          level: 45,
+          moves: ["solar-beam"],
+        },
+      ],
+      rivals: [
+        {
+          species: "charizard",
+          level: 53,
+          moves: ["scratch"],
+        },
+      ],
+    });
+    const actor = base.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = base.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const ready = {
+      ...base,
+      activeUnitId: actor.id,
+      turnIndex: base.turnOrder.indexOf(actor.id),
+      units: base.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+              chargingMove: {
+                moveId: "solar-beam" as const,
+                targetId: target.id,
+              },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const dry = applyDuelAction(ready, {
+      kind: "release-charge",
+      unitId: actor.id,
+    });
+    const rainy = applyDuelAction(
+      {
+        ...ready,
+        weather: "rain",
+        weatherTurnsRemaining: 5,
+      },
+      {
+        kind: "release-charge",
+        unitId: actor.id,
+      },
+    );
+
+    const dryDamage =
+      dry.presentation?.kind === "move"
+        ? dry.presentation.results[0].damage
+        : 0;
+    const rainyDamage =
+      rainy.presentation?.kind === "move"
+        ? rainy.presentation.results[0].damage
+        : 0;
+
+    expect(dryDamage).toBeGreaterThan(0);
+    expect(rainyDamage).toBe(
+      Math.max(1, Math.floor(dryDamage / 2)),
+    );
+  });
+
+  it("makes auto battle release a charged Solar Beam before any new decision", () => {
+    const base = createTrainerDuel({
+      seed: 1937,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "exeggcute",
+          level: 45,
+          moves: ["solar-beam", "sleep-powder"],
+        },
+      ],
+      rivals: [
+        {
+          species: "charizard",
+          level: 53,
+          moves: ["scratch"],
+        },
+      ],
+    });
+    const actor = base.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = base.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const ready = {
+      ...base,
+      activeUnitId: actor.id,
+      turnIndex: base.turnOrder.indexOf(actor.id),
+      units: base.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+              chargingMove: {
+                moveId: "solar-beam" as const,
+                targetId: target.id,
+              },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      ready,
+      "player",
+    );
+
+    expect(turn.steps).toHaveLength(1);
+    expect(
+      turn.state.units.find(
+        (unit) => unit.id === actor.id,
+      )?.chargingMove,
+    ).toBeNull();
+    expect(
+      turn.state.units.find(
+        (unit) => unit.id === target.id,
+      )?.hp,
+    ).toBeLessThan(target.hp);
+    expect(
+      turn.steps[0].presentation?.kind,
+    ).toBe("move");
+  });
+});
+
+
 describe("late-rival direct move sets", () => {
   it("uses canonical direct moves for Charizard and Gyarados", () => {
     expect(defaultMovesForSpecies("charizard")).toEqual([

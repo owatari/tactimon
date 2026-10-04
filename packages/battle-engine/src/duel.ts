@@ -148,6 +148,7 @@ export type DuelMoveId =
   | "screech"
   | "vine-whip"
   | "razor-leaf"
+  | "solar-beam"
   | "seed-bomb"
   | "ember"
   | "flame-wheel"
@@ -360,6 +361,7 @@ export interface DuelMove {
     | "heal-self"
     | "synthesis"
     | "rain-dance"
+    | "solar-beam"
     | "drain-half"
     | "fixed-damage-20"
     | "ohko"
@@ -381,6 +383,8 @@ export type DuelPresentationEvent =
       targetIds: string[];
       vfxId: DuelMoveId;
       motion: DuelMoveMotion;
+      /** First-turn charge presentation for two-turn moves. */
+      charging?: boolean;
       results: Array<{
         targetId: string;
         damage: number;
@@ -445,6 +449,11 @@ export interface DuelUnit {
   position: DuelPoint;
   moves: DuelMoveId[];
   movePp: DuelMovePp;
+  /** Forced move/target to release on this unit's next usable activation. */
+  chargingMove: {
+    moveId: DuelMoveId;
+    targetId: string;
+  } | null;
   captureAttempted: boolean;
 }
 
@@ -493,6 +502,10 @@ export type DuelAction =
       unitId: string;
       moveId: DuelMoveId;
       targetId: string;
+    }
+  | {
+      kind: "release-charge";
+      unitId: string;
     }
   | {
       kind: "use-item";
@@ -1020,7 +1033,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 60,
     specialDefense: 45,
     speed: 40,
-    moves: ["hypnosis", "leech-seed", "confusion", "stun-spore"],
+    moves: ["solar-beam", "sleep-powder", "poison-powder", "stun-spore"],
   },
   charmeleon: {
     name: "Charmeleon",
@@ -2199,6 +2212,24 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 25,
     minRange: 1,
     maxRange: 4,
+  },
+  "solar-beam": {
+    id: "solar-beam",
+    name: "Solar Beam",
+    type: "grass",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "solar-beam",
+    description:
+      "Absorve luz em uma ativação e dispara na próxima; chuva reduz o dano pela metade.",
+    power: 120,
+    accuracy: 100,
+    apCost: 5,
+    maxPp: 10,
+    minRange: 1,
+    maxRange: 4,
+    effect: "solar-beam",
   },
   "seed-bomb": {
     id: "seed-bomb",
@@ -3411,6 +3442,7 @@ function makeUnit(
       [...build.moves].slice(0, 4),
       build.movePp,
     ),
+    chargingMove: null,
     captureAttempted: false,
   };
 }
@@ -3752,6 +3784,9 @@ function cloneState(state: DuelState): DuelState {
       types: [...unit.types],
       moves: [...unit.moves],
       movePp: { ...unit.movePp },
+      chargingMove: unit.chargingMove
+        ? { ...unit.chargingMove }
+        : null,
     })),
     log: [...state.log],
   };
@@ -4027,6 +4062,10 @@ function expectedMoveDamage(
   singleHitDamage: number,
 ): number {
   return singleHitDamage * expectedHitCount(move);
+}
+
+function expectedMoveTempoFactor(move: DuelMove): number {
+  return move.effect === "solar-beam" ? 0.5 : 1;
 }
 
 function rollSleepTurns(
@@ -4364,7 +4403,10 @@ function calculateDamage(
         1,
         Math.floor((damage * 15) / 10),
       );
-    } else if (move.type === "fire") {
+    } else if (
+      move.type === "fire" ||
+      move.effect === "solar-beam"
+    ) {
       damage = Math.max(
         1,
         Math.floor(damage / 2),
@@ -4406,6 +4448,195 @@ function calculateDamage(
     damage,
     sameTypeAttackBonus,
     typeEffectiveness,
+  };
+}
+
+function chargedMoveMissPresentation(
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): DuelPresentationEvent {
+  return {
+    kind: "move",
+    actorId: actor.id,
+    moveId: move.id,
+    targetIds: [target.id],
+    vfxId: move.vfxId,
+    motion: move.motion,
+    results: [
+      {
+        targetId: target.id,
+        damage: 0,
+        fainted: false,
+        statChanges: [],
+        missed: true,
+      },
+    ],
+  };
+}
+
+function releaseChargedMove(
+  state: DuelState,
+  actor: DuelUnit,
+): DuelActionResult {
+  const charging = actor.chargingMove;
+  if (!charging) {
+    return {
+      state,
+      accepted: false,
+      reason: "not-charging",
+    };
+  }
+
+  const move = DUEL_MOVES[charging.moveId];
+  const target = state.units.find(
+    (unit) => unit.id === charging.targetId,
+  );
+  actor.chargingMove = null;
+
+  if (
+    !move ||
+    move.effect !== "solar-beam" ||
+    !target ||
+    target.hp <= 0
+  ) {
+    actor.ap = 0;
+    actor.mp = 0;
+    appendLog(
+      state,
+      `${actor.displayName} perdeu o alvo do golpe carregado.`,
+    );
+    resolveTurnEnd(state, actor);
+    return {
+      state,
+      accepted: true,
+      reason: "charged-target-unavailable",
+    };
+  }
+
+  const distance = manhattanDistance(
+    actor.position,
+    target.position,
+  );
+  if (
+    distance < move.minRange ||
+    distance > move.maxRange
+  ) {
+    actor.ap = 0;
+    actor.mp = 0;
+    appendLog(
+      state,
+      `${actor.displayName} liberou ${move.name}, mas ${target.displayName} saiu do alcance.`,
+    );
+    resolveTurnEnd(state, actor);
+    return {
+      state,
+      accepted: true,
+      presentation: chargedMoveMissPresentation(
+        actor,
+        target,
+        move,
+      ),
+    };
+  }
+
+  if (paralysisBlocksMove(state, actor)) {
+    actor.ap = 0;
+    actor.mp = 0;
+    appendLog(
+      state,
+      `${actor.displayName} está paralisado e não conseguiu liberar ${move.name}.`,
+    );
+    resolveTurnEnd(state, actor);
+    return {
+      state,
+      accepted: true,
+      reason: "fully-paralyzed",
+    };
+  }
+
+  actor.ap = 0;
+  actor.mp = 0;
+
+  if (!moveAccuracySucceeds(state, actor, target, move)) {
+    appendLog(
+      state,
+      `${actor.displayName} liberou ${move.name}, mas errou.`,
+    );
+    resolveTurnEnd(state, actor);
+    return {
+      state,
+      accepted: true,
+      presentation: chargedMoveMissPresentation(
+        actor,
+        target,
+        move,
+      ),
+    };
+  }
+
+  const damageResult = calculateDamage(
+    state,
+    actor,
+    target,
+    move,
+  );
+  const damageDealt = Math.min(
+    target.hp,
+    damageResult.damage,
+  );
+  target.hp = Math.max(
+    0,
+    target.hp - damageResult.damage,
+  );
+  appendLog(
+    state,
+    `${actor.displayName} liberou ${move.name}: ${damageDealt} de dano.`,
+  );
+
+  if (damageResult.typeEffectiveness === 0) {
+    appendLog(
+      state,
+      `Não afeta ${target.displayName}.`,
+    );
+  } else if (damageResult.typeEffectiveness > 1) {
+    appendLog(state, "É super efetivo!");
+  } else if (damageResult.typeEffectiveness < 1) {
+    appendLog(state, "Não é muito efetivo.");
+  }
+
+  if (target.hp <= 0) {
+    appendLog(
+      state,
+      `${target.displayName} desmaiou.`,
+    );
+  }
+
+  resolveTurnEnd(state, actor);
+
+  return {
+    state,
+    accepted: true,
+    presentation: {
+      kind: "move",
+      actorId: actor.id,
+      moveId: move.id,
+      targetIds: [target.id],
+      vfxId: move.vfxId,
+      motion: move.motion,
+      results: [
+        {
+          targetId: target.id,
+          damage: damageDealt,
+          fainted: target.hp <= 0,
+          statChanges: [],
+          sameTypeAttackBonus:
+            damageResult.sameTypeAttackBonus,
+          typeEffectiveness:
+            damageResult.typeEffectiveness,
+        },
+      ],
+    },
   };
 }
 
@@ -4503,6 +4734,21 @@ export function applyDuelAction(
       accepted: false,
       reason: "not-active-unit",
     };
+  }
+
+  if (
+    actor.chargingMove &&
+    action.kind !== "release-charge"
+  ) {
+    return {
+      state: input,
+      accepted: false,
+      reason: "must-release-charge",
+    };
+  }
+
+  if (action.kind === "release-charge") {
+    return releaseChargedMove(state, actor);
   }
 
   if (action.kind === "end-turn") {
@@ -4774,6 +5020,41 @@ export function applyDuelAction(
   }
 
   actor.ap -= move.apCost;
+
+  if (move.effect === "solar-beam") {
+    actor.chargingMove = {
+      moveId: move.id,
+      targetId: target.id,
+    };
+    actor.ap = 0;
+    actor.mp = 0;
+    appendLog(
+      state,
+      `${actor.displayName} absorveu luz para ${move.name}!`,
+    );
+    resolveTurnEnd(state, actor);
+    return {
+      state,
+      accepted: true,
+      presentation: {
+        kind: "move",
+        actorId: actor.id,
+        moveId: move.id,
+        targetIds: [target.id],
+        vfxId: move.vfxId,
+        motion: move.motion,
+        charging: true,
+        results: [
+          {
+            targetId: target.id,
+            damage: 0,
+            fainted: false,
+            statChanges: [],
+          },
+        ],
+      },
+    };
+  }
 
   if (!moveAccuracySucceeds(state, actor, target, move)) {
     appendLog(
@@ -5896,10 +6177,11 @@ function aiThreatToTeam(
       const hitChance =
         getDuelMoveHitChance(target, ally, move) /
         100;
-      const expectedDamage = expectedMoveDamage(
-        move,
-        result.damage,
-      );
+      const expectedDamage =
+        expectedMoveDamage(
+          move,
+          result.damage,
+        ) * expectedMoveTempoFactor(move);
       bestRatio = Math.max(
         bestRatio,
         (expectedDamage * hitChance) /
@@ -6112,10 +6394,12 @@ function scoreAiCandidate(
     riderUtility -
     recoilPenalty;
 
+  const tempoFactor = expectedMoveTempoFactor(move);
+
   return {
-    damage: expectedDamage * hitChance,
+    damage: expectedDamage * hitChance * tempoFactor,
     score:
-      onHitScore * hitChance +
+      onHitScore * hitChance * tempoFactor +
       positioningScore +
       resourceScore +
       targetThreat +
@@ -6285,15 +6569,16 @@ function aiBestIncomingDamage(
         continue;
       }
 
-      const damage = expectedMoveDamage(
-        move,
-        calculateDamage(
-          state,
-          enemy,
-          ally,
+      const damage =
+        expectedMoveDamage(
           move,
-        ).damage,
-      );
+          calculateDamage(
+            state,
+            enemy,
+            ally,
+            move,
+          ).damage,
+        ) * expectedMoveTempoFactor(move);
       const hitChance =
         getDuelMoveHitChance(enemy, ally, move) /
         100;
@@ -6431,6 +6716,14 @@ export function resolveSimpleAiTurnDetailed(
     !actor ||
     actor.side !== side
   ) {
+    return { state, steps };
+  }
+
+  if (actor.chargingMove) {
+    run({
+      kind: "release-charge",
+      unitId: actor.id,
+    });
     return { state, steps };
   }
 
