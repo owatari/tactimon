@@ -3209,23 +3209,26 @@ function stageMultiplier(stage: number): number {
     : 2 / (2 - bounded);
 }
 
-const ACCURACY_STAGE_RATIOS: readonly number[] = [
-  0.33,
-  0.36,
-  0.43,
-  0.5,
-  0.6,
-  0.75,
-  1,
-  1.33,
-  1.66,
-  2,
-  2.33,
-  2.66,
-  3,
-];
+const ACCURACY_STAGE_RATIOS = [
+  { dividend: 33, divisor: 100 },
+  { dividend: 36, divisor: 100 },
+  { dividend: 43, divisor: 100 },
+  { dividend: 50, divisor: 100 },
+  { dividend: 60, divisor: 100 },
+  { dividend: 75, divisor: 100 },
+  { dividend: 1, divisor: 1 },
+  { dividend: 133, divisor: 100 },
+  { dividend: 166, divisor: 100 },
+  { dividend: 2, divisor: 1 },
+  { dividend: 233, divisor: 100 },
+  { dividend: 133, divisor: 50 },
+  { dividend: 3, divisor: 1 },
+] as const;
 
-function accuracyStageMultiplier(stage: number): number {
+function accuracyStageRatio(stage: number): {
+  dividend: number;
+  divisor: number;
+} {
   const bounded = Math.max(
     -MAX_STAGE,
     Math.min(MAX_STAGE, Math.trunc(stage)),
@@ -3273,13 +3276,15 @@ export function getDuelMoveHitChance(
   );
   const netStage =
     attacker.accuracyStage - defender.evasionStage;
+  const ratio = accuracyStageRatio(netStage);
+  const fireRedAccuracy = Math.floor(
+    (ratio.dividend * baseAccuracy) /
+      ratio.divisor,
+  );
 
   return Math.max(
     0,
-    Math.min(
-      100,
-      baseAccuracy * accuracyStageMultiplier(netStage),
-    ),
+    Math.min(100, fireRedAccuracy),
   );
 }
 
