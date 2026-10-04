@@ -3593,3 +3593,56 @@ h1 {
 .pokemon-battle-sprite-frame {
   transform-origin: 50% 100%;
 }
+
+
+.mart-item-card {
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 10px;
+  border: 2px solid #405868;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+}
+
+.mart-item-rom-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.mart-item-copy > strong,
+.mart-item-copy > span {
+  color: #182838;
+}
+
+.mart-item-copy small,
+.mart-item-copy em,
+.mart-copy {
+  color: #506878;
+}
+
+.mart-item-actions button,
+.mart-close {
+  border: 2px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow: inset -2px -2px 0 #a8b8a8;
+}
+
+.mart-item-actions button:hover:not(:disabled),
+.mart-close:hover {
+  background: #f8e878;
+  border-color: #203850;
+}
+
+@media (max-width: 700px) {
+  .mart-item-card {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .mart-item-actions {
+    grid-column: 1 / -1;
+  }
+}
