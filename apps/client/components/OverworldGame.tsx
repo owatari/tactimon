@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import type {
-  DuelItemId,
   DuelPokemonBuild,
   WildSpeciesId,
 } from "@tactimon/battle-engine";
@@ -40,7 +39,6 @@ import {
   hasStoryKeyItem,
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
-  type MtMoonFossilId,
   type StoryBadgeId,
   type StoryState,
 } from "@/lib/story";
@@ -64,8 +62,8 @@ import {
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import {
-  resolvePlayerOverworldPickups,
-} from "@/lib/overworldPickups";
+  resolveScriptedWorldObjects,
+} from "@/lib/scriptedWorldObjects";
 import {
   resolveOverworldDialogues,
 } from "@/lib/overworldDialogues";
@@ -194,52 +192,16 @@ type MartClerkStoryObject = StoryObjectBase & {
   kind: "mart-clerk";
 };
 
-type PokemonCenterNurseStoryObject = StoryObjectBase & {
-  kind: "pokemon-center-nurse";
-};
-
 type DialogueStoryObject = StoryObjectBase & {
   kind: "dialogue";
   request: DialogueInteractionRequest;
-};
-
-type PickupStoryObject = StoryObjectBase & {
-  kind: "pickup";
-  pickupId: string;
-  itemId: DuelItemId;
-  itemName: string;
-};
-
-type FossilStoryObject = StoryObjectBase & {
-  kind: "fossil";
-  fossilId: MtMoonFossilId;
-  fossilName: string;
-};
-
-type BillStoryObject = StoryObjectBase & {
-  kind: "bill";
-};
-
-type SsAnneCaptainStoryObject = StoryObjectBase & {
-  kind: "ss-anne-captain";
-};
-
-type CutTreeStoryObject = StoryObjectBase & {
-  kind: "cut-tree";
-  obstacleId: string;
 };
 
 type StoryObject =
   | StaticStoryObject
   | TrainerStoryObject
   | MartClerkStoryObject
-  | PokemonCenterNurseStoryObject
-  | DialogueStoryObject
-  | PickupStoryObject
-  | FossilStoryObject
-  | BillStoryObject
-  | SsAnneCaptainStoryObject
-  | CutTreeStoryObject;
+  | DialogueStoryObject;
 
 function createPlayer(
   x: number,
@@ -561,193 +523,21 @@ function mapDialogueStoryObjects(
   );
 }
 
-function mapPickupStoryObjects(
+function scriptedStoryObjects(
   mapId: string,
-  story: StoryState,
-): PickupStoryObject[] {
-  return resolvePlayerOverworldPickups(
-    mapId,
-    story,
-  ).map((pickup) => ({
-    id: pickup.id,
-    kind: "pickup",
-    pickupId: pickup.id,
-    itemId: pickup.itemId,
-    itemName: pickup.itemName,
-    label: "Item Ball",
-    x: pickup.x,
-    y: pickup.y,
-    spriteUrl: "/game-assets/overworld/092_item_ball.png",
-    frameWidth: 16,
-    frameHeight: 16,
-    sheetWidth: 16,
-    sheetHeight: 16,
-  }));
-}
-
-function mtMoonFossilStoryObjects(): FossilStoryObject[] {
-  const visibleWhen: PlayerWorldCondition = {
-    kind: "all",
-    conditions: [
-      {
-        kind: "event",
-        namespace: "trainer",
-        id: "mtmoon-miguel",
-      },
-      {
-        kind: "choice",
-        id: "mt-moon-fossil",
-        set: false,
-      },
-    ],
-  };
-
-  return [
-    {
-      id: "mt-moon-dome-fossil",
-      kind: "fossil",
-      fossilId: "dome",
-      fossilName: "Dome Fossil",
-      label: "Dome Fossil",
-      x: 13,
-      y: 7,
-      spriteUrl: "/game-assets/overworld/098_fossil.png",
-      frameWidth: 16,
-      frameHeight: 16,
-      sheetWidth: 16,
-      sheetHeight: 16,
-      visibleWhen,
-    },
-    {
-      id: "mt-moon-helix-fossil",
-      kind: "fossil",
-      fossilId: "helix",
-      fossilName: "Helix Fossil",
-      label: "Helix Fossil",
-      x: 14,
-      y: 7,
-      spriteUrl: "/game-assets/overworld/098_fossil.png",
-      frameWidth: 16,
-      frameHeight: 16,
-      sheetWidth: 16,
-      sheetHeight: 16,
-      visibleWhen,
-    },
-  ];
-}
-
-function billStoryObjects(): BillStoryObject[] {
-  return [
-    {
-      id: "sea-cottage-bill-clefairy",
-      kind: "bill",
-      label: "Bill",
-      x: 10,
-      y: 6,
-      spriteUrl:
-        "/game-assets/overworld/113_clefairy.png",
-      frameWidth: 16,
-      frameHeight: 16,
-      sheetWidth: 96,
-      sheetHeight: 32,
-      visibleWhen: {
-        kind: "not",
-        condition: {
-          kind: "any",
-          conditions: [
-            {
-              kind: "choice",
-              id: "bill-stage",
-              equals: "teleporter-ready",
-            },
-            {
-              kind: "choice",
-              id: "bill-stage",
-              equals: "helped",
-            },
-          ],
-        },
-      },
-    },
-    {
-      id: "sea-cottage-bill",
-      kind: "bill",
-      label: "Bill",
-      x: 7,
-      y: 5,
-      spriteUrl: "/game-assets/overworld/073_bill.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-      visibleWhen: {
-        kind: "choice",
-        id: "bill-stage",
-        equals: "helped",
-      },
-    },
-  ];
-}
-
-function ssAnneCaptainStoryObjects(): SsAnneCaptainStoryObject[] {
-  return [
-    {
-      id: "ss-anne-captain",
-      kind: "ss-anne-captain",
-      label: "Captain",
-      x: 5,
-      y: 4,
-      spriteUrl: "/game-assets/overworld/063_captain.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-    },
-  ];
-}
-
-function vermilionCutTreeStoryObjects(): CutTreeStoryObject[] {
-  const obstacleId = "vermilion-gym-cut-tree";
-
-  return [
-    {
-      id: obstacleId,
-      kind: "cut-tree",
-      obstacleId,
-      label: "Cut Tree",
-      x: 19,
-      y: 24,
-      spriteUrl: "/game-assets/overworld/095_cut_tree.png",
-      frameWidth: 16,
-      frameHeight: 16,
-      sheetWidth: 16,
-      sheetHeight: 16,
-      visibleWhen: {
-        kind: "event",
-        namespace: "obstacle",
-        id: obstacleId,
-        completed: false,
-      },
-    },
-  ];
+): DialogueStoryObject[] {
+  return resolveScriptedWorldObjects(mapId).map(
+    (object) => ({
+      ...object,
+      kind: "dialogue" as const,
+    }),
+  );
 }
 
 function pokemonCenterStoryObjects(
   mapId: string,
 ): StoryObject[] {
   return [
-    {
-      id: `${mapId}-nurse`,
-      kind: "pokemon-center-nurse",
-      label: "Nurse",
-      x: 7,
-      y: 2,
-      spriteUrl: "/game-assets/overworld/064_nurse.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-    },
     {
       id: `${mapId}-gentleman`,
       kind: "dialogue",
@@ -808,11 +598,7 @@ function mapStoryObjects(
   const objects: StoryObject[] =
     mapId === "oak-lab"
       ? [...labStoryObjects(story)]
-      : mapId === "sea-cottage"
-        ? billStoryObjects()
-        : mapId === "ss-anne-captains-office"
-          ? ssAnneCaptainStoryObjects()
-          : mapId === "viridian-mart" ||
+      : mapId === "viridian-mart" ||
           mapId === "pewter-mart" ||
           mapId === "cerulean-mart" ||
           mapId === "vermilion-mart"
@@ -823,19 +609,12 @@ function mapStoryObjects(
             mapId === "vermilion-pokemon-center" ||
             mapId === "route-4-pokemon-center"
           ? pokemonCenterStoryObjects(mapId)
-          : mapPickupStoryObjects(mapId, story);
+          : [];
 
   objects.push(
     ...mapDialogueStoryObjects(mapId),
+    ...scriptedStoryObjects(mapId),
   );
-
-  if (mapId === "mt-moon-b2f") {
-    objects.push(...mtMoonFossilStoryObjects());
-  }
-
-  if (mapId === "vermilion-city") {
-    objects.push(...vermilionCutTreeStoryObjects());
-  }
 
   for (const playerTrainer of resolvePlayerOverworldTrainers(
     mapId,
@@ -1309,82 +1088,8 @@ export function OverworldGame({
         return;
       }
 
-      if (storyObject.kind === "bill") {
-        showDialogue(
-          onDialogueInteraction({
-            kind: "script",
-            id: "bill",
-          }),
-        );
-        return;
-      }
-
-      if (storyObject.kind === "ss-anne-captain") {
-        showDialogue(
-          onDialogueInteraction({
-            kind: "script",
-            id: "ss-anne-captain",
-          }),
-        );
-        return;
-      }
-
-      if (storyObject.kind === "cut-tree") {
-        showDialogue(
-          onDialogueInteraction({
-            kind: "script",
-            id: "cut",
-            context: {
-              obstacleId: storyObject.obstacleId,
-            },
-          }),
-        );
-        return;
-      }
-
       if (storyObject.kind === "mart-clerk") {
         onMartOpen();
-        return;
-      }
-
-      if (
-        storyObject.kind === "pokemon-center-nurse"
-      ) {
-        showDialogue(
-          onDialogueInteraction({
-            kind: "script",
-            id: "pokemon-center-nurse",
-          }),
-        );
-        return;
-      }
-
-      if (storyObject.kind === "fossil") {
-        showDialogue(
-          onDialogueInteraction({
-            kind: "script",
-            id: "fossil",
-            context: {
-              fossilId: storyObject.fossilId,
-              fossilName: storyObject.fossilName,
-            },
-          }),
-        );
-        return;
-      }
-
-      if (storyObject.kind === "pickup") {
-        showDialogue(
-          onDialogueInteraction({
-            kind: "script",
-            id: "pickup",
-            context: {
-              pickupId: storyObject.pickupId,
-              itemId: storyObject.itemId,
-              itemName: storyObject.itemName,
-            },
-          }),
-        );
         return;
       }
 

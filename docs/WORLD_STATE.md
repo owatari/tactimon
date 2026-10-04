@@ -124,3 +124,18 @@ state plus a `DialoguePresentation`.
 
 Legacy bespoke interaction kinds remain compatibility surfaces only. New
 gameplay code should use registered scripts.
+
+
+## Declarative scripted world objects
+
+Dialogue-backed progression objects are registered in
+`scriptedWorldObjects.ts`. Each definition contains immutable visual/position
+data, an optional serializable `visibleWhen` rule, and a
+`DialogueInteractionRequest`.
+
+Fossils, Bill's forms, the S.S. Anne Captain, Cut trees, Pokémon Center nurses
+and overworld pickups use this registry. `OverworldGame` no longer needs a
+new object kind or interaction branch for those systems.
+
+Future dialogue-backed world events should be added as registry data and
+projected through the owning player's `StoryState`.
