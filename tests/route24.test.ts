@@ -1,8 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
   OVERWORLD_TRAINERS,
+  ROUTE24_NUGGET_REWARD_ID,
+  ROUTE24_ROCKET_TRAINER_ID,
   trainerPrizeMoney,
 } from "../apps/client/lib/trainers";
+import {
+  collectStoryValuable,
+  DEFAULT_STORY_STATE,
+  normalizeStoryState,
+} from "../apps/client/lib/story";
 import {
   LAND_ENCOUNTERS,
   resolveLandEncounter,
@@ -45,7 +52,7 @@ describe("Route 24", () => {
       (trainer) => trainer.mapId === "route-24",
     );
 
-    expect(route24).toHaveLength(6);
+    expect(route24).toHaveLength(7);
     expect(
       route24.map((trainer) => [
         trainer.id,
@@ -61,6 +68,7 @@ describe("Route 24", () => {
         ["route24-reli", { x: 10, y: 22 }, "east", 2],
         ["route24-ethan", { x: 12, y: 19 }, "west", 2],
         ["route24-shane", { x: 5, y: 21 }, "north", 5],
+        [ROUTE24_ROCKET_TRAINER_ID, { x: 12, y: 15 }, "west", 2],
       ]),
     );
   });
@@ -104,6 +112,55 @@ describe("Route 24", () => {
         (pokemon) => [pokemon.species, pokemon.level],
       ),
     ).toEqual([["mankey", 18]]);
+  });
+
+  it("models the Mystery Trainer as FireRed's Grunt 6", () => {
+    const rocket = OVERWORLD_TRAINERS.find(
+      (trainer) =>
+        trainer.id === ROUTE24_ROCKET_TRAINER_ID,
+    )!;
+
+    expect(
+      rocket.party.map(
+        (pokemon) => [pokemon.species, pokemon.level],
+      ),
+    ).toEqual([
+      ["ekans", 15],
+      ["zubat", 15],
+    ]);
+    expect(
+      trainerPrizeMoney(
+        rocket.party,
+        rocket.moneyMultiplier,
+      ),
+    ).toBe(480);
+  });
+
+  it("persists the Nugget prize exactly once", () => {
+    const first = collectStoryValuable(
+      DEFAULT_STORY_STATE,
+      ROUTE24_NUGGET_REWARD_ID,
+      "nugget",
+    );
+
+    expect(first.accepted).toBe(true);
+    expect(first.story.valuables?.nugget).toBe(1);
+    expect(
+      first.story.collectedItemIds,
+    ).toContain(ROUTE24_NUGGET_REWARD_ID);
+
+    const second = collectStoryValuable(
+      first.story,
+      ROUTE24_NUGGET_REWARD_ID,
+      "nugget",
+    );
+    expect(second.accepted).toBe(false);
+    expect(second.reason).toBe("already-collected");
+    expect(second.story.valuables?.nugget).toBe(1);
+
+    expect(
+      normalizeStoryState(first.story).valuables?.nugget,
+    ).toBe(1);
   });
 
   it("uses FireRed trainer-class prize factors", () => {

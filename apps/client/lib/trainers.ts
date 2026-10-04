@@ -28,6 +28,11 @@ export type OverworldTrainerDefinition = {
   party: readonly DuelPokemonBuild[];
 };
 
+export const ROUTE24_ROCKET_TRAINER_ID =
+  "route24-rocket";
+export const ROUTE24_NUGGET_REWARD_ID =
+  "route24-nugget-prize";
+
 export type OverworldTrainerInstance =
   OverworldTrainerDefinition & {
     x: number;
@@ -1078,6 +1083,36 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
         species: "ekans",
         level: 14,
         moves: ["bind", "leer", "poison-sting", "bite"],
+      },
+    ],
+  },
+  {
+    id: ROUTE24_ROCKET_TRAINER_ID,
+    mapId: "route-24",
+    name: "Team Rocket Grunt",
+    preferredPosition: { x: 12, y: 15 },
+    facing: "west",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/025_man.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Mystery Trainer: Parabéns por vencer os cinco! Seu prêmio é uma Nugget. Aliás... que tal entrar para a Team Rocket? Não? Então vou ter que convencer você!",
+    defeatedText:
+      "Rocket: Com a sua habilidade, você poderia virar um grande líder da Team Rocket.",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "ekans",
+        level: 15,
+        moves: ["bind", "leer", "poison-sting", "bite"],
+      },
+      {
+        species: "zubat",
+        level: 15,
+        moves: ["astonish"],
       },
     ],
   },

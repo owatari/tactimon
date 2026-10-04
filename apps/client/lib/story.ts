@@ -32,6 +32,8 @@ export type StoryHealLocationId =
 
 export type StoryBadgeId = "boulder" | "cascade";
 export type MtMoonFossilId = "dome" | "helix";
+export type StoryValuableId = "nugget";
+export type StoryValuables = Record<StoryValuableId, number>;
 
 export type StoryState = {
   starter: StarterSpeciesId | null;
@@ -47,6 +49,7 @@ export type StoryState = {
   healLocationId: StoryHealLocationId;
   money: number;
   inventory: DuelInventory;
+  valuables?: StoryValuables;
 };
 
 export const DEFAULT_STORY_STATE: StoryState = {
@@ -65,6 +68,9 @@ export const DEFAULT_STORY_STATE: StoryState = {
   inventory: {
     potion: 1,
     "poke-ball": 5,
+  },
+  valuables: {
+    nugget: 0,
   },
 };
 
@@ -112,6 +118,9 @@ export function chooseStarter(
     inventory: {
       potion: 1,
       "poke-ball": 5,
+    },
+    valuables: {
+      nugget: 0,
     },
   };
 }
@@ -205,6 +214,26 @@ function normalizeMoney(value: unknown): number {
     0,
     Math.min(999_999, Math.trunc(value)),
   );
+}
+
+function normalizeValuables(
+  value: unknown,
+): StoryValuables {
+  const candidate =
+    value && typeof value === "object"
+      ? (value as Partial<StoryValuables>)
+      : {};
+
+  const nugget =
+    typeof candidate.nugget === "number" &&
+    Number.isFinite(candidate.nugget)
+      ? Math.max(
+          0,
+          Math.min(999, Math.trunc(candidate.nugget)),
+        )
+      : 0;
+
+  return { nugget };
 }
 
 function normalizeInventory(
@@ -336,6 +365,7 @@ export function normalizeStoryState(
             : "pallet-town",
     money: normalizeMoney(input?.money),
     inventory: normalizeInventory(input?.inventory),
+    valuables: normalizeValuables(input?.valuables),
   };
 }
 
@@ -555,6 +585,51 @@ export function withdrawBoxedPokemon(
   };
 }
 
+
+export type StoryValuableCollectionResult = {
+  accepted: boolean;
+  story: StoryState;
+  reason?: "already-collected" | "inventory-full";
+};
+
+export function collectStoryValuable(
+  story: StoryState,
+  sourceId: string,
+  itemId: StoryValuableId,
+): StoryValuableCollectionResult {
+  if (story.collectedItemIds.includes(sourceId)) {
+    return {
+      accepted: false,
+      story,
+      reason: "already-collected",
+    };
+  }
+
+  const valuables = story.valuables ?? { nugget: 0 };
+  const current = valuables[itemId] ?? 0;
+  if (current >= 999) {
+    return {
+      accepted: false,
+      story,
+      reason: "inventory-full",
+    };
+  }
+
+  return {
+    accepted: true,
+    story: {
+      ...story,
+      valuables: {
+        ...valuables,
+        [itemId]: current + 1,
+      },
+      collectedItemIds: [
+        ...story.collectedItemIds,
+        sourceId,
+      ],
+    },
+  };
+}
 
 export type OverworldItemPickupResult = {
   accepted: boolean;

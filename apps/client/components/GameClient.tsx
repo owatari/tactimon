@@ -42,10 +42,15 @@ import {
   type MartPurchaseResult,
 } from "@/lib/mart";
 import {
+  ROUTE24_NUGGET_REWARD_ID,
+  ROUTE24_ROCKET_TRAINER_ID,
+} from "@/lib/trainers";
+import {
   applyStoryWhiteOut,
   chooseMtMoonFossil,
   chooseStarter,
   collectOverworldItem,
+  collectStoryValuable,
   DEFAULT_STORY_STATE,
   depositCapturedPokemon,
   healStoryParty,
@@ -779,6 +784,19 @@ export function GameClient() {
             !story.defeatedTrainerIds.includes(trainer.id) &&
             battleParty.length > 0
           ) {
+            if (
+              trainer.id ===
+              ROUTE24_ROCKET_TRAINER_ID
+            ) {
+              setStory((current) =>
+                collectStoryValuable(
+                  current,
+                  ROUTE24_NUGGET_REWARD_ID,
+                  "nugget",
+                ).story,
+              );
+            }
+
             setBattleSession({
               context,
               partyIndices: deployedParty.map(
