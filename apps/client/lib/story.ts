@@ -592,9 +592,9 @@ export function healStoryParty(
   };
 }
 
-function applyFieldPoisonToPokemon<
-  T extends PokemonProgression
->(pokemon: T): T {
+function applyFieldPoisonToPokemon(
+  pokemon: PokemonProgression,
+): PokemonProgression {
   if (
     pokemon.status !== "poison" ||
     pokemon.currentHp <= 0
