@@ -30,9 +30,9 @@ export type WildSpeciesId =
   | "jigglypuff"
   | "zubat"
   | "paras"
-  | "clefairy";
+  | "clefairy"
+  | "geodude";
 export type TrainerSpeciesId =
-  | "geodude"
   | "onix";
 export type DuelSpeciesId =
   | StarterSpeciesId
@@ -813,6 +813,7 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   zubat: 255,
   paras: 190,
   clefairy: 150,
+  geodude: 255,
 };
 
 function normalizeDuelItems(

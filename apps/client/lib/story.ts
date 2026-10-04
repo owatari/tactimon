@@ -145,7 +145,8 @@ function normalizeCapturedPokemon(
       candidate.species !== "jigglypuff" &&
       candidate.species !== "zubat" &&
       candidate.species !== "paras" &&
-      candidate.species !== "clefairy") ||
+      candidate.species !== "clefairy" &&
+      candidate.species !== "geodude") ||
     typeof candidate.level !== "number" ||
     !Number.isFinite(candidate.level)
   ) {
