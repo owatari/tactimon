@@ -62,6 +62,21 @@ const ROUTE_22_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 1, species: "mankey", level: 5 },
 ];
 
+const ROUTE_3_SLOTS: readonly LandEncounterSlot[] = [
+  { weight: 20, species: "spearow", level: 6 },
+  { weight: 20, species: "pidgey", level: 6 },
+  { weight: 10, species: "spearow", level: 7 },
+  { weight: 10, species: "mankey", level: 7 },
+  { weight: 10, species: "nidoran-m", level: 6 },
+  { weight: 10, species: "pidgey", level: 7 },
+  { weight: 5, species: "spearow", level: 8 },
+  { weight: 5, species: "jigglypuff", level: 3 },
+  { weight: 4, species: "nidoran-m", level: 7 },
+  { weight: 4, species: "jigglypuff", level: 5 },
+  { weight: 1, species: "nidoran-f", level: 6 },
+  { weight: 1, species: "jigglypuff", level: 7 },
+];
+
 const VIRIDIAN_FOREST_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 20, species: "caterpie", level: 4 },
   { weight: 20, species: "weedle", level: 4 },
@@ -91,6 +106,10 @@ export const LAND_ENCOUNTERS: Readonly<
   "route-22": {
     encounterRate: 21,
     slots: ROUTE_22_SLOTS,
+  },
+  "route-3": {
+    encounterRate: 21,
+    slots: ROUTE_3_SLOTS,
   },
   "viridian-forest": {
     encounterRate: 14,

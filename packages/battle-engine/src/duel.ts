@@ -23,7 +23,11 @@ export type WildSpeciesId =
   | "mankey"
   | "metapod"
   | "kakuna"
-  | "pikachu";
+  | "pikachu"
+  | "ekans"
+  | "nidoran-f"
+  | "nidoran-m"
+  | "jigglypuff";
 export type TrainerSpeciesId =
   | "geodude"
   | "onix";
@@ -79,6 +83,7 @@ export type DuelMoveId =
   | "water-gun"
   | "bite"
   | "aqua-jet"
+  | "pound"
   | "struggle";
 
 export type DuelMovePp = Partial<Record<DuelMoveId, number>>;
@@ -658,6 +663,56 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 90,
     moves: ["thunder-shock", "growl"],
   },
+  ekans: {
+    name: "Ekans",
+    type: "poison",
+    types: ["poison"],
+    hp: 35,
+    attack: 60,
+    defense: 44,
+    specialAttack: 40,
+    specialDefense: 54,
+    speed: 55,
+    moves: ["bind", "leer", "poison-sting"],
+  },
+  "nidoran-f": {
+    name: "Nidoran♀",
+    type: "poison",
+    types: ["poison"],
+    hp: 55,
+    attack: 47,
+    defense: 52,
+    specialAttack: 40,
+    specialDefense: 40,
+    speed: 41,
+    moves: ["scratch", "growl"],
+  },
+  "nidoran-m": {
+    name: "Nidoran♂",
+    type: "poison",
+    types: ["poison"],
+    hp: 46,
+    attack: 57,
+    defense: 40,
+    specialAttack: 40,
+    specialDefense: 40,
+    speed: 50,
+    moves: ["peck", "leer"],
+  },
+  jigglypuff: {
+    name: "Jigglypuff",
+    type: "normal",
+    types: ["normal"],
+    hp: 115,
+    attack: 45,
+    defense: 20,
+    specialAttack: 45,
+    specialDefense: 25,
+    speed: 20,
+    // Sing/Disable are not modeled yet; Pound keeps low-level encounters
+    // tactically active while Defense Curl preserves its defensive identity.
+    moves: ["pound", "defense-curl"],
+  },
   geodude: {
     name: "Geodude",
     type: "rock",
@@ -711,6 +766,10 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   metapod: 120,
   kakuna: 120,
   pikachu: 190,
+  ekans: 255,
+  "nidoran-f": 235,
+  "nidoran-m": 235,
+  jigglypuff: 170,
 };
 
 function normalizeDuelItems(
@@ -741,6 +800,21 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "contact",
     vfxId: "tackle",
     description: "Avança sobre um inimigo adjacente e causa dano físico.",
+    power: 40,
+    apCost: 4,
+    maxPp: 35,
+    minRange: 1,
+    maxRange: 1,
+  },
+  pound: {
+    id: "pound",
+    name: "Pound",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Golpe físico simples contra um alvo adjacente.",
     power: 40,
     apCost: 4,
     maxPp: 35,

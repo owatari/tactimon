@@ -483,3 +483,46 @@ describe("persistent move PP", () => {
     expect(next.movePp.tackle).toBe(1);
   });
 });
+
+
+describe("Route 3 species progression", () => {
+  it("uses FireRed growth groups and base EXP for the new encounters", () => {
+    expect(
+      fireRedExperienceAtLevel("jigglypuff", 5),
+    ).toBe(100);
+    expect(
+      fireRedExperienceAtLevel("nidoran-f", 5),
+    ).toBe(135);
+    expect(
+      fireRedExperienceAtLevel("nidoran-m", 5),
+    ).toBe(135);
+    expect(
+      fireRedExperienceAtLevel("ekans", 5),
+    ).toBe(125);
+
+    expect(
+      experienceRewardForWild("jigglypuff", 5),
+    ).toBe(54);
+    expect(
+      experienceRewardForWild("nidoran-f", 6),
+    ).toBe(50);
+    expect(
+      experienceRewardForWild("nidoran-m", 6),
+    ).toBe(51);
+  });
+
+  it("creates the Route 3 species with playable early moves", () => {
+    expect(
+      createPokemonProgression("nidoran-f", 6).activeMoves,
+    ).toEqual(["scratch", "growl"]);
+    expect(
+      createPokemonProgression("nidoran-m", 6).activeMoves,
+    ).toEqual(["peck", "leer"]);
+    expect(
+      createPokemonProgression("ekans", 11).activeMoves,
+    ).toEqual(["bind", "leer", "poison-sting"]);
+    expect(
+      createPokemonProgression("jigglypuff", 5).activeMoves,
+    ).toEqual(["pound", "defense-curl"]);
+  });
+});

@@ -137,7 +137,11 @@ function normalizeCapturedPokemon(
       candidate.species !== "mankey" &&
       candidate.species !== "metapod" &&
       candidate.species !== "kakuna" &&
-      candidate.species !== "pikachu") ||
+      candidate.species !== "pikachu" &&
+      candidate.species !== "ekans" &&
+      candidate.species !== "nidoran-f" &&
+      candidate.species !== "nidoran-m" &&
+      candidate.species !== "jigglypuff") ||
     typeof candidate.level !== "number" ||
     !Number.isFinite(candidate.level)
   ) {

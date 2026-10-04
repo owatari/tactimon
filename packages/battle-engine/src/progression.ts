@@ -22,7 +22,10 @@ export type EvStat =
 
 export type EvSpread = Record<EvStat, number>;
 
-export type GrowthRate = "medium-slow" | "medium-fast";
+export type GrowthRate =
+  | "medium-slow"
+  | "medium-fast"
+  | "fast";
 
 export interface PokemonProgression {
   species: DuelSpeciesId;
@@ -130,6 +133,28 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "thunder-shock" },
     { level: 1, moveId: "growl" },
     { level: 6, moveId: "tail-whip" },
+  ],
+  ekans: [
+    { level: 1, moveId: "bind" },
+    { level: 1, moveId: "leer" },
+    { level: 8, moveId: "poison-sting" },
+    { level: 13, moveId: "bite" },
+  ],
+  "nidoran-f": [
+    { level: 1, moveId: "growl" },
+    { level: 1, moveId: "scratch" },
+    { level: 8, moveId: "tail-whip" },
+    { level: 17, moveId: "poison-sting" },
+    { level: 20, moveId: "bite" },
+  ],
+  "nidoran-m": [
+    { level: 1, moveId: "leer" },
+    { level: 1, moveId: "peck" },
+    { level: 17, moveId: "poison-sting" },
+  ],
+  jigglypuff: [
+    { level: 4, moveId: "defense-curl" },
+    { level: 9, moveId: "pound" },
   ],
   geodude: [
     { level: 1, moveId: "tackle" },
@@ -256,6 +281,38 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
     "attack",
     "speed",
   ],
+  ekans: [
+    "attack",
+    "speed",
+    "attack",
+    "specialDefense",
+    "attack",
+    "speed",
+  ],
+  "nidoran-f": [
+    "hp",
+    "defense",
+    "hp",
+    "defense",
+    "specialDefense",
+    "hp",
+  ],
+  "nidoran-m": [
+    "attack",
+    "speed",
+    "attack",
+    "speed",
+    "defense",
+    "attack",
+  ],
+  jigglypuff: [
+    "hp",
+    "hp",
+    "hp",
+    "specialAttack",
+    "hp",
+    "specialDefense",
+  ],
   geodude: [
     "defense",
     "attack",
@@ -287,6 +344,10 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   metapod: ["harden"],
   kakuna: ["harden"],
   pikachu: ["thunder-shock", "growl"],
+  ekans: ["bind", "leer", "poison-sting"],
+  "nidoran-f": ["scratch", "growl"],
+  "nidoran-m": ["peck", "leer"],
+  jigglypuff: ["pound", "defense-curl"],
   geodude: ["tackle", "defense-curl"],
   onix: ["tackle", "bind"],
 };
@@ -312,6 +373,10 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   metapod: 72,
   kakuna: 71,
   pikachu: 82,
+  ekans: 62,
+  "nidoran-f": 59,
+  "nidoran-m": 60,
+  jigglypuff: 76,
   geodude: 86,
   onix: 108,
 };
@@ -332,6 +397,10 @@ export const POKEMON_GROWTH_RATE: Record<
   metapod: "medium-fast",
   kakuna: "medium-fast",
   pikachu: "medium-fast",
+  ekans: "medium-fast",
+  "nidoran-f": "medium-slow",
+  "nidoran-m": "medium-slow",
+  jigglypuff: "fast",
   geodude: "medium-slow",
   onix: "medium-fast",
 };
@@ -383,6 +452,8 @@ export function fireRedExperienceAtLevel(
       );
     case "medium-fast":
       return n * n * n;
+    case "fast":
+      return Math.floor((4 * n * n * n) / 5);
   }
 }
 
