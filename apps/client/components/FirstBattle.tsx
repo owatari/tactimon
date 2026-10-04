@@ -442,13 +442,11 @@ export function FirstBattle({
   };
 
   const toggleAutoBattle = () => {
-    setAutoBattle((current) => {
-      const next = !current;
-      if (next) {
-        resetCommand();
-      }
-      return next;
-    });
+    const next = !autoBattle;
+    if (next) {
+      resetCommand();
+    }
+    setAutoBattle(next);
   };
 
   const flashNotice = (message: string) => {
@@ -723,6 +721,7 @@ export function FirstBattle({
       return;
     }
 
+    const automatedSide = active.side;
     aiRunningRef.current = true;
     let started = false;
     const timer = window.setTimeout(() => {
@@ -733,7 +732,7 @@ export function FirstBattle({
         try {
           const turn = resolveSimpleAiTurnDetailed(
             state,
-            active.side,
+            automatedSide,
           );
           let visualState = state;
 
@@ -800,7 +799,14 @@ export function FirstBattle({
         aiRunningRef.current = false;
       }
     };
-  }, [active?.id, active?.side, autoBattle, busy, state]);
+  }, [
+    active?.id,
+    active?.side,
+    autoBattle,
+    battleSpeed,
+    busy,
+    state,
+  ]);
 
   const menuPosition =
     visualPositions[player.id] ?? player.position;
