@@ -4255,6 +4255,37 @@ function shortestAiPathToRange(
   const points = new Map<string, DuelPoint>([
     [startKey, { ...actor.position }],
   ]);
+  const steps = new Map<string, number>([
+    [startKey, 0],
+  ]);
+
+  const buildPath = (key: string): DuelPoint[] => {
+    const reversed: DuelPoint[] = [];
+    let cursor: string | null = key;
+
+    while (cursor && cursor !== startKey) {
+      const point = points.get(cursor);
+      if (!point) break;
+      reversed.push(point);
+      cursor = previous.get(cursor) ?? null;
+    }
+
+    return reversed.reverse();
+  };
+
+  const rangeGap = (point: DuelPoint): number => {
+    const distance = manhattanDistance(
+      point,
+      target.position,
+    );
+    if (distance < move.minRange) {
+      return move.minRange - distance;
+    }
+    if (distance > move.maxRange) {
+      return distance - move.maxRange;
+    }
+    return 0;
+  };
 
   // Iterate with a cursor instead of Array.shift(). In crowded 6v10
   // battles this BFS runs once per candidate move/target, so avoiding repeated
@@ -4263,6 +4294,8 @@ function shortestAiPathToRange(
   while (queueIndex < queue.length) {
     const current = queue[queueIndex];
     queueIndex += 1;
+    const currentKey = pointKey(current);
+    const currentSteps = steps.get(currentKey) ?? 0;
 
     for (const next of aiNeighbors(current)) {
       const key = pointKey(next);
@@ -4275,28 +4308,65 @@ function shortestAiPathToRange(
         continue;
       }
 
-      previous.set(key, pointKey(current));
+      previous.set(key, currentKey);
       points.set(key, next);
+      steps.set(key, currentSteps + 1);
 
       if (inMoveRange(next)) {
-        const reversed: DuelPoint[] = [];
-        let cursor: string | null = key;
-
-        while (cursor && cursor !== startKey) {
-          const point = points.get(cursor);
-          if (!point) break;
-          reversed.push(point);
-          cursor = previous.get(cursor) ?? null;
-        }
-
-        return reversed.reverse();
+        return buildPath(key);
       }
 
       queue.push(next);
     }
   }
 
-  return null;
+  // Living allies can temporarily split a crowded arena. If no complete route
+  // exists this turn, keep a strategic plan by walking to the reachable cell
+  // that gets strictly closer to the move's legal range. Once no progress is
+  // possible the candidate is discarded, preventing pointless side-to-side
+  // shuffling against a wall of allies.
+  const actorGap = rangeGap(actor.position);
+  let fallbackKey: string | null = null;
+  let fallbackGap = actorGap;
+  let fallbackSteps = Number.POSITIVE_INFINITY;
+  let fallbackTargetDistance = Number.POSITIVE_INFINITY;
+
+  for (const [key, point] of points) {
+    if (key === startKey) continue;
+
+    const gap = rangeGap(point);
+    if (gap >= actorGap) continue;
+
+    const pathSteps =
+      steps.get(key) ?? Number.POSITIVE_INFINITY;
+    const targetDistance = manhattanDistance(
+      point,
+      target.position,
+    );
+
+    if (
+      gap < fallbackGap ||
+      (
+        gap === fallbackGap &&
+        (
+          pathSteps < fallbackSteps ||
+          (
+            pathSteps === fallbackSteps &&
+            targetDistance < fallbackTargetDistance
+          )
+        )
+      )
+    ) {
+      fallbackKey = key;
+      fallbackGap = gap;
+      fallbackSteps = pathSteps;
+      fallbackTargetDistance = targetDistance;
+    }
+  }
+
+  return fallbackKey
+    ? buildPath(fallbackKey)
+    : null;
 }
 
 function aiThreatScore(unit: DuelUnit): number {
