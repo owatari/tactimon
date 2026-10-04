@@ -780,6 +780,36 @@ const overworldSource = resolve(sourceRoot, "overworld");
 const overworldDestination = resolve(publicRoot, "overworld");
 await cp(overworldSource, overworldDestination, { recursive: true });
 
+// Keep canonical FireRed battle artwork available to the UI. These assets come
+// from the user's extracted ROM and preserve the original pixel proportions.
+const fireRedPublicRoot = resolve(
+  publicRoot,
+  "firered",
+);
+await mkdir(fireRedPublicRoot, {
+  recursive: true,
+});
+await copyFile(
+  resolve(sourceRoot, "asset-manifest.json"),
+  resolve(fireRedPublicRoot, "asset-manifest.json"),
+);
+await cp(
+  resolve(sourceRoot, "pokemon/front/normal"),
+  resolve(
+    fireRedPublicRoot,
+    "pokemon/front/normal",
+  ),
+  { recursive: true },
+);
+await cp(
+  resolve(sourceRoot, "pokemon/back/normal"),
+  resolve(
+    fireRedPublicRoot,
+    "pokemon/back/normal",
+  ),
+  { recursive: true },
+);
+
 for (const [source, destination] of optionalFiles) {
   const from = resolve(sourceRoot, source);
   const to = resolve(publicRoot, destination);
