@@ -3549,6 +3549,22 @@ export function getDuelCaptureEligibility(
 ): CaptureEligibility {
   const target = state.units.find((unit) => unit.id === targetId);
   if (!target) return { allowed: false, reason: "target-not-wild" };
+
+  if (
+    state.battleKind === "wild" &&
+    target.side === "rival" &&
+    state.units.filter(
+      (unit) =>
+        unit.side === "rival" &&
+        unit.hp > 0,
+    ).length > 1
+  ) {
+    return {
+      allowed: false,
+      reason: "multiple-wilds",
+    };
+  }
+
   return getCaptureEligibility(
     {
       id: target.id,
