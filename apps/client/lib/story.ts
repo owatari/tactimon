@@ -44,7 +44,12 @@ export type StoryHealLocationId =
 export type StoryBadgeId =
   | "boulder"
   | "cascade"
-  | "thunder";
+  | "thunder"
+  | "rainbow"
+  | "soul"
+  | "marsh"
+  | "volcano"
+  | "earth";
 export type MtMoonFossilId = "dome" | "helix";
 export type StoryValuableId = "nugget";
 export type StoryValuables = Record<StoryValuableId, number>;
@@ -74,6 +79,8 @@ export type StoryState = {
   fieldTechniqueIds?: StoryFieldTechniqueId[];
   clearedObstacleIds?: string[];
   billStage?: BillStoryStage;
+  /** FireRed field poison advances once per completed overworld step. */
+  poisonStepCounter?: number;
   /**
    * Private world-instance state for this player only.
    *
@@ -107,6 +114,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   fieldTechniqueIds: [],
   clearedObstacleIds: [],
   billStage: "unmet",
+  poisonStepCounter: 0,
   playerWorld: createEmptyPlayerWorldState(),
 };
 
@@ -168,6 +176,7 @@ export function chooseStarter(
     fieldTechniqueIds: [],
     clearedObstacleIds: [],
     billStage: "unmet",
+    poisonStepCounter: 0,
     playerWorld,
   };
 }
@@ -456,7 +465,12 @@ export function normalizeStoryState(
               (badge): badge is StoryBadgeId =>
                 badge === "boulder" ||
                 badge === "cascade" ||
-                badge === "thunder",
+                badge === "thunder" ||
+                badge === "rainbow" ||
+                badge === "soul" ||
+                badge === "marsh" ||
+                badge === "volcano" ||
+                badge === "earth",
             ),
           ),
         )
@@ -504,6 +518,17 @@ export function normalizeStoryState(
       )
         ? "helped"
         : normalizeBillStage(input?.billStage),
+    poisonStepCounter:
+      typeof input?.poisonStepCounter === "number" &&
+      Number.isFinite(input.poisonStepCounter)
+        ? Math.max(
+            0,
+            Math.min(
+              4,
+              Math.trunc(input.poisonStepCounter),
+            ),
+          )
+        : 0,
     playerWorld,
   };
 }
@@ -560,6 +585,61 @@ export function healStoryParty(
     capturedPokemon: story.capturedPokemon.map(
       (pokemon) => ({
         ...healPokemonProgression(pokemon),
+        species: pokemon.species,
+      }),
+    ),
+    poisonStepCounter: 0,
+  };
+}
+
+function applyFieldPoisonToPokemon<
+  T extends PokemonProgression
+>(pokemon: T): T {
+  if (
+    pokemon.status !== "poison" ||
+    pokemon.currentHp <= 0
+  ) {
+    return pokemon;
+  }
+
+  return {
+    ...pokemon,
+    currentHp: Math.max(
+      0,
+      pokemon.currentHp - 1,
+    ),
+  };
+}
+
+/**
+ * FireRed increments a poison field counter after movement and applies
+ * exactly 1 HP of poison damage to every poisoned party member every fifth
+ * step. Field poison is allowed to faint a Pokémon.
+ */
+export function applyStoryOverworldStep(
+  story: StoryState,
+): StoryState {
+  const nextCounter =
+    ((story.poisonStepCounter ?? 0) + 1) % 5;
+
+  if (nextCounter !== 0) {
+    return {
+      ...story,
+      poisonStepCounter: nextCounter,
+    };
+  }
+
+  return {
+    ...story,
+    poisonStepCounter: 0,
+    playerPokemon: story.playerPokemon
+      ? applyFieldPoisonToPokemon(
+          story.playerPokemon,
+        )
+      : null,
+    capturedPokemon: story.capturedPokemon.map(
+      (pokemon) => ({
+        ...applyFieldPoisonToPokemon(pokemon),
         species: pokemon.species,
       }),
     ),
