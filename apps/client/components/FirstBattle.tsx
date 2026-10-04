@@ -1066,8 +1066,9 @@ export function FirstBattle({
                   !state.captureAllowed
                 }
                 onClick={toggleAutoCatch}
+                title="Auto Catch usa Poké Ball automaticamente em Pokémon selvagem com 30% de HP ou menos."
               >
-                Catch {autoCatch ? "ON" : "OFF"}
+                Auto Catch {autoCatch ? "ON" : "OFF"}
               </button>
               <button
                 type="button"
