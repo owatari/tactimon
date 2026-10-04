@@ -8,6 +8,10 @@ import {
   LAND_ENCOUNTERS,
   resolveLandEncounter,
 } from "../apps/client/lib/wildEncounters";
+import {
+  isRoute22EarlyRivalTriggerTile,
+  route22EarlyRivalParty,
+} from "../apps/client/lib/trainers";
 
 describe("Route 22", () => {
   it("registers the extracted FireRed route with Route 3 music", () => {
@@ -80,5 +84,47 @@ describe("Route 22", () => {
     expect(
       isVictoryRoadLeagueGateAt("route-22", 10, 5),
     ).toBe(false);
+  });
+});
+
+
+describe("Route 22 early rival", () => {
+  it("uses FireRed trigger geometry and the level 9 Pidgey plus starter party", () => {
+    expect(
+      isRoute22EarlyRivalTriggerTile(
+        "route-22",
+        33,
+        4,
+      ),
+    ).toBe(true);
+    expect(
+      isRoute22EarlyRivalTriggerTile(
+        "route-22",
+        33,
+        6,
+      ),
+    ).toBe(true);
+    expect(
+      isRoute22EarlyRivalTriggerTile(
+        "route-22",
+        32,
+        5,
+      ),
+    ).toBe(false);
+
+    expect(
+      route22EarlyRivalParty("charmander"),
+    ).toEqual([
+      {
+        species: "pidgey",
+        level: 9,
+        moves: ["tackle", "sand-attack"],
+      },
+      {
+        species: "charmander",
+        level: 9,
+        moves: ["scratch", "growl"],
+      },
+    ]);
   });
 });
