@@ -169,6 +169,7 @@ export type DuelMoveId =
   | "karate-chop"
   | "confusion"
   | "psychic"
+  | "future-sight"
   | "calm-mind"
   | "hypnosis"
   | "disable"
@@ -362,6 +363,7 @@ export interface DuelMove {
     | "synthesis"
     | "rain-dance"
     | "solar-beam"
+    | "future-sight"
     | "drain-half"
     | "fixed-damage-20"
     | "ohko"
@@ -453,6 +455,13 @@ export interface DuelUnit {
   chargingMove: {
     moveId: DuelMoveId;
     targetId: string;
+  } | null;
+  /** FireRed Future Sight is attached to the target and stores damage at setup. */
+  futureSight: {
+    attackerId: string;
+    moveId: "future-sight";
+    damage: number;
+    roundsRemaining: number;
   } | null;
   captureAttempted: boolean;
 }
@@ -2561,6 +2570,24 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     },
     secondaryEffectChance: 10,
   },
+  "future-sight": {
+    id: "future-sight",
+    name: "Future Sight",
+    type: "psychic",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "confusion",
+    description:
+      "Prevê um ataque de 80 power que atinge o alvo dois rounds depois.",
+    power: 80,
+    accuracy: 90,
+    apCost: 5,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 4,
+    effect: "future-sight",
+  },
   "calm-mind": {
     id: "calm-mind",
     name: "Calm Mind",
@@ -3443,6 +3470,7 @@ function makeUnit(
       build.movePp,
     ),
     chargingMove: null,
+    futureSight: null,
     captureAttempted: false,
   };
 }
@@ -3787,6 +3815,9 @@ function cloneState(state: DuelState): DuelState {
       chargingMove: unit.chargingMove
         ? { ...unit.chargingMove }
         : null,
+      futureSight: unit.futureSight
+        ? { ...unit.futureSight }
+        : null,
     })),
     log: [...state.log],
   };
@@ -4065,7 +4096,9 @@ function expectedMoveDamage(
 }
 
 function expectedMoveTempoFactor(move: DuelMove): number {
-  return move.effect === "solar-beam" ? 0.5 : 1;
+  if (move.effect === "solar-beam") return 0.5;
+  if (move.effect === "future-sight") return 0.7;
+  return 1;
 }
 
 function rollSleepTurns(
@@ -4193,6 +4226,81 @@ function applyEndTurnMajorStatus(
   }
 }
 
+function tickRoundFutureSight(state: DuelState): void {
+  for (const target of state.units) {
+    const pending = target.futureSight;
+    if (!pending) continue;
+
+    pending.roundsRemaining -= 1;
+    if (pending.roundsRemaining > 0) {
+      continue;
+    }
+
+    target.futureSight = null;
+    if (target.hp <= 0) {
+      continue;
+    }
+
+    const attacker = state.units.find(
+      (unit) => unit.id === pending.attackerId,
+    );
+    const move = DUEL_MOVES[pending.moveId];
+
+    if (
+      !attacker ||
+      !moveAccuracySucceeds(
+        state,
+        attacker,
+        target,
+        move,
+      )
+    ) {
+      appendLog(
+        state,
+        `${move.name} não acertou ${target.displayName}.`,
+      );
+      continue;
+    }
+
+    const damage = Math.min(
+      target.hp,
+      pending.damage,
+    );
+    target.hp = Math.max(
+      0,
+      target.hp - pending.damage,
+    );
+    appendLog(
+      state,
+      `${target.displayName} foi atingido por ${move.name}: ${damage} de dano.`,
+    );
+
+    if (target.hp <= 0) {
+      appendLog(
+        state,
+        `${target.displayName} desmaiou.`,
+      );
+    }
+  }
+
+  const playerAlive = sideHasLivingUnit(
+    state,
+    "player",
+  );
+  const rivalAlive = sideHasLivingUnit(
+    state,
+    "rival",
+  );
+  if (!playerAlive || !rivalAlive) {
+    state.status = "finished";
+    state.winner = playerAlive
+      ? "player"
+      : rivalAlive
+        ? "rival"
+        : null;
+  }
+}
+
 function tickRoundWeather(state: DuelState): void {
   if (
     state.weather !== "rain" ||
@@ -4274,6 +4382,11 @@ function activateNextTurnUnit(
       return true;
     }
 
+    tickRoundFutureSight(state);
+    if (state.status !== "active") {
+      return false;
+    }
+
     tickRoundWeather(state);
     state.round += 1;
     state.turnOrder = createTurnOrder(state.units);
@@ -4316,8 +4429,10 @@ function resolveTurnEnd(
     return;
   }
 
-  state.status = "finished";
-  state.winner = current.side;
+  if (state.status === "active") {
+    state.status = "finished";
+    state.winner = current.side;
+  }
 }
 
 type DuelDamageResult = {
@@ -4325,6 +4440,37 @@ type DuelDamageResult = {
   sameTypeAttackBonus: boolean;
   typeEffectiveness: number;
 };
+
+function calculateFutureSightBaseDamage(
+  attacker: DuelUnit,
+  defender: DuelUnit,
+  move: DuelMove,
+): number {
+  if (move.power === null) return 0;
+
+  const attack =
+    attacker.specialAttack *
+    stageMultiplier(attacker.specialAttackStage);
+  const defense = Math.max(
+    1,
+    defender.specialDefense *
+      stageMultiplier(defender.specialDefenseStage),
+  );
+
+  // FireRed stores CalculateBaseDamage() at setup. Future Sight's later
+  // impact skips typecalc, so this intentionally omits STAB/effectiveness.
+  return Math.max(
+    1,
+    Math.floor(
+      (((2 * attacker.level) / 5 + 2) *
+        move.power *
+        attack) /
+        defense /
+        50 +
+        2,
+    ),
+  );
+}
 
 function calculateDamage(
   state: DuelState,
@@ -5020,6 +5166,57 @@ export function applyDuelAction(
   }
 
   actor.ap -= move.apCost;
+
+  if (move.effect === "future-sight") {
+    if (target.futureSight) {
+      appendLog(
+        state,
+        `${move.name} falhou: já existe um ataque futuro mirando ${target.displayName}.`,
+      );
+      return {
+        state,
+        accepted: true,
+        reason: "future-sight-already-pending",
+      };
+    }
+
+    target.futureSight = {
+      attackerId: actor.id,
+      moveId: "future-sight",
+      damage: calculateFutureSightBaseDamage(
+        actor,
+        target,
+        move,
+      ),
+      roundsRemaining: 3,
+    };
+    appendLog(
+      state,
+      `${actor.displayName} previu um ataque futuro contra ${target.displayName}.`,
+    );
+    return {
+      state,
+      accepted: true,
+      presentation: {
+        kind: "move",
+        actorId: actor.id,
+        moveId: move.id,
+        targetIds: [target.id],
+        vfxId: move.vfxId,
+        motion: move.motion,
+        results: [
+          {
+            targetId: target.id,
+            damage: 0,
+            fainted: false,
+            statChanges: [],
+            sameTypeAttackBonus: false,
+            typeEffectiveness: 1,
+          },
+        ],
+      },
+    };
+  }
 
   if (move.effect === "solar-beam") {
     actor.chargingMove = {
@@ -6282,6 +6479,13 @@ function scoreAiCandidate(
     return { score: -Infinity, damage: 0 };
   }
 
+  if (
+    move.effect === "future-sight" &&
+    target.futureSight
+  ) {
+    return { score: -Infinity, damage: 0 };
+  }
+
   if (move.category === "status") {
     const utility = aiStatusUtility(
       state,
@@ -6311,12 +6515,23 @@ function scoreAiCandidate(
     };
   }
 
-  const result = calculateDamage(
-    state,
-    actor,
-    target,
-    move,
-  );
+  const result =
+    move.effect === "future-sight"
+      ? {
+          damage: calculateFutureSightBaseDamage(
+            actor,
+            target,
+            move,
+          ),
+          sameTypeAttackBonus: false,
+          typeEffectiveness: 1,
+        }
+      : calculateDamage(
+          state,
+          actor,
+          target,
+          move,
+        );
   if (result.damage <= 0) {
     return { score: -Infinity, damage: 0 };
   }
