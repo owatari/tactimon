@@ -2423,6 +2423,209 @@ describe("late rival stage moves", () => {
 });
 
 
+describe("special stat stages", () => {
+  it("applies Growth to special damage and respects the stage cap", () => {
+    let state = createTrainerDuel({
+      seed: 1907,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "bulbasaur",
+          level: 20,
+          moves: ["growth", "absorb"],
+        },
+      ],
+      rivals: [
+        {
+          species: "squirtle",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const baseline = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "absorb",
+      targetId: rival.id,
+    });
+    expect(baseline.accepted).toBe(true);
+    expect(baseline.presentation?.kind).toBe("move");
+    const baselineDamage =
+      baseline.presentation?.kind === "move"
+        ? baseline.presentation.results[0].damage
+        : 0;
+
+    const growth = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "growth",
+      targetId: player.id,
+    });
+    expect(growth.accepted).toBe(true);
+    expect(
+      growth.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.specialAttackStage,
+    ).toBe(1);
+    if (growth.presentation?.kind === "move") {
+      expect(growth.presentation.results[0].statChanges).toEqual([
+        { stat: "special-attack", delta: 1 },
+      ]);
+    }
+
+    const boosted = applyDuelAction(growth.state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "absorb",
+      targetId: rival.id,
+    });
+    expect(boosted.accepted).toBe(true);
+    expect(boosted.presentation?.kind).toBe("move");
+    const boostedDamage =
+      boosted.presentation?.kind === "move"
+        ? boosted.presentation.results[0].damage
+        : 0;
+    expect(boostedDamage).toBeGreaterThan(baselineDamage);
+
+    const cappedState = {
+      ...state,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              specialAttackStage: 6,
+            }
+          : unit,
+      ),
+    };
+    const capped = applyDuelAction(cappedState, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "growth",
+      targetId: player.id,
+    });
+    expect(capped.accepted).toBe(true);
+    expect(
+      capped.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.specialAttackStage,
+    ).toBe(6);
+    if (capped.presentation?.kind === "move") {
+      expect(capped.presentation.results[0].statChanges).toEqual([
+        { stat: "special-attack", delta: 0 },
+      ]);
+    }
+  });
+
+  it("uses Special Defense stages when resolving special damage", () => {
+    let state = createTrainerDuel({
+      seed: 1908,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "charmander",
+          level: 20,
+          moves: ["ember"],
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const baseline = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "ember",
+      targetId: rival.id,
+    });
+    const defended = applyDuelAction(
+      {
+        ...state,
+        units: state.units.map((unit) =>
+          unit.id === rival.id
+            ? {
+                ...unit,
+                specialDefenseStage: 2,
+              }
+            : unit,
+        ),
+      },
+      {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "ember",
+        targetId: rival.id,
+      },
+    );
+
+    expect(baseline.accepted).toBe(true);
+    expect(defended.accepted).toBe(true);
+    const baselineDamage =
+      baseline.presentation?.kind === "move"
+        ? baseline.presentation.results[0].damage
+        : 0;
+    const defendedDamage =
+      defended.presentation?.kind === "move"
+        ? defended.presentation.results[0].damage
+        : 0;
+    expect(defendedDamage).toBeLessThan(baselineDamage);
+  });
+});
+
+
 describe("battle movement and deployment scale", () => {
   it("derives MP from species Speed instead of giving every Pokémon 3", () => {
     expect(
