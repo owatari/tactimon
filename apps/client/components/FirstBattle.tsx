@@ -898,7 +898,7 @@ export function FirstBattle({
             automatedSide,
             {
               useItems:
-                automatedSide === "player" &&
+                automatedSide === "rival" ||
                 autoBattle,
               autoCapture:
                 automatedSide === "player" &&
