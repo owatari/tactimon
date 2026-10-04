@@ -1747,6 +1747,24 @@ export function FirstBattle({
                   ? "VITÓRIA"
                   : "DERROTA"}
             </span>
+            <div
+              className="battle-result-sprites"
+              aria-hidden="true"
+            >
+              <PokemonPortrait
+                species={starterUnit.species}
+                name={starterUnit.displayName}
+              />
+              <span>
+                {rivalUnits.length > 1
+                  ? `VS ×${rivalUnits.length}`
+                  : "VS"}
+              </span>
+              <PokemonPortrait
+                species={rival.species}
+                name={rival.displayName}
+              />
+            </div>
             <h3>
               {state.captureResult
                 ? state.captureResult.success
@@ -1820,6 +1838,20 @@ export function FirstBattle({
             <span className="eyebrow">
               {state.escapedBy === "rival" ? "FUGIU" : "ESCAPOU"}
             </span>
+            <div
+              className="battle-result-sprites"
+              aria-hidden="true"
+            >
+              <PokemonPortrait
+                species={starterUnit.species}
+                name={starterUnit.displayName}
+              />
+              <span>↔</span>
+              <PokemonPortrait
+                species={rival.species}
+                name={rival.displayName}
+              />
+            </div>
             <h3>
               {state.escapedBy === "rival"
                 ? `${rival.displayName} fugiu do combate.`
