@@ -44,6 +44,10 @@ export type TrainerSpeciesId =
   | "drowzee"
   | "butterfree"
   | "raticate"
+  | "wartortle"
+  | "ivysaur"
+  | "charmeleon"
+  | "kadabra"
   | "onix"
   | "sandshrew"
   | "grimer"
@@ -132,6 +136,8 @@ export type DuelMoveId =
   | "headbutt"
   | "supersonic"
   | "hyper-fang"
+  | "kinesis"
+  | "smokescreen"
   | "recover"
   | "water-pulse"
   | "swift"
@@ -806,6 +812,54 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 70,
     speed: 97,
     moves: ["tackle", "tail-whip", "quick-attack", "hyper-fang"],
+  },
+  wartortle: {
+    name: "Wartortle",
+    type: "water",
+    types: ["water"],
+    hp: 59,
+    attack: 63,
+    defense: 80,
+    specialAttack: 65,
+    specialDefense: 80,
+    speed: 58,
+    moves: ["bubble", "withdraw", "water-gun", "bite"],
+  },
+  ivysaur: {
+    name: "Ivysaur",
+    type: "grass",
+    types: ["grass", "poison"],
+    hp: 60,
+    attack: 62,
+    defense: 63,
+    specialAttack: 80,
+    specialDefense: 80,
+    speed: 60,
+    moves: ["leech-seed", "vine-whip", "poison-powder", "sleep-powder"],
+  },
+  charmeleon: {
+    name: "Charmeleon",
+    type: "fire",
+    types: ["fire"],
+    hp: 58,
+    attack: 64,
+    defense: 58,
+    specialAttack: 80,
+    specialDefense: 65,
+    speed: 80,
+    moves: ["growl", "ember", "metal-claw", "smokescreen"],
+  },
+  kadabra: {
+    name: "Kadabra",
+    type: "psychic",
+    types: ["psychic"],
+    hp: 40,
+    attack: 35,
+    defense: 30,
+    specialAttack: 120,
+    specialDefense: 70,
+    speed: 105,
+    moves: ["teleport", "kinesis", "confusion", "disable"],
   },
   metapod: {
     name: "Metapod",
@@ -1932,6 +1986,38 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 15,
     minRange: 1,
     maxRange: 1,
+  },
+  kinesis: {
+    id: "kinesis",
+    name: "Kinesis",
+    type: "psychic",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Reduz Accuracy no jogo original; Accuracy ainda não é uma estatística tática do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 3,
+  },
+  smokescreen: {
+    id: "smokescreen",
+    name: "Smokescreen",
+    type: "normal",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Reduz Accuracy no jogo original; Accuracy ainda não é uma estatística tática do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 3,
   },
   recover: {
     id: "recover",

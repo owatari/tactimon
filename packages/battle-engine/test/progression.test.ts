@@ -761,3 +761,45 @@ describe("Route 6 trainer species", () => {
     ]);
   });
 });
+
+
+describe("S.S. Anne rival species", () => {
+  it("uses FireRed growth and trainer EXP values", () => {
+    expect(fireRedExperienceAtLevel("wartortle", 20)).toBe(5_460);
+    expect(fireRedExperienceAtLevel("ivysaur", 20)).toBe(5_460);
+    expect(fireRedExperienceAtLevel("charmeleon", 20)).toBe(5_460);
+    expect(fireRedExperienceAtLevel("kadabra", 18)).toBe(3_798);
+
+    expect(experienceRewardForTrainer("wartortle", 20, 1)).toBe(612);
+    expect(experienceRewardForTrainer("ivysaur", 20, 1)).toBe(603);
+    expect(experienceRewardForTrainer("charmeleon", 20, 1)).toBe(607);
+    expect(experienceRewardForTrainer("kadabra", 18, 1)).toBe(558);
+  });
+
+  it("creates the FireRed S.S. Anne rival move sets", () => {
+    expect(createPokemonProgression("wartortle", 20).activeMoves).toEqual([
+      "bubble",
+      "withdraw",
+      "water-gun",
+      "bite",
+    ]);
+    expect(createPokemonProgression("ivysaur", 20).activeMoves).toEqual([
+      "leech-seed",
+      "vine-whip",
+      "poison-powder",
+      "sleep-powder",
+    ]);
+    expect(createPokemonProgression("charmeleon", 20).activeMoves).toEqual([
+      "growl",
+      "ember",
+      "metal-claw",
+      "smokescreen",
+    ]);
+    expect(createPokemonProgression("kadabra", 18).activeMoves).toEqual([
+      "teleport",
+      "kinesis",
+      "confusion",
+      "disable",
+    ]);
+  });
+});

@@ -9,8 +9,11 @@ import { basename, join, resolve } from "node:path";
 
 const SPECIES = {
   bulbasaur: "0001",
+  ivysaur: "0002",
   charmander: "0004",
+  charmeleon: "0005",
   squirtle: "0007",
+  wartortle: "0008",
   caterpie: "0010",
   metapod: "0011",
   weedle: "0013",
@@ -34,6 +37,7 @@ const SPECIES = {
   parasect: "0047",
   mankey: "0056",
   abra: "0063",
+  kadabra: "0064",
   machop: "0066",
   bellsprout: "0069",
   slowpoke: "0079",
