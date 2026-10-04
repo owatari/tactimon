@@ -2336,6 +2336,71 @@ describe("battle movement and deployment scale", () => {
     ).toBe(5);
   });
 
+  it("charges MP by the real path length around obstacles", () => {
+    let state = createWildDuel({
+      seed: 1904,
+      width: 5,
+      height: 5,
+      players: [
+        {
+          species: "pikachu",
+          level: 10,
+          moves: ["thunder-shock"],
+        },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 5,
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      blocked: [{ x: 1, y: 2 }],
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 0, y: 2 },
+              mp: 4,
+              maxMp: 4,
+            }
+          : unit.id === wild.id
+            ? {
+                ...unit,
+                position: { x: 4, y: 4 },
+              }
+            : unit,
+      ),
+    };
+
+    expect(
+      getReachableCells(state, player.id),
+    ).toContainEqual({ x: 2, y: 2 });
+
+    const moved = applyDuelAction(state, {
+      kind: "move",
+      unitId: player.id,
+      to: { x: 2, y: 2 },
+    });
+
+    expect(moved.accepted).toBe(true);
+    expect(moved.presentation).toMatchObject({
+      kind: "movement",
+      cost: 4,
+    });
+    expect(
+      moved.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.mp,
+    ).toBe(0);
+  });
+
   it("deploys large wild packs with player units on the left and enemies on the right", () => {
     const state = createWildDuel({
       seed: 1901,
