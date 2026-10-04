@@ -1379,9 +1379,7 @@ export function FirstBattle({
 
             {isPlayerTurn &&
               state.status === "active" &&
-              (command === "root" ||
-                command === "moves" ||
-                command === "items") && (
+              command === "root" && (
               <div
                 className={`battle-action-popover mode-${command}`}
                 style={{
@@ -1646,6 +1644,121 @@ export function FirstBattle({
             </div>
           )}
         </div>
+
+        {isPlayerTurn &&
+          state.status === "active" &&
+          (command === "moves" ||
+            command === "items") && (
+            <div className="battle-selection-dock">
+              {command === "moves" && (
+                <>
+                  <div className="battle-selection-dock-title">
+                    <strong>Escolha um golpe</strong>
+                    <span>{player.ap} AP disponível</span>
+                  </div>
+                  <div className="battle-selection-dock-grid">
+                    {[
+                      ...player.moves,
+                      ...(player.moves.length > 0 &&
+                      player.moves.every(
+                        (moveId) =>
+                          getDuelMovePp(player, moveId) <= 0,
+                      )
+                        ? (["struggle"] as DuelMoveId[])
+                        : []),
+                    ].map((moveId) => {
+                      const move = DUEL_MOVES[moveId];
+                      const currentPp =
+                        moveId === "struggle"
+                          ? null
+                          : getDuelMovePp(player, moveId);
+                      const hasPp =
+                        moveId === "struggle" ||
+                        (currentPp ?? 0) > 0;
+                      const canPay =
+                        player.ap >= move.apCost &&
+                        hasPp;
+
+                      return (
+                        <button
+                          key={moveId}
+                          type="button"
+                          disabled={!canPay}
+                          onClick={() => {
+                            setSelectedMove(moveId);
+                            setCommand("move-target");
+                          }}
+                        >
+                          <strong>{move.name}</strong>
+                          <span>
+                            {move.apCost} AP ·{" "}
+                            {moveId === "struggle"
+                              ? "PP —"
+                              : `PP ${currentPp} / ${move.maxPp}`} ·{" "}
+                            {move.targeting === "self"
+                              ? "self"
+                              : `${move.minRange}–${move.maxRange}`}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+
+              {command === "items" && (
+                <>
+                  <div className="battle-selection-dock-title">
+                    <strong>Escolha um item</strong>
+                    <span>Bolsa de batalha</span>
+                  </div>
+                  <div className="battle-selection-dock-grid">
+                    {(Object.keys(DUEL_ITEMS) as DuelItemId[])
+                      .filter(
+                        (itemId) =>
+                          DUEL_ITEMS[itemId].kind !== "capture" ||
+                          state.battleKind === "wild",
+                      )
+                      .map((itemId) => {
+                        const item = DUEL_ITEMS[itemId];
+                        const amount =
+                          state.items[itemId] ?? 0;
+
+                        return (
+                          <button
+                            key={itemId}
+                            type="button"
+                            disabled={amount <= 0}
+                            onClick={() => {
+                              setSelectedItem(itemId);
+                              setCommand("item-target");
+                            }}
+                          >
+                            <strong>{item.name}</strong>
+                            <span>
+                              ×{amount} ·{" "}
+                              {item.kind === "heal"
+                                ? `+${item.heal} HP`
+                                : state.captureAllowed
+                                  ? "captura com HP ≤50%"
+                                  : "captura indisponível"}
+                            </span>
+                          </button>
+                        );
+                      })}
+                  </div>
+                </>
+              )}
+
+              <button
+                type="button"
+                className="battle-selection-dock-back"
+                onClick={resetCommand}
+              >
+                ← Voltar
+              </button>
+            </div>
+          )}
 
         <div className="battle-message-strip">
           <span>{latestMessage}</span>
