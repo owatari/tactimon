@@ -43,11 +43,15 @@ import {
   CERULEAN_RIVAL_CHALLENGE_TEXT,
   CERULEAN_RIVAL_TRAINER_ID,
   CERULEAN_ROCKET_TRAINER_ID,
+  ROUTE22_EARLY_RIVAL_CHALLENGE_TEXT,
+  ROUTE22_EARLY_RIVAL_TRAINER_ID,
   SS_ANNE_RIVAL_CHALLENGE_TEXT,
   SS_ANNE_RIVAL_TRAINER_ID,
   ceruleanRivalEncounter,
   isCeruleanRivalTriggerTile,
   isCeruleanRocketTriggerTile,
+  isRoute22EarlyRivalTriggerTile,
+  route22EarlyRivalEncounter,
   isSsAnneRivalTriggerTile,
   resolvePlayerOverworldTrainers,
   ssAnneRivalEncounter,
@@ -1627,6 +1631,58 @@ export function OverworldGame({
       }
     };
 
+    const maybeTriggerRoute22RivalBattle = () => {
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+
+      if (
+        isStoryTrainerDefeated(
+          currentStory,
+          ROUTE22_EARLY_RIVAL_TRAINER_ID,
+        ) ||
+        !isRoute22EarlyRivalTriggerTile(
+          mapIdRef.current,
+          player.tileX,
+          player.tileY,
+        ) ||
+        !currentStory.firstBattleComplete ||
+        !currentStory.playerPokemon ||
+        !storyHasHealthyPokemon(currentStory) ||
+        trainerBattleLockRef.current
+      ) {
+        return;
+      }
+
+      const encounter =
+        route22EarlyRivalEncounter(
+          currentStory.rivalStarter,
+        );
+      const context = createBattleContext();
+      if (!encounter || !context) {
+        return;
+      }
+
+      trainerBattleLockRef.current = true;
+      resetInput();
+      showDialogue(
+        onDialogueInteraction({
+          kind: "text",
+          id: "trainer:route22-rival-early:challenge",
+          speaker: "Blue",
+          text: ROUTE22_EARLY_RIVAL_CHALLENGE_TEXT.replace(
+            /^Blue:\s*/,
+            "",
+          ),
+        }),
+        () => {
+          onTrainerBattleTrigger(
+            context,
+            encounter,
+          );
+        },
+      );
+    };
+
     const maybeTriggerCeruleanRivalBattle = () => {
       const player = playerRef.current;
       const currentStory = storyRef.current;
@@ -1998,6 +2054,7 @@ export function OverworldGame({
           );
           onOverworldStep();
           maybeTriggerLabBattle();
+          maybeTriggerRoute22RivalBattle();
           maybeTriggerCeruleanRivalBattle();
           maybeTriggerSsAnneRivalBattle();
           maybeTriggerCeruleanRocketBattle();
