@@ -21,6 +21,16 @@ type Props = {
   onClose: () => void;
 };
 
+const FIRE_RED_ITEM_ICON: Record<
+  DuelItemId,
+  string
+> = {
+  potion:
+    "/game-assets/firered/ui/items/013_potion.png",
+  "poke-ball":
+    "/game-assets/firered/ui/items/004_poke_ball.png",
+};
+
 function purchaseMessage(
   result: MartPurchaseResult,
 ): string {
@@ -94,6 +104,12 @@ export function MartOverlay({
                 key={item.id}
                 className="mart-item-card"
               >
+                <img
+                  className="mart-item-rom-icon"
+                  src={FIRE_RED_ITEM_ICON[item.id]}
+                  alt=""
+                  aria-hidden="true"
+                />
                 <div className="mart-item-copy">
                   <span>{item.name}</span>
                   <strong>
