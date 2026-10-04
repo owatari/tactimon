@@ -7,6 +7,7 @@ import {
   createWildDuel,
   DUEL_MOVES,
   getActiveDuelUnit,
+  getDuelCaptureEligibility,
   getReachableCells,
   isDuelAutoCatchTarget,
   manhattanDistance,
