@@ -427,6 +427,8 @@ export function GameClient() {
           : [];
       const trainerId =
         session.encounter.trainerId;
+      const badgeId =
+        session.encounter.badgeId;
       const prizeMoney = outcome.won
         ? Math.max(
             0,
@@ -457,8 +459,6 @@ export function GameClient() {
             };
           }
 
-          const badgeId =
-            session.encounter.badgeId;
           if (
             outcome.won &&
             badgeId &&
