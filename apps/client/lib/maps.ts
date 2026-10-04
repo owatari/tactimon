@@ -297,6 +297,13 @@ const CERULEAN_GYM_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/cerulean-gym/attributes.bin",
 };
 
+const VERMILION_GYM_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/vermilion-gym/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/vermilion-gym/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/vermilion-gym/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/vermilion-gym/attributes.bin",
+};
+
 const POKEMON_CENTER_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/pokemon-center/tiles.4bpp",
   palettesUrl:
@@ -683,6 +690,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: BUILDING_TILESET,
       secondary: MART_TILESET,
+    },
+  },
+  "vermilion-gym": {
+    id: "vermilion-gym",
+    label: "Vermilion Gym",
+    layoutUrl: "/game-assets/maps/vermilion-gym/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-gym/preview.png",
+    worldUrl: null,
+    spawn: { x: 5, y: 18 },
+    fallbackMusicId: 275,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: VERMILION_GYM_TILESET,
     },
   },
   "cerulean-pokemon-center": {
@@ -1763,6 +1783,29 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "vermilion-city",
       spawn: { x: 29, y: 18 },
+    };
+  }
+
+  if (
+    mapId === "vermilion-city" &&
+    x === 14 &&
+    y === 25
+  ) {
+    return {
+      mapId: "vermilion-gym",
+      spawn: { x: 5, y: 18 },
+    };
+  }
+
+  if (
+    mapId === "vermilion-gym" &&
+    y === 19 &&
+    x >= 4 &&
+    x <= 6
+  ) {
+    return {
+      mapId: "vermilion-city",
+      spawn: { x: 14, y: 26 },
     };
   }
 
