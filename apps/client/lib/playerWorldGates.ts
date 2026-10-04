@@ -113,7 +113,41 @@ const KANTO_BADGES = [
   "earth",
 ] as const;
 
+export const VIRIDIAN_GYM_UNLOCK_BADGES = [
+  "cascade",
+  "thunder",
+  "rainbow",
+  "soul",
+  "marsh",
+  "volcano",
+] as const;
+
 const TILE_GATES: readonly PlayerWorldTileGate[] = [
+  {
+    id: "viridian-gym-story-lock",
+    kind: "tile",
+    mapId: "viridian-city",
+    x: 36,
+    y: 10,
+    allowWhen: {
+      kind: "all",
+      conditions:
+        VIRIDIAN_GYM_UNLOCK_BADGES.map(
+          (id) => ({
+            kind: "event" as const,
+            namespace: "badge" as const,
+            id,
+          }),
+        ),
+    },
+    blockedRequest: {
+      kind: "text",
+      id: "gate:viridian-gym",
+      speaker: "Viridian Gym",
+      text:
+        "As portas estão trancadas. O Líder de Viridian ainda não voltou. Continue sua jornada por Kanto.",
+    },
+  },
   {
     id: "route22-league-gate",
     kind: "tile",
