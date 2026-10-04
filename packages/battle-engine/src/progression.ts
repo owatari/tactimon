@@ -341,6 +341,73 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "recover" },
     { level: 1, moveId: "swift" },
   ],
+  pidgeot: [
+    { level: 1, moveId: "tackle" },
+    { level: 1, moveId: "sand-attack" },
+    { level: 1, moveId: "gust" },
+    { level: 1, moveId: "quick-attack" },
+    { level: 34, moveId: "feather-dance" },
+    { level: 48, moveId: "agility" },
+  ],
+  rhyhorn: [
+    { level: 1, moveId: "horn-attack" },
+    { level: 1, moveId: "tail-whip" },
+    { level: 15, moveId: "fury-attack" },
+    { level: 24, moveId: "scary-face" },
+  ],
+  growlithe: [
+    { level: 1, moveId: "bite" },
+    { level: 7, moveId: "ember" },
+    { level: 13, moveId: "leer" },
+    { level: 43, moveId: "agility" },
+  ],
+  exeggcute: [
+    { level: 1, moveId: "hypnosis" },
+    { level: 13, moveId: "leech-seed" },
+    { level: 19, moveId: "confusion" },
+    { level: 25, moveId: "stun-spore" },
+    { level: 31, moveId: "poison-powder" },
+    { level: 37, moveId: "sleep-powder" },
+  ],
+  gyarados: [
+    { level: 20, moveId: "bite" },
+    { level: 30, moveId: "leer" },
+  ],
+  alakazam: [
+    { level: 1, moveId: "teleport" },
+    { level: 1, moveId: "kinesis" },
+    { level: 1, moveId: "confusion" },
+    { level: 18, moveId: "disable" },
+    { level: 25, moveId: "recover" },
+  ],
+  blastoise: [
+    { level: 1, moveId: "tackle" },
+    { level: 1, moveId: "tail-whip" },
+    { level: 1, moveId: "bubble" },
+    { level: 1, moveId: "withdraw" },
+    { level: 13, moveId: "water-gun" },
+    { level: 19, moveId: "bite" },
+    { level: 25, moveId: "rapid-spin" },
+  ],
+  venusaur: [
+    { level: 1, moveId: "tackle" },
+    { level: 1, moveId: "growl" },
+    { level: 1, moveId: "leech-seed" },
+    { level: 1, moveId: "vine-whip" },
+    { level: 15, moveId: "poison-powder" },
+    { level: 15, moveId: "sleep-powder" },
+    { level: 22, moveId: "razor-leaf" },
+    { level: 29, moveId: "sweet-scent" },
+    { level: 41, moveId: "growth" },
+  ],
+  charizard: [
+    { level: 1, moveId: "scratch" },
+    { level: 1, moveId: "growl" },
+    { level: 1, moveId: "ember" },
+    { level: 1, moveId: "metal-claw" },
+    { level: 20, moveId: "smokescreen" },
+    { level: 27, moveId: "scary-face" },
+  ],
 };
 
 export const STARTER_LEARNSETS: Record<
@@ -710,6 +777,15 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
     "specialAttack",
     "speed",
   ],
+  pidgeot: ["speed", "attack", "speed", "attack", "speed", "specialAttack"],
+  rhyhorn: ["defense", "attack", "hp", "defense", "attack", "defense"],
+  growlithe: ["speed", "attack", "specialAttack", "speed", "attack", "specialAttack"],
+  exeggcute: ["defense", "specialAttack", "hp", "defense", "specialAttack", "defense"],
+  gyarados: ["attack", "specialDefense", "attack", "speed", "attack", "specialDefense"],
+  alakazam: ["specialAttack", "speed", "specialAttack", "speed", "specialDefense", "specialAttack"],
+  blastoise: ["defense", "specialDefense", "hp", "defense", "specialDefense", "defense"],
+  venusaur: ["specialAttack", "specialDefense", "hp", "specialAttack", "specialDefense", "defense"],
+  charizard: ["specialAttack", "speed", "specialAttack", "speed", "attack", "specialAttack"],
 };
 
 const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
@@ -760,6 +836,15 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   goldeen: ["peck", "tail-whip", "horn-attack"],
   staryu: ["tackle", "harden", "water-gun", "recover"],
   starmie: ["water-gun", "rapid-spin", "recover", "swift"],
+  pidgeot: ["tackle", "sand-attack", "gust", "quick-attack"],
+  rhyhorn: ["horn-attack", "tail-whip"],
+  growlithe: ["bite"],
+  exeggcute: ["hypnosis"],
+  gyarados: ["bite"],
+  alakazam: ["teleport", "kinesis", "confusion"],
+  blastoise: ["tackle", "tail-whip", "bubble", "withdraw"],
+  venusaur: ["tackle", "growl", "leech-seed", "vine-whip"],
+  charizard: ["scratch", "growl", "ember", "metal-claw"],
 };
 
 /**
@@ -818,6 +903,15 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   goldeen: 111,
   staryu: 106,
   starmie: 207,
+  pidgeot: 172,
+  rhyhorn: 135,
+  growlithe: 91,
+  exeggcute: 98,
+  gyarados: 214,
+  alakazam: 186,
+  blastoise: 210,
+  venusaur: 208,
+  charizard: 209,
 };
 
 export const POKEMON_GROWTH_RATE: Record<
@@ -871,6 +965,15 @@ export const POKEMON_GROWTH_RATE: Record<
   goldeen: "medium-fast",
   staryu: "slow",
   starmie: "slow",
+  pidgeot: "medium-slow",
+  rhyhorn: "slow",
+  growlithe: "slow",
+  exeggcute: "slow",
+  gyarados: "slow",
+  alakazam: "medium-slow",
+  blastoise: "medium-slow",
+  venusaur: "medium-slow",
+  charizard: "medium-slow",
 };
 
 export const STARTER_GROWTH_RATE: Record<
