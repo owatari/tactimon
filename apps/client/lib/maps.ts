@@ -147,6 +147,13 @@ const MART_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/mart/attributes.bin",
 };
 
+const PEWTER_GYM_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/pewter-gym/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/pewter-gym/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/pewter-gym/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/pewter-gym/attributes.bin",
+};
+
 const POKEMON_CENTER_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/pokemon-center/tiles.4bpp",
   palettesUrl:
@@ -230,6 +237,45 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: PEWTER_TILESET,
+    },
+  },
+  "pewter-mart": {
+    id: "pewter-mart",
+    label: "Pewter Poké Mart",
+    layoutUrl: "/game-assets/maps/pewter-mart/layout.json",
+    previewUrl: "/game-assets/maps/pewter-mart/preview.png",
+    worldUrl: null,
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: MART_TILESET,
+    },
+  },
+  "pewter-pokemon-center": {
+    id: "pewter-pokemon-center",
+    label: "Pewter Pokémon Center",
+    layoutUrl: "/game-assets/maps/pewter-pokemon-center/layout.json",
+    previewUrl: "/game-assets/maps/pewter-pokemon-center/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 7 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: POKEMON_CENTER_TILESET,
+    },
+  },
+  "pewter-gym": {
+    id: "pewter-gym",
+    label: "Pewter Gym",
+    layoutUrl: "/game-assets/maps/pewter-gym/layout.json",
+    previewUrl: "/game-assets/maps/pewter-gym/preview.png",
+    worldUrl: null,
+    spawn: { x: 6, y: 13 },
+    fallbackMusicId: 275,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: PEWTER_GYM_TILESET,
     },
   },
   "route-22": {
@@ -515,8 +561,18 @@ export type WhiteOutRespawn = {
 };
 
 export function resolveWhiteOutRespawn(
-  healLocationId: "pallet-town" | "viridian-city",
+  healLocationId:
+    | "pallet-town"
+    | "viridian-city"
+    | "pewter-city",
 ): WhiteOutRespawn {
+  if (healLocationId === "pewter-city") {
+    return {
+      mapId: "pewter-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
   if (healLocationId === "viridian-city") {
     return {
       mapId: "viridian-pokemon-center",
@@ -553,7 +609,8 @@ export function isPokemonStoragePcAt(
 ): boolean {
   // FireRed's MB_PC metatile in LAYOUT_POKEMON_CENTER_1F.
   return (
-    mapId === "viridian-pokemon-center" &&
+    (mapId === "viridian-pokemon-center" ||
+      mapId === "pewter-pokemon-center") &&
     x === 11 &&
     y === 1
   );
@@ -584,6 +641,75 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "pallet-town",
       spawn: { x: 16, y: 14 },
+    };
+  }
+
+  if (
+    mapId === "pewter-city" &&
+    x === 17 &&
+    y === 25
+  ) {
+    return {
+      mapId: "pewter-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
+  if (
+    mapId === "pewter-pokemon-center" &&
+    y === 8 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "pewter-city",
+      spawn: { x: 17, y: 26 },
+    };
+  }
+
+  if (
+    mapId === "pewter-city" &&
+    x === 28 &&
+    y === 18
+  ) {
+    return {
+      mapId: "pewter-mart",
+      spawn: { x: 4, y: 6 },
+    };
+  }
+
+  if (
+    mapId === "pewter-mart" &&
+    y === 7 &&
+    x >= 3 &&
+    x <= 5
+  ) {
+    return {
+      mapId: "pewter-city",
+      spawn: { x: 28, y: 19 },
+    };
+  }
+
+  if (
+    mapId === "pewter-city" &&
+    x === 15 &&
+    y === 16
+  ) {
+    return {
+      mapId: "pewter-gym",
+      spawn: { x: 6, y: 13 },
+    };
+  }
+
+  if (
+    mapId === "pewter-gym" &&
+    y === 14 &&
+    x >= 5 &&
+    x <= 7
+  ) {
+    return {
+      mapId: "pewter-city",
+      spawn: { x: 15, y: 17 },
     };
   }
 

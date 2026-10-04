@@ -1,4 +1,5 @@
 import type { DuelPokemonBuild } from "@tactimon/battle-engine";
+import type { StoryBadgeId } from "@/lib/story";
 import type {
   Direction,
   MapLayout,
@@ -20,6 +21,7 @@ export type OverworldTrainerDefinition = {
   challengeText: string;
   defeatedText: string;
   moneyMultiplier: number;
+  badgeId?: StoryBadgeId;
   party: readonly DuelPokemonBuild[];
 };
 
@@ -59,6 +61,37 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
         species: "rattata",
         level: 4,
         moves: ["tackle", "tail-whip"],
+      },
+    ],
+  },
+  {
+    id: "pewter-brock",
+    mapId: "pewter-gym",
+    name: "Brock",
+    preferredPosition: { x: 6, y: 5 },
+    facing: "south",
+    sightRange: 0,
+    spriteUrl: "/game-assets/overworld/080_brock.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Brock: Sou o Líder do Ginásio de Pewter. Mostre a força do seu time!",
+    defeatedText:
+      "Brock: A Boulder Badge prova que você venceu este Ginásio.",
+    moneyMultiplier: 25,
+    badgeId: "boulder",
+    party: [
+      {
+        species: "geodude",
+        level: 12,
+        moves: ["tackle", "defense-curl"],
+      },
+      {
+        species: "onix",
+        level: 14,
+        moves: ["tackle", "bind", "rock-tomb"],
       },
     ],
   },

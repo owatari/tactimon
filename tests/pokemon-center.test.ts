@@ -41,6 +41,7 @@ function damagedStory(): StoryState {
     boxedPokemon: [],
     collectedItemIds: [],
     defeatedTrainerIds: [],
+    badgeIds: [],
     healLocationId: "pallet-town",
     money: 3_000,
     inventory: {

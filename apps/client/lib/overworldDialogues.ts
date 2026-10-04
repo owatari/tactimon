@@ -11,6 +11,16 @@ export type OverworldDialogueDefinition = {
 export const OVERWORLD_DIALOGUES:
   readonly OverworldDialogueDefinition[] = [
     {
+      id: "pewter-gym-guy",
+      mapId: "pewter-gym",
+      label: "Gym Guide",
+      x: 7,
+      y: 12,
+      spriteUrl: "/game-assets/overworld/091_gym_guy.png",
+      dialogue:
+        "Gym Guide: Brock usa Pokémon Rock. Water e Grass têm uma grande vantagem aqui.",
+    },
+    {
       id: "viridian-forest-youngster",
       mapId: "viridian-forest",
       label: "Youngster",

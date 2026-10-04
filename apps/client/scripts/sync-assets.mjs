@@ -56,6 +56,30 @@ const files = [
     "maps/pewter-city/preview.png",
   ],
   [
+    "maps/layouts/009_mart_layout/layout.json",
+    "maps/pewter-mart/layout.json",
+  ],
+  [
+    "maps/layouts/009_mart_layout/preview.png",
+    "maps/pewter-mart/preview.png",
+  ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
+    "maps/pewter-pokemon-center/layout.json",
+  ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/preview.png",
+    "maps/pewter-pokemon-center/preview.png",
+  ],
+  [
+    "maps/layouts/027_pewtercity_gym_layout/layout.json",
+    "maps/pewter-gym/layout.json",
+  ],
+  [
+    "maps/layouts/027_pewtercity_gym_layout/preview.png",
+    "maps/pewter-gym/preview.png",
+  ],
+  [
     "maps/layouts/109_route22_layout/layout.json",
     "maps/route-22/layout.json",
   ],
@@ -184,6 +208,23 @@ const files = [
   [
     "tilesets/03_pewtercity/attributes.bin",
     "tilesets/pewter-city/attributes.bin",
+  ],
+
+  [
+    "tilesets/26_pewtergym/tiles.4bpp",
+    "tilesets/pewter-gym/tiles.4bpp",
+  ],
+  [
+    "tilesets/26_pewtergym/palettes.gbapal",
+    "tilesets/pewter-gym/palettes.gbapal",
+  ],
+  [
+    "tilesets/26_pewtergym/metatiles.bin",
+    "tilesets/pewter-gym/metatiles.bin",
+  ],
+  [
+    "tilesets/26_pewtergym/attributes.bin",
+    "tilesets/pewter-gym/attributes.bin",
   ],
 
   ["tilesets/12_building/tiles.4bpp", "tilesets/building/tiles.4bpp"],

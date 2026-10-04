@@ -24,7 +24,10 @@ export const POKEMON_STORAGE_CAPACITY =
 
 export type StoryHealLocationId =
   | "pallet-town"
-  | "viridian-city";
+  | "viridian-city"
+  | "pewter-city";
+
+export type StoryBadgeId = "boulder";
 
 export type StoryState = {
   starter: StarterSpeciesId | null;
@@ -35,6 +38,7 @@ export type StoryState = {
   boxedPokemon: CapturedPokemon[];
   collectedItemIds: string[];
   defeatedTrainerIds: string[];
+  badgeIds: StoryBadgeId[];
   healLocationId: StoryHealLocationId;
   money: number;
   inventory: DuelInventory;
@@ -49,6 +53,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   boxedPokemon: [],
   collectedItemIds: [],
   defeatedTrainerIds: [],
+  badgeIds: [],
   healLocationId: "pallet-town",
   money: 3000,
   inventory: {
@@ -94,6 +99,7 @@ export function chooseStarter(
     boxedPokemon: [],
     collectedItemIds: [],
     defeatedTrainerIds: [],
+    badgeIds: [],
     healLocationId: "pallet-town",
     money: 3000,
     inventory: {
@@ -282,10 +288,22 @@ export function normalizeStoryState(
           ),
         ).slice(0, 128)
       : [],
+    badgeIds: Array.isArray(input?.badgeIds)
+      ? Array.from(
+          new Set(
+            input.badgeIds.filter(
+              (badge): badge is StoryBadgeId =>
+                badge === "boulder",
+            ),
+          ),
+        )
+      : [],
     healLocationId:
-      input?.healLocationId === "viridian-city"
-        ? "viridian-city"
-        : "pallet-town",
+      input?.healLocationId === "pewter-city"
+        ? "pewter-city"
+        : input?.healLocationId === "viridian-city"
+          ? "viridian-city"
+          : "pallet-town",
     money: normalizeMoney(input?.money),
     inventory: normalizeInventory(input?.inventory),
   };
@@ -574,9 +592,27 @@ export function computeWhiteOutMoneyLoss(
     ),
   );
 
-  // FireRed uses level * 4 * multiplier. This slice has
-  // no badges yet, so the original zero-badge multiplier is 2.
-  const loss = highestLevel * 4 * 2;
+  // FireRed uses highest level * 4 * a badge-count multiplier.
+  // The full table is 2, 4, 6, 9, 12, 16, 20, 25, 30.
+  const whiteOutMultipliers = [
+    2,
+    4,
+    6,
+    9,
+    12,
+    16,
+    20,
+    25,
+    30,
+  ] as const;
+  const badgeCount = Math.max(
+    0,
+    Math.min(8, story.badgeIds.length),
+  );
+  const loss =
+    highestLevel *
+    4 *
+    whiteOutMultipliers[badgeCount];
 
   return Math.min(
     story.money,

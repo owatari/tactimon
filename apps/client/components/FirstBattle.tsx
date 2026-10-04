@@ -32,6 +32,7 @@ import { BattleVfx } from "@/components/BattleVfx";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import type { BattleSceneContext } from "@/lib/maps";
+import type { StoryBadgeId } from "@/lib/story";
 
 export type BattleOutcome = {
   won: boolean;
@@ -58,6 +59,7 @@ export type BattleEncounter =
       trainerId?: string;
       trainerName?: string;
       rewardMoney?: number;
+      badgeId?: StoryBadgeId;
       rivals?: readonly DuelPokemonBuild[];
     }
   | {

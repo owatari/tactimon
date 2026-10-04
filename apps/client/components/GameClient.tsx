@@ -302,6 +302,15 @@ export function GameClient() {
             "viridian-city",
           ),
         );
+      } else if (
+        next.mapId === "pewter-pokemon-center"
+      ) {
+        setStory((current) =>
+          registerStoryHealLocation(
+            current,
+            "pewter-city",
+          ),
+        );
       }
     },
     [],
@@ -404,6 +413,19 @@ export function GameClient() {
                 ...next.defeatedTrainerIds,
                 trainerId,
               ],
+            };
+          }
+
+          const badgeId =
+            session.encounter.badgeId;
+          if (
+            outcome.won &&
+            badgeId &&
+            !next.badgeIds.includes(badgeId)
+          ) {
+            next = {
+              ...next,
+              badgeIds: [...next.badgeIds, badgeId],
             };
           }
 
@@ -731,6 +753,7 @@ export function GameClient() {
                 trainerId: trainer.id,
                 trainerName: trainer.name,
                 rewardMoney: trainer.rewardMoney,
+                badgeId: trainer.badgeId,
                 rivals: trainer.party,
               },
             });

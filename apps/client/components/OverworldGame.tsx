@@ -32,6 +32,7 @@ import {
 import {
   storyHasHealthyPokemon,
   storyStarterSummary,
+  type StoryBadgeId,
   type StoryState,
 } from "@/lib/story";
 import {
@@ -98,6 +99,7 @@ type Props = {
       id: string;
       name: string;
       rewardMoney: number;
+      badgeId?: StoryBadgeId;
       party: readonly DuelPokemonBuild[];
     },
   ) => void;
@@ -153,6 +155,7 @@ type TrainerStoryObject = StoryObjectBase & {
   trainerId: string;
   trainerName: string;
   rewardMoney: number;
+  badgeId?: StoryBadgeId;
   party: readonly DuelPokemonBuild[];
   facing: Direction;
   sightRange: number;
@@ -358,6 +361,7 @@ function trainerStoryObject(
     trainerId: trainer.id,
     trainerName: trainer.name,
     rewardMoney: trainer.rewardMoney,
+    badgeId: trainer.badgeId,
     party: trainer.party,
     facing: trainer.facing,
     sightRange: trainer.sightRange,
@@ -367,10 +371,12 @@ function trainerStoryObject(
   };
 }
 
-function martStoryObjects(): StoryObject[] {
+function martStoryObjects(
+  mapId: string,
+): StoryObject[] {
   return [
     {
-      id: "viridian-mart-clerk",
+      id: `${mapId}-clerk`,
       kind: "mart-clerk",
       label: "Clerk",
       x: 2,
@@ -382,7 +388,7 @@ function martStoryObjects(): StoryObject[] {
       sheetHeight: 64,
     },
     {
-      id: "viridian-mart-youngster",
+      id: `${mapId}-youngster`,
       kind: "dialogue",
       label: "Youngster",
       x: 6,
@@ -396,7 +402,7 @@ function martStoryObjects(): StoryObject[] {
         "Youngster: Tenho que comprar algumas Potions.",
     },
     {
-      id: "viridian-mart-woman",
+      id: `${mapId}-woman`,
       kind: "dialogue",
       label: "Mulher",
       x: 9,
@@ -456,10 +462,12 @@ function mapPickupStoryObjects(
   }));
 }
 
-function pokemonCenterStoryObjects(): StoryObject[] {
+function pokemonCenterStoryObjects(
+  mapId: string,
+): StoryObject[] {
   return [
     {
-      id: "viridian-center-nurse",
+      id: `${mapId}-nurse`,
       kind: "pokemon-center-nurse",
       label: "Nurse",
       x: 7,
@@ -471,7 +479,7 @@ function pokemonCenterStoryObjects(): StoryObject[] {
       sheetHeight: 64,
     },
     {
-      id: "viridian-center-gentleman",
+      id: `${mapId}-gentleman`,
       kind: "dialogue",
       label: "Gentleman",
       x: 12,
@@ -485,7 +493,7 @@ function pokemonCenterStoryObjects(): StoryObject[] {
         "Gentleman: Pode usar o PC no canto à vontade. A recepcionista deixa qualquer treinador usar.",
     },
     {
-      id: "viridian-center-boy",
+      id: `${mapId}-boy`,
       kind: "dialogue",
       label: "Garoto",
       x: 4,
@@ -499,7 +507,7 @@ function pokemonCenterStoryObjects(): StoryObject[] {
         "Garoto: Há Pokémon Centers em todas as cidades adiante. A cura é gratuita.",
     },
     {
-      id: "viridian-center-youngster",
+      id: `${mapId}-youngster`,
       kind: "dialogue",
       label: "Youngster",
       x: 2,
@@ -524,10 +532,12 @@ function mapStoryObjects(
   const objects: StoryObject[] =
     mapId === "oak-lab"
       ? [...labStoryObjects(story)]
-      : mapId === "viridian-mart"
-        ? martStoryObjects()
-        : mapId === "viridian-pokemon-center"
-          ? pokemonCenterStoryObjects()
+      : mapId === "viridian-mart" ||
+          mapId === "pewter-mart"
+        ? martStoryObjects(mapId)
+        : mapId === "viridian-pokemon-center" ||
+            mapId === "pewter-pokemon-center"
+          ? pokemonCenterStoryObjects(mapId)
           : mapPickupStoryObjects(mapId, story);
 
   objects.push(
@@ -806,6 +816,7 @@ export function OverworldGame({
         id: trainer.trainerId,
         name: trainer.trainerName,
         rewardMoney: trainer.rewardMoney,
+        badgeId: trainer.badgeId,
         party: trainer.party,
       });
     },

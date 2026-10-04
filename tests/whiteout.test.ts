@@ -43,6 +43,7 @@ function faintedStory(): StoryState {
     boxedPokemon: [],
     collectedItemIds: [],
     defeatedTrainerIds: [],
+    badgeIds: [],
     healLocationId: "pallet-town",
     money: 3_000,
     inventory: {
@@ -67,6 +68,20 @@ describe("FireRed-style whiteout", () => {
     expect(
       computeWhiteOutMoneyLoss(story),
     ).toBe(7 * 4 * 2);
+  });
+
+  it("uses FireRed's one-badge multiplier after earning Boulder Badge", () => {
+    const story = {
+      ...faintedStory(),
+      badgeIds: ["boulder"] as const,
+    };
+
+    expect(
+      computeWhiteOutMoneyLoss({
+        ...story,
+        badgeIds: [...story.badgeIds],
+      }),
+    ).toBe(7 * 4 * 4);
   });
 
   it("heals the party and removes the calculated money", () => {

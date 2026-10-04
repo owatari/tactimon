@@ -106,7 +106,7 @@ describe("Pewter Gym battle data", () => {
       rivals: [
         {
           species: "pidgey",
-          level: 8,
+          level: 20,
           moves: ["tackle"],
         },
       ],
