@@ -68,8 +68,12 @@ import {
   type DialogueInteractionRequest,
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
-
-const STORAGE_KEY = "tactimon.story.v1";
+import {
+  chooseBestStorySave,
+  serializeStorySave,
+  STORY_BACKUP_STORAGE_KEY,
+  STORY_STORAGE_KEY,
+} from "@/lib/storyPersistence";
 
 type BattleSession = {
   context: BattleSceneContext;
@@ -225,6 +229,8 @@ export function GameClient() {
   const [story, setStory] = useState<StoryState>(
     DEFAULT_STORY_STATE,
   );
+  const [storyHydrated, setStoryHydrated] =
+    useState(false);
   const [starterChoiceOpen, setStarterChoiceOpen] =
     useState(false);
   const [martOpen, setMartOpen] = useState(false);
@@ -285,29 +291,51 @@ export function GameClient() {
 
   useEffect(() => {
     try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setStory(
-          normalizeStoryState(
-            JSON.parse(stored) as Partial<StoryState>,
-          ),
-        );
-      }
+      const primary = window.localStorage.getItem(
+        STORY_STORAGE_KEY,
+      );
+      const backup = window.localStorage.getItem(
+        STORY_BACKUP_STORAGE_KEY,
+      );
+
+      setStory(
+        chooseBestStorySave(primary, backup),
+      );
     } catch {
-      // Local storage is an enhancement, not a runtime dependency.
+      setStory(
+        normalizeStoryState(DEFAULT_STORY_STATE),
+      );
+    } finally {
+      setStoryHydrated(true);
     }
   }, []);
 
   useEffect(() => {
+    if (!storyHydrated) {
+      return;
+    }
+
     try {
+      const serialized = serializeStorySave(story);
+      const previous = window.localStorage.getItem(
+        STORY_STORAGE_KEY,
+      );
+
+      if (previous && previous !== serialized) {
+        window.localStorage.setItem(
+          STORY_BACKUP_STORAGE_KEY,
+          previous,
+        );
+      }
+
       window.localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(story),
+        STORY_STORAGE_KEY,
+        serialized,
       );
     } catch {
-      // Ignore unavailable storage.
+      // Local storage is an enhancement, not a runtime dependency.
     }
-  }, [story]);
+  }, [story, storyHydrated]);
 
   const handleMapAudioContextChange = useCallback(
     (next: { mapId: string; musicId: number | null }) => {
@@ -729,6 +757,16 @@ export function GameClient() {
       current.slice(1),
     );
   };
+
+  if (!storyHydrated) {
+    return (
+      <div
+        className="game-client"
+        aria-busy="true"
+        aria-label="Carregando save local"
+      />
+    );
+  }
 
   const paused =
     starterChoiceOpen ||
