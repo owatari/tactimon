@@ -49,6 +49,12 @@ export interface PokemonProgression {
   movePp: DuelMovePp;
 }
 
+export interface ProgressionEvolution {
+  from: DuelSpeciesId;
+  to: DuelSpeciesId;
+  level: number;
+}
+
 export interface ProgressionReward {
   progression: PokemonProgression;
   xpGained: number;
@@ -60,6 +66,7 @@ export interface ProgressionReward {
   evGained: EvSpread;
   autoLearnedMoves: DuelMoveId[];
   pendingMoves: DuelMoveId[];
+  evolutions: ProgressionEvolution[];
 }
 
 export interface ExperienceProgress {
@@ -74,6 +81,52 @@ export interface ExperienceProgress {
 export interface LearnsetEntry {
   level: number;
   moveId: DuelMoveId;
+}
+
+const LEVEL_EVOLUTIONS: Partial<
+  Record<
+    DuelSpeciesId,
+    { level: number; species: DuelSpeciesId }
+  >
+> = {
+  bulbasaur: { level: 16, species: "ivysaur" },
+  ivysaur: { level: 32, species: "venusaur" },
+  charmander: { level: 16, species: "charmeleon" },
+  charmeleon: { level: 36, species: "charizard" },
+  squirtle: { level: 16, species: "wartortle" },
+  wartortle: { level: 36, species: "blastoise" },
+  pidgey: { level: 18, species: "pidgeotto" },
+  pidgeotto: { level: 36, species: "pidgeot" },
+  rattata: { level: 20, species: "raticate" },
+  caterpie: { level: 7, species: "metapod" },
+  metapod: { level: 10, species: "butterfree" },
+  weedle: { level: 7, species: "kakuna" },
+  abra: { level: 16, species: "kadabra" },
+  paras: { level: 24, species: "parasect" },
+};
+
+function applyEligibleLevelEvolutions(
+  progression: PokemonProgression,
+  evolutions: ProgressionEvolution[],
+): void {
+  for (let guard = 0; guard < 3; guard += 1) {
+    const evolution =
+      LEVEL_EVOLUTIONS[progression.species];
+    if (
+      !evolution ||
+      progression.level < evolution.level
+    ) {
+      return;
+    }
+
+    const from = progression.species;
+    progression.species = evolution.species;
+    evolutions.push({
+      from,
+      to: evolution.species,
+      level: progression.level,
+    });
+  }
 }
 
 export const POKEMON_LEARNSETS: Record<
@@ -1318,6 +1371,11 @@ function grantExperience(
   const hpBefore = progression.currentHp;
   const oldLevel = progression.level;
   const experienceBefore = progression.experience;
+  const evolutions: ProgressionEvolution[] = [];
+  applyEligibleLevelEvolutions(
+    progression,
+    evolutions,
+  );
   const awardedXp =
     progression.level >= 100
       ? 0
@@ -1347,6 +1405,10 @@ function grantExperience(
       )
   ) {
     progression.level += 1;
+    applyEligibleLevelEvolutions(
+      progression,
+      evolutions,
+    );
 
     const allocation = grantAutoEv(
       progression,
@@ -1397,6 +1459,7 @@ function grantExperience(
     evGained,
     autoLearnedMoves,
     pendingMoves,
+    evolutions,
   };
 }
 

@@ -231,6 +231,66 @@ describe("pokemon progression", () => {
     expect(fourth.progression.activeMoves).toContain("ember");
   });
 
+  it("evolves supported species when they reach canonical level thresholds", () => {
+    const charmander = {
+      ...createPokemonProgression("charmander", 15),
+      experience:
+        fireRedExperienceAtLevel("charmander", 16) - 1,
+    };
+
+    const reward = grantWildBattleProgress(
+      charmander,
+      {
+        species: "pidgey",
+        level: 2,
+      },
+    );
+
+    expect(reward.newLevel).toBe(16);
+    expect(reward.progression.species).toBe(
+      "charmeleon",
+    );
+    expect(reward.evolutions).toEqual([
+      {
+        from: "charmander",
+        to: "charmeleon",
+        level: 16,
+      },
+    ]);
+  });
+
+  it("catches up old saves through multiple eligible evolutions", () => {
+    const legacy = createPokemonProgression(
+      "caterpie",
+      10,
+    );
+
+    const reward = grantWildBattleProgress(
+      legacy,
+      {
+        species: "pidgey",
+        level: 2,
+      },
+      0,
+    );
+
+    expect(reward.progression.species).toBe(
+      "butterfree",
+    );
+    expect(reward.evolutions).toEqual([
+      {
+        from: "caterpie",
+        to: "metapod",
+        level: 10,
+      },
+      {
+        from: "metapod",
+        to: "butterfree",
+        level: 10,
+      },
+    ]);
+  });
+
   it("migrates prototype per-level EXP into cumulative FireRed EXP", () => {
     const migrated = normalizePokemonProgression({
       ...createStarterProgression("bulbasaur"),
@@ -861,6 +921,61 @@ describe("Vermilion Gym species", () => {
       "thunder-wave",
       "double-team",
       "shock-wave",
+    ]);
+  });
+});
+
+
+describe("level evolution", () => {
+  it.each([
+    ["bulbasaur", 15, "ivysaur"],
+    ["charmander", 15, "charmeleon"],
+    ["squirtle", 15, "wartortle"],
+    ["caterpie", 6, "metapod"],
+    ["metapod", 9, "butterfree"],
+    ["pidgey", 17, "pidgeotto"],
+    ["rattata", 19, "raticate"],
+    ["abra", 15, "kadabra"],
+    ["paras", 23, "parasect"],
+  ] as const)(
+    "evolves %s at its canonical FireRed level",
+    (species, level, evolvedSpecies) => {
+      const progression = createPokemonProgression(species, level);
+      progression.experience =
+        fireRedExperienceAtLevel(species, level + 1) - 1;
+
+      const reward = grantWildBattleProgress(
+        progression,
+        { species: "pidgey", level: 2 },
+      );
+
+      expect(reward.progression.level).toBe(level + 1);
+      expect(reward.progression.species).toBe(evolvedSpecies);
+      expect(reward.evolutions).toEqual([
+        {
+          from: species,
+          to: evolvedSpecies,
+          level: level + 1,
+        },
+      ]);
+    },
+  );
+
+  it("can continue a supported two-stage chain after later level gains", () => {
+    const progression = createPokemonProgression("charmander", 35);
+    progression.experience =
+      fireRedExperienceAtLevel("charmander", 36) - 1;
+
+    const reward = grantWildBattleProgress(
+      progression,
+      { species: "pidgey", level: 2 },
+    );
+
+    expect(reward.progression.level).toBe(36);
+    expect(reward.progression.species).toBe("charizard");
+    expect(reward.evolutions).toEqual([
+      { from: "charmander", to: "charmeleon", level: 35 },
+      { from: "charmeleon", to: "charizard", level: 36 },
     ]);
   });
 });

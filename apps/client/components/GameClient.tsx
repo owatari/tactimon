@@ -31,6 +31,7 @@ import {
   type BattleEncounter,
   type BattleOutcome,
 } from "@/components/FirstBattle";
+import { BattleProgressionSummary } from "@/components/BattleProgressionSummary";
 import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
@@ -236,6 +237,20 @@ function progressionQueueFor(
   }));
 }
 
+function pendingMoveQueue(
+  entries: readonly ProgressionQueueEntry[],
+): ProgressionQueueEntry[] {
+  const pending = entries.filter(
+    (entry) => entry.reward.pendingMoves.length > 0,
+  );
+
+  return pending.map((entry, index) => ({
+    ...entry,
+    position: index + 1,
+    total: pending.length,
+  }));
+}
+
 export function GameClient() {
   const [story, setStory] = useState<StoryState>(
     DEFAULT_STORY_STATE,
@@ -250,6 +265,8 @@ export function GameClient() {
   const [battleSession, setBattleSession] =
     useState<BattleSession | null>(null);
   const [progressionQueue, setProgressionQueue] =
+    useState<ProgressionQueueEntry[]>([]);
+  const [progressionSummary, setProgressionSummary] =
     useState<ProgressionQueueEntry[]>([]);
   const [pendingWhiteOut, setPendingWhiteOut] =
     useState<PendingWhiteOut | null>(null);
@@ -540,11 +557,14 @@ export function GameClient() {
         };
       });
 
-      setProgressionQueue(
+      const progressionEntries =
         progressionQueueFor(
           rewards,
           session.partyIndices,
-        ),
+        );
+      setProgressionSummary(progressionEntries);
+      setProgressionQueue(
+        pendingMoveQueue(progressionEntries),
       );
       return;
     }
@@ -618,11 +638,14 @@ export function GameClient() {
       ).story;
     });
 
-    setProgressionQueue(
+    const progressionEntries =
       progressionQueueFor(
         rewards,
         session.partyIndices,
-      ),
+      );
+    setProgressionSummary(progressionEntries);
+    setProgressionQueue(
+      pendingMoveQueue(progressionEntries),
     );
   };
 
@@ -819,6 +842,7 @@ export function GameClient() {
     storageOpen ||
     Boolean(battleSession) ||
     Boolean(pendingWhiteOut) ||
+    progressionSummary.length > 0 ||
     progressionQueue.length > 0;
   const battleMusicKind = battleSession
     ? battleSession.encounter.kind === "wild"
@@ -1001,15 +1025,27 @@ export function GameClient() {
           />
         )}
 
-      {progressionQueue[0] && (
-        <ProgressionOverlay
-          key={`${progressionQueue[0].partyIndex}-${progressionQueue[0].reward.experienceAfter}`}
-          reward={progressionQueue[0].reward}
-          position={progressionQueue[0].position}
-          total={progressionQueue[0].total}
-          onComplete={finishProgression}
+      {progressionSummary.length > 0 && (
+        <BattleProgressionSummary
+          rewards={progressionSummary.map(
+            (entry) => entry.reward,
+          )}
+          onContinue={() =>
+            setProgressionSummary([])
+          }
         />
       )}
+
+      {progressionSummary.length === 0 &&
+        progressionQueue[0] && (
+          <ProgressionOverlay
+            key={`${progressionQueue[0].partyIndex}-${progressionQueue[0].reward.experienceAfter}`}
+            reward={progressionQueue[0].reward}
+            position={progressionQueue[0].position}
+            total={progressionQueue[0].total}
+            onComplete={finishProgression}
+          />
+        )}
     </div>
   );
 }
