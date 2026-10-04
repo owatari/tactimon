@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   createPokemonProgression,
-} from "@tactimon/battle-engine";
+} from "../packages/battle-engine/src";
 import {
   chooseStarter,
   completeStoryPlayerEvent,
