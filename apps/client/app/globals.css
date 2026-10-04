@@ -3115,7 +3115,7 @@ h1 {
 .battle-combatant-hud-row,
 .battle-message-strip,
 .battle-selection-dock {
-  width: min(1600px, calc(100vw - 32px));
+  width: calc(100vw - 32px);
   color: #182838;
 }
 
@@ -3177,7 +3177,7 @@ h1 {
 
 .battle-arena-scroll {
   width: calc(100vw - 32px);
-  max-width: 1600px;
+  max-width: none;
   max-height: min(72vh, 860px);
   margin: 0 auto;
   overflow: auto;
