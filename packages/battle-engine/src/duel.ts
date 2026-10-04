@@ -4227,9 +4227,13 @@ function shortestAiPathToRange(
     [startKey, { ...actor.position }],
   ]);
 
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (!current) break;
+  // Iterate with a cursor instead of Array.shift(). In crowded 6v10
+  // battles this BFS runs once per candidate move/target, so avoiding repeated
+  // array compaction keeps pathfinding linear without changing visit order.
+  let queueIndex = 0;
+  while (queueIndex < queue.length) {
+    const current = queue[queueIndex];
+    queueIndex += 1;
 
     for (const next of aiNeighbors(current)) {
       const key = pointKey(next);
