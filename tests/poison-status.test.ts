@@ -8,6 +8,7 @@ import {
   normalizePokemonProgression,
 } from "../packages/battle-engine/src";
 import {
+  applyStoryOverworldStep,
   chooseStarter,
   healStoryParty,
 } from "../apps/client/lib/story";
@@ -186,5 +187,38 @@ describe("persistent Poison status", () => {
     expect(
       healStoryParty(poisoned).playerPokemon?.status,
     ).toBeNull();
+  });
+});
+
+
+describe("FireRed field Poison", () => {
+  it("ticks one HP on every fifth completed overworld step and can faint", () => {
+    const base = chooseStarter("bulbasaur");
+    let story = {
+      ...base,
+      playerPokemon: base.playerPokemon
+        ? {
+            ...base.playerPokemon,
+            currentHp: 2,
+            status: "poison" as const,
+          }
+        : null,
+    };
+
+    for (let step = 1; step <= 4; step += 1) {
+      story = applyStoryOverworldStep(story);
+      expect(
+        story.playerPokemon?.currentHp,
+      ).toBe(2);
+    }
+
+    story = applyStoryOverworldStep(story);
+    expect(story.playerPokemon?.currentHp).toBe(1);
+    expect(story.poisonStepCounter).toBe(0);
+
+    for (let step = 1; step <= 5; step += 1) {
+      story = applyStoryOverworldStep(story);
+    }
+    expect(story.playerPokemon?.currentHp).toBe(0);
   });
 });
