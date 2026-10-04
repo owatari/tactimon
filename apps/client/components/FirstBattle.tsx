@@ -1740,7 +1740,11 @@ export function FirstBattle({
                       ...(player.moves.length > 0 &&
                       player.moves.every(
                         (moveId) =>
-                          getDuelMovePp(player, moveId) <= 0,
+                          getDuelMovePp(player, moveId) <= 0 ||
+                          (
+                            player.disabledMove === moveId &&
+                            player.disableTurnsRemaining > 0
+                          ),
                       )
                         ? (["struggle"] as DuelMoveId[])
                         : []),
@@ -1753,9 +1757,14 @@ export function FirstBattle({
                       const hasPp =
                         moveId === "struggle" ||
                         (currentPp ?? 0) > 0;
+                      const isDisabled =
+                        moveId !== "struggle" &&
+                        player.disabledMove === moveId &&
+                        player.disableTurnsRemaining > 0;
                       const canPay =
                         player.ap >= move.apCost &&
-                        hasPp;
+                        hasPp &&
+                        !isDisabled;
 
                       return (
                         <button
@@ -1772,7 +1781,9 @@ export function FirstBattle({
                             {move.apCost} AP ·{" "}
                             {moveId === "struggle"
                               ? "PP —"
-                              : `PP ${currentPp} / ${move.maxPp}`} ·{" "}
+                              : isDisabled
+                                ? `DESABILITADO ${player.disableTurnsRemaining} · PP ${currentPp} / ${move.maxPp}`
+                                : `PP ${currentPp} / ${move.maxPp}`} ·{" "}
                             {move.targeting === "self"
                               ? "self"
                               : `${move.minRange}–${move.maxRange}`}
