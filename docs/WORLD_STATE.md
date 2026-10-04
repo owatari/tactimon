@@ -92,3 +92,19 @@ The corresponding story helpers are `completeStoryPlayerEvent`,
 These APIs are the extension point for future doors, switches, quest stages,
 NPC branches, instanced objects, and similar progression. Shared map
 definitions must stay immutable.
+
+
+## Declarative object visibility
+
+Player-instanced objects use serializable `PlayerWorldCondition` rules from
+`playerWorldProjection.ts`. Rules can depend on namespaced events, choices,
+and `all` / `any` / `not` composition.
+
+The overworld projects shared object definitions through
+`projectPlayerWorldDefinitions(definitions, story)`. This is now used by
+Mt. Moon fossils, Bill's forms, and the Vermilion Cut tree.
+
+Future progression objects should declare `visibleWhen` instead of adding
+map-specific visibility branches. Because these rules are data-shaped rather
+than callbacks, the same rules can later be evaluated authoritatively on a
+server for multiplayer.

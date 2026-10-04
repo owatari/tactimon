@@ -36,11 +36,8 @@ import {
   WorldTransition,
 } from "@/lib/maps";
 import {
-  getStoryBillStage,
-  getStoryFossilChoice,
   hasStoryBadge,
   hasStoryKeyItem,
-  isStoryObstacleCleared,
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
   type MtMoonFossilId,
@@ -76,6 +73,10 @@ import {
   LAND_ENCOUNTERS,
   resolveLandEncounter,
 } from "@/lib/wildEncounters";
+import {
+  projectPlayerWorldDefinitions,
+  type PlayerWorldCondition,
+} from "@/lib/playerWorldProjection";
 
 const STEP_DURATION_MS = 142;
 const JUMP_DURATION_MS = 250;
@@ -160,6 +161,7 @@ type RuntimePlayer = {
 type StoryObjectBase = {
   id: string;
   label: string;
+  visibleWhen?: PlayerWorldCondition;
   x: number;
   y: number;
   spriteUrl: string;
@@ -583,18 +585,22 @@ function mapPickupStoryObjects(
   }));
 }
 
-function mtMoonFossilStoryObjects(
-  story: StoryState,
-): FossilStoryObject[] {
-  if (
-    getStoryFossilChoice(story) ||
-    !isStoryTrainerDefeated(
-      story,
-      "mtmoon-miguel",
-    )
-  ) {
-    return [];
-  }
+function mtMoonFossilStoryObjects(): FossilStoryObject[] {
+  const visibleWhen: PlayerWorldCondition = {
+    kind: "all",
+    conditions: [
+      {
+        kind: "event",
+        namespace: "trainer",
+        id: "mtmoon-miguel",
+      },
+      {
+        kind: "choice",
+        id: "mt-moon-fossil",
+        set: false,
+      },
+    ],
+  };
 
   return [
     {
@@ -610,6 +616,7 @@ function mtMoonFossilStoryObjects(
       frameHeight: 16,
       sheetWidth: 16,
       sheetHeight: 16,
+      visibleWhen,
     },
     {
       id: "mt-moon-helix-fossil",
@@ -624,38 +631,44 @@ function mtMoonFossilStoryObjects(
       frameHeight: 16,
       sheetWidth: 16,
       sheetHeight: 16,
+      visibleWhen,
     },
   ];
 }
 
-function billStoryObjects(
-  story: StoryState,
-): BillStoryObject[] {
-  const stage = getStoryBillStage(story);
-
-  if (stage === "teleporter-ready") {
-    return [];
-  }
-
-  if (stage === "unmet") {
-    return [
-      {
-        id: "sea-cottage-bill-clefairy",
-        kind: "bill",
-        label: "Bill",
-        x: 10,
-        y: 6,
-        spriteUrl:
-          "/game-assets/overworld/113_clefairy.png",
-        frameWidth: 16,
-        frameHeight: 16,
-        sheetWidth: 96,
-        sheetHeight: 32,
-      },
-    ];
-  }
-
+function billStoryObjects(): BillStoryObject[] {
   return [
+    {
+      id: "sea-cottage-bill-clefairy",
+      kind: "bill",
+      label: "Bill",
+      x: 10,
+      y: 6,
+      spriteUrl:
+        "/game-assets/overworld/113_clefairy.png",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 96,
+      sheetHeight: 32,
+      visibleWhen: {
+        kind: "not",
+        condition: {
+          kind: "any",
+          conditions: [
+            {
+              kind: "choice",
+              id: "bill-stage",
+              equals: "teleporter-ready",
+            },
+            {
+              kind: "choice",
+              id: "bill-stage",
+              equals: "helped",
+            },
+          ],
+        },
+      },
+    },
     {
       id: "sea-cottage-bill",
       kind: "bill",
@@ -667,6 +680,11 @@ function billStoryObjects(
       frameHeight: 32,
       sheetWidth: 96,
       sheetHeight: 64,
+      visibleWhen: {
+        kind: "choice",
+        id: "bill-stage",
+        equals: "helped",
+      },
     },
   ];
 }
@@ -688,13 +706,8 @@ function ssAnneCaptainStoryObjects(): SsAnneCaptainStoryObject[] {
   ];
 }
 
-function vermilionCutTreeStoryObjects(
-  story: StoryState,
-): CutTreeStoryObject[] {
+function vermilionCutTreeStoryObjects(): CutTreeStoryObject[] {
   const obstacleId = "vermilion-gym-cut-tree";
-  if (isStoryObstacleCleared(story, obstacleId)) {
-    return [];
-  }
 
   return [
     {
@@ -709,6 +722,12 @@ function vermilionCutTreeStoryObjects(
       frameHeight: 16,
       sheetWidth: 16,
       sheetHeight: 16,
+      visibleWhen: {
+        kind: "event",
+        namespace: "obstacle",
+        id: obstacleId,
+        completed: false,
+      },
     },
   ];
 }
@@ -790,7 +809,7 @@ function mapStoryObjects(
     mapId === "oak-lab"
       ? [...labStoryObjects(story)]
       : mapId === "sea-cottage"
-        ? billStoryObjects(story)
+        ? billStoryObjects()
         : mapId === "ss-anne-captains-office"
           ? ssAnneCaptainStoryObjects()
           : mapId === "viridian-mart" ||
@@ -811,11 +830,11 @@ function mapStoryObjects(
   );
 
   if (mapId === "mt-moon-b2f") {
-    objects.push(...mtMoonFossilStoryObjects(story));
+    objects.push(...mtMoonFossilStoryObjects());
   }
 
   if (mapId === "vermilion-city") {
-    objects.push(...vermilionCutTreeStoryObjects(story));
+    objects.push(...vermilionCutTreeStoryObjects());
   }
 
   for (const playerTrainer of resolvePlayerOverworldTrainers(
@@ -839,7 +858,10 @@ function mapStoryObjects(
     objects.push(trainerStoryObject(playerTrainer));
   }
 
-  return objects;
+  return projectPlayerWorldDefinitions(
+    objects,
+    story,
+  );
 }
 
 export function OverworldGame({
