@@ -15,6 +15,8 @@ const SPECIES = {
   weedle: "0013",
   pidgey: "0016",
   rattata: "0019",
+  spearow: "0021",
+  mankey: "0056",
 };
 
 const ANIMATIONS = ["Idle", "Walk", "Attack", "Hurt", "Faint"];

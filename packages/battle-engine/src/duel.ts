@@ -18,7 +18,9 @@ export type WildSpeciesId =
   | "pidgey"
   | "rattata"
   | "caterpie"
-  | "weedle";
+  | "weedle"
+  | "spearow"
+  | "mankey";
 export type DuelSpeciesId = StarterSpeciesId | WildSpeciesId;
 export type DuelType =
   | "normal"
@@ -28,6 +30,7 @@ export type DuelType =
   | "flying"
   | "bug"
   | "poison"
+  | "fighting"
   | "dark"
   | "steel";
 
@@ -43,6 +46,8 @@ export type DuelMoveId =
   | "tail-whip"
   | "string-shot"
   | "poison-sting"
+  | "peck"
+  | "leer"
   | "vine-whip"
   | "razor-leaf"
   | "seed-bomb"
@@ -374,6 +379,28 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 50,
     moves: ["poison-sting", "string-shot"],
   },
+  spearow: {
+    name: "Spearow",
+    type: "flying",
+    hp: 40,
+    attack: 60,
+    defense: 30,
+    specialAttack: 31,
+    specialDefense: 31,
+    speed: 70,
+    moves: ["peck", "growl"],
+  },
+  mankey: {
+    name: "Mankey",
+    type: "fighting",
+    hp: 40,
+    attack: 80,
+    defense: 35,
+    specialAttack: 35,
+    specialDefense: 45,
+    speed: 70,
+    moves: ["scratch", "leer"],
+  },
 };
 
 export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
@@ -398,6 +425,8 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   rattata: 255,
   caterpie: 255,
   weedle: 255,
+  spearow: 255,
+  mankey: 190,
 };
 
 function normalizeDuelItems(
@@ -507,6 +536,35 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     apCost: 3,
     minRange: 1,
     maxRange: 3,
+  },
+  peck: {
+    id: "peck",
+    name: "Peck",
+    type: "flying",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "peck",
+    description: "Bica um inimigo adjacente.",
+    power: 35,
+    apCost: 3,
+    minRange: 1,
+    maxRange: 1,
+  },
+  leer: {
+    id: "leer",
+    name: "Leer",
+    type: "normal",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "leer",
+    description: "Intimida o alvo e reduz sua Defense em 1 estágio.",
+    power: null,
+    apCost: 2,
+    minRange: 1,
+    maxRange: 3,
+    effect: "defense-down",
   },
   "vine-whip": {
     id: "vine-whip",

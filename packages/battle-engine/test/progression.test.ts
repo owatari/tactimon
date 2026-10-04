@@ -389,3 +389,21 @@ describe("Route 2 species progression", () => {
     expect(experienceRewardForWild("weedle", 4)).toBe(29);
   });
 });
+
+
+describe("Route 22 species progression", () => {
+  it("uses FireRed Medium Fast growth and initial moves", () => {
+    const spearow = createPokemonProgression("spearow", 5);
+    const mankey = createPokemonProgression("mankey", 5);
+
+    expect(spearow.experience).toBe(125);
+    expect(spearow.activeMoves).toEqual(["peck", "growl"]);
+    expect(mankey.experience).toBe(125);
+    expect(mankey.activeMoves).toEqual(["scratch", "leer"]);
+  });
+
+  it("uses Generation III base EXP yields", () => {
+    expect(experienceRewardForWild("spearow", 5)).toBe(41);
+    expect(experienceRewardForWild("mankey", 5)).toBe(52);
+  });
+});

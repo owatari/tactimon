@@ -968,3 +968,46 @@ describe("dynamic Speed initiative", () => {
     ).toBe(player.id);
   });
 });
+
+
+describe("Route 22 Pokémon", () => {
+  it("creates Spearow with Peck and Growl", () => {
+    const state = createWildDuel({
+      seed: 921,
+      player: {
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle", "growl"],
+      },
+      wildSpecies: "spearow",
+      wildLevel: 5,
+    });
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    expect(wild.displayName).toBe("Spearow");
+    expect(wild.type).toBe("flying");
+    expect(wild.moves).toEqual(["peck", "growl"]);
+  });
+
+  it("creates Mankey with Scratch and Leer", () => {
+    const state = createWildDuel({
+      seed: 922,
+      player: {
+        species: "charmander",
+        level: 5,
+        moves: ["scratch", "growl"],
+      },
+      wildSpecies: "mankey",
+      wildLevel: 5,
+    });
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    expect(wild.displayName).toBe("Mankey");
+    expect(wild.type).toBe("fighting");
+    expect(wild.moves).toEqual(["scratch", "leer"]);
+  });
+});

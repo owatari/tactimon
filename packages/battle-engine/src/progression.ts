@@ -99,6 +99,15 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "poison-sting" },
     { level: 1, moveId: "string-shot" },
   ],
+  spearow: [
+    { level: 1, moveId: "peck" },
+    { level: 1, moveId: "growl" },
+    { level: 7, moveId: "leer" },
+  ],
+  mankey: [
+    { level: 1, moveId: "scratch" },
+    { level: 1, moveId: "leer" },
+  ],
 };
 
 export const STARTER_LEARNSETS: Record<
@@ -176,6 +185,22 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
     "defense",
     "speed",
   ],
+  spearow: [
+    "speed",
+    "attack",
+    "speed",
+    "attack",
+    "speed",
+    "specialDefense",
+  ],
+  mankey: [
+    "attack",
+    "speed",
+    "attack",
+    "defense",
+    "attack",
+    "speed",
+  ],
 };
 
 const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
@@ -186,6 +211,8 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   rattata: ["tackle", "tail-whip"],
   caterpie: ["tackle", "string-shot"],
   weedle: ["poison-sting", "string-shot"],
+  spearow: ["peck", "growl"],
+  mankey: ["scratch", "leer"],
 };
 
 /**
@@ -204,6 +231,8 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   rattata: 57,
   caterpie: 53,
   weedle: 52,
+  spearow: 58,
+  mankey: 74,
 };
 
 export const POKEMON_GROWTH_RATE: Record<
@@ -217,6 +246,8 @@ export const POKEMON_GROWTH_RATE: Record<
   rattata: "medium-fast",
   caterpie: "medium-fast",
   weedle: "medium-fast",
+  spearow: "medium-fast",
+  mankey: "medium-fast",
 };
 
 export const STARTER_GROWTH_RATE: Record<
