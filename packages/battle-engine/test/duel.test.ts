@@ -2455,6 +2455,106 @@ describe("battle movement and deployment scale", () => {
 });
 
 describe("crowded tactical AI", () => {
+  it("advances toward a target even when allies temporarily block the full route", () => {
+    let state = createTrainerDuel({
+      seed: 1905,
+      width: 7,
+      height: 3,
+      players: [
+        {
+          species: "squirtle",
+          level: 10,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "charmander",
+          level: 10,
+          moves: ["scratch"],
+        },
+        {
+          species: "pidgey",
+          level: 10,
+          moves: ["tackle"],
+        },
+        {
+          species: "rattata",
+          level: 10,
+          moves: ["tackle"],
+        },
+        {
+          species: "bulbasaur",
+          level: 10,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const target = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const actor = state.units.find(
+      (unit) => unit.species === "charmander",
+    )!;
+    const blockers = state.units.filter(
+      (unit) =>
+        unit.side === "rival" &&
+        unit.id !== actor.id,
+    );
+
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      blocked: [],
+      units: state.units.map((unit) => {
+        if (unit.id === target.id) {
+          return {
+            ...unit,
+            position: { x: 0, y: 1 },
+          };
+        }
+        if (unit.id === actor.id) {
+          return {
+            ...unit,
+            position: { x: 6, y: 1 },
+            mp: 3,
+          };
+        }
+
+        const blockerIndex = blockers.findIndex(
+          (candidate) => candidate.id === unit.id,
+        );
+        return blockerIndex >= 0
+          ? {
+              ...unit,
+              position: {
+                x: 4,
+                y: blockerIndex,
+              },
+            }
+          : unit;
+      }),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+
+    expect(turn.steps[0]?.presentation).toMatchObject({
+      kind: "movement",
+      actorId: actor.id,
+      to: { x: 5, y: 1 },
+      cost: 1,
+    });
+    expect(
+      turn.steps.filter(
+        (step) =>
+          step.presentation?.kind === "movement",
+      ),
+    ).toHaveLength(1);
+  });
+
   it("acts deterministically in a full 6v10 wild battle", () => {
     let state = createWildDuel({
       seed: 1903,
