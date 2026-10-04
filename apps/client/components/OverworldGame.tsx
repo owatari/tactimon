@@ -75,6 +75,9 @@ import {
   projectPlayerWorldDefinitions,
   type PlayerWorldCondition,
 } from "@/lib/playerWorldProjection";
+import {
+  isVermilionGymBeamWalkable,
+} from "@/lib/vermilionGym";
 
 const STEP_DURATION_MS = 142;
 const JUMP_DURATION_MS = 250;
@@ -161,6 +164,7 @@ type StoryObjectBase = {
   label: string;
   visibleWhen?: PlayerWorldCondition;
   blocksMovement?: boolean;
+  renderSprite?: boolean;
   x: number;
   y: number;
   spriteUrl: string;
@@ -898,7 +902,12 @@ export function OverworldGame({
 
           if (
             !cell ||
-            cell.collision !== 0 ||
+            (cell.collision !== 0 &&
+              !isVermilionGymBeamWalkable(
+                storyRef.current,
+                worldX,
+                worldY,
+              )) ||
             occupied
           ) {
             blocked.push({
@@ -1379,7 +1388,15 @@ export function OverworldGame({
       }
 
       const cell = activeLayout.cells[y * activeLayout.width + x];
-      if (!cell || cell.collision !== 0) {
+      if (
+        !cell ||
+        (cell.collision !== 0 &&
+          !isVermilionGymBeamWalkable(
+            storyRef.current,
+            x,
+            y,
+          ))
+      ) {
         return false;
       }
 
@@ -1908,7 +1925,12 @@ export function OverworldGame({
 
           if (
             !cell ||
-            cell.collision !== 0 ||
+            (cell.collision !== 0 &&
+              !isVermilionGymBeamWalkable(
+                storyRef.current,
+                x,
+                y,
+              )) ||
             worldObjectsRef.current.some(
               (worldObject) =>
                 worldObject.x === x &&
@@ -2164,7 +2186,11 @@ export function OverworldGame({
               );
             })}
 
-            {storyObjects.map((object) => (
+            {storyObjects
+              .filter(
+                (object) => object.renderSprite !== false,
+              )
+              .map((object) => (
               <div
                 key={object.id}
                 className="world-object story-object"
@@ -2183,7 +2209,7 @@ export function OverworldGame({
                     `${object.sheetWidth}px ${object.sheetHeight}px`,
                 }}
               />
-            ))}
+              ))}
 
             <div
               ref={playerElementRef}
