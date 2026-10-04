@@ -150,6 +150,11 @@ class MusicManager {
     }
 
     this.desired = track;
+    if (track) {
+      // A route track that failed once must be allowed to retry when the
+      // game returns to that route after a battle.
+      this.failedTracks.delete(track.id);
+    }
     if (this.unlocked) {
       void this.applyDesired();
     }
@@ -202,6 +207,18 @@ class MusicManager {
     } catch (error) {
       if (token !== this.transitionToken) return;
       this.handlePlayError(track, error);
+
+      // Never leave battle music running after the desired context already
+      // changed back to the overworld. Silence is preferable to stale music,
+      // and NotAllowedError will retry the desired track on the next unlock.
+      if (
+        this.current &&
+        this.current.track.id !== track.id
+      ) {
+        this.current.audio.pause();
+        this.current.audio.currentTime = 0;
+        this.current = null;
+      }
       return;
     }
 
