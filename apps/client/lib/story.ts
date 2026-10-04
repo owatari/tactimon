@@ -26,7 +26,8 @@ export const POKEMON_STORAGE_CAPACITY =
 export type StoryHealLocationId =
   | "pallet-town"
   | "viridian-city"
-  | "pewter-city";
+  | "pewter-city"
+  | "route-4";
 
 export type StoryBadgeId = "boulder";
 
@@ -306,11 +307,13 @@ export function normalizeStoryState(
         )
       : [],
     healLocationId:
-      input?.healLocationId === "pewter-city"
-        ? "pewter-city"
-        : input?.healLocationId === "viridian-city"
-          ? "viridian-city"
-          : "pallet-town",
+      input?.healLocationId === "route-4"
+        ? "route-4"
+        : input?.healLocationId === "pewter-city"
+          ? "pewter-city"
+          : input?.healLocationId === "viridian-city"
+            ? "viridian-city"
+            : "pallet-town",
     money: normalizeMoney(input?.money),
     inventory: normalizeInventory(input?.inventory),
   };

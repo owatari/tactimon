@@ -323,6 +323,15 @@ export function GameClient() {
             "pewter-city",
           ),
         );
+      } else if (
+        next.mapId === "route-4-pokemon-center"
+      ) {
+        setStory((current) =>
+          registerStoryHealLocation(
+            current,
+            "route-4",
+          ),
+        );
       }
     },
     [],
@@ -855,10 +864,15 @@ export function GameClient() {
           <BlackoutOverlay
             moneyLost={pendingWhiteOut.moneyLost}
             locationLabel={
-              pendingWhiteOut.healLocationId ===
-              "viridian-city"
-                ? "Viridian Pokémon Center"
-                : "Pallet Town"
+              pendingWhiteOut.healLocationId === "route-4"
+                ? "Route 4 Pokémon Center"
+                : pendingWhiteOut.healLocationId ===
+                    "pewter-city"
+                  ? "Pewter Pokémon Center"
+                  : pendingWhiteOut.healLocationId ===
+                      "viridian-city"
+                    ? "Viridian Pokémon Center"
+                    : "Pallet Town"
             }
             onContinue={continueAfterWhiteOut}
           />

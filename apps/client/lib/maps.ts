@@ -241,6 +241,13 @@ const PEWTER_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/pewter-city/attributes.bin",
 };
 
+const CERULEAN_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/cerulean-city/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/cerulean-city/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/cerulean-city/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/cerulean-city/attributes.bin",
+};
+
 const BUILDING_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/building/tiles.4bpp",
   palettesUrl: "/game-assets/tilesets/building/palettes.gbapal",
@@ -365,6 +372,34 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: PEWTER_TILESET,
+    },
+  },
+  "route-4": {
+    id: "route-4",
+    label: "Route 4",
+    layoutUrl: "/game-assets/maps/route-4/layout.json",
+    previewUrl: "/game-assets/maps/route-4/preview.png",
+    worldUrl: null,
+    spawn: { x: 11, y: 19 },
+    fallbackMusicId: 293,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: CERULEAN_TILESET,
+    },
+  },
+  "route-4-pokemon-center": {
+    id: "route-4-pokemon-center",
+    label: "Route 4 Pokémon Center",
+    layoutUrl:
+      "/game-assets/maps/route-4-pokemon-center/layout.json",
+    previewUrl:
+      "/game-assets/maps/route-4-pokemon-center/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 7 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: POKEMON_CENTER_TILESET,
     },
   },
   "pewter-mart": {
@@ -648,6 +683,32 @@ export function resolveWorldTransition(
   }
 
   if (
+    mapId === "route-3" &&
+    direction === "north" &&
+    y === 0 &&
+    x >= 68 &&
+    x <= 75
+  ) {
+    return {
+      mapId: "route-4",
+      spawn: { x: x - 60, y: 19 },
+    };
+  }
+
+  if (
+    mapId === "route-4" &&
+    direction === "south" &&
+    y === 19 &&
+    x >= 8 &&
+    x <= 15
+  ) {
+    return {
+      mapId: "route-3",
+      spawn: { x: x + 60, y: 0 },
+    };
+  }
+
+  if (
     mapId === "pewter-city" &&
     direction === "east" &&
     x === 47 &&
@@ -718,8 +779,16 @@ export function resolveWhiteOutRespawn(
   healLocationId:
     | "pallet-town"
     | "viridian-city"
-    | "pewter-city",
+    | "pewter-city"
+    | "route-4",
 ): WhiteOutRespawn {
+  if (healLocationId === "route-4") {
+    return {
+      mapId: "route-4-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
   if (healLocationId === "pewter-city") {
     return {
       mapId: "pewter-pokemon-center",
@@ -764,10 +833,19 @@ export function isPokemonStoragePcAt(
   // FireRed's MB_PC metatile in LAYOUT_POKEMON_CENTER_1F.
   return (
     (mapId === "viridian-pokemon-center" ||
-      mapId === "pewter-pokemon-center") &&
+      mapId === "pewter-pokemon-center" ||
+      mapId === "route-4-pokemon-center") &&
     x === 11 &&
     y === 1
   );
+}
+
+export function isMtMoonEntranceAt(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  return mapId === "route-4" && x === 19 && y === 5;
 }
 
 export function resolveWarpTransitionAt(
@@ -795,6 +873,29 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "pallet-town",
       spawn: { x: 16, y: 14 },
+    };
+  }
+
+  if (
+    mapId === "route-4" &&
+    x === 12 &&
+    y === 5
+  ) {
+    return {
+      mapId: "route-4-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
+  if (
+    mapId === "route-4-pokemon-center" &&
+    y === 8 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "route-4",
+      spawn: { x: 12, y: 6 },
     };
   }
 

@@ -64,6 +64,22 @@ const files = [
     "maps/route-3/preview.png",
   ],
   [
+    "maps/layouts/091_route4_layout/layout.json",
+    "maps/route-4/layout.json",
+  ],
+  [
+    "maps/layouts/091_route4_layout/preview.png",
+    "maps/route-4/preview.png",
+  ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
+    "maps/route-4-pokemon-center/layout.json",
+  ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/preview.png",
+    "maps/route-4-pokemon-center/preview.png",
+  ],
+  [
     "maps/layouts/009_mart_layout/layout.json",
     "maps/pewter-mart/layout.json",
   ],
@@ -216,6 +232,23 @@ const files = [
   [
     "tilesets/03_pewtercity/attributes.bin",
     "tilesets/pewter-city/attributes.bin",
+  ],
+
+  [
+    "tilesets/04_ceruleancity/tiles.4bpp",
+    "tilesets/cerulean-city/tiles.4bpp",
+  ],
+  [
+    "tilesets/04_ceruleancity/palettes.gbapal",
+    "tilesets/cerulean-city/palettes.gbapal",
+  ],
+  [
+    "tilesets/04_ceruleancity/metatiles.bin",
+    "tilesets/cerulean-city/metatiles.bin",
+  ],
+  [
+    "tilesets/04_ceruleancity/attributes.bin",
+    "tilesets/cerulean-city/attributes.bin",
   ],
 
   [

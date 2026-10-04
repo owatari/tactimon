@@ -23,6 +23,7 @@ import {
   isCounterCell,
   isLedgeCell,
   isLedgeForDirection,
+  isMtMoonEntranceAt,
   isPokemonStoragePcAt,
   isVictoryRoadLeagueGateAt,
   resolveWarpTransitionAt,
@@ -612,7 +613,8 @@ function mapStoryObjects(
           mapId === "pewter-mart"
         ? martStoryObjects(mapId)
         : mapId === "viridian-pokemon-center" ||
-            mapId === "pewter-pokemon-center"
+            mapId === "pewter-pokemon-center" ||
+            mapId === "route-4-pokemon-center"
           ? pokemonCenterStoryObjects(mapId)
           : mapPickupStoryObjects(mapId, story);
 
@@ -1391,6 +1393,20 @@ export function OverworldGame({
       ) {
         showInteraction(
           "Pokémon League: acesso restrito. Volte quando tiver as insígnias necessárias.",
+        );
+        player.blockedUntil = now + 500;
+        return false;
+      }
+
+      if (
+        isMtMoonEntranceAt(
+          mapIdRef.current,
+          nextX,
+          nextY,
+        )
+      ) {
+        showInteraction(
+          "A entrada de Mt. Moon está aberta, mas o interior ainda está sendo importado.",
         );
         player.blockedUntil = now + 500;
         return false;

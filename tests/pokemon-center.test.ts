@@ -10,7 +10,9 @@ import {
   type StoryState,
 } from "../apps/client/lib/story";
 import {
+  isPokemonStoragePcAt,
   resolveWarpTransitionAt,
+  resolveWhiteOutRespawn,
   WORLD_MAPS,
 } from "../apps/client/lib/maps";
 
@@ -153,5 +155,45 @@ describe("Pokémon Center PP", () => {
     expect(healed.playerPokemon?.movePp.growl).toBe(
       DUEL_MOVES.growl.maxPp,
     );
+  });
+});
+
+
+describe("Route 4 Pokémon Center", () => {
+  it("registers the pre-Mt. Moon heal checkpoint and PC", () => {
+    expect(
+      resolveWhiteOutRespawn("route-4"),
+    ).toEqual({
+      mapId: "route-4-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    });
+
+    expect(
+      isPokemonStoragePcAt(
+        "route-4-pokemon-center",
+        11,
+        1,
+      ),
+    ).toBe(true);
+  });
+
+  it("connects the Route 4 Center door in both directions", () => {
+    expect(
+      resolveWarpTransitionAt("route-4", 12, 5),
+    ).toEqual({
+      mapId: "route-4-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    });
+
+    expect(
+      resolveWarpTransitionAt(
+        "route-4-pokemon-center",
+        7,
+        8,
+      ),
+    ).toEqual({
+      mapId: "route-4",
+      spawn: { x: 12, y: 6 },
+    });
   });
 });
