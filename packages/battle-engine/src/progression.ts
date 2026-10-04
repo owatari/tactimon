@@ -1330,6 +1330,45 @@ export function grantWildBattleProgressToParty(
   );
 }
 
+export function grantWildBattlesProgressToParty(
+  party: readonly PokemonProgression[],
+  enemies: readonly {
+    species: WildSpeciesId;
+    level: number;
+  }[],
+  xpRatio = 1,
+): ProgressionReward[] {
+  if (
+    party.length === 0 ||
+    enemies.length === 0
+  ) {
+    return [];
+  }
+
+  const ratio =
+    Math.max(0, Math.min(1, xpRatio));
+  const xpPerParticipant = Math.floor(
+    enemies.reduce(
+      (total, enemy) =>
+        total +
+        experienceRewardForWild(
+          enemy.species,
+          enemy.level,
+        ),
+      0,
+    ) *
+      ratio /
+      party.length,
+  );
+
+  return party.map((progression) =>
+    grantExperience(
+      progression,
+      xpPerParticipant,
+    ),
+  );
+}
+
 export function grantTrainerBattleProgressToParty(
   party: readonly PokemonProgression[],
   enemies: readonly {
