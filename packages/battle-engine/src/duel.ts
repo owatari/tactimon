@@ -146,10 +146,12 @@ export type DuelMoveId =
   | "ember"
   | "flame-wheel"
   | "flamethrower"
+  | "slash"
   | "metal-claw"
   | "flame-burst"
   | "water-gun"
   | "hydro-pump"
+  | "twister"
   | "rain-dance"
   | "bubble"
   | "icicle-spear"
@@ -945,7 +947,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 60,
     specialDefense: 100,
     speed: 81,
-    moves: ["bite", "leer"],
+    moves: ["hydro-pump", "twister", "leer", "rain-dance"],
   },
   ivysaur: {
     name: "Ivysaur",
@@ -1017,7 +1019,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 109,
     specialDefense: 85,
     speed: 100,
-    moves: ["ember", "metal-claw", "scary-face", "smokescreen"],
+    moves: ["flamethrower", "wing-attack", "slash", "scary-face"],
   },
   kadabra: {
     name: "Kadabra",
@@ -2209,6 +2211,23 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     secondaryStatus: "burn",
     secondaryEffectChance: 10,
   },
+  slash: {
+    id: "slash",
+    name: "Slash",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "scratch",
+    description:
+      "Golpe Normal de 70 power; a taxa de crítico elevada ainda não é modelada.",
+    power: 70,
+    accuracy: 100,
+    apCost: 5,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 1,
+  },
   "metal-claw": {
     id: "metal-claw",
     name: "Metal Claw",
@@ -2267,6 +2286,23 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     accuracy: 80,
     apCost: 6,
     maxPp: 5,
+    minRange: 1,
+    maxRange: 4,
+  },
+  twister: {
+    id: "twister",
+    name: "Twister",
+    type: "dragon",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "gust",
+    description:
+      "Ataque Dragon de 40 power; flinch ainda não é modelado.",
+    power: 40,
+    accuracy: 100,
+    apCost: 4,
+    maxPp: 20,
     minRange: 1,
     maxRange: 4,
   },
