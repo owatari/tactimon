@@ -95,6 +95,7 @@ export type DuelType =
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
+export type DuelWeather = "rain" | null;
 export type DuelMajorStatus = "poison" | "paralysis" | "burn" | null;
 export type DuelItemId = "potion" | "poke-ball";
 export type DuelInventory = Record<DuelItemId, number>;
@@ -149,6 +150,7 @@ export type DuelMoveId =
   | "flame-burst"
   | "water-gun"
   | "hydro-pump"
+  | "rain-dance"
   | "bubble"
   | "icicle-spear"
   | "horn-attack"
@@ -312,6 +314,8 @@ export interface DuelMove {
     | "speed-down-2"
     | "speed-up-2"
     | "heal-self"
+    | "synthesis"
+    | "rain-dance"
     | "drain-half"
     | "fixed-damage-20"
     | "teleport";
@@ -408,6 +412,8 @@ export interface DuelState {
   /** Opponent-side battle bag; never mutates the player's inventory. */
   rivalItems: DuelInventory;
   round: number;
+  weather: DuelWeather;
+  weatherTurnsRemaining: number;
   turnOrder: string[];
   turnIndex: number;
   activeUnitId: string;
@@ -915,7 +921,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 85,
     specialDefense: 105,
     speed: 78,
-    moves: ["water-gun", "bite", "rapid-spin", "withdraw"],
+    moves: ["water-gun", "rain-dance", "bite", "rapid-spin"],
   },
   gyarados: {
     name: "Gyarados",
@@ -1750,13 +1756,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "recover",
     description:
-      "Recupera metade do HP máximo em clima neutro.",
+      "Recupera metade do HP máximo em clima neutro e 1/4 sob chuva.",
     power: null,
     apCost: 3,
     maxPp: 5,
     minRange: 0,
     maxRange: 0,
-    effect: "heal-self",
+    effect: "synthesis",
   },
   wrap: {
     id: "wrap",
@@ -2233,6 +2239,23 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 5,
     minRange: 1,
     maxRange: 4,
+  },
+  "rain-dance": {
+    id: "rain-dance",
+    name: "Rain Dance",
+    type: "water",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "water-gun",
+    description:
+      "Invoca chuva por 5 rounds; fortalece Water e enfraquece Fire.",
+    power: null,
+    apCost: 2,
+    maxPp: 5,
+    minRange: 0,
+    maxRange: 0,
+    effect: "rain-dance",
   },
   bubble: {
     id: "bubble",
@@ -3255,6 +3278,8 @@ export function createTrainerDuel(
       },
     ),
     round: 1,
+    weather: null,
+    weatherTurnsRemaining: 0,
     turnOrder,
     turnIndex: 0,
     activeUnitId: active.id,
@@ -3430,6 +3455,8 @@ export function createWildDuel(
       "poke-ball": 0,
     },
     round: 1,
+    weather: null,
+    weatherTurnsRemaining: 0,
     turnOrder,
     turnIndex: 0,
     activeUnitId: active.id,
@@ -3736,6 +3763,29 @@ function applyEndTurnMajorStatus(
   }
 }
 
+function tickRoundWeather(state: DuelState): void {
+  if (
+    state.weather !== "rain" ||
+    state.weatherTurnsRemaining <= 0
+  ) {
+    return;
+  }
+
+  state.weatherTurnsRemaining -= 1;
+
+  if (state.weatherTurnsRemaining <= 0) {
+    state.weather = null;
+    state.weatherTurnsRemaining = 0;
+    appendLog(state, "A chuva parou.");
+    return;
+  }
+
+  appendLog(
+    state,
+    `A chuva continua. ${state.weatherTurnsRemaining} rounds restantes.`,
+  );
+}
+
 function resolveTurnEnd(
   state: DuelState,
   current: DuelUnit,
@@ -3783,6 +3833,7 @@ function resolveTurnEnd(
     return;
   }
 
+  tickRoundWeather(state);
   state.round += 1;
   state.turnOrder = createTurnOrder(state.units);
 
@@ -3820,6 +3871,7 @@ type DuelDamageResult = {
 };
 
 function calculateDamage(
+  state: DuelState,
   attacker: DuelUnit,
   defender: DuelUnit,
   move: DuelMove,
@@ -3874,6 +3926,20 @@ function calculateDamage(
     attacker.status === "burn"
   ) {
     damage = Math.max(1, Math.floor(damage / 2));
+  }
+
+  if (state.weather === "rain") {
+    if (move.type === "water") {
+      damage = Math.max(
+        1,
+        Math.floor((damage * 15) / 10),
+      );
+    } else if (move.type === "fire") {
+      damage = Math.max(
+        1,
+        Math.floor(damage / 2),
+      );
+    }
   }
 
   const sameTypeAttackBonus =
@@ -4288,6 +4354,7 @@ export function applyDuelAction(
 
   if (move.category !== "status") {
     const damageResult = calculateDamage(
+      state,
       actor,
       target,
       move,
@@ -4636,6 +4703,35 @@ export function applyDuelAction(
     appendLog(
       state,
       `${move.name} aumentou muito a Speed de ${actor.displayName}.`,
+    );
+  } else if (move.effect === "rain-dance") {
+    if (state.weather === "rain") {
+      appendLog(
+        state,
+        `${move.name} falhou: já está chovendo.`,
+      );
+    } else {
+      state.weather = "rain";
+      state.weatherTurnsRemaining = 5;
+      appendLog(
+        state,
+        `${actor.displayName} usou ${move.name}. Começou a chover!`,
+      );
+    }
+  } else if (move.effect === "synthesis") {
+    const divisor =
+      state.weather === "rain" ? 4 : 2;
+    const healed = Math.min(
+      Math.max(
+        1,
+        Math.floor(actor.maxHp / divisor),
+      ),
+      actor.maxHp - actor.hp,
+    );
+    actor.hp += healed;
+    appendLog(
+      state,
+      `${actor.displayName} recuperou ${healed} HP com ${move.name}.`,
     );
   } else if (move.effect === "heal-self") {
     const healed = Math.min(
@@ -5016,6 +5112,63 @@ function aiStatusUtility(
     );
   }
 
+  if (move.effect === "rain-dance") {
+    if (state.weather === "rain") return -Infinity;
+
+    let allyWaterMoves = 0;
+    let allyFireMoves = 0;
+    let enemyWaterMoves = 0;
+    let enemyFireMoves = 0;
+
+    for (const unit of state.units) {
+      if (unit.hp <= 0) continue;
+
+      for (const moveId of unit.moves) {
+        if (getDuelMovePp(unit, moveId) <= 0) {
+          continue;
+        }
+        const candidate = DUEL_MOVES[moveId];
+        if (
+          !candidate ||
+          candidate.category === "status"
+        ) {
+          continue;
+        }
+
+        const allied = unit.side === actor.side;
+        if (candidate.type === "water") {
+          if (allied) allyWaterMoves += 1;
+          else enemyWaterMoves += 1;
+        } else if (candidate.type === "fire") {
+          if (allied) allyFireMoves += 1;
+          else enemyFireMoves += 1;
+        }
+      }
+    }
+
+    return Math.max(
+      0,
+      46 +
+        allyWaterMoves * 14 +
+        enemyFireMoves * 8 -
+        allyFireMoves * 12 -
+        enemyWaterMoves * 10,
+    );
+  }
+
+  if (move.effect === "synthesis") {
+    const missingRatio =
+      (actor.maxHp - actor.hp) /
+      Math.max(1, actor.maxHp);
+    if (missingRatio <= 0) return -Infinity;
+    const weatherFactor =
+      state.weather === "rain" ? 0.5 : 1;
+    return (
+      35 +
+      missingRatio * 120 * weatherFactor
+    );
+  }
+
   if (move.effect === "heal-self") {
     const missingRatio =
       (actor.maxHp - actor.hp) /
@@ -5110,6 +5263,7 @@ function aiThreatToTeam(
       }
 
       const result = calculateDamage(
+        state,
         target,
         ally,
         move,
@@ -5161,6 +5315,7 @@ function aiCoverageBonus(
 
       if (
         calculateDamage(
+          state,
           ally,
           target,
           move,
@@ -5236,6 +5391,7 @@ function scoreAiCandidate(
   }
 
   const result = calculateDamage(
+    state,
     actor,
     target,
     move,
@@ -5482,7 +5638,12 @@ function aiBestIncomingDamage(
 
       best = Math.max(
         best,
-        calculateDamage(enemy, ally, move).damage,
+        calculateDamage(
+          state,
+          enemy,
+          ally,
+          move,
+        ).damage,
       );
     }
   }
