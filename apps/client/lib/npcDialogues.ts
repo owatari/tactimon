@@ -1,6 +1,8 @@
 import {
   resolveDialogueScript,
   resolveWorldObjectDialogueId,
+  resolveWorldObjectDialogueRequest,
+  runDialogueInteraction,
 } from "./dialogueSystem";
 import {
   DEFAULT_STORY_STATE,
@@ -22,16 +24,24 @@ export function resolveNpcDialogue(
   firstBattleComplete: boolean,
 ): string | null {
   const id = resolveNpcDialogueId(mapId, x, y);
-  if (!id) return null;
-
   const story = normalizeStoryState({
     ...DEFAULT_STORY_STATE,
     firstBattleComplete,
   });
-  const presentation = resolveDialogueScript(
-    story,
-    id,
-  );
+  const presentation = id
+    ? resolveDialogueScript(
+        story,
+        id,
+      )
+    : runDialogueInteraction(
+        story,
+        resolveWorldObjectDialogueRequest(
+          mapId,
+          x,
+          y,
+          "NPC",
+        ),
+      ).presentation;
 
   return presentation?.pages
     .map((entry) =>
