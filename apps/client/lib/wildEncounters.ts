@@ -14,6 +14,7 @@ export type LandEncounterSlot =
 
 export type LandEncounterTable = {
   encounterRate: number;
+  terrain?: "grass" | "cave";
   slots: readonly LandEncounterSlot[];
 };
 
@@ -92,6 +93,51 @@ const ROUTE_4_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 1, species: "ekans", level: 12 },
 ];
 
+const MT_MOON_1F_SLOTS: readonly LandEncounterSlot[] = [
+  { weight: 20, species: "zubat", level: 7 },
+  { weight: 20, species: "zubat", level: 8 },
+  { weight: 10, species: "geodude", level: 7 },
+  { weight: 10, species: "zubat", level: 9 },
+  { weight: 10, species: "zubat", level: 10 },
+  { weight: 10, species: "geodude", level: 8 },
+  { weight: 5, species: "geodude", level: 9 },
+  { weight: 5, species: "paras", level: 8 },
+  { weight: 4, species: "zubat", level: 7 },
+  { weight: 4, species: "zubat", level: 7 },
+  { weight: 1, species: "zubat", level: 7 },
+  { weight: 1, species: "clefairy", level: 8 },
+];
+
+const MT_MOON_B1F_SLOTS: readonly LandEncounterSlot[] = [
+  { weight: 20, species: "paras", level: 7 },
+  { weight: 20, species: "paras", level: 8 },
+  { weight: 10, species: "paras", level: 5 },
+  { weight: 10, species: "paras", level: 6 },
+  { weight: 10, species: "paras", level: 9 },
+  { weight: 10, species: "paras", level: 10 },
+  { weight: 5, species: "paras", level: 7 },
+  { weight: 5, species: "paras", level: 8 },
+  { weight: 4, species: "paras", level: 5 },
+  { weight: 4, species: "paras", level: 6 },
+  { weight: 1, species: "paras", level: 9 },
+  { weight: 1, species: "paras", level: 10 },
+];
+
+const MT_MOON_B2F_SLOTS: readonly LandEncounterSlot[] = [
+  { weight: 20, species: "zubat", level: 8 },
+  { weight: 20, species: "geodude", level: 9 },
+  { weight: 10, species: "zubat", level: 9 },
+  { weight: 10, species: "zubat", level: 10 },
+  { weight: 10, species: "geodude", level: 10 },
+  { weight: 10, species: "paras", level: 10 },
+  { weight: 5, species: "paras", level: 12 },
+  { weight: 5, species: "clefairy", level: 10 },
+  { weight: 4, species: "zubat", level: 11 },
+  { weight: 4, species: "zubat", level: 11 },
+  { weight: 1, species: "zubat", level: 11 },
+  { weight: 1, species: "clefairy", level: 12 },
+];
+
 const VIRIDIAN_FOREST_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 20, species: "caterpie", level: 4 },
   { weight: 20, species: "weedle", level: 4 },
@@ -129,6 +175,21 @@ export const LAND_ENCOUNTERS: Readonly<
   "route-4": {
     encounterRate: 21,
     slots: ROUTE_4_SLOTS,
+  },
+  "mt-moon-1f": {
+    encounterRate: 7,
+    terrain: "cave",
+    slots: MT_MOON_1F_SLOTS,
+  },
+  "mt-moon-b1f": {
+    encounterRate: 5,
+    terrain: "cave",
+    slots: MT_MOON_B1F_SLOTS,
+  },
+  "mt-moon-b2f": {
+    encounterRate: 7,
+    terrain: "cave",
+    slots: MT_MOON_B2F_SLOTS,
   },
   "viridian-forest": {
     encounterRate: 14,

@@ -526,3 +526,21 @@ describe("Route 3 species progression", () => {
     ).toEqual(["pound", "defense-curl"]);
   });
 });
+
+
+describe("Mt. Moon species progression", () => {
+  it("uses FireRed growth and base EXP for cave encounters", () => {
+    expect(fireRedExperienceAtLevel("zubat", 8)).toBe(512);
+    expect(fireRedExperienceAtLevel("paras", 8)).toBe(512);
+    expect(fireRedExperienceAtLevel("clefairy", 8)).toBe(409);
+    expect(experienceRewardForWild("zubat", 8)).toBe(61);
+    expect(experienceRewardForWild("paras", 8)).toBe(80);
+    expect(experienceRewardForWild("clefairy", 8)).toBe(77);
+  });
+
+  it("creates playable early cave movesets", () => {
+    expect(createPokemonProgression("zubat", 8).activeMoves).toEqual(["astonish"]);
+    expect(createPokemonProgression("paras", 8).activeMoves).toEqual(["scratch"]);
+    expect(createPokemonProgression("clefairy", 8).activeMoves).toEqual(["pound", "growl"]);
+  });
+});

@@ -27,7 +27,10 @@ export type WildSpeciesId =
   | "ekans"
   | "nidoran-f"
   | "nidoran-m"
-  | "jigglypuff";
+  | "jigglypuff"
+  | "zubat"
+  | "paras"
+  | "clefairy";
 export type TrainerSpeciesId =
   | "geodude"
   | "onix";
@@ -84,6 +87,7 @@ export type DuelMoveId =
   | "bite"
   | "aqua-jet"
   | "pound"
+  | "astonish"
   | "struggle";
 
 export type DuelMovePp = Partial<Record<DuelMoveId, number>>;
@@ -713,6 +717,42 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     // tactically active while Defense Curl preserves its defensive identity.
     moves: ["pound", "defense-curl"],
   },
+  zubat: {
+    name: "Zubat",
+    type: "flying",
+    types: ["poison", "flying"],
+    hp: 40,
+    attack: 45,
+    defense: 35,
+    specialAttack: 30,
+    specialDefense: 40,
+    speed: 55,
+    moves: ["astonish"],
+  },
+  paras: {
+    name: "Paras",
+    type: "bug",
+    types: ["bug", "grass"],
+    hp: 35,
+    attack: 70,
+    defense: 55,
+    specialAttack: 45,
+    specialDefense: 55,
+    speed: 25,
+    moves: ["scratch"],
+  },
+  clefairy: {
+    name: "Clefairy",
+    type: "normal",
+    types: ["normal"],
+    hp: 70,
+    attack: 45,
+    defense: 48,
+    specialAttack: 60,
+    specialDefense: 65,
+    speed: 35,
+    moves: ["pound", "growl"],
+  },
   geodude: {
     name: "Geodude",
     type: "rock",
@@ -770,6 +810,9 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   "nidoran-f": 235,
   "nidoran-m": 235,
   jigglypuff: 170,
+  zubat: 255,
+  paras: 190,
+  clefairy: 150,
 };
 
 function normalizeDuelItems(
@@ -818,6 +861,21 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     power: 40,
     apCost: 4,
     maxPp: 35,
+    minRange: 1,
+    maxRange: 1,
+  },
+  astonish: {
+    id: "astonish",
+    name: "Astonish",
+    type: "ghost",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Ataque fantasmagórico de curta distância.",
+    power: 30,
+    apCost: 3,
+    maxPp: 15,
     minRange: 1,
     maxRange: 1,
   },

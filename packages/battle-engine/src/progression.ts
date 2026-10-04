@@ -156,6 +156,18 @@ export const POKEMON_LEARNSETS: Record<
     { level: 4, moveId: "defense-curl" },
     { level: 9, moveId: "pound" },
   ],
+  zubat: [
+    { level: 6, moveId: "astonish" },
+    { level: 16, moveId: "bite" },
+  ],
+  paras: [
+    { level: 1, moveId: "scratch" },
+  ],
+  clefairy: [
+    { level: 1, moveId: "pound" },
+    { level: 1, moveId: "growl" },
+    { level: 25, moveId: "defense-curl" },
+  ],
   geodude: [
     { level: 1, moveId: "tackle" },
     { level: 1, moveId: "defense-curl" },
@@ -313,6 +325,9 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
     "hp",
     "specialDefense",
   ],
+  zubat: ["speed", "speed", "attack", "speed", "specialDefense", "speed"],
+  paras: ["attack", "defense", "attack", "specialDefense", "attack", "hp"],
+  clefairy: ["hp", "specialDefense", "hp", "specialAttack", "hp", "defense"],
   geodude: [
     "defense",
     "attack",
@@ -348,6 +363,9 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   "nidoran-f": ["scratch", "growl"],
   "nidoran-m": ["peck", "leer"],
   jigglypuff: ["pound", "defense-curl"],
+  zubat: ["astonish"],
+  paras: ["scratch"],
+  clefairy: ["pound", "growl"],
   geodude: ["tackle", "defense-curl"],
   onix: ["tackle", "bind"],
 };
@@ -377,6 +395,9 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   "nidoran-f": 59,
   "nidoran-m": 60,
   jigglypuff: 76,
+  zubat: 54,
+  paras: 70,
+  clefairy: 68,
   geodude: 86,
   onix: 108,
 };
@@ -401,6 +422,9 @@ export const POKEMON_GROWTH_RATE: Record<
   "nidoran-f": "medium-slow",
   "nidoran-m": "medium-slow",
   jigglypuff: "fast",
+  zubat: "medium-fast",
+  paras: "medium-fast",
+  clefairy: "fast",
   geodude: "medium-slow",
   onix: "medium-fast",
 };
