@@ -364,6 +364,7 @@ export interface DuelMove {
     | "rain-dance"
     | "solar-beam"
     | "future-sight"
+    | "disable"
     | "drain-half"
     | "fixed-damage-20"
     | "ohko"
@@ -463,6 +464,11 @@ export interface DuelUnit {
     damage: number;
     roundsRemaining: number;
   } | null;
+  /** Last move that actually progressed past action cancellation. */
+  lastMoveUsed: DuelMoveId | null;
+  /** FireRed Disable volatile state; expires by full arena rounds in Tactimon. */
+  disabledMove: DuelMoveId | null;
+  disableTurnsRemaining: number;
   captureAttempted: boolean;
 }
 
@@ -2633,13 +2639,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "growl",
     description:
-      "Bloqueia um golpe no jogo original; Disable ainda não é um efeito volátil do motor.",
+      "Desabilita por 2-5 rounds o último golpe usado pelo alvo que ainda tenha PP.",
     power: null,
     accuracy: 55,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
     maxRange: 3,
+    effect: "disable",
   },
   headbutt: {
     id: "headbutt",
@@ -2887,6 +2894,35 @@ export function getDuelMovePp(
       DUEL_MOVES[moveId]?.maxPp ?? 0,
       Math.trunc(unit.movePp[moveId] ?? 0),
     ),
+  );
+}
+
+function isDuelMoveDisabled(
+  unit: Pick<
+    DuelUnit,
+    "disabledMove" | "disableTurnsRemaining"
+  >,
+  moveId: DuelMoveId,
+): boolean {
+  return (
+    unit.disableTurnsRemaining > 0 &&
+    unit.disabledMove === moveId
+  );
+}
+
+function canDuelUnitUseMove(
+  unit: Pick<
+    DuelUnit,
+    | "moves"
+    | "movePp"
+    | "disabledMove"
+    | "disableTurnsRemaining"
+  >,
+  moveId: DuelMoveId,
+): boolean {
+  return (
+    getDuelMovePp(unit, moveId) > 0 &&
+    !isDuelMoveDisabled(unit, moveId)
   );
 }
 
@@ -3471,6 +3507,9 @@ function makeUnit(
     ),
     chargingMove: null,
     futureSight: null,
+    lastMoveUsed: null,
+    disabledMove: null,
+    disableTurnsRemaining: 0,
     captureAttempted: false,
   };
 }
@@ -3818,6 +3857,9 @@ function cloneState(state: DuelState): DuelState {
       futureSight: unit.futureSight
         ? { ...unit.futureSight }
         : null,
+      lastMoveUsed: unit.lastMoveUsed,
+      disabledMove: unit.disabledMove,
+      disableTurnsRemaining: unit.disableTurnsRemaining,
     })),
     log: [...state.log],
   };
@@ -4128,6 +4170,33 @@ function rollSleepTurns(
   return Math.floor(random() * 4) + 2;
 }
 
+function rollDisableTurns(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): number {
+  let moveSalt = 0;
+  for (const char of move.id) {
+    moveSalt =
+      (Math.imul(moveSalt, 31) + char.charCodeAt(0)) >>>
+      0;
+  }
+
+  const random = createSeededRandom(
+    (
+      state.seed ^
+      Math.imul(state.round + 1, 0x7f4a7c15) ^
+      Math.imul(state.turnIndex + 1, 0x94d049bb) ^
+      Math.imul(actor.ap + 1, 0x369dea0f) ^
+      Math.imul(target.hp + 1, 0x27d4eb2d) ^
+      moveSalt
+    ) >>> 0,
+  );
+
+  return Math.floor(random() * 4) + 2;
+}
+
 function secondaryEffectSucceeds(
   state: DuelState,
   actor: DuelUnit,
@@ -4222,6 +4291,36 @@ function applyEndTurnMajorStatus(
     appendLog(
       state,
       `${current.displayName} desmaiou por causa de ${statusName}.`,
+    );
+  }
+}
+
+function tickRoundDisable(state: DuelState): void {
+  for (const unit of state.units) {
+    const disabledMove = unit.disabledMove;
+    if (!disabledMove) {
+      unit.disableTurnsRemaining = 0;
+      continue;
+    }
+
+    if (!unit.moves.includes(disabledMove)) {
+      unit.disabledMove = null;
+      unit.disableTurnsRemaining = 0;
+      continue;
+    }
+
+    unit.disableTurnsRemaining = Math.max(
+      0,
+      unit.disableTurnsRemaining - 1,
+    );
+    if (unit.disableTurnsRemaining > 0) {
+      continue;
+    }
+
+    unit.disabledMove = null;
+    appendLog(
+      state,
+      `${unit.displayName} pode usar ${DUEL_MOVES[disabledMove].name} novamente.`,
     );
   }
 }
@@ -4382,6 +4481,7 @@ function activateNextTurnUnit(
       return true;
     }
 
+    tickRoundDisable(state);
     tickRoundFutureSight(state);
     if (state.status !== "active") {
       return false;
@@ -5092,7 +5192,7 @@ export function applyDuelAction(
     usingStruggle &&
     actor.moves.length > 0 &&
     actor.moves.every(
-      (moveId) => getDuelMovePp(actor, moveId) <= 0,
+      (moveId) => !canDuelUnitUseMove(actor, moveId),
     );
 
   if (
@@ -5107,6 +5207,17 @@ export function applyDuelAction(
       state: input,
       accepted: false,
       reason: "invalid-move-target",
+    };
+  }
+
+  if (
+    !usingStruggle &&
+    isDuelMoveDisabled(actor, move.id)
+  ) {
+    return {
+      state: input,
+      accepted: false,
+      reason: "move-disabled",
     };
   }
 
@@ -5166,6 +5277,7 @@ export function applyDuelAction(
   }
 
   actor.ap -= move.apCost;
+  actor.lastMoveUsed = move.id;
 
   if (move.effect === "future-sight") {
     if (target.futureSight) {
@@ -5653,6 +5765,36 @@ export function applyDuelAction(
       state,
       `${move.name} aumentou o Special Attack de ${actor.displayName}.`,
     );
+  } else if (move.effect === "disable") {
+    const lastMove = target.lastMoveUsed;
+    const alreadyDisabled =
+      target.disabledMove !== null &&
+      target.disableTurnsRemaining > 0;
+
+    if (
+      alreadyDisabled ||
+      !lastMove ||
+      !target.moves.includes(lastMove) ||
+      getDuelMovePp(target, lastMove) <= 0
+    ) {
+      appendLog(
+        state,
+        `${move.name} falhou contra ${target.displayName}.`,
+      );
+    } else {
+      const turns = rollDisableTurns(
+        state,
+        actor,
+        target,
+        move,
+      );
+      target.disabledMove = lastMove;
+      target.disableTurnsRemaining = turns;
+      appendLog(
+        state,
+        `${DUEL_MOVES[lastMove].name} de ${target.displayName} foi desabilitado por ${turns} rounds.`,
+      );
+    }
   } else if (move.effect === "calm-mind") {
     const beforeSpecialAttack =
       actor.specialAttackStage;
@@ -6062,6 +6204,26 @@ function aiStatusUtility(
           : 58;
   }
 
+  if (move.effect === "disable") {
+    const lastMove = target.lastMoveUsed;
+    if (
+      (target.disabledMove !== null &&
+        target.disableTurnsRemaining > 0) ||
+      !lastMove ||
+      !target.moves.includes(lastMove) ||
+      getDuelMovePp(target, lastMove) <= 0
+    ) {
+      return -Infinity;
+    }
+
+    const last = DUEL_MOVES[lastMove];
+    const offensiveValue =
+      last.category === "status"
+        ? 0
+        : 24 + (last.power ?? 0) * 0.45;
+    return 54 + offensiveValue;
+  }
+
   if (
     move.effect === "attack-down" ||
     move.effect === "attack-down-2"
@@ -6226,9 +6388,9 @@ function aiStatusUtility(
       if (unit.hp <= 0) continue;
 
       for (const moveId of unit.moves) {
-        if (getDuelMovePp(unit, moveId) <= 0) {
-          continue;
-        }
+        if (!canDuelUnitUseMove(unit, moveId)) {
+        continue;
+      }
         const candidate = DUEL_MOVES[moveId];
         if (
           !candidate ||
@@ -6354,7 +6516,7 @@ function aiThreatToTeam(
     let bestRatio = 0;
 
     for (const moveId of target.moves) {
-      if (getDuelMovePp(target, moveId) <= 0) {
+      if (!canDuelUnitUseMove(target, moveId)) {
         continue;
       }
       const move = DUEL_MOVES[moveId];
@@ -6414,7 +6576,7 @@ function aiCoverageBonus(
     }
 
     for (const moveId of ally.moves) {
-      if (getDuelMovePp(ally, moveId) <= 0) {
+      if (!canDuelUnitUseMove(ally, moveId)) {
         continue;
       }
       const move = DUEL_MOVES[moveId];
@@ -6655,7 +6817,7 @@ function chooseAiCandidate(
   const candidates: AiCandidate[] = [];
 
   const usableMoveIds = actor.moves.filter(
-    (moveId) => getDuelMovePp(actor, moveId) > 0,
+    (moveId) => canDuelUnitUseMove(actor, moveId),
   );
   const candidateMoveIds: DuelMoveId[] =
     usableMoveIds.length > 0
@@ -6776,7 +6938,7 @@ function aiBestIncomingDamage(
     }
 
     for (const moveId of enemy.moves) {
-      if (getDuelMovePp(enemy, moveId) <= 0) {
+      if (!canDuelUnitUseMove(enemy, moveId)) {
         continue;
       }
       const move = DUEL_MOVES[moveId];
