@@ -10,6 +10,7 @@ import {
   getActiveDuelUnit,
   getDuelCaptureEligibility,
   getDuelMoveHitChance,
+  getDuelMoveAreaTargetIds,
   getReachableCells,
   isDuelAutoCatchTarget,
   manhattanDistance,
@@ -73,9 +74,12 @@ describe("starter duel", () => {
       });
       const [player, rival] = state.units;
 
-      expect(
-        manhattanDistance(player.position, rival.position),
-      ).toBeGreaterThanOrEqual(6);
+      const openingDistance = manhattanDistance(
+        player.position,
+        rival.position,
+      );
+      expect(openingDistance).toBeGreaterThanOrEqual(5);
+      expect(openingDistance).toBeLessThanOrEqual(8);
       expect(player.position.x).toBeGreaterThan(0);
       expect(player.position.x).toBeLessThan(12);
       expect(player.position.y).toBeGreaterThan(0);
@@ -1482,6 +1486,274 @@ describe("AI utility planning", () => {
     )!;
     expect(finalRival.ap).toBe(2);
   });
+
+  it("uses immediate damage instead of wasting tempo on a debuff", () => {
+    let state = createTrainerDuel({
+      seed: 702,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "bulbasaur",
+          level: 5,
+          moves: ["tackle", "growl"],
+        },
+        {
+          species: "pidgey",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 5,
+          moves: ["tackle", "tail-whip"],
+        },
+      ],
+    });
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: rival.id,
+      units: state.units.map((unit) =>
+        unit.id === rival.id
+          ? {
+              ...unit,
+              position: { x: 3, y: 2 },
+              ap: 6,
+            }
+          : unit.id === target.id
+            ? {
+                ...unit,
+                position: { x: 4, y: 2 },
+              }
+            : {
+                ...unit,
+                position: { x: 1, y: 4 },
+              },
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+    const firstMove = turn.steps.find(
+      (step) => step.presentation?.kind === "move",
+    );
+
+    expect(
+      firstMove?.presentation?.kind === "move"
+        ? firstMove.presentation.moveId
+        : null,
+    ).toBe("tackle");
+  });
+});
+
+
+describe("tactical area moves", () => {
+  it("damages every enemy in a Flame Burst explosion without friendly fire", () => {
+    let state = createTrainerDuel({
+      seed: 703,
+      width: 9,
+      height: 7,
+      players: [
+        {
+          species: "charmander",
+          level: 20,
+          moves: ["flame-burst"],
+        },
+        {
+          species: "pidgey",
+          level: 10,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "caterpie",
+          level: 10,
+          moves: ["tackle"],
+        },
+        {
+          species: "weedle",
+          level: 10,
+          moves: ["poison-sting"],
+        },
+        {
+          species: "rattata",
+          level: 10,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.species === "charmander",
+    )!;
+    const ally = state.units.find(
+      (unit) =>
+        unit.side === "player" &&
+        unit.id !== actor.id,
+    )!;
+    const enemies = state.units.filter(
+      (unit) => unit.side === "rival",
+    );
+    const [primary, adjacent, distant] = enemies;
+
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? { ...unit, position: { x: 1, y: 3 } }
+          : unit.id === ally.id
+            ? { ...unit, position: { x: 4, y: 2 } }
+            : unit.id === primary.id
+              ? { ...unit, position: { x: 4, y: 3 } }
+              : unit.id === adjacent.id
+                ? { ...unit, position: { x: 4, y: 4 } }
+                : { ...unit, position: { x: 7, y: 5 } },
+      ),
+    };
+
+    const allyHp = state.units.find(
+      (unit) => unit.id === ally.id,
+    )!.hp;
+    const distantHp = state.units.find(
+      (unit) => unit.id === distant.id,
+    )!.hp;
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "flame-burst",
+      targetId: primary.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.presentation?.kind === "move"
+        ? result.presentation.targetIds
+        : [],
+    ).toEqual(
+      expect.arrayContaining([
+        primary.id,
+        adjacent.id,
+      ]),
+    );
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === primary.id,
+      )!.hp,
+    ).toBeLessThan(primary.hp);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === adjacent.id,
+      )!.hp,
+    ).toBeLessThan(adjacent.hp);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === distant.id,
+      )!.hp,
+    ).toBe(distantHp);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === ally.id,
+      )!.hp,
+    ).toBe(allyHp);
+  });
+
+  it("exposes line, cone and self-radius footprints for tactical previews", () => {
+    let state = createTrainerDuel({
+      seed: 704,
+      width: 9,
+      height: 7,
+      players: [{
+        species: "charizard",
+        level: 36,
+        moves: ["razor-leaf", "twister", "flame-wheel"],
+      }],
+      rivals: [
+        { species: "pidgey", level: 12, moves: ["tackle"] },
+        { species: "rattata", level: 12, moves: ["tackle"] },
+        { species: "weedle", level: 12, moves: ["poison-sting"] },
+        { species: "caterpie", level: 12, moves: ["tackle"] },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rivals = state.units.filter(
+      (unit) => unit.side === "rival",
+    );
+    const [primary, lineEnemy, coneEnemy, adjacentEnemy] = rivals;
+    state = {
+      ...state,
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? { ...unit, position: { x: 1, y: 3 } }
+          : unit.id === primary.id
+            ? { ...unit, position: { x: 4, y: 3 } }
+            : unit.id === lineEnemy.id
+              ? { ...unit, position: { x: 3, y: 3 } }
+              : unit.id === coneEnemy.id
+                ? { ...unit, position: { x: 3, y: 2 } }
+                : { ...unit, position: { x: 1, y: 2 } },
+      ),
+    };
+
+    expect(
+      getDuelMoveAreaTargetIds(
+        state,
+        actor.id,
+        "razor-leaf",
+        primary.id,
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        primary.id,
+        lineEnemy.id,
+      ]),
+    );
+    expect(
+      getDuelMoveAreaTargetIds(
+        state,
+        actor.id,
+        "razor-leaf",
+        primary.id,
+      ),
+    ).not.toContain(coneEnemy.id);
+
+    expect(
+      getDuelMoveAreaTargetIds(
+        state,
+        actor.id,
+        "twister",
+        primary.id,
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        primary.id,
+        lineEnemy.id,
+        coneEnemy.id,
+      ]),
+    );
+
+    expect(
+      getDuelMoveAreaTargetIds(
+        state,
+        actor.id,
+        "flame-wheel",
+        adjacentEnemy.id,
+      ),
+    ).toEqual([adjacentEnemy.id]);
+  });
 });
 
 
@@ -2139,6 +2411,68 @@ describe("sequential tactical AI decisions", () => {
     );
     expect(turn.state.items["poke-ball"]).toBe(1);
     expect(turn.state.status).toBe("finished");
+  });
+
+  it("prepares an auto-catch with a major status before throwing the ball", () => {
+    let state = createWildDuel({
+      seed: 1605,
+      width: 7,
+      height: 5,
+      items: {
+        potion: 0,
+        "poke-ball": 2,
+      },
+      players: [
+        {
+          species: "bulbasaur",
+          level: 12,
+          moves: ["tackle", "sleep-powder"],
+        },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 3,
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : unit.id === wild.id
+            ? {
+                ...unit,
+                hp: 1,
+                position: { x: 3, y: 2 },
+              }
+            : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "player",
+      { autoCapture: true },
+    );
+
+    expect(turn.steps[0]?.presentation?.kind).toBe(
+      "move",
+    );
+    expect(
+      turn.steps[0]?.presentation?.kind === "move"
+        ? turn.steps[0].presentation.moveId
+        : null,
+    ).toBe("sleep-powder");
+    expect(turn.state.items["poke-ball"]).toBe(2);
   });
 });
 

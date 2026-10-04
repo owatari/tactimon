@@ -230,6 +230,8 @@ export interface DuelPokemonBuild {
   status?: DuelMajorStatus;
   /** Remaining FireRed Sleep counter (1-5); ignored unless status is Sleep. */
   sleepTurnsRemaining?: number;
+  /** Future multiplayer ownership hint for allied battle UI. */
+  ownerKind?: "local" | "party-member";
 }
 
 export interface TrainerDuelOptions {
@@ -335,6 +337,12 @@ export interface DuelMove {
   maxPp: number;
   minRange: number;
   maxRange: number;
+  /** Tactical multi-target footprint used by the grid battle adaptation. */
+  areaPattern?:
+    | "burst-1"
+    | "line"
+    | "cone"
+    | "self-radius-1";
   secondaryStatus?: Exclude<DuelMajorStatus, null>;
   secondaryStatChange?: {
     stat: "special-defense";
@@ -424,6 +432,7 @@ export type DuelPresentationEvent =
 export interface DuelUnit {
   id: string;
   side: DuelSide;
+  ownerKind: "local" | "party-member";
   species: DuelSpeciesId;
   displayName: string;
   type: DuelType;
@@ -2220,13 +2229,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     targeting: "single-enemy",
     motion: "projectile",
     vfxId: "razor-leaf",
-    description: "Lança folhas cortantes a média distância.",
+    description: "Lança folhas cortantes em uma linha frontal.",
     power: 55,
     accuracy: 95,
     apCost: 4,
     maxPp: 25,
     minRange: 1,
     maxRange: 4,
+    areaPattern: "line",
   },
   "solar-beam": {
     id: "solar-beam",
@@ -2288,12 +2298,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "contact",
     vfxId: "ember",
     description:
-      "Golpe Fire de 60 power com 10% de chance de Burn.",
+      "Gira em chamas e atinge inimigos adjacentes; 10% de Burn.",
     power: 60,
     apCost: 4,
     maxPp: 25,
     minRange: 1,
     maxRange: 1,
+    areaPattern: "self-radius-1",
     secondaryStatus: "burn",
     secondaryEffectChance: 10,
   },
@@ -2355,12 +2366,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     targeting: "single-enemy",
     motion: "projectile",
     vfxId: "flame-burst",
-    description: "Projétil de fogo mais forte para média distância.",
+    description: "Explode no alvo e atinge inimigos nos tiles adjacentes.",
     power: 65,
     apCost: 5,
     maxPp: 15,
     minRange: 1,
     maxRange: 4,
+    areaPattern: "burst-1",
   },
   "water-gun": {
     id: "water-gun",
@@ -2402,13 +2414,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "projectile",
     vfxId: "gust",
     description:
-      "Ataque Dragon de 40 power; flinch ainda não é modelado.",
+      "Avança em cone frontal; flinch ainda não é modelado.",
     power: 40,
     accuracy: 100,
     apCost: 4,
     maxPp: 20,
     minRange: 1,
     maxRange: 4,
+    areaPattern: "cone",
   },
   "rain-dance": {
     id: "rain-dance",
@@ -3065,7 +3078,7 @@ function pickSpawnPositions(
   );
   const rightBoundary = Math.min(
     width - 2,
-    Math.ceil((width - 1) * 0.7),
+    Math.ceil((width - 1) * 0.62),
   );
   const isInterior = (point: DuelPoint) =>
     point.x > 0 &&
@@ -3119,19 +3132,37 @@ function pickSpawnPositions(
               pointKey(point) !== pointKey(player),
           );
 
-  // Favor the far side while retaining seeded vertical variation.
-  const maxDistance = Math.max(
-    ...fallback.map((point) =>
-      manhattanDistance(point, player),
-    ),
+  // Keep opposing teams clearly separated without wasting the first
+  // several turns only closing an unnecessarily huge gap.
+  const desiredDistance = Math.max(
+    4,
+    Math.min(7, Math.round(width * 0.42)),
   );
-  const farthest = fallback.filter(
+  const ranked = [...fallback].sort((a, b) => {
+    const aDistance = manhattanDistance(a, player);
+    const bDistance = manhattanDistance(b, player);
+
+    return (
+      Math.abs(aDistance - desiredDistance) -
+        Math.abs(bDistance - desiredDistance) ||
+      aDistance - bDistance ||
+      a.y - b.y ||
+      a.x - b.x
+    );
+  });
+  const bestDelta = Math.abs(
+    manhattanDistance(ranked[0], player) -
+      desiredDistance,
+  );
+  const nearIdeal = ranked.filter(
     (point) =>
-      manhattanDistance(point, player) >=
-      Math.max(1, maxDistance - 2),
+      Math.abs(
+        manhattanDistance(point, player) -
+          desiredDistance,
+      ) <= bestDelta + 1,
   );
   const rival = randomItem(
-    farthest.length > 0 ? farthest : fallback,
+    nearIdeal.length > 0 ? nearIdeal : ranked,
     random,
   );
 
@@ -3448,6 +3479,10 @@ function makeUnit(
   return {
     id: `${side}-${slot}-${build.species}`,
     side,
+    ownerKind:
+      side === "player"
+        ? build.ownerKind ?? "local"
+        : "local",
     species: build.species,
     displayName: base.name,
     type: base.type,
@@ -3827,6 +3862,127 @@ export function manhattanDistance(
   b: DuelPoint,
 ): number {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+}
+
+function areaFacing(
+  actor: DuelPoint,
+  target: DuelPoint,
+): DuelPoint {
+  const dx = target.x - actor.x;
+  const dy = target.y - actor.y;
+
+  if (Math.abs(dx) >= Math.abs(dy)) {
+    return { x: dx >= 0 ? 1 : -1, y: 0 };
+  }
+  return { x: 0, y: dy >= 0 ? 1 : -1 };
+}
+
+function pointInMoveArea(
+  actor: DuelPoint,
+  primaryTarget: DuelPoint,
+  point: DuelPoint,
+  move: DuelMove,
+): boolean {
+  if (!move.areaPattern) {
+    return (
+      point.x === primaryTarget.x &&
+      point.y === primaryTarget.y
+    );
+  }
+
+  if (move.areaPattern === "burst-1") {
+    return (
+      manhattanDistance(point, primaryTarget) <= 1
+    );
+  }
+
+  if (move.areaPattern === "self-radius-1") {
+    return manhattanDistance(point, actor) <= 1;
+  }
+
+  const facing = areaFacing(actor, primaryTarget);
+  const relativeX = point.x - actor.x;
+  const relativeY = point.y - actor.y;
+  const forward =
+    relativeX * facing.x + relativeY * facing.y;
+  const lateral = Math.abs(
+    relativeX * facing.y -
+      relativeY * facing.x,
+  );
+
+  if (
+    forward < 1 ||
+    forward > move.maxRange
+  ) {
+    return false;
+  }
+
+  if (move.areaPattern === "line") {
+    return lateral === 0;
+  }
+
+  if (move.areaPattern === "cone") {
+    return lateral <= Math.floor(forward / 2);
+  }
+
+  return false;
+}
+
+export function getDuelMoveAreaTargetIds(
+  state: DuelState,
+  actorId: string,
+  moveId: DuelMoveId,
+  primaryTargetId: string,
+): string[] {
+  const actor = state.units.find(
+    (unit) => unit.id === actorId,
+  );
+  const primaryTarget = state.units.find(
+    (unit) => unit.id === primaryTargetId,
+  );
+  const move = DUEL_MOVES[moveId];
+
+  if (
+    !actor ||
+    !primaryTarget ||
+    !move ||
+    primaryTarget.hp <= 0
+  ) {
+    return [];
+  }
+
+  const affected = state.units
+    .filter(
+      (unit) =>
+        unit.hp > 0 &&
+        unit.side !== actor.side &&
+        (
+          unit.id === primaryTarget.id ||
+          pointInMoveArea(
+            actor.position,
+            primaryTarget.position,
+            unit.position,
+            move,
+          )
+        ),
+    )
+    .sort((a, b) => {
+      if (a.id === primaryTarget.id) return -1;
+      if (b.id === primaryTarget.id) return 1;
+      return (
+        manhattanDistance(
+          a.position,
+          primaryTarget.position,
+        ) -
+          manhattanDistance(
+            b.position,
+            primaryTarget.position,
+          ) ||
+        a.id.localeCompare(b.id)
+      );
+    });
+
+  return affected.map((unit) => unit.id);
 }
 
 export function getActiveDuelUnit(
@@ -4955,6 +5111,167 @@ export function isDuelAutoCatchTarget(
   );
 }
 
+function resolveAreaDamageAction(
+  state: DuelState,
+  actor: DuelUnit,
+  primaryTarget: DuelUnit,
+  move: DuelMove,
+): DuelActionResult {
+  const targetIds = getDuelMoveAreaTargetIds(
+    state,
+    actor.id,
+    move.id,
+    primaryTarget.id,
+  );
+  const results: Extract<
+    DuelPresentationEvent,
+    { kind: "move" }
+  >["results"] = [];
+
+  appendLog(
+    state,
+    targetIds.length > 1
+      ? `${actor.displayName} usou ${move.name} e atingiu uma área.`
+      : `${actor.displayName} usou ${move.name}.`,
+  );
+
+  for (const targetId of targetIds) {
+    const target = state.units.find(
+      (unit) => unit.id === targetId,
+    );
+    if (!target || target.hp <= 0) {
+      continue;
+    }
+
+    if (
+      !moveAccuracySucceeds(
+        state,
+        actor,
+        target,
+        move,
+      )
+    ) {
+      appendLog(
+        state,
+        `${move.name} errou ${target.displayName}.`,
+      );
+      results.push({
+        targetId: target.id,
+        damage: 0,
+        fainted: false,
+        statChanges: [],
+        missed: true,
+      });
+      continue;
+    }
+
+    const damageResult = calculateDamage(
+      state,
+      actor,
+      target,
+      move,
+    );
+    const damageDealt = Math.min(
+      target.hp,
+      damageResult.damage,
+    );
+    target.hp = Math.max(
+      0,
+      target.hp - damageResult.damage,
+    );
+
+    let statusApplied:
+      | Exclude<DuelMajorStatus, null>
+      | undefined;
+    if (
+      target.hp > 0 &&
+      move.secondaryStatus &&
+      canMoveApplyMajorStatus(
+        target,
+        move,
+        damageResult.typeEffectiveness,
+      ) &&
+      secondaryStatusSucceeds(
+        state,
+        actor,
+        target,
+        move,
+      )
+    ) {
+      target.status = move.secondaryStatus;
+      target.sleepTurnsRemaining =
+        move.secondaryStatus === "sleep"
+          ? rollSleepTurns(
+              state,
+              actor,
+              target,
+              move,
+            )
+          : 0;
+      statusApplied = move.secondaryStatus;
+      appendLog(
+        state,
+        statusAppliedMessage(
+          target,
+          move.secondaryStatus,
+        ),
+      );
+    }
+
+    appendLog(
+      state,
+      `${target.displayName} recebeu ${damageDealt} de dano.`,
+    );
+
+    if (target.hp <= 0) {
+      appendLog(
+        state,
+        `${target.displayName} desmaiou.`,
+      );
+    }
+
+    results.push({
+      targetId: target.id,
+      damage: damageDealt,
+      fainted: target.hp <= 0,
+      statChanges: [],
+      ...(statusApplied
+        ? { statusApplied }
+        : {}),
+      sameTypeAttackBonus:
+        damageResult.sameTypeAttackBonus,
+      typeEffectiveness:
+        damageResult.typeEffectiveness,
+    });
+  }
+
+  if (
+    !sideHasLivingUnit(
+      state,
+      primaryTarget.side,
+    )
+  ) {
+    state.status = "finished";
+    state.winner = actor.side;
+  }
+
+  return {
+    state,
+    accepted: true,
+    presentation: {
+      kind: "move",
+      actorId: actor.id,
+      moveId: move.id,
+      targetIds: results.map(
+        (result) => result.targetId,
+      ),
+      vfxId: move.vfxId,
+      motion: move.motion,
+      results,
+    },
+  };
+}
+
 export function applyDuelAction(
   input: DuelState,
   action: DuelAction,
@@ -5365,6 +5682,18 @@ export function applyDuelAction(
         ],
       },
     };
+  }
+
+  if (
+    move.areaPattern &&
+    move.category !== "status"
+  ) {
+    return resolveAreaDamageAction(
+      state,
+      actor,
+      target,
+      move,
+    );
   }
 
   if (!moveAccuracySucceeds(state, actor, target, move)) {
@@ -6664,7 +6993,43 @@ function scoreAiCandidate(
     const nearlyDefeatedPenalty =
       target.side !== actor.side &&
       target.hp / Math.max(1, target.maxHp) <= 0.2
-        ? 30
+        ? 90
+        : 0;
+    const distanceToTarget = manhattanDistance(
+      actor.position,
+      target.position,
+    );
+    const hasImmediateDamageOption =
+      target.side !== actor.side &&
+      actor.moves.some((moveId) => {
+        if (!canDuelUnitUseMove(actor, moveId)) {
+          return false;
+        }
+        const alternative = DUEL_MOVES[moveId];
+        if (
+          alternative.category === "status" ||
+          actor.ap < alternative.apCost ||
+          distanceToTarget < alternative.minRange ||
+          distanceToTarget > alternative.maxRange
+        ) {
+          return false;
+        }
+
+        return calculateDamage(
+          state,
+          actor,
+          target,
+          alternative,
+        ).damage > 0;
+      });
+    const tempoPenalty =
+      hasImmediateDamageOption
+        ? 58 +
+          Math.max(
+            0,
+            livingEnemies - livingAllies,
+          ) *
+            12
         : 0;
 
     return {
@@ -6673,9 +7038,10 @@ function scoreAiCandidate(
         utility * hitChance +
         positioningScore +
         resourceScore +
-        targetThreat +
-        numbersPressure -
-        nearlyDefeatedPenalty,
+        targetThreat -
+        Math.max(0, -numbersPressure) -
+        nearlyDefeatedPenalty -
+        tempoPenalty,
     };
   }
 
@@ -6704,6 +7070,18 @@ function scoreAiCandidate(
     move,
     result.damage,
   );
+  const areaTargetCount =
+    move.areaPattern
+      ? getDuelMoveAreaTargetIds(
+          state,
+          actor.id,
+          move.id,
+          target.id,
+        ).length
+      : 1;
+  const areaUtility =
+    Math.max(0, areaTargetCount - 1) *
+    (expectedDamage * 4 + 36);
   const hpRatio =
     target.hp / Math.max(1, target.maxHp);
   const damageRatio =
@@ -6770,13 +7148,18 @@ function scoreAiCandidate(
     lowHpFocus +
     coverageBonus +
     secondaryUtility +
-    riderUtility -
+    riderUtility +
+    areaUtility -
     recoilPenalty;
 
   const tempoFactor = expectedMoveTempoFactor(move);
 
   return {
-    damage: expectedDamage * hitChance * tempoFactor,
+    damage:
+      expectedDamage *
+      hitChance *
+      tempoFactor *
+      areaTargetCount,
     score:
       onHitScore * hitChance * tempoFactor +
       positioningScore +
@@ -7005,6 +7388,57 @@ function chooseAiItemAction(
       )[0];
 
     if (target) {
+      if (target.status === null) {
+        const statusPriority: Partial<
+          Record<Exclude<DuelMajorStatus, null>, number>
+        > = {
+          sleep: 4,
+          paralysis: 3,
+          poison: 2,
+          burn: 1,
+        };
+        const distance = manhattanDistance(
+          actor.position,
+          target.position,
+        );
+        const statusMove = actor.moves
+          .map((moveId) => DUEL_MOVES[moveId])
+          .filter(
+            (move) =>
+              move.category === "status" &&
+              move.targeting === "single-enemy" &&
+              Boolean(move.secondaryStatus) &&
+              canDuelUnitUseMove(actor, move.id) &&
+              actor.ap >= move.apCost &&
+              distance >= move.minRange &&
+              distance <= move.maxRange &&
+              canMoveApplyMajorStatus(
+                target,
+                move,
+              ),
+          )
+          .sort(
+            (a, b) =>
+              (statusPriority[
+                b.secondaryStatus!
+              ] ?? 0) -
+                (statusPriority[
+                  a.secondaryStatus!
+                ] ?? 0) ||
+              (b.accuracy ?? 100) -
+                (a.accuracy ?? 100),
+          )[0];
+
+        if (statusMove) {
+          return {
+            kind: "use-move",
+            unitId: actor.id,
+            moveId: statusMove.id,
+            targetId: target.id,
+          };
+        }
+      }
+
       return {
         kind: "use-item",
         unitId: actor.id,
