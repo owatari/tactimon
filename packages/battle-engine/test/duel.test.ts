@@ -10,6 +10,7 @@ import {
   getReachableCells,
   isDuelAutoCatchTarget,
   manhattanDistance,
+  movementPointsForDuelPokemon,
   resolveSimpleAiTurn,
   resolveSimpleAiTurnDetailed,
   rivalStarterFor,
@@ -2314,5 +2315,75 @@ describe("auto catch threshold and item priorities", () => {
     );
     expect(turn.state.rivalItems.potion).toBe(1);
     expect(turn.state.winner).toBe("rival");
+  });
+});
+
+
+describe("battle movement and deployment scale", () => {
+  it("derives MP from species Speed instead of giving every Pokémon 3", () => {
+    expect(
+      movementPointsForDuelPokemon("slowpoke"),
+    ).toBe(2);
+    expect(
+      movementPointsForDuelPokemon("bulbasaur"),
+    ).toBe(3);
+    expect(
+      movementPointsForDuelPokemon("pikachu"),
+    ).toBe(4);
+    expect(
+      movementPointsForDuelPokemon("kadabra"),
+    ).toBe(5);
+  });
+
+  it("deploys large wild packs with player units on the left and enemies on the right", () => {
+    const state = createWildDuel({
+      seed: 1901,
+      width: 17,
+      height: 9,
+      players: [
+        {
+          species: "bulbasaur",
+          level: 10,
+          moves: ["tackle"],
+        },
+        {
+          species: "pidgey",
+          level: 8,
+          moves: ["tackle"],
+        },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 5,
+      wilds: Array.from(
+        { length: 10 },
+        (_, index) => ({
+          species:
+            index % 2 === 0
+              ? "rattata" as const
+              : "pidgey" as const,
+          level: 5,
+        }),
+      ),
+    });
+
+    const players = state.units.filter(
+      (unit) => unit.side === "player",
+    );
+    const rivals = state.units.filter(
+      (unit) => unit.side === "rival",
+    );
+
+    expect(players).toHaveLength(2);
+    expect(rivals).toHaveLength(10);
+    expect(
+      Math.max(
+        ...players.map((unit) => unit.position.x),
+      ),
+    ).toBeLessThan(state.width / 2);
+    expect(
+      Math.min(
+        ...rivals.map((unit) => unit.position.x),
+      ),
+    ).toBeGreaterThan(state.width / 2);
   });
 });
