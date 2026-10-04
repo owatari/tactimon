@@ -168,6 +168,28 @@ function stageBadges(unit: DuelUnit): Array<{
     });
   }
 
+  if (unit.specialAttackStage !== 0) {
+    badges.push({
+      label:
+        `SP.ATK ${unit.specialAttackStage > 0 ? "+" : ""}${unit.specialAttackStage}`,
+      tone:
+        unit.specialAttackStage > 0
+          ? "buff"
+          : "debuff",
+    });
+  }
+
+  if (unit.specialDefenseStage !== 0) {
+    badges.push({
+      label:
+        `SP.DEF ${unit.specialDefenseStage > 0 ? "+" : ""}${unit.specialDefenseStage}`,
+      tone:
+        unit.specialDefenseStage > 0
+          ? "buff"
+          : "debuff",
+    });
+  }
+
   if (unit.speedStage !== 0) {
     badges.push({
       label: `SPD ${unit.speedStage > 0 ? "+" : ""}${unit.speedStage}`,
