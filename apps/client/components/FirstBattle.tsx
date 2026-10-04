@@ -11,6 +11,7 @@ import {
   experienceProgress,
   getActiveDuelUnit,
   getDuelCaptureEligibility,
+  isDuelAutoCatchTarget,
   getDuelMovePp,
   getReachableCells,
   manhattanDistance,
@@ -411,10 +412,10 @@ export function FirstBattle({
       (unit) =>
         unit.side === "rival" &&
         unit.hp > 0 &&
-        getDuelCaptureEligibility(
+        isDuelAutoCatchTarget(
           state,
           unit.id,
-        ).allowed,
+        ),
     );
   const isPlayerTurn =
     state.status === "active" &&
