@@ -47,7 +47,7 @@ export type DuelType =
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
-export type DuelMajorStatus = "poison" | "paralysis" | null;
+export type DuelMajorStatus = "poison" | "paralysis" | "burn" | null;
 export type DuelItemId = "potion" | "poke-ball";
 export type DuelInventory = Record<DuelItemId, number>;
 export type DuelMoveId =
@@ -152,7 +152,9 @@ export type DuelItem =
 export function normalizeDuelMajorStatus(
   value: unknown,
 ): DuelMajorStatus {
-  return value === "poison" || value === "paralysis"
+  return value === "poison" ||
+    value === "paralysis" ||
+    value === "burn"
     ? value
     : null;
 }
@@ -892,11 +894,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     targeting: "single-enemy",
     motion: "projectile",
     vfxId: "ember",
-    description: "Dispara brasas contra um alvo distante.",
+    description:
+      "Dispara brasas com 10% de chance de causar Burn.",
     power: 40,
     apCost: 4,
     minRange: 2,
     maxRange: 4,
+    secondaryStatus: "burn",
+    secondaryEffectChance: 10,
   },
   "metal-claw": {
     id: "metal-claw",
@@ -1815,17 +1820,17 @@ function isMajorStatusImmune(
   unit: DuelUnit,
   status: Exclude<DuelMajorStatus, null>,
 ): boolean {
-  if (status !== "poison") {
-    return false;
+  switch (status) {
+    case "poison":
+      return (
+        unit.types.includes("poison") ||
+        unit.types.includes("steel")
+      );
+    case "burn":
+      return unit.types.includes("fire");
+    case "paralysis":
+      return false;
   }
-
-  // FireRed / Gen III: Poison- and Steel-type Pokémon
-  // cannot be poisoned. Electric types are not inherently
-  // immune to paralysis until Generation VI.
-  return (
-    unit.types.includes("poison") ||
-    unit.types.includes("steel")
-  );
 }
 
 function statusRollSucceeds(
@@ -1900,6 +1905,8 @@ function statusAppliedMessage(
       return `${target.displayName} foi envenenado.`;
     case "paralysis":
       return `${target.displayName} ficou paralisado.`;
+    case "burn":
+      return `${target.displayName} ficou queimado.`;
   }
 }
 
@@ -1907,7 +1914,11 @@ function applyEndTurnMajorStatus(
   state: DuelState,
   current: DuelUnit,
 ): void {
-  if (current.status !== "poison" || current.hp <= 0) {
+  if (
+    (current.status !== "poison" &&
+      current.status !== "burn") ||
+    current.hp <= 0
+  ) {
     return;
   }
 
@@ -1916,15 +1927,18 @@ function applyEndTurnMajorStatus(
     Math.floor(current.maxHp / 8),
   );
   current.hp = Math.max(0, current.hp - damage);
+  const statusName =
+    current.status === "poison" ? "Poison" : "Burn";
+
   appendLog(
     state,
-    `Poison causou ${damage} de dano em ${current.displayName}.`,
+    `${statusName} causou ${damage} de dano em ${current.displayName}.`,
   );
 
   if (current.hp <= 0) {
     appendLog(
       state,
-      `${current.displayName} desmaiou por causa do Poison.`,
+      `${current.displayName} desmaiou por causa de ${statusName}.`,
     );
   }
 }
@@ -2047,6 +2061,13 @@ function calculateDamage(
         2,
     ),
   );
+
+  if (
+    move.category === "physical" &&
+    attacker.status === "burn"
+  ) {
+    damage = Math.max(1, Math.floor(damage / 2));
+  }
 
   const sameTypeAttackBonus =
     attacker.types.includes(move.type);
@@ -2194,7 +2215,8 @@ export function applyDuelAction(
         ballModifier: item.ballModifier,
         statusModifier:
           target.status === "poison" ||
-          target.status === "paralysis"
+          target.status === "paralysis" ||
+          target.status === "burn"
             ? 1.5
             : 1,
         hpRatio: target.hp / target.maxHp,

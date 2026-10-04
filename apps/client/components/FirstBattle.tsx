@@ -158,6 +158,11 @@ function stageBadges(unit: DuelUnit): Array<{
       label: "PAR",
       tone: "debuff",
     });
+  } else if (unit.status === "burn") {
+    badges.push({
+      label: "BRN",
+      tone: "debuff",
+    });
   }
 
   return badges;
