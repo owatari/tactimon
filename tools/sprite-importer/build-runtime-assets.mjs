@@ -20,6 +20,8 @@ const SPECIES = {
   spearow: "0021",
   pikachu: "0025",
   mankey: "0056",
+  geodude: "0074",
+  onix: "0095",
 };
 
 const ANIMATIONS = ["Idle", "Walk", "Attack", "Hurt", "Faint"];

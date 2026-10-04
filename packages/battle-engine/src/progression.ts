@@ -125,6 +125,14 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "growl" },
     { level: 6, moveId: "tail-whip" },
   ],
+  geodude: [
+    { level: 1, moveId: "tackle" },
+    { level: 1, moveId: "defense-curl" },
+  ],
+  onix: [
+    { level: 1, moveId: "tackle" },
+    { level: 8, moveId: "bind" },
+  ],
 };
 
 export const STARTER_LEARNSETS: Record<
@@ -242,6 +250,22 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
     "attack",
     "speed",
   ],
+  geodude: [
+    "defense",
+    "attack",
+    "defense",
+    "hp",
+    "defense",
+    "attack",
+  ],
+  onix: [
+    "defense",
+    "speed",
+    "defense",
+    "hp",
+    "defense",
+    "speed",
+  ],
 };
 
 const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
@@ -257,6 +281,8 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   metapod: ["harden"],
   kakuna: ["harden"],
   pikachu: ["thunder-shock", "growl"],
+  geodude: ["tackle", "defense-curl"],
+  onix: ["tackle", "bind"],
 };
 
 /**
@@ -280,6 +306,8 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   metapod: 72,
   kakuna: 71,
   pikachu: 82,
+  geodude: 86,
+  onix: 108,
 };
 
 export const POKEMON_GROWTH_RATE: Record<
@@ -298,6 +326,8 @@ export const POKEMON_GROWTH_RATE: Record<
   metapod: "medium-fast",
   kakuna: "medium-fast",
   pikachu: "medium-fast",
+  geodude: "medium-slow",
+  onix: "medium-fast",
 };
 
 export const STARTER_GROWTH_RATE: Record<

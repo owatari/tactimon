@@ -24,7 +24,13 @@ export type WildSpeciesId =
   | "metapod"
   | "kakuna"
   | "pikachu";
-export type DuelSpeciesId = StarterSpeciesId | WildSpeciesId;
+export type TrainerSpeciesId =
+  | "geodude"
+  | "onix";
+export type DuelSpeciesId =
+  | StarterSpeciesId
+  | WildSpeciesId
+  | TrainerSpeciesId;
 export type DuelType =
   | "normal"
   | "fighting"
@@ -60,6 +66,9 @@ export type DuelMoveId =
   | "peck"
   | "leer"
   | "harden"
+  | "defense-curl"
+  | "bind"
+  | "rock-tomb"
   | "thunder-shock"
   | "vine-whip"
   | "razor-leaf"
@@ -642,6 +651,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 90,
     moves: ["thunder-shock", "growl"],
   },
+  geodude: {
+    name: "Geodude",
+    type: "rock",
+    types: ["rock", "ground"],
+    hp: 40,
+    attack: 80,
+    defense: 100,
+    specialAttack: 30,
+    specialDefense: 30,
+    speed: 20,
+    moves: ["tackle", "defense-curl"],
+  },
+  onix: {
+    name: "Onix",
+    type: "rock",
+    types: ["rock", "ground"],
+    hp: 35,
+    attack: 45,
+    defense: 160,
+    specialAttack: 30,
+    specialDefense: 45,
+    speed: 70,
+    moves: ["tackle", "bind", "rock-tomb"],
+  },
 };
 
 export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
@@ -826,6 +859,52 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 0,
     maxRange: 0,
     effect: "defense-up",
+  },
+  "defense-curl": {
+    id: "defense-curl",
+    name: "Defense Curl",
+    type: "normal",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "defense-curl",
+    description:
+      "Enrola o corpo e aumenta a própria Defense em 1 estágio.",
+    power: null,
+    apCost: 2,
+    minRange: 0,
+    maxRange: 0,
+    effect: "defense-up",
+  },
+  bind: {
+    id: "bind",
+    name: "Bind",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "bind",
+    description: "Aperta um inimigo adjacente e causa dano físico.",
+    power: 15,
+    apCost: 3,
+    minRange: 1,
+    maxRange: 1,
+  },
+  "rock-tomb": {
+    id: "rock-tomb",
+    name: "Rock Tomb",
+    type: "rock",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "rock-tomb",
+    description:
+      "Derruba rochas sobre o alvo e reduz sua Speed em 1 estágio.",
+    power: 50,
+    apCost: 4,
+    minRange: 1,
+    maxRange: 3,
+    effect: "speed-down",
   },
   "thunder-shock": {
     id: "thunder-shock",
@@ -2440,6 +2519,26 @@ export function applyDuelAction(
       appendLog(
         state,
         statusAppliedMessage(target, move.secondaryStatus),
+      );
+    }
+
+    if (
+      target.hp > 0 &&
+      typeEffectiveness > 0 &&
+      move.effect === "speed-down"
+    ) {
+      const before = target.speedStage;
+      target.speedStage = Math.max(
+        -MAX_STAGE,
+        target.speedStage - 1,
+      );
+      statChanges.push({
+        stat: "speed",
+        delta: target.speedStage - before,
+      });
+      appendLog(
+        state,
+        `${move.name} reduziu a Speed de ${target.displayName}.`,
       );
     }
 
