@@ -20,6 +20,10 @@ export const POKEMON_PER_BOX = 30;
 export const POKEMON_STORAGE_CAPACITY =
   POKEMON_STORAGE_BOX_COUNT * POKEMON_PER_BOX;
 
+export type StoryHealLocationId =
+  | "pallet-town"
+  | "viridian-city";
+
 export type StoryState = {
   starter: StarterSpeciesId | null;
   rivalStarter: StarterSpeciesId | null;
@@ -29,6 +33,7 @@ export type StoryState = {
   boxedPokemon: CapturedPokemon[];
   collectedItemIds: string[];
   defeatedTrainerIds: string[];
+  healLocationId: StoryHealLocationId;
   money: number;
   inventory: DuelInventory;
 };
@@ -42,6 +47,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   boxedPokemon: [],
   collectedItemIds: [],
   defeatedTrainerIds: [],
+  healLocationId: "pallet-town",
   money: 3000,
   inventory: {
     potion: 1,
@@ -86,6 +92,7 @@ export function chooseStarter(
     boxedPokemon: [],
     collectedItemIds: [],
     defeatedTrainerIds: [],
+    healLocationId: "pallet-town",
     money: 3000,
     inventory: {
       potion: 1,
@@ -264,6 +271,10 @@ export function normalizeStoryState(
           ),
         ).slice(0, 128)
       : [],
+    healLocationId:
+      input?.healLocationId === "viridian-city"
+        ? "viridian-city"
+        : "pallet-town",
     money: normalizeMoney(input?.money),
     inventory: normalizeInventory(input?.inventory),
   };
@@ -523,5 +534,62 @@ export function collectOverworldItem(
         pickupId,
       ],
     },
+  };
+}
+
+
+export function registerStoryHealLocation(
+  story: StoryState,
+  healLocationId: StoryHealLocationId,
+): StoryState {
+  if (story.healLocationId === healLocationId) {
+    return story;
+  }
+
+  return {
+    ...story,
+    healLocationId,
+  };
+}
+
+export function computeWhiteOutMoneyLoss(
+  story: StoryState,
+): number {
+  const highestLevel = Math.max(
+    story.playerPokemon?.level ?? 0,
+    ...story.capturedPokemon.map(
+      (pokemon) => pokemon.level,
+    ),
+  );
+
+  // FireRed uses level * 4 * multiplier. This slice has
+  // no badges yet, so the original zero-badge multiplier is 2.
+  const loss = highestLevel * 4 * 2;
+
+  return Math.min(
+    story.money,
+    Math.max(0, loss),
+  );
+}
+
+export type StoryWhiteOutResult = {
+  story: StoryState;
+  moneyLost: number;
+  healLocationId: StoryHealLocationId;
+};
+
+export function applyStoryWhiteOut(
+  story: StoryState,
+): StoryWhiteOutResult {
+  const moneyLost = computeWhiteOutMoneyLoss(story);
+  const healed = healStoryParty(story);
+
+  return {
+    story: {
+      ...healed,
+      money: Math.max(0, healed.money - moneyLost),
+    },
+    moneyLost,
+    healLocationId: story.healLocationId,
   };
 }

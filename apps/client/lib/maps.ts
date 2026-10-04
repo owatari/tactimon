@@ -320,6 +320,29 @@ export function resolveWorldTransition(
  * registry is generated for the client this fallback table can be replaced
  * by target_map + target warp lookup without changing the movement engine.
  */
+export type WhiteOutRespawn = {
+  mapId: string;
+  spawn: { x: number; y: number };
+};
+
+export function resolveWhiteOutRespawn(
+  healLocationId: "pallet-town" | "viridian-city",
+): WhiteOutRespawn {
+  if (healLocationId === "viridian-city") {
+    return {
+      mapId: "viridian-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
+  // FireRed's Pallet heal location is (6, 8). The player's
+  // house interior is not in this slice yet, so respawn outside.
+  return {
+    mapId: "pallet-town",
+    spawn: { x: 6, y: 8 },
+  };
+}
+
 export function isPokemonStoragePcAt(
   mapId: string,
   x: number,

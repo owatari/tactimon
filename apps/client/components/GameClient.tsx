@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   createPokemonProgression,
   grantTrainerBattleProgressToParty,
@@ -11,12 +17,16 @@ import {
   type ProgressionReward,
   type StarterSpeciesId,
 } from "@tactimon/battle-engine";
-import type { BattleSceneContext } from "@/lib/maps";
+import {
+  resolveWhiteOutRespawn,
+  type BattleSceneContext,
+} from "@/lib/maps";
 import {
   FirstBattle,
   type BattleEncounter,
   type BattleOutcome,
 } from "@/components/FirstBattle";
+import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
 import { OverworldGame } from "@/components/OverworldGame";
@@ -28,6 +38,7 @@ import {
   type MartPurchaseResult,
 } from "@/lib/mart";
 import {
+  applyStoryWhiteOut,
   chooseStarter,
   collectOverworldItem,
   DEFAULT_STORY_STATE,
@@ -35,7 +46,9 @@ import {
   healStoryParty,
   normalizeStoryState,
   placeCapturedPokemon,
+  registerStoryHealLocation,
   storyCanCapturePokemon,
+  storyHasHealthyPokemon,
   withdrawBoxedPokemon,
   type PokemonStorageActionResult,
   type StoryState,
@@ -47,6 +60,18 @@ type BattleSession = {
   context: BattleSceneContext;
   encounter: BattleEncounter;
   partyIndices: number[];
+};
+
+type PendingWhiteOut = {
+  id: number;
+  moneyLost: number;
+  healLocationId: StoryState["healLocationId"];
+};
+
+type RespawnRequest = {
+  id: number;
+  mapId: string;
+  spawn: { x: number; y: number };
 };
 
 type ProgressionQueueEntry = {
@@ -178,6 +203,11 @@ export function GameClient() {
     useState<BattleSession | null>(null);
   const [progressionQueue, setProgressionQueue] =
     useState<ProgressionQueueEntry[]>([]);
+  const [pendingWhiteOut, setPendingWhiteOut] =
+    useState<PendingWhiteOut | null>(null);
+  const [respawnRequest, setRespawnRequest] =
+    useState<RespawnRequest | null>(null);
+  const whiteOutNonceRef = useRef(0);
   const [mapAudioContext, setMapAudioContext] = useState<{
     mapId: string;
     musicId: number | null;
@@ -254,6 +284,15 @@ export function GameClient() {
           ? current
           : next,
       );
+
+      if (next.mapId === "viridian-pokemon-center") {
+        setStory((current) =>
+          registerStoryHealLocation(
+            current,
+            "viridian-city",
+          ),
+        );
+      }
     },
     [],
   );
@@ -433,6 +472,48 @@ export function GameClient() {
     );
   };
 
+  useEffect(() => {
+    if (
+      battleSession ||
+      pendingWhiteOut ||
+      !story.playerPokemon ||
+      storyHasHealthyPokemon(story)
+    ) {
+      return;
+    }
+
+    const result = applyStoryWhiteOut(story);
+    const id = whiteOutNonceRef.current + 1;
+    whiteOutNonceRef.current = id;
+
+    setStory(result.story);
+    setPendingWhiteOut({
+      id,
+      moneyLost: result.moneyLost,
+      healLocationId: result.healLocationId,
+    });
+  }, [
+    battleSession,
+    pendingWhiteOut,
+    story,
+  ]);
+
+  const continueAfterWhiteOut = () => {
+    if (!pendingWhiteOut) {
+      return;
+    }
+
+    const respawn = resolveWhiteOutRespawn(
+      pendingWhiteOut.healLocationId,
+    );
+
+    setRespawnRequest({
+      id: pendingWhiteOut.id,
+      ...respawn,
+    });
+    setPendingWhiteOut(null);
+  };
+
   const handleMartPurchase = (
     itemId: DuelItemId,
     quantity: number,
@@ -553,6 +634,7 @@ export function GameClient() {
     martOpen ||
     storageOpen ||
     Boolean(battleSession) ||
+    Boolean(pendingWhiteOut) ||
     progressionQueue.length > 0;
   const battleMusicKind = battleSession
     ? battleSession.encounter.kind === "wild"
@@ -571,6 +653,7 @@ export function GameClient() {
       <OverworldGame
         story={story}
         paused={paused}
+        respawnRequest={respawnRequest}
         onRequestStarterChoice={() => setStarterChoiceOpen(true)}
         onMapAudioContextChange={handleMapAudioContextChange}
         onFirstBattleTrigger={(context) => {
@@ -707,6 +790,20 @@ export function GameClient() {
             encounter={battleSession.encounter}
             context={battleSession.context}
             onComplete={handleBattleComplete}
+          />
+        )}
+
+      {pendingWhiteOut &&
+        progressionQueue.length === 0 && (
+          <BlackoutOverlay
+            moneyLost={pendingWhiteOut.moneyLost}
+            locationLabel={
+              pendingWhiteOut.healLocationId ===
+              "viridian-city"
+                ? "Viridian Pokémon Center"
+                : "Pallet Town"
+            }
+            onContinue={continueAfterWhiteOut}
           />
         )}
 

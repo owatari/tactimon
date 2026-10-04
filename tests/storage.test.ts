@@ -40,6 +40,7 @@ function storyWithParty(
     boxedPokemon,
     collectedItemIds: [],
     defeatedTrainerIds: [],
+    healLocationId: "pallet-town",
     money: 3_000,
     inventory: {
       potion: 1,

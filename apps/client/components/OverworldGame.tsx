@@ -107,6 +107,11 @@ const WALK_FRAME: Record<Direction, [number, number]> = {
 type Props = {
   story: StoryState;
   paused: boolean;
+  respawnRequest: {
+    id: number;
+    mapId: string;
+    spawn: { x: number; y: number };
+  } | null;
   onRequestStarterChoice: () => void;
   onMapAudioContextChange: (context: {
     mapId: string;
@@ -561,6 +566,7 @@ function mapStoryObjects(
 export function OverworldGame({
   story,
   paused,
+  respawnRequest,
   onRequestStarterChoice,
   onMapAudioContextChange,
   onFirstBattleTrigger,
@@ -1046,6 +1052,18 @@ export function OverworldGame({
       "south",
     );
   }, [loadMap]);
+
+  useEffect(() => {
+    if (!respawnRequest) {
+      return;
+    }
+
+    void loadMap(
+      respawnRequest.mapId,
+      respawnRequest.spawn,
+      "south",
+    );
+  }, [loadMap, respawnRequest]);
 
   useEffect(() => {
     return () => {
