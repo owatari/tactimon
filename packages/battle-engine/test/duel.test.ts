@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   applyDuelAction,
   createStarterDuel,
+  createTrainerDuel,
   createWildDuel,
   getActiveDuelUnit,
   getReachableCells,
@@ -425,6 +426,136 @@ describe("wild capture integration", () => {
   });
 });
 
+
+describe("trainer team battles", () => {
+  it("deploys up to six Pokémon for both trainer teams", () => {
+    const state = createTrainerDuel({
+      seed: 777,
+      width: 13,
+      height: 7,
+      trainerName: "Ace Trainer",
+      players: [
+        { species: "bulbasaur", level: 8, moves: ["tackle", "vine-whip"] },
+        { species: "pidgey", level: 6, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 6, moves: ["tackle", "tail-whip"] },
+        { species: "pidgey", level: 7, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 7, moves: ["tackle", "tail-whip"] },
+        { species: "squirtle", level: 8, moves: ["tackle", "water-gun"] },
+      ],
+      rivals: [
+        { species: "charmander", level: 8, moves: ["scratch", "ember"] },
+        { species: "pidgey", level: 6, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 6, moves: ["tackle", "tail-whip"] },
+        { species: "pidgey", level: 7, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 7, moves: ["tackle", "tail-whip"] },
+        { species: "bulbasaur", level: 8, moves: ["tackle", "vine-whip"] },
+      ],
+    });
+
+    expect(
+      state.units.filter((unit) => unit.side === "player"),
+    ).toHaveLength(6);
+    expect(
+      state.units.filter((unit) => unit.side === "rival"),
+    ).toHaveLength(6);
+    expect(state.turnOrder).toHaveLength(12);
+    expect(
+      new Set(
+        state.units.map(
+          (unit) => `${unit.position.x},${unit.position.y}`,
+        ),
+      ).size,
+    ).toBe(12);
+  });
+
+  it("does not end a trainer battle until the whole rival team faints", () => {
+    let state = createTrainerDuel({
+      seed: 778,
+      width: 9,
+      height: 7,
+      players: [
+        { species: "charmander", level: 10, moves: ["scratch", "ember"] },
+      ],
+      rivals: [
+        { species: "pidgey", level: 3, moves: ["tackle", "growl"] },
+        { species: "rattata", level: 3, moves: ["tackle", "tail-whip"] },
+      ],
+    });
+
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rivals = state.units.filter(
+      (unit) => unit.side === "rival",
+    );
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 3, y: 3 } }
+          : unit.id === rivals[0].id
+            ? { ...unit, hp: 1, position: { x: 4, y: 3 } }
+            : unit.id === rivals[1].id
+              ? { ...unit, position: { x: 7, y: 5 } }
+              : unit,
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "scratch",
+      targetId: rivals[0].id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === rivals[0].id,
+      )?.hp,
+    ).toBe(0);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === rivals[1].id,
+      )?.hp,
+    ).toBeGreaterThan(0);
+    expect(result.state.status).toBe("active");
+    expect(result.state.winner).toBeNull();
+  });
+
+  it("caps oversized trainer teams at six Pokémon per side", () => {
+    const seven = Array.from({ length: 7 }, (_, index) => ({
+      species: index % 2 === 0 ? "pidgey" as const : "rattata" as const,
+      level: 5,
+      moves: index % 2 === 0
+        ? ["tackle", "growl"] as const
+        : ["tackle", "tail-whip"] as const,
+    }));
+
+    const state = createTrainerDuel({
+      seed: 779,
+      width: 13,
+      height: 7,
+      players: seven.map((pokemon) => ({
+        ...pokemon,
+        moves: [...pokemon.moves],
+      })),
+      rivals: seven.map((pokemon) => ({
+        ...pokemon,
+        moves: [...pokemon.moves],
+      })),
+    });
+
+    expect(
+      state.units.filter((unit) => unit.side === "player"),
+    ).toHaveLength(6);
+    expect(
+      state.units.filter((unit) => unit.side === "rival"),
+    ).toHaveLength(6);
+  });
+});
 
 describe("multi-unit party battles", () => {
   it("deploys every party member up to six on unique cells", () => {

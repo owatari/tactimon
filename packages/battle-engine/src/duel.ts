@@ -69,6 +69,16 @@ export interface DuelPokemonBuild {
   evs?: Partial<DuelEvSpread>;
 }
 
+export interface TrainerDuelOptions {
+  seed?: number;
+  width?: number;
+  height?: number;
+  blocked?: readonly DuelPoint[];
+  players: readonly DuelPokemonBuild[];
+  rivals: readonly DuelPokemonBuild[];
+  trainerName?: string;
+}
+
 export interface StarterDuelOptions {
   seed?: number;
   width?: number;
@@ -78,6 +88,8 @@ export interface StarterDuelOptions {
   player?: DuelPokemonBuild;
   /** Every member is deployed at battle start, capped at six. */
   players?: readonly DuelPokemonBuild[];
+  /** Optional explicit rival party; defaults to Blue's counter starter. */
+  rivals?: readonly DuelPokemonBuild[];
 }
 
 export interface WildDuelOptions {
@@ -719,27 +731,30 @@ function pickSpawnPositions(
   ];
 }
 
-function pickPartySpawnPositions(
+function clusterSpawnPositions(
+  anchor: DuelPoint,
+  opposingAnchor: DuelPoint,
+  count: number,
   width: number,
   height: number,
-  blocked: readonly DuelPoint[],
-  seed: number,
-  partySize: number,
-): {
-  players: DuelPoint[];
-  rival: DuelPoint;
-} {
-  const [anchor, rival] = pickSpawnPositions(
-    width,
-    height,
-    blocked,
-    seed,
-  );
-  const blockedKeys = new Set(blocked.map(pointKey));
-  const reserved = new Set([
-    pointKey(anchor),
-    pointKey(rival),
-  ]);
+  blockedKeys: ReadonlySet<string>,
+  reserved: Set<string>,
+): DuelPoint[] {
+  const positions: DuelPoint[] = [];
+
+  const add = (point: DuelPoint): boolean => {
+    const key = pointKey(point);
+    if (blockedKeys.has(key) || reserved.has(key)) {
+      return false;
+    }
+
+    positions.push({ ...point });
+    reserved.add(key);
+    return true;
+  };
+
+  add(anchor);
+
   const candidates = connectedOpenCells(
     anchor,
     width,
@@ -767,42 +782,83 @@ function pickPartySpawnPositions(
         aBorder - bBorder ||
         manhattanDistance(a, anchor) -
           manhattanDistance(b, anchor) ||
-        manhattanDistance(b, rival) -
-          manhattanDistance(a, rival) ||
+        manhattanDistance(b, opposingAnchor) -
+          manhattanDistance(a, opposingAnchor) ||
         a.y - b.y ||
         a.x - b.x
       );
     });
 
-  const players = [{ ...anchor }];
   for (const point of candidates) {
-    if (players.length >= partySize) break;
-    players.push({ ...point });
+    if (positions.length >= count) break;
+    add(point);
   }
 
-  if (players.length < partySize) {
+  if (positions.length < count) {
     for (let y = 0; y < height; y += 1) {
       for (let x = 0; x < width; x += 1) {
-        const point = { x, y };
-        const key = pointKey(point);
-        if (
-          blockedKeys.has(key) ||
-          reserved.has(key) ||
-          players.some((item) => pointKey(item) === key)
-        ) {
-          continue;
-        }
-
-        players.push(point);
-        if (players.length >= partySize) break;
+        if (positions.length >= count) break;
+        add({ x, y });
       }
-      if (players.length >= partySize) break;
+      if (positions.length >= count) break;
     }
   }
 
+  return positions.slice(0, count);
+}
+
+function pickTeamSpawnPositions(
+  width: number,
+  height: number,
+  blocked: readonly DuelPoint[],
+  seed: number,
+  playerSize: number,
+  rivalSize: number,
+): {
+  players: DuelPoint[];
+  rivals: DuelPoint[];
+} {
+  const [playerAnchor, rivalAnchor] =
+    pickSpawnPositions(
+      width,
+      height,
+      blocked,
+      seed,
+    );
+  const blockedKeys = new Set(blocked.map(pointKey));
+  const reserved = new Set<string>();
+
+  // Keep both team anchors free while the first cluster is selected.
+  reserved.add(pointKey(rivalAnchor));
+  const players = clusterSpawnPositions(
+    playerAnchor,
+    rivalAnchor,
+    playerSize,
+    width,
+    height,
+    blockedKeys,
+    reserved,
+  );
+
+  reserved.delete(pointKey(rivalAnchor));
+  reserved.add(pointKey(playerAnchor));
+  for (const point of players) {
+    reserved.add(pointKey(point));
+  }
+
+  const rivals = clusterSpawnPositions(
+    rivalAnchor,
+    playerAnchor,
+    rivalSize,
+    width,
+    height,
+    blockedKeys,
+    reserved,
+  );
+
   return {
-    players: players.slice(0, partySize),
-    rival: { ...rival },
+    players,
+    rivals,
   };
 }
 
@@ -925,31 +981,32 @@ function normalizeArenaOptions(options: {
   return { width, height, seed, blocked };
 }
 
-export function createStarterDuel(
-  playerStarter: StarterSpeciesId,
-  options: StarterDuelOptions = {},
+export function createTrainerDuel(
+  options: TrainerDuelOptions,
 ): DuelState {
-  const rivalStarter = rivalStarterFor(playerStarter);
   const { width, height, seed, blocked } =
     normalizeArenaOptions(options);
-  const fallbackPlayer: DuelPokemonBuild = {
-    species: playerStarter,
-    level: LEVEL,
-    moves: SPECIES[playerStarter].moves,
-  };
-  const party = (
-    options.players && options.players.length > 0
-      ? [...options.players]
-      : options.player
-        ? [options.player]
-        : [fallbackPlayer]
-  ).slice(0, 6);
-  const positions = pickPartySpawnPositions(
+  const party = [...options.players].slice(0, 6);
+  const rivalParty = [...options.rivals].slice(0, 6);
+
+  if (party.length === 0) {
+    throw new Error(
+      "Trainer duel requires at least one player Pokémon.",
+    );
+  }
+  if (rivalParty.length === 0) {
+    throw new Error(
+      "Trainer duel requires at least one rival Pokémon.",
+    );
+  }
+
+  const positions = pickTeamSpawnPositions(
     width,
     height,
     blocked,
     seed,
     party.length,
+    rivalParty.length,
   );
   const players = party.map((build, index) =>
     makeUnit(
@@ -959,21 +1016,21 @@ export function createStarterDuel(
       index,
     ),
   );
-  const rival = makeUnit(
-    {
-      species: rivalStarter,
-      level: LEVEL,
-      moves: SPECIES[rivalStarter].moves,
-    },
-    "rival",
-    positions.rival,
-    0,
+  const rivals = rivalParty.map((build, index) =>
+    makeUnit(
+      build,
+      "rival",
+      positions.rivals[index],
+      index,
+    ),
   );
-  const units = [...players, rival];
+  const units = [...players, ...rivals];
   const turnOrder = createTurnOrder(units);
   const active = units.find(
     (unit) => unit.id === turnOrder[0],
   )!;
+  const trainerName =
+    options.trainerName?.trim() || "Treinador rival";
 
   return {
     width,
@@ -996,13 +1053,56 @@ export function createStarterDuel(
     captureResult: null,
     units,
     log: [
-      `Blue desafia você! ${rival.displayName} entra na arena.`,
+      `${trainerName} desafia você!`,
       players.length > 1
         ? `${players.length} Pokémon do seu time entram na arena.`
         : `${players[0].displayName} entra na arena.`,
+      rivals.length > 1
+        ? `${trainerName} coloca ${rivals.length} Pokémon na arena.`
+        : `${rivals[0].displayName} entra pelo lado rival.`,
       `${active.displayName} age primeiro pela Speed.`,
     ],
   };
+}
+
+export function createStarterDuel(
+  playerStarter: StarterSpeciesId,
+  options: StarterDuelOptions = {},
+): DuelState {
+  const rivalStarter = rivalStarterFor(playerStarter);
+  const fallbackPlayer: DuelPokemonBuild = {
+    species: playerStarter,
+    level: LEVEL,
+    moves: SPECIES[playerStarter].moves,
+  };
+  const party = (
+    options.players && options.players.length > 0
+      ? [...options.players]
+      : options.player
+        ? [options.player]
+        : [fallbackPlayer]
+  ).slice(0, 6);
+  const rivals = (
+    options.rivals && options.rivals.length > 0
+      ? [...options.rivals]
+      : [
+          {
+            species: rivalStarter,
+            level: LEVEL,
+            moves: SPECIES[rivalStarter].moves,
+          },
+        ]
+  ).slice(0, 6);
+
+  return createTrainerDuel({
+    seed: options.seed,
+    width: options.width,
+    height: options.height,
+    blocked: options.blocked,
+    players: party,
+    rivals,
+    trainerName: "Blue",
+  });
 }
 
 export function createWildDuel(
@@ -1022,12 +1122,13 @@ export function createWildDuel(
     throw new Error("Wild duel requires at least one player Pokémon.");
   }
 
-  const positions = pickPartySpawnPositions(
+  const positions = pickTeamSpawnPositions(
     width,
     height,
     blocked,
     seed,
     party.length,
+    1,
   );
   const players = party.map((build, index) =>
     makeUnit(
@@ -1044,7 +1145,7 @@ export function createWildDuel(
       moves: SPECIES[options.wildSpecies].moves,
     },
     "rival",
-    positions.rival,
+    positions.rivals[0],
     0,
   );
   const units = [...players, wild];

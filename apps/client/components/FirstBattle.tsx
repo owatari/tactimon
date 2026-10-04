@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   applyDuelAction,
   createStarterDuel,
+  createTrainerDuel,
   createWildDuel,
   DUEL_ITEMS,
   DUEL_MOVES,
@@ -43,6 +44,8 @@ export type BattleOutcome = {
 export type BattleEncounter =
   | {
       kind: "trainer";
+      trainerName?: string;
+      rivals?: readonly DuelPokemonBuild[];
     }
   | {
       kind: "wild";
@@ -252,6 +255,22 @@ export function FirstBattle({
       });
     }
 
+    if (
+      encounter.rivals &&
+      encounter.rivals.length > 0
+    ) {
+      return createTrainerDuel({
+        seed: context.seed,
+        width: context.arenaWidth,
+        height: context.arenaHeight,
+        blocked: context.blocked,
+        players: deployedParty,
+        rivals: encounter.rivals,
+        trainerName:
+          encounter.trainerName ?? "Treinador rival",
+      });
+    }
+
     return createStarterDuel(starter, {
       seed: context.seed,
       width: context.arenaWidth,
@@ -303,6 +322,10 @@ export function FirstBattle({
       ? active
       : starterUnit;
   const rival = rivalUnits[0]!;
+  const trainerName =
+    encounter.kind === "trainer"
+      ? encounter.trainerName ?? "Blue"
+      : null;
   const isPlayerTurn =
     state.status === "active" &&
     active?.side === "player" &&
@@ -836,12 +859,14 @@ export function FirstBattle({
             <span className="eyebrow">
               {encounter.kind === "wild"
                 ? "ENCONTRO SELVAGEM"
-                : "PRIMEIRO COMBATE"}
+                : encounter.rivals?.length
+                  ? "BATALHA DE TREINADOR"
+                  : "PRIMEIRO COMBATE"}
             </span>
             <strong>
               {encounter.kind === "wild"
                 ? `${rival.displayName} selvagem`
-                : "Você vs. Blue"}
+                : `Você vs. ${trainerName}`}
             </strong>
             <small>{context.mapLabel}</small>
           </div>
@@ -936,7 +961,7 @@ export function FirstBattle({
                         ? "SEU POKÉMON"
                         : encounter.kind === "wild"
                           ? "SELVAGEM"
-                          : "BLUE"}
+                          : trainerName?.toUpperCase() ?? "RIVAL"}
                     </span>
                   </div>
 
@@ -1383,10 +1408,10 @@ export function FirstBattle({
                 : state.winner === "player"
                   ? encounter.kind === "wild"
                     ? `${rival.displayName} foi derrotado.`
-                    : `${player.displayName} venceu o primeiro duelo.`
+                    : `Seu time venceu ${trainerName}.`
                   : encounter.kind === "wild"
                     ? "Seu time foi derrotado."
-                    : "Blue venceu desta vez."}
+                    : `${trainerName} venceu desta vez.`}
             </h3>
             <p>
               {state.captureResult
@@ -1399,7 +1424,9 @@ export function FirstBattle({
                   ? state.winner === "player"
                     ? "A EXP da vitória é dividida entre todos os Pokémon que entraram na arena e pode gerar level up, EV e novos moves."
                     : "Você retorna ao mapa sem receber recompensa."
-                  : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
+                  : encounter.rivals?.length
+                    ? "A batalha termina somente quando todos os Pokémon de um dos treinadores forem derrotados."
+                    : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
             </p>
             <button
               type="button"
