@@ -2320,6 +2320,109 @@ describe("auto catch threshold and item priorities", () => {
 });
 
 
+describe("late rival stage moves", () => {
+  it("applies FireRed two-stage stat changes and consumes PP", () => {
+    let state = createTrainerDuel({
+      seed: 1906,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "pidgey",
+          level: 20,
+          moves: [
+            "feather-dance",
+            "agility",
+            "scary-face",
+          ],
+        },
+      ],
+      rivals: [
+        {
+          species: "machop",
+          level: 20,
+          moves: ["karate-chop"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 2 },
+            },
+      ),
+    };
+
+    const featherDance = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "feather-dance",
+      targetId: rival.id,
+    });
+    expect(featherDance.accepted).toBe(true);
+    expect(
+      featherDance.state.units.find(
+        (unit) => unit.id === rival.id,
+      )?.attackStage,
+    ).toBe(-2);
+    expect(
+      featherDance.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.movePp["feather-dance"],
+    ).toBe(
+      DUEL_MOVES["feather-dance"].maxPp - 1,
+    );
+
+    const agility = applyDuelAction(
+      featherDance.state,
+      {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "agility",
+        targetId: player.id,
+      },
+    );
+    expect(agility.accepted).toBe(true);
+    expect(
+      agility.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.speedStage,
+    ).toBe(2);
+
+    const scaryFace = applyDuelAction(
+      agility.state,
+      {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "scary-face",
+        targetId: rival.id,
+      },
+    );
+    expect(scaryFace.accepted).toBe(true);
+    expect(
+      scaryFace.state.units.find(
+        (unit) => unit.id === rival.id,
+      )?.speedStage,
+    ).toBe(-2);
+  });
+});
+
+
 describe("battle movement and deployment scale", () => {
   it("derives MP from species Speed instead of giving every Pokémon 3", () => {
     expect(
