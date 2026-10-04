@@ -132,6 +132,7 @@ export type DuelMoveId =
   | "defense-curl"
   | "bind"
   | "rock-tomb"
+  | "rock-blast"
   | "thunder-shock"
   | "thunder-wave"
   | "double-team"
@@ -309,6 +310,8 @@ export interface DuelMove {
     delta: -1;
   };
   secondaryEffectChance?: number;
+  /** FireRed-style random 2-5 hit sequence. */
+  multiHit?: "two-to-five";
   /** Fraction of actual HP damage dealt that returns to the attacker as recoil. */
   recoilDamageFraction?: number;
   effect?:
@@ -359,6 +362,7 @@ export type DuelPresentationEvent =
         }>;
         statusApplied?: Exclude<DuelMajorStatus, null>;
         missed?: boolean;
+        hitCount?: number;
         sameTypeAttackBonus?: boolean;
         typeEffectiveness?: number;
       }>;
@@ -1347,7 +1351,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialAttack: 30,
     specialDefense: 30,
     speed: 25,
-    moves: ["horn-attack", "tail-whip", "fury-attack", "scary-face"],
+    moves: ["take-down", "horn-drill", "rock-blast", "fury-attack"],
   },
 };
 
@@ -1600,6 +1604,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 20,
     minRange: 1,
     maxRange: 1,
+    multiHit: "two-to-five",
   },
   "feather-dance": {
     id: "feather-dance",
@@ -1973,6 +1978,24 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 3,
     effect: "speed-down",
+  },
+  "rock-blast": {
+    id: "rock-blast",
+    name: "Rock Blast",
+    type: "rock",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "rock-tomb",
+    description:
+      "Dispara de 2 a 5 rochas usando a distribuição multi-hit do FireRed.",
+    power: 25,
+    accuracy: 80,
+    apCost: 5,
+    maxPp: 10,
+    minRange: 1,
+    maxRange: 4,
+    multiHit: "two-to-five",
   },
   "thunder-shock": {
     id: "thunder-shock",
@@ -2348,12 +2371,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     targeting: "single-enemy",
     motion: "projectile",
     vfxId: "rock-tomb",
-    description: "Dispara uma lança de gelo contra o alvo.",
+    description: "Dispara de 2 a 5 lanças de gelo contra o alvo.",
     power: 10,
+    accuracy: 100,
     apCost: 3,
     maxPp: 30,
     minRange: 1,
     maxRange: 4,
+    multiHit: "two-to-five",
   },
   "horn-attack": {
     id: "horn-attack",
@@ -3863,6 +3888,54 @@ function moveAccuracySucceeds(
   );
 }
 
+function rollMultiHitCount(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): number {
+  if (move.multiHit !== "two-to-five") {
+    return 1;
+  }
+
+  let moveSalt = 0;
+  for (const char of move.id) {
+    moveSalt =
+      (Math.imul(moveSalt, 31) + char.charCodeAt(0)) >>>
+      0;
+  }
+
+  const random = createSeededRandom(
+    (
+      state.seed ^
+      Math.imul(state.round + 1, 0x9e3779b1) ^
+      Math.imul(state.turnIndex + 1, 0x85ebca6b) ^
+      Math.imul(actor.ap + 1, 0xc2b2ae35) ^
+      target.hp ^
+      moveSalt
+    ) >>> 0,
+  );
+  const firstRoll = Math.floor(random() * 4);
+
+  if (firstRoll > 1) {
+    return Math.floor(random() * 4) + 2;
+  }
+
+  return firstRoll + 2;
+}
+
+function expectedHitCount(move: DuelMove): number {
+  // FireRed distribution: 2/3 hits = 3/8 each; 4/5 hits = 1/8 each.
+  return move.multiHit === "two-to-five" ? 3 : 1;
+}
+
+function expectedMoveDamage(
+  move: DuelMove,
+  singleHitDamage: number,
+): number {
+  return singleHitDamage * expectedHitCount(move);
+}
+
 function secondaryEffectSucceeds(
   state: DuelState,
   actor: DuelUnit,
@@ -4583,6 +4656,7 @@ export function applyDuelAction(
 
   let damage = 0;
   let damageDealt = 0;
+  let hitCount: number | undefined;
   let statusApplied: Exclude<DuelMajorStatus, null> | undefined;
   const statChanges: Array<{
     stat: DuelStatId;
@@ -4600,6 +4674,26 @@ export function applyDuelAction(
       move,
     );
     damage = damageResult.damage;
+    if (
+      move.multiHit === "two-to-five" &&
+      damage > 0
+    ) {
+      const rolledHits = rollMultiHitCount(
+        state,
+        actor,
+        target,
+        move,
+      );
+      const hitsBeforeFaint = Math.max(
+        1,
+        Math.ceil(target.hp / damage),
+      );
+      hitCount = Math.min(
+        rolledHits,
+        hitsBeforeFaint,
+      );
+      damage *= hitCount;
+    }
     damageDealt = Math.min(target.hp, damage);
     sameTypeAttackBonus =
       damageResult.sameTypeAttackBonus;
@@ -4609,8 +4703,14 @@ export function applyDuelAction(
 
     appendLog(
       state,
-      `${actor.displayName} usou ${move.name}: ${damage} de dano.`,
+      `${actor.displayName} usou ${move.name}: ${damageDealt} de dano.`,
     );
+    if (hitCount !== undefined) {
+      appendLog(
+        state,
+        `${move.name} acertou ${hitCount} vezes.`,
+      );
+    }
 
     if (typeEffectiveness === 0) {
       appendLog(
@@ -5095,6 +5195,7 @@ export function applyDuelAction(
               }
             : {}),
           ...(statusApplied ? { statusApplied } : {}),
+          ...(hitCount !== undefined ? { hitCount } : {}),
         },
       ],
     },
@@ -5630,9 +5731,13 @@ function aiThreatToTeam(
       const hitChance =
         getDuelMoveHitChance(target, ally, move) /
         100;
+      const expectedDamage = expectedMoveDamage(
+        move,
+        result.damage,
+      );
       bestRatio = Math.max(
         bestRatio,
-        (result.damage * hitChance) /
+        (expectedDamage * hitChance) /
           Math.max(1, ally.maxHp),
       );
     }
@@ -5769,12 +5874,19 @@ function scoreAiCandidate(
     return { score: -Infinity, damage: 0 };
   }
 
+  const expectedDamage = expectedMoveDamage(
+    move,
+    result.damage,
+  );
   const hpRatio =
     target.hp / Math.max(1, target.maxHp);
   const damageRatio =
-    Math.min(1.5, result.damage / Math.max(1, target.maxHp));
+    Math.min(
+      1.5,
+      expectedDamage / Math.max(1, target.maxHp),
+    );
   const knockoutScore =
-    result.damage >= target.hp
+    expectedDamage >= target.hp
       ? 230 + Math.max(0, 40 - target.hp)
       : 0;
   const stabScore =
@@ -5799,11 +5911,11 @@ function scoreAiCandidate(
     aiSecondaryStatusUtility(target, move) +
     aiSecondaryStatUtility(target, move);
   const recoilDamage =
-    move.recoilDamageFraction && result.damage > 0
+    move.recoilDamageFraction && expectedDamage > 0
       ? Math.max(
           1,
           Math.floor(
-            Math.min(result.damage, target.hp) *
+            Math.min(expectedDamage, target.hp) *
               move.recoilDamageFraction,
           ),
         )
@@ -5823,7 +5935,7 @@ function scoreAiCandidate(
       : 0;
 
   const onHitScore =
-    result.damage * 7 +
+    expectedDamage * 7 +
     damageRatio * 125 +
     (move.power ?? 0) * 0.35 +
     knockoutScore +
@@ -5836,7 +5948,7 @@ function scoreAiCandidate(
     recoilPenalty;
 
   return {
-    damage: result.damage * hitChance,
+    damage: expectedDamage * hitChance,
     score:
       onHitScore * hitChance +
       positioningScore +
@@ -6008,12 +6120,15 @@ function aiBestIncomingDamage(
         continue;
       }
 
-      const damage = calculateDamage(
-        state,
-        enemy,
-        ally,
+      const damage = expectedMoveDamage(
         move,
-      ).damage;
+        calculateDamage(
+          state,
+          enemy,
+          ally,
+          move,
+        ).damage,
+      );
       const hitChance =
         getDuelMoveHitChance(enemy, ally, move) /
         100;
