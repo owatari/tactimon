@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import type { DuelSpeciesId } from "@tactimon/battle-engine";
 
 type AnimationName = "idle" | "walk" | "attack" | "hurt" | "faint";
@@ -38,6 +43,40 @@ type Props = {
 };
 
 const SPRITE_TILE_FILL = 1.18;
+
+const SPECIES_VISUAL_SCALE: Partial<
+  Record<DuelSpeciesId, number>
+> = {
+  caterpie: 0.86,
+  weedle: 0.84,
+  metapod: 0.94,
+  kakuna: 0.94,
+  pidgey: 0.92,
+  rattata: 0.92,
+  pikachu: 0.96,
+  zubat: 0.96,
+  paras: 0.98,
+  abra: 0.98,
+  jigglypuff: 1,
+  geodude: 1.12,
+  machop: 1.08,
+  raticate: 1.08,
+  raichu: 1.12,
+  wartortle: 1.12,
+  ivysaur: 1.18,
+  charmeleon: 1.18,
+  butterfree: 1.22,
+  slowpoke: 1.2,
+  staryu: 1.15,
+  starmie: 1.24,
+  onix: 2.05,
+};
+
+export function pokemonVisualTileScale(
+  species: DuelSpeciesId,
+): number {
+  return SPECIES_VISUAL_SCALE[species] ?? 1.04;
+}
 
 let manifestPromise: Promise<RuntimeManifest> | null = null;
 
@@ -211,6 +250,12 @@ export function PokemonBattleSprite({
     <div
       className={`pokemon-battle-sprite ${side}`}
       title={`${species} · ${manifest.source}`}
+      style={
+        {
+          "--pokemon-visual-scale":
+            pokemonVisualTileScale(species),
+        } as CSSProperties
+      }
     >
       <div
         className="pokemon-battle-sprite-frame"
