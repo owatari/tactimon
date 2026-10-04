@@ -5,7 +5,7 @@ export type OverworldDialogueDefinition = {
   x: number;
   y: number;
   spriteUrl: string;
-  dialogue: string;
+  dialogueId: string;
 };
 
 export const OVERWORLD_DIALOGUES:
@@ -17,8 +17,7 @@ export const OVERWORLD_DIALOGUES:
       x: 9,
       y: 8,
       spriteUrl: "/game-assets/overworld/023_woman_1.png",
-      dialogue:
-        "Mulher: Ai! Tropecei em um Pokémon rochoso, Geodude!",
+      dialogueId: "route4-woman",
     },
     {
       id: "route4-boy",
@@ -27,8 +26,7 @@ export const OVERWORLD_DIALOGUES:
       x: 15,
       y: 14,
       spriteUrl: "/game-assets/overworld/019_boy.png",
-      dialogue:
-        "Garoto: Uau, essa é a Boulder Badge! Brock não é só forte; as pessoas gostam e respeitam ele. Quero me tornar um Líder de Ginásio como ele.",
+      dialogueId: "route4-boy",
     },
     {
       id: "cerulean-house2-hiker",
@@ -37,8 +35,7 @@ export const OVERWORLD_DIALOGUES:
       x: 1,
       y: 2,
       spriteUrl: "/game-assets/overworld/056_hiker.png",
-      dialogue:
-        "Morador: A Team Rocket arrombou a parede e roubou meu material sobre técnicas de escavação. O ladrão fugiu para os fundos!",
+      dialogueId: "cerulean-house2-hiker",
     },
     {
       id: "cerulean-house2-lass",
@@ -47,8 +44,7 @@ export const OVERWORLD_DIALOGUES:
       x: 7,
       y: 6,
       spriteUrl: "/game-assets/overworld/022_lass.png",
-      dialogue:
-        "Garota: A Team Rocket cavou um buraco na parede. Eles realmente não prestam!",
+      dialogueId: "cerulean-house2-lass",
     },
     {
       id: "pewter-gym-guy",
@@ -57,8 +53,7 @@ export const OVERWORLD_DIALOGUES:
       x: 7,
       y: 12,
       spriteUrl: "/game-assets/overworld/091_gym_guy.png",
-      dialogue:
-        "Gym Guide: Brock usa Pokémon Rock. Water e Grass têm uma grande vantagem aqui.",
+      dialogueId: "pewter-gym-guy",
     },
     {
       id: "cerulean-gym-guy",
@@ -67,8 +62,7 @@ export const OVERWORLD_DIALOGUES:
       x: 7,
       y: 16,
       spriteUrl: "/game-assets/overworld/091_gym_guy.png",
-      dialogue:
-        "Gym Guide: Misty usa Pokémon Water. Grass pode drenar a vantagem dela, e Electric pode dar um choque decisivo.",
+      dialogueId: "cerulean-gym-guy",
     },
     {
       id: "viridian-forest-youngster",
@@ -77,8 +71,7 @@ export const OVERWORLD_DIALOGUES:
       x: 29,
       y: 58,
       spriteUrl: "/game-assets/overworld/018_youngster.png",
-      dialogue:
-        "Youngster: Vim com alguns amigos capturar Pokémon Bug. Eles estão loucos para batalhar!",
+      dialogueId: "viridian-forest-youngster",
     },
     {
       id: "viridian-forest-boy",
@@ -87,8 +80,7 @@ export const OVERWORLD_DIALOGUES:
       x: 45,
       y: 58,
       spriteUrl: "/game-assets/overworld/019_boy.png",
-      dialogue:
-        "Garoto: Eu estava jogando Poké Balls para capturar Pokémon e elas acabaram. Nunca é demais carregar algumas.",
+      dialogueId: "viridian-forest-boy",
     },
     {
       id: "forest-south-gate-woman",
@@ -97,8 +89,7 @@ export const OVERWORLD_DIALOGUES:
       x: 10,
       y: 6,
       spriteUrl: "/game-assets/overworld/028_woman_2.png",
-      dialogue:
-        "Mulher: Vai entrar na Viridian Forest? Lá dentro é um labirinto natural. Cuidado para não se perder.",
+      dialogueId: "forest-south-gate-woman",
     },
     {
       id: "forest-south-gate-woman-rattata",
@@ -107,8 +98,7 @@ export const OVERWORLD_DIALOGUES:
       x: 4,
       y: 7,
       spriteUrl: "/game-assets/overworld/023_woman_1.png",
-      dialogue:
-        "Mulher: Rattata pode ser pequeno, mas não subestime a mordida dele. Você já capturou um?",
+      dialogueId: "forest-south-gate-woman-rattata",
     },
     {
       id: "forest-north-gate-youngster",
@@ -117,8 +107,7 @@ export const OVERWORLD_DIALOGUES:
       x: 5,
       y: 4,
       spriteUrl: "/game-assets/overworld/018_youngster.png",
-      dialogue:
-        "Youngster: Muitos Pokémon vivem apenas em florestas e cavernas. Procure por toda parte para encontrar espécies diferentes.",
+      dialogueId: "forest-north-gate-youngster",
     },
     {
       id: "forest-north-gate-old-man",
@@ -127,8 +116,7 @@ export const OVERWORLD_DIALOGUES:
       x: 4,
       y: 7,
       spriteUrl: "/game-assets/overworld/032_old_man_1.png",
-      dialogue:
-        "Homem: Viu aquelas árvores finas à beira da estrada? Dizem que um golpe especial de Pokémon consegue cortá-las.",
+      dialogueId: "forest-north-gate-old-man",
     },
     {
       id: "forest-north-gate-cooltrainer",
@@ -137,8 +125,7 @@ export const OVERWORLD_DIALOGUES:
       x: 10,
       y: 5,
       spriteUrl: "/game-assets/overworld/042_cooltrainer_f.png",
-      dialogue:
-        "Treinadora: Você conhece a técnica de cancelar evolução? É uma forma de treinar um Pokémon mantendo a forma atual.",
+      dialogueId: "forest-north-gate-cooltrainer",
     },
   ];
 

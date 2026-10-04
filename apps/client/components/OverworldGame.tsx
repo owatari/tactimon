@@ -36,9 +36,13 @@ import {
   WorldTransition,
 } from "@/lib/maps";
 import {
+  getStoryBillStage,
+  getStoryFossilChoice,
+  hasStoryCollectedItem,
   hasStoryKeyItem,
+  isStoryObstacleCleared,
+  isStoryTrainerDefeated,
   storyHasHealthyPokemon,
-  storyStarterSummary,
   type MtMoonFossilId,
   type StoryBadgeId,
   type StoryState,
@@ -57,7 +61,11 @@ import {
   ssAnneRivalEncounter,
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
-import { resolveNpcDialogue } from "@/lib/npcDialogues";
+import { resolveNpcDialogueId } from "@/lib/npcDialogues";
+import type {
+  DialogueInteractionRequest,
+  DialoguePresentation,
+} from "@/lib/dialogueSystem";
 import {
   resolveOverworldPickups,
 } from "@/lib/overworldPickups";
@@ -73,7 +81,6 @@ const STEP_DURATION_MS = 142;
 const JUMP_DURATION_MS = 250;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
-const INTERACTION_DURATION_MS = 2200;
 const POSITION_STORAGE_KEY = "tactimon.position.v1";
 const FALLBACK_BATTLE_ARENA_WIDTH = 17;
 const FALLBACK_BATTLE_ARENA_HEIGHT = 9;
@@ -124,25 +131,10 @@ type Props = {
     },
   ) => void;
   onMartOpen: () => void;
-  onPokemonCenterHeal: () => void;
   onPokemonStorageOpen: () => void;
-  onBillInteract: () => string;
-  onBillComputerInteract: () => string;
-  onSsAnneCaptainInteract: () => string;
-  onCutObstacleInteract: (obstacleId: string) => string;
-  onMtMoonFossilChoice: (
-    fossil: MtMoonFossilId,
-  ) => {
-    accepted: boolean;
-    reason?: "miguel-not-defeated" | "already-chosen";
-  };
-  onOverworldItemPickup: (
-    pickupId: string,
-    itemId: DuelItemId,
-  ) => {
-    accepted: boolean;
-    reason?: "already-collected" | "inventory-full";
-  };
+  onDialogueInteraction: (
+    request: DialogueInteractionRequest,
+  ) => DialoguePresentation;
 };
 
 type RuntimePlayer = {
@@ -206,7 +198,7 @@ type PokemonCenterNurseStoryObject = StoryObjectBase & {
 
 type DialogueStoryObject = StoryObjectBase & {
   kind: "dialogue";
-  dialogue: string;
+  request: DialogueInteractionRequest;
 };
 
 type PickupStoryObject = StoryObjectBase & {
@@ -520,8 +512,10 @@ function martStoryObjects(
       frameHeight: 32,
       sheetWidth: 96,
       sheetHeight: 64,
-      dialogue:
-        "Youngster: Tenho que comprar algumas Potions.",
+      request: {
+        kind: "script",
+        id: "mart-youngster",
+      },
     },
     {
       id: `${mapId}-woman`,
@@ -534,8 +528,10 @@ function martStoryObjects(
       frameHeight: 32,
       sheetWidth: 96,
       sheetHeight: 64,
-      dialogue:
-        "Mulher: Antidotes vendem muito bem por aqui.",
+      request: {
+        kind: "script",
+        id: "mart-woman",
+      },
     },
   ];
 }
@@ -555,7 +551,10 @@ function mapDialogueStoryObjects(
       frameHeight: 32,
       sheetWidth: 96,
       sheetHeight: 64,
-      dialogue: dialogue.dialogue,
+      request: {
+        kind: "script",
+        id: dialogue.dialogueId,
+      },
     }),
   );
 }
@@ -566,8 +565,13 @@ function mapPickupStoryObjects(
 ): PickupStoryObject[] {
   return resolveOverworldPickups(
     mapId,
-    story.collectedItemIds,
-  ).map((pickup) => ({
+    [],
+  )
+    .filter(
+      (pickup) =>
+        !hasStoryCollectedItem(story, pickup.id),
+    )
+    .map((pickup) => ({
     id: pickup.id,
     kind: "pickup",
     pickupId: pickup.id,
@@ -588,8 +592,11 @@ function mtMoonFossilStoryObjects(
   story: StoryState,
 ): FossilStoryObject[] {
   if (
-    story.mtMoonFossil ||
-    !story.defeatedTrainerIds.includes("mtmoon-miguel")
+    getStoryFossilChoice(story) ||
+    !isStoryTrainerDefeated(
+      story,
+      "mtmoon-miguel",
+    )
   ) {
     return [];
   }
@@ -629,7 +636,7 @@ function mtMoonFossilStoryObjects(
 function billStoryObjects(
   story: StoryState,
 ): BillStoryObject[] {
-  const stage = story.billStage ?? "unmet";
+  const stage = getStoryBillStage(story);
 
   if (stage === "teleporter-ready") {
     return [];
@@ -690,11 +697,7 @@ function vermilionCutTreeStoryObjects(
   story: StoryState,
 ): CutTreeStoryObject[] {
   const obstacleId = "vermilion-gym-cut-tree";
-  if (
-    (story.clearedObstacleIds ?? []).includes(
-      obstacleId,
-    )
-  ) {
+  if (isStoryObstacleCleared(story, obstacleId)) {
     return [];
   }
 
@@ -742,8 +745,10 @@ function pokemonCenterStoryObjects(
       frameHeight: 32,
       sheetWidth: 96,
       sheetHeight: 64,
-      dialogue:
-        "Gentleman: Pode usar o PC no canto à vontade. A recepcionista deixa qualquer treinador usar.",
+      request: {
+        kind: "script",
+        id: "center-gentleman",
+      },
     },
     {
       id: `${mapId}-boy`,
@@ -756,8 +761,10 @@ function pokemonCenterStoryObjects(
       frameHeight: 32,
       sheetWidth: 96,
       sheetHeight: 64,
-      dialogue:
-        "Garoto: Há Pokémon Centers em todas as cidades adiante. A cura é gratuita.",
+      request: {
+        kind: "script",
+        id: "center-boy",
+      },
     },
     {
       id: `${mapId}-youngster`,
@@ -770,8 +777,10 @@ function pokemonCenterStoryObjects(
       frameHeight: 32,
       sheetWidth: 96,
       sheetHeight: 64,
-      dialogue:
-        "Youngster: Pokémon Centers curam Pokémon cansados, feridos ou desmaiados por completo.",
+      request: {
+        kind: "script",
+        id: "center-youngster",
+      },
     },
   ];
 }
@@ -818,19 +827,28 @@ function mapStoryObjects(
     mapId,
     layout,
     worldObjects,
-    story.defeatedTrainerIds,
+    [],
   )) {
+    const playerTrainer = {
+      ...trainer,
+      defeated: isStoryTrainerDefeated(
+        story,
+        trainer.id,
+      ),
+    };
+
     if (
-      trainer.id === CERULEAN_ROCKET_TRAINER_ID &&
+      playerTrainer.id ===
+        CERULEAN_ROCKET_TRAINER_ID &&
       (
         !hasStoryKeyItem(story, "ss-ticket") ||
-        trainer.defeated
+        playerTrainer.defeated
       )
     ) {
       continue;
     }
 
-    objects.push(trainerStoryObject(trainer));
+    objects.push(trainerStoryObject(playerTrainer));
   }
 
   return objects;
@@ -846,14 +864,8 @@ export function OverworldGame({
   onWildBattleTrigger,
   onTrainerBattleTrigger,
   onMartOpen,
-  onPokemonCenterHeal,
   onPokemonStorageOpen,
-  onBillInteract,
-  onBillComputerInteract,
-  onSsAnneCaptainInteract,
-  onCutObstacleInteract,
-  onMtMoonFossilChoice,
-  onOverworldItemPickup,
+  onDialogueInteraction,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -882,15 +894,19 @@ export function OverworldGame({
   const cameraPositionRef = useRef({ x: 0, y: 0, ready: false });
   const transitioningRef = useRef(false);
   const loadTokenRef = useRef(0);
-  const interactionTimerRef = useRef<
-    ReturnType<typeof setTimeout> | null
-  >(null);
 
   const [mapId, setMapId] = useState("pallet-town");
   const [layout, setLayout] = useState<MapLayout | null>(null);
   const [worldData, setWorldData] = useState<WorldMapData | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(true);
-  const [interaction, setInteraction] = useState<string | null>(null);
+  const [dialogue, setDialogue] =
+    useState<DialoguePresentation | null>(null);
+  const [dialoguePageIndex, setDialoguePageIndex] =
+    useState(0);
+  const dialogueRef = useRef<DialoguePresentation | null>(
+    null,
+  );
+  const dialoguePageIndexRef = useRef(0);
 
   const mapDefinition = WORLD_MAPS[mapId];
   const visibleObjects = renderableObjects(worldData);
@@ -919,6 +935,10 @@ export function OverworldGame({
     pausedRef.current = paused;
     if (paused) {
       pressedRef.current = [];
+      dialogueRef.current = null;
+      dialoguePageIndexRef.current = 0;
+      setDialogue(null);
+      setDialoguePageIndex(0);
     } else {
       wildBattleLockRef.current = false;
       trainerBattleLockRef.current = false;
@@ -946,15 +966,43 @@ export function OverworldGame({
     pressedRef.current = [];
   }, []);
 
-  const showInteraction = useCallback((message: string) => {
-    if (interactionTimerRef.current) {
-      clearTimeout(interactionTimerRef.current);
+  const showDialogue = useCallback(
+    (presentation: DialoguePresentation) => {
+      dialogueRef.current = presentation;
+      dialoguePageIndexRef.current = 0;
+      setDialogue(presentation);
+      setDialoguePageIndex(0);
+      resetInput();
+    },
+    [resetInput],
+  );
+
+  const showInteraction = useCallback(
+    (message: string) => {
+      showDialogue({
+        id: "system-message",
+        pages: [{ id: "main", text: message }],
+      });
+    },
+    [showDialogue],
+  );
+
+  const advanceDialogue = useCallback((): boolean => {
+    const active = dialogueRef.current;
+    if (!active) return false;
+
+    const next = dialoguePageIndexRef.current + 1;
+    if (next < active.pages.length) {
+      dialoguePageIndexRef.current = next;
+      setDialoguePageIndex(next);
+      return true;
     }
 
-    setInteraction(message);
-    interactionTimerRef.current = setTimeout(() => {
-      setInteraction(null);
-    }, INTERACTION_DURATION_MS);
+    dialogueRef.current = null;
+    dialoguePageIndexRef.current = 0;
+    setDialoguePageIndex(0);
+    setDialogue(null);
+    return true;
   }, []);
 
   const createBattleContext =
@@ -1135,6 +1183,10 @@ export function OverworldGame({
       return;
     }
 
+    if (advanceDialogue()) {
+      return;
+    }
+
     const player = playerRef.current;
     const delta = DIRECTION_DELTA[player.facing];
     const targetX = player.tileX + delta.x;
@@ -1146,7 +1198,11 @@ export function OverworldGame({
       targetX === 4 &&
       targetY === 5
     ) {
-      showInteraction(onBillComputerInteract());
+      showDialogue(
+        onDialogueInteraction({
+          kind: "bill-computer",
+        }),
+      );
       return;
     }
 
@@ -1203,19 +1259,20 @@ export function OverworldGame({
         if (!storyRef.current.starter) {
           onRequestStarterChoice();
         } else {
-          showInteraction(
-            storyStarterSummary(storyRef.current) ??
-              "Oak: Cuide bem do seu primeiro Pokémon.",
+          showDialogue(
+            onDialogueInteraction({
+              kind: "lab-oak",
+            }),
           );
         }
         return;
       }
 
       if (storyObject.kind === "rival") {
-        showInteraction(
-          storyRef.current.starter
-            ? "Blue: Quando você tentar sair, vamos ver quem treinou melhor."
-            : "Blue: Ei! Escolha logo o seu Pokémon.",
+        showDialogue(
+          onDialogueInteraction({
+            kind: "lab-rival",
+          }),
         );
         return;
       }
@@ -1226,20 +1283,27 @@ export function OverworldGame({
       }
 
       if (storyObject.kind === "bill") {
-        showInteraction(onBillInteract());
+        showDialogue(
+          onDialogueInteraction({ kind: "bill" }),
+        );
         return;
       }
 
       if (storyObject.kind === "ss-anne-captain") {
-        showInteraction(onSsAnneCaptainInteract());
+        showDialogue(
+          onDialogueInteraction({
+            kind: "ss-anne-captain",
+          }),
+        );
         return;
       }
 
       if (storyObject.kind === "cut-tree") {
-        showInteraction(
-          onCutObstacleInteract(
-            storyObject.obstacleId,
-          ),
+        showDialogue(
+          onDialogueInteraction({
+            kind: "cut",
+            obstacleId: storyObject.obstacleId,
+          }),
         );
         return;
       }
@@ -1252,46 +1316,39 @@ export function OverworldGame({
       if (
         storyObject.kind === "pokemon-center-nurse"
       ) {
-        onPokemonCenterHeal();
-        showInteraction(
-          "Nurse: Pronto! Todos os seus Pokémon estão completamente saudáveis.",
+        showDialogue(
+          onDialogueInteraction({ kind: "nurse" }),
         );
         return;
       }
 
       if (storyObject.kind === "fossil") {
-        const result = onMtMoonFossilChoice(
-          storyObject.fossilId,
-        );
-
-        showInteraction(
-          result.accepted
-            ? `Você escolheu o ${storyObject.fossilName}. Miguel ficará com o outro fóssil.`
-            : result.reason === "miguel-not-defeated"
-              ? "Miguel ainda não concordou em dividir os fósseis."
-              : "Você já escolheu um fóssil em Mt. Moon.",
+        showDialogue(
+          onDialogueInteraction({
+            kind: "fossil",
+            fossilId: storyObject.fossilId,
+            fossilName: storyObject.fossilName,
+          }),
         );
         return;
       }
 
       if (storyObject.kind === "pickup") {
-        const result = onOverworldItemPickup(
-          storyObject.pickupId,
-          storyObject.itemId,
-        );
-
-        showInteraction(
-          result.accepted
-            ? `Você encontrou ${storyObject.itemName}!`
-            : result.reason === "inventory-full"
-              ? "Sua bolsa não tem espaço para mais desse item."
-              : "Esse item já foi coletado.",
+        showDialogue(
+          onDialogueInteraction({
+            kind: "pickup",
+            pickupId: storyObject.pickupId,
+            itemId: storyObject.itemId,
+            itemName: storyObject.itemName,
+          }),
         );
         return;
       }
 
       if (storyObject.kind === "dialogue") {
-        showInteraction(storyObject.dialogue);
+        showDialogue(
+          onDialogueInteraction(storyObject.request),
+        );
         return;
       }
 
@@ -1314,29 +1371,32 @@ export function OverworldGame({
       );
 
     if (object) {
-      const dialogue = resolveNpcDialogue(
+      const dialogueId = resolveNpcDialogueId(
         mapIdRef.current,
         object.x,
         object.y,
-        storyRef.current.firstBattleComplete,
       );
 
-      showInteraction(
-        dialogue ??
+      if (dialogueId) {
+        showDialogue(
+          onDialogueInteraction({
+            kind: "script",
+            id: dialogueId,
+          }),
+        );
+      } else {
+        showInteraction(
           `${displayObjectName(object)} · diálogo ainda não importado`,
-      );
+        );
+      }
     }
   }, [
-    onBillComputerInteract,
-    onBillInteract,
-    onCutObstacleInteract,
+    advanceDialogue,
+    onDialogueInteraction,
     onMartOpen,
-    onMtMoonFossilChoice,
-    onPokemonCenterHeal,
     onPokemonStorageOpen,
-    onSsAnneCaptainInteract,
-    onOverworldItemPickup,
     onRequestStarterChoice,
+    showDialogue,
     showInteraction,
     triggerTrainerBattle,
   ]);
@@ -1466,14 +1526,6 @@ export function OverworldGame({
   }, [loadMap, respawnRequest]);
 
   useEffect(() => {
-    return () => {
-      if (interactionTimerRef.current) {
-        clearTimeout(interactionTimerRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     if (!layout || !foregroundRef.current) {
       return;
     }
@@ -1585,7 +1637,8 @@ export function OverworldGame({
       if (
         !activeLayout ||
         transitioningRef.current ||
-        pausedRef.current
+        pausedRef.current ||
+        dialogueRef.current
       ) {
         return false;
       }
@@ -2392,8 +2445,27 @@ export function OverworldGame({
         </div>
       </div>
 
-      {interaction && (
-        <div className="interaction-toast">{interaction}</div>
+      {dialogue && dialogue.pages[dialoguePageIndex] && (
+        <div className="interaction-toast dialogue-panel">
+          {dialogue.pages[dialoguePageIndex].speaker && (
+            <strong className="dialogue-speaker">
+              {dialogue.pages[dialoguePageIndex].speaker}
+            </strong>
+          )}
+          <span>
+            {dialogue.pages[dialoguePageIndex].text}
+          </span>
+          <button
+            type="button"
+            className="dialogue-continue"
+            onClick={() => {
+              advanceDialogue();
+            }}
+          >
+            {dialoguePageIndex + 1}/{dialogue.pages.length}
+            {" · "}Avançar
+          </button>
+        </div>
       )}
 
       <div

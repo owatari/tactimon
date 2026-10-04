@@ -209,6 +209,37 @@ h1 {
   pointer-events: none;
 }
 
+.dialogue-panel {
+  display: grid;
+  gap: 5px;
+  min-width: min(420px, calc(100% - 32px));
+  text-align: left;
+  pointer-events: auto;
+}
+
+.dialogue-speaker {
+  color: var(--accent-strong);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dialogue-continue {
+  justify-self: end;
+  border: 0;
+  padding: 2px 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.dialogue-continue:hover,
+.dialogue-continue:focus-visible {
+  color: var(--text);
+}
+
 .transition-curtain {
   position: absolute;
   inset: 0;

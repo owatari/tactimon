@@ -47,20 +47,14 @@ import {
 } from "@/lib/trainers";
 import {
   applyStoryWhiteOut,
-  chooseMtMoonFossil,
   chooseStarter,
-  collectOverworldItem,
   collectStoryValuable,
   DEFAULT_STORY_STATE,
   depositCapturedPokemon,
   grantStoryBadge,
-  healStoryParty,
-  interactWithBill,
-  interactWithCutObstacle,
-  interactWithSsAnneCaptain,
+  isStoryTrainerDefeated,
   markStoryTrainerDefeated,
   normalizeStoryState,
-  runBillCellSeparator,
   placeCapturedPokemon,
   registerStoryHealLocation,
   storyCanCapturePokemon,
@@ -69,6 +63,11 @@ import {
   type PokemonStorageActionResult,
   type StoryState,
 } from "@/lib/story";
+import {
+  runDialogueInteraction,
+  type DialogueInteractionRequest,
+  type DialoguePresentation,
+} from "@/lib/dialogueSystem";
 
 const STORAGE_KEY = "tactimon.story.v1";
 
@@ -673,6 +672,26 @@ export function GameClient() {
     return preview;
   };
 
+  const handleDialogueInteraction = (
+    request: DialogueInteractionRequest,
+  ): DialoguePresentation => {
+    const preview = runDialogueInteraction(
+      story,
+      request,
+    );
+
+    if (preview.story !== story) {
+      setStory((current) =>
+        runDialogueInteraction(
+          current,
+          request,
+        ).story,
+      );
+    }
+
+    return preview.presentation;
+  };
+
   const finishProgression = (
     progression: PokemonProgression,
   ) => {
@@ -783,7 +802,7 @@ export function GameClient() {
             story.starter &&
             story.playerPokemon &&
             story.firstBattleComplete &&
-            !story.defeatedTrainerIds.includes(trainer.id) &&
+            !isStoryTrainerDefeated(story, trainer.id) &&
             battleParty.length > 0
           ) {
             if (
@@ -816,88 +835,11 @@ export function GameClient() {
           }
         }}
         onMartOpen={() => setMartOpen(true)}
-        onPokemonCenterHeal={() =>
-          setStory((current) => healStoryParty(current))
-        }
+        onDialogueInteraction={handleDialogueInteraction}
         onPokemonStorageOpen={() =>
           setStorageOpen(true)
         }
-        onBillInteract={() => {
-          const preview = interactWithBill(story);
-          setStory((current) =>
-            interactWithBill(current).story,
-          );
-          return preview.message;
-        }}
-        onBillComputerInteract={() => {
-          const preview = runBillCellSeparator(story);
-          setStory((current) =>
-            runBillCellSeparator(current).story,
-          );
-          return preview.message;
-        }}
-        onSsAnneCaptainInteract={() => {
-          const preview = interactWithSsAnneCaptain(story);
-          setStory((current) =>
-            interactWithSsAnneCaptain(current).story,
-          );
-          return preview.message;
-        }}
-        onCutObstacleInteract={(obstacleId) => {
-          const preview = interactWithCutObstacle(
-            story,
-            obstacleId,
-          );
-          setStory((current) =>
-            interactWithCutObstacle(
-              current,
-              obstacleId,
-            ).story,
-          );
-          return preview.message;
-        }}
-        onMtMoonFossilChoice={(fossil) => {
-          const preview = chooseMtMoonFossil(
-            story,
-            fossil,
-          );
 
-          if (preview.accepted) {
-            setStory((current) =>
-              chooseMtMoonFossil(
-                current,
-                fossil,
-              ).story,
-            );
-          }
-
-          return {
-            accepted: preview.accepted,
-            reason: preview.reason,
-          };
-        }}
-        onOverworldItemPickup={(pickupId, itemId) => {
-          const preview = collectOverworldItem(
-            story,
-            pickupId,
-            itemId,
-          );
-
-          if (preview.accepted) {
-            setStory((current) =>
-              collectOverworldItem(
-                current,
-                pickupId,
-                itemId,
-              ).story,
-            );
-          }
-
-          return {
-            accepted: preview.accepted,
-            reason: preview.reason,
-          };
-        }}
       />
 
       {starterChoiceOpen && !story.starter && (
