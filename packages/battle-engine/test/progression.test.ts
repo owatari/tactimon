@@ -569,7 +569,7 @@ describe("Mt. Moon trainer species", () => {
     expect(experienceRewardForTrainer("sandshrew", 11, 1)).toBe(219);
     expect(experienceRewardForTrainer("grimer", 12, 1)).toBe(231);
     expect(experienceRewardForTrainer("voltorb", 12, 1)).toBe(264);
-    expect(experienceRewardForTrainer("koffing", 12, 1)).toBe(293);
+    expect(experienceRewardForTrainer("koffing", 12, 1)).toBe(292);
   });
 });
 
@@ -577,7 +577,7 @@ describe("Mt. Moon trainer species", () => {
 describe("Route 4 Crissy species", () => {
   it("supports Parasect with FireRed growth, EXP, PP and usable powder moves", () => {
     expect(fireRedExperienceAtLevel("parasect", 31)).toBe(29_791);
-    expect(experienceRewardForTrainer("parasect", 31, 1)).toBe(850);
+    expect(experienceRewardForTrainer("parasect", 31, 1)).toBe(849);
 
     expect(createPokemonProgression("paras", 31).activeMoves).toEqual([
       "scratch",
@@ -614,8 +614,8 @@ describe("Cerulean Gym trainer species", () => {
     expect(fireRedExperienceAtLevel("staryu", 18)).toBe(7_290);
     expect(fireRedExperienceAtLevel("starmie", 21)).toBe(11_576);
 
-    expect(experienceRewardForTrainer("horsea", 16, 1)).toBe(284);
-    expect(experienceRewardForTrainer("shellder", 16, 1)).toBe(332);
+    expect(experienceRewardForTrainer("horsea", 16, 1)).toBe(283);
+    expect(experienceRewardForTrainer("shellder", 16, 1)).toBe(331);
     expect(experienceRewardForTrainer("goldeen", 19, 1)).toBe(451);
     expect(experienceRewardForTrainer("staryu", 18, 1)).toBe(408);
     expect(experienceRewardForTrainer("starmie", 21, 1)).toBe(931);

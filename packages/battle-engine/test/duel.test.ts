@@ -1460,6 +1460,11 @@ describe("AI utility planning", () => {
     ).toBe(true);
     expect(usedMoves[0]).toBe("tackle");
     expect(usedMoves).not.toContain("tail-whip");
+
+    const finalRival = turn.state.units.find(
+      (unit) => unit.id === rival.id,
+    )!;
+    expect(finalRival.ap).toBe(2);
   });
 });
 

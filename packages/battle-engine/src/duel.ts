@@ -3972,6 +3972,7 @@ function chooseAiCandidate(
   options: {
     requireInRange: boolean;
     statusAlreadyUsed: boolean;
+    damageAlreadyUsed: boolean;
   },
 ): AiCandidate | null {
   const enemies = state.units.filter(
@@ -3997,8 +3998,14 @@ function chooseAiCandidate(
       continue;
     }
     if (
-      options.statusAlreadyUsed &&
-      move.category === "status"
+      move.category === "status" &&
+      (
+        options.statusAlreadyUsed ||
+        (
+          options.damageAlreadyUsed &&
+          move.targeting === "single-enemy"
+        )
+      )
     ) {
       continue;
     }
@@ -4086,6 +4093,7 @@ export function resolveSimpleAiTurnDetailed(
   const steps: DuelActionResult[] = [];
   let actor = getActiveDuelUnit(state);
   let statusUsed = false;
+  let damageUsed = false;
 
   const run = (action: DuelAction): DuelActionResult => {
     const result = applyDuelAction(state, action);
@@ -4112,6 +4120,7 @@ export function resolveSimpleAiTurnDetailed(
     {
       requireInRange: false,
       statusAlreadyUsed: false,
+      damageAlreadyUsed: false,
     },
   );
 
@@ -4136,7 +4145,8 @@ export function resolveSimpleAiTurnDetailed(
   }
 
   // Spend remaining AP on the best tactical actions available now. A status
-  // move is used at most once per turn, preventing deterministic debuff spam.
+  // move is used at most once per turn. After committing to damage, the AI
+  // keeps offensive pressure instead of dumping leftover AP into a debuff.
   for (
     let actionIndex = 0;
     actionIndex < 3;
@@ -4157,6 +4167,7 @@ export function resolveSimpleAiTurnDetailed(
       {
         requireInRange: true,
         statusAlreadyUsed: statusUsed,
+        damageAlreadyUsed: damageUsed,
       },
     );
     if (!candidate || candidate.score <= 0) {
@@ -4176,6 +4187,8 @@ export function resolveSimpleAiTurnDetailed(
 
     if (candidate.move.category === "status") {
       statusUsed = true;
+    } else {
+      damageUsed = true;
     }
 
     if (result.state.status === "finished") {

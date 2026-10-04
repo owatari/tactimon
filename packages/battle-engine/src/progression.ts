@@ -768,7 +768,12 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
 
   const evs = { ...ZERO_EVS };
 
-  const activeMoves = [...INITIAL_MOVES[species]];
+  const activeMoves =
+    species === "paras" && bounded < 13
+      ? INITIAL_MOVES.paras.filter(
+          (moveId) => moveId !== "poison-powder",
+        )
+      : [...INITIAL_MOVES[species]];
 
   return {
     species,
