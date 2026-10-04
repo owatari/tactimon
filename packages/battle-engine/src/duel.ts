@@ -100,6 +100,7 @@ export type DuelItemId = "potion" | "poke-ball";
 export type DuelInventory = Record<DuelItemId, number>;
 export type DuelMoveId =
   | "tackle"
+  | "take-down"
   | "scratch"
   | "growl"
   | "tail-whip"
@@ -292,6 +293,8 @@ export interface DuelMove {
     delta: -1;
   };
   secondaryEffectChance?: number;
+  /** Fraction of actual HP damage dealt that returns to the attacker as recoil. */
+  recoilDamageFraction?: number;
   effect?:
     | "attack-down"
     | "attack-down-2"
@@ -1395,6 +1398,23 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 35,
     minRange: 1,
     maxRange: 1,
+  },
+  "take-down": {
+    id: "take-down",
+    name: "Take Down",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description:
+      "Investida de 90 power que causa recoil de 1/4 do dano efetivamente causado.",
+    power: 90,
+    apCost: 5,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 1,
+    recoilDamageFraction: 0.25,
   },
   pound: {
     id: "pound",
@@ -4167,6 +4187,7 @@ export function applyDuelAction(
   actor.ap -= move.apCost;
 
   let damage = 0;
+  let damageDealt = 0;
   let statusApplied: Exclude<DuelMajorStatus, null> | undefined;
   const statChanges: Array<{
     stat: DuelStatId;
@@ -4183,6 +4204,7 @@ export function applyDuelAction(
       move,
     );
     damage = damageResult.damage;
+    damageDealt = Math.min(target.hp, damage);
     sameTypeAttackBonus =
       damageResult.sameTypeAttackBonus;
     typeEffectiveness =
@@ -4286,6 +4308,26 @@ export function applyDuelAction(
       );
     }
 
+    let recoilFainted = false;
+    if (
+      move.recoilDamageFraction &&
+      damageDealt > 0 &&
+      actor.hp > 0
+    ) {
+      const recoil = Math.max(
+        1,
+        Math.floor(
+          damageDealt * move.recoilDamageFraction,
+        ),
+      );
+      actor.hp = Math.max(0, actor.hp - recoil);
+      recoilFainted = actor.hp <= 0;
+      appendLog(
+        state,
+        `${move.name} causou ${recoil} de recoil em ${actor.displayName}.`,
+      );
+    }
+
     if (target.hp <= 0) {
       appendLog(
         state,
@@ -4295,6 +4337,33 @@ export function applyDuelAction(
       if (!sideHasLivingUnit(state, target.side)) {
         state.status = "finished";
         state.winner = actor.side;
+      }
+    }
+
+    if (recoilFainted) {
+      appendLog(
+        state,
+        `${actor.displayName} desmaiou com o recoil de ${move.name}.`,
+      );
+
+      const actorSideAlive = sideHasLivingUnit(
+        state,
+        actor.side,
+      );
+      const targetSideAlive = sideHasLivingUnit(
+        state,
+        target.side,
+      );
+
+      if (!actorSideAlive || !targetSideAlive) {
+        state.status = "finished";
+        state.winner = actorSideAlive
+          ? actor.side
+          : targetSideAlive
+            ? target.side
+            : null;
+      } else {
+        resolveTurnEnd(state, actor);
       }
     }
 
@@ -5108,6 +5177,21 @@ function scoreAiCandidate(
   const secondaryUtility =
     aiSecondaryStatusUtility(target, move) +
     aiSecondaryStatUtility(target, move);
+  const recoilDamage =
+    move.recoilDamageFraction && result.damage > 0
+      ? Math.max(
+          1,
+          Math.floor(
+            Math.min(result.damage, target.hp) *
+              move.recoilDamageFraction,
+          ),
+        )
+      : 0;
+  const recoilPenalty =
+    recoilDamage > 0
+      ? recoilDamage * 4 +
+        (recoilDamage >= actor.hp ? 160 : 0)
+      : 0;
   const riderUtility =
     move.effect === "speed-down" &&
     target.speedStage > -MAX_STAGE
@@ -5129,7 +5213,8 @@ function scoreAiCandidate(
       lowHpFocus +
       coverageBonus +
       secondaryUtility +
-      riderUtility +
+      riderUtility -
+      recoilPenalty +
       positioningScore +
       resourceScore +
       targetThreat +
