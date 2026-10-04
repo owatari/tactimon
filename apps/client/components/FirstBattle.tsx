@@ -190,6 +190,28 @@ function stageBadges(unit: DuelUnit): Array<{
     });
   }
 
+  if (unit.accuracyStage !== 0) {
+    badges.push({
+      label:
+        `ACC ${unit.accuracyStage > 0 ? "+" : ""}${unit.accuracyStage}`,
+      tone:
+        unit.accuracyStage > 0
+          ? "buff"
+          : "debuff",
+    });
+  }
+
+  if (unit.evasionStage !== 0) {
+    badges.push({
+      label:
+        `EVA ${unit.evasionStage > 0 ? "+" : ""}${unit.evasionStage}`,
+      tone:
+        unit.evasionStage > 0
+          ? "buff"
+          : "debuff",
+    });
+  }
+
   if (unit.speedStage !== 0) {
     badges.push({
       label: `SPD ${unit.speedStage > 0 ? "+" : ""}${unit.speedStage}`,
@@ -756,6 +778,16 @@ export function FirstBattle({
       facingBetween(actor.position, target.position),
     );
     await wait(ATTACK_WINDUP_MS);
+
+    if (targetResult?.missed) {
+      setState(result.state);
+      flashNotice(
+        `${DUEL_MOVES[presentation.moveId].name} errou!`,
+      );
+      setUnitAnimation(actor.id, "idle");
+      await wait(100);
+      return;
+    }
 
     if ((targetResult?.damage ?? 0) > 0) {
       setUnitAnimation(target.id, "hurt");
