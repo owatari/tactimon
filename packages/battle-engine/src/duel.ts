@@ -176,6 +176,8 @@ export type DuelMoveMotion = "contact" | "status" | "projectile";
 export type DuelStatId =
   | "attack"
   | "defense"
+  | "special-attack"
+  | "special-defense"
   | "speed";
 
 export interface DuelPoint {
@@ -290,6 +292,7 @@ export interface DuelMove {
     | "defense-down"
     | "defense-down-2"
     | "defense-up"
+    | "special-attack-up"
     | "speed-down"
     | "speed-down-2"
     | "speed-up-2"
@@ -363,6 +366,8 @@ export interface DuelUnit {
   speed: number;
   attackStage: number;
   defenseStage: number;
+  specialAttackStage: number;
+  specialDefenseStage: number;
   speedStage: number;
   ap: number;
   maxAp: number;
@@ -1681,12 +1686,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "harden",
     description:
-      "Aumenta Special Attack no jogo original; estágio de Sp. Atk ainda não é modelado.",
+      "Aumenta o Special Attack do usuário em 1 estágio.",
     power: null,
     apCost: 2,
     maxPp: 40,
     minRange: 0,
     maxRange: 0,
+    effect: "special-attack-up",
   },
   wrap: {
     id: "wrap",
@@ -2972,6 +2978,8 @@ function makeUnit(
     }),
     attackStage: 0,
     defenseStage: 0,
+    specialAttackStage: 0,
+    specialDefenseStage: 0,
     speedStage: 0,
     ap: 6,
     maxAp: 6,
@@ -3672,12 +3680,14 @@ function calculateDamage(
 
   const isSpecial = move.category === "special";
   const attack = isSpecial
-    ? attacker.specialAttack
+    ? attacker.specialAttack *
+      stageMultiplier(attacker.specialAttackStage)
     : attacker.attack * stageMultiplier(attacker.attackStage);
   const defense = Math.max(
     1,
     isSpecial
-      ? defender.specialDefense
+      ? defender.specialDefense *
+        stageMultiplier(defender.specialDefenseStage)
       : defender.defense * stageMultiplier(defender.defenseStage),
   );
 
@@ -4304,6 +4314,20 @@ export function applyDuelAction(
       state,
       `${move.name} aumentou a Defense de ${target.displayName}.`,
     );
+  } else if (move.effect === "special-attack-up") {
+    const before = actor.specialAttackStage;
+    actor.specialAttackStage = Math.min(
+      MAX_STAGE,
+      actor.specialAttackStage + 1,
+    );
+    statChanges.push({
+      stat: "special-attack",
+      delta: actor.specialAttackStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} aumentou o Special Attack de ${actor.displayName}.`,
+    );
   } else if (
     move.effect === "speed-down" ||
     move.effect === "speed-down-2"
@@ -4665,6 +4689,22 @@ function aiStatusUtility(
       0,
       54 - Math.max(0, actor.defenseStage) * 12 +
         hpPressure,
+    );
+  }
+
+  if (move.effect === "special-attack-up") {
+    if (actor.specialAttackStage >= 4) return -Infinity;
+    const specialMoves = actor.moves.filter(
+      (moveId) =>
+        DUEL_MOVES[moveId]?.category === "special" &&
+        getDuelMovePp(actor, moveId) > 0,
+    ).length;
+    if (specialMoves === 0) return -Infinity;
+    return Math.max(
+      0,
+      58 -
+        Math.max(0, actor.specialAttackStage) * 12 +
+        specialMoves * 8,
     );
   }
 
