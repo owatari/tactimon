@@ -3174,14 +3174,28 @@ function stageMultiplier(stage: number): number {
     : 2 / (2 - bounded);
 }
 
+const ACCURACY_STAGE_RATIOS: readonly number[] = [
+  0.33,
+  0.36,
+  0.43,
+  0.5,
+  0.6,
+  0.75,
+  1,
+  1.33,
+  1.66,
+  2,
+  2.33,
+  2.66,
+  3,
+];
+
 function accuracyStageMultiplier(stage: number): number {
   const bounded = Math.max(
     -MAX_STAGE,
-    Math.min(MAX_STAGE, stage),
+    Math.min(MAX_STAGE, Math.trunc(stage)),
   );
-  return bounded >= 0
-    ? (3 + bounded) / 3
-    : 3 / (3 - bounded);
+  return ACCURACY_STAGE_RATIOS[bounded + MAX_STAGE];
 }
 
 export function getDuelMoveHitChance(
