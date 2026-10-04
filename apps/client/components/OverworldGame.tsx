@@ -1268,15 +1268,25 @@ export function OverworldGame({
 
   useEffect(() => {
     const saved = readSavedPlayerPosition();
-    const initialMapId = saved?.mapId ?? "pallet-town";
+    const currentStory = storyRef.current;
+    const canResumeSavedPosition = Boolean(
+      currentStory.starter &&
+        currentStory.playerPokemon,
+    );
+    const initialMapId =
+      canResumeSavedPosition && saved
+        ? saved.mapId
+        : "pallet-town";
     const initialDefinition = WORLD_MAPS[initialMapId];
 
     void loadMap(
       initialMapId,
-      saved
+      canResumeSavedPosition && saved
         ? { x: saved.x, y: saved.y }
         : initialDefinition.spawn,
-      saved?.facing ?? "south",
+      canResumeSavedPosition && saved
+        ? saved.facing
+        : "south",
     );
   }, [loadMap]);
 
