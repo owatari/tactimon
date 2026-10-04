@@ -13,6 +13,16 @@ import {
   type StarterSpeciesId,
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
+import {
+  completePlayerWorldEvent,
+  createEmptyPlayerWorldState,
+  getPlayerWorldChoice,
+  hasPlayerWorldEvent,
+  normalizePlayerWorldState,
+  setPlayerWorldChoice,
+  type PlayerWorldEventNamespace,
+  type PlayerWorldState,
+} from "./playerWorldState";
 
 export type CapturedPokemon = PokemonProgression & {
   species: WildSpeciesId;
@@ -61,6 +71,13 @@ export type StoryState = {
   fieldTechniqueIds?: StoryFieldTechniqueId[];
   clearedObstacleIds?: string[];
   billStage?: BillStoryStage;
+  /**
+   * Private world-instance state for this player only.
+   *
+   * Multiplayer code must replicate playerWorld with the owning player,
+   * never as shared map/world state.
+   */
+  playerWorld?: PlayerWorldState;
 };
 
 export const DEFAULT_STORY_STATE: StoryState = {
@@ -87,6 +104,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   fieldTechniqueIds: [],
   clearedObstacleIds: [],
   billStage: "unmet",
+  playerWorld: createEmptyPlayerWorldState(),
 };
 
 export const STARTER_META: Record<
@@ -141,6 +159,7 @@ export function chooseStarter(
     fieldTechniqueIds: [],
     clearedObstacleIds: [],
     billStage: "unmet",
+    playerWorld: createEmptyPlayerWorldState(),
   };
 }
 
@@ -454,6 +473,19 @@ export function normalizeStoryState(
       )
         ? "helped"
         : normalizeBillStage(input?.billStage),
+    playerWorld: normalizePlayerWorldState(
+      input?.playerWorld,
+      {
+        collectedItemIds: input?.collectedItemIds,
+        defeatedTrainerIds: input?.defeatedTrainerIds,
+        badgeIds: input?.badgeIds,
+        clearedObstacleIds: input?.clearedObstacleIds,
+        keyItemIds: input?.keyItemIds,
+        fieldTechniqueIds: input?.fieldTechniqueIds,
+        mtMoonFossil: input?.mtMoonFossil,
+        billStage: input?.billStage,
+      },
+    ),
   };
 }
 
@@ -679,19 +711,189 @@ export type StoryScriptInteractionResult = {
   message: string;
 };
 
+function storyPlayerWorld(
+  story: StoryState,
+): PlayerWorldState {
+  return (
+    story.playerWorld ??
+    normalizePlayerWorldState(undefined, {
+      collectedItemIds: story.collectedItemIds,
+      defeatedTrainerIds: story.defeatedTrainerIds,
+      badgeIds: story.badgeIds,
+      clearedObstacleIds: story.clearedObstacleIds,
+      keyItemIds: story.keyItemIds,
+      fieldTechniqueIds: story.fieldTechniqueIds,
+      mtMoonFossil: story.mtMoonFossil,
+      billStage: story.billStage,
+    })
+  );
+}
+
+export function hasStoryPlayerEvent(
+  story: StoryState,
+  namespace: PlayerWorldEventNamespace,
+  id: string,
+): boolean {
+  return hasPlayerWorldEvent(
+    storyPlayerWorld(story),
+    namespace,
+    id,
+  );
+}
+
+function completeStoryPlayerEvent(
+  story: StoryState,
+  namespace: PlayerWorldEventNamespace,
+  id: string,
+): StoryState {
+  return {
+    ...story,
+    playerWorld: completePlayerWorldEvent(
+      storyPlayerWorld(story),
+      namespace,
+      id,
+    ),
+  };
+}
+
+function setStoryPlayerChoice(
+  story: StoryState,
+  choiceId: string,
+  value: string,
+): StoryState {
+  return {
+    ...story,
+    playerWorld: setPlayerWorldChoice(
+      storyPlayerWorld(story),
+      choiceId,
+      value,
+    ),
+  };
+}
+
+export function isStoryTrainerDefeated(
+  story: StoryState,
+  trainerId: string,
+): boolean {
+  return (
+    hasStoryPlayerEvent(story, "trainer", trainerId) ||
+    story.defeatedTrainerIds.includes(trainerId)
+  );
+}
+
+export function markStoryTrainerDefeated(
+  story: StoryState,
+  trainerId: string,
+): StoryState {
+  let next = completeStoryPlayerEvent(
+    story,
+    "trainer",
+    trainerId,
+  );
+
+  if (!next.defeatedTrainerIds.includes(trainerId)) {
+    next = {
+      ...next,
+      defeatedTrainerIds: [
+        ...next.defeatedTrainerIds,
+        trainerId,
+      ],
+    };
+  }
+
+  return next;
+}
+
+export function grantStoryBadge(
+  story: StoryState,
+  badgeId: StoryBadgeId,
+): StoryState {
+  let next = completeStoryPlayerEvent(
+    story,
+    "badge",
+    badgeId,
+  );
+
+  if (!next.badgeIds.includes(badgeId)) {
+    next = {
+      ...next,
+      badgeIds: [...next.badgeIds, badgeId],
+    };
+  }
+
+  return next;
+}
+
+export function isStoryObstacleCleared(
+  story: StoryState,
+  obstacleId: string,
+): boolean {
+  return (
+    hasStoryPlayerEvent(story, "obstacle", obstacleId) ||
+    (story.clearedObstacleIds ?? []).includes(obstacleId)
+  );
+}
+
+export function hasStoryCollectedItem(
+  story: StoryState,
+  pickupId: string,
+): boolean {
+  return (
+    hasStoryPlayerEvent(story, "pickup", pickupId) ||
+    story.collectedItemIds.includes(pickupId)
+  );
+}
+
+export function getStoryFossilChoice(
+  story: StoryState,
+): MtMoonFossilId | null {
+  const choice = getPlayerWorldChoice(
+    storyPlayerWorld(story),
+    "mt-moon-fossil",
+  );
+
+  return choice === "dome" || choice === "helix"
+    ? choice
+    : story.mtMoonFossil;
+}
+
+export function getStoryBillStage(
+  story: StoryState,
+): BillStoryStage {
+  const choice = getPlayerWorldChoice(
+    storyPlayerWorld(story),
+    "bill-stage",
+  );
+
+  return choice === "teleporter-ready" ||
+    choice === "helped"
+    ? choice
+    : story.billStage ?? "unmet";
+}
+
 export function hasStoryKeyItem(
   story: StoryState,
   itemId: StoryKeyItemId,
 ): boolean {
-  return (story.keyItemIds ?? []).includes(itemId);
+  return (
+    hasStoryPlayerEvent(story, "key-item", itemId) ||
+    (story.keyItemIds ?? []).includes(itemId)
+  );
 }
 
 export function hasStoryFieldTechnique(
   story: StoryState,
   techniqueId: StoryFieldTechniqueId,
 ): boolean {
-  return (story.fieldTechniqueIds ?? []).includes(
-    techniqueId,
+  return (
+    hasStoryPlayerEvent(
+      story,
+      "field-technique",
+      techniqueId,
+    ) ||
+    (story.fieldTechniqueIds ?? []).includes(
+      techniqueId,
+    )
   );
 }
 
@@ -699,7 +901,7 @@ export function interactWithCutObstacle(
   story: StoryState,
   obstacleId: string,
 ): StoryScriptInteractionResult {
-  if ((story.clearedObstacleIds ?? []).includes(obstacleId)) {
+  if (isStoryObstacleCleared(story, obstacleId)) {
     return {
       story,
       message: "A pequena árvore já foi cortada.",
@@ -714,14 +916,25 @@ export function interactWithCutObstacle(
     };
   }
 
-  return {
-    story: {
-      ...story,
+  let next = completeStoryPlayerEvent(
+    story,
+    "obstacle",
+    obstacleId,
+  );
+  if (
+    !(next.clearedObstacleIds ?? []).includes(obstacleId)
+  ) {
+    next = {
+      ...next,
       clearedObstacleIds: [
-        ...(story.clearedObstacleIds ?? []),
+        ...(next.clearedObstacleIds ?? []),
         obstacleId,
       ],
-    },
+    };
+  }
+
+  return {
+    story: next,
     message:
       "Você usou Cut! A pequena árvore foi removida.",
   };
@@ -738,14 +951,23 @@ export function interactWithSsAnneCaptain(
     };
   }
 
-  return {
-    story: {
-      ...story,
+  let next = completeStoryPlayerEvent(
+    story,
+    "field-technique",
+    "cut",
+  );
+  if (!(next.fieldTechniqueIds ?? []).includes("cut")) {
+    next = {
+      ...next,
       fieldTechniqueIds: [
-        ...(story.fieldTechniqueIds ?? []),
+        ...(next.fieldTechniqueIds ?? []),
         "cut",
       ],
-    },
+    };
+  }
+
+  return {
+    story: next,
     message:
       "Você ajudou o Capitão a se recuperar. Ele ensinou a técnica de campo Cut! Agora pequenas árvores podem ser cortadas.",
   };
@@ -754,12 +976,16 @@ export function interactWithSsAnneCaptain(
 export function interactWithBill(
   story: StoryState,
 ): StoryScriptInteractionResult {
-  const stage = story.billStage ?? "unmet";
+  const stage = getStoryBillStage(story);
 
   if (stage === "unmet") {
     return {
       story: {
-        ...story,
+        ...setStoryPlayerChoice(
+          story,
+          "bill-stage",
+          "teleporter-ready",
+        ),
         billStage: "teleporter-ready",
       },
       message:
@@ -778,7 +1004,11 @@ export function interactWithBill(
   if (!hasStoryKeyItem(story, "ss-ticket")) {
     return {
       story: {
-        ...story,
+        ...completeStoryPlayerEvent(
+          story,
+          "key-item",
+          "ss-ticket",
+        ),
         keyItemIds: [
           ...(story.keyItemIds ?? []),
           "ss-ticket",
@@ -799,7 +1029,7 @@ export function interactWithBill(
 export function runBillCellSeparator(
   story: StoryState,
 ): StoryScriptInteractionResult {
-  const stage = story.billStage ?? "unmet";
+  const stage = getStoryBillStage(story);
 
   if (stage === "unmet") {
     return {
@@ -812,7 +1042,11 @@ export function runBillCellSeparator(
   if (stage === "teleporter-ready") {
     return {
       story: {
-        ...story,
+        ...setStoryPlayerChoice(
+          story,
+          "bill-stage",
+          "helped",
+        ),
         billStage: "helped",
       },
       message:
@@ -838,7 +1072,7 @@ export function collectStoryValuable(
   sourceId: string,
   itemId: StoryValuableId,
 ): StoryValuableCollectionResult {
-  if (story.collectedItemIds.includes(sourceId)) {
+  if (hasStoryCollectedItem(story, sourceId)) {
     return {
       accepted: false,
       story,
@@ -859,7 +1093,11 @@ export function collectStoryValuable(
   return {
     accepted: true,
     story: {
-      ...story,
+      ...completeStoryPlayerEvent(
+        story,
+        "pickup",
+        sourceId,
+      ),
       valuables: {
         ...valuables,
         [itemId]: current + 1,
@@ -883,7 +1121,7 @@ export function collectOverworldItem(
   pickupId: string,
   itemId: DuelItemId,
 ): OverworldItemPickupResult {
-  if (story.collectedItemIds.includes(pickupId)) {
+  if (hasStoryCollectedItem(story, pickupId)) {
     return {
       accepted: false,
       story,
@@ -903,7 +1141,11 @@ export function collectOverworldItem(
   return {
     accepted: true,
     story: {
-      ...story,
+      ...completeStoryPlayerEvent(
+        story,
+        "pickup",
+        pickupId,
+      ),
       inventory: {
         ...story.inventory,
         [itemId]: current + 1,
@@ -1002,7 +1244,7 @@ export function chooseMtMoonFossil(
   story: StoryState,
   fossil: MtMoonFossilId,
 ): MtMoonFossilChoiceResult {
-  if (!story.defeatedTrainerIds.includes("mtmoon-miguel")) {
+  if (!isStoryTrainerDefeated(story, "mtmoon-miguel")) {
     return {
       accepted: false,
       story,
@@ -1010,7 +1252,7 @@ export function chooseMtMoonFossil(
     };
   }
 
-  if (story.mtMoonFossil) {
+  if (getStoryFossilChoice(story)) {
     return {
       accepted: false,
       story,
@@ -1021,7 +1263,11 @@ export function chooseMtMoonFossil(
   return {
     accepted: true,
     story: {
-      ...story,
+      ...setStoryPlayerChoice(
+        story,
+        "mt-moon-fossil",
+        fossil,
+      ),
       mtMoonFossil: fossil,
     },
   };

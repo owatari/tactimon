@@ -53,10 +53,12 @@ import {
   collectStoryValuable,
   DEFAULT_STORY_STATE,
   depositCapturedPokemon,
+  grantStoryBadge,
   healStoryParty,
   interactWithBill,
   interactWithCutObstacle,
   interactWithSsAnneCaptain,
+  markStoryTrainerDefeated,
   normalizeStoryState,
   runBillCellSeparator,
   placeCapturedPokemon,
@@ -459,28 +461,15 @@ export function GameClient() {
         );
 
         if (trainerId) {
-          if (
-            outcome.won &&
-            !next.defeatedTrainerIds.includes(trainerId)
-          ) {
-            next = {
-              ...next,
-              defeatedTrainerIds: [
-                ...next.defeatedTrainerIds,
-                trainerId,
-              ],
-            };
+          if (outcome.won) {
+            next = markStoryTrainerDefeated(
+              next,
+              trainerId,
+            );
           }
 
-          if (
-            outcome.won &&
-            badgeId &&
-            !next.badgeIds.includes(badgeId)
-          ) {
-            next = {
-              ...next,
-              badgeIds: [...next.badgeIds, badgeId],
-            };
+          if (outcome.won && badgeId) {
+            next = grantStoryBadge(next, badgeId);
           }
 
           return {
