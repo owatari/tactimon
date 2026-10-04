@@ -70,6 +70,12 @@ export type BattleEncounter =
       kind: "wild";
       species: WildSpeciesId;
       level: number;
+      wilds?: readonly {
+        species: WildSpeciesId;
+        level: number;
+      }[];
+      areaLevel?: number;
+      equivalentPartyStrength?: number;
     };
 
 type Props = {
@@ -293,6 +299,28 @@ export function FirstBattle({
         : [starterBuild];
 
     if (encounter.kind === "wild") {
+      const openCells =
+        context.arenaWidth * context.arenaHeight -
+        context.blocked.length;
+      const maxWilds = Math.max(
+        1,
+        Math.min(
+          10,
+          openCells - deployedParty.length,
+        ),
+      );
+      const wilds = (
+        encounter.wilds &&
+        encounter.wilds.length > 0
+          ? encounter.wilds
+          : [
+              {
+                species: encounter.species,
+                level: encounter.level,
+              },
+            ]
+      ).slice(0, maxWilds);
+
       return createWildDuel({
         seed: context.seed,
         width: context.arenaWidth,
@@ -303,6 +331,7 @@ export function FirstBattle({
         items: inventory,
         wildSpecies: encounter.species,
         wildLevel: encounter.level,
+        wilds,
       });
     }
 
