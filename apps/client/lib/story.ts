@@ -741,7 +741,7 @@ export function hasStoryPlayerEvent(
   );
 }
 
-function completeStoryPlayerEvent(
+export function completeStoryPlayerEvent(
   story: StoryState,
   namespace: PlayerWorldEventNamespace,
   id: string,
@@ -756,7 +756,17 @@ function completeStoryPlayerEvent(
   };
 }
 
-function setStoryPlayerChoice(
+export function getStoryPlayerChoice(
+  story: StoryState,
+  choiceId: string,
+): string | null {
+  return getPlayerWorldChoice(
+    storyPlayerWorld(story),
+    choiceId,
+  );
+}
+
+export function setStoryPlayerChoice(
   story: StoryState,
   choiceId: string,
   value: string,

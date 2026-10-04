@@ -4,21 +4,33 @@ import type {
 import {
   chooseMtMoonFossil,
   collectOverworldItem,
+  completeStoryPlayerEvent,
   getStoryBillStage,
   healStoryParty,
   interactWithBill,
   interactWithCutObstacle,
   interactWithSsAnneCaptain,
   runBillCellSeparator,
+  setStoryPlayerChoice,
   storyStarterSummary,
   type MtMoonFossilId,
   type StoryState,
 } from "./story";
+import type {
+  PlayerWorldEventNamespace,
+} from "./playerWorldState";
+
+export type DialogueChoice = {
+  id: string;
+  label: string;
+  request: DialogueInteractionRequest;
+};
 
 export type DialoguePage = {
   id: string;
   text: string;
   speaker?: string;
+  choices?: readonly DialogueChoice[];
 };
 
 export type DialoguePresentation = {
@@ -56,6 +68,20 @@ export type DialogueInteractionRequest =
   | { kind: "bill-computer" }
   | { kind: "ss-anne-captain" }
   | { kind: "nurse" }
+  | {
+      kind: "complete-event";
+      namespace: PlayerWorldEventNamespace;
+      eventId: string;
+      text: string;
+      speaker?: string;
+    }
+  | {
+      kind: "set-choice";
+      choiceId: string;
+      value: string;
+      text: string;
+      speaker?: string;
+    }
   | { kind: "cut"; obstacleId: string }
   | {
       kind: "fossil";
@@ -420,6 +446,39 @@ export function runDialogueInteraction(
         "pokemon-center-nurse",
         "Pronto! Todos os seus Pokémon estão completamente saudáveis.",
         "Nurse",
+      ),
+    };
+  }
+
+  if (request.kind === "complete-event") {
+    return {
+      story: completeStoryPlayerEvent(
+        story,
+        request.namespace,
+        request.eventId,
+      ),
+      presentation: dialoguePresentationFromText(
+        "event:" +
+          request.namespace +
+          ":" +
+          request.eventId,
+        request.text,
+        request.speaker,
+      ),
+    };
+  }
+
+  if (request.kind === "set-choice") {
+    return {
+      story: setStoryPlayerChoice(
+        story,
+        request.choiceId,
+        request.value,
+      ),
+      presentation: dialoguePresentationFromText(
+        "choice:" + request.choiceId,
+        request.text,
+        request.speaker,
       ),
     };
   }

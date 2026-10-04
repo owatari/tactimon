@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   chooseMtMoonFossil,
   collectOverworldItem,
+  completeStoryPlayerEvent,
   DEFAULT_STORY_STATE,
   getStoryFossilChoice,
+  getStoryPlayerChoice,
   grantStoryBadge,
   hasStoryBadge,
   hasStoryCollectedItem,
@@ -14,6 +16,7 @@ import {
   isStoryTrainerDefeated,
   markStoryTrainerDefeated,
   normalizeStoryState,
+  setStoryPlayerChoice,
 } from "../apps/client/lib/story";
 import {
   playerWorldEventId,
@@ -186,6 +189,57 @@ describe("per-player world state", () => {
   });
 });
 
+
+describe("generic future player progression", () => {
+  it("keeps arbitrary events and branch choices private", () => {
+    const playerA = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    const playerB = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+
+    const eventA = completeStoryPlayerEvent(
+      playerA,
+      "story",
+      "future-door-open",
+    );
+    const choiceA = setStoryPlayerChoice(
+      eventA,
+      "future-branch",
+      "left",
+    );
+
+    expect(
+      choiceA.playerWorld?.completedEventIds,
+    ).toContain(
+      playerWorldEventId(
+        "story",
+        "future-door-open",
+      ),
+    );
+    expect(
+      playerB.playerWorld?.completedEventIds,
+    ).not.toContain(
+      playerWorldEventId(
+        "story",
+        "future-door-open",
+      ),
+    );
+    expect(
+      getStoryPlayerChoice(
+        choiceA,
+        "future-branch",
+      ),
+    ).toBe("left");
+    expect(
+      getStoryPlayerChoice(
+        playerB,
+        "future-branch",
+      ),
+    ).toBeNull();
+  });
+});
 
 describe("player-scoped world projection", () => {
   it("projects pickups independently from private player events", () => {

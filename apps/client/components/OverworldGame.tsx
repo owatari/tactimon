@@ -61,10 +61,10 @@ import {
   ssAnneRivalEncounter,
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
-import { resolveNpcDialogueId } from "@/lib/npcDialogues";
-import type {
-  DialogueInteractionRequest,
-  DialoguePresentation,
+import {
+  resolveWorldObjectDialogueId,
+  type DialogueInteractionRequest,
+  type DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import {
   resolvePlayerOverworldPickups,
@@ -987,6 +987,12 @@ export function OverworldGame({
     const active = dialogueRef.current;
     if (!active) return false;
 
+    const currentPage =
+      active.pages[dialoguePageIndexRef.current];
+    if (currentPage?.choices?.length) {
+      return true;
+    }
+
     const next = dialoguePageIndexRef.current + 1;
     if (next < active.pages.length) {
       dialoguePageIndexRef.current = next;
@@ -1367,7 +1373,7 @@ export function OverworldGame({
       );
 
     if (object) {
-      const dialogueId = resolveNpcDialogueId(
+      const dialogueId = resolveWorldObjectDialogueId(
         mapIdRef.current,
         object.x,
         object.y,
@@ -2466,16 +2472,39 @@ export function OverworldGame({
           <span>
             {dialogue.pages[dialoguePageIndex].text}
           </span>
-          <button
-            type="button"
-            className="dialogue-continue"
-            onClick={() => {
-              advanceDialogue();
-            }}
-          >
-            {dialoguePageIndex + 1}/{dialogue.pages.length}
-            {" · "}Avançar
-          </button>
+          {dialogue.pages[dialoguePageIndex].choices?.length ? (
+            <div className="dialogue-choices">
+              {dialogue.pages[
+                dialoguePageIndex
+              ].choices?.map((choice) => (
+                <button
+                  key={choice.id}
+                  type="button"
+                  className="dialogue-continue"
+                  onClick={() => {
+                    showDialogue(
+                      onDialogueInteraction(
+                        choice.request,
+                      ),
+                    );
+                  }}
+                >
+                  {choice.label}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="dialogue-continue"
+              onClick={() => {
+                advanceDialogue();
+              }}
+            >
+              {dialoguePageIndex + 1}/{dialogue.pages.length}
+              {" · "}Avançar
+            </button>
+          )}
         </div>
       )}
 

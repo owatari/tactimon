@@ -72,3 +72,23 @@ All player-facing overworld text, including transient gate/trainer messages,
 must enter through `DialogueInteractionRequest` / `DialoguePresentation`.
 This keeps rendering, multi-page support, stateful actions, and future
 localization in one dialogue pipeline.
+
+
+## Generic dialogue progression
+
+Dialogue pages may expose choices. A choice points to another
+`DialogueInteractionRequest`, so branching dialogue does not require new
+interaction code in the overworld.
+
+For future story switches and branches, prefer the generic player-owned
+operations:
+
+- `complete-event` marks a namespaced event only for that player;
+- `set-choice` persists a branch/value only for that player.
+
+The corresponding story helpers are `completeStoryPlayerEvent`,
+`getStoryPlayerChoice`, and `setStoryPlayerChoice`.
+
+These APIs are the extension point for future doors, switches, quest stages,
+NPC branches, instanced objects, and similar progression. Shared map
+definitions must stay immutable.

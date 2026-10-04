@@ -6,6 +6,8 @@ import {
 } from "../apps/client/lib/dialogueSystem";
 import {
   DEFAULT_STORY_STATE,
+  getStoryPlayerChoice,
+  hasStoryPlayerEvent,
   normalizeStoryState,
 } from "../apps/client/lib/story";
 import {
@@ -113,6 +115,74 @@ describe("dialogue system", () => {
   });
 });
 
+
+describe("generic player-scoped dialogue actions", () => {
+  it("completes events only for the owning player", () => {
+    const playerA = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    const playerB = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+
+    const completed = runDialogueInteraction(
+      playerA,
+      {
+        kind: "complete-event",
+        namespace: "story",
+        eventId: "future-quest-step",
+        text: "A etapa foi concluída.",
+      },
+    );
+
+    expect(
+      hasStoryPlayerEvent(
+        completed.story,
+        "story",
+        "future-quest-step",
+      ),
+    ).toBe(true);
+    expect(
+      hasStoryPlayerEvent(
+        playerB,
+        "story",
+        "future-quest-step",
+      ),
+    ).toBe(false);
+  });
+
+  it("stores dialogue branches only for the owning player", () => {
+    const playerA = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    const playerB = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+
+    const chosen = runDialogueInteraction(
+      playerA,
+      {
+        kind: "set-choice",
+        choiceId: "future-npc-answer",
+        value: "yes",
+        text: "Entendido.",
+      },
+    );
+
+    expect(
+      getStoryPlayerChoice(
+        chosen.story,
+        "future-npc-answer",
+      ),
+    ).toBe("yes");
+    expect(
+      getStoryPlayerChoice(
+        playerB,
+        "future-npc-answer",
+      ),
+    ).toBeNull();
+  });
+});
 
 describe("runtime dialogue presentation", () => {
   it("routes dynamic gate/trainer text through the same dialogue contract", () => {
