@@ -3017,6 +3017,189 @@ describe("canonical late-rival direct moves", () => {
 });
 
 
+describe("Horn Drill OHKO", () => {
+  it("uses the FireRed level-gated OHKO chance", () => {
+    const state = createTrainerDuel({
+      seed: 1924,
+      players: [
+        {
+          species: "rhyhorn",
+          level: 45,
+          moves: ["horn-drill"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 45,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    expect(DUEL_MOVES["horn-drill"]).toMatchObject({
+      type: "normal",
+      power: 1,
+      accuracy: 30,
+      maxPp: 5,
+      effect: "ohko",
+    });
+    expect(
+      getDuelMoveHitChance(
+        player,
+        rival,
+        DUEL_MOVES["horn-drill"],
+      ),
+    ).toBe(29);
+    expect(
+      getDuelMoveHitChance(
+        { ...player, level: 44 },
+        rival,
+        DUEL_MOVES["horn-drill"],
+      ),
+    ).toBe(0);
+    expect(
+      getDuelMoveHitChance(
+        { ...player, level: 55 },
+        rival,
+        DUEL_MOVES["horn-drill"],
+      ),
+    ).toBe(39);
+  });
+
+  it("fails automatically against a higher-level target while spending resources", () => {
+    let state = createTrainerDuel({
+      seed: 1925,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "rhyhorn",
+          level: 45,
+          moves: ["horn-drill"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 3, y: 2 } },
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "horn-drill",
+      targetId: rival.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    if (result.presentation?.kind === "move") {
+      expect(
+        result.presentation.results[0].missed,
+      ).toBe(true);
+    }
+    const updatedPlayer = result.state.units.find(
+      (unit) => unit.id === player.id,
+    )!;
+    const updatedRival = result.state.units.find(
+      (unit) => unit.id === rival.id,
+    )!;
+    expect(updatedPlayer.ap).toBe(
+      player.maxAp - DUEL_MOVES["horn-drill"].apCost,
+    );
+    expect(updatedPlayer.movePp["horn-drill"]).toBe(
+      DUEL_MOVES["horn-drill"].maxPp - 1,
+    );
+    expect(updatedRival.hp).toBe(rival.hp);
+  });
+
+  it("knocks out the target when its OHKO chance reaches 100 percent", () => {
+    let state = createTrainerDuel({
+      seed: 1926,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "rhyhorn",
+          level: 100,
+          moves: ["horn-drill"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 1,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 3, y: 2 } },
+      ),
+    };
+
+    expect(
+      getDuelMoveHitChance(
+        player,
+        rival,
+        DUEL_MOVES["horn-drill"],
+      ),
+    ).toBe(100);
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "horn-drill",
+      targetId: rival.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === rival.id,
+      )?.hp,
+    ).toBe(0);
+    expect(result.state.status).toBe("finished");
+    expect(result.state.winner).toBe("player");
+  });
+});
+
+
 describe("late-rival direct move sets", () => {
   it("uses canonical direct moves for Charizard and Gyarados", () => {
     expect(defaultMovesForSpecies("charizard")).toEqual([
