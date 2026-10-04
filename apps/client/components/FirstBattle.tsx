@@ -352,6 +352,9 @@ export function FirstBattle({
   const [animations, setAnimations] = useState<
     Record<string, UnitAnimationState>
   >({});
+  const [hiddenUnitIds, setHiddenUnitIds] = useState<
+    Set<string>
+  >(() => new Set());
   const [visualPositions, setVisualPositions] = useState<
     Record<string, DuelPoint>
   >(() =>
@@ -1186,15 +1189,37 @@ export function FirstBattle({
           </div>
 
           <div className="duel-units-layer">
-            {state.units.map((unit) => {
+            {state.units
+              .filter(
+                (unit) => !hiddenUnitIds.has(unit.id),
+              )
+              .map((unit) => {
               const position =
                 visualPositions[unit.id] ?? unit.position;
-              const animation =
-                animations[unit.id] ?? {
-                  name: unit.hp > 0 ? "idle" : "faint",
-                  nonce: 0,
-                  facing: unit.side === "player" ? "right" : "left",
-                };
+              const requestedAnimation =
+                animations[unit.id];
+              const animation: UnitAnimationState =
+                unit.hp <= 0
+                  ? {
+                      name: "faint",
+                      nonce:
+                        requestedAnimation?.name === "faint"
+                          ? requestedAnimation.nonce
+                          : 0,
+                      facing:
+                        requestedAnimation?.facing ??
+                        (unit.side === "player"
+                          ? "right"
+                          : "left"),
+                    }
+                  : requestedAnimation ?? {
+                      name: "idle",
+                      nonce: 0,
+                      facing:
+                        unit.side === "player"
+                          ? "right"
+                          : "left",
+                    };
               const targetable = targetableUnitIds.has(unit.id);
 
               return (
@@ -1226,6 +1251,25 @@ export function FirstBattle({
                       animation={animation.name}
                       facing={animation.facing}
                       speed={battleSpeed}
+                      onAnimationComplete={
+                        unit.hp <= 0
+                          ? () => {
+                              setHiddenUnitIds(
+                                (current) => {
+                                  if (
+                                    current.has(unit.id)
+                                  ) {
+                                    return current;
+                                  }
+                                  const next =
+                                    new Set(current);
+                                  next.add(unit.id);
+                                  return next;
+                                },
+                              );
+                            }
+                          : undefined
+                      }
                     />
                     <span className="duel-unit-label">
                       {unit.displayName}

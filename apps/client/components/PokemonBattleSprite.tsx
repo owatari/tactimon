@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { DuelSpeciesId } from "@tactimon/battle-engine";
 
 type AnimationName = "idle" | "walk" | "attack" | "hurt" | "faint";
@@ -34,7 +34,10 @@ type Props = {
   animation?: AnimationName;
   facing?: Facing;
   speed?: 1 | 2;
+  onAnimationComplete?: () => void;
 };
+
+const SPRITE_TILE_FILL = 1.18;
 
 let manifestPromise: Promise<RuntimeManifest> | null = null;
 
@@ -61,11 +64,20 @@ export function PokemonBattleSprite({
   animation = "idle",
   facing,
   speed = 1,
+  onAnimationComplete,
 }: Props) {
   const [manifest, setManifest] =
     useState<RuntimeManifest | null>(null);
   const [frame, setFrame] = useState(0);
   const [failed, setFailed] = useState(false);
+  const onAnimationCompleteRef = useRef(
+    onAnimationComplete,
+  );
+
+  useEffect(() => {
+    onAnimationCompleteRef.current =
+      onAnimationComplete;
+  }, [onAnimationComplete]);
 
   useEffect(() => {
     let active = true;
@@ -92,10 +104,11 @@ export function PokemonBattleSprite({
   useEffect(() => {
     setFrame(0);
 
-    if (!data || data.frames <= 1) {
+    if (!data) {
       return;
     }
 
+    const terminal = animation === "faint";
     let cancelled = false;
     let timeout: ReturnType<typeof setTimeout> | null = null;
     let currentFrame = 0;
@@ -110,7 +123,19 @@ export function PokemonBattleSprite({
 
       timeout = setTimeout(() => {
         if (cancelled) return;
-        currentFrame = (currentFrame + 1) % data.frames;
+
+        if (
+          terminal &&
+          currentFrame >= data.frames - 1
+        ) {
+          onAnimationCompleteRef.current?.();
+          return;
+        }
+
+        currentFrame =
+          currentFrame >= data.frames - 1
+            ? 0
+            : currentFrame + 1;
         setFrame(currentFrame);
         advance();
       }, Math.max(25, (duration * (1000 / 60)) / speed));
@@ -122,7 +147,7 @@ export function PokemonBattleSprite({
       cancelled = true;
       if (timeout) clearTimeout(timeout);
     };
-  }, [data, speed]);
+  }, [animation, data, speed]);
 
   if (failed) {
     return (
@@ -149,15 +174,17 @@ export function PokemonBattleSprite({
   const idle =
     manifest.species[species]?.animations.idle ??
     data;
-  const referenceSide = Math.max(
-    1,
-    idle.frameWidth,
-    idle.frameHeight,
-  );
+  const referenceSide =
+    Math.max(
+      1,
+      idle.frameWidth,
+      idle.frameHeight,
+    ) / SPRITE_TILE_FILL;
 
   // Keep one source pixel at the same visual scale for every animation.
-  // Idle fills the tile on its longest axis; larger animation canvases are
-  // allowed to extend beyond the tile instead of shrinking the Pokémon.
+  // The idle canvas slightly overfills one tile to compensate for transparent
+  // SpriteCollab margins; every other animation reuses that exact source-pixel
+  // scale and may extend outside the tile without changing Pokémon size.
   const frameWidthPercent =
     (data.frameWidth / referenceSide) * 100;
   const frameHeightPercent =
