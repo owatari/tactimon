@@ -96,6 +96,14 @@ const files = [
     "maps/cerulean-mart/preview.png",
   ],
   [
+    "maps/layouts/011_ceruleancity_gym_layout/layout.json",
+    "maps/cerulean-gym/layout.json",
+  ],
+  [
+    "maps/layouts/011_ceruleancity_gym_layout/preview.png",
+    "maps/cerulean-gym/preview.png",
+  ],
+  [
     "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
     "maps/route-4-pokemon-center/layout.json",
   ],
@@ -296,6 +304,23 @@ const files = [
   [
     "tilesets/26_pewtergym/attributes.bin",
     "tilesets/pewter-gym/attributes.bin",
+  ],
+
+  [
+    "tilesets/27_ceruleangym/tiles.4bpp",
+    "tilesets/cerulean-gym/tiles.4bpp",
+  ],
+  [
+    "tilesets/27_ceruleangym/palettes.gbapal",
+    "tilesets/cerulean-gym/palettes.gbapal",
+  ],
+  [
+    "tilesets/27_ceruleangym/metatiles.bin",
+    "tilesets/cerulean-gym/metatiles.bin",
+  ],
+  [
+    "tilesets/27_ceruleangym/attributes.bin",
+    "tilesets/cerulean-gym/attributes.bin",
   ],
 
   ["tilesets/12_building/tiles.4bpp", "tilesets/building/tiles.4bpp"],

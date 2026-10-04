@@ -96,6 +96,92 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ],
   },
   {
+    id: "cerulean-luis",
+    mapId: "cerulean-gym",
+    name: "Swimmer Luis",
+    preferredPosition: { x: 10, y: 12 },
+    facing: "west",
+    sightRange: 1,
+    spriteUrl: "/game-assets/overworld/043_swimmer_m_water.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Luis: Splash! Eu sou o primeiro! Vamos nessa!",
+    defeatedText:
+      "Luis: Misty é uma Treinadora que continua melhorando. Ela não vai perder para alguém como você!",
+    moneyMultiplier: 1,
+    party: [
+      {
+        species: "horsea",
+        level: 16,
+        moves: ["bubble", "leer"],
+      },
+      {
+        species: "shellder",
+        level: 16,
+        moves: ["tackle", "icicle-spear"],
+      },
+    ],
+  },
+  {
+    id: "cerulean-diana",
+    mapId: "cerulean-gym",
+    name: "Picnicker Diana",
+    preferredPosition: { x: 4, y: 7 },
+    facing: "east",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/040_picnicker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Diana: O quê? Você? Eu sou mais do que suficiente para cuidar de você!",
+    defeatedText:
+      "Diana: Você precisa enfrentar outros Treinadores para saber o quanto realmente é bom.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "goldeen",
+        level: 19,
+        moves: ["peck", "tail-whip", "horn-attack"],
+      },
+    ],
+  },
+  {
+    id: "cerulean-misty",
+    mapId: "cerulean-gym",
+    name: "Misty",
+    preferredPosition: { x: 8, y: 6 },
+    facing: "south",
+    sightRange: 0,
+    spriteUrl: "/game-assets/overworld/081_misty.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Misty: Minha política é uma ofensiva total com Pokémon do tipo Water!",
+    defeatedText:
+      "Misty: Certo! A Cascade Badge prova que você venceu o Ginásio de Cerulean.",
+    moneyMultiplier: 25,
+    badgeId: "cascade",
+    party: [
+      {
+        species: "staryu",
+        level: 18,
+        moves: ["tackle", "harden", "recover", "water-pulse"],
+      },
+      {
+        species: "starmie",
+        level: 21,
+        moves: ["swift", "recover", "rapid-spin", "water-pulse"],
+      },
+    ],
+  },
+  {
     id: "route3-ben",
     mapId: "route-3",
     name: "Youngster Ben",

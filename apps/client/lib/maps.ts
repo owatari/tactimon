@@ -276,6 +276,13 @@ const PEWTER_GYM_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/pewter-gym/attributes.bin",
 };
 
+const CERULEAN_GYM_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/cerulean-gym/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/cerulean-gym/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/cerulean-gym/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/cerulean-gym/attributes.bin",
+};
+
 const POKEMON_CENTER_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/pokemon-center/tiles.4bpp",
   palettesUrl:
@@ -431,6 +438,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: BUILDING_TILESET,
       secondary: MART_TILESET,
+    },
+  },
+  "cerulean-gym": {
+    id: "cerulean-gym",
+    label: "Cerulean Gym",
+    layoutUrl: "/game-assets/maps/cerulean-gym/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-gym/preview.png",
+    worldUrl: null,
+    spawn: { x: 8, y: 17 },
+    fallbackMusicId: 275,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: CERULEAN_GYM_TILESET,
     },
   },
   "route-4-pokemon-center": {
@@ -1032,6 +1052,29 @@ export function resolveWarpTransitionAt(
   }
   if (mapId === "mt-moon-b2f" && x === 5 && y === 10) {
     return { mapId: "mt-moon-b1f", spawn: { x: 39, y: 4 } };
+  }
+
+  if (
+    mapId === "cerulean-city" &&
+    x === 31 &&
+    y === 21
+  ) {
+    return {
+      mapId: "cerulean-gym",
+      spawn: { x: 8, y: 17 },
+    };
+  }
+
+  if (
+    mapId === "cerulean-gym" &&
+    y === 18 &&
+    x >= 7 &&
+    x <= 9
+  ) {
+    return {
+      mapId: "cerulean-city",
+      spawn: { x: 31, y: 22 },
+    };
   }
 
   if (

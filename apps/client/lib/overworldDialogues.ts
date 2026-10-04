@@ -41,6 +41,16 @@ export const OVERWORLD_DIALOGUES:
         "Gym Guide: Brock usa Pokémon Rock. Water e Grass têm uma grande vantagem aqui.",
     },
     {
+      id: "cerulean-gym-guy",
+      mapId: "cerulean-gym",
+      label: "Gym Guide",
+      x: 7,
+      y: 16,
+      spriteUrl: "/game-assets/overworld/091_gym_guy.png",
+      dialogue:
+        "Gym Guide: Misty usa Pokémon Water. Grass pode drenar a vantagem dela, e Electric pode dar um choque decisivo.",
+    },
+    {
       id: "viridian-forest-youngster",
       mapId: "viridian-forest",
       label: "Youngster",
