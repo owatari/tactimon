@@ -6389,8 +6389,8 @@ function aiStatusUtility(
 
       for (const moveId of unit.moves) {
         if (!canDuelUnitUseMove(unit, moveId)) {
-        continue;
-      }
+          continue;
+        }
         const candidate = DUEL_MOVES[moveId];
         if (
           !candidate ||

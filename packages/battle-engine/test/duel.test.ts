@@ -3313,6 +3313,350 @@ describe("Horn Drill OHKO", () => {
 });
 
 
+describe("FireRed Disable", () => {
+  it("matches FireRed move data", () => {
+    expect(DUEL_MOVES.disable).toMatchObject({
+      type: "normal",
+      category: "status",
+      accuracy: 55,
+      maxPp: 20,
+      effect: "disable",
+    });
+  });
+
+  it("tracks the target's last move, disables it for 2-5 rounds, and blocks only that move", () => {
+    let state = createTrainerDuel({
+      seed: 1942,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["disable"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 20,
+          moves: ["tackle", "growl"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: target.id,
+      turnIndex: state.turnOrder.indexOf(target.id),
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              accuracyStage: 6,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              evasionStage: -6,
+              position: { x: 3, y: 2 },
+            },
+      ),
+    };
+
+    const used = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: target.id,
+      moveId: "tackle",
+      targetId: actor.id,
+    });
+    expect(used.accepted).toBe(true);
+    expect(
+      used.state.units.find(
+        (unit) => unit.id === target.id,
+      )?.lastMoveUsed,
+    ).toBe("tackle");
+
+    state = {
+      ...used.state,
+      activeUnitId: actor.id,
+      turnIndex: used.state.turnOrder.indexOf(actor.id),
+    };
+    const disabled = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "disable",
+      targetId: target.id,
+    });
+
+    expect(disabled.accepted).toBe(true);
+    const disabledTarget = disabled.state.units.find(
+      (unit) => unit.id === target.id,
+    )!;
+    expect(disabledTarget.disabledMove).toBe("tackle");
+    expect(
+      disabledTarget.disableTurnsRemaining,
+    ).toBeGreaterThanOrEqual(2);
+    expect(
+      disabledTarget.disableTurnsRemaining,
+    ).toBeLessThanOrEqual(5);
+    expect(
+      disabled.state.units.find(
+        (unit) => unit.id === actor.id,
+      )?.movePp.disable,
+    ).toBe(DUEL_MOVES.disable.maxPp - 1);
+
+    state = {
+      ...disabled.state,
+      activeUnitId: target.id,
+      turnIndex: disabled.state.turnOrder.indexOf(target.id),
+    };
+    const blocked = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: target.id,
+      moveId: "tackle",
+      targetId: actor.id,
+    });
+    expect(blocked.accepted).toBe(false);
+    expect(blocked.reason).toBe("move-disabled");
+
+    const otherMove = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: target.id,
+      moveId: "growl",
+      targetId: actor.id,
+    });
+    expect(otherMove.accepted).toBe(true);
+    expect(
+      otherMove.state.units.find(
+        (unit) => unit.id === target.id,
+      )?.lastMoveUsed,
+    ).toBe("growl");
+  });
+
+  it("fails after accuracy when the last move has no PP left", () => {
+    let state = createTrainerDuel({
+      seed: 1943,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "alakazam",
+          level: 47,
+          moves: ["disable"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 20,
+          moves: ["tackle"],
+          movePp: { tackle: 0 },
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      turnIndex: state.turnOrder.indexOf(actor.id),
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              accuracyStage: 6,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              lastMoveUsed: "tackle" as const,
+              evasionStage: -6,
+              position: { x: 3, y: 2 },
+            },
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "disable",
+      targetId: target.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    const updated = result.state.units.find(
+      (unit) => unit.id === target.id,
+    )!;
+    expect(updated.disabledMove).toBeNull();
+    expect(updated.disableTurnsRemaining).toBe(0);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === actor.id,
+      )?.movePp.disable,
+    ).toBe(DUEL_MOVES.disable.maxPp - 1);
+  });
+
+  it("decrements Disable once per complete arena round and restores the move", () => {
+    let state = createTrainerDuel({
+      seed: 1944,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "rattata",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const disabledId = state.turnOrder[0];
+    state = {
+      ...state,
+      activeUnitId: disabledId,
+      turnIndex: 0,
+      units: state.units.map((unit) =>
+        unit.id === disabledId
+          ? {
+              ...unit,
+              disabledMove: "tackle" as const,
+              disableTurnsRemaining: 2,
+            }
+          : unit,
+      ),
+    };
+
+    let ended = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: disabledId,
+    });
+    expect(ended.accepted).toBe(true);
+    expect(
+      ended.state.units.find(
+        (unit) => unit.id === disabledId,
+      )?.disableTurnsRemaining,
+    ).toBe(2);
+
+    ended = applyDuelAction(ended.state, {
+      kind: "end-turn",
+      unitId: getActiveDuelUnit(ended.state)!.id,
+    });
+    expect(ended.accepted).toBe(true);
+    expect(
+      ended.state.units.find(
+        (unit) => unit.id === disabledId,
+      )?.disableTurnsRemaining,
+    ).toBe(1);
+
+    ended = applyDuelAction(ended.state, {
+      kind: "end-turn",
+      unitId: getActiveDuelUnit(ended.state)!.id,
+    });
+    expect(ended.accepted).toBe(true);
+    ended = applyDuelAction(ended.state, {
+      kind: "end-turn",
+      unitId: getActiveDuelUnit(ended.state)!.id,
+    });
+    expect(ended.accepted).toBe(true);
+    const restored = ended.state.units.find(
+      (unit) => unit.id === disabledId,
+    )!;
+    expect(restored.disabledMove).toBeNull();
+    expect(restored.disableTurnsRemaining).toBe(0);
+  });
+
+  it("allows Struggle when every learned move is out of PP or disabled", () => {
+    let state = createTrainerDuel({
+      seed: 1945,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "rattata",
+          level: 20,
+          moves: ["tackle", "growl"],
+          movePp: { growl: 0 },
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const actor = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      turnIndex: state.turnOrder.indexOf(actor.id),
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              disabledMove: "tackle" as const,
+              disableTurnsRemaining: 3,
+              position: { x: 2, y: 2 },
+            }
+          : {
+              ...unit,
+              position: { x: 3, y: 2 },
+            },
+      ),
+    };
+
+    const direct = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: "struggle",
+      targetId: target.id,
+    });
+    expect(direct.accepted).toBe(true);
+    expect(
+      direct.presentation?.kind === "move"
+        ? direct.presentation.moveId
+        : null,
+    ).toBe("struggle");
+
+    const ai = resolveSimpleAiTurnDetailed(
+      state,
+      "player",
+    );
+    expect(
+      ai.steps.find(
+        (step) => step.presentation?.kind === "move",
+      )?.presentation?.kind === "move"
+        ? ai.steps.find(
+            (step) => step.presentation?.kind === "move",
+          )!.presentation!.moveId
+        : null,
+    ).toBe("struggle");
+  });
+});
+
+
 describe("FireRed Future Sight", () => {
   it("matches FireRed move data", () => {
     expect(DUEL_MOVES["future-sight"]).toMatchObject({
