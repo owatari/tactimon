@@ -2958,7 +2958,7 @@ describe("canonical late-rival direct moves", () => {
       type: "grass",
       category: "status",
       maxPp: 5,
-      effect: "heal-self",
+      effect: "synthesis",
     });
   });
 
@@ -3011,6 +3011,285 @@ describe("canonical late-rival direct moves", () => {
     expect(updated.movePp.synthesis).toBe(
       DUEL_MOVES.synthesis.maxPp - 1,
     );
+  });
+});
+
+
+describe("Rain Dance weather", () => {
+  it("starts five rounds of rain and consumes exactly one PP", () => {
+    let state = createTrainerDuel({
+      seed: 1914,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["rain-dance", "water-gun"],
+        },
+      ],
+      rivals: [
+        {
+          species: "pidgeot",
+          level: 47,
+          moves: ["wing-attack"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "rain-dance",
+      targetId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.weather).toBe("rain");
+    expect(result.state.weatherTurnsRemaining).toBe(5);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.movePp["rain-dance"],
+    ).toBe(DUEL_MOVES["rain-dance"].maxPp - 1);
+  });
+
+  it("boosts Water damage and halves Fire damage", () => {
+    let waterState = createTrainerDuel({
+      seed: 1915,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+      rivals: [
+        {
+          species: "charizard",
+          level: 53,
+          moves: ["ember"],
+        },
+      ],
+    });
+    const waterActor = waterState.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const waterTarget = waterState.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    waterState = {
+      ...waterState,
+      activeUnitId: waterActor.id,
+      units: waterState.units.map((unit) =>
+        unit.id === waterActor.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const dryWater = applyDuelAction(waterState, {
+      kind: "use-move",
+      unitId: waterActor.id,
+      moveId: "water-gun",
+      targetId: waterTarget.id,
+    });
+    const rainyWater = applyDuelAction(
+      {
+        ...waterState,
+        weather: "rain",
+        weatherTurnsRemaining: 5,
+      },
+      {
+        kind: "use-move",
+        unitId: waterActor.id,
+        moveId: "water-gun",
+        targetId: waterTarget.id,
+      },
+    );
+
+    const dryWaterDamage =
+      dryWater.presentation?.kind === "move"
+        ? dryWater.presentation.results[0].damage
+        : 0;
+    const rainyWaterDamage =
+      rainyWater.presentation?.kind === "move"
+        ? rainyWater.presentation.results[0].damage
+        : 0;
+    expect(rainyWaterDamage).toBeGreaterThan(
+      dryWaterDamage,
+    );
+
+    let fireState = createTrainerDuel({
+      seed: 1916,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "charizard",
+          level: 53,
+          moves: ["ember"],
+        },
+      ],
+      rivals: [
+        {
+          species: "venusaur",
+          level: 53,
+          moves: ["razor-leaf"],
+        },
+      ],
+    });
+    const fireActor = fireState.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const fireTarget = fireState.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    fireState = {
+      ...fireState,
+      activeUnitId: fireActor.id,
+      units: fireState.units.map((unit) =>
+        unit.id === fireActor.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const dryFire = applyDuelAction(fireState, {
+      kind: "use-move",
+      unitId: fireActor.id,
+      moveId: "ember",
+      targetId: fireTarget.id,
+    });
+    const rainyFire = applyDuelAction(
+      {
+        ...fireState,
+        weather: "rain",
+        weatherTurnsRemaining: 5,
+      },
+      {
+        kind: "use-move",
+        unitId: fireActor.id,
+        moveId: "ember",
+        targetId: fireTarget.id,
+      },
+    );
+
+    const dryFireDamage =
+      dryFire.presentation?.kind === "move"
+        ? dryFire.presentation.results[0].damage
+        : 0;
+    const rainyFireDamage =
+      rainyFire.presentation?.kind === "move"
+        ? rainyFire.presentation.results[0].damage
+        : 0;
+    expect(rainyFireDamage).toBeLessThan(
+      dryFireDamage,
+    );
+  });
+
+  it("reduces Synthesis healing to one quarter under rain", () => {
+    let state = createTrainerDuel({
+      seed: 1917,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "venusaur",
+          level: 53,
+          moves: ["synthesis"],
+          currentHp: 10,
+        },
+      ],
+      rivals: [
+        {
+          species: "pidgeot",
+          level: 47,
+          moves: ["wing-attack"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      weather: "rain",
+      weatherTurnsRemaining: 5,
+    };
+
+    const expectedHeal = Math.min(
+      Math.max(1, Math.floor(player.maxHp / 4)),
+      player.maxHp - player.hp,
+    );
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "synthesis",
+      targetId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.hp,
+    ).toBe(player.hp + expectedHeal);
+  });
+
+  it("decrements weather only after the full arena round", () => {
+    let state = createTrainerDuel({
+      seed: 1918,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "squirtle",
+          level: 10,
+          moves: ["water-gun"],
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 10,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    state = {
+      ...state,
+      weather: "rain",
+      weatherTurnsRemaining: 1,
+    };
+
+    const first = applyDuelAction(state, {
+      kind: "end-turn",
+      unitId: state.activeUnitId,
+    });
+    expect(first.accepted).toBe(true);
+    expect(first.state.weather).toBe("rain");
+    expect(first.state.weatherTurnsRemaining).toBe(1);
+
+    const second = applyDuelAction(first.state, {
+      kind: "end-turn",
+      unitId: first.state.activeUnitId,
+    });
+    expect(second.accepted).toBe(true);
+    expect(second.state.weather).toBe(null);
+    expect(second.state.weatherTurnsRemaining).toBe(0);
+    expect(second.state.round).toBe(2);
   });
 });
 
