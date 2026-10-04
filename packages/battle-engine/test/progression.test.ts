@@ -736,3 +736,28 @@ describe("Cerulean Rocket and Route 5 species", () => {
     ]);
   });
 });
+
+
+describe("Route 6 trainer species", () => {
+  it("uses FireRed progression inputs for Butterfree and Raticate", () => {
+    expect(fireRedExperienceAtLevel("butterfree", 20)).toBe(8_000);
+    expect(fireRedExperienceAtLevel("raticate", 16)).toBe(4_096);
+    expect(experienceRewardForTrainer("butterfree", 20, 1)).toBe(685);
+    expect(experienceRewardForTrainer("raticate", 16, 1)).toBe(397);
+  });
+
+  it("creates their FireRed trainer move sets", () => {
+    expect(createPokemonProgression("butterfree", 20).activeMoves).toEqual([
+      "poison-powder",
+      "stun-spore",
+      "sleep-powder",
+      "supersonic",
+    ]);
+    expect(createPokemonProgression("raticate", 16).activeMoves).toEqual([
+      "tackle",
+      "tail-whip",
+      "quick-attack",
+      "hyper-fang",
+    ]);
+  });
+});

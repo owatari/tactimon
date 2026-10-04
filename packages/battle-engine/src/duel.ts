@@ -42,6 +42,8 @@ export type TrainerSpeciesId =
   | "machop"
   | "slowpoke"
   | "drowzee"
+  | "butterfree"
+  | "raticate"
   | "onix"
   | "sandshrew"
   | "grimer"
@@ -125,6 +127,8 @@ export type DuelMoveId =
   | "hypnosis"
   | "disable"
   | "headbutt"
+  | "supersonic"
+  | "hyper-fang"
   | "recover"
   | "water-pulse"
   | "swift"
@@ -775,6 +779,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 90,
     speed: 42,
     moves: ["hypnosis", "disable", "confusion", "headbutt"],
+  },
+  butterfree: {
+    name: "Butterfree",
+    type: "bug",
+    types: ["bug", "flying"],
+    hp: 60,
+    attack: 45,
+    defense: 50,
+    specialAttack: 80,
+    specialDefense: 80,
+    speed: 70,
+    moves: ["poison-powder", "stun-spore", "sleep-powder", "supersonic"],
+  },
+  raticate: {
+    name: "Raticate",
+    type: "normal",
+    types: ["normal"],
+    hp: 55,
+    attack: 81,
+    defense: 60,
+    specialAttack: 50,
+    specialDefense: 70,
+    speed: 97,
+    moves: ["tackle", "tail-whip", "quick-attack", "hyper-fang"],
   },
   metapod: {
     name: "Metapod",
@@ -1816,6 +1844,38 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Cabeçada forte de contato; flinch ainda não é modelado.",
     power: 70,
+    apCost: 5,
+    maxPp: 15,
+    minRange: 1,
+    maxRange: 1,
+  },
+  supersonic: {
+    id: "supersonic",
+    name: "Supersonic",
+    type: "normal",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Confunde no jogo original; confusion ainda não é um status persistente do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 3,
+  },
+  "hyper-fang": {
+    id: "hyper-fang",
+    name: "Hyper Fang",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "bite",
+    description:
+      "Mordida forte de contato; a chance de flinch ainda não é modelada.",
+    power: 80,
     apCost: 5,
     maxPp: 15,
     minRange: 1,
