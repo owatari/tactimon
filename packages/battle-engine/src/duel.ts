@@ -1414,7 +1414,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   },
 };
 
-export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
+export const DUEL_ITEMS = {
   potion: {
     id: "potion",
     name: "Potion",
@@ -1429,7 +1429,7 @@ export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
     target: "wild-enemy",
     ballModifier: 1,
   },
-};
+} satisfies Record<DuelItemId, DuelItem>;
 
 const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   pidgey: 255,
