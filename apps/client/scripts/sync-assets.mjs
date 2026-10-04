@@ -56,6 +56,14 @@ const files = [
     "maps/pewter-city/preview.png",
   ],
   [
+    "maps/layouts/090_route3_layout/layout.json",
+    "maps/route-3/layout.json",
+  ],
+  [
+    "maps/layouts/090_route3_layout/preview.png",
+    "maps/route-3/preview.png",
+  ],
+  [
     "maps/layouts/009_mart_layout/layout.json",
     "maps/pewter-mart/layout.json",
   ],

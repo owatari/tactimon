@@ -96,6 +96,251 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ],
   },
   {
+    id: "route3-ben",
+    mapId: "route-3",
+    name: "Youngster Ben",
+    preferredPosition: { x: 17, y: 4 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Ben: Oi! Eu gosto de shorts! Eles são confortáveis e fáceis de usar!",
+    defeatedText:
+      "Ben: Você usa o PC do Pokémon Center para guardar seus Pokémon?",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "rattata",
+        level: 11,
+        moves: ["tackle", "tail-whip"],
+      },
+      {
+        species: "ekans",
+        level: 11,
+        moves: ["bind", "leer", "poison-sting"],
+      },
+    ],
+  },
+  {
+    id: "route3-calvin",
+    mapId: "route-3",
+    name: "Youngster Calvin",
+    preferredPosition: { x: 29, y: 10 },
+    facing: "west",
+    sightRange: 5,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Calvin: Ei! Você não está usando shorts! O que há de errado com você?",
+    defeatedText:
+      "Calvin: Eu sempre uso shorts, até no inverno. Essa é minha regra.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "spearow",
+        level: 14,
+        moves: ["peck", "growl", "leer"],
+      },
+    ],
+  },
+  {
+    id: "route3-colton",
+    mapId: "route-3",
+    name: "Bug Catcher Colton",
+    preferredPosition: { x: 12, y: 6 },
+    facing: "east",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Colton: Ei! Eu vi você na Floresta de Viridian!",
+    defeatedText:
+      "Colton: Há outros tipos de Pokémon além dos que vivem em florestas.",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "caterpie",
+        level: 10,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "weedle",
+        level: 10,
+        moves: ["poison-sting", "string-shot"],
+      },
+      {
+        species: "caterpie",
+        level: 10,
+        moves: ["tackle", "string-shot"],
+      },
+    ],
+  },
+  {
+    id: "route3-greg",
+    mapId: "route-3",
+    name: "Bug Catcher Greg",
+    preferredPosition: { x: 25, y: 4 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Greg: Você é Treinador? Então vamos batalhar agora mesmo!",
+    defeatedText:
+      "Greg: Se uma Box do PC ficar cheia, é só trocar para outra.",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "weedle",
+        level: 9,
+        moves: ["poison-sting", "string-shot"],
+      },
+      {
+        species: "kakuna",
+        level: 9,
+        moves: ["harden"],
+      },
+      {
+        species: "caterpie",
+        level: 9,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "metapod",
+        level: 9,
+        moves: ["harden"],
+      },
+    ],
+  },
+  {
+    id: "route3-james",
+    mapId: "route-3",
+    name: "Bug Catcher James",
+    preferredPosition: { x: 32, y: 6 },
+    facing: "east",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "James: Vou batalhar com os Pokémon que acabei de capturar.",
+    defeatedText:
+      "James: Pokémon treinados são mais fortes que os selvagens.",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "caterpie",
+        level: 11,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "metapod",
+        level: 11,
+        moves: ["harden"],
+      },
+    ],
+  },
+  {
+    id: "route3-janice",
+    mapId: "route-3",
+    name: "Lass Janice",
+    preferredPosition: { x: 19, y: 9 },
+    facing: "west",
+    sightRange: 5,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Janice: Com licença! Você olhou para mim, não olhou?",
+    defeatedText:
+      "Janice: Não encare outros Treinadores se não quiser batalhar!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "pidgey",
+        level: 9,
+        moves: ["tackle", "growl"],
+      },
+      {
+        species: "pidgey",
+        level: 9,
+        moves: ["tackle", "growl"],
+      },
+    ],
+  },
+  {
+    id: "route3-sally",
+    mapId: "route-3",
+    name: "Lass Sally",
+    preferredPosition: { x: 30, y: 3 },
+    facing: "west",
+    sightRange: 5,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Sally: Esse olhar que você me deu... é tão intrigante!",
+    defeatedText:
+      "Sally: Dá para evitar batalhas sem deixar os Treinadores verem você.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "rattata",
+        level: 10,
+        moves: ["tackle", "tail-whip"],
+      },
+      {
+        species: "nidoran-f",
+        level: 10,
+        moves: ["scratch", "growl", "tail-whip"],
+      },
+    ],
+  },
+  {
+    id: "route3-robin",
+    mapId: "route-3",
+    name: "Lass Robin",
+    preferredPosition: { x: 40, y: 11 },
+    facing: "south",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Robin: Eek! Você encostou em mim?",
+    defeatedText:
+      "Robin: A Route 4 fica aos pés do Mt. Moon.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "jigglypuff",
+        level: 14,
+        moves: ["pound", "defense-curl"],
+      },
+    ],
+  },
+  {
     id: "viridian-forest-rick",
     mapId: "viridian-forest",
     name: "Bug Catcher Rick",

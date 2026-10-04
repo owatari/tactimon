@@ -1358,6 +1358,18 @@ export function OverworldGame({
           return false;
         }
 
+        if (
+          mapIdRef.current === "pewter-city" &&
+          edgeTransition.mapId === "route-3" &&
+          !storyRef.current.badgeIds.includes("boulder")
+        ) {
+          showInteraction(
+            "A passagem para a Route 3 abre depois de vencer Brock e conquistar a Boulder Badge.",
+          );
+          player.blockedUntil = now + 500;
+          return false;
+        }
+
         void loadMap(
           edgeTransition.mapId,
           edgeTransition.spawn,

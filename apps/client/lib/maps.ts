@@ -354,6 +354,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: PEWTER_TILESET,
     },
   },
+  "route-3": {
+    id: "route-3",
+    label: "Route 3",
+    layoutUrl: "/game-assets/maps/route-3/layout.json",
+    previewUrl: "/game-assets/maps/route-3/preview.png",
+    worldUrl: null,
+    spawn: { x: 0, y: 10 },
+    fallbackMusicId: 293,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: PEWTER_TILESET,
+    },
+  },
   "pewter-mart": {
     id: "pewter-mart",
     label: "Pewter Poké Mart",
@@ -631,6 +644,32 @@ export function resolveWorldTransition(
     return {
       mapId: "route-2",
       spawn: { x: x - 12, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "pewter-city" &&
+    direction === "east" &&
+    x === 47 &&
+    y >= 20 &&
+    y <= 23
+  ) {
+    return {
+      mapId: "route-3",
+      spawn: { x: 0, y: y - 11 },
+    };
+  }
+
+  if (
+    mapId === "route-3" &&
+    direction === "west" &&
+    x === 0 &&
+    y >= 9 &&
+    y <= 12
+  ) {
+    return {
+      mapId: "pewter-city",
+      spawn: { x: 47, y: y + 11 },
     };
   }
 
