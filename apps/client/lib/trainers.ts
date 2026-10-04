@@ -1116,6 +1116,281 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       },
     ],
   },
+  {
+    id: "route25-franklin",
+    mapId: "route-25",
+    name: "Hiker Franklin",
+    preferredPosition: { x: 11, y: 4 },
+    facing: "east",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/056_hiker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Franklin: Acabei de descer do Mt. Moon e ainda tenho energia de sobra!",
+    defeatedText:
+      "Franklin: Droga! Um Zubat me mordeu naquela caverna.",
+    moneyMultiplier: 9,
+    party: [
+      {
+        species: "machop",
+        level: 15,
+        moves: ["low-kick", "leer", "focus-energy", "karate-chop"],
+      },
+      {
+        species: "geodude",
+        level: 15,
+        moves: ["tackle", "defense-curl"],
+      },
+    ],
+  },
+  {
+    id: "route25-joey",
+    mapId: "route-25",
+    name: "Youngster Joey",
+    preferredPosition: { x: 18, y: 2 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Joey: Os Treinadores daqui vêm para praticar!",
+    defeatedText:
+      "Joey: Todo Pokémon tem fraquezas, até os mais fortes.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "rattata",
+        level: 15,
+        moves: ["tackle", "tail-whip", "quick-attack"],
+      },
+      {
+        species: "spearow",
+        level: 15,
+        moves: ["peck", "growl", "leer"],
+      },
+    ],
+  },
+  {
+    id: "route25-wayne",
+    mapId: "route-25",
+    name: "Hiker Wayne",
+    preferredPosition: { x: 17, y: 7 },
+    facing: "east",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/056_hiker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Wayne: Vai visitar o Bill? Primeiro, nós batalhamos!",
+    defeatedText:
+      "Wayne: A trilha abaixo é um atalho de volta para Cerulean.",
+    moneyMultiplier: 9,
+    party: [
+      {
+        species: "onix",
+        level: 17,
+        moves: ["tackle", "bind"],
+      },
+    ],
+  },
+  {
+    id: "route25-dan",
+    mapId: "route-25",
+    name: "Youngster Dan",
+    preferredPosition: { x: 22, y: 4 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Dan: Meu pai me levou a uma grande festa no S.S. Anne!",
+    defeatedText:
+      "Dan: No S.S. Anne eu vi Treinadores do mundo inteiro.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "slowpoke",
+        level: 17,
+        moves: ["tackle", "growl", "water-gun", "confusion"],
+      },
+    ],
+  },
+  {
+    id: "route25-kelsey",
+    mapId: "route-25",
+    name: "Picnicker Kelsey",
+    preferredPosition: { x: 22, y: 8 },
+    facing: "east",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/040_picnicker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Kelsey: Oi! Meu namorado é muito legal!",
+    defeatedText:
+      "Kelsey: Queria que meu namorado lutasse tão bem quanto você.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "nidoran-m",
+        level: 15,
+        moves: ["peck", "leer"],
+      },
+      {
+        species: "nidoran-f",
+        level: 15,
+        moves: ["scratch", "growl", "tail-whip"],
+      },
+    ],
+  },
+  {
+    id: "route25-nob",
+    mapId: "route-25",
+    name: "Hiker Nob",
+    preferredPosition: { x: 27, y: 9 },
+    facing: "north",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/056_hiker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Nob: Estou indo ver a coleção de um Pokémaniac no cabo!",
+    defeatedText:
+      "Nob: O Pokémaniac realmente faz jus ao nome.",
+    moneyMultiplier: 9,
+    party: [
+      {
+        species: "geodude",
+        level: 13,
+        moves: ["tackle", "defense-curl"],
+      },
+      {
+        species: "geodude",
+        level: 13,
+        moves: ["tackle", "defense-curl"],
+      },
+      {
+        species: "machop",
+        level: 13,
+        moves: ["low-kick", "leer", "focus-energy", "karate-chop"],
+      },
+      {
+        species: "geodude",
+        level: 13,
+        moves: ["tackle", "defense-curl"],
+      },
+    ],
+  },
+  {
+    id: "route25-flint",
+    mapId: "route-25",
+    name: "Camper Flint",
+    preferredPosition: { x: 28, y: 4 },
+    facing: "south",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/039_camper.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Flint: Eu sou um cara legal. Tenho até namorada!",
+    defeatedText:
+      "Flint: Minha namorada vai me animar depois dessa.",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "rattata",
+        level: 14,
+        moves: ["tackle", "tail-whip", "quick-attack"],
+      },
+      {
+        species: "ekans",
+        level: 14,
+        moves: ["bind", "leer", "poison-sting", "bite"],
+      },
+    ],
+  },
+  {
+    id: "route25-chad",
+    mapId: "route-25",
+    name: "Youngster Chad",
+    preferredPosition: { x: 36, y: 4 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Chad: Eu tive um pressentimento... sabia que tinha que batalhar com você!",
+    defeatedText:
+      "Chad: Eu também sabia que ia perder!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "ekans",
+        level: 14,
+        moves: ["bind", "leer", "poison-sting", "bite"],
+      },
+      {
+        species: "sandshrew",
+        level: 14,
+        moves: ["scratch", "defense-curl", "sand-attack"],
+      },
+    ],
+  },
+  {
+    id: "route25-haley",
+    mapId: "route-25",
+    name: "Lass Haley",
+    preferredPosition: { x: 42, y: 5 },
+    facing: "south",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Haley: Minha amiga tem tantos Pokémon fofos. Estou com inveja!",
+    defeatedText:
+      "Haley: Você veio do Mt. Moon? Queria tanto um Clefairy.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "oddish",
+        level: 13,
+        moves: ["absorb", "sweet-scent"],
+      },
+      {
+        species: "pidgey",
+        level: 13,
+        moves: ["tackle", "sand-attack", "gust", "quick-attack"],
+      },
+      {
+        species: "oddish",
+        level: 13,
+        moves: ["absorb", "sweet-scent"],
+      },
+    ],
+  },
 ];
 
 export function trainerPrizeMoney(

@@ -108,6 +108,21 @@ const ROUTE_24_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 1, species: "abra", level: 12 },
 ];
 
+const ROUTE_25_SLOTS: readonly LandEncounterSlot[] = [
+  { weight: 20, species: "weedle", level: 8 },
+  { weight: 20, species: "caterpie", level: 8 },
+  { weight: 10, species: "pidgey", level: 13 },
+  { weight: 10, species: "oddish", level: 14 },
+  { weight: 10, species: "oddish", level: 13 },
+  { weight: 10, species: "abra", level: 11 },
+  { weight: 5, species: "pidgey", level: 11 },
+  { weight: 5, species: "oddish", level: 12 },
+  { weight: 4, species: "kakuna", level: 9 },
+  { weight: 4, species: "abra", level: 9 },
+  { weight: 1, species: "metapod", level: 9 },
+  { weight: 1, species: "abra", level: 13 },
+];
+
 const MT_MOON_1F_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 20, species: "zubat", level: 7 },
   { weight: 20, species: "zubat", level: 8 },
@@ -194,6 +209,10 @@ export const LAND_ENCOUNTERS: Readonly<
   "route-24": {
     encounterRate: 21,
     slots: ROUTE_24_SLOTS,
+  },
+  "route-25": {
+    encounterRate: 21,
+    slots: ROUTE_25_SLOTS,
   },
   "mt-moon-1f": {
     encounterRate: 7,
