@@ -3508,6 +3508,29 @@ export function getDuelCaptureEligibility(
   );
 }
 
+export const AUTO_CATCH_HP_RATIO = 0.3;
+
+export function isDuelAutoCatchTarget(
+  state: DuelState,
+  targetId: string,
+): boolean {
+  const target = state.units.find(
+    (unit) => unit.id === targetId,
+  );
+  if (!target || target.hp <= 0) {
+    return false;
+  }
+
+  return (
+    target.hp / Math.max(1, target.maxHp) <=
+      AUTO_CATCH_HP_RATIO &&
+    getDuelCaptureEligibility(
+      state,
+      targetId,
+    ).allowed
+  );
+}
+
 export function applyDuelAction(
   input: DuelState,
   action: DuelAction,
@@ -4698,10 +4721,10 @@ function chooseAiItemAction(
         (unit) =>
           unit.side !== actor.side &&
           unit.hp > 0 &&
-          getDuelCaptureEligibility(
+          isDuelAutoCatchTarget(
             state,
             unit.id,
-          ).allowed,
+          ),
       )
       .sort(
         (a, b) =>
