@@ -7,6 +7,9 @@ import {
 import type {
   PlayerWorldCondition,
 } from "./playerWorldProjection";
+import {
+  VERMILION_GYM_TRASH_CANS,
+} from "./vermilionGym";
 
 export type ScriptedWorldObjectDefinition = {
   id: string;
@@ -20,6 +23,7 @@ export type ScriptedWorldObjectDefinition = {
   sheetWidth: number;
   sheetHeight: number;
   blocksMovement?: boolean;
+  renderSprite?: boolean;
   visibleWhen?: PlayerWorldCondition;
   request: DialogueInteractionRequest;
 };
@@ -239,11 +243,36 @@ const PICKUP_OBJECTS:
     },
   }));
 
+const VERMILION_GYM_TRASH_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  VERMILION_GYM_TRASH_CANS.map((can) => ({
+    id: can.id,
+    mapId: "vermilion-gym",
+    label: "Lixeira",
+    x: can.x,
+    y: can.y,
+    spriteUrl: "/game-assets/overworld/092_item_ball.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    blocksMovement: false,
+    renderSprite: false,
+    request: {
+      kind: "script" as const,
+      id: "vermilion-gym-trash-can",
+      context: {
+        canId: can.id,
+      },
+    },
+  }));
+
 export const SCRIPTED_WORLD_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] = [
     ...STATIC_SCRIPTED_WORLD_OBJECTS,
     ...CENTER_NURSES,
     ...PICKUP_OBJECTS,
+    ...VERMILION_GYM_TRASH_OBJECTS,
   ];
 
 export function resolveScriptedWorldObjects(
