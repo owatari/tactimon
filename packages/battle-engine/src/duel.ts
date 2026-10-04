@@ -232,8 +232,14 @@ export interface WildDuelOptions {
   players?: readonly DuelPokemonBuild[];
   captureAllowed?: boolean;
   items?: Partial<DuelInventory>;
+  /** Primary encounter, retained for backward compatibility and summaries. */
   wildSpecies: WildSpeciesId;
   wildLevel: number;
+  /** Optional multi-wild pack. When present, up to ten enemies are deployed. */
+  wilds?: readonly {
+    species: WildSpeciesId;
+    level: number;
+  }[];
 }
 
 export type DuelItem =
@@ -2439,22 +2445,42 @@ function pickSpawnPositions(
   if (open.length < 2) {
     return [
       { x: 0, y: 0 },
-      { x: Math.max(0, width - 1), y: Math.max(0, height - 1) },
+      {
+        x: Math.max(0, width - 1),
+        y: Math.max(0, height - 1),
+      },
     ];
   }
 
   const random = createSeededRandom(seed);
-  const interiorOpen = open.filter(
-    (point) =>
-      point.x > 0 &&
-      point.y > 0 &&
-      point.x < width - 1 &&
-      point.y < height - 1,
+  const leftBoundary = Math.max(
+    1,
+    Math.floor((width - 1) * 0.3),
   );
+  const rightBoundary = Math.min(
+    width - 2,
+    Math.ceil((width - 1) * 0.7),
+  );
+  const isInterior = (point: DuelPoint) =>
+    point.y > 0 &&
+    point.y < height - 1;
+
+  const left = open.filter(
+    (point) =>
+      point.x <= leftBoundary &&
+      isInterior(point),
+  );
+  const playerPool =
+    left.length > 0
+      ? left
+      : open.filter(
+          (point) => point.x < width / 2,
+        );
   const player = randomItem(
-    interiorOpen.length >= 2 ? interiorOpen : open,
+    playerPool.length > 0 ? playerPool : open,
     random,
   );
+
   const connected = connectedOpenCells(
     player,
     width,
@@ -2464,37 +2490,40 @@ function pickSpawnPositions(
     (point) => pointKey(point) !== pointKey(player),
   );
 
-  const minimumDistance = Math.max(
-    4,
-    Math.floor((width + height) / 3),
-  );
-  const interiorConnected = connected.filter(
+  const right = connected.filter(
     (point) =>
-      point.x > 0 &&
-      point.y > 0 &&
-      point.x < width - 1 &&
-      point.y < height - 1,
+      point.x >= rightBoundary &&
+      isInterior(point),
   );
   const rivalPool =
-    interiorConnected.length > 0
-      ? interiorConnected
-      : connected;
-
-  const preferredRivalCells = rivalPool.filter(
-    (point) =>
-      manhattanDistance(point, player) >= minimumDistance,
-  );
-  const fallbackRivalCells =
+    right.length > 0
+      ? right
+      : connected.filter(
+          (point) => point.x > width / 2,
+        );
+  const fallback =
     rivalPool.length > 0
       ? rivalPool
-      : open.filter(
-          (point) => pointKey(point) !== pointKey(player),
-        );
+      : connected.length > 0
+        ? connected
+        : open.filter(
+            (point) =>
+              pointKey(point) !== pointKey(player),
+          );
 
+  // Favor the far side while retaining seeded vertical variation.
+  const maxDistance = Math.max(
+    ...fallback.map((point) =>
+      manhattanDistance(point, player),
+    ),
+  );
+  const farthest = fallback.filter(
+    (point) =>
+      manhattanDistance(point, player) >=
+      Math.max(1, maxDistance - 2),
+  );
   const rival = randomItem(
-    preferredRivalCells.length > 0
-      ? preferredRivalCells
-      : fallbackRivalCells,
+    farthest.length > 0 ? farthest : fallback,
     random,
   );
 
@@ -2668,6 +2697,17 @@ function stageMultiplier(stage: number): number {
     : 2 / (2 - bounded);
 }
 
+export function movementPointsForDuelPokemon(
+  species: DuelSpeciesId,
+): number {
+  const speed = SPECIES[species].speed;
+
+  if (speed < 40) return 2;
+  if (speed < 75) return 3;
+  if (speed < 105) return 4;
+  return 5;
+}
+
 export function calculateDuelPokemonMaxHp(
   build: Pick<
     DuelPokemonBuild,
@@ -2761,8 +2801,8 @@ function makeUnit(
     speedStage: 0,
     ap: 6,
     maxAp: 6,
-    mp: 3,
-    maxMp: 3,
+    mp: movementPointsForDuelPokemon(build.species),
+    maxMp: movementPointsForDuelPokemon(build.species),
     position,
     moves: [...build.moves].slice(0, 4),
     movePp: normalizeDuelMovePp(
@@ -2967,8 +3007,30 @@ export function createWildDuel(
   ).slice(0, 6);
 
   if (party.length === 0) {
-    throw new Error("Wild duel requires at least one player Pokémon.");
+    throw new Error(
+      "Wild duel requires at least one player Pokémon.",
+    );
   }
+
+  const requestedWilds =
+    options.wilds && options.wilds.length > 0
+      ? [...options.wilds]
+      : [
+          {
+            species: options.wildSpecies,
+            level: options.wildLevel,
+          },
+        ];
+  const wildBuilds = requestedWilds
+    .slice(0, 10)
+    .map((wild) => ({
+      species: wild.species,
+      level: Math.max(
+        1,
+        Math.min(100, Math.trunc(wild.level)),
+      ),
+      moves: [...SPECIES[wild.species].moves],
+    }));
 
   const positions = pickTeamSpawnPositions(
     width,
@@ -2976,11 +3038,11 @@ export function createWildDuel(
     blocked,
     seed,
     party.length,
-    1,
+    wildBuilds.length,
   );
   if (
     positions.players.length < party.length ||
-    positions.rivals.length < 1
+    positions.rivals.length < wildBuilds.length
   ) {
     throw new Error(
       "Wild duel arena does not have enough open cells for the encounter.",
@@ -2995,22 +3057,21 @@ export function createWildDuel(
       index,
     ),
   );
-  const wild = makeUnit(
-    {
-      species: options.wildSpecies,
-      level: options.wildLevel,
-      moves: SPECIES[options.wildSpecies].moves,
-    },
-    "rival",
-    positions.rivals[0],
-    0,
+  const wilds = wildBuilds.map((build, index) =>
+    makeUnit(
+      build,
+      "rival",
+      positions.rivals[index],
+      index,
+    ),
   );
-  const units = [...players, wild];
+  const units = [...players, ...wilds];
   const turnOrder = createTurnOrder(units);
   const active = units.find(
     (unit) => unit.id === turnOrder[0],
   )!;
-  const captureAllowed = options.captureAllowed ?? true;
+  const captureAllowed =
+    options.captureAllowed ?? true;
 
   return {
     width,
@@ -3041,7 +3102,9 @@ export function createWildDuel(
     captureResult: null,
     units,
     log: [
-      `Um ${wild.displayName} selvagem apareceu!`,
+      wilds.length === 1
+        ? `Um ${wilds[0].displayName} selvagem apareceu!`
+        : `${wilds.length} Pokémon selvagens cercaram seu time!`,
       players.length > 1
         ? `${players.length} Pokémon do seu time entram na arena.`
         : `${players[0].displayName} entra na arena.`,
