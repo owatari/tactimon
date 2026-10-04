@@ -38,6 +38,7 @@ function storyWithParty(
       createPokemonProgression("bulbasaur", 5),
     capturedPokemon,
     boxedPokemon,
+    collectedItemIds: [],
     defeatedTrainerIds: [],
     money: 3_000,
     inventory: {

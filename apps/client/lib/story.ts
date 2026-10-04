@@ -27,6 +27,7 @@ export type StoryState = {
   playerPokemon: PokemonProgression | null;
   capturedPokemon: CapturedPokemon[];
   boxedPokemon: CapturedPokemon[];
+  collectedItemIds: string[];
   defeatedTrainerIds: string[];
   money: number;
   inventory: DuelInventory;
@@ -39,6 +40,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   playerPokemon: null,
   capturedPokemon: [],
   boxedPokemon: [],
+  collectedItemIds: [],
   defeatedTrainerIds: [],
   money: 3000,
   inventory: {
@@ -82,6 +84,7 @@ export function chooseStarter(
     playerPokemon: createStarterProgression(starter),
     capturedPokemon: [],
     boxedPokemon: [],
+    collectedItemIds: [],
     defeatedTrainerIds: [],
     money: 3000,
     inventory: {
@@ -235,6 +238,19 @@ export function normalizeStoryState(
           pokemon !== null,
       )
       .slice(0, POKEMON_STORAGE_CAPACITY),
+    collectedItemIds: Array.isArray(
+      input?.collectedItemIds,
+    )
+      ? Array.from(
+          new Set(
+            input.collectedItemIds.filter(
+              (id): id is string =>
+                typeof id === "string" &&
+                id.length > 0,
+            ),
+          ),
+        ).slice(0, 512)
+      : [],
     defeatedTrainerIds: Array.isArray(
       input?.defeatedTrainerIds,
     )
@@ -461,6 +477,51 @@ export function withdrawBoxedPokemon(
         pokemon,
       ],
       boxedPokemon,
+    },
+  };
+}
+
+
+export type OverworldItemPickupResult = {
+  accepted: boolean;
+  story: StoryState;
+  reason?: "already-collected" | "inventory-full";
+};
+
+export function collectOverworldItem(
+  story: StoryState,
+  pickupId: string,
+  itemId: DuelItemId,
+): OverworldItemPickupResult {
+  if (story.collectedItemIds.includes(pickupId)) {
+    return {
+      accepted: false,
+      story,
+      reason: "already-collected",
+    };
+  }
+
+  const current = story.inventory[itemId] ?? 0;
+  if (current >= 999) {
+    return {
+      accepted: false,
+      story,
+      reason: "inventory-full",
+    };
+  }
+
+  return {
+    accepted: true,
+    story: {
+      ...story,
+      inventory: {
+        ...story.inventory,
+        [itemId]: current + 1,
+      },
+      collectedItemIds: [
+        ...story.collectedItemIds,
+        pickupId,
+      ],
     },
   };
 }

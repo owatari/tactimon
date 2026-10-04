@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import type {
+  DuelItemId,
   DuelPokemonBuild,
   WildSpeciesId,
 } from "@tactimon/battle-engine";
@@ -131,6 +132,13 @@ type Props = {
   onMartOpen: () => void;
   onPokemonCenterHeal: () => void;
   onPokemonStorageOpen: () => void;
+  onOverworldItemPickup: (
+    pickupId: string,
+    itemId: DuelItemId,
+  ) => {
+    accepted: boolean;
+    reason?: "already-collected" | "inventory-full";
+  };
 };
 
 type RuntimePlayer = {
@@ -194,12 +202,20 @@ type DialogueStoryObject = StoryObjectBase & {
   dialogue: string;
 };
 
+type PickupStoryObject = StoryObjectBase & {
+  kind: "pickup";
+  pickupId: string;
+  itemId: DuelItemId;
+  itemName: string;
+};
+
 type StoryObject =
   | StaticStoryObject
   | TrainerStoryObject
   | MartClerkStoryObject
   | PokemonCenterNurseStoryObject
-  | DialogueStoryObject;
+  | DialogueStoryObject
+  | PickupStoryObject;
 
 function createPlayer(
   x: number,
@@ -424,6 +440,36 @@ function martStoryObjects(): StoryObject[] {
   ];
 }
 
+function viridianPickupStoryObjects(
+  story: StoryState,
+): StoryObject[] {
+  if (
+    story.collectedItemIds.includes(
+      "viridian-city-potion",
+    )
+  ) {
+    return [];
+  }
+
+  return [
+    {
+      id: "viridian-city-potion",
+      kind: "pickup",
+      pickupId: "viridian-city-potion",
+      itemId: "potion",
+      itemName: "Potion",
+      label: "Item Ball",
+      x: 17,
+      y: 5,
+      spriteUrl: "/game-assets/overworld/092_item_ball.png",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 16,
+      sheetHeight: 16,
+    },
+  ];
+}
+
 function pokemonCenterStoryObjects(): StoryObject[] {
   return [
     {
@@ -496,7 +542,9 @@ function mapStoryObjects(
         ? martStoryObjects()
         : mapId === "viridian-pokemon-center"
           ? pokemonCenterStoryObjects()
-          : [];
+          : mapId === "viridian-city"
+            ? viridianPickupStoryObjects(story)
+            : [];
 
   for (const trainer of resolveOverworldTrainers(
     mapId,
@@ -521,6 +569,7 @@ export function OverworldGame({
   onMartOpen,
   onPokemonCenterHeal,
   onPokemonStorageOpen,
+  onOverworldItemPickup,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -855,6 +904,22 @@ export function OverworldGame({
         return;
       }
 
+      if (storyObject.kind === "pickup") {
+        const result = onOverworldItemPickup(
+          storyObject.pickupId,
+          storyObject.itemId,
+        );
+
+        showInteraction(
+          result.accepted
+            ? `Você encontrou ${storyObject.itemName}!`
+            : result.reason === "inventory-full"
+              ? "Sua bolsa não tem espaço para mais desse item."
+              : "Esse item já foi coletado.",
+        );
+        return;
+      }
+
       if (storyObject.kind === "dialogue") {
         showInteraction(storyObject.dialogue);
         return;
@@ -888,6 +953,7 @@ export function OverworldGame({
     onMartOpen,
     onPokemonCenterHeal,
     onPokemonStorageOpen,
+    onOverworldItemPickup,
     onRequestStarterChoice,
     showInteraction,
     triggerTrainerBattle,

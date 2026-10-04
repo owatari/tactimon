@@ -29,6 +29,7 @@ import {
 } from "@/lib/mart";
 import {
   chooseStarter,
+  collectOverworldItem,
   DEFAULT_STORY_STATE,
   depositCapturedPokemon,
   healStoryParty,
@@ -642,6 +643,28 @@ export function GameClient() {
         onPokemonStorageOpen={() =>
           setStorageOpen(true)
         }
+        onOverworldItemPickup={(pickupId, itemId) => {
+          const preview = collectOverworldItem(
+            story,
+            pickupId,
+            itemId,
+          );
+
+          if (preview.accepted) {
+            setStory((current) =>
+              collectOverworldItem(
+                current,
+                pickupId,
+                itemId,
+              ).story,
+            );
+          }
+
+          return {
+            accepted: preview.accepted,
+            reason: preview.reason,
+          };
+        }}
       />
 
       {starterChoiceOpen && !story.starter && (
