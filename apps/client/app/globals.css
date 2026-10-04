@@ -2816,7 +2816,7 @@ h1 {
   bottom: 0;
   min-width: 1px;
   min-height: 1px;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(var(--pokemon-visual-scale, 1));
   transform-origin: center bottom;
   background-repeat: no-repeat;
   image-rendering: pixelated;
@@ -3091,8 +3091,8 @@ h1 {
 }
 
 .battle-shell-clean {
-  width: max-content;
-  min-width: min(100%, 720px);
+  width: 100%;
+  min-width: 0;
   max-width: none;
   max-height: none;
   padding: 10px 12px 12px;
@@ -3115,7 +3115,7 @@ h1 {
 .battle-combatant-hud-row,
 .battle-message-strip,
 .battle-selection-dock {
-  width: min(960px, calc(100vw - 32px));
+  width: min(1600px, calc(100vw - 32px));
   color: #182838;
 }
 
@@ -3176,8 +3176,9 @@ h1 {
 }
 
 .battle-arena-scroll {
-  width: min(960px, calc(100vw - 32px));
-  max-height: min(65vh, 720px);
+  width: calc(100vw - 32px);
+  max-width: 1600px;
+  max-height: min(72vh, 860px);
   margin: 0 auto;
   overflow: auto;
   border: 3px solid #203850;
