@@ -740,7 +740,7 @@ export function runDialogueInteraction(
         resolveDialogueScript(story, request.id) ??
         dialoguePresentationFromText(
           request.id,
-          "Este personagem ainda não tem uma conversa específica, mas está pronto para receber um diálogo pelo registro central.",
+          "Olá! Continue explorando e conversando com as pessoas pelo caminho. Sempre há algo novo para descobrir.",
         ),
     };
   }
