@@ -160,6 +160,7 @@ type StoryObjectBase = {
   id: string;
   label: string;
   visibleWhen?: PlayerWorldCondition;
+  blocksMovement?: boolean;
   x: number;
   y: number;
   spriteUrl: string;
@@ -202,6 +203,12 @@ type StoryObject =
   | TrainerStoryObject
   | MartClerkStoryObject
   | DialogueStoryObject;
+
+function storyObjectBlocksMovement(
+  object: StoryObject,
+): boolean {
+  return object.blocksMovement !== false;
+}
 
 function createPlayer(
   x: number,
@@ -884,6 +891,7 @@ export function OverworldGame({
             ) ||
             storyObjectsRef.current.some(
               (object) =>
+                storyObjectBlocksMovement(object) &&
                 object.x === worldX &&
                 object.y === worldY,
             );
@@ -1350,7 +1358,10 @@ export function OverworldGame({
         (object) => object.x === x && object.y === y,
       ) ||
       storyObjectsRef.current.some(
-        (object) => object.x === x && object.y === y,
+        (object) =>
+          storyObjectBlocksMovement(object) &&
+          object.x === x &&
+          object.y === y,
       );
 
     const canWalk = (
@@ -1906,6 +1917,7 @@ export function OverworldGame({
             storyObjectsRef.current.some(
               (storyObject) =>
                 storyObject.id !== object.id &&
+                storyObjectBlocksMovement(storyObject) &&
                 storyObject.x === x &&
                 storyObject.y === y,
             )

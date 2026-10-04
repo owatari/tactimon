@@ -139,3 +139,15 @@ new object kind or interaction branch for those systems.
 
 Future dialogue-backed world events should be added as registry data and
 projected through the owning player's `StoryState`.
+
+
+### Collision is projected too
+
+Scripted world objects block movement by default. Definitions may set
+`blocksMovement: false` for floor switches, visual markers and other
+non-blocking events.
+
+The same projected object list drives overworld collision, trainer line of
+sight and battle-arena blocked cells. A Cut tree removed for player A therefore
+does not remain as an invisible collision for A, while the unchanged shared
+definition still blocks player B.

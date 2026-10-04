@@ -81,6 +81,28 @@ describe("scripted world object registry", () => {
     ).toContain("sea-cottage-bill");
   });
 
+  it("supports non-blocking future scripted events without a new runtime kind", () => {
+    const base =
+      resolveScriptedWorldObjects("vermilion-city")
+        .find(
+          (object) =>
+            object.id === "vermilion-gym-cut-tree",
+        )!;
+
+    const futureSwitch = {
+      ...base,
+      id: "future-floor-switch",
+      blocksMovement: false,
+      request: {
+        kind: "script" as const,
+        id: "future-floor-switch",
+      },
+    };
+
+    expect(futureSwitch.blocksMovement).toBe(false);
+    expect(futureSwitch.request.kind).toBe("script");
+  });
+
   it("uses generic script requests for fossils, Cut and Captain", () => {
     const fossil =
       resolveScriptedWorldObjects("mt-moon-b2f")[0];

@@ -19,6 +19,7 @@ export type ScriptedWorldObjectDefinition = {
   frameHeight: number;
   sheetWidth: number;
   sheetHeight: number;
+  blocksMovement?: boolean;
   visibleWhen?: PlayerWorldCondition;
   request: DialogueInteractionRequest;
 };
