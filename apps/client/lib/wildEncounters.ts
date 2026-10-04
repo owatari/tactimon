@@ -287,3 +287,133 @@ export function resolveLandEncounter(
       }
     : null;
 }
+
+
+export type ScaledWildEncounter = {
+  areaLevel: number;
+  equivalentPartyStrength: number;
+  members: WildEncounter[];
+};
+
+export function resolveAreaWildLevel(
+  mapId: string,
+): number | null {
+  const table = LAND_ENCOUNTERS[mapId];
+  if (!table || table.slots.length === 0) {
+    return null;
+  }
+
+  const totalWeight = table.slots.reduce(
+    (sum, slot) => sum + slot.weight,
+    0,
+  );
+  if (totalWeight <= 0) {
+    return null;
+  }
+
+  const weightedLevel = table.slots.reduce(
+    (sum, slot) =>
+      sum + slot.level * slot.weight,
+    0,
+  );
+
+  return weightedLevel / totalWeight;
+}
+
+export function equivalentWildPartyStrength(
+  areaLevel: number,
+  partyLevels: readonly number[],
+): number {
+  const safeAreaLevel = Math.max(1, areaLevel);
+
+  return partyLevels
+    .filter(
+      (level) =>
+        Number.isFinite(level) && level > 0,
+    )
+    .reduce((sum, level) => {
+      const ratio =
+        Math.max(1, level) / safeAreaLevel;
+      const contribution = Math.min(
+        4.5,
+        Math.max(
+          0.35,
+          Math.pow(ratio, 2.2),
+        ),
+      );
+      return sum + contribution;
+    }, 0);
+}
+
+export function resolveWildPackSize(
+  areaLevel: number,
+  partyLevels: readonly number[],
+  roll: number,
+): number {
+  const strength = equivalentWildPartyStrength(
+    areaLevel,
+    partyLevels,
+  );
+  const range: readonly [number, number] =
+    strength <= 0.65
+      ? [1, 2]
+      : strength <= 1.3
+        ? [2, 4]
+        : strength <= 2.3
+          ? [4, 6]
+          : strength <= 4
+            ? [6, 8]
+            : [8, 10];
+
+  const width = range[1] - range[0] + 1;
+  const normalized =
+    Math.abs(Math.trunc(roll * 17 + 31)) %
+    width;
+
+  return range[0] + normalized;
+}
+
+export function resolveScaledWildEncounter(
+  mapId: string,
+  roll: number,
+  partyLevels: readonly number[],
+): ScaledWildEncounter | null {
+  const areaLevel = resolveAreaWildLevel(mapId);
+  if (areaLevel === null) {
+    return null;
+  }
+
+  const size = resolveWildPackSize(
+    areaLevel,
+    partyLevels,
+    roll,
+  );
+  const members: WildEncounter[] = [];
+
+  for (let index = 0; index < size; index += 1) {
+    const encounter = resolveLandEncounter(
+      mapId,
+      roll +
+        index * 37 +
+        size * 11 +
+        index * index * 3,
+    );
+    if (encounter) {
+      members.push(encounter);
+    }
+  }
+
+  if (members.length === 0) {
+    return null;
+  }
+
+  return {
+    areaLevel,
+    equivalentPartyStrength:
+      equivalentWildPartyStrength(
+        areaLevel,
+        partyLevels,
+      ),
+    members,
+  };
+}
