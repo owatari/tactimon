@@ -2389,6 +2389,74 @@ describe("battle movement and deployment scale", () => {
   });
 });
 
+describe("crowded tactical AI", () => {
+  it("acts deterministically in a full 6v10 wild battle", () => {
+    let state = createWildDuel({
+      seed: 1903,
+      width: 17,
+      height: 9,
+      players: [
+        { species: "bulbasaur", level: 10, moves: ["tackle", "vine-whip"] },
+        { species: "charmander", level: 10, moves: ["scratch", "ember"] },
+        { species: "squirtle", level: 10, moves: ["tackle", "water-gun"] },
+        { species: "pidgey", level: 10, moves: ["tackle", "gust"] },
+        { species: "rattata", level: 10, moves: ["tackle", "tail-whip"] },
+        { species: "pikachu", level: 10, moves: ["thunder-shock", "growl"] },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 8,
+      wilds: Array.from(
+        { length: 10 },
+        (_, index) => ({
+          species:
+            index % 2 === 0
+              ? "rattata" as const
+              : "pidgey" as const,
+          level: 8,
+        }),
+      ),
+    });
+
+    const actor = state.units.find(
+      (unit) =>
+        unit.side === "rival" &&
+        getReachableCells(state, unit.id).length > 0,
+    );
+    expect(actor).toBeDefined();
+
+    state = {
+      ...state,
+      activeUnitId: actor!.id,
+    };
+
+    const first = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+    const second = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+    const firstPresentations = first.steps
+      .map((step) => step.presentation)
+      .filter(Boolean);
+    const secondPresentations = second.steps
+      .map((step) => step.presentation)
+      .filter(Boolean);
+
+    expect(firstPresentations).toEqual(
+      secondPresentations,
+    );
+    expect(
+      firstPresentations.some(
+        (presentation) =>
+          presentation?.kind === "movement" ||
+          presentation?.kind === "move",
+      ),
+    ).toBe(true);
+  });
+});
+
 
 describe("multi-wild capture flow", () => {
   it("keeps capture locked until only one wild Pokémon is still standing", () => {
