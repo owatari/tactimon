@@ -38,6 +38,8 @@ export type WildSpeciesId =
 export type TrainerSpeciesId =
   | "pidgeotto"
   | "bellsprout"
+  | "machop"
+  | "slowpoke"
   | "onix"
   | "sandshrew"
   | "grimer"
@@ -114,6 +116,10 @@ export type DuelMoveId =
   | "bubble"
   | "icicle-spear"
   | "horn-attack"
+  | "low-kick"
+  | "focus-energy"
+  | "karate-chop"
+  | "confusion"
   | "recover"
   | "water-pulse"
   | "swift"
@@ -716,6 +722,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 45,
     speed: 70,
     moves: ["scratch", "leer"],
+  },
+  machop: {
+    name: "Machop",
+    type: "fighting",
+    types: ["fighting"],
+    hp: 70,
+    attack: 80,
+    defense: 50,
+    specialAttack: 35,
+    specialDefense: 35,
+    speed: 35,
+    moves: ["low-kick", "leer", "focus-energy", "karate-chop"],
+  },
+  slowpoke: {
+    name: "Slowpoke",
+    type: "water",
+    types: ["water", "psychic"],
+    hp: 90,
+    attack: 65,
+    defense: 65,
+    specialAttack: 40,
+    specialDefense: 40,
+    speed: 15,
+    moves: ["tackle", "growl", "water-gun", "confusion"],
   },
   metapod: {
     name: "Metapod",
@@ -1649,6 +1679,69 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 25,
     minRange: 1,
     maxRange: 1,
+  },
+  "low-kick": {
+    id: "low-kick",
+    name: "Low Kick",
+    type: "fighting",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description:
+      "Golpe Fighting de contato. O peso do alvo ainda não altera a potência tática.",
+    power: 50,
+    apCost: 4,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 1,
+  },
+  "focus-energy": {
+    id: "focus-energy",
+    name: "Focus Energy",
+    type: "normal",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "harden",
+    description:
+      "Aumenta chance de crítico no jogo original; critical-stage ainda não é modelado.",
+    power: null,
+    apCost: 2,
+    maxPp: 30,
+    minRange: 0,
+    maxRange: 0,
+  },
+  "karate-chop": {
+    id: "karate-chop",
+    name: "Karate Chop",
+    type: "fighting",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Golpe Fighting de contato com boa potência.",
+    power: 50,
+    apCost: 4,
+    maxPp: 25,
+    minRange: 1,
+    maxRange: 1,
+  },
+  confusion: {
+    id: "confusion",
+    name: "Confusion",
+    type: "psychic",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "thunder-shock",
+    description:
+      "Ataque Psychic; a chance de confusão ainda não é um status persistente do motor.",
+    power: 50,
+    apCost: 4,
+    maxPp: 25,
+    minRange: 1,
+    maxRange: 4,
   },
   recover: {
     id: "recover",

@@ -687,3 +687,28 @@ describe("Route 24 species progression", () => {
     ]);
   });
 });
+
+
+describe("Route 25 trainer species", () => {
+  it("uses FireRed growth groups and base EXP for Machop and Slowpoke", () => {
+    expect(fireRedExperienceAtLevel("machop", 15)).toBe(2_035);
+    expect(fireRedExperienceAtLevel("slowpoke", 17)).toBe(4_913);
+    expect(experienceRewardForTrainer("machop", 15, 1)).toBe(282);
+    expect(experienceRewardForTrainer("slowpoke", 17, 1)).toBe(360);
+  });
+
+  it("creates playable Route 25 trainer move sets", () => {
+    expect(createPokemonProgression("machop", 15).activeMoves).toEqual([
+      "low-kick",
+      "leer",
+      "focus-energy",
+      "karate-chop",
+    ]);
+    expect(createPokemonProgression("slowpoke", 17).activeMoves).toEqual([
+      "tackle",
+      "growl",
+      "water-gun",
+      "confusion",
+    ]);
+  });
+});
