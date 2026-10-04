@@ -42,7 +42,7 @@ describe("overworld NPC dialogue", () => {
     ).toContain("Pewter City");
   });
 
-  it("leaves unsupported maps and objects untouched", () => {
+  it("gives unsupported or future world NPCs a safe in-world fallback", () => {
     expect(
       resolveNpcDialogue(
         "route-1",
@@ -50,15 +50,44 @@ describe("overworld NPC dialogue", () => {
         22,
         true,
       ),
-    ).toBeNull();
+    ).toContain("estrada");
 
     expect(
       resolveNpcDialogue(
-        "viridian-city",
+        "future-route",
         1,
         1,
         true,
       ),
-    ).toBeNull();
+    ).toContain("Continue explorando");
+  });
+
+  it("includes the newly imported Pallet, Route 1 and Oak Lab conversations", () => {
+    expect(
+      resolveNpcDialogue(
+        "pallet-town",
+        13,
+        17,
+        false,
+      ),
+    ).toContain("tecnologia");
+
+    expect(
+      resolveNpcDialogue(
+        "route-1",
+        19,
+        16,
+        true,
+      ),
+    ).toContain("barrancos");
+
+    expect(
+      resolveNpcDialogue(
+        "oak-lab",
+        3,
+        11,
+        true,
+      ),
+    ).toContain("assistente");
   });
 });
