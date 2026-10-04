@@ -3,6 +3,7 @@ import {
   copyFile,
   cp,
   mkdir,
+  readdir,
   rm,
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -128,11 +129,11 @@ const files = [
     "maps/route-6/preview.png",
   ],
   [
-    "maps/layouts/083_vermilioncity_layout/layout.json",
+    "maps/layouts/082_vermilioncity_layout/layout.json",
     "maps/vermilion-city/layout.json",
   ],
   [
-    "maps/layouts/083_vermilioncity_layout/preview.png",
+    "maps/layouts/082_vermilioncity_layout/preview.png",
     "maps/vermilion-city/preview.png",
   ],
   [
@@ -144,51 +145,51 @@ const files = [
     "maps/vermilion-gym/preview.png",
   ],
   [
-    "maps/layouts/118_ssanne_exterior_layout/layout.json",
+    "maps/layouts/117_ssanne_exterior_layout/layout.json",
     "maps/ss-anne-exterior/layout.json",
   ],
   [
-    "maps/layouts/118_ssanne_exterior_layout/preview.png",
+    "maps/layouts/117_ssanne_exterior_layout/preview.png",
     "maps/ss-anne-exterior/preview.png",
   ],
   [
-    "maps/layouts/119_ssanne_1f_corridor_layout/layout.json",
+    "maps/layouts/118_ssanne_1f_corridor_layout/layout.json",
     "maps/ss-anne-1f-corridor/layout.json",
   ],
   [
-    "maps/layouts/119_ssanne_1f_corridor_layout/preview.png",
+    "maps/layouts/118_ssanne_1f_corridor_layout/preview.png",
     "maps/ss-anne-1f-corridor/preview.png",
   ],
   [
-    "maps/layouts/120_ssanne_2f_corridor_layout/layout.json",
+    "maps/layouts/119_ssanne_2f_corridor_layout/layout.json",
     "maps/ss-anne-2f-corridor/layout.json",
   ],
   [
-    "maps/layouts/120_ssanne_2f_corridor_layout/preview.png",
+    "maps/layouts/119_ssanne_2f_corridor_layout/preview.png",
     "maps/ss-anne-2f-corridor/preview.png",
   ],
   [
-    "maps/layouts/121_ssanne_3f_corridor_layout/layout.json",
+    "maps/layouts/120_ssanne_3f_corridor_layout/layout.json",
     "maps/ss-anne-3f-corridor/layout.json",
   ],
   [
-    "maps/layouts/121_ssanne_3f_corridor_layout/preview.png",
+    "maps/layouts/120_ssanne_3f_corridor_layout/preview.png",
     "maps/ss-anne-3f-corridor/preview.png",
   ],
   [
-    "maps/layouts/123_ssanne_deck_layout/layout.json",
+    "maps/layouts/122_ssanne_deck_layout/layout.json",
     "maps/ss-anne-deck/layout.json",
   ],
   [
-    "maps/layouts/123_ssanne_deck_layout/preview.png",
+    "maps/layouts/122_ssanne_deck_layout/preview.png",
     "maps/ss-anne-deck/preview.png",
   ],
   [
-    "maps/layouts/171_ssanne_captainsoffice_layout/layout.json",
+    "maps/layouts/170_ssanne_captainsoffice_layout/layout.json",
     "maps/ss-anne-captains-office/layout.json",
   ],
   [
-    "maps/layouts/171_ssanne_captainsoffice_layout/preview.png",
+    "maps/layouts/170_ssanne_captainsoffice_layout/preview.png",
     "maps/ss-anne-captains-office/preview.png",
   ],
   [
@@ -695,14 +696,84 @@ const optionalFiles = [
   ],
 ];
 
+async function resolveRequiredSource(source) {
+  const direct = resolve(sourceRoot, source);
+
+  try {
+    await access(direct);
+    return {
+      path: direct,
+      source,
+    };
+  } catch {
+    // Layout indices can shift when extractor metadata is regenerated.
+  }
+
+  const layoutMatch = source.match(
+    /^maps\/layouts\/\d{3}_(.+)\/([^/]+)$/,
+  );
+
+  if (!layoutMatch) {
+    return {
+      path: direct,
+      source,
+    };
+  }
+
+  const [, layoutSlug, filename] = layoutMatch;
+  const layoutsRoot = resolve(sourceRoot, "maps/layouts");
+  const suffix = `_${layoutSlug}`;
+
+  try {
+    const entries = await readdir(layoutsRoot, {
+      withFileTypes: true,
+    });
+    const candidates = entries.filter(
+      (entry) =>
+        entry.isDirectory() &&
+        entry.name.endsWith(suffix),
+    );
+
+    if (candidates.length === 1) {
+      const fallbackSource =
+        `maps/layouts/${candidates[0].name}/${filename}`;
+      const fallback = resolve(
+        layoutsRoot,
+        candidates[0].name,
+        filename,
+      );
+
+      await access(fallback);
+      console.warn(
+        `layout index changed: ${source} -> ${fallbackSource}`,
+      );
+
+      return {
+        path: fallback,
+        source: fallbackSource,
+      };
+    }
+  } catch {
+    // Let copyFile report the original missing required asset below.
+  }
+
+  return {
+    path: direct,
+    source,
+  };
+}
+
 await rm(publicRoot, { recursive: true, force: true });
 
 for (const [source, destination] of files) {
-  const from = resolve(sourceRoot, source);
+  const resolvedSource =
+    await resolveRequiredSource(source);
   const to = resolve(publicRoot, destination);
   await mkdir(dirname(to), { recursive: true });
-  await copyFile(from, to);
-  console.log(`synced ${source} -> ${destination}`);
+  await copyFile(resolvedSource.path, to);
+  console.log(
+    `synced ${resolvedSource.source} -> ${destination}`,
+  );
 }
 
 const overworldSource = resolve(sourceRoot, "overworld");
