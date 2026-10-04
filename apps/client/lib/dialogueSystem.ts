@@ -392,6 +392,11 @@ const DIALOGUE_DEFINITIONS: Record<
     "Misty usa Pokémon Water. Grass pode drenar a vantagem dela, e Electric pode dar um choque decisivo.",
     "Gym Guide",
   ),
+  "vermilion-gym-guy": one(
+    "vermilion-gym-guy",
+    "Lt. Surge domina Pokémon Electric. Ground ignora ataques Electric, e os interruptores da porta estão escondidos nas lixeiras.",
+    "Gym Guide",
+  ),
   "viridian-forest-youngster": one(
     "viridian-forest-youngster",
     "Vim com alguns amigos capturar Pokémon Bug. Eles estão loucos para batalhar!",
