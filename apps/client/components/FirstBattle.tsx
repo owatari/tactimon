@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import {
   applyDuelAction,
   createStarterDuel,
@@ -9,11 +15,11 @@ import {
   DUEL_ITEMS,
   DUEL_MOVES,
   calculateTypeEffectiveness,
-  experienceProgress,
   getActiveDuelUnit,
   getDuelCaptureEligibility,
   isDuelAutoCatchTarget,
   getDuelMovePp,
+  getDuelMoveAreaTargetIds,
   getReachableCells,
   manhattanDistance,
   resolveSimpleAiTurnDetailed,
@@ -129,6 +135,12 @@ type VfxEvent = {
   nonce: number;
 };
 
+type CaptureThrowEvent = {
+  from: DuelPoint;
+  to: DuelPoint;
+  nonce: number;
+};
+
 const STEP_ANIMATION_MS = 145;
 const ATTACK_WINDUP_MS = 180;
 
@@ -158,14 +170,14 @@ function stageBadges(unit: DuelUnit): Array<{
 
   if (unit.attackStage !== 0) {
     badges.push({
-      label: `ATK ${unit.attackStage > 0 ? "+" : ""}${unit.attackStage}`,
+      label: `ATK ${unit.attackStage > 0 ? "▲" : "▼"}${Math.abs(unit.attackStage)}`,
       tone: unit.attackStage > 0 ? "buff" : "debuff",
     });
   }
 
   if (unit.defenseStage !== 0) {
     badges.push({
-      label: `DEF ${unit.defenseStage > 0 ? "+" : ""}${unit.defenseStage}`,
+      label: `DEF ${unit.defenseStage > 0 ? "▲" : "▼"}${Math.abs(unit.defenseStage)}`,
       tone: unit.defenseStage > 0 ? "buff" : "debuff",
     });
   }
@@ -173,7 +185,7 @@ function stageBadges(unit: DuelUnit): Array<{
   if (unit.specialAttackStage !== 0) {
     badges.push({
       label:
-        `SP.ATK ${unit.specialAttackStage > 0 ? "+" : ""}${unit.specialAttackStage}`,
+        `SP.ATK ${unit.specialAttackStage > 0 ? "▲" : "▼"}${Math.abs(unit.specialAttackStage)}`,
       tone:
         unit.specialAttackStage > 0
           ? "buff"
@@ -184,7 +196,7 @@ function stageBadges(unit: DuelUnit): Array<{
   if (unit.specialDefenseStage !== 0) {
     badges.push({
       label:
-        `SP.DEF ${unit.specialDefenseStage > 0 ? "+" : ""}${unit.specialDefenseStage}`,
+        `SP.DEF ${unit.specialDefenseStage > 0 ? "▲" : "▼"}${Math.abs(unit.specialDefenseStage)}`,
       tone:
         unit.specialDefenseStage > 0
           ? "buff"
@@ -195,7 +207,7 @@ function stageBadges(unit: DuelUnit): Array<{
   if (unit.accuracyStage !== 0) {
     badges.push({
       label:
-        `ACC ${unit.accuracyStage > 0 ? "+" : ""}${unit.accuracyStage}`,
+        `ACC ${unit.accuracyStage > 0 ? "▲" : "▼"}${Math.abs(unit.accuracyStage)}`,
       tone:
         unit.accuracyStage > 0
           ? "buff"
@@ -206,7 +218,7 @@ function stageBadges(unit: DuelUnit): Array<{
   if (unit.evasionStage !== 0) {
     badges.push({
       label:
-        `EVA ${unit.evasionStage > 0 ? "+" : ""}${unit.evasionStage}`,
+        `EVA ${unit.evasionStage > 0 ? "▲" : "▼"}${Math.abs(unit.evasionStage)}`,
       tone:
         unit.evasionStage > 0
           ? "buff"
@@ -216,34 +228,30 @@ function stageBadges(unit: DuelUnit): Array<{
 
   if (unit.speedStage !== 0) {
     badges.push({
-      label: `SPD ${unit.speedStage > 0 ? "+" : ""}${unit.speedStage}`,
+      label: `SPD ${unit.speedStage > 0 ? "▲" : "▼"}${Math.abs(unit.speedStage)}`,
       tone: unit.speedStage > 0 ? "buff" : "debuff",
     });
   }
 
-  if (unit.status === "poison") {
-    badges.push({
-      label: "PSN",
-      tone: "debuff",
-    });
-  } else if (unit.status === "paralysis") {
-    badges.push({
-      label: "PAR",
-      tone: "debuff",
-    });
-  } else if (unit.status === "burn") {
-    badges.push({
-      label: "BRN",
-      tone: "debuff",
-    });
-  } else if (unit.status === "sleep") {
-    badges.push({
-      label: "SLP",
-      tone: "debuff",
-    });
-  }
-
   return badges;
+}
+
+function majorStatusToken(
+  status: DuelMajorStatus,
+): { label: string; className: string } | null {
+  if (status === "poison") {
+    return { label: "PSN", className: "psn" };
+  }
+  if (status === "paralysis") {
+    return { label: "PAR", className: "par" };
+  }
+  if (status === "burn") {
+    return { label: "BRN", className: "brn" };
+  }
+  if (status === "sleep") {
+    return { label: "SLP", className: "slp" };
+  }
+  return null;
 }
 
 function pointKey(point: DuelPoint): string {
@@ -454,6 +462,8 @@ export function FirstBattle({
     useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [vfx, setVfx] = useState<VfxEvent | null>(null);
+  const [captureThrow, setCaptureThrow] =
+    useState<CaptureThrowEvent | null>(null);
   const [animations, setAnimations] = useState<
     Record<string, UnitAnimationState>
   >({});
@@ -475,6 +485,7 @@ export function FirstBattle({
   const battleSpeedRef = useRef<1 | 2>(1);
   const animationNonceRef = useRef(0);
   const vfxNonceRef = useRef(0);
+  const captureThrowNonceRef = useRef(0);
   const vfxDoneRef = useRef<(() => void) | null>(null);
 
   const active = getActiveDuelUnit(state);
@@ -578,6 +589,31 @@ export function FirstBattle({
 
     return keys;
   }, [command, player.position, selectedMove, state.height, state.width]);
+
+  const areaPreviewUnitIds = useMemo(() => {
+    if (
+      command !== "move-target" ||
+      !selectedMove ||
+      !hoveredTargetId
+    ) {
+      return new Set<string>();
+    }
+
+    return new Set(
+      getDuelMoveAreaTargetIds(
+        state,
+        player.id,
+        selectedMove,
+        hoveredTargetId,
+      ),
+    );
+  }, [
+    command,
+    hoveredTargetId,
+    player.id,
+    selectedMove,
+    state,
+  ]);
 
   const targetableUnitIds = useMemo(() => {
     if (!isPlayerTurn) return new Set<string>();
@@ -776,6 +812,21 @@ export function FirstBattle({
     const targetResult = presentation.results.find(
       (entry) => entry.targetId === targetId,
     );
+    const affectedTargets = presentation.results
+      .map((entry) => ({
+        entry,
+        unit: beforeState.units.find(
+          (unit) => unit.id === entry.targetId,
+        ),
+      }))
+      .filter(
+        (
+          affected,
+        ): affected is {
+          entry: (typeof presentation.results)[number];
+          unit: DuelUnit;
+        } => Boolean(affected.unit),
+      );
 
     if (!actor || !target) {
       setState(result.state);
@@ -807,7 +858,13 @@ export function FirstBattle({
     );
     await wait(ATTACK_WINDUP_MS);
 
-    if (targetResult?.missed) {
+    const landedTargets = affectedTargets.filter(
+      ({ entry }) => !entry.missed,
+    );
+    if (
+      affectedTargets.length > 0 &&
+      landedTargets.length === 0
+    ) {
       setState(result.state);
       flashNotice(
         `${DUEL_MOVES[presentation.moveId].name} errou!`,
@@ -817,8 +874,10 @@ export function FirstBattle({
       return;
     }
 
-    if ((targetResult?.damage ?? 0) > 0) {
-      setUnitAnimation(target.id, "hurt");
+    for (const { entry, unit } of affectedTargets) {
+      if (!entry.missed && entry.damage > 0) {
+        setUnitAnimation(unit.id, "hurt");
+      }
     }
 
     await playVfx(
@@ -832,14 +891,16 @@ export function FirstBattle({
         `${targetResult?.hitCount} acertos!`,
       );
     }
-    const nextTarget = result.state.units.find(
-      (unit) => unit.id === target.id,
-    );
+    for (const { entry, unit } of affectedTargets) {
+      const nextTarget = result.state.units.find(
+        (candidate) => candidate.id === unit.id,
+      );
 
-    if (nextTarget?.hp === 0) {
-      setUnitAnimation(target.id, "faint");
-    } else {
-      setUnitAnimation(target.id, "idle");
+      if (!entry.missed && nextTarget?.hp === 0) {
+        setUnitAnimation(unit.id, "faint");
+      } else {
+        setUnitAnimation(unit.id, "idle");
+      }
     }
 
     setUnitAnimation(actor.id, "idle");
@@ -847,6 +908,7 @@ export function FirstBattle({
   };
 
   const animateResolvedItem = async (
+    beforeState: DuelState,
     result: DuelActionResult,
   ) => {
     const presentation = result.presentation;
@@ -862,6 +924,27 @@ export function FirstBattle({
     const targetId = presentation.targetIds[0];
 
     if (presentation.kind === "capture") {
+      const actorBefore = beforeState.units.find(
+        (unit) => unit.id === presentation.actorId,
+      );
+      const targetBefore = beforeState.units.find(
+        (unit) => unit.id === targetId,
+      );
+
+      if (actorBefore && targetBefore) {
+        setCaptureThrow({
+          from:
+            visualPositions[actorBefore.id] ??
+            actorBefore.position,
+          to:
+            visualPositions[targetBefore.id] ??
+            targetBefore.position,
+          nonce: ++captureThrowNonceRef.current,
+        });
+        await wait(360);
+        setCaptureThrow(null);
+      }
+
       flashNotice(
         presentation.success
           ? "Captura bem-sucedida!"
@@ -871,7 +954,7 @@ export function FirstBattle({
         setUnitAnimation(targetId, "faint");
       }
       setState(result.state);
-      await wait(520);
+      await wait(360);
       return;
     }
 
@@ -971,7 +1054,7 @@ export function FirstBattle({
 
     setBusy(true);
     resetCommand();
-    await animateResolvedItem(result);
+    await animateResolvedItem(state, result);
     setBusy(false);
   };
 
@@ -1101,7 +1184,10 @@ export function FirstBattle({
               presentation?.kind === "item" ||
               presentation?.kind === "capture"
             ) {
-              await animateResolvedItem(step);
+              await animateResolvedItem(
+            visualState,
+            step,
+          );
             } else {
               setState(step.state);
             }
@@ -1165,7 +1251,6 @@ export function FirstBattle({
   );
   const latestMessage =
     notice ?? state.log[state.log.length - 1] ?? "";
-  const playerXp = experienceProgress(progression);
 
   const battleTilePixels =
     TILE_SIZE * battleZoom;
@@ -1177,11 +1262,24 @@ export function FirstBattle({
     context.mapWidth * TILE_SIZE * battleZoom;
   const naturalMapHeight =
     context.mapHeight * TILE_SIZE * battleZoom;
+  const orderedTurnIds = [
+    ...state.turnOrder.slice(state.turnIndex),
+    ...state.turnOrder.slice(0, state.turnIndex),
+  ];
+  const actionOrderUnits = orderedTurnIds
+    .map((id) =>
+      state.units.find((unit) => unit.id === id),
+    )
+    .filter(
+      (unit): unit is DuelUnit =>
+        Boolean(unit && unit.hp > 0),
+    );
 
   const renderCombatantHud = (
     unit: (typeof state.units)[number],
   ) => {
     const badges = stageBadges(unit);
+    const statusToken = majorStatusToken(unit.status);
     const healthTone = hpTone(unit.hp, unit.maxHp);
     const isPlayer = unit.side === "player";
 
@@ -1191,6 +1289,9 @@ export function FirstBattle({
         className={[
           "combatant-hud",
           unit.side,
+          unit.ownerKind === "party-member"
+            ? "party-member"
+            : "",
           active?.id === unit.id ? "active" : "",
         ]
           .filter(Boolean)
@@ -1240,51 +1341,32 @@ export function FirstBattle({
             </div>
           </div>
 
-          {isPlayer && unit.id === starterUnit.id && (
-            <div className="combatant-resource-block xp-resource">
-              <div className="combatant-resource-heading">
-                <span>EXP</span>
-                <strong>
-                  {playerXp.required > 0
-                    ? `${playerXp.current} / ${playerXp.required}`
-                    : "MAX"}
-                </strong>
-              </div>
-              <div className="combatant-exp-track">
-                <div
-                  className="combatant-exp-fill"
-                  style={{
-                    width: `${playerXp.percent}%`,
-                  }}
-                />
-              </div>
-            </div>
-          )}
-
           <div className="combatant-meta-row">
             <span className="resource-chip">
-              {unit.ap}/{unit.maxAp} AP
+              AP {unit.ap}/{unit.maxAp}
             </span>
             <span className="resource-chip">
-              {unit.mp}/{unit.maxMp} MP
+              MP {unit.mp}/{unit.maxMp}
             </span>
-            <span className="combatant-status-label">
-              STATUS
-            </span>
-            {badges.length === 0 ? (
+            {statusToken ? (
+              <span
+                className={`status-chip major ${statusToken.className}`}
+              >
+                {statusToken.label}
+              </span>
+            ) : badges.length === 0 ? (
               <span className="status-chip neutral">
                 NORMAL
               </span>
-            ) : (
-              badges.map((badge) => (
-                <span
-                  key={badge.label}
-                  className={`status-chip ${badge.tone}`}
-                >
-                  {badge.label}
-                </span>
-              ))
-            )}
+            ) : null}
+            {badges.map((badge) => (
+              <span
+                key={badge.label}
+                className={`status-chip stage ${badge.tone}`}
+              >
+                {badge.label}
+              </span>
+            ))}
           </div>
         </div>
       </section>
@@ -1313,6 +1395,40 @@ export function FirstBattle({
                 : `Você vs. ${trainerName}`}
             </strong>
             <small>{context.mapLabel}</small>
+          </div>
+
+          <div
+            className="battle-action-order"
+            aria-label="Ordem das ações"
+          >
+            <span className="battle-action-order-label">
+              ORDEM
+            </span>
+            <div className="battle-action-order-list">
+              {actionOrderUnits.map((unit, index) => (
+                <div
+                  key={`${unit.id}-order-${index}`}
+                  className={[
+                    "battle-action-order-entry",
+                    unit.side,
+                    unit.ownerKind === "party-member"
+                      ? "party-member"
+                      : "",
+                    index === 0 ? "current" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  title={`${index + 1}. ${unit.displayName}`}
+                >
+                  <PokemonPortrait
+                    species={unit.species}
+                    name={unit.displayName}
+                    compact
+                  />
+                  <span>{index + 1}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="battle-round-cluster">
@@ -1554,7 +1670,13 @@ export function FirstBattle({
                   className={[
                     "duel-unit-position",
                     unit.side,
+                    unit.ownerKind === "party-member"
+                      ? "party-member"
+                      : "",
                     targetable ? "targetable" : "",
+                    areaPreviewUnitIds.has(unit.id)
+                      ? "area-preview"
+                      : "",
                     active?.id === unit.id ? "active-unit" : "",
                   ]
                     .filter(Boolean)
@@ -1699,6 +1821,32 @@ export function FirstBattle({
                   </div>
                 </div>
               )}
+
+            {captureThrow && (
+              <div
+                key={captureThrow.nonce}
+                className="capture-throw-position"
+                style={{
+                  left: `${(captureThrow.from.x / state.width) * 100}%`,
+                  top: `${(captureThrow.from.y / state.height) * 100}%`,
+                  width: `${100 / state.width}%`,
+                  height: `${100 / state.height}%`,
+                  "--capture-dx":
+                    `${(captureThrow.to.x - captureThrow.from.x) * 100}%`,
+                  "--capture-dy":
+                    `${(captureThrow.to.y - captureThrow.from.y) * 100}%`,
+                  "--capture-half-dx":
+                    `${(captureThrow.to.x - captureThrow.from.x) * 50}%`,
+                  "--capture-half-dy":
+                    `${(captureThrow.to.y - captureThrow.from.y) * 50}%`,
+                } as CSSProperties}
+              >
+                <img
+                  src={FIRE_RED_ITEM_ICON["poke-ball"]}
+                  alt=""
+                />
+              </div>
+            )}
 
             {vfx && (
               <div

@@ -3918,3 +3918,1010 @@ h1 {
     grid-row: 3;
   }
 }
+
+
+/* Battle stage v9: fixed side HUDs, full central field, no stretched white rows. */
+.battle-shell-clean {
+  height: 100vh;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-auto-rows: auto;
+  gap: 6px;
+  overflow: hidden;
+  background: #203850;
+}
+
+.battle-minimal-header,
+.battle-message-strip,
+.battle-selection-dock {
+  width: calc(100vw - 24px);
+}
+
+.battle-stage-layout {
+  display: flex;
+  width: calc(100vw - 24px);
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.battle-combatant-sidebar {
+  flex: 0 0 216px;
+  width: 216px;
+  min-width: 216px;
+  height: 100%;
+  max-height: none;
+  padding: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 3px solid #203850;
+  background: #789078;
+  box-shadow: inset 0 0 0 2px #a8c0a0;
+}
+
+.battle-combatant-sidebar-title {
+  padding: 4px 6px;
+  border: 2px solid #203850;
+  background: #d8e8d0;
+  color: #203850;
+}
+
+.battle-combatant-sidebar .combatant-hud,
+.battle-combatant-sidebar.rival .combatant-hud {
+  min-height: 68px;
+  padding: 5px;
+  background: #f0f0d8;
+}
+
+.battle-combatant-sidebar .combatant-hud {
+  grid-template-columns: 46px minmax(0, 1fr);
+}
+
+.battle-combatant-sidebar.rival .combatant-hud {
+  grid-template-columns: minmax(0, 1fr) 46px;
+}
+
+.battle-combatant-sidebar .battle-portrait-frame {
+  width: 46px;
+  height: 46px;
+}
+
+.battle-combatant-sidebar .combatant-resource-heading strong {
+  font-size: 7px;
+}
+
+.battle-combatant-sidebar .combatant-meta-row {
+  flex-wrap: wrap;
+}
+
+.battle-stage-layout .battle-arena-scroll {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  overflow: auto;
+  border: 3px solid #203850;
+  background: #000;
+}
+
+.battle-stage-layout .clean-arena {
+  min-width: max-content;
+  min-height: max-content;
+}
+
+.battle-message-strip {
+  min-height: 34px;
+  max-height: 58px;
+  overflow: auto;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .battle-combatant-sidebar {
+    flex-basis: 176px;
+    width: 176px;
+    min-width: 176px;
+  }
+
+  .battle-combatant-sidebar .combatant-hud,
+  .battle-combatant-sidebar.rival .combatant-hud {
+    grid-template-columns: 1fr;
+  }
+
+  .battle-combatant-sidebar .battle-portrait-frame,
+  .battle-combatant-sidebar.rival .battle-portrait-frame {
+    width: 40px;
+    height: 40px;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  .battle-combatant-sidebar .combatant-hud-body,
+  .battle-combatant-sidebar.rival .combatant-hud-body {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .battle-combatant-sidebar .combatant-identity,
+  .battle-combatant-sidebar .combatant-meta-row {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .battle-shell-clean {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .battle-stage-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .battle-combatant-sidebar {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    max-height: 132px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .battle-combatant-sidebar-title {
+    grid-column: 1 / -1;
+  }
+
+  .battle-stage-layout .battle-arena-scroll {
+    height: min(58vh, 620px);
+  }
+}
+
+
+/* Battle allegiance markers: readable even in crowded 6x10 encounters. */
+.duel-unit-position .duel-unit::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  z-index: 0;
+  width: 72%;
+  height: 18%;
+  transform: translateX(-50%);
+  border: 2px solid;
+  border-radius: 50%;
+  image-rendering: pixelated;
+}
+
+.duel-unit-position.player .duel-unit::before {
+  border-color: #2858a8;
+  background: rgba(104, 176, 248, 0.34);
+  box-shadow: 0 0 0 1px rgba(232, 248, 255, 0.75);
+}
+
+.duel-unit-position.rival .duel-unit::before {
+  border-color: #b83028;
+  background: rgba(248, 104, 80, 0.34);
+  box-shadow: 0 0 0 1px rgba(255, 240, 216, 0.75);
+}
+
+.duel-unit-position .pokemon-battle-sprite {
+  z-index: 1;
+}
+
+.duel-unit-position.player .duel-unit-label {
+  border-color: #2858a8;
+  background: #d8e8f8;
+}
+
+.duel-unit-position.rival .duel-unit-label {
+  border-color: #b83028;
+  background: #f8d8c8;
+}
+
+.duel-unit-position.active-unit .duel-unit::before {
+  animation: battle-allegiance-pulse 700ms steps(2, end) infinite;
+}
+
+@keyframes battle-allegiance-pulse {
+  50% {
+    filter: brightness(1.45);
+  }
+}
+
+
+.duel-unit-position.area-preview .duel-unit::before {
+  border-color: #c87818;
+  background: rgba(248, 216, 80, 0.58);
+  box-shadow:
+    0 0 0 1px #fff0a8,
+    0 0 8px rgba(248, 216, 80, 0.7);
+}
+
+
+/* One-screen FireRed-style post-battle team summary. */
+.battle-summary-overlay {
+  padding: 0;
+  background: #203850;
+}
+
+.battle-summary-panel {
+  display: grid;
+  width: 100vw;
+  min-height: 100vh;
+  max-width: none;
+  max-height: 100vh;
+  margin: 0;
+  padding: 18px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  overflow: hidden;
+  border: 8px solid #203850 !important;
+  background: #d8e8d0 !important;
+  color: #182838 !important;
+  box-shadow:
+    inset 0 0 0 4px #90a8b8,
+    inset 0 0 0 7px #f8f8e8 !important;
+}
+
+.battle-summary-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+  box-shadow: inset 0 0 0 2px #a8c0d0;
+}
+
+.battle-summary-header h2 {
+  margin: 2px 0 0;
+  color: #182838;
+  font-size: 18px;
+}
+
+.battle-summary-header > strong {
+  color: #304858;
+  font-size: 10px;
+}
+
+.battle-summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(360px, 1fr));
+  align-content: start;
+  gap: 8px;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.battle-summary-pokemon {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+  box-shadow: inset -2px -2px 0 #b8c0b0;
+}
+
+.battle-summary-pokemon .battle-portrait-frame {
+  width: 72px;
+  height: 72px;
+  align-self: start;
+}
+
+.battle-summary-pokemon-body {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.battle-summary-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 2px solid #90a8b8;
+  padding-bottom: 4px;
+}
+
+.battle-summary-name strong {
+  font-size: 12px;
+}
+
+.battle-summary-name span {
+  color: #304858;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.battle-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px 8px;
+  font-size: 8px;
+}
+
+.battle-summary-stats span {
+  min-width: 0;
+  color: #304858;
+}
+
+.battle-summary-stats b,
+.battle-summary-moves b,
+.battle-summary-learned b {
+  color: #182838;
+}
+
+.battle-summary-moves,
+.battle-summary-learned {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 5px;
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.battle-summary-learned {
+  padding-top: 4px;
+  border-top: 1px solid #90a8b8;
+  color: #905020;
+}
+
+.battle-summary-continue {
+  justify-self: end;
+  min-width: 150px;
+  padding: 9px 16px;
+  border: 3px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  box-shadow: inset -3px -3px 0 #a8b8a8;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.battle-summary-continue:hover {
+  background: #f8e878;
+}
+
+@media (max-width: 760px) {
+  .battle-summary-panel {
+    padding: 10px;
+    border-width: 5px !important;
+  }
+
+  .battle-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .battle-summary-pokemon {
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .battle-summary-pokemon .battle-portrait-frame {
+    width: 54px;
+    height: 54px;
+  }
+}
+
+
+/* Battle HUD v10: keep turn order compact and preserve the arena viewport. */
+.battle-minimal-header {
+  min-width: 0;
+  gap: 10px;
+}
+
+.battle-minimal-title {
+  flex: 0 0 auto;
+}
+
+.battle-action-order {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: min(760px, 48vw);
+  align-items: center;
+  gap: 6px;
+  padding: 3px 5px;
+  overflow: hidden;
+  border: 2px solid #203850;
+  background: #f8f8e8;
+  box-shadow: inset 0 0 0 1px #a8c0d0;
+}
+
+.battle-action-order-label {
+  flex: 0 0 auto;
+  color: #304858;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.battle-action-order-list {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.battle-action-order-entry {
+  position: relative;
+  display: grid;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid #607080;
+  background: #d8e8d0;
+}
+
+.battle-action-order-entry.current {
+  border-color: #d08818;
+  box-shadow: inset 0 0 0 2px #fff0a8;
+}
+
+.battle-action-order-entry.rival {
+  border-color: #a83830;
+}
+
+.battle-action-order-entry.party-member {
+  border-color: #2858a8;
+}
+
+.battle-action-order-entry .battle-portrait-frame,
+.battle-action-order-entry .battle-portrait-frame.compact {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  background: transparent;
+}
+
+.battle-action-order-entry .battle-portrait-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.battle-action-order-entry > span {
+  position: absolute;
+  right: 1px;
+  bottom: 0;
+  min-width: 12px;
+  padding: 0 2px;
+  background: #f8f8e8;
+  color: #182838;
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 11px;
+  text-align: center;
+}
+
+.battle-round-cluster {
+  flex: 0 0 auto;
+}
+
+/* Allegiance is communicated by readable names, not circles under units. */
+.duel-unit-position .duel-unit::before {
+  display: none !important;
+}
+
+.duel-unit-position.player .duel-unit-label {
+  border-color: #283840;
+  background: #f8f8e8;
+  color: #101820;
+}
+
+.duel-unit-position.player.party-member .duel-unit-label {
+  border-color: #2858a8;
+  background: #d8e8f8;
+  color: #184888;
+}
+
+.duel-unit-position.rival .duel-unit-label {
+  border-color: #a83028;
+  background: #f8e8d8;
+  color: #a02020;
+}
+
+.duel-unit-label {
+  min-width: max-content;
+  padding: 2px 4px;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.05;
+  text-shadow: none;
+}
+
+/* Main battle information should remain legible at desktop scale. */
+.battle-combatant-sidebar .combatant-name,
+.battle-combatant-sidebar .combatant-level {
+  font-size: 10px;
+}
+
+.battle-combatant-sidebar .combatant-resource-heading,
+.battle-combatant-sidebar .combatant-resource-heading strong,
+.battle-combatant-sidebar .resource-chip,
+.battle-combatant-sidebar .status-chip {
+  font-size: 8px;
+  line-height: 1.15;
+}
+
+.battle-combatant-sidebar .status-chip {
+  padding: 2px 4px;
+}
+
+@media (max-width: 1100px) {
+  .battle-action-order {
+    max-width: 38vw;
+  }
+
+  .battle-action-order-entry {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .battle-action-order-entry .battle-portrait-frame,
+  .battle-action-order-entry .battle-portrait-frame.compact {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 760px) {
+  .battle-minimal-header {
+    flex-wrap: wrap;
+  }
+
+  .battle-action-order {
+    order: 3;
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
+
+/* Battle readability pass v10 — tuned against 1365x768 and 6x10. */
+.battle-shell-clean {
+  --battle-ink: #182838;
+  --battle-frame: #203850;
+  --battle-paper: #f8f8e8;
+  --battle-panel: #d8e8d0;
+  font-size: 10px;
+}
+
+.battle-minimal-header {
+  display: grid;
+  grid-template-columns: minmax(150px, 210px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 58px;
+  padding: 5px 7px;
+}
+
+.battle-minimal-title .eyebrow {
+  font-size: 8px;
+  line-height: 1.15;
+}
+
+.battle-minimal-title strong {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.battle-minimal-title small,
+.battle-turn,
+.battle-control-toggle {
+  font-size: 8px;
+}
+
+.battle-action-order {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.battle-action-order-label {
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #304858;
+}
+
+.battle-action-order-list {
+  display: flex;
+  gap: 3px;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px;
+  scrollbar-width: thin;
+}
+
+.battle-action-order-entry {
+  position: relative;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #607080;
+  background: #eef0d8;
+}
+
+.battle-action-order-entry.current {
+  outline: 2px solid #f0b020;
+  outline-offset: 1px;
+}
+
+.battle-action-order-entry.rival {
+  border-color: #a83028;
+}
+
+.battle-action-order-entry.party-member {
+  border-color: #2858a8;
+}
+
+.battle-action-order-entry .battle-portrait-frame.compact {
+  width: 26px;
+  height: 26px;
+  border: 0;
+}
+
+.battle-action-order-entry > span {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  min-width: 12px;
+  padding: 1px 2px;
+  border: 1px solid #203850;
+  background: #f8f8e8;
+  color: #182838;
+  font-size: 6px;
+  line-height: 1;
+  text-align: center;
+}
+
+.battle-stage-layout {
+  gap: 5px;
+}
+
+.battle-combatant-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 0 0 192px;
+  width: 192px;
+  min-width: 192px;
+  padding: 3px;
+  overflow: hidden;
+}
+
+.battle-combatant-sidebar-title {
+  flex: 0 0 auto;
+  padding: 3px 5px;
+  font-size: 8px;
+}
+
+.battle-combatant-sidebar .combatant-hud,
+.battle-combatant-sidebar.rival .combatant-hud {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 76px;
+  padding: 4px;
+  gap: 5px;
+}
+
+.battle-combatant-sidebar .combatant-hud {
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+
+.battle-combatant-sidebar.rival .combatant-hud {
+  grid-template-columns: minmax(0, 1fr) 40px;
+}
+
+.battle-combatant-sidebar .battle-portrait-frame {
+  width: 40px;
+  height: 40px;
+  align-self: center;
+}
+
+.battle-portrait-image.eos-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.combatant-identity {
+  gap: 4px;
+  min-width: 0;
+}
+
+.combatant-identity strong {
+  font-size: 9px !important;
+  line-height: 1.15;
+  color: #182838;
+}
+
+.combatant-hud.rival .combatant-identity strong {
+  color: #a02018;
+}
+
+.combatant-hud.party-member .combatant-identity strong {
+  color: #2858a8;
+}
+
+.combatant-level {
+  font-size: 7px !important;
+}
+
+.combatant-type {
+  padding: 1px 3px !important;
+  font-size: 6px !important;
+  line-height: 1.1;
+}
+
+.combatant-side-label {
+  display: none;
+}
+
+.combatant-resource-heading {
+  font-size: 7px !important;
+}
+
+.combatant-resource-heading strong {
+  font-size: 7px !important;
+}
+
+.combatant-hp-track {
+  height: 6px !important;
+}
+
+.combatant-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+  min-height: 14px;
+}
+
+.resource-chip,
+.status-chip {
+  min-height: 13px;
+  padding: 2px 4px !important;
+  font-size: 6px !important;
+  line-height: 1;
+  border-width: 1px !important;
+  white-space: nowrap;
+}
+
+.status-chip.major {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 900;
+  border: 2px solid #203850 !important;
+}
+
+.status-chip.major.psn {
+  background: #c070d8;
+  color: #201828;
+}
+
+.status-chip.major.par {
+  background: #f0d048;
+  color: #282010;
+}
+
+.status-chip.major.brn {
+  background: #e87848;
+  color: #281810;
+}
+
+.status-chip.major.slp {
+  background: #a8b0b8;
+  color: #182028;
+}
+
+.status-chip.stage.buff {
+  background: #c8e8b8;
+  color: #184018;
+}
+
+.status-chip.stage.debuff {
+  background: #f0c0b0;
+  color: #681810;
+}
+
+.status-chip.neutral {
+  color: #405040;
+  background: #e0e8d0;
+}
+
+.battle-stage-layout .battle-arena-scroll {
+  position: relative;
+  min-width: 0;
+  overflow: auto;
+}
+
+.battle-stage-layout .clean-arena {
+  margin: 8px auto 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.duel-unit-position .duel-unit::before {
+  display: none !important;
+}
+
+.duel-unit-label {
+  min-width: max-content;
+  padding: 2px 4px !important;
+  border: 2px solid #203850 !important;
+  background: #f8f8e8 !important;
+  color: #182838 !important;
+  font-size: 8px !important;
+  line-height: 1.05 !important;
+  font-weight: 900 !important;
+  text-shadow: none !important;
+}
+
+.duel-unit-position.rival .duel-unit-label {
+  color: #b02018 !important;
+}
+
+.duel-unit-position.party-member .duel-unit-label {
+  color: #2858a8 !important;
+}
+
+.capture-throw-position {
+  position: absolute;
+  z-index: 40;
+  pointer-events: none;
+  animation: capture-ball-flight 360ms steps(8, end) forwards;
+}
+
+.capture-throw-position img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+}
+
+@keyframes capture-ball-flight {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.8);
+  }
+  55% {
+    transform:
+      translate(
+        calc(var(--capture-dx) * 0.55),
+        calc(var(--capture-dy) * 0.55 - 22px)
+      )
+      rotate(180deg)
+      scale(1);
+  }
+  100% {
+    transform:
+      translate(var(--capture-dx), var(--capture-dy))
+      rotate(360deg)
+      scale(0.9);
+  }
+}
+
+.battle-action-popover {
+  font-size: 9px;
+}
+
+.battle-action-popover button strong {
+  font-size: 9px;
+}
+
+.battle-action-popover button span {
+  font-size: 7px;
+}
+
+.battle-message-strip {
+  min-height: 34px;
+  max-height: 42px;
+  padding: 6px 9px;
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+.battle-summary-evolution {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 5px;
+  padding-top: 4px;
+  border-top: 1px solid #90a8b8;
+  color: #305090;
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+@media (max-width: 1450px) and (min-width: 761px) {
+  .battle-shell-clean {
+    gap: 4px;
+  }
+
+  .battle-minimal-header,
+  .battle-message-strip,
+  .battle-selection-dock,
+  .battle-stage-layout {
+    width: calc(100vw - 12px);
+  }
+
+  .battle-minimal-header {
+    grid-template-columns: 174px minmax(0, 1fr) auto;
+    min-height: 54px;
+    padding: 4px 5px;
+  }
+
+  .battle-combatant-sidebar {
+    flex-basis: 176px;
+    width: 176px;
+    min-width: 176px;
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .battle-combatant-sidebar .combatant-hud,
+  .battle-combatant-sidebar.rival .combatant-hud {
+    max-height: 66px;
+    padding: 3px;
+  }
+
+  .battle-combatant-sidebar .combatant-hud {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .battle-combatant-sidebar.rival .combatant-hud {
+    grid-template-columns: minmax(0, 1fr) 34px;
+  }
+
+  .battle-combatant-sidebar .battle-portrait-frame {
+    width: 34px;
+    height: 34px;
+  }
+
+  .combatant-identity strong {
+    font-size: 8px !important;
+  }
+
+  .resource-chip,
+  .status-chip {
+    font-size: 5.5px !important;
+    padding: 1px 3px !important;
+  }
+
+  .battle-action-order-entry {
+    flex-basis: 27px;
+    width: 27px;
+    height: 27px;
+  }
+
+  .battle-action-order-entry .battle-portrait-frame.compact {
+    width: 23px;
+    height: 23px;
+  }
+}
