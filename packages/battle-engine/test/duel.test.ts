@@ -1393,3 +1393,72 @@ describe("defeated unit cleanup rules", () => {
     ).toBe(survivor.id);
   });
 });
+
+
+describe("AI utility planning", () => {
+  it("walks farther for a damaging attack instead of camping on a ranged debuff", () => {
+    let state = createTrainerDuel({
+      seed: 701,
+      width: 7,
+      height: 3,
+      players: [{
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle"],
+      }],
+      rivals: [{
+        species: "rattata",
+        level: 5,
+        moves: ["tackle", "tail-whip"],
+      }],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: rival.id,
+      units: state.units.map((unit) =>
+        unit.id === rival.id
+          ? {
+              ...unit,
+              position: { x: 0, y: 1 },
+              mp: 3,
+              ap: 6,
+            }
+          : {
+              ...unit,
+              position: { x: 4, y: 1 },
+            },
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+    const usedMoves = turn.steps
+      .filter(
+        (step) =>
+          step.presentation?.kind === "move",
+      )
+      .map((step) =>
+        step.presentation?.kind === "move"
+          ? step.presentation.moveId
+          : null,
+      );
+
+    expect(
+      turn.steps.some(
+        (step) =>
+          step.presentation?.kind === "movement",
+      ),
+    ).toBe(true);
+    expect(usedMoves[0]).toBe("tackle");
+    expect(usedMoves).not.toContain("tail-whip");
+  });
+});

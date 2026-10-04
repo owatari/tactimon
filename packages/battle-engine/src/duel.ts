@@ -2933,37 +2933,37 @@ function aiStatusUtility(
   }
 
   if (move.effect === "attack-down") {
-    if (target.attackStage <= -MAX_STAGE) return -Infinity;
+    if (target.attackStage <= -4) return -Infinity;
     const physicalBias =
       target.attack >= target.specialAttack ? 18 : -8;
     return Math.max(
       0,
-      66 + target.attackStage * 13 + physicalBias,
+      66 + target.attackStage * 18 + physicalBias,
     );
   }
 
   if (move.effect === "defense-down") {
-    if (target.defenseStage <= -MAX_STAGE) return -Infinity;
+    if (target.defenseStage <= -4) return -Infinity;
     return Math.max(
       0,
-      64 + target.defenseStage * 13,
+      64 + target.defenseStage * 18,
     );
   }
 
   if (move.effect === "speed-down") {
-    if (target.speedStage <= -MAX_STAGE) return -Infinity;
+    if (target.speedStage <= -4) return -Infinity;
     const speedLead =
       effectiveSpeed(target) > effectiveSpeed(actor)
         ? 20
         : 0;
     return Math.max(
       0,
-      48 + target.speedStage * 11 + speedLead,
+      48 + target.speedStage * 15 + speedLead,
     );
   }
 
   if (move.effect === "defense-up") {
-    if (actor.defenseStage >= MAX_STAGE) return -Infinity;
+    if (actor.defenseStage >= 4) return -Infinity;
     const hpPressure =
       actor.hp / Math.max(1, actor.maxHp) < 0.5
         ? 18
@@ -3004,6 +3004,101 @@ function aiSecondaryStatusUtility(
   );
 }
 
+function aiThreatToTeam(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+): number {
+  const allies = state.units.filter(
+    (unit) =>
+      unit.hp > 0 &&
+      unit.side === actor.side,
+  );
+  let pressure = 0;
+
+  for (const ally of allies) {
+    let bestRatio = 0;
+
+    for (const moveId of target.moves) {
+      if (getDuelMovePp(target, moveId) <= 0) {
+        continue;
+      }
+      const move = DUEL_MOVES[moveId];
+      if (
+        !move ||
+        move.category === "status"
+      ) {
+        continue;
+      }
+
+      const result = calculateDamage(
+        target,
+        ally,
+        move,
+      );
+      bestRatio = Math.max(
+        bestRatio,
+        result.damage / Math.max(1, ally.maxHp),
+      );
+    }
+
+    pressure += Math.min(1.5, bestRatio) * 28;
+  }
+
+  return pressure;
+}
+
+function aiCoverageBonus(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  typeEffectiveness: number,
+): number {
+  if (typeEffectiveness <= 1) {
+    return 0;
+  }
+
+  let teammateHasAnswer = false;
+
+  for (const ally of state.units) {
+    if (
+      ally.hp <= 0 ||
+      ally.side !== actor.side ||
+      ally.id === actor.id
+    ) {
+      continue;
+    }
+
+    for (const moveId of ally.moves) {
+      if (getDuelMovePp(ally, moveId) <= 0) {
+        continue;
+      }
+      const move = DUEL_MOVES[moveId];
+      if (
+        !move ||
+        move.category === "status"
+      ) {
+        continue;
+      }
+
+      if (
+        calculateDamage(
+          ally,
+          target,
+          move,
+        ).typeEffectiveness > 1
+      ) {
+        teammateHasAnswer = true;
+        break;
+      }
+    }
+
+    if (teammateHasAnswer) break;
+  }
+
+  return teammateHasAnswer ? 0 : 24;
+}
+
 function scoreAiCandidate(
   state: DuelState,
   actor: DuelUnit,
@@ -3027,7 +3122,9 @@ function scoreAiCandidate(
       ? 14
       : -pathCost * 9 - futureTurnPenalty;
   const resourceScore = -move.apCost * 3;
-  const targetThreat = aiThreatScore(target) * 0.16;
+  const targetThreat =
+    aiThreatScore(target) * 0.16 +
+    aiThreatToTeam(state, actor, target);
   const numbersPressure =
     (livingEnemies - livingAllies) * 5;
 
@@ -3088,6 +3185,12 @@ function scoreAiCandidate(
           : 0;
   const lowHpFocus =
     (1 - hpRatio) * 38;
+  const coverageBonus = aiCoverageBonus(
+    state,
+    actor,
+    target,
+    result.typeEffectiveness,
+  );
   const secondaryUtility =
     aiSecondaryStatusUtility(target, move);
   const riderUtility =
@@ -3109,6 +3212,7 @@ function scoreAiCandidate(
       stabScore +
       matchupScore +
       lowHpFocus +
+      coverageBonus +
       secondaryUtility +
       riderUtility +
       positioningScore +
