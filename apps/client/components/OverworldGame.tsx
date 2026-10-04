@@ -54,7 +54,7 @@ import {
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
 import {
-  resolveWorldObjectDialogueId,
+  resolveWorldObjectDialogueRequest,
   type DialogueInteractionRequest,
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
@@ -1138,24 +1138,16 @@ export function OverworldGame({
       );
 
     if (object) {
-      const dialogueId = resolveWorldObjectDialogueId(
-        mapIdRef.current,
-        object.x,
-        object.y,
+      showDialogue(
+        onDialogueInteraction(
+          resolveWorldObjectDialogueRequest(
+            mapIdRef.current,
+            object.x,
+            object.y,
+            displayObjectName(object),
+          ),
+        ),
       );
-
-      if (dialogueId) {
-        showDialogue(
-          onDialogueInteraction({
-            kind: "script",
-            id: dialogueId,
-          }),
-        );
-      } else {
-        showInteraction(
-          `${displayObjectName(object)} · diálogo ainda não importado`,
-        );
-      }
     }
   }, [
     advanceDialogue,
