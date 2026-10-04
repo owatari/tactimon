@@ -4842,15 +4842,20 @@ export function resolveSimpleAiTurnDetailed(
       return { state, steps };
     }
 
-    const itemAction = chooseAiItemAction(
-      state,
-      actor,
-      options,
-    );
-    if (itemAction) {
-      const itemResult = run(itemAction);
-      if (itemResult.accepted) {
-        return { state, steps };
+    if (options.autoCapture) {
+      const captureAction = chooseAiItemAction(
+        state,
+        actor,
+        {
+          autoCapture: true,
+          useItems: false,
+        },
+      );
+      if (captureAction) {
+        const captureResult = run(captureAction);
+        if (captureResult.accepted) {
+          return { state, steps };
+        }
       }
     }
 
@@ -4881,6 +4886,27 @@ export function resolveSimpleAiTurnDetailed(
       inRange !== null &&
       inRange.move.category !== "status" &&
       inRange.damage >= inRange.target.hp;
+
+    if (
+      options.useItems &&
+      !immediateKnockout
+    ) {
+      const itemAction = chooseAiItemAction(
+        state,
+        actor,
+        {
+          useItems: true,
+          autoCapture: false,
+        },
+      );
+      if (itemAction) {
+        const itemResult = run(itemAction);
+        if (itemResult.accepted) {
+          return { state, steps };
+        }
+      }
+    }
+
     const shouldMoveBeforeAction =
       canMoveForStrategic &&
       !immediateKnockout &&
