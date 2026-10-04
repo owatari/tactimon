@@ -41,7 +41,10 @@ export type StoryHealLocationId =
   | "vermilion-city"
   | "route-4";
 
-export type StoryBadgeId = "boulder" | "cascade";
+export type StoryBadgeId =
+  | "boulder"
+  | "cascade"
+  | "thunder";
 export type MtMoonFossilId = "dome" | "helix";
 export type StoryValuableId = "nugget";
 export type StoryValuables = Record<StoryValuableId, number>;
@@ -425,7 +428,8 @@ export function normalizeStoryState(
             input.badgeIds.filter(
               (badge): badge is StoryBadgeId =>
                 badge === "boulder" ||
-                badge === "cascade",
+                badge === "cascade" ||
+                badge === "thunder",
             ),
           ),
         )
