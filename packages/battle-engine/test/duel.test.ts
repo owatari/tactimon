@@ -1874,3 +1874,254 @@ describe("Vermilion Gym move mechanics", () => {
     ).toBe(-2);
   });
 });
+
+
+describe("sequential tactical AI decisions", () => {
+  it("can attack first, then move, then attack another target", () => {
+    let state = createTrainerDuel({
+      seed: 1601,
+      width: 10,
+      height: 5,
+      players: [
+        {
+          species: "pidgey",
+          level: 5,
+          moves: ["tackle"],
+        },
+        {
+          species: "bulbasaur",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "charmander",
+          level: 8,
+          moves: ["scratch", "ember"],
+        },
+      ],
+    });
+
+    const actor = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const pidgey = state.units.find(
+      (unit) => unit.species === "pidgey",
+    )!;
+    const bulbasaur = state.units.find(
+      (unit) => unit.species === "bulbasaur",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              position: { x: 2, y: 2 },
+              ap: 6,
+              mp: 4,
+            }
+          : unit.id === pidgey.id
+            ? {
+                ...unit,
+                hp: 1,
+                position: { x: 3, y: 2 },
+              }
+            : unit.id === bulbasaur.id
+              ? {
+                  ...unit,
+                  position: { x: 7, y: 2 },
+                }
+              : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+    const presentations = turn.steps
+      .map((step) => step.presentation)
+      .filter(Boolean);
+
+    const firstAttackIndex = presentations.findIndex(
+      (presentation) =>
+        presentation?.kind === "move",
+    );
+    const movementAfterAttackIndex =
+      presentations.findIndex(
+        (presentation, index) =>
+          index > firstAttackIndex &&
+          presentation?.kind === "movement",
+      );
+
+    expect(firstAttackIndex).toBeGreaterThanOrEqual(0);
+    expect(movementAfterAttackIndex).toBeGreaterThan(
+      firstAttackIndex,
+    );
+  });
+
+  it("can move first and immediately attack from the new position", () => {
+    let state = createTrainerDuel({
+      seed: 1602,
+      width: 10,
+      height: 5,
+      players: [
+        {
+          species: "squirtle",
+          level: 6,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "bulbasaur",
+          level: 6,
+          moves: ["vine-whip"],
+        },
+      ],
+    });
+
+    const actor = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const target = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: actor.id,
+      units: state.units.map((unit) =>
+        unit.id === actor.id
+          ? {
+              ...unit,
+              position: { x: 1, y: 2 },
+              ap: 6,
+              mp: 4,
+            }
+          : unit.id === target.id
+            ? {
+                ...unit,
+                position: { x: 6, y: 2 },
+              }
+            : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+
+    expect(turn.steps[0]?.presentation?.kind).toBe(
+      "movement",
+    );
+    expect(
+      turn.steps.some(
+        (step) =>
+          step.presentation?.kind === "move" &&
+          step.presentation.targetIds[0] === target.id,
+      ),
+    ).toBe(true);
+  });
+
+  it("lets player Auto Battle spend a Potion on a threatened ally", () => {
+    let state = createWildDuel({
+      seed: 1603,
+      items: {
+        potion: 2,
+        "poke-ball": 0,
+      },
+      players: [
+        {
+          species: "bulbasaur",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+      wildSpecies: "pidgey",
+      wildLevel: 5,
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? {
+              ...unit,
+              hp: Math.max(
+                1,
+                Math.floor(unit.maxHp * 0.25),
+              ),
+            }
+          : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "player",
+      { useItems: true },
+    );
+
+    expect(turn.steps[0]?.presentation?.kind).toBe(
+      "item",
+    );
+    expect(turn.state.items.potion).toBe(1);
+  });
+
+  it("can auto-catch an eligible low-HP wild target without full Auto Battle", () => {
+    let state = createWildDuel({
+      seed: 1604,
+      items: {
+        potion: 0,
+        "poke-ball": 2,
+      },
+      players: [
+        {
+          species: "bulbasaur",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 3,
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === wild.id
+          ? { ...unit, hp: 1 }
+          : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "player",
+      { autoCapture: true },
+    );
+
+    expect(turn.steps[0]?.presentation?.kind).toBe(
+      "capture",
+    );
+    expect(turn.state.items["poke-ball"]).toBe(1);
+    expect(turn.state.status).toBe("finished");
+  });
+});
