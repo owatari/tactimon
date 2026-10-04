@@ -2125,3 +2125,69 @@ describe("sequential tactical AI decisions", () => {
     expect(turn.state.status).toBe("finished");
   });
 });
+
+
+describe("rival battle inventory", () => {
+  it("lets rival AI heal from its own bag without consuming player items", () => {
+    let state = createTrainerDuel({
+      seed: 1701,
+      items: {
+        potion: 4,
+        "poke-ball": 3,
+      },
+      rivalItems: {
+        potion: 1,
+        "poke-ball": 0,
+      },
+      players: [
+        {
+          species: "bulbasaur",
+          level: 6,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "charmander",
+          level: 6,
+          moves: ["scratch"],
+        },
+      ],
+    });
+
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: rival.id,
+      units: state.units.map((unit) =>
+        unit.id === rival.id
+          ? {
+              ...unit,
+              hp: Math.max(
+                1,
+                Math.floor(unit.maxHp * 0.25),
+              ),
+            }
+          : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+      { useItems: true },
+    );
+
+    expect(turn.steps[0]?.presentation?.kind).toBe(
+      "item",
+    );
+    expect(turn.state.rivalItems.potion).toBe(0);
+    expect(turn.state.items).toEqual({
+      potion: 4,
+      "poke-ball": 3,
+    });
+  });
+});
