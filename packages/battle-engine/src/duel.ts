@@ -16,6 +16,8 @@ export type StarterSpeciesId =
 
 export type WildSpeciesId =
   | "pidgey"
+  | "abra"
+  | "oddish"
   | "rattata"
   | "caterpie"
   | "weedle"
@@ -35,7 +37,7 @@ export type WildSpeciesId =
   | "geodude";
 export type TrainerSpeciesId =
   | "pidgeotto"
-  | "abra"
+  | "bellsprout"
   | "onix"
   | "sandshrew"
   | "grimer"
@@ -87,6 +89,10 @@ export type DuelMoveId =
   | "withdraw"
   | "sleep-powder"
   | "leech-seed"
+  | "absorb"
+  | "sweet-scent"
+  | "growth"
+  | "wrap"
   | "string-shot"
   | "poison-sting"
   | "stun-spore"
@@ -232,7 +238,8 @@ export interface DuelMove {
     | "defense-up"
     | "speed-down"
     | "heal-self"
-    | "trainer-teleport-fail";
+    | "drain-half"
+    | "teleport";
 }
 
 export type DuelPresentationEvent =
@@ -317,6 +324,7 @@ export interface DuelState {
   blocked: DuelPoint[];
   battleKind: DuelBattleKind;
   escaped: boolean;
+  escapedBy: DuelSide | null;
   captureAllowed: boolean;
   items: DuelInventory;
   round: number;
@@ -624,6 +632,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 55,
     speed: 90,
     moves: ["teleport"],
+  },
+  oddish: {
+    name: "Oddish",
+    type: "grass",
+    types: ["grass", "poison"],
+    hp: 45,
+    attack: 50,
+    defense: 55,
+    specialAttack: 75,
+    specialDefense: 65,
+    speed: 30,
+    moves: ["absorb", "sweet-scent"],
+  },
+  bellsprout: {
+    name: "Bellsprout",
+    type: "grass",
+    types: ["grass", "poison"],
+    hp: 50,
+    attack: 75,
+    defense: 35,
+    specialAttack: 70,
+    specialDefense: 30,
+    speed: 40,
+    moves: ["vine-whip", "growth", "wrap"],
   },
   rattata: {
     name: "Rattata",
@@ -972,6 +1004,8 @@ export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
 
 const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   pidgey: 255,
+  abra: 200,
+  oddish: 255,
   rattata: 255,
   caterpie: 255,
   weedle: 255,
@@ -1157,13 +1191,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "growl",
     description:
-      "Em batalha de Treinador, a tentativa de fuga falha.",
+      "Foge de encontros selvagens; falha em batalha de Treinador.",
     power: null,
     apCost: 2,
     maxPp: 20,
     minRange: 0,
     maxRange: 0,
-    effect: "trainer-teleport-fail",
+    effect: "teleport",
   },
   withdraw: {
     id: "withdraw",
@@ -1212,6 +1246,71 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 10,
     minRange: 1,
     maxRange: 3,
+  },
+  absorb: {
+    id: "absorb",
+    name: "Absorb",
+    type: "grass",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "vine-whip",
+    description:
+      "Drena energia do alvo e recupera metade do dano causado.",
+    power: 20,
+    apCost: 3,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 3,
+    effect: "drain-half",
+  },
+  "sweet-scent": {
+    id: "sweet-scent",
+    name: "Sweet Scent",
+    type: "normal",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Reduz evasão no jogo original; evasão ainda não é modelada no motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 3,
+  },
+  growth: {
+    id: "growth",
+    name: "Growth",
+    type: "normal",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "harden",
+    description:
+      "Aumenta Special Attack no jogo original; estágio de Sp. Atk ainda não é modelado.",
+    power: null,
+    apCost: 2,
+    maxPp: 40,
+    minRange: 0,
+    maxRange: 0,
+  },
+  wrap: {
+    id: "wrap",
+    name: "Wrap",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "bind",
+    description:
+      "Aperta um alvo adjacente; o aprisionamento ainda não é modelado.",
+    power: 15,
+    apCost: 3,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 1,
   },
   "string-shot": {
     id: "string-shot",
@@ -2260,6 +2359,7 @@ export function createTrainerDuel(
     blocked,
     battleKind: "trainer",
     escaped: false,
+    escapedBy: null,
     captureAllowed: false,
     items: normalizeDuelItems(
       options.items,
@@ -2406,6 +2506,7 @@ export function createWildDuel(
     blocked,
     battleKind: "wild",
     escaped: false,
+    escapedBy: null,
     captureAllowed,
     items: normalizeDuelItems(
       options.items,
@@ -2926,6 +3027,7 @@ export function applyDuelAction(
 
     state.status = "finished";
     state.escaped = true;
+    state.escapedBy = actor.side;
     state.winner = null;
     appendLog(state, `${actor.displayName} escapou da batalha.`);
     return { state, accepted: true };
@@ -3233,6 +3335,23 @@ export function applyDuelAction(
       );
     }
 
+    if (
+      move.effect === "drain-half" &&
+      damage > 0 &&
+      actor.hp > 0 &&
+      actor.hp < actor.maxHp
+    ) {
+      const healed = Math.min(
+        Math.max(1, Math.floor(damage / 2)),
+        actor.maxHp - actor.hp,
+      );
+      actor.hp += healed;
+      appendLog(
+        state,
+        `${actor.displayName} drenou ${healed} HP com ${move.name}.`,
+      );
+    }
+
     if (target.hp <= 0) {
       appendLog(
         state,
@@ -3349,11 +3468,22 @@ export function applyDuelAction(
       state,
       `${actor.displayName} recuperou ${healed} HP com ${move.name}.`,
     );
-  } else if (move.effect === "trainer-teleport-fail") {
-    appendLog(
-      state,
-      `${actor.displayName} tentou usar ${move.name}, mas não pode fugir de uma batalha de Treinador.`,
-    );
+  } else if (move.effect === "teleport") {
+    if (state.battleKind === "wild") {
+      state.status = "finished";
+      state.escaped = true;
+      state.escapedBy = actor.side;
+      state.winner = null;
+      appendLog(
+        state,
+        `${actor.displayName} usou ${move.name} e fugiu da batalha.`,
+      );
+    } else {
+      appendLog(
+        state,
+        `${actor.displayName} tentou usar ${move.name}, mas não pode fugir de uma batalha de Treinador.`,
+      );
+    }
   }
 
   return {
@@ -3500,6 +3630,7 @@ function aiThreatScore(unit: DuelUnit): number {
 }
 
 function aiStatusUtility(
+  state: DuelState,
   actor: DuelUnit,
   target: DuelUnit,
   move: DuelMove,
@@ -3559,8 +3690,17 @@ function aiStatusUtility(
     return 35 + missingRatio * 120;
   }
 
-  if (move.effect === "trainer-teleport-fail") {
-    return 1;
+  if (move.effect === "teleport") {
+    if (
+      state.battleKind === "wild" &&
+      actor.side === "rival"
+    ) {
+      return 240;
+    }
+
+    return state.battleKind === "trainer"
+      ? 1
+      : -Infinity;
   }
 
   return -Infinity;
@@ -3718,6 +3858,7 @@ function scoreAiCandidate(
 
   if (move.category === "status") {
     const utility = aiStatusUtility(
+      state,
       actor,
       target,
       move,

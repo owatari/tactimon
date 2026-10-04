@@ -1649,3 +1649,133 @@ describe("Cerulean rival moves", () => {
     ).toBe(1);
   });
 });
+
+
+describe("Route 24 wild mechanics", () => {
+  it("lets wild Abra escape with Teleport and records who fled", () => {
+    let state = createWildDuel({
+      seed: 1401,
+      players: [
+        {
+          species: "pidgey",
+          level: 11,
+          moves: ["tackle"],
+        },
+      ],
+      wildSpecies: "abra",
+      wildLevel: 10,
+    });
+
+    const abra = state.units.find(
+      (unit) => unit.species === "abra",
+    )!;
+    state = { ...state, activeUnitId: abra.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: abra.id,
+      moveId: "teleport",
+      targetId: abra.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.status).toBe("finished");
+    expect(result.state.escaped).toBe(true);
+    expect(result.state.escapedBy).toBe("rival");
+    expect(result.state.winner).toBeNull();
+  });
+
+  it("still makes Teleport fail in trainer battles", () => {
+    let state = createTrainerDuel({
+      seed: 1402,
+      players: [
+        {
+          species: "abra",
+          level: 16,
+          moves: ["teleport"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 15,
+          moves: ["tackle"],
+        },
+      ],
+    });
+
+    const abra = state.units.find(
+      (unit) => unit.species === "abra",
+    )!;
+    state = { ...state, activeUnitId: abra.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: abra.id,
+      moveId: "teleport",
+      targetId: abra.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.state.escaped).toBe(false);
+    expect(result.state.escapedBy).toBeNull();
+    expect(result.state.status).toBe("active");
+  });
+
+  it("heals Absorb's user for half the damage dealt", () => {
+    let state = createTrainerDuel({
+      seed: 1403,
+      width: 9,
+      height: 7,
+      players: [
+        {
+          species: "oddish",
+          level: 12,
+          moves: ["absorb"],
+        },
+      ],
+      rivals: [
+        {
+          species: "geodude",
+          level: 12,
+          moves: ["tackle"],
+        },
+      ],
+    });
+
+    const oddish = state.units.find(
+      (unit) => unit.species === "oddish",
+    )!;
+    const geodude = state.units.find(
+      (unit) => unit.species === "geodude",
+    )!;
+    oddish.position = { x: 2, y: 2 };
+    geodude.position = { x: 4, y: 2 };
+    oddish.hp = Math.max(1, oddish.maxHp - 10);
+    state = { ...state, activeUnitId: oddish.id };
+    const hpBefore = oddish.hp;
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: oddish.id,
+      moveId: "absorb",
+      targetId: geodude.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    if (result.presentation?.kind !== "move") {
+      throw new Error("Expected move presentation");
+    }
+
+    const damage = result.presentation.results[0].damage;
+    const healedOddish = result.state.units.find(
+      (unit) => unit.id === oddish.id,
+    )!;
+    expect(healedOddish.hp).toBe(
+      Math.min(
+        healedOddish.maxHp,
+        hpBefore + Math.max(1, Math.floor(damage / 2)),
+      ),
+    );
+  });
+});

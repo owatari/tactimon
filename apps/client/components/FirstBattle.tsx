@@ -1620,8 +1620,14 @@ export function FirstBattle({
 
         {state.status === "finished" && state.escaped && (
           <div className="battle-result">
-            <span className="eyebrow">ESCAPOU</span>
-            <h3>Você saiu do combate.</h3>
+            <span className="eyebrow">
+              {state.escapedBy === "rival" ? "FUGIU" : "ESCAPOU"}
+            </span>
+            <h3>
+              {state.escapedBy === "rival"
+                ? `${rival.displayName} fugiu do combate.`
+                : "Você saiu do combate."}
+            </h3>
             <button
               type="button"
               onClick={() =>

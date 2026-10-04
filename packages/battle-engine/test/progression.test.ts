@@ -665,3 +665,25 @@ describe("Cerulean rival species", () => {
     ]);
   });
 });
+
+
+describe("Route 24 species progression", () => {
+  it("uses FireRed growth and EXP inputs for Oddish and Bellsprout", () => {
+    expect(fireRedExperienceAtLevel("oddish", 12)).toBe(973);
+    expect(fireRedExperienceAtLevel("bellsprout", 12)).toBe(973);
+    expect(experienceRewardForTrainer("oddish", 12, 1)).toBe(199);
+    expect(experienceRewardForTrainer("bellsprout", 12, 1)).toBe(216);
+  });
+
+  it("creates their early playable move sets", () => {
+    expect(createPokemonProgression("oddish", 12).activeMoves).toEqual([
+      "absorb",
+      "sweet-scent",
+    ]);
+    expect(createPokemonProgression("bellsprout", 12).activeMoves).toEqual([
+      "vine-whip",
+      "growth",
+      "wrap",
+    ]);
+  });
+});
