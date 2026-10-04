@@ -196,6 +196,127 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ],
   },
   {
+    id: "vermilion-baily",
+    mapId: "vermilion-gym",
+    name: "Engineer Baily",
+    preferredPosition: { x: 2, y: 11 },
+    facing: "east",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/030_balding_man.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Baily: Sou leve, mas entendo de eletricidade! É por isso que entrei neste Ginásio.",
+    defeatedText:
+      "Baily: Lt. Surge escondeu os interruptores da porta em algum lugar do Ginásio.",
+    moneyMultiplier: 12,
+    party: [
+      {
+        species: "voltorb",
+        level: 21,
+        moves: ["tackle", "screech", "sonic-boom", "spark"],
+      },
+      {
+        species: "magnemite",
+        level: 21,
+        moves: ["thunder-shock", "supersonic", "sonic-boom", "thunder-wave"],
+      },
+    ],
+  },
+  {
+    id: "vermilion-dwayne",
+    mapId: "vermilion-gym",
+    name: "Sailor Dwayne",
+    preferredPosition: { x: 8, y: 13 },
+    facing: "west",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Dwayne: Este não é lugar para crianças, mesmo que você seja bom!",
+    defeatedText:
+      "Dwayne: Quando achar o primeiro interruptor, o segundo fica logo ao lado.",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "pikachu",
+        level: 21,
+        moves: ["thunder-wave", "quick-attack", "double-team", "slam"],
+      },
+      {
+        species: "pikachu",
+        level: 21,
+        moves: ["thunder-wave", "quick-attack", "double-team", "slam"],
+      },
+    ],
+  },
+  {
+    id: "vermilion-tucker",
+    mapId: "vermilion-gym",
+    name: "Gentleman Tucker",
+    preferredPosition: { x: 7, y: 8 },
+    facing: "west",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/061_gentleman.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Tucker: Quando eu estava no Exército, Lt. Surge era meu comandante. Ele era exigente!",
+    defeatedText:
+      "Tucker: Abrir aquela porta não é fácil. Lt. Surge sempre foi muito cauteloso.",
+    moneyMultiplier: 18,
+    party: [
+      {
+        species: "pikachu",
+        level: 23,
+        moves: ["thunder-wave", "quick-attack", "double-team", "slam"],
+      },
+    ],
+  },
+  {
+    id: "vermilion-lt-surge",
+    mapId: "vermilion-gym",
+    name: "Lt. Surge",
+    preferredPosition: { x: 5, y: 2 },
+    facing: "south",
+    sightRange: 0,
+    spriteUrl: "/game-assets/overworld/082_lt_surge.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Lt. Surge: Ei, garoto! Pokémon Electric me salvaram na guerra. Agora vou mostrar o poder deles!",
+    defeatedText:
+      "Lt. Surge: Que choque! Você é de verdade. A Thunder Badge prova que venceu este Ginásio.",
+    moneyMultiplier: 25,
+    badgeId: "thunder",
+    party: [
+      {
+        species: "voltorb",
+        level: 21,
+        moves: ["sonic-boom", "tackle", "screech", "shock-wave"],
+      },
+      {
+        species: "pikachu",
+        level: 18,
+        moves: ["quick-attack", "thunder-wave", "double-team", "shock-wave"],
+      },
+      {
+        species: "raichu",
+        level: 24,
+        moves: ["quick-attack", "thunder-wave", "double-team", "shock-wave"],
+      },
+    ],
+  },
+  {
     id: "route3-ben",
     mapId: "route-3",
     name: "Youngster Ben",
