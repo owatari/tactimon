@@ -46,7 +46,6 @@ import {
   ROUTE24_ROCKET_TRAINER_ID,
 } from "@/lib/trainers";
 import {
-  applyStoryOverworldStep,
   applyStoryWhiteOut,
   chooseStarter,
   collectStoryValuable,
@@ -902,10 +901,8 @@ export function GameClient() {
           }
         }}
         onMartOpen={() => setMartOpen(true)}
-        onOverworldStep={() => {
-          setStory((current) =>
-            applyStoryOverworldStep(current),
-          );
+        onOverworldStep={(nextStory) => {
+          setStory(nextStory);
         }}
         onDialogueInteraction={handleDialogueInteraction}
         onPokemonStorageOpen={() =>
