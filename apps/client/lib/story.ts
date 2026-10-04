@@ -2,6 +2,7 @@ import {
   calculateDuelPokemonMaxHp,
   createPokemonProgression,
   createStarterProgression,
+  normalizeDuelMajorStatus,
   normalizePokemonProgression,
   rivalStarterFor,
   starterDisplayName,
@@ -153,7 +154,7 @@ function normalizeCapturedPokemon(
       typeof candidate.currentHp === "number"
         ? candidate.currentHp
         : base.currentHp,
-    status: candidate.status === "poison" ? "poison" : null,
+    status: normalizeDuelMajorStatus(candidate.status),
     activeMoves: Array.isArray(candidate.activeMoves)
       ? candidate.activeMoves
       : base.activeMoves,

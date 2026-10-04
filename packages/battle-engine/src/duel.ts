@@ -41,7 +41,7 @@ export type DuelType =
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
-export type DuelMajorStatus = "poison" | null;
+export type DuelMajorStatus = "poison" | "paralysis" | null;
 export type DuelItemId = "potion" | "poke-ball";
 export type DuelInventory = Record<DuelItemId, number>;
 export type DuelMoveId =
@@ -143,6 +143,14 @@ export type DuelItem =
   | { id: "potion"; name: string; kind: "heal"; target: "ally"; heal: number }
   | { id: "poke-ball"; name: string; kind: "capture"; target: "wild-enemy"; ballModifier: number };
 
+export function normalizeDuelMajorStatus(
+  value: unknown,
+): DuelMajorStatus {
+  return value === "poison" || value === "paralysis"
+    ? value
+    : null;
+}
+
 export interface DuelMove {
   id: DuelMoveId;
   name: string;
@@ -215,6 +223,7 @@ export interface DuelUnit {
   species: DuelSpeciesId;
   displayName: string;
   type: DuelType;
+  types: DuelType[];
   level: number;
   hp: number;
   maxHp: number;
@@ -309,7 +318,7 @@ const MAX_STAGE = 6;
 type SpeciesData = {
   name: string;
   type: DuelType;
-  statusImmunities?: readonly Exclude<DuelMajorStatus, null>[];
+  types: readonly DuelType[];
   hp: number;
   attack: number;
   defense: number;
@@ -323,7 +332,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   bulbasaur: {
     name: "Bulbasaur",
     type: "grass",
-    statusImmunities: ["poison"],
+    types: ["grass", "poison"],
     hp: 45,
     attack: 49,
     defense: 49,
@@ -335,6 +344,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   charmander: {
     name: "Charmander",
     type: "fire",
+    types: ["fire"],
     hp: 39,
     attack: 52,
     defense: 43,
@@ -346,6 +356,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   squirtle: {
     name: "Squirtle",
     type: "water",
+    types: ["water"],
     hp: 44,
     attack: 48,
     defense: 65,
@@ -357,6 +368,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   pidgey: {
     name: "Pidgey",
     type: "flying",
+    types: ["normal", "flying"],
     hp: 40,
     attack: 45,
     defense: 40,
@@ -368,6 +380,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   rattata: {
     name: "Rattata",
     type: "normal",
+    types: ["normal"],
     hp: 30,
     attack: 56,
     defense: 35,
@@ -379,6 +392,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   caterpie: {
     name: "Caterpie",
     type: "bug",
+    types: ["bug"],
     hp: 45,
     attack: 30,
     defense: 35,
@@ -390,7 +404,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   weedle: {
     name: "Weedle",
     type: "bug",
-    statusImmunities: ["poison"],
+    types: ["bug", "poison"],
     hp: 40,
     attack: 35,
     defense: 30,
@@ -402,6 +416,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   spearow: {
     name: "Spearow",
     type: "flying",
+    types: ["normal", "flying"],
     hp: 40,
     attack: 60,
     defense: 30,
@@ -413,6 +428,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   mankey: {
     name: "Mankey",
     type: "fighting",
+    types: ["fighting"],
     hp: 40,
     attack: 80,
     defense: 35,
@@ -424,6 +440,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   metapod: {
     name: "Metapod",
     type: "bug",
+    types: ["bug"],
     hp: 50,
     attack: 20,
     defense: 55,
@@ -435,7 +452,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   kakuna: {
     name: "Kakuna",
     type: "bug",
-    statusImmunities: ["poison"],
+    types: ["bug", "poison"],
     hp: 45,
     attack: 25,
     defense: 50,
@@ -447,6 +464,7 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   pikachu: {
     name: "Pikachu",
     type: "electric",
+    types: ["electric"],
     hp: 35,
     attack: 55,
     defense: 30,
@@ -648,11 +666,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     targeting: "single-enemy",
     motion: "projectile",
     vfxId: "thunder-shock",
-    description: "Dispara uma pequena descarga elétrica a distância.",
+    description:
+      "Dispara uma descarga com 10% de chance de paralisar.",
     power: 40,
     apCost: 4,
     minRange: 2,
     maxRange: 4,
+    secondaryStatus: "paralysis",
+    secondaryEffectChance: 10,
   },
   "vine-whip": {
     id: "vine-whip",
@@ -1103,7 +1124,14 @@ function pickTeamSpawnPositions(
 }
 
 function effectiveSpeed(unit: DuelUnit): number {
-  return unit.speed * stageMultiplier(unit.speedStage);
+  const paralysisMultiplier =
+    unit.status === "paralysis" ? 0.25 : 1;
+
+  return (
+    unit.speed *
+    stageMultiplier(unit.speedStage) *
+    paralysisMultiplier
+  );
 }
 
 function createTurnOrder(units: readonly DuelUnit[]): string[] {
@@ -1181,10 +1209,11 @@ function makeUnit(
     species: build.species,
     displayName: base.name,
     type: base.type,
+    types: [...base.types],
     level,
     hp: currentHp,
     maxHp,
-    status: build.status === "poison" ? "poison" : null,
+    status: normalizeDuelMajorStatus(build.status),
     attack: calculateOtherStat({
       base: base.attack,
       iv: FIXED_IV,
@@ -1516,6 +1545,7 @@ function cloneState(state: DuelState): DuelState {
     units: state.units.map((unit) => ({
       ...unit,
       position: { ...unit.position },
+      types: [...unit.types],
       moves: [...unit.moves],
     })),
     log: [...state.log],
@@ -1618,10 +1648,43 @@ function isMajorStatusImmune(
   unit: DuelUnit,
   status: Exclude<DuelMajorStatus, null>,
 ): boolean {
+  if (status !== "poison") {
+    return false;
+  }
+
+  // FireRed / Gen III: Poison- and Steel-type Pokémon
+  // cannot be poisoned. Electric types are not inherently
+  // immune to paralysis until Generation VI.
   return (
-    SPECIES[unit.species].statusImmunities?.includes(status) ??
-    false
+    unit.types.includes("poison") ||
+    unit.types.includes("steel")
   );
+}
+
+function statusRollSucceeds(
+  state: DuelState,
+  actor: DuelUnit,
+  salt: number,
+  chancePercent: number,
+): boolean {
+  const chance = Math.max(
+    0,
+    Math.min(100, Math.trunc(chancePercent)),
+  );
+  if (chance <= 0) {
+    return false;
+  }
+
+  const seed =
+    (
+      Math.imul(state.seed + 1, 0x9e3779b1) ^
+      Math.imul(state.round + 1, 0x85ebca6b) ^
+      Math.imul(state.turnIndex + 1, 0xc2b2ae35) ^
+      Math.imul(actor.ap + 1, 0x27d4eb2d) ^
+      Math.imul(salt + 1, 0x165667b1)
+    ) >>> 0;
+
+  return createSeededRandom(seed)() < chance / 100;
 }
 
 function secondaryStatusSucceeds(
@@ -1638,16 +1701,39 @@ function secondaryStatusSucceeds(
     return false;
   }
 
-  const seed =
-    (
-      Math.imul(state.seed + 1, 0x9e3779b1) ^
-      Math.imul(state.round + 1, 0x85ebca6b) ^
-      Math.imul(state.turnIndex + 1, 0xc2b2ae35) ^
-      Math.imul(actor.ap + 1, 0x27d4eb2d) ^
-      Math.imul(target.hp + 1, 0x165667b1)
-    ) >>> 0;
+  return statusRollSucceeds(
+    state,
+    actor,
+    target.hp,
+    chance,
+  );
+}
 
-  return createSeededRandom(seed)() < chance / 100;
+function paralysisBlocksMove(
+  state: DuelState,
+  actor: DuelUnit,
+): boolean {
+  return (
+    actor.status === "paralysis" &&
+    statusRollSucceeds(
+      state,
+      actor,
+      actor.hp,
+      25,
+    )
+  );
+}
+
+function statusAppliedMessage(
+  target: DuelUnit,
+  status: Exclude<DuelMajorStatus, null>,
+): string {
+  switch (status) {
+    case "poison":
+      return `${target.displayName} foi envenenado.`;
+    case "paralysis":
+      return `${target.displayName} ficou paralisado.`;
+  }
 }
 
 function applyEndTurnMajorStatus(
@@ -1893,7 +1979,11 @@ export function applyDuelAction(
       const chance = experimentalCaptureChance({
         catchRate: WILD_CATCH_RATE[species],
         ballModifier: item.ballModifier,
-        statusModifier: target.status === "poison" ? 1.5 : 1,
+        statusModifier:
+          target.status === "poison" ||
+          target.status === "paralysis"
+            ? 1.5
+            : 1,
         hpRatio: target.hp / target.maxHp,
         thresholdRatio: 0.5,
       });
@@ -2048,6 +2138,19 @@ export function applyDuelAction(
     };
   }
 
+  if (paralysisBlocksMove(state, actor)) {
+    appendLog(
+      state,
+      `${actor.displayName} está paralisado e não conseguiu atacar.`,
+    );
+    resolveTurnEnd(state, actor);
+    return {
+      state,
+      accepted: true,
+      reason: "fully-paralyzed",
+    };
+  }
+
   actor.ap -= move.apCost;
 
   let damage = 0;
@@ -2077,7 +2180,7 @@ export function applyDuelAction(
       statusApplied = move.secondaryStatus;
       appendLog(
         state,
-        `${target.displayName} foi envenenado.`,
+        statusAppliedMessage(target, move.secondaryStatus),
       );
     }
 

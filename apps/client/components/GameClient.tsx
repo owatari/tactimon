@@ -11,6 +11,7 @@ import {
   createPokemonProgression,
   grantTrainerBattleProgressToParty,
   grantWildBattleProgressToParty,
+  normalizeDuelMajorStatus,
   type DuelItemId,
   type DuelMajorStatus,
   type DuelPokemonBuild,
@@ -140,9 +141,9 @@ function applyBattleHealth(
 
     const currentHp = Math.max(0, Math.trunc(hp));
     const status: DuelMajorStatus =
-      playerStatuses[outcomeIndex] === "poison"
-        ? "poison"
-        : null;
+      normalizeDuelMajorStatus(
+        playerStatuses[outcomeIndex],
+      );
 
     if (partyIndex === 0) {
       if (playerPokemon) {
@@ -348,9 +349,9 @@ export function GameClient() {
 
         const hp = outcome.playerHp[outcomeIndex];
         const status: DuelMajorStatus =
-          outcome.playerStatuses[outcomeIndex] === "poison"
-            ? "poison"
-            : null;
+          normalizeDuelMajorStatus(
+            outcome.playerStatuses[outcomeIndex],
+          );
         return {
           ...pokemon,
           status,

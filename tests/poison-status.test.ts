@@ -159,11 +159,15 @@ describe("persistent Poison status", () => {
         targetId: wild.id,
       });
 
-      expect(
-        result.state.units.find(
-          (unit) => unit.id === wild.id,
-        )?.status,
-      ).toBeNull();
+      const immuneTarget = result.state.units.find(
+        (unit) => unit.id === wild.id,
+      )!;
+
+      expect(immuneTarget.types).toEqual([
+        "bug",
+        "poison",
+      ]);
+      expect(immuneTarget.status).toBeNull();
     }
   });
 

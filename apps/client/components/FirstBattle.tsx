@@ -153,6 +153,11 @@ function stageBadges(unit: DuelUnit): Array<{
       label: "PSN",
       tone: "debuff",
     });
+  } else if (unit.status === "paralysis") {
+    badges.push({
+      label: "PAR",
+      tone: "debuff",
+    });
   }
 
   return badges;
@@ -1014,7 +1019,7 @@ export function FirstBattle({
                       <strong>{unit.displayName}</strong>
                       <span className="combatant-level">Lv. {unit.level}</span>
                       <span className={`combatant-type type-${unit.type}`}>
-                        {unit.type}
+                        {unit.types.join("/")}
                       </span>
                     </div>
                     <span className="combatant-side-label">

@@ -1,5 +1,6 @@
 import {
   calculateDuelPokemonMaxHp,
+  normalizeDuelMajorStatus,
   type DuelMajorStatus,
   type DuelMoveId,
   type DuelSpeciesId,
@@ -493,7 +494,7 @@ export function normalizePokemonProgression(
     experience: migratedExperience,
     evs,
     currentHp,
-    status: input.status === "poison" ? "poison" : null,
+    status: normalizeDuelMajorStatus(input.status),
     activeMoves:
       Array.isArray(input.activeMoves) &&
       input.activeMoves.length > 0
