@@ -202,6 +202,8 @@ export interface TrainerDuelOptions {
   rivals: readonly DuelPokemonBuild[];
   trainerName?: string;
   items?: Partial<DuelInventory>;
+  /** Separate trainer-side bag used by rival AI. */
+  rivalItems?: Partial<DuelInventory>;
 }
 
 export interface StarterDuelOptions {
@@ -216,6 +218,7 @@ export interface StarterDuelOptions {
   /** Optional explicit rival party; defaults to Blue's counter starter. */
   rivals?: readonly DuelPokemonBuild[];
   items?: Partial<DuelInventory>;
+  rivalItems?: Partial<DuelInventory>;
 }
 
 export interface WildDuelOptions {
@@ -359,7 +362,10 @@ export interface DuelState {
   escaped: boolean;
   escapedBy: DuelSide | null;
   captureAllowed: boolean;
+  /** Player-owned persistent battle bag. */
   items: DuelInventory;
+  /** Opponent-side battle bag; never mutates the player's inventory. */
+  rivalItems: DuelInventory;
   round: number;
   turnOrder: string[];
   turnIndex: number;
@@ -2866,6 +2872,13 @@ export function createTrainerDuel(
         "poke-ball": 0,
       },
     ),
+    rivalItems: normalizeDuelItems(
+      options.rivalItems,
+      {
+        potion: 1,
+        "poke-ball": 0,
+      },
+    ),
     round: 1,
     turnOrder,
     turnIndex: 0,
@@ -2931,6 +2944,9 @@ export function createStarterDuel(
       : {}),
     ...(options.items !== undefined
       ? { items: options.items }
+      : {}),
+    ...(options.rivalItems !== undefined
+      ? { rivalItems: options.rivalItems }
       : {}),
     players: party,
     rivals,
@@ -3013,6 +3029,10 @@ export function createWildDuel(
         "poke-ball": captureAllowed ? 3 : 0,
       },
     ),
+    rivalItems: {
+      potion: 0,
+      "poke-ball": 0,
+    },
     round: 1,
     turnOrder,
     turnIndex: 0,
@@ -3054,6 +3074,7 @@ function cloneState(state: DuelState): DuelState {
     blocked: state.blocked.map((point) => ({ ...point })),
     turnOrder: [...state.turnOrder],
     items: { ...state.items },
+    rivalItems: { ...state.rivalItems },
     captureResult: state.captureResult ? { ...state.captureResult } : null,
     units: state.units.map((unit) => ({
       ...unit,
@@ -3546,10 +3567,14 @@ export function applyDuelAction(
   if (action.kind === "use-item") {
     const item = DUEL_ITEMS[action.itemId];
     const target = state.units.find((unit) => unit.id === action.targetId);
+    const actorItems =
+      actor.side === "player"
+        ? state.items
+        : state.rivalItems;
     if (!item || !target || target.hp <= 0) {
       return { state: input, accepted: false, reason: "invalid-item-target" };
     }
-    if ((state.items[item.id] ?? 0) <= 0) {
+    if ((actorItems[item.id] ?? 0) <= 0) {
       return { state: input, accepted: false, reason: "item-unavailable" };
     }
 
@@ -3582,7 +3607,7 @@ export function applyDuelAction(
       );
       const resolution = resolveCaptureRoll(random(), chance, target.hp, target.maxHp);
       target.captureAttempted = true;
-      state.items[item.id] -= 1;
+      actorItems[item.id] -= 1;
       state.status = "finished";
       state.winner = resolution.success ? "player" : null;
       state.captureResult = {
@@ -3623,7 +3648,7 @@ export function applyDuelAction(
     }
     const healed = Math.min(item.heal, target.maxHp - target.hp);
     target.hp += healed;
-    state.items[item.id] -= 1;
+    actorItems[item.id] -= 1;
     appendLog(state, `${target.displayName} recuperou ${healed} HP com ${item.name}.`);
     resolveTurnEnd(state, actor);
     return {
@@ -4657,16 +4682,17 @@ function chooseAiItemAction(
   actor: DuelUnit,
   options: DuelAiTurnOptions,
 ): DuelAction | null {
-  // DuelState currently stores the player's bag, not a trainer-owned bag.
-  if (actor.side !== "player") {
-    return null;
-  }
+  const actorItems =
+    actor.side === "player"
+      ? state.items
+      : state.rivalItems;
 
   if (
+    actor.side === "player" &&
     options.autoCapture &&
     state.battleKind === "wild" &&
     state.captureAllowed &&
-    (state.items["poke-ball"] ?? 0) > 0
+    (actorItems["poke-ball"] ?? 0) > 0
   ) {
     const target = state.units
       .filter(
@@ -4696,7 +4722,7 @@ function chooseAiItemAction(
 
   if (
     !options.useItems ||
-    (state.items.potion ?? 0) <= 0
+    (actorItems.potion ?? 0) <= 0
   ) {
     return null;
   }
