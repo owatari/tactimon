@@ -4829,8 +4829,13 @@ export function resolveSimpleAiTurnDetailed(
       actor.mp > 0 &&
       strategic !== null &&
       strategic.path.length > 0;
+    const immediateKnockout =
+      inRange !== null &&
+      inRange.move.category !== "status" &&
+      inRange.damage >= inRange.target.hp;
     const shouldMoveBeforeAction =
       canMoveForStrategic &&
+      !immediateKnockout &&
       (
         !inRange ||
         strategic.score >
