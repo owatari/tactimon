@@ -150,6 +150,28 @@ const POKEMON_CENTER_TILESET: TilesetAssetDefinition = {
     "/game-assets/tilesets/pokemon-center/attributes.bin",
 };
 
+const GENERIC_BUILDING_2_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/generic-building-2/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/generic-building-2/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/generic-building-2/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/generic-building-2/attributes.bin",
+};
+
+const VIRIDIAN_FOREST_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/viridian-forest/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/viridian-forest/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/viridian-forest/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/viridian-forest/attributes.bin",
+};
+
 export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
   "pallet-town": {
     id: "pallet-town",
@@ -201,6 +223,49 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: VIRIDIAN_TILESET,
+    },
+  },
+  "route-2-forest-south-entrance": {
+    id: "route-2-forest-south-entrance",
+    label: "Viridian Forest South Gate",
+    layoutUrl:
+      "/game-assets/maps/route-2-forest-south-entrance/layout.json",
+    previewUrl:
+      "/game-assets/maps/route-2-forest-south-entrance/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 9 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "viridian-forest": {
+    id: "viridian-forest",
+    label: "Viridian Forest",
+    layoutUrl: "/game-assets/maps/viridian-forest/layout.json",
+    previewUrl: "/game-assets/maps/viridian-forest/preview.png",
+    worldUrl: null,
+    spawn: { x: 29, y: 61 },
+    fallbackMusicId: 287,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: VIRIDIAN_FOREST_TILESET,
+    },
+  },
+  "route-2-forest-north-entrance": {
+    id: "route-2-forest-north-entrance",
+    label: "Viridian Forest North Gate",
+    layoutUrl:
+      "/game-assets/maps/route-2-forest-north-entrance/layout.json",
+    previewUrl:
+      "/game-assets/maps/route-2-forest-north-entrance/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 9 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
     },
   },
   "viridian-city": {
@@ -519,6 +584,98 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "viridian-city",
       spawn: { x: 36, y: 20 },
+    };
+  }
+
+  if (
+    mapId === "route-2" &&
+    y === 51 &&
+    (x === 5 || x === 6)
+  ) {
+    return {
+      mapId: "route-2-forest-south-entrance",
+      spawn: { x: 7, y: 9 },
+    };
+  }
+
+  if (
+    mapId === "route-2-forest-south-entrance" &&
+    y === 10 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "route-2",
+      spawn: { x: 6, y: 52 },
+    };
+  }
+
+  if (
+    mapId === "route-2-forest-south-entrance" &&
+    x === 7 &&
+    y === 1
+  ) {
+    return {
+      mapId: "viridian-forest",
+      spawn: { x: 29, y: 61 },
+    };
+  }
+
+  if (
+    mapId === "viridian-forest" &&
+    y === 62 &&
+    x >= 28 &&
+    x <= 30
+  ) {
+    return {
+      mapId: "route-2-forest-south-entrance",
+      spawn: { x: 7, y: 2 },
+    };
+  }
+
+  if (
+    mapId === "viridian-forest" &&
+    y === 9 &&
+    x >= 4 &&
+    x <= 6
+  ) {
+    return {
+      mapId: "route-2-forest-north-entrance",
+      spawn: { x: 7, y: 9 },
+    };
+  }
+
+  if (
+    mapId === "route-2-forest-north-entrance" &&
+    y === 10 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "viridian-forest",
+      spawn: { x: 5, y: 10 },
+    };
+  }
+
+  if (
+    mapId === "route-2-forest-north-entrance" &&
+    x === 7 &&
+    y === 1
+  ) {
+    return {
+      mapId: "route-2",
+      spawn: { x: 6, y: 12 },
+    };
+  }
+
+  if (
+    mapId === "route-2" &&
+    y === 13 &&
+    (x === 5 || x === 6)
+  ) {
+    return {
+      mapId: "route-2-forest-north-entrance",
+      spawn: { x: 7, y: 2 },
     };
   }
 

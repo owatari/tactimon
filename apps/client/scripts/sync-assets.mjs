@@ -56,6 +56,30 @@ const files = [
     "maps/route-22/preview.png",
   ],
   [
+    "maps/layouts/220_route2_entrance_layout/layout.json",
+    "maps/route-2-forest-south-entrance/layout.json",
+  ],
+  [
+    "maps/layouts/220_route2_entrance_layout/preview.png",
+    "maps/route-2-forest-south-entrance/preview.png",
+  ],
+  [
+    "maps/layouts/116_viridianforest_layout/layout.json",
+    "maps/viridian-forest/layout.json",
+  ],
+  [
+    "maps/layouts/116_viridianforest_layout/preview.png",
+    "maps/viridian-forest/preview.png",
+  ],
+  [
+    "maps/layouts/220_route2_entrance_layout/layout.json",
+    "maps/route-2-forest-north-entrance/layout.json",
+  ],
+  [
+    "maps/layouts/220_route2_entrance_layout/preview.png",
+    "maps/route-2-forest-north-entrance/preview.png",
+  ],
+  [
     "maps/layouts/078_viridiancity_layout/layout.json",
     "maps/viridian-city/layout.json",
   ],
@@ -194,6 +218,40 @@ const files = [
   [
     "tilesets/14_pokemoncenter/attributes.bin",
     "tilesets/pokemon-center/attributes.bin",
+  ],
+
+  [
+    "tilesets/42_genericbuilding2/tiles.4bpp",
+    "tilesets/generic-building-2/tiles.4bpp",
+  ],
+  [
+    "tilesets/42_genericbuilding2/palettes.gbapal",
+    "tilesets/generic-building-2/palettes.gbapal",
+  ],
+  [
+    "tilesets/42_genericbuilding2/metatiles.bin",
+    "tilesets/generic-building-2/metatiles.bin",
+  ],
+  [
+    "tilesets/42_genericbuilding2/attributes.bin",
+    "tilesets/generic-building-2/attributes.bin",
+  ],
+
+  [
+    "tilesets/34_viridianforest/tiles.4bpp",
+    "tilesets/viridian-forest/tiles.4bpp",
+  ],
+  [
+    "tilesets/34_viridianforest/palettes.gbapal",
+    "tilesets/viridian-forest/palettes.gbapal",
+  ],
+  [
+    "tilesets/34_viridianforest/metatiles.bin",
+    "tilesets/viridian-forest/metatiles.bin",
+  ],
+  [
+    "tilesets/34_viridianforest/attributes.bin",
+    "tilesets/viridian-forest/attributes.bin",
   ],
 ];
 
