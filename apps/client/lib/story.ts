@@ -249,7 +249,10 @@ function normalizeCapturedPokemon(
         : base.currentHp,
     status: normalizeDuelMajorStatus(candidate.status),
     sleepTurnsRemaining:
-      candidate.sleepTurnsRemaining,
+      typeof candidate.sleepTurnsRemaining === "number" &&
+      Number.isFinite(candidate.sleepTurnsRemaining)
+        ? candidate.sleepTurnsRemaining
+        : undefined,
     activeMoves: Array.isArray(candidate.activeMoves)
       ? candidate.activeMoves
       : base.activeMoves,

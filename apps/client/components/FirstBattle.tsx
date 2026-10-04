@@ -359,6 +359,8 @@ export function FirstBattle({
       evs: progression.evs,
       currentHp: progression.currentHp,
       status: progression.status,
+      sleepTurnsRemaining:
+        progression.sleepTurnsRemaining,
     };
     const deployedParty =
       party.length > 0

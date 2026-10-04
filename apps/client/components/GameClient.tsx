@@ -443,7 +443,7 @@ export function GameClient() {
         ].slice(0, 6)
       : [];
     const partySnapshot = session.partyIndices
-      .map((partyIndex, outcomeIndex) => {
+      .map<PokemonProgression | null>((partyIndex, outcomeIndex) => {
         const pokemon = fullPartySnapshot[partyIndex];
         if (!pokemon) {
           return null;
