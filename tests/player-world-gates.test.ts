@@ -93,3 +93,57 @@ describe("player world movement gates", () => {
     )).not.toBeNull();
   });
 });
+
+
+describe("Viridian Gym story lock", () => {
+  it("opens only after the six FireRed prerequisite badges", () => {
+    const required = [
+      "cascade",
+      "thunder",
+      "rainbow",
+      "soul",
+      "marsh",
+      "volcano",
+    ];
+
+    let ready = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    for (const badge of required) {
+      ready = completeStoryPlayerEvent(
+        ready,
+        "badge",
+        badge,
+      );
+    }
+
+    expect(
+      resolveBlockedPlayerTileGate(
+        ready,
+        "viridian-city",
+        36,
+        10,
+      ),
+    ).toBeNull();
+
+    let missingVolcano = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    for (const badge of required.slice(0, -1)) {
+      missingVolcano = completeStoryPlayerEvent(
+        missingVolcano,
+        "badge",
+        badge,
+      );
+    }
+
+    expect(
+      resolveBlockedPlayerTileGate(
+        missingVolcano,
+        "viridian-city",
+        36,
+        10,
+      )?.id,
+    ).toBe("viridian-gym-story-lock");
+  });
+});
