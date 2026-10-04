@@ -317,8 +317,19 @@ describe("starter duel", () => {
       width: 9,
       height: 7,
     });
+    const player = state.units.find((unit) => unit.side === "player")!;
     const rival = state.units.find((unit) => unit.side === "rival")!;
-    state = { ...state, activeUnitId: rival.id };
+    state = {
+      ...state,
+      activeUnitId: rival.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 1, y: 3 } }
+          : unit.id === rival.id
+            ? { ...unit, position: { x: 5, y: 3 } }
+            : unit,
+      ),
+    };
 
     const turn = resolveSimpleAiTurnDetailed(state);
 

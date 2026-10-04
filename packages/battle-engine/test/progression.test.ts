@@ -625,16 +625,18 @@ describe("Route 4 Crissy species", () => {
     ]);
 
     expect(DUEL_MOVES["stun-spore"]).toMatchObject({
+      accuracy: 75,
       maxPp: 30,
       minRange: 1,
       secondaryStatus: "paralysis",
-      secondaryEffectChance: 75,
+      secondaryEffectChance: 100,
     });
     expect(DUEL_MOVES["poison-powder"]).toMatchObject({
+      accuracy: 75,
       maxPp: 35,
       minRange: 1,
       secondaryStatus: "poison",
-      secondaryEffectChance: 75,
+      secondaryEffectChance: 100,
     });
   });
 });

@@ -3068,6 +3068,8 @@ function pickSpawnPositions(
     Math.ceil((width - 1) * 0.7),
   );
   const isInterior = (point: DuelPoint) =>
+    point.x > 0 &&
+    point.x < width - 1 &&
     point.y > 0 &&
     point.y < height - 1;
 
