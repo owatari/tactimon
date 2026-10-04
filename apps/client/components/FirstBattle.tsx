@@ -1380,16 +1380,14 @@ export function FirstBattle({
             {isPlayerTurn &&
               state.status === "active" &&
               command === "root" && (
-              <div
-                className={`battle-action-popover mode-${command}`}
-                style={{
-                  left: `${menuLeft}%`,
-                  top: `${menuTop}%`,
-                }}
-              >
-                <div className="battle-action-popover-caret" />
-
-                {command === "root" && (
+                <div
+                  className="battle-action-popover mode-root"
+                  style={{
+                    left: `${menuLeft}%`,
+                    top: `${menuTop}%`,
+                  }}
+                >
+                  <div className="battle-action-popover-caret" />
                   <div className="battle-action-list">
                     <button
                       type="button"
@@ -1435,179 +1433,8 @@ export function FirstBattle({
                       <span>Passar para o próximo</span>
                     </button>
                   </div>
-                )}
-
-                {command === "walk" && (
-                  <div className="battle-submenu">
-                    <div className="battle-submenu-copy">
-                      <span>MOVE</span>
-                      <strong>Escolha um tile verde</strong>
-                      <small>{reachable.length} destinos possíveis</small>
-                    </div>
-                    <button
-                      type="button"
-                      className="battle-menu-back"
-                      onClick={resetCommand}
-                    >
-                      ← Voltar
-                    </button>
-                  </div>
-                )}
-
-                {command === "moves" && (
-                  <div className="battle-action-list">
-                    {[
-                      ...player.moves,
-                      ...(player.moves.length > 0 &&
-                      player.moves.every(
-                        (moveId) =>
-                          getDuelMovePp(player, moveId) <= 0,
-                      )
-                        ? (["struggle"] as DuelMoveId[])
-                        : []),
-                    ].map((moveId) => {
-                      const move = DUEL_MOVES[moveId];
-                      const currentPp =
-                        moveId === "struggle"
-                          ? null
-                          : getDuelMovePp(player, moveId);
-                      const hasPp =
-                        moveId === "struggle" ||
-                        (currentPp ?? 0) > 0;
-                      const canPay =
-                        player.ap >= move.apCost &&
-                        hasPp;
-
-                      return (
-                        <button
-                          key={moveId}
-                          type="button"
-                          disabled={!canPay}
-                          onClick={() => {
-                            setSelectedMove(moveId);
-                            setCommand("move-target");
-                          }}
-                        >
-                          <strong>{move.name}</strong>
-                          <span>
-                            {move.apCost} AP ·{" "}
-                            {moveId === "struggle"
-                              ? "PP —"
-                              : `PP ${currentPp} / ${move.maxPp}`} ·{" "}
-                            {move.targeting === "self"
-                              ? "self"
-                              : `${move.minRange}–${move.maxRange}`}
-                          </span>
-                        </button>
-                      );
-                    })}
-                    <button
-                      type="button"
-                      className="battle-menu-back"
-                      onClick={resetCommand}
-                    >
-                      ← Voltar
-                    </button>
-                  </div>
-                )}
-
-                {command === "move-target" && selectedMove && (
-                  <div className="battle-submenu">
-                    <div className="battle-submenu-copy">
-                      <span>ATTACK</span>
-                      <strong>{DUEL_MOVES[selectedMove].name}</strong>
-                      <small>
-                        {targetableUnitIds.size > 0
-                          ? "Escolha o alvo destacado"
-                          : "Nenhum alvo no alcance"}
-                      </small>
-                    </div>
-                    <button
-                      type="button"
-                      className="battle-menu-back"
-                      onClick={() => {
-                        setSelectedMove(null);
-                        setCommand("moves");
-                      }}
-                    >
-                      ← Voltar
-                    </button>
-                  </div>
-                )}
-
-                {command === "items" && (
-                  <div className="battle-action-list">
-                    {(Object.keys(DUEL_ITEMS) as DuelItemId[])
-                      .filter(
-                        (itemId) =>
-                          DUEL_ITEMS[itemId].kind !== "capture" ||
-                          state.battleKind === "wild",
-                      )
-                      .map((itemId) => {
-                        const item = DUEL_ITEMS[itemId];
-                        const amount = state.items[itemId] ?? 0;
-
-                        return (
-                          <button
-                            key={itemId}
-                            type="button"
-                            disabled={amount <= 0}
-                            onClick={() => {
-                              setSelectedItem(itemId);
-                              setCommand("item-target");
-                            }}
-                          >
-                            <strong>{item.name}</strong>
-                            <span>
-                              ×{amount} · {item.kind === "heal"
-                                ? `+${item.heal} HP`
-                                : state.captureAllowed
-                                  ? "captura com HP ≤50%"
-                                  : "party 6/6"}
-                            </span>
-                          </button>
-                        );
-                      },
-                    )}
-                    <button
-                      type="button"
-                      className="battle-menu-back"
-                      onClick={resetCommand}
-                    >
-                      ← Voltar
-                    </button>
-                  </div>
-                )}
-
-                {command === "item-target" && selectedItem && (
-                  <div className="battle-submenu">
-                    <div className="battle-submenu-copy">
-                      <span>ITEM</span>
-                      <strong>{DUEL_ITEMS[selectedItem].name}</strong>
-                      <small>
-                        {DUEL_ITEMS[selectedItem].kind === "capture"
-                          ? targetableUnitIds.size > 0
-                            ? "Escolha o Pokémon selvagem"
-                            : "Reduza o alvo para 50% de HP ou menos"
-                          : targetableUnitIds.size > 0
-                            ? "Escolha um aliado"
-                            : "Nenhum alvo precisa do item"}
-                      </small>
-                    </div>
-                    <button
-                      type="button"
-                      className="battle-menu-back"
-                      onClick={() => {
-                        setSelectedItem(null);
-                        setCommand("items");
-                      }}
-                    >
-                      ← Voltar
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+                </div>
+              )}
 
             {vfx && (
               <div
