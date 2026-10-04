@@ -138,6 +138,12 @@ export const STARTER_META: Record<
 export function chooseStarter(
   starter: StarterSpeciesId,
 ): StoryState {
+  const playerWorld = completePlayerWorldEvent(
+    createEmptyPlayerWorldState(),
+    "story",
+    "starter-chosen",
+  );
+
   return {
     starter,
     rivalStarter: rivalStarterFor(starter),
@@ -162,7 +168,7 @@ export function chooseStarter(
     fieldTechniqueIds: [],
     clearedObstacleIds: [],
     billStage: "unmet",
-    playerWorld: createEmptyPlayerWorldState(),
+    playerWorld,
   };
 }
 
@@ -370,6 +376,27 @@ export function normalizeStoryState(
     ? (input as { boxedPokemon: unknown[] }).boxedPokemon
     : [];
 
+  let playerWorld = normalizePlayerWorldState(
+    input?.playerWorld,
+    {
+      collectedItemIds: input?.collectedItemIds,
+      defeatedTrainerIds: input?.defeatedTrainerIds,
+      badgeIds: input?.badgeIds,
+      clearedObstacleIds: input?.clearedObstacleIds,
+      keyItemIds: input?.keyItemIds,
+      fieldTechniqueIds: input?.fieldTechniqueIds,
+      mtMoonFossil: input?.mtMoonFossil,
+      billStage: input?.billStage,
+    },
+  );
+  if (starter) {
+    playerWorld = completePlayerWorldEvent(
+      playerWorld,
+      "story",
+      "starter-chosen",
+    );
+  }
+
   return {
     starter,
     rivalStarter:
@@ -477,19 +504,7 @@ export function normalizeStoryState(
       )
         ? "helped"
         : normalizeBillStage(input?.billStage),
-    playerWorld: normalizePlayerWorldState(
-      input?.playerWorld,
-      {
-        collectedItemIds: input?.collectedItemIds,
-        defeatedTrainerIds: input?.defeatedTrainerIds,
-        badgeIds: input?.badgeIds,
-        clearedObstacleIds: input?.clearedObstacleIds,
-        keyItemIds: input?.keyItemIds,
-        fieldTechniqueIds: input?.fieldTechniqueIds,
-        mtMoonFossil: input?.mtMoonFossil,
-        billStage: input?.billStage,
-      },
-    ),
+    playerWorld,
   };
 }
 

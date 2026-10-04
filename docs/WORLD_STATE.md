@@ -151,3 +151,17 @@ The same projected object list drives overworld collision, trainer line of
 sight and battle-arena blocked cells. A Cut tree removed for player A therefore
 does not remain as an invisible collision for A, while the unchanged shared
 definition still blocks player B.
+
+
+## Declarative movement gates
+
+Progression-gated movement is registered in `playerWorldGates.ts`. Edge and
+tile gates declare geometry, an `allowWhen` `PlayerWorldCondition`, and the
+dialogue request shown when blocked.
+
+Pallet's starter gate, Pewter/Route 3, Cerulean/Route 24, Cerulean/Route 5,
+S.S. Anne boarding, the Captain path, the burgled house and the Route 22
+Pokémon League gate use this registry.
+
+New doors/routes that depend on progression should add gate data instead of a
+map-specific `if` in the movement loop.

@@ -23,8 +23,6 @@ import {
   isLedgeCell,
   isLedgeForDirection,
   isPokemonStoragePcAt,
-  isSsAnneBoardingWarpAt,
-  isVictoryRoadLeagueGateAt,
   resolveWarpTransitionAt,
   resolveWorldTransition,
   TILE_SIZE,
@@ -35,7 +33,6 @@ import {
   WorldTransition,
 } from "@/lib/maps";
 import {
-  hasStoryBadge,
   hasStoryKeyItem,
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
@@ -75,6 +72,10 @@ import {
   projectPlayerWorldDefinitions,
   type PlayerWorldCondition,
 } from "@/lib/playerWorldProjection";
+import {
+  resolveBlockedPlayerEdgeGate,
+  resolveBlockedPlayerTileGate,
+} from "@/lib/playerWorldGates";
 import {
   isVermilionGymBeamWalkable,
 } from "@/lib/vermilionGym";
@@ -1435,58 +1436,16 @@ export function OverworldGame({
       );
 
       if (edgeTransition) {
-        if (
-          mapIdRef.current === "pallet-town" &&
-          edgeTransition.mapId === "route-1" &&
-          !storyRef.current.starter
-        ) {
-          showInteraction(
-            "Prof. Oak: Espere! Passe no meu laboratório antes de sair de Pallet.",
-          );
-          player.blockedUntil = now + 500;
-          return false;
-        }
-
-        if (
-          mapIdRef.current === "pewter-city" &&
-          edgeTransition.mapId === "route-3" &&
-          !hasStoryBadge(
-            storyRef.current,
-            "boulder",
-          )
-        ) {
-          showInteraction(
-            "A passagem para a Route 3 abre depois de vencer Brock e conquistar a Boulder Badge.",
-          );
-          player.blockedUntil = now + 500;
-          return false;
-        }
-
-        if (
-          mapIdRef.current === "cerulean-city" &&
-          edgeTransition.mapId === "route-24" &&
-          !isStoryTrainerDefeated(
-            storyRef.current,
-            CERULEAN_RIVAL_TRAINER_ID,
-          )
-        ) {
-          showInteraction(
-            "Blue está esperando na saída norte de Cerulean. Enfrente-o antes de seguir para a Route 24.",
-          );
-          player.blockedUntil = now + 500;
-          return false;
-        }
-
-        if (
-          mapIdRef.current === "cerulean-city" &&
-          edgeTransition.mapId === "route-5" &&
-          !isStoryTrainerDefeated(
-            storyRef.current,
-            CERULEAN_ROCKET_TRAINER_ID,
-          )
-        ) {
-          showInteraction(
-            "A rota sul só fica segura depois de expulsar o Rocket que está atrás da casa arrombada.",
+        const blockedGate = resolveBlockedPlayerEdgeGate(
+          storyRef.current,
+          mapIdRef.current,
+          edgeTransition.mapId,
+        );
+        if (blockedGate) {
+          showDialogue(
+            onDialogueInteraction(
+              blockedGate.blockedRequest,
+            ),
           );
           player.blockedUntil = now + 500;
           return false;
@@ -1504,15 +1463,18 @@ export function OverworldGame({
       const nextX = player.tileX + delta.x;
       const nextY = player.tileY + delta.y;
 
-      if (
-        isVictoryRoadLeagueGateAt(
+      const blockedTileGate =
+        resolveBlockedPlayerTileGate(
+          storyRef.current,
           mapIdRef.current,
           nextX,
           nextY,
-        )
-      ) {
-        showInteraction(
-          "Pokémon League: acesso restrito. Volte quando tiver as insígnias necessárias.",
+        );
+      if (blockedTileGate) {
+        showDialogue(
+          onDialogueInteraction(
+            blockedTileGate.blockedRequest,
+          ),
         );
         player.blockedUntil = now + 500;
         return false;
@@ -1574,53 +1536,6 @@ export function OverworldGame({
         nextX,
         nextY,
       );
-
-      if (
-        isSsAnneBoardingWarpAt(
-          mapIdRef.current,
-          nextX,
-          nextY,
-        ) &&
-        !hasStoryKeyItem(
-          storyRef.current,
-          "ss-ticket",
-        )
-      ) {
-        showInteraction(
-          "Marinheiro: Bem-vindo ao S.S. Anne! Você precisa do S.S. Ticket para embarcar.",
-        );
-        player.blockedUntil = now + 500;
-        return false;
-      }
-
-      if (
-        warp?.mapId === "ss-anne-captains-office" &&
-        !isStoryTrainerDefeated(
-          storyRef.current,
-          SS_ANNE_RIVAL_TRAINER_ID,
-        )
-      ) {
-        showInteraction(
-          "Blue está bloqueando o caminho para o Capitão. Vença-o primeiro.",
-        );
-        player.blockedUntil = now + 500;
-        return false;
-      }
-
-      if (
-        warp?.mapId === "cerulean-house2" &&
-        mapIdRef.current === "cerulean-city" &&
-        !hasStoryKeyItem(
-          storyRef.current,
-          "ss-ticket",
-        )
-      ) {
-        showInteraction(
-          "Policial: A casa foi arrombada. A passagem fica isolada até terminarmos de verificar a ocorrência.",
-        );
-        player.blockedUntil = now + 500;
-        return false;
-      }
 
       if (!warp && !canWalk(activeLayout, nextX, nextY)) {
         player.blockedUntil = now + BLOCKED_RETRY_MS;
