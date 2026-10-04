@@ -2387,3 +2387,77 @@ describe("battle movement and deployment scale", () => {
     ).toBeGreaterThan(state.width / 2);
   });
 });
+
+
+describe("multi-wild capture flow", () => {
+  it("keeps capture locked until only one wild Pokémon is still standing", () => {
+    let state = createWildDuel({
+      seed: 1902,
+      width: 9,
+      height: 7,
+      items: {
+        potion: 0,
+        "poke-ball": 3,
+      },
+      players: [
+        {
+          species: "bulbasaur",
+          level: 8,
+          moves: ["tackle"],
+        },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 5,
+      wilds: [
+        {
+          species: "rattata",
+          level: 5,
+        },
+        {
+          species: "pidgey",
+          level: 5,
+        },
+      ],
+    });
+
+    const rivals = state.units.filter(
+      (unit) => unit.side === "rival",
+    );
+    expect(
+      getDuelCaptureEligibility(
+        state,
+        rivals[0].id,
+      ),
+    ).toEqual({
+      allowed: false,
+      reason: "multiple-wilds",
+    });
+
+    state = {
+      ...state,
+      units: state.units.map((unit) =>
+        unit.id === rivals[0].id
+          ? {
+              ...unit,
+              hp: Math.max(
+                1,
+                Math.floor(unit.maxHp * 0.2),
+              ),
+            }
+          : unit.id === rivals[1].id
+            ? {
+                ...unit,
+                hp: 0,
+              }
+            : unit,
+      ),
+    };
+
+    expect(
+      getDuelCaptureEligibility(
+        state,
+        rivals[0].id,
+      ).allowed,
+    ).toBe(true);
+  });
+});
