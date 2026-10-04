@@ -5,6 +5,7 @@ import {
   createStarterDuel,
   createTrainerDuel,
   createWildDuel,
+  defaultMovesForSpecies,
   DUEL_MOVES,
   getActiveDuelUnit,
   getDuelCaptureEligibility,
@@ -3012,6 +3013,41 @@ describe("canonical late-rival direct moves", () => {
     expect(updated.movePp.synthesis).toBe(
       DUEL_MOVES.synthesis.maxPp - 1,
     );
+  });
+});
+
+
+describe("late-rival direct move sets", () => {
+  it("uses canonical direct moves for Charizard and Gyarados", () => {
+    expect(defaultMovesForSpecies("charizard")).toEqual([
+      "flamethrower",
+      "wing-attack",
+      "slash",
+      "scary-face",
+    ]);
+    expect(defaultMovesForSpecies("gyarados")).toEqual([
+      "hydro-pump",
+      "twister",
+      "leer",
+      "rain-dance",
+    ]);
+  });
+
+  it("matches FireRed data for Slash and Twister", () => {
+    expect(DUEL_MOVES.slash).toMatchObject({
+      type: "normal",
+      category: "physical",
+      power: 70,
+      accuracy: 100,
+      maxPp: 20,
+    });
+    expect(DUEL_MOVES.twister).toMatchObject({
+      type: "dragon",
+      category: "special",
+      power: 40,
+      accuracy: 100,
+      maxPp: 20,
+    });
   });
 });
 
