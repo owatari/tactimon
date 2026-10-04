@@ -65,6 +65,15 @@ export const OVERWORLD_DIALOGUES:
       dialogueId: "cerulean-gym-guy",
     },
     {
+      id: "vermilion-gym-guy",
+      mapId: "vermilion-gym",
+      label: "Gym Guide",
+      x: 4,
+      y: 17,
+      spriteUrl: "/game-assets/overworld/091_gym_guy.png",
+      dialogueId: "vermilion-gym-guy",
+    },
+    {
       id: "viridian-forest-youngster",
       mapId: "viridian-forest",
       label: "Youngster",
