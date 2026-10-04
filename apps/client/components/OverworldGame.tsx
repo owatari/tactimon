@@ -18,6 +18,10 @@ import {
   Direction,
   MapLayout,
   PLAYER_SPRITE,
+  getMapCell,
+  hydrateMapBehaviors,
+  isCounterCell,
+  isLedgeForDirection,
   isPokemonStoragePcAt,
   isVictoryRoadLeagueGateAt,
   resolveWarpTransitionAt,
@@ -52,11 +56,13 @@ import {
 } from "@/lib/wildEncounters";
 
 const STEP_DURATION_MS = 142;
+const JUMP_DURATION_MS = 250;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
 const INTERACTION_DURATION_MS = 2200;
-const BATTLE_ARENA_MAX_WIDTH = 17;
-const BATTLE_ARENA_MAX_HEIGHT = 9;
+const POSITION_STORAGE_KEY = "tactimon.position.v1";
+const FALLBACK_BATTLE_ARENA_WIDTH = 17;
+const FALLBACK_BATTLE_ARENA_HEIGHT = 9;
 
 const IDLE_FRAME: Record<Direction, number> = {
   south: 0,
@@ -129,6 +135,8 @@ type RuntimePlayer = {
   targetTileX: number;
   targetTileY: number;
   stepStartedAt: number;
+  stepDuration: number;
+  jumping: boolean;
   foot: 0 | 1;
   blockedUntil: number;
 };
@@ -211,9 +219,76 @@ function createPlayer(
     targetTileX: x,
     targetTileY: y,
     stepStartedAt: 0,
+    stepDuration: STEP_DURATION_MS,
+    jumping: false,
     foot: 0,
     blockedUntil: 0,
   };
+}
+
+type SavedPlayerPosition = {
+  mapId: string;
+  x: number;
+  y: number;
+  facing: Direction;
+};
+
+function isDirection(value: unknown): value is Direction {
+  return (
+    value === "north" ||
+    value === "south" ||
+    value === "west" ||
+    value === "east"
+  );
+}
+
+function readSavedPlayerPosition(): SavedPlayerPosition | null {
+  try {
+    const raw = window.localStorage.getItem(POSITION_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<SavedPlayerPosition>;
+    if (
+      typeof parsed.mapId !== "string" ||
+      !WORLD_MAPS[parsed.mapId] ||
+      typeof parsed.x !== "number" ||
+      !Number.isInteger(parsed.x) ||
+      typeof parsed.y !== "number" ||
+      !Number.isInteger(parsed.y) ||
+      !isDirection(parsed.facing)
+    ) {
+      return null;
+    }
+
+    return {
+      mapId: parsed.mapId,
+      x: parsed.x,
+      y: parsed.y,
+      facing: parsed.facing,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function savePlayerPosition(
+  mapId: string,
+  player: RuntimePlayer,
+): void {
+  if (player.moving) return;
+
+  try {
+    window.localStorage.setItem(
+      POSITION_STORAGE_KEY,
+      JSON.stringify({
+        mapId,
+        x: player.tileX,
+        y: player.tileY,
+        facing: player.facing,
+      } satisfies SavedPlayerPosition),
+    );
+  } catch {
+    // Position persistence is an enhancement, not a runtime dependency.
+  }
 }
 
 function keyToDirection(key: string): Direction | null {
@@ -682,12 +757,29 @@ export function OverworldGame({
         return null;
       }
 
+      const viewport = viewportRef.current;
+      const visibleTileWidth = viewport
+        ? Math.max(
+            3,
+            Math.floor(
+              viewport.clientWidth / (TILE_SIZE * WORLD_ZOOM),
+            ),
+          )
+        : FALLBACK_BATTLE_ARENA_WIDTH;
+      const visibleTileHeight = viewport
+        ? Math.max(
+            3,
+            Math.floor(
+              viewport.clientHeight / (TILE_SIZE * WORLD_ZOOM),
+            ),
+          )
+        : FALLBACK_BATTLE_ARENA_HEIGHT;
       const arenaWidth = Math.min(
-        BATTLE_ARENA_MAX_WIDTH,
+        visibleTileWidth,
         activeLayout.width,
       );
       const arenaHeight = Math.min(
-        BATTLE_ARENA_MAX_HEIGHT,
+        visibleTileHeight,
         activeLayout.height,
       );
       const cropX = Math.max(
@@ -849,10 +941,34 @@ export function OverworldGame({
       return;
     }
 
-    const storyObject = storyObjectsRef.current.find(
-      (candidate) =>
-        candidate.x === targetX && candidate.y === targetY,
-    );
+    const interactionPoints = [
+      { x: targetX, y: targetY },
+    ];
+
+    if (
+      isCounterCell(
+        layoutRef.current,
+        targetX,
+        targetY,
+      )
+    ) {
+      interactionPoints.push({
+        x: targetX + delta.x,
+        y: targetY + delta.y,
+      });
+    }
+
+    const storyObject = interactionPoints
+      .map(({ x, y }) =>
+        storyObjectsRef.current.find(
+          (candidate) =>
+            candidate.x === x && candidate.y === y,
+        ),
+      )
+      .find(
+        (candidate): candidate is StoryObject =>
+          candidate !== undefined,
+      );
 
     if (storyObject) {
       if (
@@ -931,10 +1047,17 @@ export function OverworldGame({
       return;
     }
 
-    const object = worldObjectsRef.current.find(
-      (candidate) =>
-        candidate.x === targetX && candidate.y === targetY,
-    );
+    const object = interactionPoints
+      .map(({ x, y }) =>
+        worldObjectsRef.current.find(
+          (candidate) =>
+            candidate.x === x && candidate.y === y,
+        ),
+      )
+      .find(
+        (candidate): candidate is WorldObject =>
+          candidate !== undefined,
+      );
 
     if (object) {
       const dialogue = resolveNpcDialogue(
@@ -988,8 +1111,12 @@ export function OverworldGame({
           );
         }
 
-        const nextLayout =
+        const rawLayout =
           (await layoutResponse.json()) as MapLayout;
+        const nextLayout = await hydrateMapBehaviors(
+          rawLayout,
+          definition.tilesets,
+        );
         const nextWorldData = worldResponse?.ok
           ? ((await worldResponse.json()) as WorldMapData)
           : null;
@@ -1008,10 +1135,24 @@ export function OverworldGame({
           nextLayout,
           worldObjectsRef.current,
         );
-        playerRef.current = createPlayer(
+        const requestedCell = getMapCell(
+          nextLayout,
           spawn.x,
           spawn.y,
+        );
+        const resolvedSpawn =
+          requestedCell && requestedCell.collision === 0
+            ? spawn
+            : definition.spawn;
+
+        playerRef.current = createPlayer(
+          resolvedSpawn.x,
+          resolvedSpawn.y,
           facing,
+        );
+        savePlayerPosition(
+          nextMapId,
+          playerRef.current,
         );
         pendingWarpRef.current = null;
         cameraPositionRef.current.ready = false;
@@ -1040,10 +1181,16 @@ export function OverworldGame({
   );
 
   useEffect(() => {
+    const saved = readSavedPlayerPosition();
+    const initialMapId = saved?.mapId ?? "pallet-town";
+    const initialDefinition = WORLD_MAPS[initialMapId];
+
     void loadMap(
-      "pallet-town",
-      WORLD_MAPS["pallet-town"].spawn,
-      "south",
+      initialMapId,
+      saved
+        ? { x: saved.x, y: saved.y }
+        : initialDefinition.spawn,
+      saved?.facing ?? "south",
     );
   }, [loadMap]);
 
@@ -1232,6 +1379,64 @@ export function OverworldGame({
         return false;
       }
 
+      if (
+        isLedgeForDirection(
+          activeLayout,
+          nextX,
+          nextY,
+          direction,
+        )
+      ) {
+        const landingX = nextX + delta.x;
+        const landingY = nextY + delta.y;
+        const landingWarp = resolveWarpTransitionAt(
+          mapIdRef.current,
+          landingX,
+          landingY,
+        );
+
+        if (
+          !landingWarp &&
+          !canWalk(activeLayout, landingX, landingY)
+        ) {
+          player.blockedUntil = now + BLOCKED_RETRY_MS;
+          return false;
+        }
+
+        player.moving = true;
+        player.jumping = true;
+        player.stepDuration = JUMP_DURATION_MS;
+        player.fromX = player.visualX;
+        player.fromY = player.visualY;
+        player.toX = landingX * TILE_SIZE;
+        player.toY = landingY * TILE_SIZE;
+        player.targetTileX = landingX;
+        player.targetTileY = landingY;
+        player.stepStartedAt = now;
+        player.foot = player.foot === 0 ? 1 : 0;
+        pendingWarpRef.current = landingWarp;
+        return true;
+      }
+
+      const nextCell = getMapCell(
+        activeLayout,
+        nextX,
+        nextY,
+      );
+      if (
+        nextCell?.behavior !== undefined &&
+        Object.values({
+          east: 0x38,
+          west: 0x39,
+          north: 0x3a,
+          south: 0x3b,
+        }).includes(nextCell.behavior)
+      ) {
+        // A directional ledge approached from the wrong side remains blocked.
+        player.blockedUntil = now + BLOCKED_RETRY_MS;
+        return false;
+      }
+
       const warp = resolveWarpTransitionAt(
         mapIdRef.current,
         nextX,
@@ -1244,6 +1449,8 @@ export function OverworldGame({
       }
 
       player.moving = true;
+      player.jumping = false;
+      player.stepDuration = STEP_DURATION_MS;
       player.fromX = player.visualX;
       player.fromY = player.visualY;
       player.toX = nextX * TILE_SIZE;
@@ -1441,12 +1648,21 @@ export function OverworldGame({
       }
 
       let frame = IDLE_FRAME[player.facing];
+      let jumpLift = 0;
 
       if (player.moving) {
         const progress = Math.min(
           1,
-          (now - player.stepStartedAt) / STEP_DURATION_MS,
+          (now - player.stepStartedAt) /
+            Math.max(1, player.stepDuration),
         );
+
+        if (player.jumping) {
+          jumpLift =
+            Math.sin(progress * Math.PI) *
+            TILE_SIZE *
+            0.8;
+        }
 
         player.visualX =
           player.fromX + (player.toX - player.fromX) * progress;
@@ -1464,6 +1680,8 @@ export function OverworldGame({
           player.tileX = player.targetTileX;
           player.tileY = player.targetTileY;
           player.moving = false;
+          player.jumping = false;
+          jumpLift = 0;
 
           const pendingWarp = pendingWarpRef.current;
           pendingWarpRef.current = null;
@@ -1477,6 +1695,10 @@ export function OverworldGame({
             return;
           }
 
+          savePlayerPosition(
+            mapIdRef.current,
+            player,
+          );
           maybeTriggerLabBattle();
           maybeTriggerTrainerBattle();
           maybeTriggerWildBattle();
@@ -1503,7 +1725,8 @@ export function OverworldGame({
 
       const frameOffset = framePosition(frame);
       playerElement.style.left = `${player.visualX}px`;
-      playerElement.style.top = `${player.visualY - TILE_SIZE}px`;
+      playerElement.style.top =
+        `${player.visualY - TILE_SIZE - jumpLift}px`;
       playerElement.style.backgroundPosition =
         `${frameOffset.x}px ${frameOffset.y}px`;
       playerElement.style.transform =

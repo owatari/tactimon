@@ -8,6 +8,8 @@ export type MapCell = {
   metatile: number;
   collision: number;
   elevation: number;
+  /** FireRed metatile behavior, hydrated from the tileset attributes at runtime. */
+  behavior?: number;
 };
 
 export type MapLayout = {
@@ -83,6 +85,103 @@ export type WorldTransition = {
   mapId: string;
   spawn: { x: number; y: number };
 };
+
+const PRIMARY_METATILE_COUNT = 640;
+const METATILE_BEHAVIOR_MASK = 0x1ff;
+const MB_COUNTER = 0x80;
+const JUMP_BEHAVIOR_BY_DIRECTION: Record<Direction, number> = {
+  east: 0x38,
+  west: 0x39,
+  north: 0x3a,
+  south: 0x3b,
+};
+
+const attributeCache = new Map<string, Promise<Uint8Array>>();
+
+async function fetchAttributeBytes(url: string): Promise<Uint8Array> {
+  let request = attributeCache.get(url);
+  if (!request) {
+    request = fetch(url).then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to load metatile attributes ${url}: ${response.status}`);
+      }
+      return new Uint8Array(await response.arrayBuffer());
+    });
+    attributeCache.set(url, request);
+  }
+  return request;
+}
+
+function readU32(data: Uint8Array, offset: number): number {
+  if (offset < 0 || offset + 3 >= data.length) {
+    return 0;
+  }
+  return (
+    data[offset] |
+    (data[offset + 1] << 8) |
+    (data[offset + 2] << 16) |
+    (data[offset + 3] << 24)
+  ) >>> 0;
+}
+
+export async function hydrateMapBehaviors(
+  layout: MapLayout,
+  definitions: {
+    primary: TilesetAssetDefinition;
+    secondary: TilesetAssetDefinition;
+  },
+): Promise<MapLayout> {
+  const [primaryAttributes, secondaryAttributes] = await Promise.all([
+    fetchAttributeBytes(definitions.primary.attributesUrl),
+    fetchAttributeBytes(definitions.secondary.attributesUrl),
+  ]);
+
+  return {
+    ...layout,
+    cells: layout.cells.map((cell) => {
+      const primary = cell.metatile < PRIMARY_METATILE_COUNT;
+      const localMetatile = primary
+        ? cell.metatile
+        : cell.metatile - PRIMARY_METATILE_COUNT;
+      const attributes = primary ? primaryAttributes : secondaryAttributes;
+      const behavior =
+        readU32(attributes, localMetatile * 4) & METATILE_BEHAVIOR_MASK;
+
+      return { ...cell, behavior };
+    }),
+  };
+}
+
+export function getMapCell(
+  layout: MapLayout | null,
+  x: number,
+  y: number,
+): MapCell | null {
+  if (!layout || x < 0 || y < 0 || x >= layout.width || y >= layout.height) {
+    return null;
+  }
+  return layout.cells[y * layout.width + x] ?? null;
+}
+
+export function isCounterCell(
+  layout: MapLayout | null,
+  x: number,
+  y: number,
+): boolean {
+  return getMapCell(layout, x, y)?.behavior === MB_COUNTER;
+}
+
+export function isLedgeForDirection(
+  layout: MapLayout | null,
+  x: number,
+  y: number,
+  direction: Direction,
+): boolean {
+  return (
+    getMapCell(layout, x, y)?.behavior ===
+    JUMP_BEHAVIOR_BY_DIRECTION[direction]
+  );
+}
 
 export type BattleSceneContext = {
   mapId: string;
