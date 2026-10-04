@@ -3,6 +3,7 @@ import {
   DUEL_MOVES,
   normalizeDuelMajorStatus,
   normalizeDuelMovePp,
+  normalizeDuelSleepTurns,
   restoreDuelMovePp,
   type DuelMajorStatus,
   type DuelMoveId,
@@ -41,6 +42,8 @@ export interface PokemonProgression {
   currentHp: number;
   /** Persistent non-volatile status. */
   status: DuelMajorStatus;
+  /** Persistent FireRed Sleep counter; zero for every other status. */
+  sleepTurnsRemaining?: number;
   activeMoves: DuelMoveId[];
   /** Current PP for each active move; persisted between battles. */
   movePp: DuelMovePp;
@@ -1111,6 +1114,7 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
       evs,
     }),
     status: null,
+    sleepTurnsRemaining: 0,
     activeMoves,
     movePp: restoreDuelMovePp(activeMoves),
   };
@@ -1182,13 +1186,21 @@ export function normalizePokemonProgression(
       ? [...input.activeMoves].slice(0, 4)
       : [...base.activeMoves];
 
+  const status = normalizeDuelMajorStatus(
+    input.status,
+  );
+
   return {
     species: input.species,
     level,
     experience: migratedExperience,
     evs,
     currentHp,
-    status: normalizeDuelMajorStatus(input.status),
+    status,
+    sleepTurnsRemaining: normalizeDuelSleepTurns(
+      status,
+      input.sleepTurnsRemaining,
+    ),
     activeMoves,
     movePp: normalizeDuelMovePp(
       activeMoves,

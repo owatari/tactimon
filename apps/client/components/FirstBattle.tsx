@@ -48,6 +48,7 @@ export type BattleOutcome = {
   inventory: DuelInventory;
   playerHp: number[];
   playerStatuses: DuelMajorStatus[];
+  playerSleepTurnsRemaining: number[];
   playerMovePp: DuelMovePp[];
   defeatedEnemies: Array<{
     species: DuelSpeciesId;
@@ -59,6 +60,7 @@ export type BattleOutcome = {
     level: number;
     xpRatio: number;
     status: DuelMajorStatus;
+    sleepTurnsRemaining: number;
   };
 };
 
@@ -232,6 +234,11 @@ function stageBadges(unit: DuelUnit): Array<{
   } else if (unit.status === "burn") {
     badges.push({
       label: "BRN",
+      tone: "debuff",
+    });
+  } else if (unit.status === "sleep") {
+    badges.push({
+      label: "SLP",
       tone: "debuff",
     });
   }
@@ -1902,6 +1909,11 @@ export function FirstBattle({
                   inventory: { ...state.items },
                   playerHp: playerUnits.map((unit) => unit.hp),
                   playerStatuses: playerUnits.map((unit) => unit.status),
+                  playerSleepTurnsRemaining:
+                    playerUnits.map(
+                      (unit) =>
+                        unit.sleepTurnsRemaining,
+                    ),
                   playerMovePp: playerUnits.map(
                     (unit) => ({ ...unit.movePp }),
                   ),
@@ -1913,6 +1925,9 @@ export function FirstBattle({
                         level: state.captureResult.level,
                         xpRatio: state.captureResult.xpRatio,
                         status: state.captureResult.status,
+                        sleepTurnsRemaining:
+                          state.captureResult
+                            .sleepTurnsRemaining,
                       }
                     : undefined,
                 })
@@ -1956,6 +1971,11 @@ export function FirstBattle({
                   inventory: { ...state.items },
                   playerHp: playerUnits.map((unit) => unit.hp),
                   playerStatuses: playerUnits.map((unit) => unit.status),
+                  playerSleepTurnsRemaining:
+                    playerUnits.map(
+                      (unit) =>
+                        unit.sleepTurnsRemaining,
+                    ),
                   playerMovePp: playerUnits.map(
                     (unit) => ({ ...unit.movePp }),
                   ),

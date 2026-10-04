@@ -96,7 +96,12 @@ export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
 export type DuelBattleKind = "trainer" | "wild";
 export type DuelWeather = "rain" | null;
-export type DuelMajorStatus = "poison" | "paralysis" | "burn" | null;
+export type DuelMajorStatus =
+  | "poison"
+  | "paralysis"
+  | "burn"
+  | "sleep"
+  | null;
 export type DuelItemId = "potion" | "poke-ball";
 export type DuelInventory = Record<DuelItemId, number>;
 export type DuelMoveId =
@@ -221,6 +226,8 @@ export interface DuelPokemonBuild {
   currentHp?: number;
   /** Persistent major status carried between battles. */
   status?: DuelMajorStatus;
+  /** Remaining FireRed Sleep counter (1-5); ignored unless status is Sleep. */
+  sleepTurnsRemaining?: number;
 }
 
 export interface TrainerDuelOptions {
@@ -281,9 +288,31 @@ export function normalizeDuelMajorStatus(
 ): DuelMajorStatus {
   return value === "poison" ||
     value === "paralysis" ||
-    value === "burn"
+    value === "burn" ||
+    value === "sleep"
     ? value
     : null;
+}
+
+export function normalizeDuelSleepTurns(
+  status: DuelMajorStatus,
+  value: unknown,
+): number {
+  if (status !== "sleep") {
+    return 0;
+  }
+
+  if (
+    typeof value === "number" &&
+    Number.isFinite(value)
+  ) {
+    return Math.max(
+      1,
+      Math.min(5, Math.trunc(value)),
+    );
+  }
+
+  return 2;
 }
 
 export interface DuelMove {
@@ -396,6 +425,7 @@ export interface DuelUnit {
   hp: number;
   maxHp: number;
   status: DuelMajorStatus;
+  sleepTurnsRemaining: number;
   attack: number;
   defense: number;
   specialAttack: number;
@@ -446,6 +476,7 @@ export interface DuelState {
     xpRatio: number;
     chance: number;
     status: DuelMajorStatus;
+    sleepTurnsRemaining: number;
   } | null;
   units: DuelUnit[];
   log: string[];
@@ -1700,13 +1731,15 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "stun-spore",
     description:
-      "Pó sonífero; Sleep ainda não é um status persistente do motor.",
+      "Pó sonífero com 75% de Accuracy que causa Sleep por 2-5 turnos.",
     power: null,
     accuracy: 75,
     apCost: 2,
     maxPp: 15,
     minRange: 1,
     maxRange: 3,
+    secondaryStatus: "sleep",
+    secondaryEffectChance: 100,
   },
   "leech-seed": {
     id: "leech-seed",
@@ -2523,13 +2556,15 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "growl",
     description:
-      "Induz Sleep no jogo original; Sleep ainda não é um status persistente do motor.",
+      "Induz Sleep por 2-5 turnos com 60% de Accuracy.",
     power: null,
     accuracy: 60,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
     maxRange: 3,
+    secondaryStatus: "sleep",
+    secondaryEffectChance: 100,
   },
   disable: {
     id: "disable",
@@ -3305,6 +3340,9 @@ function makeUnit(
           Math.min(maxHp, Math.trunc(build.currentHp)),
         )
       : maxHp;
+  const status = normalizeDuelMajorStatus(
+    build.status,
+  );
 
   return {
     id: `${side}-${slot}-${build.species}`,
@@ -3316,7 +3354,11 @@ function makeUnit(
     level,
     hp: currentHp,
     maxHp,
-    status: normalizeDuelMajorStatus(build.status),
+    status,
+    sleepTurnsRemaining: normalizeDuelSleepTurns(
+      status,
+      build.sleepTurnsRemaining,
+    ),
     attack: calculateOtherStat({
       base: base.attack,
       iv: FIXED_IV,
@@ -3450,7 +3492,7 @@ export function createTrainerDuel(
   const trainerName =
     options.trainerName?.trim() || "Treinador rival";
 
-  return {
+  const state: DuelState = {
     width,
     height,
     seed,
@@ -3491,9 +3533,10 @@ export function createTrainerDuel(
       rivals.length > 1
         ? `${trainerName} coloca ${rivals.length} Pokémon na arena.`
         : `${rivals[0].displayName} entra pelo lado rival.`,
-      `${active.displayName} age primeiro pela Speed.`,
     ],
   };
+  activateNextTurnUnit(state, 0);
+  return state;
 }
 
 export function createStarterDuel(
@@ -3630,7 +3673,7 @@ export function createWildDuel(
   const captureAllowed =
     options.captureAllowed ?? true;
 
-  return {
+  const state: DuelState = {
     width,
     height,
     seed,
@@ -3667,9 +3710,10 @@ export function createWildDuel(
       players.length > 1
         ? `${players.length} Pokémon do seu time entram na arena.`
         : `${players[0].displayName} entra na arena.`,
-      `${active.displayName} age primeiro pela Speed.`,
     ],
   };
+  activateNextTurnUnit(state, 0);
+  return state;
 }
 
 export function manhattanDistance(
@@ -3833,6 +3877,7 @@ function isMajorStatusImmune(
     case "burn":
       return unit.types.includes("fire");
     case "paralysis":
+    case "sleep":
       return false;
   }
 }
@@ -3950,6 +3995,33 @@ function expectedMoveDamage(
   return singleHitDamage * expectedHitCount(move);
 }
 
+function rollSleepTurns(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): number {
+  let moveSalt = 0;
+  for (const char of move.id) {
+    moveSalt =
+      (Math.imul(moveSalt, 31) + char.charCodeAt(0)) >>>
+      0;
+  }
+
+  const random = createSeededRandom(
+    (
+      state.seed ^
+      Math.imul(state.round + 1, 0x9e3779b1) ^
+      Math.imul(state.turnIndex + 1, 0x85ebca6b) ^
+      Math.imul(actor.ap + 1, 0xc2b2ae35) ^
+      Math.imul(target.hp + 1, 0x27d4eb2d) ^
+      moveSalt
+    ) >>> 0,
+  );
+
+  return Math.floor(random() * 4) + 2;
+}
+
 function secondaryEffectSucceeds(
   state: DuelState,
   actor: DuelUnit,
@@ -4010,6 +4082,8 @@ function statusAppliedMessage(
       return `${target.displayName} ficou paralisado.`;
     case "burn":
       return `${target.displayName} ficou queimado.`;
+    case "sleep":
+      return `${target.displayName} adormeceu.`;
   }
 }
 
@@ -4069,6 +4143,73 @@ function tickRoundWeather(state: DuelState): void {
   );
 }
 
+function activateNextTurnUnit(
+  state: DuelState,
+  startIndex: number,
+): boolean {
+  let nextIndex = Math.max(0, startIndex);
+
+  for (let pass = 0; pass < 6; pass += 1) {
+    for (
+      ;
+      nextIndex < state.turnOrder.length;
+      nextIndex += 1
+    ) {
+      const nextId = state.turnOrder[nextIndex];
+      const next = state.units.find(
+        (unit) =>
+          unit.id === nextId &&
+          unit.hp > 0,
+      );
+
+      if (!next) continue;
+
+      next.ap = next.maxAp;
+      next.mp = next.maxMp;
+
+      if (next.status === "sleep") {
+        const remaining = normalizeDuelSleepTurns(
+          next.status,
+          next.sleepTurnsRemaining,
+        );
+
+        if (remaining <= 1) {
+          next.status = null;
+          next.sleepTurnsRemaining = 0;
+          appendLog(
+            state,
+            `${next.displayName} acordou!`,
+          );
+        } else {
+          next.sleepTurnsRemaining = remaining - 1;
+          next.ap = 0;
+          next.mp = 0;
+          appendLog(
+            state,
+            `${next.displayName} está dormindo profundamente.`,
+          );
+          continue;
+        }
+      }
+
+      state.activeUnitId = next.id;
+      state.turnIndex = nextIndex;
+      appendLog(
+        state,
+        `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
+      );
+      return true;
+    }
+
+    tickRoundWeather(state);
+    state.round += 1;
+    state.turnOrder = createTurnOrder(state.units);
+    nextIndex = 0;
+  }
+
+  return false;
+}
+
 function resolveTurnEnd(
   state: DuelState,
   current: DuelUnit,
@@ -4093,53 +4234,12 @@ function resolveTurnEnd(
     state.turnOrder.indexOf(current.id),
   );
 
-  for (
-    let nextIndex = currentIndex + 1;
-    nextIndex < state.turnOrder.length;
-    nextIndex += 1
-  ) {
-    const nextId = state.turnOrder[nextIndex];
-    const next = state.units.find(
-      (unit) => unit.id === nextId && unit.hp > 0,
-    );
-
-    if (!next) continue;
-
-    next.ap = next.maxAp;
-    next.mp = next.maxMp;
-    state.activeUnitId = next.id;
-    state.turnIndex = nextIndex;
-    appendLog(
+  if (
+    activateNextTurnUnit(
       state,
-      `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
-    );
-    return;
-  }
-
-  tickRoundWeather(state);
-  state.round += 1;
-  state.turnOrder = createTurnOrder(state.units);
-
-  for (
-    let nextIndex = 0;
-    nextIndex < state.turnOrder.length;
-    nextIndex += 1
+      currentIndex + 1,
+    )
   ) {
-    const nextId = state.turnOrder[nextIndex];
-    const next = state.units.find(
-      (unit) => unit.id === nextId && unit.hp > 0,
-    );
-
-    if (!next) continue;
-
-    next.ap = next.maxAp;
-    next.mp = next.maxMp;
-    state.activeUnitId = next.id;
-    state.turnIndex = nextIndex;
-    appendLog(
-      state,
-      `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
-    );
     return;
   }
 
@@ -4427,11 +4527,13 @@ export function applyDuelAction(
         catchRate: WILD_CATCH_RATE[species],
         ballModifier: item.ballModifier,
         statusModifier:
-          target.status === "poison" ||
-          target.status === "paralysis" ||
-          target.status === "burn"
-            ? 1.5
-            : 1,
+          target.status === "sleep"
+            ? 2
+            : target.status === "poison" ||
+                target.status === "paralysis" ||
+                target.status === "burn"
+              ? 1.5
+              : 1,
         hpRatio: target.hp / target.maxHp,
         thresholdRatio: 0.5,
       });
@@ -4450,6 +4552,8 @@ export function applyDuelAction(
         xpRatio: resolution.xpRatio,
         chance,
         status: target.status,
+        sleepTurnsRemaining:
+          target.sleepTurnsRemaining,
       };
       appendLog(
         state,
@@ -4746,6 +4850,15 @@ export function applyDuelAction(
       secondaryStatusSucceeds(state, actor, target, move)
     ) {
       target.status = move.secondaryStatus;
+      target.sleepTurnsRemaining =
+        move.secondaryStatus === "sleep"
+          ? rollSleepTurns(
+              state,
+              actor,
+              target,
+              move,
+            )
+          : 0;
       statusApplied = move.secondaryStatus;
       appendLog(
         state,
@@ -4930,6 +5043,15 @@ export function applyDuelAction(
       )
     ) {
       target.status = move.secondaryStatus;
+      target.sleepTurnsRemaining =
+        move.secondaryStatus === "sleep"
+          ? rollSleepTurns(
+              state,
+              actor,
+              target,
+              move,
+            )
+          : 0;
       statusApplied = move.secondaryStatus;
       appendLog(
         state,
@@ -5427,11 +5549,13 @@ function aiStatusUtility(
       return -Infinity;
     }
 
-    return move.secondaryStatus === "burn"
-      ? 72
-      : move.secondaryStatus === "paralysis"
-        ? 66
-        : 58;
+    return move.secondaryStatus === "sleep"
+      ? 92
+      : move.secondaryStatus === "burn"
+        ? 72
+        : move.secondaryStatus === "paralysis"
+          ? 66
+          : 58;
   }
 
   if (
@@ -5681,11 +5805,13 @@ function aiSecondaryStatusUtility(
   }
 
   const statusValue =
-    move.secondaryStatus === "burn"
-      ? 72
-      : move.secondaryStatus === "paralysis"
-        ? 66
-        : 58;
+    move.secondaryStatus === "sleep"
+      ? 92
+      : move.secondaryStatus === "burn"
+        ? 72
+        : move.secondaryStatus === "paralysis"
+          ? 66
+          : 58;
 
   return (
     statusValue *

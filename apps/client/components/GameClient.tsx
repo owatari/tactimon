@@ -13,6 +13,7 @@ import {
   grantWildBattlesProgressToParty,
   normalizeDuelMajorStatus,
   normalizeDuelMovePp,
+  normalizeDuelSleepTurns,
   type DuelItemId,
   type DuelMajorStatus,
   type DuelMovePp,
@@ -143,6 +144,7 @@ function applyBattleHealth(
   partyIndices: readonly number[],
   playerHp: readonly number[],
   playerStatuses: readonly DuelMajorStatus[],
+  playerSleepTurnsRemaining: readonly number[],
   playerMovePp: readonly DuelMovePp[],
 ): StoryState {
   let playerPokemon = current.playerPokemon;
@@ -162,6 +164,13 @@ function applyBattleHealth(
       normalizeDuelMajorStatus(
         playerStatuses[outcomeIndex],
       );
+    const sleepTurnsRemaining =
+      normalizeDuelSleepTurns(
+        status,
+        playerSleepTurnsRemaining[
+          outcomeIndex
+        ],
+      );
 
     if (partyIndex === 0) {
       if (playerPokemon) {
@@ -169,6 +178,7 @@ function applyBattleHealth(
           ...playerPokemon,
           currentHp,
           status,
+          sleepTurnsRemaining,
           movePp: normalizeDuelMovePp(
             playerPokemon.activeMoves,
             playerMovePp[outcomeIndex],
@@ -185,6 +195,7 @@ function applyBattleHealth(
         ...existing,
         currentHp,
         status,
+        sleepTurnsRemaining,
         movePp: normalizeDuelMovePp(
           existing.activeMoves,
           playerMovePp[outcomeIndex],
@@ -285,6 +296,8 @@ export function GameClient() {
         evs: pokemon.evs,
         currentHp: pokemon.currentHp,
         status: pokemon.status,
+        sleepTurnsRemaining:
+          pokemon.sleepTurnsRemaining,
       })),
     [deployedParty],
   );
@@ -417,6 +430,7 @@ export function GameClient() {
         session.partyIndices,
         outcome.playerHp,
         outcome.playerStatuses,
+        outcome.playerSleepTurnsRemaining,
         outcome.playerMovePp,
       ),
       inventory: { ...outcome.inventory },
@@ -440,9 +454,17 @@ export function GameClient() {
           normalizeDuelMajorStatus(
             outcome.playerStatuses[outcomeIndex],
           );
+        const sleepTurnsRemaining =
+          normalizeDuelSleepTurns(
+            status,
+            outcome.playerSleepTurnsRemaining[
+              outcomeIndex
+            ],
+          );
         return {
           ...pokemon,
           status,
+          sleepTurnsRemaining,
           movePp: normalizeDuelMovePp(
             pokemon.activeMoves,
             outcome.playerMovePp[outcomeIndex],
@@ -590,6 +612,8 @@ export function GameClient() {
           ...captured,
           species: outcome.capture.species,
           status: outcome.capture.status,
+          sleepTurnsRemaining:
+            outcome.capture.sleepTurnsRemaining,
         },
       ).story;
     });

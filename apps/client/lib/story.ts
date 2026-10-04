@@ -195,6 +195,7 @@ function normalizeCapturedPokemon(
     evs?: PokemonProgression["evs"];
     currentHp?: unknown;
     status?: unknown;
+    sleepTurnsRemaining?: unknown;
     activeMoves?: PokemonProgression["activeMoves"];
     movePp?: PokemonProgression["movePp"];
   };
@@ -247,6 +248,8 @@ function normalizeCapturedPokemon(
         ? candidate.currentHp
         : base.currentHp,
     status: normalizeDuelMajorStatus(candidate.status),
+    sleepTurnsRemaining:
+      candidate.sleepTurnsRemaining,
     activeMoves: Array.isArray(candidate.activeMoves)
       ? candidate.activeMoves
       : base.activeMoves,
@@ -568,6 +571,7 @@ function healPokemonProgression(
     ...pokemon,
     currentHp: calculateDuelPokemonMaxHp(pokemon),
     status: null,
+    sleepTurnsRemaining: 0,
     movePp: restoreDuelMovePp(
       pokemon.activeMoves,
     ),
