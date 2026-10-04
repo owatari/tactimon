@@ -1224,7 +1224,8 @@ export function OverworldGame({
     ) {
       showDialogue(
         onDialogueInteraction({
-          kind: "bill-computer",
+          kind: "script",
+          id: "bill-computer",
         }),
       );
       return;
@@ -1285,7 +1286,8 @@ export function OverworldGame({
         } else {
           showDialogue(
             onDialogueInteraction({
-              kind: "lab-oak",
+              kind: "script",
+              id: "lab-oak",
             }),
           );
         }
@@ -1295,7 +1297,8 @@ export function OverworldGame({
       if (storyObject.kind === "rival") {
         showDialogue(
           onDialogueInteraction({
-            kind: "lab-rival",
+            kind: "script",
+            id: "lab-rival",
           }),
         );
         return;
@@ -1308,7 +1311,10 @@ export function OverworldGame({
 
       if (storyObject.kind === "bill") {
         showDialogue(
-          onDialogueInteraction({ kind: "bill" }),
+          onDialogueInteraction({
+            kind: "script",
+            id: "bill",
+          }),
         );
         return;
       }
@@ -1316,7 +1322,8 @@ export function OverworldGame({
       if (storyObject.kind === "ss-anne-captain") {
         showDialogue(
           onDialogueInteraction({
-            kind: "ss-anne-captain",
+            kind: "script",
+            id: "ss-anne-captain",
           }),
         );
         return;
@@ -1325,8 +1332,11 @@ export function OverworldGame({
       if (storyObject.kind === "cut-tree") {
         showDialogue(
           onDialogueInteraction({
-            kind: "cut",
-            obstacleId: storyObject.obstacleId,
+            kind: "script",
+            id: "cut",
+            context: {
+              obstacleId: storyObject.obstacleId,
+            },
           }),
         );
         return;
@@ -1341,7 +1351,10 @@ export function OverworldGame({
         storyObject.kind === "pokemon-center-nurse"
       ) {
         showDialogue(
-          onDialogueInteraction({ kind: "nurse" }),
+          onDialogueInteraction({
+            kind: "script",
+            id: "pokemon-center-nurse",
+          }),
         );
         return;
       }
@@ -1349,9 +1362,12 @@ export function OverworldGame({
       if (storyObject.kind === "fossil") {
         showDialogue(
           onDialogueInteraction({
-            kind: "fossil",
-            fossilId: storyObject.fossilId,
-            fossilName: storyObject.fossilName,
+            kind: "script",
+            id: "fossil",
+            context: {
+              fossilId: storyObject.fossilId,
+              fossilName: storyObject.fossilName,
+            },
           }),
         );
         return;
@@ -1360,10 +1376,13 @@ export function OverworldGame({
       if (storyObject.kind === "pickup") {
         showDialogue(
           onDialogueInteraction({
-            kind: "pickup",
-            pickupId: storyObject.pickupId,
-            itemId: storyObject.itemId,
-            itemName: storyObject.itemName,
+            kind: "script",
+            id: "pickup",
+            context: {
+              pickupId: storyObject.pickupId,
+              itemId: storyObject.itemId,
+              itemName: storyObject.itemName,
+            },
           }),
         );
         return;

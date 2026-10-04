@@ -81,10 +81,13 @@ describe("dialogue system", () => {
     const pickup = runDialogueInteraction(
       playerA,
       {
-        kind: "pickup",
-        pickupId: "viridian-city-potion",
-        itemId: "potion",
-        itemName: "Potion",
+        kind: "script",
+        id: "pickup",
+        context: {
+          pickupId: "viridian-city-potion",
+          itemId: "potion",
+          itemName: "Potion",
+        },
       },
     );
 
@@ -96,7 +99,10 @@ describe("dialogue system", () => {
 
     const bill = runDialogueInteraction(
       playerB,
-      { kind: "bill" },
+      {
+        kind: "script",
+        id: "bill",
+      },
     );
     expect(bill.story.billStage).toBe(
       "teleporter-ready",
@@ -210,5 +216,54 @@ describe("runtime dialogue presentation", () => {
         },
       ],
     });
+  });
+});
+
+
+describe("registered stateful dialogue scripts", () => {
+  it("executes existing progression through script context", () => {
+    const story = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    const pickup = runDialogueInteraction(
+      story,
+      {
+        kind: "script",
+        id: "pickup",
+        context: {
+          pickupId: "viridian-city-potion",
+          itemId: "potion",
+          itemName: "Potion",
+        },
+      },
+    );
+
+    expect(pickup.story.inventory.potion).toBe(2);
+    expect(
+      hasStoryPlayerEvent(
+        pickup.story,
+        "pickup",
+        "viridian-city-potion",
+      ),
+    ).toBe(true);
+  });
+
+  it("rejects invalid script context without mutating player state", () => {
+    const story = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    const result = runDialogueInteraction(
+      story,
+      {
+        kind: "script",
+        id: "pickup",
+        context: {},
+      },
+    );
+
+    expect(result.story).toBe(story);
+    expect(
+      result.presentation.pages[0].text,
+    ).toContain("contexto inválido");
   });
 });

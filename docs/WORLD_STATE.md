@@ -108,3 +108,19 @@ Future progression objects should declare `visibleWhen` instead of adding
 map-specific visibility branches. Because these rules are data-shaped rather
 than callbacks, the same rules can later be evaluated authoritatively on a
 server for multiplayer.
+
+
+## Registry-driven stateful dialogue
+
+Existing stateful interactions (Bill, Bill's computer, Pokémon Center healing,
+Cut, fossils, pickups and the S.S. Anne Captain) are registered dialogue
+scripts. Runtime objects invoke them with `kind: "script"` plus an optional
+context object.
+
+New dialogue-backed progression must add a registry entry instead of adding a
+new branch to the overworld or central interaction dispatcher. The handler
+receives only the owning player's `StoryState` and returns that player's next
+state plus a `DialoguePresentation`.
+
+Legacy bespoke interaction kinds remain compatibility surfaces only. New
+gameplay code should use registered scripts.

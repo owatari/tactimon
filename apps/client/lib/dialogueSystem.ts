@@ -49,13 +49,38 @@ export type DialogueVariant = {
     | ((story: StoryState) => readonly DialoguePage[]);
 };
 
+export type DialogueScriptContextValue =
+  | string
+  | number
+  | boolean
+  | null;
+
+export type DialogueScriptContext = Readonly<
+  Record<string, DialogueScriptContextValue>
+>;
+
+export type DialogueInteractionResult = {
+  story: StoryState;
+  presentation: DialoguePresentation;
+};
+
+export type DialogueScriptHandler = (
+  story: StoryState,
+  context: DialogueScriptContext,
+) => DialogueInteractionResult;
+
 export type DialogueDefinition = {
   id: string;
-  variants: readonly DialogueVariant[];
+  variants?: readonly DialogueVariant[];
+  interact?: DialogueScriptHandler;
 };
 
 export type DialogueInteractionRequest =
-  | { kind: "script"; id: string }
+  | {
+      kind: "script";
+      id: string;
+      context?: DialogueScriptContext;
+    }
   | {
       kind: "text";
       id: string;
@@ -95,17 +120,35 @@ export type DialogueInteractionRequest =
       itemName: string;
     };
 
-export type DialogueInteractionResult = {
-  story: StoryState;
-  presentation: DialoguePresentation;
-};
-
 function page(
   id: string,
   text: string,
   speaker?: string,
 ): DialoguePage {
   return { id, text, speaker };
+}
+
+function contextString(
+  context: DialogueScriptContext,
+  key: string,
+): string | null {
+  const value = context[key];
+  return typeof value === "string" && value.length > 0
+    ? value
+    : null;
+}
+
+function invalidScriptContext(
+  story: StoryState,
+  id: string,
+): DialogueInteractionResult {
+  return {
+    story,
+    presentation: dialoguePresentationFromText(
+      id,
+      "Este evento está com contexto inválido.",
+    ),
+  };
 }
 
 function one(
@@ -127,6 +170,184 @@ const DIALOGUE_DEFINITIONS: Record<
   string,
   DialogueDefinition
 > = {
+  "lab-oak": {
+    id: "lab-oak",
+    variants: [
+      {
+        pages: (story) => [
+          page(
+            "main",
+            storyStarterSummary(story) ??
+              "Cuide bem do seu primeiro Pokémon.",
+            "Prof. Oak",
+          ),
+        ],
+      },
+    ],
+  },
+  "lab-rival": {
+    id: "lab-rival",
+    variants: [
+      {
+        pages: (story) => [
+          page(
+            "main",
+            story.starter
+              ? "Quando você tentar sair, vamos ver quem treinou melhor."
+              : "Ei! Escolha logo o seu Pokémon.",
+            "Blue",
+          ),
+        ],
+      },
+    ],
+  },
+  bill: {
+    id: "bill",
+    interact: (story) => {
+      const result = interactWithBill(story);
+      return {
+        story: result.story,
+        presentation: dialoguePresentationFromText(
+          "bill",
+          result.message,
+        ),
+      };
+    },
+  },
+  "bill-computer": {
+    id: "bill-computer",
+    interact: (story) => {
+      const result = runBillCellSeparator(story);
+      return {
+        story: result.story,
+        presentation: dialoguePresentationFromText(
+          "bill-computer",
+          result.message,
+        ),
+      };
+    },
+  },
+  "ss-anne-captain": {
+    id: "ss-anne-captain",
+    interact: (story) => {
+      const result = interactWithSsAnneCaptain(story);
+      return {
+        story: result.story,
+        presentation: dialoguePresentationFromText(
+          "ss-anne-captain",
+          result.message,
+        ),
+      };
+    },
+  },
+  "pokemon-center-nurse": {
+    id: "pokemon-center-nurse",
+    interact: (story) => ({
+      story: healStoryParty(story),
+      presentation: dialoguePresentationFromText(
+        "pokemon-center-nurse",
+        "Pronto! Todos os seus Pokémon estão completamente saudáveis.",
+        "Nurse",
+      ),
+    }),
+  },
+  cut: {
+    id: "cut",
+    interact: (story, context) => {
+      const obstacleId = contextString(
+        context,
+        "obstacleId",
+      );
+      if (!obstacleId) {
+        return invalidScriptContext(story, "cut");
+      }
+
+      const result = interactWithCutObstacle(
+        story,
+        obstacleId,
+      );
+      return {
+        story: result.story,
+        presentation: dialoguePresentationFromText(
+          `cut:${obstacleId}`,
+          result.message,
+        ),
+      };
+    },
+  },
+  fossil: {
+    id: "fossil",
+    interact: (story, context) => {
+      const fossilId = contextString(
+        context,
+        "fossilId",
+      );
+      const fossilName = contextString(
+        context,
+        "fossilName",
+      );
+      if (
+        (fossilId !== "dome" &&
+          fossilId !== "helix") ||
+        !fossilName
+      ) {
+        return invalidScriptContext(story, "fossil");
+      }
+
+      const result = chooseMtMoonFossil(
+        story,
+        fossilId,
+      );
+      return {
+        story: result.story,
+        presentation: dialoguePresentationFromText(
+          `fossil:${fossilId}`,
+          result.accepted
+            ? `Você escolheu o ${fossilName}. Miguel ficará com o outro fóssil.`
+            : result.reason === "miguel-not-defeated"
+              ? "Miguel ainda não concordou em dividir os fósseis."
+              : "Você já escolheu um fóssil em Mt. Moon.",
+        ),
+      };
+    },
+  },
+  pickup: {
+    id: "pickup",
+    interact: (story, context) => {
+      const pickupId = contextString(
+        context,
+        "pickupId",
+      );
+      const itemId = contextString(
+        context,
+        "itemId",
+      );
+      const itemName = contextString(
+        context,
+        "itemName",
+      );
+      if (!pickupId || !itemId || !itemName) {
+        return invalidScriptContext(story, "pickup");
+      }
+
+      const result = collectOverworldItem(
+        story,
+        pickupId,
+        itemId as DuelItemId,
+      );
+      return {
+        story: result.story,
+        presentation: dialoguePresentationFromText(
+          `pickup:${pickupId}`,
+          result.accepted
+            ? `Você encontrou ${itemName}!`
+            : result.reason === "inventory-full"
+              ? "Sua bolsa não tem espaço para mais desse item."
+              : "Esse item já foi coletado.",
+        ),
+      };
+    },
+  },
   "route4-woman": one(
     "route4-woman",
     "Ai! Tropecei em um Pokémon rochoso, Geodude!",
@@ -324,7 +545,7 @@ export function resolveDialogueScript(
   id: string,
 ): DialoguePresentation | null {
   const definition = DIALOGUE_DEFINITIONS[id];
-  if (!definition) return null;
+  if (!definition?.variants) return null;
 
   const variant = definition.variants.find(
     (candidate) =>
@@ -359,6 +580,14 @@ export function runDialogueInteraction(
   request: DialogueInteractionRequest,
 ): DialogueInteractionResult {
   if (request.kind === "script") {
+    const definition = DIALOGUE_DEFINITIONS[request.id];
+    if (definition?.interact) {
+      return definition.interact(
+        story,
+        request.context ?? {},
+      );
+    }
+
     return {
       story,
       presentation:
