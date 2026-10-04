@@ -3619,6 +3619,147 @@ describe("move accuracy and evasion", () => {
 });
 
 
+describe("FireRed status type immunity", () => {
+  it.each([
+    {
+      name: "Thunder Wave fails against Ground",
+      moveId: "thunder-wave",
+      attackerSpecies: "pikachu",
+      targetSpecies: "rhyhorn",
+      expectedStatus: null,
+    },
+    {
+      name: "Thunder Wave paralyzes a normally affected target",
+      moveId: "thunder-wave",
+      attackerSpecies: "pikachu",
+      targetSpecies: "rattata",
+      expectedStatus: "paralysis",
+    },
+    {
+      name: "Stun Spore still paralyzes Ground",
+      moveId: "stun-spore",
+      attackerSpecies: "oddish",
+      targetSpecies: "rhyhorn",
+      expectedStatus: "paralysis",
+    },
+    {
+      name: "PoisonPowder keeps Steel immunity",
+      moveId: "poison-powder",
+      attackerSpecies: "oddish",
+      targetSpecies: "magnemite",
+      expectedStatus: null,
+    },
+    {
+      name: "PoisonPowder keeps Poison immunity",
+      moveId: "poison-powder",
+      attackerSpecies: "oddish",
+      targetSpecies: "oddish",
+      expectedStatus: null,
+    },
+    {
+      name: "Sleep Powder still sleeps Ground",
+      moveId: "sleep-powder",
+      attackerSpecies: "oddish",
+      targetSpecies: "rhyhorn",
+      expectedStatus: "sleep",
+    },
+    {
+      name: "Hypnosis still sleeps Ground",
+      moveId: "hypnosis",
+      attackerSpecies: "drowzee",
+      targetSpecies: "rhyhorn",
+      expectedStatus: "sleep",
+    },
+  ] as const)(
+    "$name",
+    ({
+      moveId,
+      attackerSpecies,
+      targetSpecies,
+      expectedStatus,
+    }) => {
+      let state = createTrainerDuel({
+        seed: 1934,
+        width: 7,
+        height: 5,
+        players: [
+          {
+            species: attackerSpecies,
+            level: 30,
+            moves: [moveId],
+          },
+        ],
+        rivals: [
+          {
+            species: targetSpecies,
+            level: 30,
+            moves: ["tackle"],
+          },
+        ],
+      });
+      const attacker = state.units.find(
+        (unit) => unit.side === "player",
+      )!;
+      const target = state.units.find(
+        (unit) => unit.side === "rival",
+      )!;
+      state = {
+        ...state,
+        activeUnitId: attacker.id,
+        turnIndex: state.turnOrder.indexOf(attacker.id),
+        units: state.units.map((unit) =>
+          unit.id === attacker.id
+            ? {
+                ...unit,
+                accuracyStage: 6,
+                position: { x: 2, y: 2 },
+              }
+            : {
+                ...unit,
+                evasionStage: -6,
+                position: { x: 4, y: 2 },
+              },
+        ),
+      };
+
+      const result = applyDuelAction(state, {
+        kind: "use-move",
+        unitId: attacker.id,
+        moveId,
+        targetId: target.id,
+      });
+
+      expect(result.accepted).toBe(true);
+      const updatedAttacker = result.state.units.find(
+        (unit) => unit.id === attacker.id,
+      )!;
+      const updatedTarget = result.state.units.find(
+        (unit) => unit.id === target.id,
+      )!;
+      expect(updatedTarget.status).toBe(expectedStatus);
+      expect(updatedAttacker.movePp[moveId]).toBe(
+        DUEL_MOVES[moveId].maxPp - 1,
+      );
+
+      if (expectedStatus === "sleep") {
+        expect(
+          updatedTarget.sleepTurnsRemaining,
+        ).toBeGreaterThanOrEqual(2);
+        expect(
+          updatedTarget.sleepTurnsRemaining,
+        ).toBeLessThanOrEqual(5);
+      }
+
+      if (result.presentation?.kind === "move") {
+        expect(
+          result.presentation.results[0].statusApplied,
+        ).toBe(expectedStatus ?? undefined);
+      }
+    },
+  );
+});
+
+
 describe("FireRed integer accuracy", () => {
   it("truncates stage-adjusted accuracy before the 1-100 roll", () => {
     const state = createTrainerDuel({

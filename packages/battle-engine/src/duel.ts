@@ -3887,6 +3887,35 @@ function isMajorStatusImmune(
   }
 }
 
+function canMoveApplyMajorStatus(
+  target: DuelUnit,
+  move: DuelMove,
+  typeEffectiveness = calculateTypeEffectiveness(
+    move.type,
+    target.types,
+  ),
+): boolean {
+  if (
+    !move.secondaryStatus ||
+    target.status !== null ||
+    isMajorStatusImmune(target, move.secondaryStatus)
+  ) {
+    return false;
+  }
+
+  if (move.category !== "status") {
+    return typeEffectiveness > 0;
+  }
+
+  // FireRed's EFFECT_PARALYZE script runs typecalc before applying
+  // primary paralysis. Sleep/Poison status scripts use their own
+  // immunity rules instead of generic move-type immunity.
+  return (
+    move.secondaryStatus !== "paralysis" ||
+    typeEffectiveness > 0
+  );
+}
+
 function statusRollSucceeds(
   state: DuelState,
   actor: DuelUnit,
@@ -4848,10 +4877,12 @@ export function applyDuelAction(
 
     if (
       target.hp > 0 &&
-      typeEffectiveness > 0 &&
       move.secondaryStatus &&
-      target.status === null &&
-      !isMajorStatusImmune(target, move.secondaryStatus) &&
+      canMoveApplyMajorStatus(
+        target,
+        move,
+        typeEffectiveness,
+      ) &&
       secondaryStatusSucceeds(state, actor, target, move)
     ) {
       target.status = move.secondaryStatus;
@@ -5035,11 +5066,7 @@ export function applyDuelAction(
     }
   } else if (move.secondaryStatus) {
     if (
-      target.status === null &&
-      !isMajorStatusImmune(
-        target,
-        move.secondaryStatus,
-      ) &&
+      canMoveApplyMajorStatus(target, move) &&
       secondaryStatusSucceeds(
         state,
         actor,
@@ -5544,13 +5571,7 @@ function aiStatusUtility(
   }
 
   if (move.secondaryStatus) {
-    if (
-      target.status !== null ||
-      isMajorStatusImmune(
-        target,
-        move.secondaryStatus,
-      )
-    ) {
+    if (!canMoveApplyMajorStatus(target, move)) {
       return -Infinity;
     }
 
@@ -5803,8 +5824,7 @@ function aiSecondaryStatusUtility(
   if (
     !move.secondaryStatus ||
     !move.secondaryEffectChance ||
-    target.status !== null ||
-    isMajorStatusImmune(target, move.secondaryStatus)
+    !canMoveApplyMajorStatus(target, move)
   ) {
     return 0;
   }
