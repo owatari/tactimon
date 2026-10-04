@@ -1406,9 +1406,9 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     sheetWidth: 96,
     sheetHeight: 64,
     challengeText:
-      "Keigo: Não existe lugar melhor para treinar meus Pokémon Bug!",
+      "Keigo: Não há muitos insetos por aqui.",
     defeatedText:
-      "Keigo: Eles ainda precisam ficar mais fortes.",
+      "Keigo: Não! Você só pode estar brincando!",
     moneyMultiplier: 3,
     party: [
       {
@@ -1441,15 +1441,15 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     sheetWidth: 96,
     sheetHeight: 64,
     challengeText:
-      "Ricky: Meu Pokémon favorito é o que eu comecei minha jornada!",
+      "Ricky: Quem está aí? Pare de escutar nossa conversa!",
     defeatedText:
-      "Ricky: Preciso treinar mais com ele.",
+      "Ricky: Eu simplesmente não consigo vencer!",
     moneyMultiplier: 5,
     party: [
       {
         species: "squirtle",
         level: 20,
-        moves: ["tackle", "tail-whip", "withdraw", "water-gun"],
+        moves: ["bubble", "withdraw", "water-gun", "bite"],
       },
     ],
   },
@@ -1466,20 +1466,20 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     sheetWidth: 96,
     sheetHeight: 64,
     challengeText:
-      "Nancy: Ei! Você está interrompendo nosso encontro!",
+      "Nancy: Com licença! Esta é uma conversa particular!",
     defeatedText:
-      "Nancy: Ricky vai ficar chateado quando souber.",
+      "Nancy: Ugh! Eu odeio perder.",
     moneyMultiplier: 5,
     party: [
       {
         species: "rattata",
         level: 16,
-        moves: ["tackle", "tail-whip", "quick-attack"],
+        moves: ["tackle", "tail-whip", "quick-attack", "hyper-fang"],
       },
       {
         species: "pikachu",
         level: 16,
-        moves: ["thunder-shock", "growl", "tail-whip"],
+        moves: ["tail-whip", "thunder-wave", "quick-attack", "double-team"],
       },
     ],
   },
@@ -1496,9 +1496,9 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     sheetWidth: 96,
     sheetHeight: 64,
     challengeText:
-      "Elijah: Meus Pokémon Bug evoluíram. Quer ver?",
+      "Elijah: Nunca vi você por aqui. Você é bom?",
     defeatedText:
-      "Elijah: Evoluir não basta sem uma boa estratégia.",
+      "Elijah: Você é bom demais!",
     moneyMultiplier: 3,
     party: [
       {
@@ -1521,9 +1521,9 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     sheetWidth: 96,
     sheetHeight: 64,
     challengeText:
-      "Isabelle: Estou treinando meus Pokémon Flying por aqui!",
+      "Isabelle: Eu? Bem, tudo bem. Vamos brincar!",
     defeatedText:
-      "Isabelle: Ainda temos muito espaço para melhorar.",
+      "Isabelle: As coisas simplesmente não deram certo...",
     moneyMultiplier: 5,
     party: [
       {
@@ -1556,15 +1556,15 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     sheetWidth: 96,
     sheetHeight: 64,
     challengeText:
-      "Jeff: A estrada para Vermilion é minha área de treino!",
+      "Jeff: Hã? Você quer falar comigo?",
     defeatedText:
-      "Jeff: Você está pronto para os Treinadores de Vermilion.",
+      "Jeff: Isso é péssimo... Eu não consegui vencer seu desafio.",
     moneyMultiplier: 5,
     party: [
       {
         species: "spearow",
         level: 16,
-        moves: ["peck", "growl", "leer"],
+        moves: ["peck", "growl", "leer", "fury-attack"],
       },
       {
         species: "raticate",

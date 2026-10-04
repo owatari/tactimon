@@ -128,12 +128,37 @@ describe("Underground Path and Route 6", () => {
     );
   });
 
-  it("uses FireRed Route 6 parties and prize factors", () => {
+  it("uses FireRed Route 6 parties, moves and prize factors", () => {
     const byId = new Map(
       OVERWORLD_TRAINERS.map(
         (trainer) => [trainer.id, trainer],
       ),
     );
+
+    expect(
+      byId.get("route6-ricky")?.party,
+    ).toEqual([
+      {
+        species: "squirtle",
+        level: 20,
+        moves: ["bubble", "withdraw", "water-gun", "bite"],
+      },
+    ]);
+
+    expect(
+      byId.get("route6-nancy")?.party,
+    ).toEqual([
+      {
+        species: "rattata",
+        level: 16,
+        moves: ["tackle", "tail-whip", "quick-attack", "hyper-fang"],
+      },
+      {
+        species: "pikachu",
+        level: 16,
+        moves: ["tail-whip", "thunder-wave", "quick-attack", "double-team"],
+      },
+    ]);
 
     expect(
       byId.get("route6-elijah")?.party.map(

@@ -91,6 +91,7 @@ export type DuelMoveId =
   | "sand-attack"
   | "gust"
   | "quick-attack"
+  | "fury-attack"
   | "teleport"
   | "withdraw"
   | "sleep-powder"
@@ -110,6 +111,8 @@ export type DuelMoveId =
   | "bind"
   | "rock-tomb"
   | "thunder-shock"
+  | "thunder-wave"
+  | "double-team"
   | "vine-whip"
   | "razor-leaf"
   | "seed-bomb"
@@ -1270,6 +1273,22 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 2,
   },
+  "fury-attack": {
+    id: "fury-attack",
+    name: "Fury Attack",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "peck",
+    description:
+      "Multi-hit no FireRed; enquanto multi-hit não é modelado, resolve um impacto de 15 power.",
+    power: 15,
+    apCost: 3,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 1,
+  },
   teleport: {
     id: "teleport",
     name: "Teleport",
@@ -1584,6 +1603,39 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxRange: 4,
     secondaryStatus: "paralysis",
     secondaryEffectChance: 10,
+  },
+  "thunder-wave": {
+    id: "thunder-wave",
+    name: "Thunder Wave",
+    type: "electric",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "thunder-shock",
+    description: "Paralisa o alvo com uma onda elétrica.",
+    power: null,
+    apCost: 2,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 3,
+    secondaryStatus: "paralysis",
+    secondaryEffectChance: 100,
+  },
+  "double-team": {
+    id: "double-team",
+    name: "Double Team",
+    type: "normal",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "harden",
+    description:
+      "Aumenta Evasion no FireRed; Evasion ainda não é um estágio tático do motor.",
+    power: null,
+    apCost: 2,
+    maxPp: 15,
+    minRange: 0,
+    maxRange: 0,
   },
   "vine-whip": {
     id: "vine-whip",

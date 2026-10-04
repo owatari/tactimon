@@ -133,6 +133,8 @@ export const POKEMON_LEARNSETS: Record<
   rattata: [
     { level: 1, moveId: "tackle" },
     { level: 1, moveId: "tail-whip" },
+    { level: 7, moveId: "quick-attack" },
+    { level: 13, moveId: "hyper-fang" },
   ],
   caterpie: [
     { level: 1, moveId: "tackle" },
@@ -146,6 +148,7 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "peck" },
     { level: 1, moveId: "growl" },
     { level: 7, moveId: "leer" },
+    { level: 13, moveId: "fury-attack" },
   ],
   mankey: [
     { level: 1, moveId: "scratch" },
@@ -197,6 +200,9 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "thunder-shock" },
     { level: 1, moveId: "growl" },
     { level: 6, moveId: "tail-whip" },
+    { level: 8, moveId: "thunder-wave" },
+    { level: 11, moveId: "quick-attack" },
+    { level: 15, moveId: "double-team" },
   ],
   ekans: [
     { level: 1, moveId: "bind" },
