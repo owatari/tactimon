@@ -905,6 +905,7 @@ export function OverworldGame({
             (cell.collision !== 0 &&
               !isVermilionGymBeamWalkable(
                 storyRef.current,
+                mapIdRef.current,
                 worldX,
                 worldY,
               )) ||
@@ -1393,6 +1394,7 @@ export function OverworldGame({
         (cell.collision !== 0 &&
           !isVermilionGymBeamWalkable(
             storyRef.current,
+            mapIdRef.current,
             x,
             y,
           ))
@@ -1928,6 +1930,7 @@ export function OverworldGame({
             (cell.collision !== 0 &&
               !isVermilionGymBeamWalkable(
                 storyRef.current,
+                mapIdRef.current,
                 x,
                 y,
               )) ||
