@@ -3541,3 +3541,36 @@ h1 {
     border-width: 7px;
   }
 }
+
+
+.battle-result-sprites {
+  display: grid;
+  grid-template-columns: 104px auto 104px;
+  align-items: end;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.battle-result-sprites .battle-portrait-frame {
+  width: 104px;
+  height: 104px;
+}
+
+.battle-result-sprites > span {
+  align-self: center;
+  color: #506878;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+@media (max-width: 560px) {
+  .battle-result-sprites {
+    grid-template-columns: 76px auto 76px;
+    gap: 8px;
+  }
+
+  .battle-result-sprites .battle-portrait-frame {
+    width: 76px;
+    height: 76px;
+  }
+}
