@@ -11,6 +11,7 @@ import {
   applyStoryOverworldStep,
   chooseStarter,
   healStoryParty,
+  normalizeStoryState,
 } from "../apps/client/lib/story";
 
 describe("persistent Poison status", () => {
@@ -194,7 +195,7 @@ describe("persistent Poison status", () => {
 describe("FireRed field Poison", () => {
   it("ticks one HP on every fifth completed overworld step and can faint", () => {
     const base = chooseStarter("bulbasaur");
-    let story = {
+    let story = normalizeStoryState({
       ...base,
       playerPokemon: base.playerPokemon
         ? {
@@ -203,7 +204,7 @@ describe("FireRed field Poison", () => {
             status: "poison" as const,
           }
         : null,
-    };
+    });
 
     for (let step = 1; step <= 4; step += 1) {
       story = applyStoryOverworldStep(story);
