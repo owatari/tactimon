@@ -38,6 +38,7 @@ const STORAGE_KEY = "tactimon.story.v1";
 type BattleSession = {
   context: BattleSceneContext;
   encounter: BattleEncounter;
+  partyIndices: number[];
 };
 
 type ProgressionQueueEntry = {
@@ -50,37 +51,95 @@ type ProgressionQueueEntry = {
 function applyPartyProgressionRewards(
   current: StoryState,
   rewards: readonly ProgressionReward[],
+  partyIndices: readonly number[],
 ): StoryState {
-  const nextStarter =
-    rewards[0]?.progression ??
-    current.playerPokemon;
-  const nextCaptured = current.capturedPokemon.map(
-    (pokemon, index) => {
-      const reward = rewards[index + 1];
-      if (!reward) {
-        return pokemon;
-      }
+  let playerPokemon = current.playerPokemon;
+  const capturedPokemon = [...current.capturedPokemon];
 
-      return {
-        ...reward.progression,
-        species: pokemon.species,
-      };
-    },
-  );
+  rewards.forEach((reward, rewardIndex) => {
+    const partyIndex = partyIndices[rewardIndex];
+    if (partyIndex === undefined) {
+      return;
+    }
+
+    if (partyIndex === 0) {
+      playerPokemon = reward.progression;
+      return;
+    }
+
+    const capturedIndex = partyIndex - 1;
+    const existing = capturedPokemon[capturedIndex];
+    if (!existing) {
+      return;
+    }
+
+    capturedPokemon[capturedIndex] = {
+      ...reward.progression,
+      species: existing.species,
+    };
+  });
 
   return {
     ...current,
-    playerPokemon: nextStarter,
-    capturedPokemon: nextCaptured.slice(0, 5),
+    playerPokemon,
+    capturedPokemon: capturedPokemon.slice(0, 5),
+  };
+}
+
+function applyBattleHealth(
+  current: StoryState,
+  partyIndices: readonly number[],
+  playerHp: readonly number[],
+): StoryState {
+  let playerPokemon = current.playerPokemon;
+  const capturedPokemon = [...current.capturedPokemon];
+
+  partyIndices.forEach((partyIndex, outcomeIndex) => {
+    const hp = playerHp[outcomeIndex];
+    if (
+      typeof hp !== "number" ||
+      !Number.isFinite(hp)
+    ) {
+      return;
+    }
+
+    const currentHp = Math.max(0, Math.trunc(hp));
+
+    if (partyIndex === 0) {
+      if (playerPokemon) {
+        playerPokemon = {
+          ...playerPokemon,
+          currentHp,
+        };
+      }
+      return;
+    }
+
+    const capturedIndex = partyIndex - 1;
+    const existing = capturedPokemon[capturedIndex];
+    if (existing) {
+      capturedPokemon[capturedIndex] = {
+        ...existing,
+        currentHp,
+      };
+    }
+  });
+
+  return {
+    ...current,
+    playerPokemon,
+    capturedPokemon,
   };
 }
 
 function progressionQueueFor(
   rewards: readonly ProgressionReward[],
+  partyIndices: readonly number[],
 ): ProgressionQueueEntry[] {
   const visible = rewards
-    .map((reward, partyIndex) => ({
-      partyIndex,
+    .map((reward, rewardIndex) => ({
+      partyIndex:
+        partyIndices[rewardIndex] ?? rewardIndex,
       reward,
     }))
     .filter(
@@ -128,15 +187,27 @@ export function GameClient() {
     ].slice(0, 6);
   }, [story.capturedPokemon, story.playerPokemon]);
 
+  const deployedParty = useMemo(
+    () =>
+      partyProgressions
+        .map((pokemon, partyIndex) => ({
+          pokemon,
+          partyIndex,
+        }))
+        .filter(({ pokemon }) => pokemon.currentHp > 0),
+    [partyProgressions],
+  );
+
   const battleParty = useMemo<DuelPokemonBuild[]>(
     () =>
-      partyProgressions.map((pokemon) => ({
+      deployedParty.map(({ pokemon }) => ({
         species: pokemon.species,
         level: pokemon.level,
         moves: [...pokemon.activeMoves],
         evs: pokemon.evs,
+        currentHp: pokemon.currentHp,
       })),
-    [partyProgressions],
+    [deployedParty],
   );
 
   useEffect(() => {
@@ -195,16 +266,40 @@ export function GameClient() {
     }
 
     setStory((current) => ({
-      ...current,
+      ...applyBattleHealth(
+        current,
+        session.partyIndices,
+        outcome.playerHp,
+      ),
       inventory: { ...outcome.inventory },
     }));
 
-    const partySnapshot = story.playerPokemon
+    const fullPartySnapshot = story.playerPokemon
       ? [
           story.playerPokemon,
           ...story.capturedPokemon,
         ].slice(0, 6)
       : [];
+    const partySnapshot = session.partyIndices
+      .map((partyIndex, outcomeIndex) => {
+        const pokemon = fullPartySnapshot[partyIndex];
+        if (!pokemon) {
+          return null;
+        }
+
+        const hp = outcome.playerHp[outcomeIndex];
+        return {
+          ...pokemon,
+          currentHp:
+            typeof hp === "number" && Number.isFinite(hp)
+              ? Math.max(0, Math.trunc(hp))
+              : pokemon.currentHp,
+        };
+      })
+      .filter(
+        (pokemon): pokemon is PokemonProgression =>
+          pokemon !== null,
+      );
 
     if (session.encounter.kind === "trainer") {
       const rewards =
@@ -230,6 +325,7 @@ export function GameClient() {
         let next = applyPartyProgressionRewards(
           current,
           rewards,
+          session.partyIndices,
         );
 
         if (trainerId) {
@@ -266,7 +362,10 @@ export function GameClient() {
       });
 
       setProgressionQueue(
-        progressionQueueFor(rewards),
+        progressionQueueFor(
+          rewards,
+          session.partyIndices,
+        ),
       );
       return;
     }
@@ -295,6 +394,7 @@ export function GameClient() {
       const next = applyPartyProgressionRewards(
         current,
         rewards,
+        session.partyIndices,
       );
 
       if (
@@ -317,7 +417,10 @@ export function GameClient() {
     });
 
     setProgressionQueue(
-      progressionQueueFor(rewards),
+      progressionQueueFor(
+        rewards,
+        session.partyIndices,
+      ),
     );
   };
 
@@ -424,10 +527,14 @@ export function GameClient() {
           if (
             story.starter &&
             story.playerPokemon &&
-            !story.firstBattleComplete
+            !story.firstBattleComplete &&
+            battleParty.length > 0
           ) {
             setBattleSession({
               context,
+              partyIndices: deployedParty.map(
+                ({ partyIndex }) => partyIndex,
+              ),
               encounter: {
                 kind: "trainer",
                 trainerName: "Blue",
@@ -440,10 +547,14 @@ export function GameClient() {
           if (
             story.starter &&
             story.playerPokemon &&
-            story.firstBattleComplete
+            story.firstBattleComplete &&
+            battleParty.length > 0
           ) {
             setBattleSession({
               context,
+              partyIndices: deployedParty.map(
+                ({ partyIndex }) => partyIndex,
+              ),
               encounter: {
                 kind: "wild",
                 species: encounter.species,
@@ -457,10 +568,14 @@ export function GameClient() {
             story.starter &&
             story.playerPokemon &&
             story.firstBattleComplete &&
-            !story.defeatedTrainerIds.includes(trainer.id)
+            !story.defeatedTrainerIds.includes(trainer.id) &&
+            battleParty.length > 0
           ) {
             setBattleSession({
               context,
+              partyIndices: deployedParty.map(
+                ({ partyIndex }) => partyIndex,
+              ),
               encounter: {
                 kind: "trainer",
                 trainerId: trainer.id,
@@ -492,11 +607,13 @@ export function GameClient() {
 
       {battleSession &&
         story.starter &&
-        story.playerPokemon && (
+        story.playerPokemon &&
+        deployedParty[0] && (
           <FirstBattle
             starter={story.starter}
-            progression={story.playerPokemon}
+            progression={deployedParty[0].pokemon}
             party={battleParty}
+            partySize={partyProgressions.length}
             inventory={story.inventory}
             encounter={battleSession.encounter}
             context={battleSession.context}

@@ -36,6 +36,7 @@ export type BattleOutcome = {
   won: boolean;
   escaped: boolean;
   inventory: DuelInventory;
+  playerHp: number[];
   defeatedEnemies: Array<{
     species: DuelSpeciesId;
     level: number;
@@ -66,6 +67,7 @@ type Props = {
   starter: StarterSpeciesId;
   progression: PokemonProgression;
   party: readonly DuelPokemonBuild[];
+  partySize: number;
   inventory: DuelInventory;
   encounter: BattleEncounter;
   context: BattleSceneContext;
@@ -236,6 +238,7 @@ export function FirstBattle({
   starter,
   progression,
   party,
+  partySize,
   inventory,
   encounter,
   context,
@@ -247,6 +250,7 @@ export function FirstBattle({
       level: progression.level,
       moves: progression.activeMoves,
       evs: progression.evs,
+      currentHp: progression.currentHp,
     };
     const deployedParty =
       party.length > 0
@@ -260,7 +264,7 @@ export function FirstBattle({
         height: context.arenaHeight,
         blocked: context.blocked,
         players: deployedParty,
-        captureAllowed: deployedParty.length < 6,
+        captureAllowed: partySize < 6,
         items: inventory,
         wildSpecies: encounter.species,
         wildLevel: encounter.level,
@@ -297,6 +301,7 @@ export function FirstBattle({
     encounter,
     inventory,
     party,
+    partySize,
     progression,
     starter,
   ]);
@@ -1481,6 +1486,7 @@ export function FirstBattle({
                   won: state.winner === "player",
                   escaped: false,
                   inventory: { ...state.items },
+                  playerHp: playerUnits.map((unit) => unit.hp),
                   defeatedEnemies,
                   capture: state.captureResult
                     ? {
@@ -1509,6 +1515,7 @@ export function FirstBattle({
                   won: false,
                   escaped: true,
                   inventory: { ...state.items },
+                  playerHp: playerUnits.map((unit) => unit.hp),
                   defeatedEnemies,
                 })
               }

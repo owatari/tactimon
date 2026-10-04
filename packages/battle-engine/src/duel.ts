@@ -68,6 +68,8 @@ export interface DuelPokemonBuild {
   level: number;
   moves: DuelMoveId[];
   evs?: Partial<DuelEvSpread>;
+  /** Persistent HP carried between battles. Omit to start at full HP. */
+  currentHp?: number;
 }
 
 export interface TrainerDuelOptions {
@@ -906,6 +908,26 @@ function stageMultiplier(stage: number): number {
     : 2 / (2 - bounded);
 }
 
+export function calculateDuelPokemonMaxHp(
+  build: Pick<
+    DuelPokemonBuild,
+    "species" | "level" | "evs"
+  >,
+): number {
+  const base = SPECIES[build.species];
+  const level = Math.max(
+    1,
+    Math.min(100, Math.trunc(build.level)),
+  );
+
+  return calculateHpStat({
+    base: base.hp,
+    iv: FIXED_IV,
+    ev: build.evs?.hp ?? 0,
+    level,
+  });
+}
+
 function makeUnit(
   build: DuelPokemonBuild,
   side: DuelSide,
@@ -923,12 +945,15 @@ function makeUnit(
   };
   const level = Math.max(1, Math.min(100, Math.trunc(build.level)));
 
-  const maxHp = calculateHpStat({
-    base: base.hp,
-    iv: FIXED_IV,
-    ev: evs.hp,
-    level,
-  });
+  const maxHp = calculateDuelPokemonMaxHp(build);
+  const currentHp =
+    typeof build.currentHp === "number" &&
+    Number.isFinite(build.currentHp)
+      ? Math.max(
+          0,
+          Math.min(maxHp, Math.trunc(build.currentHp)),
+        )
+      : maxHp;
 
   return {
     id: `${side}-${slot}-${build.species}`,
@@ -937,7 +962,7 @@ function makeUnit(
     displayName: base.name,
     type: base.type,
     level,
-    hp: maxHp,
+    hp: currentHp,
     maxHp,
     attack: calculateOtherStat({
       base: base.attack,

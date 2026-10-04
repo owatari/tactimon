@@ -1,8 +1,9 @@
-import type {
-  DuelMoveId,
-  DuelSpeciesId,
-  StarterSpeciesId,
-  WildSpeciesId,
+import {
+  calculateDuelPokemonMaxHp,
+  type DuelMoveId,
+  type DuelSpeciesId,
+  type StarterSpeciesId,
+  type WildSpeciesId,
 } from "./duel";
 
 export type EvStat =
@@ -26,6 +27,8 @@ export interface PokemonProgression {
    */
   experience: number;
   evs: EvSpread;
+  /** Current persistent HP. Zero means fainted. */
+  currentHp: number;
   activeMoves: DuelMoveId[];
 }
 
@@ -297,11 +300,18 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
 ): PokemonProgression & { species: T } {
   const bounded = boundedLevel(level);
 
+  const evs = { ...ZERO_EVS };
+
   return {
     species,
     level: bounded,
     experience: fireRedExperienceAtLevel(species, bounded),
-    evs: { ...ZERO_EVS },
+    evs,
+    currentHp: calculateDuelPokemonMaxHp({
+      species,
+      level: bounded,
+      evs,
+    }),
     activeMoves: [...INITIAL_MOVES[species]],
   };
 }
@@ -348,14 +358,30 @@ export function normalizePokemonProgression(
         )
       : rawExperience;
 
+  const evs: EvSpread = {
+    ...ZERO_EVS,
+    ...input.evs,
+  };
+  const maxHp = calculateDuelPokemonMaxHp({
+    species: input.species,
+    level,
+    evs,
+  });
+  const currentHp =
+    typeof input.currentHp === "number" &&
+    Number.isFinite(input.currentHp)
+      ? Math.max(
+          0,
+          Math.min(maxHp, Math.trunc(input.currentHp)),
+        )
+      : maxHp;
+
   return {
     species: input.species,
     level,
     experience: migratedExperience,
-    evs: {
-      ...ZERO_EVS,
-      ...input.evs,
-    },
+    evs,
+    currentHp,
     activeMoves:
       Array.isArray(input.activeMoves) &&
       input.activeMoves.length > 0
@@ -469,6 +495,8 @@ function grantExperience(
   requestedXp: number,
 ): ProgressionReward {
   const progression = normalizePokemonProgression(input);
+  const oldMaxHp = calculateDuelPokemonMaxHp(progression);
+  const hpBefore = progression.currentHp;
   const oldLevel = progression.level;
   const experienceBefore = progression.experience;
   const awardedXp =
@@ -527,6 +555,15 @@ function grantExperience(
       }
     }
   }
+
+  const newMaxHp = calculateDuelPokemonMaxHp(progression);
+  progression.currentHp =
+    hpBefore <= 0
+      ? 0
+      : Math.min(
+          newMaxHp,
+          hpBefore + Math.max(0, newMaxHp - oldMaxHp),
+        );
 
   return {
     progression,

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyDuelAction,
+  calculateDuelPokemonMaxHp,
   createStarterDuel,
   createTrainerDuel,
   createWildDuel,
@@ -762,5 +763,60 @@ describe("persistent battle inventory", () => {
       "poke-ball": 5,
     });
     expect(state.captureAllowed).toBe(false);
+  });
+});
+
+
+describe("persistent battle health", () => {
+  it("starts a deployed Pokémon from its persisted HP", () => {
+    const build = {
+      species: "bulbasaur" as const,
+      level: 5,
+      moves: ["tackle", "growl"] as const,
+      currentHp: 7,
+    };
+
+    const state = createWildDuel({
+      seed: 404,
+      players: [
+        {
+          ...build,
+          moves: [...build.moves],
+        },
+      ],
+      wildSpecies: "pidgey",
+      wildLevel: 3,
+    });
+
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+
+    expect(player.hp).toBe(7);
+    expect(player.maxHp).toBe(
+      calculateDuelPokemonMaxHp(build),
+    );
+  });
+
+  it("clamps persisted HP to the calculated maximum", () => {
+    const state = createWildDuel({
+      seed: 405,
+      players: [
+        {
+          species: "rattata",
+          level: 4,
+          moves: ["tackle", "tail-whip"],
+          currentHp: 99_999,
+        },
+      ],
+      wildSpecies: "pidgey",
+      wildLevel: 3,
+    });
+
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+
+    expect(player.hp).toBe(player.maxHp);
   });
 });

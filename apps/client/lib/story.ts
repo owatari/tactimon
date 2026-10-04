@@ -94,6 +94,7 @@ function normalizeCapturedPokemon(
     level?: unknown;
     experience?: unknown;
     evs?: PokemonProgression["evs"];
+    currentHp?: unknown;
     activeMoves?: PokemonProgression["activeMoves"];
   };
 
@@ -121,6 +122,10 @@ function normalizeCapturedPokemon(
         ? candidate.experience
         : base.experience,
     evs: candidate.evs ?? base.evs,
+    currentHp:
+      typeof candidate.currentHp === "number"
+        ? candidate.currentHp
+        : base.currentHp,
     activeMoves: Array.isArray(candidate.activeMoves)
       ? candidate.activeMoves
       : base.activeMoves,

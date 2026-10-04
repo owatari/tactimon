@@ -1,3 +1,4 @@
+import { calculateDuelPokemonMaxHp } from "../src/duel";
 import { describe, expect, it } from "vitest";
 import {
   createPokemonProgression,
@@ -319,5 +320,46 @@ describe("pokemon progression", () => {
     );
 
     expect(next.activeMoves).toEqual(progression.activeMoves);
+  });
+});
+
+
+describe("persistent progression health", () => {
+  it("migrates old saves without HP to full health", () => {
+    const migrated = normalizePokemonProgression({
+      species: "pidgey",
+      level: 3,
+    });
+
+    expect(migrated.currentHp).toBe(
+      calculateDuelPokemonMaxHp(migrated),
+    );
+  });
+
+  it("preserves damage when a Pokémon levels up", () => {
+    const base = createStarterProgression("charmander");
+    const oldMaxHp = calculateDuelPokemonMaxHp(base);
+    const damaged = {
+      ...base,
+      experience:
+        fireRedExperienceAtLevel("charmander", 6) - 1,
+      currentHp: oldMaxHp - 5,
+    };
+
+    const reward = grantWildBattleProgress(
+      damaged,
+      {
+        species: "pidgey",
+        level: 2,
+      },
+    );
+    const newMaxHp = calculateDuelPokemonMaxHp(
+      reward.progression,
+    );
+
+    expect(reward.newLevel).toBe(6);
+    expect(reward.progression.currentHp).toBe(
+      newMaxHp - 5,
+    );
   });
 });
