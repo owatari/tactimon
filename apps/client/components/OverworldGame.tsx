@@ -1500,6 +1500,16 @@ export function OverworldGame({
           return false;
         }
 
+        const nextStory =
+          applyStoryOverworldStep(
+            storyRef.current,
+          );
+        storyRef.current = nextStory;
+        onOverworldStep(nextStory);
+        if (!storyHasHealthyPokemon(nextStory)) {
+          return false;
+        }
+
         void loadMap(
           edgeTransition.mapId,
           edgeTransition.spawn,
@@ -2039,17 +2049,9 @@ export function OverworldGame({
           player.jumping = false;
           jumpLift = 0;
 
-          const pendingWarp = pendingWarpRef.current;
+          const pendingWarp =
+            pendingWarpRef.current;
           pendingWarpRef.current = null;
-
-          if (pendingWarp) {
-            void loadMap(
-              pendingWarp.mapId,
-              pendingWarp.spawn,
-              player.facing,
-            );
-            return;
-          }
 
           savePlayerPosition(
             mapIdRef.current,
@@ -2065,6 +2067,15 @@ export function OverworldGame({
           if (
             !storyHasHealthyPokemon(nextStory)
           ) {
+            return;
+          }
+
+          if (pendingWarp) {
+            void loadMap(
+              pendingWarp.mapId,
+              pendingWarp.spawn,
+              player.facing,
+            );
             return;
           }
 
