@@ -3017,6 +3017,119 @@ describe("canonical late-rival direct moves", () => {
 });
 
 
+describe("FireRed multi-hit moves", () => {
+  it("gives Rhyhorn its full canonical late-rival moveset", () => {
+    expect(defaultMovesForSpecies("rhyhorn")).toEqual([
+      "take-down",
+      "horn-drill",
+      "rock-blast",
+      "fury-attack",
+    ]);
+    expect(DUEL_MOVES["rock-blast"]).toMatchObject({
+      type: "rock",
+      category: "physical",
+      power: 25,
+      accuracy: 80,
+      maxPp: 10,
+      multiHit: "two-to-five",
+    });
+    expect(DUEL_MOVES["fury-attack"]).toMatchObject({
+      power: 15,
+      accuracy: 85,
+      maxPp: 20,
+      multiHit: "two-to-five",
+    });
+    expect(DUEL_MOVES["icicle-spear"]).toMatchObject({
+      power: 10,
+      accuracy: 100,
+      maxPp: 30,
+      multiHit: "two-to-five",
+    });
+  });
+
+  it("resolves between two and five hits and reports the landed count", () => {
+    let state = createTrainerDuel({
+      seed: 1927,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "rhyhorn",
+          level: 45,
+          moves: ["rock-blast"],
+        },
+      ],
+      rivals: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["water-gun"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const originalAccuracy =
+      DUEL_MOVES["rock-blast"].accuracy;
+    const originalMultiHit =
+      DUEL_MOVES["rock-blast"].multiHit;
+
+    try {
+      DUEL_MOVES["rock-blast"].accuracy = 100;
+      DUEL_MOVES["rock-blast"].multiHit = undefined;
+      const single = applyDuelAction(state, {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "rock-blast",
+        targetId: rival.id,
+      });
+      const singleDamage =
+        single.presentation?.kind === "move"
+          ? single.presentation.results[0].damage
+          : 0;
+
+      DUEL_MOVES["rock-blast"].multiHit =
+        "two-to-five";
+      const multi = applyDuelAction(state, {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "rock-blast",
+        targetId: rival.id,
+      });
+      expect(multi.accepted).toBe(true);
+      expect(multi.presentation?.kind).toBe("move");
+      if (multi.presentation?.kind === "move") {
+        const result = multi.presentation.results[0];
+        expect(result.hitCount).toBeGreaterThanOrEqual(2);
+        expect(result.hitCount).toBeLessThanOrEqual(5);
+        expect(result.damage).toBe(
+          singleDamage * (result.hitCount ?? 0),
+        );
+      }
+    } finally {
+      DUEL_MOVES["rock-blast"].accuracy =
+        originalAccuracy;
+      DUEL_MOVES["rock-blast"].multiHit =
+        originalMultiHit;
+    }
+  });
+});
+
+
 describe("Horn Drill OHKO", () => {
   it("uses the FireRed level-gated OHKO chance", () => {
     const state = createTrainerDuel({
