@@ -9,6 +9,7 @@ import {
   type PokemonProgression,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
+import { PokemonPortrait } from "@/components/PokemonPortrait";
 
 type Props = {
   reward: ProgressionReward;
@@ -71,6 +72,10 @@ export function ProgressionOverlay({
         </span>
 
         <div className="progression-title-row">
+          <PokemonPortrait
+            species={progression.species}
+            name={speciesDisplayName(progression.species)}
+          />
           <div>
             <h2>
               {reward.levelsGained > 0
