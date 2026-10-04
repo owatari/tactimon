@@ -11,6 +11,8 @@ const SPECIES = {
   bulbasaur: "0001",
   charmander: "0004",
   squirtle: "0007",
+  caterpie: "0010",
+  weedle: "0013",
   pidgey: "0016",
   rattata: "0019",
 };

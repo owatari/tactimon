@@ -820,3 +820,88 @@ describe("persistent battle health", () => {
     expect(player.hp).toBe(player.maxHp);
   });
 });
+
+
+describe("Route 2 bug Pokémon", () => {
+  it("creates Caterpie and Weedle with their FireRed starting moves", () => {
+    const caterpie = createWildDuel({
+      seed: 901,
+      player: {
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle", "growl"],
+      },
+      wildSpecies: "caterpie",
+      wildLevel: 4,
+    });
+    const caterpieUnit = caterpie.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    expect(caterpieUnit.displayName).toBe("Caterpie");
+    expect(caterpieUnit.type).toBe("bug");
+    expect(caterpieUnit.moves).toEqual([
+      "tackle",
+      "string-shot",
+    ]);
+
+    const weedle = createWildDuel({
+      seed: 902,
+      player: {
+        species: "squirtle",
+        level: 5,
+        moves: ["tackle", "tail-whip"],
+      },
+      wildSpecies: "weedle",
+      wildLevel: 4,
+    });
+    const weedleUnit = weedle.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    expect(weedleUnit.displayName).toBe("Weedle");
+    expect(weedleUnit.moves).toEqual([
+      "poison-sting",
+      "string-shot",
+    ]);
+  });
+
+  it("applies String Shot as a Speed stage reduction", () => {
+    let state = createWildDuel({
+      seed: 903,
+      player: {
+        species: "caterpie",
+        level: 5,
+        moves: ["tackle", "string-shot"],
+      },
+      wildSpecies: "weedle",
+      wildLevel: 4,
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    player.position = { x: 2, y: 2 };
+    wild.position = { x: 4, y: 2 };
+    state = { ...state, activeUnitId: player.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "string-shot",
+      targetId: wild.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === wild.id,
+      )?.speedStage,
+    ).toBe(-1);
+    if (result.presentation?.kind === "move") {
+      expect(
+        result.presentation.results[0].statChanges,
+      ).toEqual([{ stat: "speed", delta: -1 }]);
+    }
+  });
+});

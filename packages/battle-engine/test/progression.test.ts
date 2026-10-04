@@ -363,3 +363,29 @@ describe("persistent progression health", () => {
     );
   });
 });
+
+
+describe("Route 2 species progression", () => {
+  it("uses Medium Fast growth and FireRed moves for Caterpie", () => {
+    const caterpie = createPokemonProgression("caterpie", 4);
+    expect(caterpie.experience).toBe(64);
+    expect(caterpie.activeMoves).toEqual([
+      "tackle",
+      "string-shot",
+    ]);
+  });
+
+  it("uses FireRed moves for Weedle", () => {
+    const weedle = createPokemonProgression("weedle", 4);
+    expect(weedle.experience).toBe(64);
+    expect(weedle.activeMoves).toEqual([
+      "poison-sting",
+      "string-shot",
+    ]);
+  });
+
+  it("uses Generation III base EXP yields for the Route 2 bugs", () => {
+    expect(experienceRewardForWild("caterpie", 4)).toBe(30);
+    expect(experienceRewardForWild("weedle", 4)).toBe(29);
+  });
+});

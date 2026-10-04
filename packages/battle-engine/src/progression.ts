@@ -91,6 +91,14 @@ export const POKEMON_LEARNSETS: Record<
     { level: 1, moveId: "tackle" },
     { level: 1, moveId: "tail-whip" },
   ],
+  caterpie: [
+    { level: 1, moveId: "tackle" },
+    { level: 1, moveId: "string-shot" },
+  ],
+  weedle: [
+    { level: 1, moveId: "poison-sting" },
+    { level: 1, moveId: "string-shot" },
+  ],
 };
 
 export const STARTER_LEARNSETS: Record<
@@ -152,6 +160,22 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
     "speed",
     "defense",
   ],
+  caterpie: [
+    "hp",
+    "hp",
+    "defense",
+    "hp",
+    "specialDefense",
+    "hp",
+  ],
+  weedle: [
+    "speed",
+    "speed",
+    "attack",
+    "speed",
+    "defense",
+    "speed",
+  ],
 };
 
 const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
@@ -160,6 +184,8 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   squirtle: ["tackle", "tail-whip"],
   pidgey: ["tackle"],
   rattata: ["tackle", "tail-whip"],
+  caterpie: ["tackle", "string-shot"],
+  weedle: ["poison-sting", "string-shot"],
 };
 
 /**
@@ -176,6 +202,8 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   squirtle: 66,
   pidgey: 55,
   rattata: 57,
+  caterpie: 53,
+  weedle: 52,
 };
 
 export const POKEMON_GROWTH_RATE: Record<
@@ -187,6 +215,8 @@ export const POKEMON_GROWTH_RATE: Record<
   squirtle: "medium-slow",
   pidgey: "medium-slow",
   rattata: "medium-fast",
+  caterpie: "medium-fast",
+  weedle: "medium-fast",
 };
 
 export const STARTER_GROWTH_RATE: Record<

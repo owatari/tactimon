@@ -119,7 +119,9 @@ function normalizeCapturedPokemon(
 
   if (
     (candidate.species !== "pidgey" &&
-      candidate.species !== "rattata") ||
+      candidate.species !== "rattata" &&
+      candidate.species !== "caterpie" &&
+      candidate.species !== "weedle") ||
     typeof candidate.level !== "number" ||
     !Number.isFinite(candidate.level)
   ) {

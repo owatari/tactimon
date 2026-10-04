@@ -14,7 +14,11 @@ export type StarterSpeciesId =
   | "charmander"
   | "squirtle";
 
-export type WildSpeciesId = "pidgey" | "rattata";
+export type WildSpeciesId =
+  | "pidgey"
+  | "rattata"
+  | "caterpie"
+  | "weedle";
 export type DuelSpeciesId = StarterSpeciesId | WildSpeciesId;
 export type DuelType =
   | "normal"
@@ -22,6 +26,8 @@ export type DuelType =
   | "fire"
   | "water"
   | "flying"
+  | "bug"
+  | "poison"
   | "dark"
   | "steel";
 
@@ -35,6 +41,8 @@ export type DuelMoveId =
   | "scratch"
   | "growl"
   | "tail-whip"
+  | "string-shot"
+  | "poison-sting"
   | "vine-whip"
   | "razor-leaf"
   | "seed-bomb"
@@ -47,7 +55,10 @@ export type DuelMoveId =
 
 export type DuelMoveTargeting = "single-enemy";
 export type DuelMoveMotion = "contact" | "status" | "projectile";
-export type DuelStatId = "attack" | "defense";
+export type DuelStatId =
+  | "attack"
+  | "defense"
+  | "speed";
 
 export interface DuelPoint {
   x: number;
@@ -129,7 +140,10 @@ export interface DuelMove {
   apCost: number;
   minRange: number;
   maxRange: number;
-  effect?: "attack-down" | "defense-down";
+  effect?:
+    | "attack-down"
+    | "defense-down"
+    | "speed-down";
 }
 
 export type DuelPresentationEvent =
@@ -191,6 +205,7 @@ export interface DuelUnit {
   speed: number;
   attackStage: number;
   defenseStage: number;
+  speedStage: number;
   ap: number;
   maxAp: number;
   mp: number;
@@ -337,6 +352,28 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 72,
     moves: ["tackle", "tail-whip"],
   },
+  caterpie: {
+    name: "Caterpie",
+    type: "bug",
+    hp: 45,
+    attack: 30,
+    defense: 35,
+    specialAttack: 20,
+    specialDefense: 20,
+    speed: 45,
+    moves: ["tackle", "string-shot"],
+  },
+  weedle: {
+    name: "Weedle",
+    type: "bug",
+    hp: 40,
+    attack: 35,
+    defense: 30,
+    specialAttack: 20,
+    specialDefense: 20,
+    speed: 50,
+    moves: ["poison-sting", "string-shot"],
+  },
 };
 
 export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
@@ -359,6 +396,8 @@ export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
 const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   pidgey: 255,
   rattata: 255,
+  caterpie: 255,
+  weedle: 255,
 };
 
 function normalizeDuelItems(
@@ -437,6 +476,37 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 3,
     effect: "defense-down",
+  },
+  "string-shot": {
+    id: "string-shot",
+    name: "String Shot",
+    type: "bug",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "string-shot",
+    description:
+      "Prende o alvo em seda e reduz sua Speed em 1 estágio.",
+    power: null,
+    apCost: 2,
+    minRange: 1,
+    maxRange: 3,
+    effect: "speed-down",
+  },
+  "poison-sting": {
+    id: "poison-sting",
+    name: "Poison Sting",
+    type: "poison",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "poison-sting",
+    description:
+      "Dispara um ferrão venenoso contra um alvo a curta distância.",
+    power: 15,
+    apCost: 3,
+    minRange: 1,
+    maxRange: 3,
   },
   "vine-whip": {
     id: "vine-whip",
@@ -886,11 +956,15 @@ function pickTeamSpawnPositions(
   };
 }
 
+function effectiveSpeed(unit: DuelUnit): number {
+  return unit.speed * stageMultiplier(unit.speedStage);
+}
+
 function createTurnOrder(units: readonly DuelUnit[]): string[] {
   return [...units]
     .sort(
       (a, b) =>
-        b.speed - a.speed ||
+        effectiveSpeed(b) - effectiveSpeed(a) ||
         (a.side === b.side
           ? 0
           : a.side === "player"
@@ -996,6 +1070,7 @@ function makeUnit(
     }),
     attackStage: 0,
     defenseStage: 0,
+    speedStage: 0,
     ap: 6,
     maxAp: 6,
     mp: 3,
@@ -1405,33 +1480,53 @@ function resolveTurnEnd(
     return;
   }
 
-  const orderLength = state.turnOrder.length;
   const currentIndex = Math.max(
     0,
     state.turnOrder.indexOf(current.id),
   );
 
-  for (let step = 1; step <= orderLength; step += 1) {
-    const nextIndex =
-      (currentIndex + step) % orderLength;
+  for (
+    let nextIndex = currentIndex + 1;
+    nextIndex < state.turnOrder.length;
+    nextIndex += 1
+  ) {
     const nextId = state.turnOrder[nextIndex];
     const next = state.units.find(
       (unit) => unit.id === nextId && unit.hp > 0,
     );
 
-    if (!next) {
-      continue;
-    }
+    if (!next) continue;
 
     next.ap = next.maxAp;
     next.mp = next.maxMp;
     state.activeUnitId = next.id;
     state.turnIndex = nextIndex;
+    appendLog(
+      state,
+      `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
+    );
+    return;
+  }
 
-    if (nextIndex <= currentIndex) {
-      state.round += 1;
-    }
+  state.round += 1;
+  state.turnOrder = createTurnOrder(state.units);
 
+  for (
+    let nextIndex = 0;
+    nextIndex < state.turnOrder.length;
+    nextIndex += 1
+  ) {
+    const nextId = state.turnOrder[nextIndex];
+    const next = state.units.find(
+      (unit) => unit.id === nextId && unit.hp > 0,
+    );
+
+    if (!next) continue;
+
+    next.ap = next.maxAp;
+    next.mp = next.maxMp;
+    state.activeUnitId = next.id;
+    state.turnIndex = nextIndex;
     appendLog(
       state,
       `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
@@ -1787,6 +1882,20 @@ export function applyDuelAction(
     appendLog(
       state,
       `${move.name} reduziu a Defense de ${target.displayName}.`,
+    );
+  } else if (move.effect === "speed-down") {
+    const before = target.speedStage;
+    target.speedStage = Math.max(
+      -MAX_STAGE,
+      target.speedStage - 1,
+    );
+    statChanges.push({
+      stat: "speed",
+      delta: target.speedStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} reduziu a Speed de ${target.displayName}.`,
     );
   }
 
