@@ -1178,6 +1178,119 @@ export function FirstBattle({
   const naturalMapHeight =
     context.mapHeight * TILE_SIZE * battleZoom;
 
+  const renderCombatantHud = (
+    unit: (typeof state.units)[number],
+  ) => {
+    const badges = stageBadges(unit);
+    const healthTone = hpTone(unit.hp, unit.maxHp);
+    const isPlayer = unit.side === "player";
+
+    return (
+      <section
+        key={unit.id}
+        className={[
+          "combatant-hud",
+          unit.side,
+          active?.id === unit.id ? "active" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <PokemonPortrait
+          species={unit.species}
+          name={unit.displayName}
+        />
+
+        <div className="combatant-hud-body">
+          <div className="combatant-name-row">
+            <div className="combatant-identity">
+              <strong>{unit.displayName}</strong>
+              <span className="combatant-level">
+                Lv. {unit.level}
+              </span>
+              <span
+                className={`combatant-type type-${unit.type}`}
+              >
+                {unit.types.join("/")}
+              </span>
+            </div>
+            <span className="combatant-side-label">
+              {isPlayer
+                ? "SEU POKÉMON"
+                : encounter.kind === "wild"
+                  ? "SELVAGEM"
+                  : trainerName?.toUpperCase() ?? "RIVAL"}
+            </span>
+          </div>
+
+          <div className="combatant-resource-block">
+            <div className="combatant-resource-heading">
+              <span>HP</span>
+              <strong>
+                {unit.hp} / {unit.maxHp}
+              </strong>
+            </div>
+            <div className="combatant-hp-track">
+              <div
+                className={`combatant-hp-fill ${healthTone}`}
+                style={{
+                  width: `${hpPercent(unit.hp, unit.maxHp)}%`,
+                }}
+              />
+            </div>
+          </div>
+
+          {isPlayer && unit.id === starterUnit.id && (
+            <div className="combatant-resource-block xp-resource">
+              <div className="combatant-resource-heading">
+                <span>EXP</span>
+                <strong>
+                  {playerXp.required > 0
+                    ? `${playerXp.current} / ${playerXp.required}`
+                    : "MAX"}
+                </strong>
+              </div>
+              <div className="combatant-exp-track">
+                <div
+                  className="combatant-exp-fill"
+                  style={{
+                    width: `${playerXp.percent}%`,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="combatant-meta-row">
+            <span className="resource-chip">
+              {unit.ap}/{unit.maxAp} AP
+            </span>
+            <span className="resource-chip">
+              {unit.mp}/{unit.maxMp} MP
+            </span>
+            <span className="combatant-status-label">
+              STATUS
+            </span>
+            {badges.length === 0 ? (
+              <span className="status-chip neutral">
+                NORMAL
+              </span>
+            ) : (
+              badges.map((badge) => (
+                <span
+                  key={badge.label}
+                  className={`status-chip ${badge.tone}`}
+                >
+                  {badge.label}
+                </span>
+              ))
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   return (
     <div
       className={`battle-overlay battle-speed-${battleSpeed}`}
@@ -1294,119 +1407,18 @@ export function FirstBattle({
           </div>
         </header>
 
-        <div
-          className={[
-            "battle-combatant-hud-row",
-            state.units.length > 2 ? "multi-unit" : "",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-        >
-          {state.units.map((unit) => {
-            const badges = stageBadges(unit);
-            const healthTone = hpTone(unit.hp, unit.maxHp);
-            const isPlayer = unit.side === "player";
+        <div className="battle-stage-layout">
+          <aside
+            className="battle-combatant-sidebar player"
+            aria-label="Sua equipe"
+          >
+            <div className="battle-combatant-sidebar-title">
+              SUA EQUIPE
+            </div>
+            {playerUnits.map(renderCombatantHud)}
+          </aside>
 
-            return (
-              <section
-                key={unit.id}
-                className={[
-                  "combatant-hud",
-                  unit.side,
-                  active?.id === unit.id ? "active" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                <PokemonPortrait
-                  species={unit.species}
-                  name={unit.displayName}
-                />
-
-                <div className="combatant-hud-body">
-                  <div className="combatant-name-row">
-                    <div className="combatant-identity">
-                      <strong>{unit.displayName}</strong>
-                      <span className="combatant-level">Lv. {unit.level}</span>
-                      <span className={`combatant-type type-${unit.type}`}>
-                        {unit.types.join("/")}
-                      </span>
-                    </div>
-                    <span className="combatant-side-label">
-                      {isPlayer
-                        ? "SEU POKÉMON"
-                        : encounter.kind === "wild"
-                          ? "SELVAGEM"
-                          : trainerName?.toUpperCase() ?? "RIVAL"}
-                    </span>
-                  </div>
-
-                  <div className="combatant-resource-block">
-                    <div className="combatant-resource-heading">
-                      <span>HP</span>
-                      <strong>
-                        {unit.hp} / {unit.maxHp}
-                      </strong>
-                    </div>
-                    <div className="combatant-hp-track">
-                      <div
-                        className={`combatant-hp-fill ${healthTone}`}
-                        style={{
-                          width: `${hpPercent(unit.hp, unit.maxHp)}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {isPlayer && unit.id === starterUnit.id && (
-                    <div className="combatant-resource-block xp-resource">
-                      <div className="combatant-resource-heading">
-                        <span>EXP</span>
-                        <strong>
-                          {playerXp.required > 0
-                            ? `${playerXp.current} / ${playerXp.required}`
-                            : "MAX"}
-                        </strong>
-                      </div>
-                      <div className="combatant-exp-track">
-                        <div
-                          className="combatant-exp-fill"
-                          style={{
-                            width: `${playerXp.percent}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="combatant-meta-row">
-                    <span className="resource-chip">
-                      {unit.ap}/{unit.maxAp} AP
-                    </span>
-                    <span className="resource-chip">
-                      {unit.mp}/{unit.maxMp} MP
-                    </span>
-                    <span className="combatant-status-label">STATUS</span>
-                    {badges.length === 0 ? (
-                      <span className="status-chip neutral">NORMAL</span>
-                    ) : (
-                      badges.map((badge) => (
-                        <span
-                          key={badge.label}
-                          className={`status-chip ${badge.tone}`}
-                        >
-                          {badge.label}
-                        </span>
-                      ))
-                    )}
-                  </div>
-                </div>
-              </section>
-            );
-          })}
-        </div>
-
-        <div className="battle-arena-scroll">
+          <div className="battle-arena-scroll">
           <div
             className="duel-grid-shell clean-arena"
             style={{
@@ -1723,6 +1735,23 @@ export function FirstBattle({
             </div>
           )}
           </div>
+        </div>
+
+          <aside
+            className="battle-combatant-sidebar rival"
+            aria-label={
+              encounter.kind === "wild"
+                ? "Pokémon selvagens"
+                : "Equipe rival"
+            }
+          >
+            <div className="battle-combatant-sidebar-title">
+              {encounter.kind === "wild"
+                ? "SELVAGENS"
+                : "EQUIPE RIVAL"}
+            </div>
+            {rivalUnits.map(renderCombatantHud)}
+          </aside>
         </div>
 
         {isPlayerTurn &&

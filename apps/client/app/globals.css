@@ -3743,3 +3743,178 @@ h1 {
     justify-self: start;
   }
 }
+
+
+/* Battle stage v8: team status panels flank the tactical field. */
+.battle-stage-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 280px)
+    minmax(0, 1fr)
+    minmax(220px, 280px);
+  gap: 8px;
+  width: calc(100vw - 32px);
+  min-height: 0;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.battle-combatant-sidebar {
+  display: flex;
+  min-width: 0;
+  max-height: min(72vh, 860px);
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+  overflow-y: auto;
+  border: 3px solid #203850;
+  background: #d8e8d0;
+  scrollbar-width: thin;
+}
+
+.battle-combatant-sidebar-title {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: 5px 7px;
+  border: 2px solid #203850;
+  background: #f8f8e8;
+  color: #304858;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.battle-combatant-sidebar .combatant-hud {
+  width: 100%;
+  min-height: 74px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 6px;
+  padding: 6px;
+  flex: 0 0 auto;
+}
+
+.battle-combatant-sidebar.rival .combatant-hud {
+  grid-template-columns: minmax(0, 1fr) 52px;
+}
+
+.battle-combatant-sidebar .battle-portrait-frame {
+  width: 52px;
+  height: 52px;
+}
+
+.battle-combatant-sidebar .combatant-identity {
+  flex-wrap: wrap;
+  gap: 3px 5px !important;
+}
+
+.battle-combatant-sidebar .combatant-identity strong {
+  font-size: 10px;
+}
+
+.battle-combatant-sidebar .combatant-level {
+  font-size: 8px !important;
+}
+
+.battle-combatant-sidebar .combatant-type {
+  font-size: 6px !important;
+}
+
+.battle-combatant-sidebar .combatant-side-label {
+  display: none;
+}
+
+.battle-combatant-sidebar .combatant-hud-body {
+  gap: 4px;
+}
+
+.battle-combatant-sidebar .combatant-meta-row {
+  gap: 3px;
+}
+
+.battle-combatant-sidebar .combatant-meta-row > span {
+  padding: 2px 3px;
+  font-size: 6px;
+}
+
+.battle-stage-layout .battle-arena-scroll {
+  width: 100%;
+  min-width: 0;
+  max-height: min(72vh, 860px);
+  margin: 0;
+}
+
+@media (max-width: 1040px) {
+  .battle-stage-layout {
+    grid-template-columns:
+      minmax(160px, 210px)
+      minmax(0, 1fr)
+      minmax(160px, 210px);
+  }
+
+  .battle-combatant-sidebar .combatant-hud,
+  .battle-combatant-sidebar.rival .combatant-hud {
+    grid-template-columns: 1fr;
+  }
+
+  .battle-combatant-sidebar .battle-portrait-frame,
+  .battle-combatant-sidebar.rival .battle-portrait-frame,
+  .battle-combatant-sidebar .combatant-hud-body,
+  .battle-combatant-sidebar.rival .combatant-hud-body {
+    grid-column: 1;
+  }
+
+  .battle-combatant-sidebar .battle-portrait-frame,
+  .battle-combatant-sidebar.rival .battle-portrait-frame {
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  .battle-combatant-sidebar .combatant-hud-body,
+  .battle-combatant-sidebar.rival .combatant-hud-body {
+    grid-row: 2;
+  }
+
+  .battle-combatant-sidebar .combatant-name-row {
+    justify-content: center;
+  }
+
+  .battle-combatant-sidebar .combatant-identity {
+    justify-content: center;
+  }
+
+  .battle-combatant-sidebar .combatant-meta-row {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .battle-stage-layout {
+    grid-template-columns: 1fr;
+    width: calc(100vw - 20px);
+  }
+
+  .battle-combatant-sidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    max-height: 150px;
+  }
+
+  .battle-combatant-sidebar-title {
+    grid-column: 1 / -1;
+  }
+
+  .battle-stage-layout .battle-arena-scroll {
+    grid-row: 2;
+    max-height: 60vh;
+  }
+
+  .battle-combatant-sidebar.player {
+    grid-row: 1;
+  }
+
+  .battle-combatant-sidebar.rival {
+    grid-row: 3;
+  }
+}
