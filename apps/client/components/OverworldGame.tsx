@@ -47,10 +47,13 @@ import {
   CERULEAN_RIVAL_CHALLENGE_TEXT,
   CERULEAN_RIVAL_TRAINER_ID,
   CERULEAN_ROCKET_TRAINER_ID,
+  SS_ANNE_RIVAL_CHALLENGE_TEXT,
   ceruleanRivalEncounter,
   isCeruleanRivalTriggerAt,
   isCeruleanRocketTriggerAt,
+  isSsAnneRivalTriggerAt,
   resolveOverworldTrainers,
+  ssAnneRivalEncounter,
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
 import { resolveNpcDialogue } from "@/lib/npcDialogues";
@@ -1772,6 +1775,45 @@ export function OverworldGame({
       onTrainerBattleTrigger(context, encounter);
     };
 
+    const maybeTriggerSsAnneRivalBattle = () => {
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+
+      if (
+        !isSsAnneRivalTriggerAt(
+          mapIdRef.current,
+          player.tileX,
+          player.tileY,
+          currentStory.defeatedTrainerIds,
+        ) ||
+        !currentStory.firstBattleComplete ||
+        !currentStory.playerPokemon ||
+        !storyHasHealthyPokemon(currentStory) ||
+        trainerBattleLockRef.current
+      ) {
+        return;
+      }
+
+      const encounter = ssAnneRivalEncounter(
+        currentStory.rivalStarter,
+      );
+      if (!encounter) {
+        return;
+      }
+
+      const context = createBattleContext();
+      if (!context) {
+        return;
+      }
+
+      trainerBattleLockRef.current = true;
+      resetInput();
+      showInteraction(
+        SS_ANNE_RIVAL_CHALLENGE_TEXT,
+      );
+      onTrainerBattleTrigger(context, encounter);
+    };
+
     const maybeTriggerCeruleanRocketBattle = () => {
       const player = playerRef.current;
       const currentStory = storyRef.current;
@@ -2029,6 +2071,7 @@ export function OverworldGame({
           );
           maybeTriggerLabBattle();
           maybeTriggerCeruleanRivalBattle();
+          maybeTriggerSsAnneRivalBattle();
           maybeTriggerCeruleanRocketBattle();
           maybeTriggerTrainerBattle();
           maybeTriggerWildBattle();

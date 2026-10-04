@@ -1923,3 +1923,95 @@ export function isCeruleanRocketTriggerAt(
     )
   );
 }
+
+
+export const SS_ANNE_RIVAL_TRAINER_ID =
+  "ss-anne-rival";
+
+export const SS_ANNE_RIVAL_CHALLENGE_TEXT =
+  "Blue: Bonjour! Imagine encontrar você aqui. Vamos ver como seu time está evoluindo!";
+
+export function ssAnneRivalParty(
+  rivalStarter: StarterSpeciesId | null,
+): DuelPokemonBuild[] | null {
+  if (!rivalStarter) {
+    return null;
+  }
+
+  const common: DuelPokemonBuild[] = [
+    {
+      species: "pidgeotto",
+      level: 19,
+      moves: ["tackle", "sand-attack", "gust", "quick-attack"],
+    },
+    {
+      species: "raticate",
+      level: 16,
+      moves: ["tackle", "tail-whip", "quick-attack", "hyper-fang"],
+    },
+    {
+      species: "kadabra",
+      level: 18,
+      moves: ["teleport", "kinesis", "confusion", "disable"],
+    },
+  ];
+
+  const starter: DuelPokemonBuild =
+    rivalStarter === "squirtle"
+      ? {
+          species: "wartortle",
+          level: 20,
+          moves: ["bubble", "withdraw", "water-gun", "bite"],
+        }
+      : rivalStarter === "bulbasaur"
+        ? {
+            species: "ivysaur",
+            level: 20,
+            moves: ["leech-seed", "vine-whip", "poison-powder", "sleep-powder"],
+          }
+        : {
+            species: "charmeleon",
+            level: 20,
+            moves: ["growl", "ember", "metal-claw", "smokescreen"],
+          };
+
+  return [...common, starter];
+}
+
+export function ssAnneRivalEncounter(
+  rivalStarter: StarterSpeciesId | null,
+): {
+  id: string;
+  name: string;
+  rewardMoney: number;
+  party: DuelPokemonBuild[];
+} | null {
+  const party = ssAnneRivalParty(rivalStarter);
+  if (!party) {
+    return null;
+  }
+
+  return {
+    id: SS_ANNE_RIVAL_TRAINER_ID,
+    name: "Blue",
+    rewardMoney: trainerPrizeMoney(party, 9),
+    party,
+  };
+}
+
+export function isSsAnneRivalTriggerAt(
+  mapId: string,
+  x: number,
+  y: number,
+  defeatedTrainerIds: readonly string[],
+): boolean {
+  return (
+    mapId === "ss-anne-2f-corridor" &&
+    y === 6 &&
+    x >= 30 &&
+    x <= 32 &&
+    !defeatedTrainerIds.includes(
+      SS_ANNE_RIVAL_TRAINER_ID,
+    )
+  );
+}
