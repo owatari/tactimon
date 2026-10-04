@@ -188,6 +188,8 @@ export type DuelStatId =
   | "defense"
   | "special-attack"
   | "special-defense"
+  | "accuracy"
+  | "evasion"
   | "speed";
 
 export interface DuelPoint {
@@ -290,6 +292,10 @@ export interface DuelMove {
   vfxId: DuelMoveId;
   description: string;
   power: number | null;
+  /** FireRed base accuracy percentage. Omitted values default to 100. */
+  accuracy?: number;
+  /** Ignores Accuracy/Evasion stages, as with Swift and Shock Wave. */
+  alwaysHits?: boolean;
   apCost: number;
   maxPp: number;
   minRange: number;
@@ -310,6 +316,9 @@ export interface DuelMove {
     | "defense-up"
     | "special-attack-up"
     | "calm-mind"
+    | "accuracy-down"
+    | "evasion-up"
+    | "evasion-down"
     | "speed-down"
     | "speed-down-2"
     | "speed-up-2"
@@ -345,6 +354,7 @@ export type DuelPresentationEvent =
           delta: number;
         }>;
         statusApplied?: Exclude<DuelMajorStatus, null>;
+        missed?: boolean;
         sameTypeAttackBonus?: boolean;
         typeEffectiveness?: number;
       }>;
@@ -387,6 +397,8 @@ export interface DuelUnit {
   defenseStage: number;
   specialAttackStage: number;
   specialDefenseStage: number;
+  accuracyStage: number;
+  evasionStage: number;
   speedStage: number;
   ap: number;
   maxAp: number;
@@ -1421,6 +1433,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Investida de 90 power que causa recoil de 1/4 do dano efetivamente causado.",
     power: 90,
+    accuracy: 85,
     apCost: 5,
     maxPp: 20,
     minRange: 1,
@@ -1513,12 +1526,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "tail-whip",
     description:
-      "Ofusca o alvo; Accuracy ainda não é uma estatística tática do motor.",
+      "Reduz a Accuracy do alvo em 1 estágio.",
     power: null,
+    accuracy: 100,
     apCost: 2,
     maxPp: 15,
     minRange: 1,
     maxRange: 3,
+    effect: "accuracy-down",
   },
   gust: {
     id: "gust",
@@ -1576,6 +1591,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Multi-hit no FireRed; enquanto multi-hit não é modelado, resolve um impacto de 15 power.",
     power: 15,
+    accuracy: 85,
     apCost: 3,
     maxPp: 20,
     minRange: 1,
@@ -1626,6 +1642,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Assusta o alvo e reduz sua Speed em 2 estágios.",
     power: null,
+    accuracy: 90,
     apCost: 2,
     maxPp: 10,
     minRange: 1,
@@ -1676,6 +1693,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Pó sonífero; Sleep ainda não é um status persistente do motor.",
     power: null,
+    accuracy: 75,
     apCost: 2,
     maxPp: 15,
     minRange: 1,
@@ -1723,12 +1741,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "growl",
     description:
-      "Reduz evasão no jogo original; evasão ainda não é modelada no motor.",
+      "Reduz a Evasion do alvo em 1 estágio.",
     power: null,
+    accuracy: 100,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
     maxRange: 3,
+    effect: "evasion-down",
   },
   growth: {
     id: "growth",
@@ -1826,12 +1846,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Espalha esporos com 75% de chance de paralisar o alvo.",
     power: null,
+    accuracy: 75,
     apCost: 2,
     maxPp: 30,
     minRange: 1,
     maxRange: 3,
     secondaryStatus: "paralysis",
-    secondaryEffectChance: 75,
+    secondaryEffectChance: 100,
   },
   "poison-powder": {
     id: "poison-powder",
@@ -1844,12 +1865,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Espalha pó venenoso com 75% de chance de envenenar o alvo.",
     power: null,
+    accuracy: 75,
     apCost: 2,
     maxPp: 35,
     minRange: 1,
     maxRange: 3,
     secondaryStatus: "poison",
-    secondaryEffectChance: 75,
+    secondaryEffectChance: 100,
   },
   peck: {
     id: "peck",
@@ -1941,6 +1963,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Derruba rochas sobre o alvo e reduz sua Speed em 1 estágio.",
     power: 50,
+    accuracy: 80,
     apCost: 4,
     maxPp: 10,
     minRange: 1,
@@ -1975,6 +1998,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     vfxId: "thunder-shock",
     description: "Paralisa o alvo com uma onda elétrica.",
     power: null,
+    accuracy: 100,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
@@ -1991,12 +2015,13 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "harden",
     description:
-      "Aumenta Evasion no FireRed; Evasion ainda não é um estágio tático do motor.",
+      "Aumenta a Evasion do usuário em 1 estágio.",
     power: null,
     apCost: 2,
     maxPp: 15,
     minRange: 0,
     maxRange: 0,
+    effect: "evasion-up",
   },
   slam: {
     id: "slam",
@@ -2008,6 +2033,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     vfxId: "tackle",
     description: "Golpe físico pesado de contato.",
     power: 80,
+    accuracy: 75,
     apCost: 5,
     maxPp: 20,
     minRange: 1,
@@ -2044,6 +2070,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     power: 60,
     apCost: 5,
     maxPp: 20,
+    alwaysHits: true,
     minRange: 1,
     maxRange: 4,
   },
@@ -2058,6 +2085,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Onda sônica que causa exatamente 20 de dano quando o alvo não é imune.",
     power: 1,
+    accuracy: 90,
     apCost: 4,
     maxPp: 20,
     minRange: 1,
@@ -2106,6 +2134,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     vfxId: "razor-leaf",
     description: "Lança folhas cortantes a média distância.",
     power: 55,
+    accuracy: 95,
     apCost: 4,
     maxPp: 25,
     minRange: 1,
@@ -2235,6 +2264,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     vfxId: "water-gun",
     description: "Ataque Water de 120 power e 5 PP.",
     power: 120,
+    accuracy: 80,
     apCost: 6,
     maxPp: 5,
     minRange: 1,
@@ -2414,6 +2444,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Induz Sleep no jogo original; Sleep ainda não é um status persistente do motor.",
     power: null,
+    accuracy: 60,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
@@ -2430,6 +2461,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Bloqueia um golpe no jogo original; Disable ainda não é um efeito volátil do motor.",
     power: null,
+    accuracy: 55,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
@@ -2462,6 +2494,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Confunde no jogo original; confusion ainda não é um status persistente do motor.",
     power: null,
+    accuracy: 55,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
@@ -2478,6 +2511,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description:
       "Mordida forte de contato; a chance de flinch ainda não é modelada.",
     power: 80,
+    accuracy: 90,
     apCost: 5,
     maxPp: 15,
     minRange: 1,
@@ -2492,12 +2526,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "growl",
     description:
-      "Reduz Accuracy no jogo original; Accuracy ainda não é uma estatística tática do motor.",
+      "Reduz a Accuracy do alvo em 1 estágio.",
     power: null,
+    accuracy: 80,
     apCost: 2,
     maxPp: 15,
     minRange: 1,
     maxRange: 3,
+    effect: "accuracy-down",
   },
   smokescreen: {
     id: "smokescreen",
@@ -2508,12 +2544,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     motion: "status",
     vfxId: "growl",
     description:
-      "Reduz Accuracy no jogo original; Accuracy ainda não é uma estatística tática do motor.",
+      "Reduz a Accuracy do alvo em 1 estágio.",
     power: null,
+    accuracy: 100,
     apCost: 2,
     maxPp: 20,
     minRange: 1,
     maxRange: 3,
+    effect: "accuracy-down",
   },
   recover: {
     id: "recover",
@@ -2558,6 +2596,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     power: 60,
     apCost: 4,
     maxPp: 20,
+    alwaysHits: true,
     minRange: 1,
     maxRange: 4,
   },
@@ -3054,6 +3093,44 @@ function stageMultiplier(stage: number): number {
     : 2 / (2 - bounded);
 }
 
+function accuracyStageMultiplier(stage: number): number {
+  const bounded = Math.max(
+    -MAX_STAGE,
+    Math.min(MAX_STAGE, stage),
+  );
+  return bounded >= 0
+    ? (3 + bounded) / 3
+    : 3 / (3 - bounded);
+}
+
+export function getDuelMoveHitChance(
+  attacker: Pick<DuelUnit, "accuracyStage">,
+  defender: Pick<DuelUnit, "evasionStage">,
+  move: Pick<
+    DuelMove,
+    "accuracy" | "alwaysHits" | "targeting"
+  >,
+): number {
+  if (move.targeting === "self" || move.alwaysHits) {
+    return 100;
+  }
+
+  const baseAccuracy = Math.max(
+    0,
+    Math.min(100, move.accuracy ?? 100),
+  );
+  const netStage =
+    attacker.accuracyStage - defender.evasionStage;
+
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      baseAccuracy * accuracyStageMultiplier(netStage),
+    ),
+  );
+}
+
 export function movementPointsForDuelPokemon(
   species: DuelSpeciesId,
 ): number {
@@ -3157,6 +3234,8 @@ function makeUnit(
     defenseStage: 0,
     specialAttackStage: 0,
     specialDefenseStage: 0,
+    accuracyStage: 0,
+    evasionStage: 0,
     speedStage: 0,
     ap: 6,
     maxAp: 6,
@@ -3665,6 +3744,35 @@ function statusRollSucceeds(
     ) >>> 0;
 
   return createSeededRandom(seed)() < chance / 100;
+}
+
+function moveAccuracySucceeds(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+): boolean {
+  const chance = getDuelMoveHitChance(
+    actor,
+    target,
+    move,
+  );
+  if (chance >= 100) return true;
+  if (chance <= 0) return false;
+
+  let moveSalt = 0;
+  for (const char of move.id) {
+    moveSalt =
+      (Math.imul(moveSalt, 31) + char.charCodeAt(0)) >>>
+      0;
+  }
+
+  return statusRollSucceeds(
+    state,
+    actor,
+    (target.hp ^ moveSalt) >>> 0,
+    chance,
+  );
 }
 
 function secondaryEffectSucceeds(
@@ -4341,6 +4449,34 @@ export function applyDuelAction(
 
   actor.ap -= move.apCost;
 
+  if (!moveAccuracySucceeds(state, actor, target, move)) {
+    appendLog(
+      state,
+      `${actor.displayName} usou ${move.name}, mas errou.`,
+    );
+    return {
+      state,
+      accepted: true,
+      presentation: {
+        kind: "move",
+        actorId: actor.id,
+        moveId: move.id,
+        targetIds: [target.id],
+        vfxId: move.vfxId,
+        motion: move.motion,
+        results: [
+          {
+            targetId: target.id,
+            damage: 0,
+            fainted: false,
+            statChanges: [],
+            missed: true,
+          },
+        ],
+      },
+    };
+  }
+
   let damage = 0;
   let damageDealt = 0;
   let statusApplied: Exclude<DuelMajorStatus, null> | undefined;
@@ -4561,6 +4697,35 @@ export function applyDuelAction(
         }
       }
     }
+  } else if (move.secondaryStatus) {
+    if (
+      target.status === null &&
+      !isMajorStatusImmune(
+        target,
+        move.secondaryStatus,
+      ) &&
+      secondaryStatusSucceeds(
+        state,
+        actor,
+        target,
+        move,
+      )
+    ) {
+      target.status = move.secondaryStatus;
+      statusApplied = move.secondaryStatus;
+      appendLog(
+        state,
+        statusAppliedMessage(
+          target,
+          move.secondaryStatus,
+        ),
+      );
+    } else {
+      appendLog(
+        state,
+        `${move.name} não teve efeito em ${target.displayName}.`,
+      );
+    }
   } else if (
     move.effect === "attack-down" ||
     move.effect === "attack-down-2"
@@ -4668,6 +4833,48 @@ export function applyDuelAction(
     appendLog(
       state,
       `${move.name} aumentou o Special Attack e a Special Defense de ${actor.displayName}.`,
+    );
+  } else if (move.effect === "accuracy-down") {
+    const before = target.accuracyStage;
+    target.accuracyStage = Math.max(
+      -MAX_STAGE,
+      target.accuracyStage - 1,
+    );
+    statChanges.push({
+      stat: "accuracy",
+      delta: target.accuracyStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} reduziu a Accuracy de ${target.displayName}.`,
+    );
+  } else if (move.effect === "evasion-up") {
+    const before = actor.evasionStage;
+    actor.evasionStage = Math.min(
+      MAX_STAGE,
+      actor.evasionStage + 1,
+    );
+    statChanges.push({
+      stat: "evasion",
+      delta: actor.evasionStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} aumentou a Evasion de ${actor.displayName}.`,
+    );
+  } else if (move.effect === "evasion-down") {
+    const before = target.evasionStage;
+    target.evasionStage = Math.max(
+      -MAX_STAGE,
+      target.evasionStage - 1,
+    );
+    statChanges.push({
+      stat: "evasion",
+      delta: target.evasionStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} reduziu a Evasion de ${target.displayName}.`,
     );
   } else if (
     move.effect === "speed-down" ||
@@ -4990,6 +5197,24 @@ function aiStatusUtility(
     return 0;
   }
 
+  if (move.secondaryStatus) {
+    if (
+      target.status !== null ||
+      isMajorStatusImmune(
+        target,
+        move.secondaryStatus,
+      )
+    ) {
+      return -Infinity;
+    }
+
+    return move.secondaryStatus === "burn"
+      ? 72
+      : move.secondaryStatus === "paralysis"
+        ? 66
+        : 58;
+  }
+
   if (
     move.effect === "attack-down" ||
     move.effect === "attack-down-2"
@@ -5023,6 +5248,36 @@ function aiStatusUtility(
     return Math.max(
       0,
       64 + target.defenseStage * 18 + severity,
+    );
+  }
+
+  if (move.effect === "accuracy-down") {
+    if (target.accuracyStage <= -4) {
+      return -Infinity;
+    }
+    return Math.max(
+      0,
+      56 + target.accuracyStage * 14,
+    );
+  }
+
+  if (move.effect === "evasion-up") {
+    if (actor.evasionStage >= 4) {
+      return -Infinity;
+    }
+    return Math.max(
+      0,
+      58 - Math.max(0, actor.evasionStage) * 12,
+    );
+  }
+
+  if (move.effect === "evasion-down") {
+    if (target.evasionStage <= -4) {
+      return -Infinity;
+    }
+    return Math.max(
+      0,
+      48 + target.evasionStage * 12,
     );
   }
 
@@ -5268,9 +5523,13 @@ function aiThreatToTeam(
         ally,
         move,
       );
+      const hitChance =
+        getDuelMoveHitChance(target, ally, move) /
+        100;
       bestRatio = Math.max(
         bestRatio,
-        result.damage / Math.max(1, ally.maxHp),
+        (result.damage * hitChance) /
+          Math.max(1, ally.maxHp),
       );
     }
 
@@ -5360,6 +5619,12 @@ function scoreAiCandidate(
     aiThreatToTeam(state, actor, target);
   const numbersPressure =
     (livingEnemies - livingAllies) * 5;
+  const hitChance =
+    getDuelMoveHitChance(actor, target, move) / 100;
+
+  if (hitChance <= 0) {
+    return { score: -Infinity, damage: 0 };
+  }
 
   if (move.category === "status") {
     const utility = aiStatusUtility(
@@ -5381,7 +5646,7 @@ function scoreAiCandidate(
     return {
       damage: 0,
       score:
-        utility +
+        utility * hitChance +
         positioningScore +
         resourceScore +
         targetThreat +
@@ -5453,20 +5718,23 @@ function scoreAiCandidate(
         )
       : 0;
 
+  const onHitScore =
+    result.damage * 7 +
+    damageRatio * 125 +
+    (move.power ?? 0) * 0.35 +
+    knockoutScore +
+    stabScore +
+    matchupScore +
+    lowHpFocus +
+    coverageBonus +
+    secondaryUtility +
+    riderUtility -
+    recoilPenalty;
+
   return {
-    damage: result.damage,
+    damage: result.damage * hitChance,
     score:
-      result.damage * 7 +
-      damageRatio * 125 +
-      (move.power ?? 0) * 0.35 +
-      knockoutScore +
-      stabScore +
-      matchupScore +
-      lowHpFocus +
-      coverageBonus +
-      secondaryUtility +
-      riderUtility -
-      recoilPenalty +
+      onHitScore * hitChance +
       positioningScore +
       resourceScore +
       targetThreat +
@@ -5636,14 +5904,18 @@ function aiBestIncomingDamage(
         continue;
       }
 
+      const damage = calculateDamage(
+        state,
+        enemy,
+        ally,
+        move,
+      ).damage;
+      const hitChance =
+        getDuelMoveHitChance(enemy, ally, move) /
+        100;
       best = Math.max(
         best,
-        calculateDamage(
-          state,
-          enemy,
-          ally,
-          move,
-        ).damage,
+        damage * hitChance,
       );
     }
   }
