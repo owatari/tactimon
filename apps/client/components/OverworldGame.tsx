@@ -43,6 +43,9 @@ import {
   resolveOverworldPickups,
 } from "@/lib/overworldPickups";
 import {
+  resolveOverworldDialogues,
+} from "@/lib/overworldDialogues";
+import {
   LAND_ENCOUNTERS,
   resolveLandEncounter,
 } from "@/lib/wildEncounters";
@@ -409,6 +412,26 @@ function martStoryObjects(): StoryObject[] {
   ];
 }
 
+function mapDialogueStoryObjects(
+  mapId: string,
+): DialogueStoryObject[] {
+  return resolveOverworldDialogues(mapId).map(
+    (dialogue) => ({
+      id: dialogue.id,
+      kind: "dialogue",
+      label: dialogue.label,
+      x: dialogue.x,
+      y: dialogue.y,
+      spriteUrl: dialogue.spriteUrl,
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+      dialogue: dialogue.dialogue,
+    }),
+  );
+}
+
 function mapPickupStoryObjects(
   mapId: string,
   story: StoryState,
@@ -506,6 +529,10 @@ function mapStoryObjects(
         : mapId === "viridian-pokemon-center"
           ? pokemonCenterStoryObjects()
           : mapPickupStoryObjects(mapId, story);
+
+  objects.push(
+    ...mapDialogueStoryObjects(mapId),
+  );
 
   for (const trainer of resolveOverworldTrainers(
     mapId,
