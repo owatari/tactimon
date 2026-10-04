@@ -8,6 +8,7 @@ import {
   DUEL_MOVES,
   getActiveDuelUnit,
   getReachableCells,
+  isDuelAutoCatchTarget,
   manhattanDistance,
   resolveSimpleAiTurn,
   resolveSimpleAiTurnDetailed,
@@ -2189,5 +2190,129 @@ describe("rival battle inventory", () => {
       potion: 4,
       "poke-ball": 3,
     });
+  });
+});
+
+
+describe("auto catch threshold and item priorities", () => {
+  it("treats 30 percent HP as the Auto Catch low-life threshold", () => {
+    let state = createWildDuel({
+      seed: 1801,
+      items: {
+        potion: 0,
+        "poke-ball": 3,
+      },
+      players: [
+        {
+          species: "bulbasaur",
+          level: 10,
+          moves: ["tackle"],
+        },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 10,
+    });
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    const lowHp = Math.max(
+      1,
+      Math.floor(wild.maxHp * 0.3),
+    );
+    const aboveLowHp = Math.min(
+      wild.maxHp - 1,
+      lowHp + 1,
+    );
+
+    state = {
+      ...state,
+      units: state.units.map((unit) =>
+        unit.id === wild.id
+          ? { ...unit, hp: lowHp }
+          : unit,
+      ),
+    };
+    expect(
+      isDuelAutoCatchTarget(state, wild.id),
+    ).toBe(true);
+
+    state = {
+      ...state,
+      units: state.units.map((unit) =>
+        unit.id === wild.id
+          ? { ...unit, hp: aboveLowHp }
+          : unit,
+      ),
+    };
+    expect(
+      isDuelAutoCatchTarget(state, wild.id),
+    ).toBe(false);
+  });
+
+  it("takes a guaranteed KO instead of spending an emergency Potion", () => {
+    let state = createTrainerDuel({
+      seed: 1802,
+      width: 5,
+      height: 5,
+      rivalItems: {
+        potion: 1,
+        "poke-ball": 0,
+      },
+      players: [
+        {
+          species: "bulbasaur",
+          level: 5,
+          moves: ["tackle"],
+        },
+      ],
+      rivals: [
+        {
+          species: "charmander",
+          level: 5,
+          moves: ["scratch"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: rival.id,
+      units: state.units.map((unit) =>
+        unit.id === rival.id
+          ? {
+              ...unit,
+              hp: Math.max(
+                1,
+                Math.floor(unit.maxHp * 0.25),
+              ),
+              position: { x: 2, y: 2 },
+            }
+          : unit.id === player.id
+            ? {
+                ...unit,
+                hp: 1,
+                position: { x: 3, y: 2 },
+              }
+            : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+      { useItems: true },
+    );
+
+    expect(turn.steps[0]?.presentation?.kind).toBe(
+      "move",
+    );
+    expect(turn.state.rivalItems.potion).toBe(1);
+    expect(turn.state.winner).toBe("rival");
   });
 });
