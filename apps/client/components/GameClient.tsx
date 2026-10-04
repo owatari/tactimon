@@ -540,23 +540,36 @@ export function GameClient() {
     }
 
     const defeatedWilds =
-      outcome.defeatedEnemies.length > 0
-        ? outcome.defeatedEnemies
-        : [
+      outcome.defeatedEnemies.map((enemy) => ({
+        species:
+          enemy.species as typeof session.encounter.species,
+        level: enemy.level,
+        xpRatio: 1,
+      }));
+    const rewardEnemies = [
+      ...defeatedWilds,
+      ...(outcome.capture
+        ? [
             {
-              species: session.encounter.species,
-              level: session.encounter.level,
+              species: outcome.capture.species,
+              level: outcome.capture.level,
+              xpRatio: outcome.capture.xpRatio,
             },
-          ];
+          ]
+        : []),
+    ];
+    if (rewardEnemies.length === 0 && outcome.won) {
+      rewardEnemies.push({
+        species: session.encounter.species,
+        level: session.encounter.level,
+        xpRatio,
+      });
+    }
+
     const rewards =
       grantWildBattlesProgressToParty(
         partySnapshot,
-        defeatedWilds.map((enemy) => ({
-          species:
-            enemy.species as typeof session.encounter.species,
-          level: enemy.level,
-        })),
-        xpRatio,
+        rewardEnemies,
       );
 
     setStory((current) => {
