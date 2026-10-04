@@ -17,6 +17,7 @@ export type MusicTrack = {
 
 const FIRE_RED_TRACK_IDS = {
   route1: 291,
+  route3: 293,
   trainerBattle: 297,
   wildBattle: 298,
   pallet: 300,
@@ -29,6 +30,7 @@ const FALLBACK_MAP_MUSIC: Record<string, number> = {
   "pallet-town": FIRE_RED_TRACK_IDS.pallet,
   "route-1": FIRE_RED_TRACK_IDS.route1,
   "route-2": FIRE_RED_TRACK_IDS.route1,
+  "route-22": FIRE_RED_TRACK_IDS.route3,
   "viridian-city": FIRE_RED_TRACK_IDS.viridian,
   "oak-lab": FIRE_RED_TRACK_IDS.oakLab,
   "viridian-mart": FIRE_RED_TRACK_IDS.pokeCenter,
@@ -50,6 +52,7 @@ function fireRedTrack(
 
 const TRACK_REGISTRY = new Map<number, MusicTrack>([
   [FIRE_RED_TRACK_IDS.route1, fireRedTrack(FIRE_RED_TRACK_IDS.route1)],
+  [FIRE_RED_TRACK_IDS.route3, fireRedTrack(FIRE_RED_TRACK_IDS.route3)],
   [
     FIRE_RED_TRACK_IDS.trainerBattle,
     fireRedTrack(FIRE_RED_TRACK_IDS.trainerBattle, 0.66),

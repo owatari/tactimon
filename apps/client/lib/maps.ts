@@ -190,6 +190,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       secondary: VIRIDIAN_TILESET,
     },
   },
+  "route-22": {
+    id: "route-22",
+    label: "Route 22",
+    layoutUrl: "/game-assets/maps/route-22/layout.json",
+    previewUrl: "/game-assets/maps/route-22/preview.png",
+    worldUrl: null,
+    spawn: { x: 47, y: 6 },
+    fallbackMusicId: 293,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: VIRIDIAN_TILESET,
+    },
+  },
   "viridian-city": {
     id: "viridian-city",
     label: "Viridian City",
@@ -349,6 +362,32 @@ export function resolveWorldTransition(
     };
   }
 
+  if (
+    mapId === "viridian-city" &&
+    direction === "west" &&
+    x === 0 &&
+    y >= 16 &&
+    y <= 19
+  ) {
+    return {
+      mapId: "route-22",
+      spawn: { x: 47, y: y - 10 },
+    };
+  }
+
+  if (
+    mapId === "route-22" &&
+    direction === "east" &&
+    x === 47 &&
+    y >= 6 &&
+    y <= 9
+  ) {
+    return {
+      mapId: "viridian-city",
+      spawn: { x: 0, y: y + 10 },
+    };
+  }
+
   return null;
 }
 
@@ -380,6 +419,20 @@ export function resolveWhiteOutRespawn(
     mapId: "pallet-town",
     spawn: { x: 6, y: 8 },
   };
+}
+
+export function isVictoryRoadLeagueGateAt(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  // FireRed Route 22 warps 0/1 enter the first League gate.
+  // The route itself is useful early; Victory Road remains late-game.
+  return (
+    mapId === "route-22" &&
+    y === 5 &&
+    (x === 8 || x === 9)
+  );
 }
 
 export function isPokemonStoragePcAt(

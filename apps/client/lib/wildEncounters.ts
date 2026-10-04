@@ -47,6 +47,21 @@ const ROUTE_2_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 1, species: "weedle", level: 5 },
 ];
 
+const ROUTE_22_SLOTS: readonly LandEncounterSlot[] = [
+  { weight: 20, species: "rattata", level: 3 },
+  { weight: 20, species: "mankey", level: 3 },
+  { weight: 10, species: "rattata", level: 4 },
+  { weight: 10, species: "mankey", level: 4 },
+  { weight: 10, species: "rattata", level: 2 },
+  { weight: 10, species: "mankey", level: 2 },
+  { weight: 5, species: "spearow", level: 3 },
+  { weight: 5, species: "spearow", level: 5 },
+  { weight: 4, species: "rattata", level: 5 },
+  { weight: 4, species: "mankey", level: 5 },
+  { weight: 1, species: "rattata", level: 5 },
+  { weight: 1, species: "mankey", level: 5 },
+];
+
 export const LAND_ENCOUNTERS: Readonly<
   Record<string, LandEncounterTable>
 > = {
@@ -57,6 +72,10 @@ export const LAND_ENCOUNTERS: Readonly<
   "route-2": {
     encounterRate: 21,
     slots: ROUTE_2_SLOTS,
+  },
+  "route-22": {
+    encounterRate: 21,
+    slots: ROUTE_22_SLOTS,
   },
 };
 

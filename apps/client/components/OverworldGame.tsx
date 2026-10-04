@@ -19,6 +19,7 @@ import {
   MapLayout,
   PLAYER_SPRITE,
   isPokemonStoragePcAt,
+  isVictoryRoadLeagueGateAt,
   resolveWarpTransitionAt,
   resolveWorldTransition,
   TILE_SIZE,
@@ -1183,6 +1184,21 @@ export function OverworldGame({
       const delta = DIRECTION_DELTA[direction];
       const nextX = player.tileX + delta.x;
       const nextY = player.tileY + delta.y;
+
+      if (
+        isVictoryRoadLeagueGateAt(
+          mapIdRef.current,
+          nextX,
+          nextY,
+        )
+      ) {
+        showInteraction(
+          "Pokémon League: acesso restrito. Volte quando tiver as insígnias necessárias.",
+        );
+        player.blockedUntil = now + 500;
+        return false;
+      }
+
       const warp = resolveWarpTransitionAt(
         mapIdRef.current,
         nextX,
