@@ -8,6 +8,7 @@ import {
   DUEL_MOVES,
   getActiveDuelUnit,
   getDuelCaptureEligibility,
+  getDuelMoveHitChance,
   getReachableCells,
   isDuelAutoCatchTarget,
   manhattanDistance,
@@ -3011,6 +3012,277 @@ describe("canonical late-rival direct moves", () => {
     expect(updated.movePp.synthesis).toBe(
       DUEL_MOVES.synthesis.maxPp - 1,
     );
+  });
+});
+
+
+describe("move accuracy and evasion", () => {
+  it("uses FireRed accuracy stages and lets always-hit moves bypass them", () => {
+    const state = createTrainerDuel({
+      seed: 1920,
+      players: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["hydro-pump", "shock-wave"],
+        },
+      ],
+      rivals: [
+        {
+          species: "pidgeot",
+          level: 47,
+          moves: ["wing-attack"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+
+    expect(
+      getDuelMoveHitChance(
+        player,
+        rival,
+        DUEL_MOVES["hydro-pump"],
+      ),
+    ).toBe(80);
+    expect(
+      getDuelMoveHitChance(
+        { ...player, accuracyStage: -1 },
+        rival,
+        DUEL_MOVES["hydro-pump"],
+      ),
+    ).toBe(60);
+    expect(
+      getDuelMoveHitChance(
+        player,
+        { ...rival, evasionStage: 1 },
+        DUEL_MOVES["hydro-pump"],
+      ),
+    ).toBe(60);
+    expect(
+      getDuelMoveHitChance(
+        { ...player, accuracyStage: -6 },
+        { ...rival, evasionStage: 6 },
+        DUEL_MOVES["shock-wave"],
+      ),
+    ).toBe(100);
+  });
+
+  it("consumes AP and PP when an inaccurate move misses", () => {
+    let state = createTrainerDuel({
+      seed: 1921,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "blastoise",
+          level: 53,
+          moves: ["hydro-pump"],
+        },
+      ],
+      rivals: [
+        {
+          species: "pidgeot",
+          level: 47,
+          moves: ["wing-attack"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const originalAccuracy =
+      DUEL_MOVES["hydro-pump"].accuracy;
+    DUEL_MOVES["hydro-pump"].accuracy = 0;
+    try {
+      const result = applyDuelAction(state, {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "hydro-pump",
+        targetId: rival.id,
+      });
+
+      expect(result.accepted).toBe(true);
+      expect(result.presentation?.kind).toBe("move");
+      if (result.presentation?.kind === "move") {
+        expect(
+          result.presentation.results[0].missed,
+        ).toBe(true);
+        expect(
+          result.presentation.results[0].damage,
+        ).toBe(0);
+      }
+
+      const updatedPlayer = result.state.units.find(
+        (unit) => unit.id === player.id,
+      )!;
+      const updatedRival = result.state.units.find(
+        (unit) => unit.id === rival.id,
+      )!;
+      expect(updatedPlayer.ap).toBe(
+        player.maxAp - DUEL_MOVES["hydro-pump"].apCost,
+      );
+      expect(updatedPlayer.movePp["hydro-pump"]).toBe(
+        DUEL_MOVES["hydro-pump"].maxPp - 1,
+      );
+      expect(updatedRival.hp).toBe(rival.hp);
+    } finally {
+      DUEL_MOVES["hydro-pump"].accuracy =
+        originalAccuracy;
+    }
+  });
+
+  it("applies Accuracy and Evasion stages through status moves", () => {
+    let state = createTrainerDuel({
+      seed: 1922,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "pidgeotto",
+          level: 20,
+          moves: ["sand-attack", "double-team"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const sandAttack = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "sand-attack",
+      targetId: rival.id,
+    });
+    expect(sandAttack.accepted).toBe(true);
+    expect(
+      sandAttack.state.units.find(
+        (unit) => unit.id === rival.id,
+      )?.accuracyStage,
+    ).toBe(-1);
+    if (sandAttack.presentation?.kind === "move") {
+      expect(
+        sandAttack.presentation.results[0].statChanges,
+      ).toEqual([
+        { stat: "accuracy", delta: -1 },
+      ]);
+    }
+
+    const doubleTeam = applyDuelAction(
+      sandAttack.state,
+      {
+        kind: "use-move",
+        unitId: player.id,
+        moveId: "double-team",
+        targetId: player.id,
+      },
+    );
+    expect(doubleTeam.accepted).toBe(true);
+    expect(
+      doubleTeam.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.evasionStage,
+    ).toBe(1);
+    if (doubleTeam.presentation?.kind === "move") {
+      expect(
+        doubleTeam.presentation.results[0].statChanges,
+      ).toEqual([
+        { stat: "evasion", delta: 1 },
+      ]);
+    }
+  });
+
+  it("applies major status from status moves after they hit", () => {
+    let state = createTrainerDuel({
+      seed: 1923,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "pikachu",
+          level: 20,
+          moves: ["thunder-wave"],
+        },
+      ],
+      rivals: [
+        {
+          species: "rattata",
+          level: 20,
+          moves: ["tackle"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    const rival = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, position: { x: 4, y: 2 } },
+      ),
+    };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "thunder-wave",
+      targetId: rival.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === rival.id,
+      )?.status,
+    ).toBe("paralysis");
+    if (result.presentation?.kind === "move") {
+      expect(
+        result.presentation.results[0].statusApplied,
+      ).toBe("paralysis");
+    }
   });
 });
 
