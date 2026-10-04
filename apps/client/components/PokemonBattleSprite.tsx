@@ -138,34 +138,57 @@ export function PokemonBattleSprite({
 
   const desiredDirection =
     facing ?? (side === "player" ? "right" : "left");
-  const directionIndex = Math.max(
-    0,
-    manifest.directions.indexOf(desiredDirection),
+  const directionIndex = Math.min(
+    Math.max(0, data.directionRows - 1),
+    Math.max(
+      0,
+      manifest.directions.indexOf(desiredDirection),
+    ),
   );
 
-  const sheetWidth = data.frameWidth * data.frames;
-  const sheetHeight = data.frameHeight * data.directionRows;
-  const longestSide = Math.max(data.frameWidth, data.frameHeight);
-  const battleScale = Math.max(
-    1.45,
-    Math.min(2.5, 92 / longestSide),
+  const idle =
+    manifest.species[species]?.animations.idle ??
+    data;
+  const referenceSide = Math.max(
+    1,
+    idle.frameWidth,
+    idle.frameHeight,
   );
+
+  // Keep one source pixel at the same visual scale for every animation.
+  // Idle fills the tile on its longest axis; larger animation canvases are
+  // allowed to extend beyond the tile instead of shrinking the Pokémon.
+  const frameWidthPercent =
+    (data.frameWidth / referenceSide) * 100;
+  const frameHeightPercent =
+    (data.frameHeight / referenceSide) * 100;
+  const backgroundX =
+    data.frames <= 1
+      ? 0
+      : (frame / (data.frames - 1)) * 100;
+  const backgroundY =
+    data.directionRows <= 1
+      ? 0
+      : (directionIndex / (data.directionRows - 1)) * 100;
 
   return (
     <div
       className={`pokemon-battle-sprite ${side}`}
       title={`${species} · ${manifest.source}`}
-      style={{
-        width: data.frameWidth,
-        height: data.frameHeight,
-        backgroundImage:
-          `url("/game-assets/pokemon-sprites/${data.file}")`,
-        backgroundSize:
-          `${sheetWidth}px ${sheetHeight}px`,
-        backgroundPosition:
-          `-${frame * data.frameWidth}px -${directionIndex * data.frameHeight}px`,
-        transform: `scale(${battleScale})`,
-      }}
-    />
+    >
+      <div
+        className="pokemon-battle-sprite-frame"
+        style={{
+          width: `${frameWidthPercent}%`,
+          height: `${frameHeightPercent}%`,
+          backgroundImage:
+            `url("/game-assets/pokemon-sprites/${data.file}")`,
+          backgroundSize:
+            `${data.frames * 100}% ${data.directionRows * 100}%`,
+          backgroundPosition:
+            `${backgroundX}% ${backgroundY}%`,
+        }}
+      />
+    </div>
   );
 }

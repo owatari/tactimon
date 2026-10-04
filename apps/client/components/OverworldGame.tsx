@@ -39,6 +39,8 @@ const STEP_DURATION_MS = 142;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
 const INTERACTION_DURATION_MS = 2200;
+const BATTLE_ARENA_MAX_WIDTH = 17;
+const BATTLE_ARENA_MAX_HEIGHT = 9;
 
 const ROUTE_1_ENCOUNTER_RATE = 21;
 const ROUTE_1_WILD_SLOTS: Array<{
@@ -496,8 +498,14 @@ export function OverworldGame({
         return null;
       }
 
-      const arenaWidth = Math.min(13, activeLayout.width);
-      const arenaHeight = Math.min(7, activeLayout.height);
+      const arenaWidth = Math.min(
+        BATTLE_ARENA_MAX_WIDTH,
+        activeLayout.width,
+      );
+      const arenaHeight = Math.min(
+        BATTLE_ARENA_MAX_HEIGHT,
+        activeLayout.height,
+      );
       const cropX = Math.max(
         0,
         Math.min(
