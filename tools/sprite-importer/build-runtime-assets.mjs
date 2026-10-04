@@ -12,10 +12,13 @@ const SPECIES = {
   charmander: "0004",
   squirtle: "0007",
   caterpie: "0010",
+  metapod: "0011",
   weedle: "0013",
+  kakuna: "0014",
   pidgey: "0016",
   rattata: "0019",
   spearow: "0021",
+  pikachu: "0025",
   mankey: "0056",
 };
 

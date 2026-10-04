@@ -407,3 +407,24 @@ describe("Route 22 species progression", () => {
     expect(experienceRewardForWild("mankey", 5)).toBe(52);
   });
 });
+
+
+describe("Viridian Forest species progression", () => {
+  it("uses FireRed starting moves for the forest encounters", () => {
+    expect(
+      createPokemonProgression("metapod", 5).activeMoves,
+    ).toEqual(["harden"]);
+    expect(
+      createPokemonProgression("kakuna", 5).activeMoves,
+    ).toEqual(["harden"]);
+    expect(
+      createPokemonProgression("pikachu", 5).activeMoves,
+    ).toEqual(["thunder-shock", "growl"]);
+  });
+
+  it("uses Generation III base EXP yields", () => {
+    expect(experienceRewardForWild("metapod", 5)).toBe(51);
+    expect(experienceRewardForWild("kakuna", 5)).toBe(50);
+    expect(experienceRewardForWild("pikachu", 5)).toBe(58);
+  });
+});

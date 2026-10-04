@@ -20,7 +20,10 @@ export type WildSpeciesId =
   | "caterpie"
   | "weedle"
   | "spearow"
-  | "mankey";
+  | "mankey"
+  | "metapod"
+  | "kakuna"
+  | "pikachu";
 export type DuelSpeciesId = StarterSpeciesId | WildSpeciesId;
 export type DuelType =
   | "normal"
@@ -31,6 +34,7 @@ export type DuelType =
   | "bug"
   | "poison"
   | "fighting"
+  | "electric"
   | "dark"
   | "steel";
 
@@ -48,6 +52,8 @@ export type DuelMoveId =
   | "poison-sting"
   | "peck"
   | "leer"
+  | "harden"
+  | "thunder-shock"
   | "vine-whip"
   | "razor-leaf"
   | "seed-bomb"
@@ -58,7 +64,9 @@ export type DuelMoveId =
   | "bite"
   | "aqua-jet";
 
-export type DuelMoveTargeting = "single-enemy";
+export type DuelMoveTargeting =
+  | "single-enemy"
+  | "self";
 export type DuelMoveMotion = "contact" | "status" | "projectile";
 export type DuelStatId =
   | "attack"
@@ -148,6 +156,7 @@ export interface DuelMove {
   effect?:
     | "attack-down"
     | "defense-down"
+    | "defense-up"
     | "speed-down";
 }
 
@@ -401,6 +410,39 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 70,
     moves: ["scratch", "leer"],
   },
+  metapod: {
+    name: "Metapod",
+    type: "bug",
+    hp: 50,
+    attack: 20,
+    defense: 55,
+    specialAttack: 25,
+    specialDefense: 25,
+    speed: 30,
+    moves: ["harden"],
+  },
+  kakuna: {
+    name: "Kakuna",
+    type: "bug",
+    hp: 45,
+    attack: 25,
+    defense: 50,
+    specialAttack: 25,
+    specialDefense: 25,
+    speed: 35,
+    moves: ["harden"],
+  },
+  pikachu: {
+    name: "Pikachu",
+    type: "electric",
+    hp: 35,
+    attack: 55,
+    defense: 30,
+    specialAttack: 50,
+    specialDefense: 40,
+    speed: 90,
+    moves: ["thunder-shock", "growl"],
+  },
 };
 
 export const DUEL_ITEMS: Record<DuelItemId, DuelItem> = {
@@ -427,6 +469,9 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   weedle: 255,
   spearow: 255,
   mankey: 190,
+  metapod: 120,
+  kakuna: 120,
+  pikachu: 190,
 };
 
 function normalizeDuelItems(
@@ -565,6 +610,35 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     minRange: 1,
     maxRange: 3,
     effect: "defense-down",
+  },
+  harden: {
+    id: "harden",
+    name: "Harden",
+    type: "normal",
+    category: "status",
+    targeting: "self",
+    motion: "status",
+    vfxId: "harden",
+    description: "Enrijece o corpo e aumenta a própria Defense em 1 estágio.",
+    power: null,
+    apCost: 2,
+    minRange: 0,
+    maxRange: 0,
+    effect: "defense-up",
+  },
+  "thunder-shock": {
+    id: "thunder-shock",
+    name: "Thunder Shock",
+    type: "electric",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "thunder-shock",
+    description: "Dispara uma pequena descarga elétrica a distância.",
+    power: 40,
+    apCost: 4,
+    minRange: 2,
+    maxRange: 4,
   },
   "vine-whip": {
     id: "vine-whip",
@@ -1847,12 +1921,17 @@ export function applyDuelAction(
     (unit) => unit.id === action.targetId,
   );
 
+  const targetMatchesMove =
+    move?.targeting === "self"
+      ? target?.id === actor.id
+      : target?.side !== actor.side;
+
   if (
     !move ||
     !actor.moves.includes(move.id) ||
     !target ||
     target.hp <= 0 ||
-    target.side === actor.side
+    !targetMatchesMove
   ) {
     return {
       state: input,
@@ -1941,6 +2020,20 @@ export function applyDuelAction(
       state,
       `${move.name} reduziu a Defense de ${target.displayName}.`,
     );
+  } else if (move.effect === "defense-up") {
+    const before = target.defenseStage;
+    target.defenseStage = Math.min(
+      MAX_STAGE,
+      target.defenseStage + 1,
+    );
+    statChanges.push({
+      stat: "defense",
+      delta: target.defenseStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} aumentou a Defense de ${target.displayName}.`,
+    );
   } else if (move.effect === "speed-down") {
     const before = target.speedStage;
     target.speedStage = Math.max(
@@ -1979,11 +2072,15 @@ export function applyDuelAction(
   };
 }
 
-function attackMoveFor(unit: DuelUnit): DuelMoveId {
-  return unit.moves.find(
-    (moveId) =>
-      DUEL_MOVES[moveId].category !== "status",
-  ) ?? unit.moves[0];
+function attackMoveFor(
+  unit: DuelUnit,
+): DuelMoveId | null {
+  return (
+    unit.moves.find(
+      (moveId) =>
+        DUEL_MOVES[moveId].category !== "status",
+    ) ?? null
+  );
 }
 
 function statusMoveFor(
@@ -2074,9 +2171,12 @@ export function resolveSimpleAiTurnDetailed(
   }
 
   const attackMoveId = attackMoveFor(actor);
-  const attackMove = DUEL_MOVES[attackMoveId];
+  const attackMove = attackMoveId
+    ? DUEL_MOVES[attackMoveId]
+    : null;
 
   if (
+    attackMove &&
     manhattanDistance(actor.position, target.position) >
       attackMove.maxRange &&
     actor.mp > 0
@@ -2106,24 +2206,27 @@ export function resolveSimpleAiTurnDetailed(
     return { state, steps };
   }
 
-  const distance = manhattanDistance(
-    actor.position,
-    currentTarget.position,
-  );
+  if (attackMoveId && attackMove) {
+    const distance = manhattanDistance(
+      actor.position,
+      currentTarget.position,
+    );
 
-  if (
-    actor.ap >= attackMove.apCost &&
-    distance <= attackMove.maxRange
-  ) {
-    const attackResult = run({
-      kind: "use-move",
-      unitId: actor.id,
-      moveId: attackMoveId,
-      targetId: currentTarget.id,
-    });
+    if (
+      actor.ap >= attackMove.apCost &&
+      distance >= attackMove.minRange &&
+      distance <= attackMove.maxRange
+    ) {
+      const attackResult = run({
+        kind: "use-move",
+        unitId: actor.id,
+        moveId: attackMoveId,
+        targetId: currentTarget.id,
+      });
 
-    if (attackResult.state.status === "finished") {
-      return { state, steps };
+      if (attackResult.state.status === "finished") {
+        return { state, steps };
+      }
     }
   }
 
@@ -2133,25 +2236,32 @@ export function resolveSimpleAiTurnDetailed(
   }
 
   const statusMoveId = statusMoveFor(actor);
-  const refreshedTarget = bestAiTarget(state, actor);
 
-  if (statusMoveId && refreshedTarget) {
+  if (statusMoveId) {
     const statusMove = DUEL_MOVES[statusMoveId];
-    const statusDistance = manhattanDistance(
-      actor.position,
-      refreshedTarget.position,
-    );
+    const statusTarget =
+      statusMove.targeting === "self"
+        ? actor
+        : bestAiTarget(state, actor);
 
-    if (
-      actor.ap >= statusMove.apCost &&
-      statusDistance <= statusMove.maxRange
-    ) {
-      run({
-        kind: "use-move",
-        unitId: actor.id,
-        moveId: statusMoveId,
-        targetId: refreshedTarget.id,
-      });
+    if (statusTarget) {
+      const statusDistance = manhattanDistance(
+        actor.position,
+        statusTarget.position,
+      );
+
+      if (
+        actor.ap >= statusMove.apCost &&
+        statusDistance >= statusMove.minRange &&
+        statusDistance <= statusMove.maxRange
+      ) {
+        run({
+          kind: "use-move",
+          unitId: actor.id,
+          moveId: statusMoveId,
+          targetId: statusTarget.id,
+        });
+      }
     }
   }
 

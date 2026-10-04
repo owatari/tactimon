@@ -421,6 +421,13 @@ export function FirstBattle({
 
     if (command === "move-target" && selectedMove) {
       const move = DUEL_MOVES[selectedMove];
+
+      if (move.targeting === "self") {
+        return new Set(
+          player.hp > 0 ? [player.id] : [],
+        );
+      }
+
       return new Set(
         state.units
           .filter(
@@ -1286,7 +1293,10 @@ export function FirstBattle({
                         >
                           <strong>{move.name}</strong>
                           <span>
-                            {move.apCost} AP · {move.minRange}–{move.maxRange}
+                            {move.apCost} AP ·{" "}
+                            {move.targeting === "self"
+                              ? "self"
+                              : `${move.minRange}–${move.maxRange}`}
                           </span>
                         </button>
                       );

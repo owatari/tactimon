@@ -1011,3 +1011,72 @@ describe("Route 22 Pokémon", () => {
     expect(wild.moves).toEqual(["scratch", "leer"]);
   });
 });
+
+
+describe("Viridian Forest self-target moves", () => {
+  it("lets Harden raise the user's own Defense", () => {
+    let state = createWildDuel({
+      seed: 930,
+      player: {
+        species: "metapod",
+        level: 5,
+        moves: ["harden"],
+      },
+      wildSpecies: "caterpie",
+      wildLevel: 4,
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+    state = { ...state, activeUnitId: player.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "harden",
+      targetId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === player.id,
+      )?.defenseStage,
+    ).toBe(1);
+  });
+
+  it("lets status-only cocoon AI use Harden and finish its turn", () => {
+    let state = createWildDuel({
+      seed: 931,
+      player: {
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle", "growl"],
+      },
+      wildSpecies: "kakuna",
+      wildLevel: 5,
+    });
+    const wild = state.units.find(
+      (unit) => unit.side === "rival",
+    )!;
+    state = { ...state, activeUnitId: wild.id };
+
+    const turn = resolveSimpleAiTurnDetailed(
+      state,
+      "rival",
+    );
+
+    expect(
+      turn.state.units.find(
+        (unit) => unit.id === wild.id,
+      )?.defenseStage,
+    ).toBe(1);
+    expect(
+      turn.steps.some(
+        (step) =>
+          step.presentation?.kind === "move" &&
+          step.presentation.moveId === "harden",
+      ),
+    ).toBe(true);
+  });
+});

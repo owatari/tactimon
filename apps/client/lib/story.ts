@@ -123,7 +123,10 @@ function normalizeCapturedPokemon(
       candidate.species !== "caterpie" &&
       candidate.species !== "weedle" &&
       candidate.species !== "spearow" &&
-      candidate.species !== "mankey") ||
+      candidate.species !== "mankey" &&
+      candidate.species !== "metapod" &&
+      candidate.species !== "kakuna" &&
+      candidate.species !== "pikachu") ||
     typeof candidate.level !== "number" ||
     !Number.isFinite(candidate.level)
   ) {
