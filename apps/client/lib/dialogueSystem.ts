@@ -376,6 +376,46 @@ const DIALOGUE_DEFINITIONS: Record<
       };
     },
   },
+  "pallet-woman": one(
+    "pallet-woman",
+    "Eu também crio Pokémon. Quando ficam fortes, eles conseguem me proteger.",
+    "Mulher",
+  ),
+  "pallet-fat-man": one(
+    "pallet-fat-man",
+    "A tecnologia é incrível! Hoje podemos guardar e recuperar itens e Pokémon como dados usando um PC.",
+    "Homem",
+  ),
+  "route1-mart-clerk": one(
+    "route1-mart-clerk",
+    "Olá! Trabalho no Poké Mart. Visite nossa loja em Viridian City quando precisar de suprimentos e Poké Balls.",
+    "Clerk",
+  ),
+  "route1-boy": one(
+    "route1-boy",
+    "Viu aqueles barrancos na estrada? Dá um pouco de medo, mas você pode pular por eles para voltar a Pallet Town mais rápido.",
+    "Garoto",
+  ),
+  "oak-lab-aide-1": one(
+    "oak-lab-aide-1",
+    "Eu estudo Pokémon como assistente do Prof. Oak.",
+    "Aide",
+  ),
+  "oak-lab-aide-2": one(
+    "oak-lab-aide-2",
+    "O Prof. Oak pode não parecer, mas é uma autoridade em Pokémon. Muitos Treinadores o respeitam muito.",
+    "Aide",
+  ),
+  "oak-lab-aide-3": one(
+    "oak-lab-aide-3",
+    "O Prof. Oak vai ter seu próprio programa em breve: o Seminário Pokémon do Prof. Oak.",
+    "Aide",
+  ),
+  "viridian-dream-eater-tutor": one(
+    "viridian-dream-eater-tutor",
+    "Há golpes que funcionam de maneiras muito diferentes de ataques comuns. Continue conhecendo Pokémon e você encontrará técnicas incomuns.",
+    "Tutor",
+  ),
   "route4-woman": one(
     "route4-woman",
     "Ai! Tropecei em um Pokémon rochoso, Geodude!",
@@ -554,6 +594,14 @@ const WORLD_OBJECT_DIALOGUE_IDS: Record<
   string,
   string
 > = {
+  "pallet-town:3,10": "pallet-woman",
+  "pallet-town:13,17": "pallet-fat-man",
+  "route-1:6,28": "route1-mart-clerk",
+  "route-1:19,16": "route1-boy",
+  "oak-lab:3,11": "oak-lab-aide-1",
+  "oak-lab:11,10": "oak-lab-aide-2",
+  "oak-lab:2,10": "oak-lab-aide-3",
+  "viridian-city:8,26": "viridian-dream-eater-tutor",
   "viridian-city:16,22": "viridian-npc-16-22",
   "viridian-city:34,11": "viridian-npc-34-11",
   "viridian-city:20,12": "viridian-npc-20-12",
@@ -571,6 +619,71 @@ export function resolveWorldObjectDialogueId(
       `${mapId}:${x},${y}`
     ] ?? null
   );
+}
+
+function fallbackWorldNpcDialogue(
+  mapId: string,
+  speaker: string,
+): string {
+  if (mapId === "pallet-town") {
+    return "Pallet Town é pequena, mas todo grande Treinador precisa começar em algum lugar.";
+  }
+
+  if (mapId === "route-1") {
+    return "Na estrada, observe a grama alta, os barrancos e o estado do seu time antes de seguir viagem.";
+  }
+
+  if (mapId === "viridian-city") {
+    return "Viridian tem um Pokémon Center e um Poké Mart. Prepare seu time antes de seguir para rotas mais perigosas.";
+  }
+
+  if (mapId === "oak-lab") {
+    return "O laboratório do Prof. Oak está sempre cheio de pesquisas sobre Pokémon e batalhas.";
+  }
+
+  if (/clerk|mart/i.test(speaker)) {
+    return "Posso ajudar quando você precisar preparar seus suprimentos para a próxima rota.";
+  }
+
+  if (/scientist|aide|pesquis/i.test(speaker)) {
+    return "Ainda há muito para descobrir sobre Pokémon, seus golpes e a forma como eles batalham.";
+  }
+
+  if (/trainer|trein/i.test(speaker)) {
+    return "Um bom Treinador observa o campo, o próprio time e o adversário antes de decidir a próxima ação.";
+  }
+
+  return "Cada pessoa que você encontra pelo caminho pode saber algo útil sobre esta região. Continue explorando.";
+}
+
+export function resolveWorldObjectDialogueRequest(
+  mapId: string,
+  x: number,
+  y: number,
+  speaker: string,
+): DialogueInteractionRequest {
+  const id = resolveWorldObjectDialogueId(
+    mapId,
+    x,
+    y,
+  );
+
+  if (id) {
+    return {
+      kind: "script",
+      id,
+    };
+  }
+
+  return {
+    kind: "text",
+    id: `world-npc:${mapId}:${x},${y}`,
+    speaker,
+    text: fallbackWorldNpcDialogue(
+      mapId,
+      speaker,
+    ),
+  };
 }
 
 export function resolveDialogueScript(
@@ -627,7 +740,7 @@ export function runDialogueInteraction(
         resolveDialogueScript(story, request.id) ??
         dialoguePresentationFromText(
           request.id,
-          "Este diálogo ainda não foi importado.",
+          "Este personagem ainda não tem uma conversa específica, mas está pronto para receber um diálogo pelo registro central.",
         ),
     };
   }
