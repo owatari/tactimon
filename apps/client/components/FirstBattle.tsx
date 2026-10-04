@@ -436,6 +436,16 @@ export function FirstBattle({
       ? active
       : starterUnit;
   const rival = rivalUnits[0]!;
+  const resultRival =
+    state.captureResult
+      ? rivalUnits.find(
+          (unit) =>
+            unit.species ===
+              state.captureResult?.species &&
+            unit.level ===
+              state.captureResult?.level,
+        ) ?? rival
+      : rival;
   const trainerName =
     encounter.kind === "trainer"
       ? encounter.trainerName ?? "Blue"
@@ -1095,7 +1105,9 @@ export function FirstBattle({
             </span>
             <strong>
               {encounter.kind === "wild"
-                ? `${rival.displayName} selvagem`
+                ? rivalUnits.length > 1
+                  ? `${rivalUnits.length} Pokémon selvagens`
+                  : `${rival.displayName} selvagem`
                 : `Você vs. ${trainerName}`}
             </strong>
             <small>{context.mapLabel}</small>
@@ -1772,21 +1784,25 @@ export function FirstBattle({
                   : "VS"}
               </span>
               <PokemonPortrait
-                species={rival.species}
-                name={rival.displayName}
+                species={resultRival.species}
+                name={resultRival.displayName}
               />
             </div>
             <h3>
               {state.captureResult
                 ? state.captureResult.success
-                  ? `${rival.displayName} foi capturado!`
-                  : `${rival.displayName} escapou da Poké Ball.`
+                  ? `${resultRival.displayName} foi capturado!`
+                  : `${resultRival.displayName} escapou da Poké Ball.`
                 : state.winner === "player"
                   ? encounter.kind === "wild"
-                    ? `${rival.displayName} foi derrotado.`
+                    ? rivalUnits.length > 1
+                      ? `${rivalUnits.length} Pokémon selvagens foram derrotados.`
+                      : `${rival.displayName} foi derrotado.`
                     : `Seu time venceu ${trainerName}.`
                   : encounter.kind === "wild"
-                    ? "Seu time foi derrotado."
+                    ? rivalUnits.length > 1
+                      ? "Seu time foi derrotado pelo grupo selvagem."
+                      : "Seu time foi derrotado."
                     : `${trainerName} venceu desta vez.`}
             </h3>
             <p>
@@ -1859,8 +1875,8 @@ export function FirstBattle({
               />
               <span>↔</span>
               <PokemonPortrait
-                species={rival.species}
-                name={rival.displayName}
+                species={resultRival.species}
+                name={resultRival.displayName}
               />
             </div>
             <h3>
