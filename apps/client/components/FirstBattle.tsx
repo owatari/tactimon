@@ -346,6 +346,7 @@ export function FirstBattle({
   const [selectedItem, setSelectedItem] = useState<DuelItemId | null>(null);
   const [busy, setBusy] = useState(false);
   const [autoBattle, setAutoBattle] = useState(false);
+  const [autoCatch, setAutoCatch] = useState(false);
   const [battleSpeed, setBattleSpeed] = useState<1 | 2>(1);
   const [notice, setNotice] = useState<string | null>(null);
   const [vfx, setVfx] = useState<VfxEvent | null>(null);
@@ -399,11 +400,28 @@ export function FirstBattle({
       species: unit.species,
       level: unit.level,
     }));
+  const autoCatchReady =
+    autoCatch &&
+    state.status === "active" &&
+    active?.side === "player" &&
+    state.battleKind === "wild" &&
+    state.captureAllowed &&
+    (state.items["poke-ball"] ?? 0) > 0 &&
+    state.units.some(
+      (unit) =>
+        unit.side === "rival" &&
+        unit.hp > 0 &&
+        getDuelCaptureEligibility(
+          state,
+          unit.id,
+        ).allowed,
+    );
   const isPlayerTurn =
     state.status === "active" &&
     active?.side === "player" &&
     !busy &&
-    !autoBattle;
+    !autoBattle &&
+    !autoCatchReady;
 
   const blockedKeys = useMemo(
     () => new Set(state.blocked.map(pointKey)),
@@ -552,6 +570,21 @@ export function FirstBattle({
     setAutoBattle(next);
   };
 
+  const toggleAutoCatch = () => {
+    if (
+      state.battleKind !== "wild" ||
+      !state.captureAllowed
+    ) {
+      return;
+    }
+
+    const next = !autoCatch;
+    if (next) {
+      resetCommand();
+    }
+    setAutoCatch(next);
+  };
+
   const flashNotice = (message: string) => {
     setNotice(message);
     window.setTimeout(() => {
@@ -653,6 +686,43 @@ export function FirstBattle({
     await wait(100);
   };
 
+  const animateResolvedItem = async (
+    result: DuelActionResult,
+  ) => {
+    const presentation = result.presentation;
+    if (
+      !presentation ||
+      (presentation.kind !== "item" &&
+        presentation.kind !== "capture")
+    ) {
+      setState(result.state);
+      return;
+    }
+
+    const targetId = presentation.targetIds[0];
+
+    if (presentation.kind === "capture") {
+      flashNotice(
+        presentation.success
+          ? "Captura bem-sucedida!"
+          : "A captura falhou. O Pokémon fugiu!",
+      );
+      if (presentation.success) {
+        setUnitAnimation(targetId, "faint");
+      }
+      setState(result.state);
+      await wait(520);
+      return;
+    }
+
+    setUnitAnimation(targetId, "idle");
+    setState(result.state);
+    flashNotice(
+      `${DUEL_ITEMS[presentation.itemId].name} usada.`,
+    );
+    await wait(320);
+  };
+
   const handleWalk = async (destination: DuelPoint) => {
     if (
       !isPlayerTurn ||
@@ -741,21 +811,7 @@ export function FirstBattle({
 
     setBusy(true);
     resetCommand();
-    const presentation = result.presentation;
-    if (presentation?.kind === "capture") {
-      flashNotice(
-        presentation.success
-          ? "Captura bem-sucedida!"
-          : "A captura falhou. O Pokémon fugiu!",
-      );
-      if (presentation.success) setUnitAnimation(targetId, "faint");
-      await wait(520);
-    } else {
-      setUnitAnimation(targetId, "idle");
-      flashNotice(`${DUEL_ITEMS[itemId].name} usada.`);
-      await wait(320);
-    }
-    setState(result.state);
+    await animateResolvedItem(result);
     setBusy(false);
   };
 
@@ -813,7 +869,11 @@ export function FirstBattle({
     const shouldAutomate =
       state.status === "active" &&
       Boolean(active) &&
-      (active?.side === "rival" || autoBattle);
+      (
+        active?.side === "rival" ||
+        autoBattle ||
+        autoCatchReady
+      );
 
     if (
       !shouldAutomate ||
@@ -836,6 +896,14 @@ export function FirstBattle({
           const turn = resolveSimpleAiTurnDetailed(
             state,
             automatedSide,
+            {
+              useItems:
+                automatedSide === "player" &&
+                autoBattle,
+              autoCapture:
+                automatedSide === "player" &&
+                autoCatch,
+            },
           );
           let visualState = state;
 
@@ -868,6 +936,11 @@ export function FirstBattle({
                 visualState,
                 step,
               );
+            } else if (
+              presentation?.kind === "item" ||
+              presentation?.kind === "capture"
+            ) {
+              await animateResolvedItem(step);
             } else {
               setState(step.state);
             }
@@ -906,6 +979,8 @@ export function FirstBattle({
     active?.id,
     active?.side,
     autoBattle,
+    autoCatch,
+    autoCatchReady,
     battleSpeed,
     busy,
     state,
@@ -932,7 +1007,9 @@ export function FirstBattle({
   const playerXp = experienceProgress(progression);
 
   return (
-    <div className="battle-overlay">
+    <div
+      className={`battle-overlay battle-speed-${battleSpeed}`}
+    >
       <div className="battle-shell battle-shell-clean">
         <header className="battle-minimal-header">
           <div className="battle-minimal-title">
@@ -978,6 +1055,23 @@ export function FirstBattle({
                 type="button"
                 className={[
                   "battle-control-toggle",
+                  autoCatch ? "active" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                disabled={
+                  state.status === "finished" ||
+                  state.battleKind !== "wild" ||
+                  !state.captureAllowed
+                }
+                onClick={toggleAutoCatch}
+              >
+                Catch {autoCatch ? "ON" : "OFF"}
+              </button>
+              <button
+                type="button"
+                className={[
+                  "battle-control-toggle",
                   battleSpeed === 2 ? "active" : "",
                 ]
                   .filter(Boolean)
@@ -986,14 +1080,18 @@ export function FirstBattle({
               >
                 {battleSpeed}× Speed
               </button>
-              <button
-                type="button"
-                className="end-turn-compact"
-                disabled={!isPlayerTurn}
-                onClick={endTurn}
-              >
-                Encerrar turno
-              </button>
+              {(command === "walk" ||
+                command === "move-target" ||
+                command === "item-target") &&
+                isPlayerTurn && (
+                  <button
+                    type="button"
+                    className="end-turn-compact"
+                    onClick={resetCommand}
+                  >
+                    Cancelar ação
+                  </button>
+                )}
             </div>
           </div>
         </header>
@@ -1279,7 +1377,11 @@ export function FirstBattle({
               );
             })}
 
-            {isPlayerTurn && state.status === "active" && (
+            {isPlayerTurn &&
+              state.status === "active" &&
+              (command === "root" ||
+                command === "moves" ||
+                command === "items") && (
               <div
                 className={`battle-action-popover mode-${command}`}
                 style={{
@@ -1325,6 +1427,14 @@ export function FirstBattle({
                     >
                       <strong>Run</strong>
                       <span>Escape</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="end-turn-action"
+                      onClick={endTurn}
+                    >
+                      <strong>Encerrar turno</strong>
+                      <span>Passar para o próximo</span>
                     </button>
                   </div>
                 )}
@@ -1530,7 +1640,9 @@ export function FirstBattle({
             <div className="battle-busy-indicator">
               {autoBattle
                 ? `Auto Battle · ${battleSpeed}×`
-                : "Resolvendo ação…"}
+                : autoCatchReady
+                  ? `Auto Catch · ${battleSpeed}×`
+                  : "Resolvendo ação…"}
             </div>
           )}
         </div>
