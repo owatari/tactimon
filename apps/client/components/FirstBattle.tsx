@@ -799,6 +799,11 @@ export function FirstBattle({
     );
 
     setState(result.state);
+    if ((targetResult?.hitCount ?? 0) > 1) {
+      flashNotice(
+        `${targetResult?.hitCount} acertos!`,
+      );
+    }
     const nextTarget = result.state.units.find(
       (unit) => unit.id === target.id,
     );
