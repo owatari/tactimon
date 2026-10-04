@@ -18,6 +18,15 @@ import {
 import {
   playerWorldEventId,
 } from "../apps/client/lib/playerWorldState";
+import {
+  resolvePlayerOverworldPickups,
+} from "../apps/client/lib/overworldPickups";
+import {
+  resolvePlayerOverworldTrainers,
+} from "../apps/client/lib/trainers";
+import type {
+  MapLayout,
+} from "../apps/client/lib/maps";
 
 describe("per-player world state", () => {
   it("migrates legacy progression into namespaced player events", () => {
@@ -174,5 +183,90 @@ describe("per-player world state", () => {
     expect(
       getStoryFossilChoice(playerB),
     ).toBeNull();
+  });
+});
+
+
+describe("player-scoped world projection", () => {
+  it("projects pickups independently from private player events", () => {
+    const base = normalizeStoryState(DEFAULT_STORY_STATE);
+    const playerA = collectOverworldItem(
+      base,
+      "viridian-city-potion",
+      "potion",
+    ).story;
+    const playerB = normalizeStoryState(DEFAULT_STORY_STATE);
+
+    expect(
+      resolvePlayerOverworldPickups(
+        "viridian-city",
+        playerA,
+      ).some(
+        (pickup) =>
+          pickup.id === "viridian-city-potion",
+      ),
+    ).toBe(false);
+    expect(
+      resolvePlayerOverworldPickups(
+        "viridian-city",
+        playerB,
+      ).some(
+        (pickup) =>
+          pickup.id === "viridian-city-potion",
+      ),
+    ).toBe(true);
+  });
+
+  it("projects trainer defeat independently from private player events", () => {
+    const width = 80;
+    const height = 40;
+    const layout: MapLayout = {
+      index: 0,
+      id: "TEST_ROUTE3",
+      name: "Test Route 3",
+      width,
+      height,
+      primary_tileset: "test",
+      secondary_tileset: "test",
+      cells: Array.from(
+        { length: width * height },
+        () => ({
+          raw: 0,
+          metatile: 0,
+          collision: 0,
+          elevation: 0,
+        }),
+      ),
+    };
+
+    const playerA = markStoryTrainerDefeated(
+      normalizeStoryState(DEFAULT_STORY_STATE),
+      "route3-calvin",
+    );
+    const playerB = normalizeStoryState(DEFAULT_STORY_STATE);
+
+    const trainersA = resolvePlayerOverworldTrainers(
+      "route-3",
+      layout,
+      [],
+      playerA,
+    );
+    const trainersB = resolvePlayerOverworldTrainers(
+      "route-3",
+      layout,
+      [],
+      playerB,
+    );
+
+    expect(
+      trainersA.find(
+        (trainer) => trainer.id === "route3-calvin",
+      )?.defeated,
+    ).toBe(true);
+    expect(
+      trainersB.find(
+        (trainer) => trainer.id === "route3-calvin",
+      )?.defeated,
+    ).toBe(false);
   });
 });

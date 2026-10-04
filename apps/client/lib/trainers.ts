@@ -2,7 +2,11 @@ import type {
   DuelPokemonBuild,
   StarterSpeciesId,
 } from "@tactimon/battle-engine";
-import type { StoryBadgeId } from "@/lib/story";
+import {
+  isStoryTrainerDefeated,
+  type StoryBadgeId,
+  type StoryState,
+} from "./story";
 import type {
   Direction,
   MapLayout,
@@ -1790,6 +1794,30 @@ export function resolveOverworldTrainers(
 }
 
 
+/**
+ * Projects static trainer definitions through one player's private story.
+ * Keep geometry/static definition shared; only defeated state is per player.
+ */
+export function resolvePlayerOverworldTrainers(
+  mapId: string,
+  layout: MapLayout | null,
+  worldObjects: readonly WorldObject[],
+  story: StoryState,
+): OverworldTrainerInstance[] {
+  return resolveOverworldTrainers(
+    mapId,
+    layout,
+    worldObjects,
+    [],
+  ).map((trainer) => ({
+    ...trainer,
+    defeated: isStoryTrainerDefeated(
+      story,
+      trainer.id,
+    ),
+  }));
+}
+
 export const CERULEAN_RIVAL_TRAINER_ID =
   "cerulean-rival";
 
@@ -1888,6 +1916,20 @@ export function ceruleanRivalEncounter(
   };
 }
 
+export function isCeruleanRivalTriggerTile(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  return (
+    mapId === "cerulean-city" &&
+    y === 6 &&
+    x >= 22 &&
+    x <= 24
+  );
+}
+
+/** @deprecated Use geometry + isStoryTrainerDefeated for player state. */
 export function isCeruleanRivalTriggerAt(
   mapId: string,
   x: number,
@@ -1895,10 +1937,7 @@ export function isCeruleanRivalTriggerAt(
   defeatedTrainerIds: readonly string[],
 ): boolean {
   return (
-    mapId === "cerulean-city" &&
-    y === 6 &&
-    x >= 22 &&
-    x <= 24 &&
+    isCeruleanRivalTriggerTile(mapId, x, y) &&
     !defeatedTrainerIds.includes(
       CERULEAN_RIVAL_TRAINER_ID,
     )
@@ -1906,6 +1945,19 @@ export function isCeruleanRivalTriggerAt(
 }
 
 
+export function isCeruleanRocketTriggerTile(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  return (
+    mapId === "cerulean-city" &&
+    x === 33 &&
+    (y === 5 || y === 7)
+  );
+}
+
+/** @deprecated Use geometry + player-owned story helpers. */
 export function isCeruleanRocketTriggerAt(
   mapId: string,
   x: number,
@@ -1914,9 +1966,7 @@ export function isCeruleanRocketTriggerAt(
   defeatedTrainerIds: readonly string[],
 ): boolean {
   return (
-    mapId === "cerulean-city" &&
-    x === 33 &&
-    (y === 5 || y === 7) &&
+    isCeruleanRocketTriggerTile(mapId, x, y) &&
     hasSsTicket &&
     !defeatedTrainerIds.includes(
       CERULEAN_ROCKET_TRAINER_ID,
@@ -1999,6 +2049,20 @@ export function ssAnneRivalEncounter(
   };
 }
 
+export function isSsAnneRivalTriggerTile(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  return (
+    mapId === "ss-anne-2f-corridor" &&
+    y === 6 &&
+    x >= 30 &&
+    x <= 32
+  );
+}
+
+/** @deprecated Use geometry + isStoryTrainerDefeated for player state. */
 export function isSsAnneRivalTriggerAt(
   mapId: string,
   x: number,
@@ -2006,10 +2070,7 @@ export function isSsAnneRivalTriggerAt(
   defeatedTrainerIds: readonly string[],
 ): boolean {
   return (
-    mapId === "ss-anne-2f-corridor" &&
-    y === 6 &&
-    x >= 30 &&
-    x <= 32 &&
+    isSsAnneRivalTriggerTile(mapId, x, y) &&
     !defeatedTrainerIds.includes(
       SS_ANNE_RIVAL_TRAINER_ID,
     )

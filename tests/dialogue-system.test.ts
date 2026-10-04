@@ -112,3 +112,33 @@ describe("dialogue system", () => {
     ).toBeNull();
   });
 });
+
+
+describe("runtime dialogue presentation", () => {
+  it("routes dynamic gate/trainer text through the same dialogue contract", () => {
+    const story = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+    const result = runDialogueInteraction(
+      story,
+      {
+        kind: "text",
+        id: "gate:test",
+        speaker: "Guard",
+        text: "Passagem bloqueada.",
+      },
+    );
+
+    expect(result.story).toBe(story);
+    expect(result.presentation).toEqual({
+      id: "gate:test",
+      pages: [
+        {
+          id: "main",
+          speaker: "Guard",
+          text: "Passagem bloqueada.",
+        },
+      ],
+    });
+  });
+});

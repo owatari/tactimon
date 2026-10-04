@@ -1,6 +1,10 @@
 import type {
   DuelItemId,
 } from "@tactimon/battle-engine";
+import {
+  hasStoryCollectedItem,
+  type StoryState,
+} from "./story";
 
 export type OverworldPickupDefinition = {
   id: string;
@@ -57,5 +61,21 @@ export function resolveOverworldPickups(
     (pickup) =>
       pickup.mapId === mapId &&
       !collected.has(pickup.id),
+  );
+}
+
+
+/**
+ * Projects immutable pickup definitions through one player's private world
+ * progression. Runtime code should use this instead of passing shared arrays.
+ */
+export function resolvePlayerOverworldPickups(
+  mapId: string,
+  story: StoryState,
+): OverworldPickupDefinition[] {
+  return OVERWORLD_PICKUPS.filter(
+    (pickup) =>
+      pickup.mapId === mapId &&
+      !hasStoryCollectedItem(story, pickup.id),
   );
 }

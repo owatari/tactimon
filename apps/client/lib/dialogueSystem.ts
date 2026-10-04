@@ -317,7 +317,7 @@ export function resolveDialogueScript(
   };
 }
 
-function presentationFromMessage(
+export function dialoguePresentationFromText(
   id: string,
   message: string,
   speaker?: string,
@@ -337,7 +337,7 @@ export function runDialogueInteraction(
       story,
       presentation:
         resolveDialogueScript(story, request.id) ??
-        presentationFromMessage(
+        dialoguePresentationFromText(
           request.id,
           "Este diálogo ainda não foi importado.",
         ),
@@ -347,7 +347,7 @@ export function runDialogueInteraction(
   if (request.kind === "text") {
     return {
       story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         request.id,
         request.text,
         request.speaker,
@@ -358,7 +358,7 @@ export function runDialogueInteraction(
   if (request.kind === "lab-oak") {
     return {
       story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         "lab-oak",
         storyStarterSummary(story) ??
           "Cuide bem do seu primeiro Pokémon.",
@@ -370,7 +370,7 @@ export function runDialogueInteraction(
   if (request.kind === "lab-rival") {
     return {
       story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         "lab-rival",
         story.starter
           ? "Quando você tentar sair, vamos ver quem treinou melhor."
@@ -384,7 +384,7 @@ export function runDialogueInteraction(
     const result = interactWithBill(story);
     return {
       story: result.story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         "bill",
         result.message,
       ),
@@ -395,7 +395,7 @@ export function runDialogueInteraction(
     const result = runBillCellSeparator(story);
     return {
       story: result.story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         "bill-computer",
         result.message,
       ),
@@ -406,7 +406,7 @@ export function runDialogueInteraction(
     const result = interactWithSsAnneCaptain(story);
     return {
       story: result.story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         "ss-anne-captain",
         result.message,
       ),
@@ -416,7 +416,7 @@ export function runDialogueInteraction(
   if (request.kind === "nurse") {
     return {
       story: healStoryParty(story),
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         "pokemon-center-nurse",
         "Pronto! Todos os seus Pokémon estão completamente saudáveis.",
         "Nurse",
@@ -431,7 +431,7 @@ export function runDialogueInteraction(
     );
     return {
       story: result.story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         `cut:${request.obstacleId}`,
         result.message,
       ),
@@ -446,7 +446,7 @@ export function runDialogueInteraction(
 
     return {
       story: result.story,
-      presentation: presentationFromMessage(
+      presentation: dialoguePresentationFromText(
         `fossil:${request.fossilId}`,
         result.accepted
           ? `Você escolheu o ${request.fossilName}. Miguel ficará com o outro fóssil.`
@@ -465,7 +465,7 @@ export function runDialogueInteraction(
 
   return {
     story: result.story,
-    presentation: presentationFromMessage(
+    presentation: dialoguePresentationFromText(
       `pickup:${request.pickupId}`,
       result.accepted
         ? `Você encontrou ${request.itemName}!`

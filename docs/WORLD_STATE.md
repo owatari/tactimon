@@ -52,3 +52,23 @@ The server may replicate another player's avatar/action animation, but completio
 ## Dialogue integration
 
 Dialogue scripts are resolved through `dialogueSystem.ts`. Stateful dialogue interactions return a new private `StoryState`, so dialogue rewards and story steps obey the same ownership rule automatically.
+
+
+## Runtime projection APIs
+
+Map definitions remain immutable. Runtime visibility must be projected with
+player-owned state:
+
+- use `resolvePlayerOverworldPickups(mapId, story)` for pickup visibility;
+- use `resolvePlayerOverworldTrainers(mapId, layout, objects, story)` for
+  trainer defeat state;
+- combine geometry-only trigger helpers with `isStoryTrainerDefeated`,
+  `hasStoryKeyItem`, `hasStoryBadge`, and other story helpers.
+
+Legacy APIs that accept arrays are compatibility surfaces only and should not
+be used by new gameplay code.
+
+All player-facing overworld text, including transient gate/trainer messages,
+must enter through `DialogueInteractionRequest` / `DialoguePresentation`.
+This keeps rendering, multi-page support, stateful actions, and future
+localization in one dialogue pipeline.

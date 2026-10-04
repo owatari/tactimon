@@ -39,7 +39,6 @@ import {
   getStoryBillStage,
   getStoryFossilChoice,
   hasStoryBadge,
-  hasStoryCollectedItem,
   hasStoryKeyItem,
   isStoryObstacleCleared,
   isStoryTrainerDefeated,
@@ -55,10 +54,10 @@ import {
   SS_ANNE_RIVAL_CHALLENGE_TEXT,
   SS_ANNE_RIVAL_TRAINER_ID,
   ceruleanRivalEncounter,
-  isCeruleanRivalTriggerAt,
-  isCeruleanRocketTriggerAt,
-  isSsAnneRivalTriggerAt,
-  resolveOverworldTrainers,
+  isCeruleanRivalTriggerTile,
+  isCeruleanRocketTriggerTile,
+  isSsAnneRivalTriggerTile,
+  resolvePlayerOverworldTrainers,
   ssAnneRivalEncounter,
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
@@ -68,7 +67,7 @@ import type {
   DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import {
-  resolveOverworldPickups,
+  resolvePlayerOverworldPickups,
 } from "@/lib/overworldPickups";
 import {
   resolveOverworldDialogues,
@@ -564,15 +563,10 @@ function mapPickupStoryObjects(
   mapId: string,
   story: StoryState,
 ): PickupStoryObject[] {
-  return resolveOverworldPickups(
+  return resolvePlayerOverworldPickups(
     mapId,
-    [],
-  )
-    .filter(
-      (pickup) =>
-        !hasStoryCollectedItem(story, pickup.id),
-    )
-    .map((pickup) => ({
+    story,
+  ).map((pickup) => ({
     id: pickup.id,
     kind: "pickup",
     pickupId: pickup.id,
@@ -824,19 +818,12 @@ function mapStoryObjects(
     objects.push(...vermilionCutTreeStoryObjects(story));
   }
 
-  for (const trainer of resolveOverworldTrainers(
+  for (const playerTrainer of resolvePlayerOverworldTrainers(
     mapId,
     layout,
     worldObjects,
-    [],
+    story,
   )) {
-    const playerTrainer = {
-      ...trainer,
-      defeated: isStoryTrainerDefeated(
-        story,
-        trainer.id,
-      ),
-    };
 
     if (
       playerTrainer.id ===
@@ -979,13 +966,21 @@ export function OverworldGame({
   );
 
   const showInteraction = useCallback(
-    (message: string) => {
-      showDialogue({
-        id: "system-message",
-        pages: [{ id: "main", text: message }],
-      });
+    (
+      message: string,
+      id = "system-message",
+      speaker?: string,
+    ) => {
+      showDialogue(
+        onDialogueInteraction({
+          kind: "text",
+          id,
+          text: message,
+          speaker,
+        }),
+      );
     },
-    [showDialogue],
+    [onDialogueInteraction, showDialogue],
   );
 
   const advanceDialogue = useCallback((): boolean => {
@@ -1902,11 +1897,10 @@ export function OverworldGame({
           currentStory,
           CERULEAN_RIVAL_TRAINER_ID,
         ) ||
-        !isCeruleanRivalTriggerAt(
+        !isCeruleanRivalTriggerTile(
           mapIdRef.current,
           player.tileX,
           player.tileY,
-          [],
         ) ||
         !currentStory.firstBattleComplete ||
         !currentStory.playerPokemon ||
@@ -1945,11 +1939,10 @@ export function OverworldGame({
           currentStory,
           SS_ANNE_RIVAL_TRAINER_ID,
         ) ||
-        !isSsAnneRivalTriggerAt(
+        !isSsAnneRivalTriggerTile(
           mapIdRef.current,
           player.tileX,
           player.tileY,
-          [],
         ) ||
         !currentStory.firstBattleComplete ||
         !currentStory.playerPokemon ||
@@ -1988,15 +1981,14 @@ export function OverworldGame({
           currentStory,
           CERULEAN_ROCKET_TRAINER_ID,
         ) ||
-        !isCeruleanRocketTriggerAt(
+        !isCeruleanRocketTriggerTile(
           mapIdRef.current,
           player.tileX,
           player.tileY,
-          hasStoryKeyItem(
-            currentStory,
-            "ss-ticket",
-          ),
-          [],
+        ) ||
+        !hasStoryKeyItem(
+          currentStory,
+          "ss-ticket",
         ) ||
         !currentStory.firstBattleComplete ||
         !currentStory.playerPokemon ||
