@@ -531,6 +531,7 @@ export function FirstBattle({
   const isPlayerTurn =
     state.status === "active" &&
     active?.side === "player" &&
+    !active.chargingMove &&
     !busy &&
     !autoBattle &&
     !autoCatchReady;
@@ -779,6 +780,24 @@ export function FirstBattle({
       return;
     }
 
+    if (presentation.charging) {
+      setUnitAnimation(
+        actor.id,
+        "attack",
+        facingBetween(
+          actor.position,
+          target.position,
+        ),
+      );
+      setState(result.state);
+      flashNotice(
+        `${actor.displayName} está absorvendo luz!`,
+      );
+      await wait(ATTACK_WINDUP_MS);
+      setUnitAnimation(actor.id, "idle");
+      return;
+    }
+
     setUnitAnimation(
       actor.id,
       "attack",
@@ -1009,6 +1028,7 @@ export function FirstBattle({
       state.status === "active" &&
       Boolean(active) &&
       (
+        Boolean(active?.chargingMove) ||
         active?.side === "rival" ||
         autoBattle ||
         autoCatchReady
