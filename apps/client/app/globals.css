@@ -2740,3 +2740,157 @@ h1 {
     display: none;
   }
 }
+
+
+/* Viridian Poké Mart */
+.world-resource-chip {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mart-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 140;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(5, 7, 5, 0.76);
+  backdrop-filter: blur(8px);
+}
+
+.mart-panel {
+  width: min(640px, 100%);
+  max-height: calc(100% - 20px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(35, 42, 30, 0.98),
+      rgba(18, 22, 16, 0.98)
+    );
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.5);
+}
+
+.mart-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.mart-header h2 {
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+
+.mart-header > strong {
+  color: var(--accent-strong);
+  font-size: 18px;
+}
+
+.mart-copy {
+  margin: 12px 0 18px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.mart-item-list {
+  display: grid;
+  gap: 10px;
+}
+
+.mart-item-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(7, 10, 7, 0.38);
+}
+
+.mart-item-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.mart-item-copy > span {
+  font-weight: 800;
+}
+
+.mart-item-copy > strong {
+  color: var(--accent-strong);
+  font-size: 12px;
+}
+
+.mart-item-copy small,
+.mart-item-copy em {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.mart-item-copy em {
+  font-style: normal;
+}
+
+.mart-item-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(92px, 1fr));
+  gap: 6px;
+}
+
+.mart-item-actions button,
+.mart-close {
+  padding: 9px 11px;
+  border: 1px solid #48513d;
+  border-radius: 8px;
+  background: #2d3427;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.mart-item-actions button:hover:not(:disabled),
+.mart-close:hover {
+  border-color: rgba(216, 242, 121, 0.52);
+  background: #384231;
+}
+
+.mart-item-actions button:disabled {
+  opacity: 0.34;
+  cursor: not-allowed;
+}
+
+.mart-close {
+  margin-top: 16px;
+}
+
+@media (max-width: 700px) {
+  .world-resource-chip {
+    top: 50px;
+  }
+
+  .mart-overlay {
+    padding: 10px;
+  }
+
+  .mart-panel {
+    padding: 18px;
+  }
+
+  .mart-item-card {
+    grid-template-columns: 1fr;
+  }
+
+  .mart-item-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

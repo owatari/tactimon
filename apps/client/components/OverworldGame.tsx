@@ -125,6 +125,7 @@ type Props = {
       party: readonly DuelPokemonBuild[];
     },
   ) => void;
+  onMartOpen: () => void;
 };
 
 type RuntimePlayer = {
@@ -175,9 +176,20 @@ type TrainerStoryObject = StoryObjectBase & {
   defeated: boolean;
 };
 
+type MartClerkStoryObject = StoryObjectBase & {
+  kind: "mart-clerk";
+};
+
+type DialogueStoryObject = StoryObjectBase & {
+  kind: "dialogue";
+  dialogue: string;
+};
+
 type StoryObject =
   | StaticStoryObject
-  | TrainerStoryObject;
+  | TrainerStoryObject
+  | MartClerkStoryObject
+  | DialogueStoryObject;
 
 function createPlayer(
   x: number,
@@ -357,6 +369,51 @@ function trainerStoryObject(
   };
 }
 
+function martStoryObjects(): StoryObject[] {
+  return [
+    {
+      id: "viridian-mart-clerk",
+      kind: "mart-clerk",
+      label: "Clerk",
+      x: 2,
+      y: 3,
+      spriteUrl: "/game-assets/overworld/068_clerk.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+    },
+    {
+      id: "viridian-mart-youngster",
+      kind: "dialogue",
+      label: "Youngster",
+      x: 6,
+      y: 2,
+      spriteUrl: "/game-assets/overworld/018_youngster.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+      dialogue:
+        "Youngster: Tenho que comprar algumas Potions.",
+    },
+    {
+      id: "viridian-mart-woman",
+      kind: "dialogue",
+      label: "Mulher",
+      x: 9,
+      y: 5,
+      spriteUrl: "/game-assets/overworld/023_woman_1.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+      dialogue:
+        "Mulher: Antidotes vendem muito bem por aqui.",
+    },
+  ];
+}
+
 function mapStoryObjects(
   mapId: string,
   story: StoryState,
@@ -366,7 +423,9 @@ function mapStoryObjects(
   const objects: StoryObject[] =
     mapId === "oak-lab"
       ? [...labStoryObjects(story)]
-      : [];
+      : mapId === "viridian-mart"
+        ? martStoryObjects()
+        : [];
 
   for (const trainer of resolveOverworldTrainers(
     mapId,
@@ -388,6 +447,7 @@ export function OverworldGame({
   onFirstBattleTrigger,
   onWildBattleTrigger,
   onTrainerBattleTrigger,
+  onMartOpen,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -689,6 +749,16 @@ export function OverworldGame({
         return;
       }
 
+      if (storyObject.kind === "mart-clerk") {
+        onMartOpen();
+        return;
+      }
+
+      if (storyObject.kind === "dialogue") {
+        showInteraction(storyObject.dialogue);
+        return;
+      }
+
       showInteraction(
         `${storyObject.label} ficou no laboratório de Oak.`,
       );
@@ -706,6 +776,7 @@ export function OverworldGame({
       );
     }
   }, [
+    onMartOpen,
     onRequestStarterChoice,
     showInteraction,
     triggerTrainerBattle,
@@ -729,7 +800,9 @@ export function OverworldGame({
       try {
         const [layoutResponse, worldResponse] = await Promise.all([
           fetch(definition.layoutUrl),
-          fetch(definition.worldUrl),
+          definition.worldUrl
+            ? fetch(definition.worldUrl)
+            : Promise.resolve(null),
         ]);
 
         if (!layoutResponse.ok) {
@@ -740,7 +813,7 @@ export function OverworldGame({
 
         const nextLayout =
           (await layoutResponse.json()) as MapLayout;
-        const nextWorldData = worldResponse.ok
+        const nextWorldData = worldResponse?.ok
           ? ((await worldResponse.json()) as WorldMapData)
           : null;
 

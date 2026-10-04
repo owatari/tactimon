@@ -25,7 +25,7 @@ Supported FireRed SHA-1:
 41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc
 ```
 
-Current tracks are 291 (Route 1), 297 (trainer/rival battle), 298 (wild battle), 300 (Pallet Town), 301 (Professor Oak's Lab), and 314 (Viridian/Pewter).
+Current tracks are 291 (Route 1), 297 (trainer/rival battle), 298 (wild battle), 300 (Pallet Town), 301 (Professor Oak's Lab), 303 (Pokémon Center / Poké Mart), and 314 (Viridian/Pewter).
 
 Generated files:
 

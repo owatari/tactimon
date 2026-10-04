@@ -55,6 +55,14 @@ const files = [
     "maps/layouts/004_pallettown_professoroakslab_layout/preview.png",
     "maps/oak-lab/preview.png",
   ],
+  [
+    "maps/layouts/009_mart_layout/layout.json",
+    "maps/viridian-mart/layout.json",
+  ],
+  [
+    "maps/layouts/009_mart_layout/preview.png",
+    "maps/viridian-mart/preview.png",
+  ],
   ["overworld/000_red_normal.png", "overworld/red-normal.png"],
 
   ["tilesets/00_general/tiles.4bpp", "tilesets/general/tiles.4bpp"],
@@ -131,6 +139,20 @@ const files = [
   [
     "tilesets/21_lab/attributes.bin",
     "tilesets/lab/attributes.bin",
+  ],
+
+  ["tilesets/13_mart/tiles.4bpp", "tilesets/mart/tiles.4bpp"],
+  [
+    "tilesets/13_mart/palettes.gbapal",
+    "tilesets/mart/palettes.gbapal",
+  ],
+  [
+    "tilesets/13_mart/metatiles.bin",
+    "tilesets/mart/metatiles.bin",
+  ],
+  [
+    "tilesets/13_mart/attributes.bin",
+    "tilesets/mart/attributes.bin",
   ],
 ];
 

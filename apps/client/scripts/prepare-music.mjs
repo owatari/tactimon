@@ -13,7 +13,7 @@ import { spawn } from "node:child_process";
 
 const FIRE_RED_SHA1 =
   "41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc";
-const REQUIRED_TRACKS = [291, 297, 298, 300, 301, 314];
+const REQUIRED_TRACKS = [291, 297, 298, 300, 301, 303, 314];
 const GBA_AUDIO_TOOLS_REVISION =
   "45e84ba8a5a47b22e56dac7e4e87b1ac605bcb19";
 const GBA_AUDIO_TOOLS_SOURCE =

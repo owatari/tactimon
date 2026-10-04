@@ -21,6 +21,7 @@ const FIRE_RED_TRACK_IDS = {
   wildBattle: 298,
   pallet: 300,
   oakLab: 301,
+  pokeCenter: 303,
   viridian: 314,
 } as const;
 
@@ -29,6 +30,7 @@ const FALLBACK_MAP_MUSIC: Record<string, number> = {
   "route-1": FIRE_RED_TRACK_IDS.route1,
   "viridian-city": FIRE_RED_TRACK_IDS.viridian,
   "oak-lab": FIRE_RED_TRACK_IDS.oakLab,
+  "viridian-mart": FIRE_RED_TRACK_IDS.pokeCenter,
 };
 
 function fireRedTrack(
@@ -56,6 +58,10 @@ const TRACK_REGISTRY = new Map<number, MusicTrack>([
   ],
   [FIRE_RED_TRACK_IDS.pallet, fireRedTrack(FIRE_RED_TRACK_IDS.pallet)],
   [FIRE_RED_TRACK_IDS.oakLab, fireRedTrack(FIRE_RED_TRACK_IDS.oakLab)],
+  [
+    FIRE_RED_TRACK_IDS.pokeCenter,
+    fireRedTrack(FIRE_RED_TRACK_IDS.pokeCenter),
+  ],
   [FIRE_RED_TRACK_IDS.viridian, fireRedTrack(FIRE_RED_TRACK_IDS.viridian)],
 ]);
 

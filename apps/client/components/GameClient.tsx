@@ -5,6 +5,7 @@ import {
   createPokemonProgression,
   grantTrainerBattleProgressToParty,
   grantWildBattleProgressToParty,
+  type DuelItemId,
   type DuelPokemonBuild,
   type PokemonProgression,
   type ProgressionReward,
@@ -17,9 +18,14 @@ import {
   type BattleOutcome,
 } from "@/components/FirstBattle";
 import { GameMusic } from "@/components/GameMusic";
+import { MartOverlay } from "@/components/MartOverlay";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
 import { StarterChoice } from "@/components/StarterChoice";
+import {
+  buyMartItem,
+  type MartPurchaseResult,
+} from "@/lib/mart";
 import {
   chooseStarter,
   DEFAULT_STORY_STATE,
@@ -98,6 +104,7 @@ export function GameClient() {
   );
   const [starterChoiceOpen, setStarterChoiceOpen] =
     useState(false);
+  const [martOpen, setMartOpen] = useState(false);
   const [battleSession, setBattleSession] =
     useState<BattleSession | null>(null);
   const [progressionQueue, setProgressionQueue] =
@@ -314,6 +321,43 @@ export function GameClient() {
     );
   };
 
+  const handleMartPurchase = (
+    itemId: DuelItemId,
+    quantity: number,
+  ): MartPurchaseResult => {
+    const preview = buyMartItem(
+      story.money,
+      story.inventory,
+      itemId,
+      quantity,
+    );
+
+    if (!preview.accepted) {
+      return preview;
+    }
+
+    setStory((current) => {
+      const result = buyMartItem(
+        current.money,
+        current.inventory,
+        itemId,
+        quantity,
+      );
+
+      if (!result.accepted) {
+        return current;
+      }
+
+      return {
+        ...current,
+        money: result.money,
+        inventory: result.inventory,
+      };
+    });
+
+    return preview;
+  };
+
   const finishProgression = (
     progression: PokemonProgression,
   ) => {
@@ -354,6 +398,7 @@ export function GameClient() {
 
   const paused =
     starterChoiceOpen ||
+    martOpen ||
     Boolean(battleSession) ||
     progressionQueue.length > 0;
   const battleMusicKind = battleSession
@@ -426,12 +471,22 @@ export function GameClient() {
             });
           }
         }}
+        onMartOpen={() => setMartOpen(true)}
       />
 
       {starterChoiceOpen && !story.starter && (
         <StarterChoice
           onChoose={handleChooseStarter}
           onClose={() => setStarterChoiceOpen(false)}
+        />
+      )}
+
+      {martOpen && (
+        <MartOverlay
+          money={story.money}
+          inventory={story.inventory}
+          onBuy={handleMartPurchase}
+          onClose={() => setMartOpen(false)}
         />
       )}
 

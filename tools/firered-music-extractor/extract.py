@@ -31,6 +31,7 @@ REQUIRED_TRACKS = {
     298: "wild-battle",
     300: "pallet-town",
     301: "oak-lab",
+    303: "poke-center-mart",
     314: "viridian-pewter",
 }
 

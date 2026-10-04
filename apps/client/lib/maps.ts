@@ -70,7 +70,7 @@ export type WorldMapDefinition = {
   label: string;
   layoutUrl: string;
   previewUrl: string;
-  worldUrl: string;
+  worldUrl: string | null;
   spawn: { x: number; y: number };
   fallbackMusicId: number;
   tilesets: {
@@ -133,6 +133,13 @@ const LAB_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/lab/attributes.bin",
 };
 
+const MART_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/mart/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/mart/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/mart/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/mart/attributes.bin",
+};
+
 export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
   "pallet-town": {
     id: "pallet-town",
@@ -184,6 +191,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: BUILDING_TILESET,
       secondary: LAB_TILESET,
+    },
+  },
+  "viridian-mart": {
+    id: "viridian-mart",
+    label: "Viridian Poké Mart",
+    layoutUrl: "/game-assets/maps/viridian-mart/layout.json",
+    previewUrl: "/game-assets/maps/viridian-mart/preview.png",
+    worldUrl: null,
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: MART_TILESET,
     },
   },
 };
@@ -300,6 +320,29 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "pallet-town",
       spawn: { x: 16, y: 14 },
+    };
+  }
+
+  if (
+    mapId === "viridian-city" &&
+    x === 36 &&
+    y === 19
+  ) {
+    return {
+      mapId: "viridian-mart",
+      spawn: { x: 4, y: 6 },
+    };
+  }
+
+  if (
+    mapId === "viridian-mart" &&
+    y === 7 &&
+    x >= 3 &&
+    x <= 5
+  ) {
+    return {
+      mapId: "viridian-city",
+      spawn: { x: 36, y: 20 },
     };
   }
 

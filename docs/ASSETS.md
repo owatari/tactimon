@@ -52,6 +52,6 @@ local-assets/extracted/firered/music/runtime/
 
 The external renderer is installed into `local-assets/.tools/` and is not vendored into Tactimon.
 
-The asset sync copies that runtime directory to `apps/client/public/game-assets/music/firered/` when its manifest exists. The current registry covers Pallet Town, Route 1, Viridian City, Oak's Lab, wild battles, and trainer/rival battles. The rival duel uses FireRed's trainer battle theme because FireRed exposes a rival encounter cue but no separate `MUS_VS_RIVAL` battle theme constant.
+The asset sync copies that runtime directory to `apps/client/public/game-assets/music/firered/` when its manifest exists. The current registry covers Pallet Town, Route 1, Viridian City, Oak's Lab, the Pokémon Center / Poké Mart theme, wild battles, and trainer/rival battles. The rival duel uses FireRed's trainer battle theme because FireRed exposes a rival encounter cue but no separate `MUS_VS_RIVAL` battle theme constant.
 
 Future dungeon, boss and raid music can be added to the same registry without coupling audio playback to the battle engine.
