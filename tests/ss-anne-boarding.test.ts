@@ -47,6 +47,38 @@ describe("S.S. Anne boarding", () => {
     }
   });
 
+  it("connects the exterior entrance to the 1F corridor", () => {
+    expect(
+      WORLD_MAPS["ss-anne-1f-corridor"],
+    ).toMatchObject({
+      label: "S.S. Anne 1F",
+      spawn: { x: 19, y: 1 },
+      fallbackMusicId: 304,
+    });
+
+    expect(
+      resolveWarpTransitionAt(
+        "ss-anne-exterior",
+        32,
+        14,
+      ),
+    ).toEqual({
+      mapId: "ss-anne-1f-corridor",
+      spawn: { x: 19, y: 1 },
+    });
+
+    expect(
+      resolveWarpTransitionAt(
+        "ss-anne-1f-corridor",
+        19,
+        1,
+      ),
+    ).toEqual({
+      mapId: "ss-anne-exterior",
+      spawn: { x: 32, y: 14 },
+    });
+  });
+
   it("uses Bill's S.S. Ticket as the boarding key", () => {
     expect(
       hasStoryKeyItem(DEFAULT_STORY_STATE, "ss-ticket"),

@@ -340,6 +340,13 @@ const VERMILION_TILESET: TilesetAssetDefinition = {
     "/game-assets/tilesets/vermilion-city/attributes.bin",
 };
 
+const SS_ANNE_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/ss-anne/tiles.4bpp",
+  palettesUrl: "/game-assets/tilesets/ss-anne/palettes.gbapal",
+  metatilesUrl: "/game-assets/tilesets/ss-anne/metatiles.bin",
+  attributesUrl: "/game-assets/tilesets/ss-anne/attributes.bin",
+};
+
 const CAVE_TILESET: TilesetAssetDefinition = {
   tilesUrl: "/game-assets/tilesets/cave/tiles.4bpp",
   palettesUrl: "/game-assets/tilesets/cave/palettes.gbapal",
@@ -597,6 +604,19 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: GENERAL_TILESET,
       secondary: VERMILION_TILESET,
+    },
+  },
+  "ss-anne-1f-corridor": {
+    id: "ss-anne-1f-corridor",
+    label: "S.S. Anne 1F",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-corridor/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-corridor/preview.png",
+    worldUrl: null,
+    spawn: { x: 19, y: 1 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
     },
   },
   "vermilion-pokemon-center": {
@@ -1565,6 +1585,50 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "vermilion-city",
       spawn: { x: x - 9, y: 33 },
+    };
+  }
+
+  if (
+    mapId === "ss-anne-exterior" &&
+    x === 32 &&
+    y === 14
+  ) {
+    return {
+      mapId: "ss-anne-1f-corridor",
+      spawn: { x: 19, y: 1 },
+    };
+  }
+
+  if (
+    mapId === "ss-anne-exterior" &&
+    x === 33 &&
+    y === 15
+  ) {
+    return {
+      mapId: "ss-anne-1f-corridor",
+      spawn: { x: 20, y: 0 },
+    };
+  }
+
+  if (
+    mapId === "ss-anne-1f-corridor" &&
+    x === 19 &&
+    y === 1
+  ) {
+    return {
+      mapId: "ss-anne-exterior",
+      spawn: { x: 32, y: 14 },
+    };
+  }
+
+  if (
+    mapId === "ss-anne-1f-corridor" &&
+    x === 20 &&
+    y === 0
+  ) {
+    return {
+      mapId: "ss-anne-exterior",
+      spawn: { x: 33, y: 15 },
     };
   }
 

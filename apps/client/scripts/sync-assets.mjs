@@ -144,6 +144,14 @@ const files = [
     "maps/ss-anne-exterior/preview.png",
   ],
   [
+    "maps/layouts/119_ssanne_1f_corridor_layout/layout.json",
+    "maps/ss-anne-1f-corridor/layout.json",
+  ],
+  [
+    "maps/layouts/119_ssanne_1f_corridor_layout/preview.png",
+    "maps/ss-anne-1f-corridor/preview.png",
+  ],
+  [
     "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
     "maps/vermilion-pokemon-center/layout.json",
   ],
@@ -569,6 +577,23 @@ const files = [
   [
     "tilesets/06_vermilioncity/attributes.bin",
     "tilesets/vermilion-city/attributes.bin",
+  ],
+
+  [
+    "tilesets/32_ssanne/tiles.4bpp",
+    "tilesets/ss-anne/tiles.4bpp",
+  ],
+  [
+    "tilesets/32_ssanne/palettes.gbapal",
+    "tilesets/ss-anne/palettes.gbapal",
+  ],
+  [
+    "tilesets/32_ssanne/metatiles.bin",
+    "tilesets/ss-anne/metatiles.bin",
+  ],
+  [
+    "tilesets/32_ssanne/attributes.bin",
+    "tilesets/ss-anne/attributes.bin",
   ],
 
   ["tilesets/15_cave/tiles.4bpp", "tilesets/cave/tiles.4bpp"],
