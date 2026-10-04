@@ -1,8 +1,12 @@
 import {
   calculateDuelPokemonMaxHp,
+  DUEL_MOVES,
   normalizeDuelMajorStatus,
+  normalizeDuelMovePp,
+  restoreDuelMovePp,
   type DuelMajorStatus,
   type DuelMoveId,
+  type DuelMovePp,
   type DuelSpeciesId,
   type StarterSpeciesId,
   type WildSpeciesId,
@@ -34,6 +38,8 @@ export interface PokemonProgression {
   /** Persistent non-volatile status. */
   status: DuelMajorStatus;
   activeMoves: DuelMoveId[];
+  /** Current PP for each active move; persisted between battles. */
+  movePp: DuelMovePp;
 }
 
 export interface ProgressionReward {
@@ -443,6 +449,8 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
 
   const evs = { ...ZERO_EVS };
 
+  const activeMoves = [...INITIAL_MOVES[species]];
+
   return {
     species,
     level: bounded,
@@ -454,7 +462,8 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
       evs,
     }),
     status: null,
-    activeMoves: [...INITIAL_MOVES[species]],
+    activeMoves,
+    movePp: restoreDuelMovePp(activeMoves),
   };
 }
 
@@ -518,6 +527,12 @@ export function normalizePokemonProgression(
         )
       : maxHp;
 
+  const activeMoves =
+    Array.isArray(input.activeMoves) &&
+    input.activeMoves.length > 0
+      ? [...input.activeMoves].slice(0, 4)
+      : [...base.activeMoves];
+
   return {
     species: input.species,
     level,
@@ -525,11 +540,11 @@ export function normalizePokemonProgression(
     evs,
     currentHp,
     status: normalizeDuelMajorStatus(input.status),
-    activeMoves:
-      Array.isArray(input.activeMoves) &&
-      input.activeMoves.length > 0
-        ? [...input.activeMoves].slice(0, 4)
-        : [...base.activeMoves],
+    activeMoves,
+    movePp: normalizeDuelMovePp(
+      activeMoves,
+      input.movePp,
+    ),
   };
 }
 
@@ -692,6 +707,8 @@ function grantExperience(
 
       if (progression.activeMoves.length < 4) {
         progression.activeMoves.push(moveId);
+        progression.movePp[moveId] =
+          DUEL_MOVES[moveId].maxPp;
         autoLearnedMoves.push(moveId);
       } else {
         pendingMoves.push(moveId);
@@ -807,6 +824,7 @@ export function resolveMoveLearning(
     ...input,
     evs: { ...input.evs },
     activeMoves: [...input.activeMoves],
+    movePp: { ...input.movePp },
   };
 
   if (replaceIndex === null) {
@@ -820,6 +838,18 @@ export function resolveMoveLearning(
     return progression;
   }
 
+  const replacedMoveId =
+    progression.activeMoves[replaceIndex];
   progression.activeMoves[replaceIndex] = newMoveId;
+  progression.movePp[newMoveId] =
+    DUEL_MOVES[newMoveId].maxPp;
+
+  if (
+    replacedMoveId !== newMoveId &&
+    !progression.activeMoves.includes(replacedMoveId)
+  ) {
+    delete progression.movePp[replacedMoveId];
+  }
+
   return progression;
 }

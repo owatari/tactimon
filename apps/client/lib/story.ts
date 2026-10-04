@@ -4,6 +4,7 @@ import {
   createStarterProgression,
   normalizeDuelMajorStatus,
   normalizePokemonProgression,
+  restoreDuelMovePp,
   rivalStarterFor,
   starterDisplayName,
   type DuelInventory,
@@ -124,6 +125,7 @@ function normalizeCapturedPokemon(
     currentHp?: unknown;
     status?: unknown;
     activeMoves?: PokemonProgression["activeMoves"];
+    movePp?: PokemonProgression["movePp"];
   };
 
   if (
@@ -165,6 +167,7 @@ function normalizeCapturedPokemon(
     activeMoves: Array.isArray(candidate.activeMoves)
       ? candidate.activeMoves
       : base.activeMoves,
+    movePp: candidate.movePp ?? base.movePp,
   });
 
   return {
@@ -344,6 +347,9 @@ function healPokemonProgression(
     ...pokemon,
     currentHp: calculateDuelPokemonMaxHp(pokemon),
     status: null,
+    movePp: restoreDuelMovePp(
+      pokemon.activeMoves,
+    ),
   };
 }
 

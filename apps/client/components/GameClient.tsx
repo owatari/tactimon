@@ -12,8 +12,10 @@ import {
   grantTrainerBattleProgressToParty,
   grantWildBattleProgressToParty,
   normalizeDuelMajorStatus,
+  normalizeDuelMovePp,
   type DuelItemId,
   type DuelMajorStatus,
+  type DuelMovePp,
   type DuelPokemonBuild,
   type PokemonProgression,
   type ProgressionReward,
@@ -126,6 +128,7 @@ function applyBattleHealth(
   partyIndices: readonly number[],
   playerHp: readonly number[],
   playerStatuses: readonly DuelMajorStatus[],
+  playerMovePp: readonly DuelMovePp[],
 ): StoryState {
   let playerPokemon = current.playerPokemon;
   const capturedPokemon = [...current.capturedPokemon];
@@ -151,6 +154,10 @@ function applyBattleHealth(
           ...playerPokemon,
           currentHp,
           status,
+          movePp: normalizeDuelMovePp(
+            playerPokemon.activeMoves,
+            playerMovePp[outcomeIndex],
+          ),
         };
       }
       return;
@@ -163,6 +170,10 @@ function applyBattleHealth(
         ...existing,
         currentHp,
         status,
+        movePp: normalizeDuelMovePp(
+          existing.activeMoves,
+          playerMovePp[outcomeIndex],
+        ),
       };
     }
   });
@@ -253,6 +264,7 @@ export function GameClient() {
         species: pokemon.species,
         level: pokemon.level,
         moves: [...pokemon.activeMoves],
+        movePp: { ...pokemon.movePp },
         evs: pokemon.evs,
         currentHp: pokemon.currentHp,
         status: pokemon.status,
@@ -339,6 +351,7 @@ export function GameClient() {
         session.partyIndices,
         outcome.playerHp,
         outcome.playerStatuses,
+        outcome.playerMovePp,
       ),
       inventory: { ...outcome.inventory },
     }));
@@ -364,6 +377,10 @@ export function GameClient() {
         return {
           ...pokemon,
           status,
+          movePp: normalizeDuelMovePp(
+            pokemon.activeMoves,
+            outcome.playerMovePp[outcomeIndex],
+          ),
           currentHp:
             typeof hp === "number" && Number.isFinite(hp)
               ? Math.max(0, Math.trunc(hp))

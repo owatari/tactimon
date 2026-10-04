@@ -1,4 +1,7 @@
-import { calculateDuelPokemonMaxHp } from "../src/duel";
+import {
+  calculateDuelPokemonMaxHp,
+  DUEL_MOVES,
+} from "../src/duel";
 import { describe, expect, it } from "vitest";
 import {
   createPokemonProgression,
@@ -426,5 +429,57 @@ describe("Viridian Forest species progression", () => {
     expect(experienceRewardForWild("metapod", 5)).toBe(51);
     expect(experienceRewardForWild("kakuna", 5)).toBe(50);
     expect(experienceRewardForWild("pikachu", 5)).toBe(58);
+  });
+});
+
+
+describe("persistent move PP", () => {
+  it("migrates old saves without PP to full PP", () => {
+    const migrated = normalizePokemonProgression({
+      species: "pikachu",
+      level: 5,
+      activeMoves: ["thunder-shock", "growl"],
+    });
+
+    expect(migrated.movePp["thunder-shock"]).toBe(
+      DUEL_MOVES["thunder-shock"].maxPp,
+    );
+    expect(migrated.movePp.growl).toBe(
+      DUEL_MOVES.growl.maxPp,
+    );
+  });
+
+  it("preserves spent PP while normalizing progression", () => {
+    const migrated = normalizePokemonProgression({
+      species: "bulbasaur",
+      level: 5,
+      activeMoves: ["tackle", "growl"],
+      movePp: { tackle: 3, growl: 0 },
+    });
+
+    expect(migrated.movePp.tackle).toBe(3);
+    expect(migrated.movePp.growl).toBe(0);
+  });
+
+  it("gives a newly learned move full PP", () => {
+    const progression = createStarterProgression("bulbasaur");
+    progression.activeMoves = [
+      "tackle",
+      "growl",
+      "vine-whip",
+      "razor-leaf",
+    ];
+    progression.movePp.tackle = 1;
+
+    const next = resolveMoveLearning(
+      progression,
+      "seed-bomb",
+      1,
+    );
+
+    expect(next.movePp["seed-bomb"]).toBe(
+      DUEL_MOVES["seed-bomb"].maxPp,
+    );
+    expect(next.movePp.tackle).toBe(1);
   });
 });

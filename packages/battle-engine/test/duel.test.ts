@@ -1217,3 +1217,96 @@ describe("tactical AI and move ranges", () => {
     expect(hardens).toHaveLength(1);
   });
 });
+
+
+describe("move PP", () => {
+  it("consumes PP and rejects a move after its PP reaches zero", () => {
+    let state = createTrainerDuel({
+      seed: 501,
+      width: 5,
+      height: 5,
+      players: [{
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle"],
+        movePp: { tackle: 1 },
+      }],
+      rivals: [{
+        species: "charmander",
+        level: 5,
+        moves: ["scratch"],
+      }],
+    });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const rival = state.units.find((unit) => unit.side === "rival")!;
+    state = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, ap: 8, position: { x: 1, y: 1 } }
+          : { ...unit, position: { x: 2, y: 1 } },
+      ),
+    };
+
+    const first = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "tackle",
+      targetId: rival.id,
+    });
+    expect(first.accepted).toBe(true);
+    expect(first.state.units.find(
+      (unit) => unit.id === player.id,
+    )?.movePp.tackle).toBe(0);
+
+    const second = applyDuelAction(first.state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "tackle",
+      targetId: rival.id,
+    });
+    expect(second.accepted).toBe(false);
+    expect(second.reason).toBe("no-pp");
+  });
+
+  it("uses Struggle instead of softlocking AI when every move is empty", () => {
+    let state = createTrainerDuel({
+      seed: 502,
+      width: 5,
+      height: 5,
+      players: [{
+        species: "bulbasaur",
+        level: 5,
+        moves: ["tackle"],
+      }],
+      rivals: [{
+        species: "pidgey",
+        level: 5,
+        moves: ["tackle"],
+        movePp: { tackle: 0 },
+      }],
+    });
+    const player = state.units.find((unit) => unit.side === "player")!;
+    const rival = state.units.find((unit) => unit.side === "rival")!;
+    state = {
+      ...state,
+      activeUnitId: rival.id,
+      units: state.units.map((unit) =>
+        unit.id === rival.id
+          ? { ...unit, position: { x: 1, y: 1 } }
+          : unit.id === player.id
+            ? { ...unit, position: { x: 2, y: 1 } }
+            : unit,
+      ),
+    };
+
+    const turn = resolveSimpleAiTurnDetailed(state, "rival");
+
+    expect(turn.steps.some(
+      (step) =>
+        step.presentation?.kind === "move" &&
+        step.presentation.moveId === "struggle",
+    )).toBe(true);
+  });
+});

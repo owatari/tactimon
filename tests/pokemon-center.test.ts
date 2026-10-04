@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   calculateDuelPokemonMaxHp,
   createPokemonProgression,
+  DUEL_MOVES,
 } from "../packages/battle-engine/src";
 import {
   healStoryParty,
@@ -128,5 +129,29 @@ describe("Viridian Pokémon Center", () => {
         healStoryParty(fainted),
       ),
     ).toBe(true);
+  });
+});
+
+
+describe("Pokémon Center PP", () => {
+  it("restores every active move to full PP", () => {
+    const story = damagedStory();
+    if (!story.playerPokemon) {
+      throw new Error("Starter missing");
+    }
+    story.playerPokemon.movePp = {
+      ...story.playerPokemon.movePp,
+      tackle: 0,
+      growl: 1,
+    };
+
+    const healed = healStoryParty(story);
+
+    expect(healed.playerPokemon?.movePp.tackle).toBe(
+      DUEL_MOVES.tackle.maxPp,
+    );
+    expect(healed.playerPokemon?.movePp.growl).toBe(
+      DUEL_MOVES.growl.maxPp,
+    );
   });
 });

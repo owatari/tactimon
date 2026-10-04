@@ -11,6 +11,7 @@ import {
   experienceProgress,
   getActiveDuelUnit,
   getDuelCaptureEligibility,
+  getDuelMovePp,
   getReachableCells,
   manhattanDistance,
   resolveSimpleAiTurnDetailed,
@@ -19,6 +20,7 @@ import {
   type DuelItemId,
   type DuelMajorStatus,
   type DuelMoveId,
+  type DuelMovePp,
   type DuelPoint,
   type DuelPokemonBuild,
   type DuelState,
@@ -40,6 +42,7 @@ export type BattleOutcome = {
   inventory: DuelInventory;
   playerHp: number[];
   playerStatuses: DuelMajorStatus[];
+  playerMovePp: DuelMovePp[];
   defeatedEnemies: Array<{
     species: DuelSpeciesId;
     level: number;
@@ -278,6 +281,7 @@ export function FirstBattle({
       species: progression.species,
       level: progression.level,
       moves: progression.activeMoves,
+      movePp: { ...progression.movePp },
       evs: progression.evs,
       currentHp: progression.currentHp,
       status: progression.status,
@@ -1300,9 +1304,27 @@ export function FirstBattle({
 
                 {command === "moves" && (
                   <div className="battle-action-list">
-                    {player.moves.map((moveId) => {
+                    {[
+                      ...player.moves,
+                      ...(player.moves.length > 0 &&
+                      player.moves.every(
+                        (moveId) =>
+                          getDuelMovePp(player, moveId) <= 0,
+                      )
+                        ? (["struggle"] as DuelMoveId[])
+                        : []),
+                    ].map((moveId) => {
                       const move = DUEL_MOVES[moveId];
-                      const canPay = player.ap >= move.apCost;
+                      const currentPp =
+                        moveId === "struggle"
+                          ? null
+                          : getDuelMovePp(player, moveId);
+                      const hasPp =
+                        moveId === "struggle" ||
+                        (currentPp ?? 0) > 0;
+                      const canPay =
+                        player.ap >= move.apCost &&
+                        hasPp;
 
                       return (
                         <button
@@ -1317,6 +1339,9 @@ export function FirstBattle({
                           <strong>{move.name}</strong>
                           <span>
                             {move.apCost} AP ·{" "}
+                            {moveId === "struggle"
+                              ? "PP —"
+                              : `PP ${currentPp} / ${move.maxPp}`} ·{" "}
                             {move.targeting === "self"
                               ? "self"
                               : `${move.minRange}–${move.maxRange}`}
@@ -1528,6 +1553,9 @@ export function FirstBattle({
                   inventory: { ...state.items },
                   playerHp: playerUnits.map((unit) => unit.hp),
                   playerStatuses: playerUnits.map((unit) => unit.status),
+                  playerMovePp: playerUnits.map(
+                    (unit) => ({ ...unit.movePp }),
+                  ),
                   defeatedEnemies,
                   capture: state.captureResult
                     ? {
@@ -1559,6 +1587,9 @@ export function FirstBattle({
                   inventory: { ...state.items },
                   playerHp: playerUnits.map((unit) => unit.hp),
                   playerStatuses: playerUnits.map((unit) => unit.status),
+                  playerMovePp: playerUnits.map(
+                    (unit) => ({ ...unit.movePp }),
+                  ),
                   defeatedEnemies,
                 })
               }

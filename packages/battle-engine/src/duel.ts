@@ -78,7 +78,10 @@ export type DuelMoveId =
   | "flame-burst"
   | "water-gun"
   | "bite"
-  | "aqua-jet";
+  | "aqua-jet"
+  | "struggle";
+
+export type DuelMovePp = Partial<Record<DuelMoveId, number>>;
 
 export type DuelMoveTargeting =
   | "single-enemy"
@@ -107,6 +110,8 @@ export interface DuelPokemonBuild {
   species: DuelSpeciesId;
   level: number;
   moves: DuelMoveId[];
+  /** Persistent current PP keyed by learned move. Missing entries start full. */
+  movePp?: DuelMovePp;
   evs?: Partial<DuelEvSpread>;
   /** Persistent HP carried between battles. Omit to start at full HP. */
   currentHp?: number;
@@ -179,6 +184,7 @@ export interface DuelMove {
   description: string;
   power: number | null;
   apCost: number;
+  maxPp: number;
   minRange: number;
   maxRange: number;
   secondaryStatus?: Exclude<DuelMajorStatus, null>;
@@ -261,6 +267,7 @@ export interface DuelUnit {
   maxMp: number;
   position: DuelPoint;
   moves: DuelMoveId[];
+  movePp: DuelMovePp;
   captureAttempted: boolean;
 }
 
@@ -736,6 +743,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Avança sobre um inimigo adjacente e causa dano físico.",
     power: 40,
     apCost: 4,
+    maxPp: 35,
     minRange: 1,
     maxRange: 1,
   },
@@ -750,6 +758,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Golpe de contato em um inimigo adjacente.",
     power: 40,
     apCost: 4,
+    maxPp: 35,
     minRange: 1,
     maxRange: 1,
   },
@@ -764,6 +773,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Reduz o Attack do alvo em 1 estágio.",
     power: null,
     apCost: 2,
+    maxPp: 40,
     minRange: 1,
     maxRange: 3,
     effect: "attack-down",
@@ -779,6 +789,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Reduz a Defense do alvo em 1 estágio.",
     power: null,
     apCost: 2,
+    maxPp: 30,
     minRange: 1,
     maxRange: 3,
     effect: "defense-down",
@@ -795,6 +806,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Prende o alvo em seda e reduz sua Speed em 1 estágio.",
     power: null,
     apCost: 2,
+    maxPp: 40,
     minRange: 1,
     maxRange: 3,
     effect: "speed-down",
@@ -811,6 +823,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Dispara um ferrão venenoso com 30% de chance de envenenar.",
     power: 15,
     apCost: 3,
+    maxPp: 35,
     minRange: 1,
     maxRange: 3,
     secondaryStatus: "poison",
@@ -827,6 +840,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Bica um inimigo adjacente.",
     power: 35,
     apCost: 3,
+    maxPp: 35,
     minRange: 1,
     maxRange: 1,
   },
@@ -841,6 +855,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Intimida o alvo e reduz sua Defense em 1 estágio.",
     power: null,
     apCost: 2,
+    maxPp: 30,
     minRange: 1,
     maxRange: 3,
     effect: "defense-down",
@@ -856,6 +871,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Enrijece o corpo e aumenta a própria Defense em 1 estágio.",
     power: null,
     apCost: 2,
+    maxPp: 30,
     minRange: 0,
     maxRange: 0,
     effect: "defense-up",
@@ -872,6 +888,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Enrola o corpo e aumenta a própria Defense em 1 estágio.",
     power: null,
     apCost: 2,
+    maxPp: 40,
     minRange: 0,
     maxRange: 0,
     effect: "defense-up",
@@ -887,6 +904,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Aperta um inimigo adjacente e causa dano físico.",
     power: 15,
     apCost: 3,
+    maxPp: 20,
     minRange: 1,
     maxRange: 1,
   },
@@ -902,6 +920,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Derruba rochas sobre o alvo e reduz sua Speed em 1 estágio.",
     power: 50,
     apCost: 4,
+    maxPp: 10,
     minRange: 1,
     maxRange: 3,
     effect: "speed-down",
@@ -918,6 +937,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Dispara uma descarga com 10% de chance de paralisar.",
     power: 40,
     apCost: 4,
+    maxPp: 30,
     minRange: 1,
     maxRange: 4,
     secondaryStatus: "paralysis",
@@ -934,6 +954,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Chicoteia um alvo a até 2 tiles de distância.",
     power: 45,
     apCost: 4,
+    maxPp: 10,
     minRange: 1,
     maxRange: 2,
   },
@@ -948,6 +969,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Lança folhas cortantes a média distância.",
     power: 55,
     apCost: 4,
+    maxPp: 25,
     minRange: 1,
     maxRange: 4,
   },
@@ -962,6 +984,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Projétil de sementes de alto impacto.",
     power: 65,
     apCost: 5,
+    maxPp: 15,
     minRange: 1,
     maxRange: 4,
   },
@@ -977,6 +1000,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
       "Dispara brasas com 10% de chance de causar Burn.",
     power: 40,
     apCost: 4,
+    maxPp: 25,
     minRange: 1,
     maxRange: 4,
     secondaryStatus: "burn",
@@ -993,6 +1017,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Ataque físico pesado contra um alvo adjacente.",
     power: 50,
     apCost: 4,
+    maxPp: 35,
     minRange: 1,
     maxRange: 1,
   },
@@ -1007,6 +1032,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Projétil de fogo mais forte para média distância.",
     power: 65,
     apCost: 5,
+    maxPp: 15,
     minRange: 1,
     maxRange: 4,
   },
@@ -1021,6 +1047,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Jato d'água que alcança até 4 tiles.",
     power: 40,
     apCost: 4,
+    maxPp: 25,
     minRange: 1,
     maxRange: 4,
   },
@@ -1035,6 +1062,7 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Mordida forte contra um alvo adjacente.",
     power: 60,
     apCost: 4,
+    maxPp: 25,
     minRange: 1,
     maxRange: 1,
   },
@@ -1049,10 +1077,80 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     description: "Investida aquática rápida em curto alcance.",
     power: 65,
     apCost: 5,
+    maxPp: 20,
     minRange: 1,
     maxRange: 2,
   },
+  struggle: {
+    id: "struggle",
+    name: "Struggle",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description:
+      "Ataque de emergência usado apenas quando todos os outros golpes estão sem PP.",
+    power: 50,
+    apCost: 4,
+    maxPp: 0,
+    minRange: 1,
+    maxRange: 1,
+  },
+
 };
+
+export function normalizeDuelMovePp(
+  moveIds: readonly DuelMoveId[],
+  input?: DuelMovePp | null,
+): DuelMovePp {
+  const normalized: DuelMovePp = {};
+
+  for (const moveId of moveIds) {
+    if (moveId === "struggle") continue;
+    const move = DUEL_MOVES[moveId];
+    if (!move) continue;
+
+    const raw = input?.[moveId];
+    normalized[moveId] =
+      typeof raw === "number" && Number.isFinite(raw)
+        ? Math.max(
+            0,
+            Math.min(move.maxPp, Math.trunc(raw)),
+          )
+        : move.maxPp;
+  }
+
+  return normalized;
+}
+
+export function restoreDuelMovePp(
+  moveIds: readonly DuelMoveId[],
+): DuelMovePp {
+  return normalizeDuelMovePp(moveIds);
+}
+
+export function getDuelMovePp(
+  unit: Pick<DuelUnit, "moves" | "movePp">,
+  moveId: DuelMoveId,
+): number {
+  if (moveId === "struggle") {
+    return unit.moves.every(
+      (knownMoveId) =>
+        (unit.movePp[knownMoveId] ?? 0) <= 0,
+    )
+      ? 1
+      : 0;
+  }
+
+  return Math.max(
+    0,
+    Math.min(
+      DUEL_MOVES[moveId]?.maxPp ?? 0,
+      Math.trunc(unit.movePp[moveId] ?? 0),
+    ),
+  );
+}
 
 export function rivalStarterFor(
   playerStarter: StarterSpeciesId,
@@ -1504,6 +1602,10 @@ function makeUnit(
     maxMp: 3,
     position,
     moves: [...build.moves].slice(0, 4),
+    movePp: normalizeDuelMovePp(
+      [...build.moves].slice(0, 4),
+      build.movePp,
+    ),
     captureAttempted: false,
   };
 }
@@ -1798,6 +1900,7 @@ function cloneState(state: DuelState): DuelState {
       position: { ...unit.position },
       types: [...unit.types],
       moves: [...unit.moves],
+      movePp: { ...unit.movePp },
     })),
     log: [...state.log],
   };
@@ -2413,10 +2516,19 @@ export function applyDuelAction(
     move?.targeting === "self"
       ? target?.id === actor.id
       : target?.side !== actor.side;
+  const usingStruggle =
+    action.moveId === "struggle";
+  const struggleAllowed =
+    usingStruggle &&
+    actor.moves.length > 0 &&
+    actor.moves.every(
+      (moveId) => getDuelMovePp(actor, moveId) <= 0,
+    );
 
   if (
     !move ||
-    !actor.moves.includes(move.id) ||
+    (!actor.moves.includes(move.id) &&
+      !struggleAllowed) ||
     !target ||
     target.hp <= 0 ||
     !targetMatchesMove
@@ -2425,6 +2537,17 @@ export function applyDuelAction(
       state: input,
       accepted: false,
       reason: "invalid-move-target",
+    };
+  }
+
+  if (
+    !usingStruggle &&
+    getDuelMovePp(actor, move.id) <= 0
+  ) {
+    return {
+      state: input,
+      accepted: false,
+      reason: "no-pp",
     };
   }
 
@@ -2450,6 +2573,13 @@ export function applyDuelAction(
       accepted: false,
       reason: "target-out-of-range",
     };
+  }
+
+  if (!usingStruggle) {
+    actor.movePp[move.id] = Math.max(
+      0,
+      getDuelMovePp(actor, move.id) - 1,
+    );
   }
 
   if (paralysisBlocksMove(state, actor)) {
@@ -2551,6 +2681,45 @@ export function applyDuelAction(
       if (!sideHasLivingUnit(state, target.side)) {
         state.status = "finished";
         state.winner = actor.side;
+      }
+    }
+
+    if (usingStruggle && actor.hp > 0) {
+      const recoil = Math.max(
+        1,
+        Math.floor(actor.maxHp / 4),
+      );
+      actor.hp = Math.max(0, actor.hp - recoil);
+      appendLog(
+        state,
+        `Struggle causou ${recoil} de recoil em ${actor.displayName}.`,
+      );
+
+      if (actor.hp <= 0) {
+        appendLog(
+          state,
+          `${actor.displayName} desmaiou com o recoil de Struggle.`,
+        );
+
+        const actorSideAlive = sideHasLivingUnit(
+          state,
+          actor.side,
+        );
+        const targetSideAlive = sideHasLivingUnit(
+          state,
+          target.side,
+        );
+
+        if (!actorSideAlive || !targetSideAlive) {
+          state.status = "finished";
+          state.winner = actorSideAlive
+            ? actor.side
+            : targetSideAlive
+              ? target.side
+              : null;
+        } else {
+          resolveTurnEnd(state, actor);
+        }
       }
     }
   } else if (move.effect === "attack-down") {
@@ -2979,7 +3148,17 @@ function chooseAiCandidate(
   );
   const candidates: AiCandidate[] = [];
 
-  for (const moveId of actor.moves) {
+  const usableMoveIds = actor.moves.filter(
+    (moveId) => getDuelMovePp(actor, moveId) > 0,
+  );
+  const candidateMoveIds: DuelMoveId[] =
+    usableMoveIds.length > 0
+      ? usableMoveIds
+      : actor.moves.length > 0
+        ? ["struggle"]
+        : [];
+
+  for (const moveId of candidateMoveIds) {
     const move = DUEL_MOVES[moveId];
     if (!move || actor.ap < move.apCost) {
       continue;
