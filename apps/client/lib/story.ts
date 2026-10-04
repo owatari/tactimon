@@ -804,6 +804,16 @@ export function markStoryTrainerDefeated(
   return next;
 }
 
+export function hasStoryBadge(
+  story: StoryState,
+  badgeId: StoryBadgeId,
+): boolean {
+  return (
+    hasStoryPlayerEvent(story, "badge", badgeId) ||
+    story.badgeIds.includes(badgeId)
+  );
+}
+
 export function grantStoryBadge(
   story: StoryState,
   badgeId: StoryBadgeId,

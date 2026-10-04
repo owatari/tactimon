@@ -38,6 +38,7 @@ import {
 import {
   getStoryBillStage,
   getStoryFossilChoice,
+  hasStoryBadge,
   hasStoryCollectedItem,
   hasStoryKeyItem,
   isStoryObstacleCleared,
@@ -1672,7 +1673,10 @@ export function OverworldGame({
         if (
           mapIdRef.current === "pewter-city" &&
           edgeTransition.mapId === "route-3" &&
-          !storyRef.current.badgeIds.includes("boulder")
+          !hasStoryBadge(
+            storyRef.current,
+            "boulder",
+          )
         ) {
           showInteraction(
             "A passagem para a Route 3 abre depois de vencer Brock e conquistar a Boulder Badge.",
@@ -1684,7 +1688,8 @@ export function OverworldGame({
         if (
           mapIdRef.current === "cerulean-city" &&
           edgeTransition.mapId === "route-24" &&
-          !storyRef.current.defeatedTrainerIds.includes(
+          !isStoryTrainerDefeated(
+            storyRef.current,
             CERULEAN_RIVAL_TRAINER_ID,
           )
         ) {
@@ -1698,7 +1703,8 @@ export function OverworldGame({
         if (
           mapIdRef.current === "cerulean-city" &&
           edgeTransition.mapId === "route-5" &&
-          !storyRef.current.defeatedTrainerIds.includes(
+          !isStoryTrainerDefeated(
+            storyRef.current,
             CERULEAN_ROCKET_TRAINER_ID,
           )
         ) {
@@ -1812,7 +1818,8 @@ export function OverworldGame({
 
       if (
         warp?.mapId === "ss-anne-captains-office" &&
-        !storyRef.current.defeatedTrainerIds.includes(
+        !isStoryTrainerDefeated(
+          storyRef.current,
           SS_ANNE_RIVAL_TRAINER_ID,
         )
       ) {
@@ -1891,11 +1898,15 @@ export function OverworldGame({
       const currentStory = storyRef.current;
 
       if (
+        isStoryTrainerDefeated(
+          currentStory,
+          CERULEAN_RIVAL_TRAINER_ID,
+        ) ||
         !isCeruleanRivalTriggerAt(
           mapIdRef.current,
           player.tileX,
           player.tileY,
-          currentStory.defeatedTrainerIds,
+          [],
         ) ||
         !currentStory.firstBattleComplete ||
         !currentStory.playerPokemon ||
@@ -1930,11 +1941,15 @@ export function OverworldGame({
       const currentStory = storyRef.current;
 
       if (
+        isStoryTrainerDefeated(
+          currentStory,
+          SS_ANNE_RIVAL_TRAINER_ID,
+        ) ||
         !isSsAnneRivalTriggerAt(
           mapIdRef.current,
           player.tileX,
           player.tileY,
-          currentStory.defeatedTrainerIds,
+          [],
         ) ||
         !currentStory.firstBattleComplete ||
         !currentStory.playerPokemon ||
@@ -1969,6 +1984,10 @@ export function OverworldGame({
       const currentStory = storyRef.current;
 
       if (
+        isStoryTrainerDefeated(
+          currentStory,
+          CERULEAN_ROCKET_TRAINER_ID,
+        ) ||
         !isCeruleanRocketTriggerAt(
           mapIdRef.current,
           player.tileX,
@@ -1977,7 +1996,7 @@ export function OverworldGame({
             currentStory,
             "ss-ticket",
           ),
-          currentStory.defeatedTrainerIds,
+          [],
         ) ||
         !currentStory.firstBattleComplete ||
         !currentStory.playerPokemon ||

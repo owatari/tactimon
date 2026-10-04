@@ -4,6 +4,8 @@ import {
   collectOverworldItem,
   DEFAULT_STORY_STATE,
   getStoryFossilChoice,
+  grantStoryBadge,
+  hasStoryBadge,
   hasStoryCollectedItem,
   hasStoryFieldTechnique,
   interactWithCutObstacle,
@@ -89,6 +91,23 @@ describe("per-player world state", () => {
       ),
     ).toBe(false);
     expect(playerB.inventory.potion).toBe(1);
+  });
+
+  it("badges unlock gates only for the owning player", () => {
+    const playerA = grantStoryBadge(
+      normalizeStoryState(DEFAULT_STORY_STATE),
+      "boulder",
+    );
+    const playerB = normalizeStoryState(
+      DEFAULT_STORY_STATE,
+    );
+
+    expect(
+      hasStoryBadge(playerA, "boulder"),
+    ).toBe(true);
+    expect(
+      hasStoryBadge(playerB, "boulder"),
+    ).toBe(false);
   });
 
   it("Cut removes an obstacle only for the player who used it", () => {
