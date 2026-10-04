@@ -8,6 +8,7 @@ import {
   createWildDuel,
   DUEL_ITEMS,
   DUEL_MOVES,
+  calculateTypeEffectiveness,
   experienceProgress,
   getActiveDuelUnit,
   getDuelCaptureEligibility,
@@ -34,7 +35,11 @@ import {
 import { BattleVfx } from "@/components/BattleVfx";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
-import type { BattleSceneContext } from "@/lib/maps";
+import {
+  TILE_SIZE,
+  WORLD_ZOOM,
+  type BattleSceneContext,
+} from "@/lib/maps";
 import type { StoryBadgeId } from "@/lib/story";
 
 export type BattleOutcome = {
@@ -378,6 +383,11 @@ export function FirstBattle({
   const [autoBattle, setAutoBattle] = useState(false);
   const [autoCatch, setAutoCatch] = useState(false);
   const [battleSpeed, setBattleSpeed] = useState<1 | 2>(1);
+  const [battleZoom, setBattleZoom] = useState<1 | 2 | 3>(
+    WORLD_ZOOM as 3,
+  );
+  const [hoveredTargetId, setHoveredTargetId] =
+    useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [vfx, setVfx] = useState<VfxEvent | null>(null);
   const [animations, setAnimations] = useState<
@@ -590,6 +600,18 @@ export function FirstBattle({
       battleSpeedRef.current === 1 ? 2 : 1;
     battleSpeedRef.current = next;
     setBattleSpeed(next);
+  };
+
+  const zoomBattleOut = () => {
+    setBattleZoom((current) =>
+      current === 3 ? 2 : 1,
+    );
+  };
+
+  const zoomBattleIn = () => {
+    setBattleZoom((current) =>
+      current === 1 ? 2 : 3,
+    );
   };
 
   const toggleAutoBattle = () => {
@@ -1036,6 +1058,17 @@ export function FirstBattle({
     notice ?? state.log[state.log.length - 1] ?? "";
   const playerXp = experienceProgress(progression);
 
+  const battleTilePixels =
+    TILE_SIZE * battleZoom;
+  const battleArenaWidth =
+    state.width * battleTilePixels;
+  const battleArenaHeight =
+    state.height * battleTilePixels;
+  const naturalMapWidth =
+    context.mapWidth * TILE_SIZE * battleZoom;
+  const naturalMapHeight =
+    context.mapHeight * TILE_SIZE * battleZoom;
+
   return (
     <div
       className={`battle-overlay battle-speed-${battleSpeed}`}
@@ -1111,6 +1144,26 @@ export function FirstBattle({
               >
                 {battleSpeed}× Speed
               </button>
+              <div
+                className="battle-zoom-control"
+                aria-label="Zoom da arena"
+              >
+                <button
+                  type="button"
+                  disabled={battleZoom === 1}
+                  onClick={zoomBattleOut}
+                >
+                  −
+                </button>
+                <span>MAP {battleZoom}×</span>
+                <button
+                  type="button"
+                  disabled={battleZoom === 3}
+                  onClick={zoomBattleIn}
+                >
+                  +
+                </button>
+              </div>
               {(command === "walk" ||
                 command === "move-target" ||
                 command === "item-target") &&
@@ -1239,25 +1292,30 @@ export function FirstBattle({
           })}
         </div>
 
-        <div
-          className="duel-grid-shell clean-arena"
-          style={{
-            aspectRatio: `${state.width} / ${state.height}`,
-          }}
-        >
+        <div className="battle-arena-scroll">
+          <div
+            className="duel-grid-shell clean-arena"
+            style={{
+              width: `${battleArenaWidth + 20}px`,
+              height: `${battleArenaHeight + 20}px`,
+              minWidth: `${battleArenaWidth + 20}px`,
+              minHeight: `${battleArenaHeight + 20}px`,
+            }}
+          >
           <div className="duel-map-crop" aria-hidden="true">
             <div
               className="duel-map-render"
               style={{
-                width:
-                  `${(context.mapWidth / state.width) * 100}%`,
-                height:
-                  `${(context.mapHeight / state.height) * 100}%`,
+                width: `${naturalMapWidth}px`,
+                height: `${naturalMapHeight}px`,
                 left:
-                  `${(-context.cropX / state.width) * 100}%`,
+                  `${-context.cropX * battleTilePixels}px`,
                 top:
-                  `${(-context.cropY / state.height) * 100}%`,
-                backgroundImage: `url("${context.previewUrl}")`,
+                  `${-context.cropY * battleTilePixels}px`,
+                backgroundImage:
+                  `url("${context.previewUrl}")`,
+                backgroundSize:
+                  `${naturalMapWidth}px ${naturalMapHeight}px`,
               }}
             />
           </div>
@@ -1265,8 +1323,10 @@ export function FirstBattle({
           <div
             className="duel-grid"
             style={{
-              gridTemplateColumns: `repeat(${state.width}, 1fr)`,
-              gridTemplateRows: `repeat(${state.height}, 1fr)`,
+              gridTemplateColumns:
+                `repeat(${state.width}, ${battleTilePixels}px)`,
+              gridTemplateRows:
+                `repeat(${state.height}, ${battleTilePixels}px)`,
             }}
           >
             {Array.from({
@@ -1370,6 +1430,16 @@ export function FirstBattle({
                     height: `${100 / state.height}%`,
                   }}
                   onClick={() => handleUnitTarget(unit.id)}
+                  onMouseEnter={() => {
+                    if (targetable) {
+                      setHoveredTargetId(unit.id);
+                    }
+                  }}
+                  onMouseLeave={() =>
+                    setHoveredTargetId((current) =>
+                      current === unit.id ? null : current,
+                    )
+                  }
                   disabled={!targetable || busy}
                 >
                   <div className="duel-unit">
@@ -1403,6 +1473,49 @@ export function FirstBattle({
                     <span className="duel-unit-label">
                       {unit.displayName}
                     </span>
+                    {hoveredTargetId === unit.id &&
+                      selectedMove &&
+                      DUEL_MOVES[selectedMove].category !==
+                        "status" && (
+                        <span
+                          className={[
+                            "move-effectiveness-preview",
+                            calculateTypeEffectiveness(
+                              DUEL_MOVES[selectedMove].type,
+                              unit.types,
+                            ) === 0
+                              ? "immune"
+                              : calculateTypeEffectiveness(
+                                    DUEL_MOVES[selectedMove].type,
+                                    unit.types,
+                                  ) > 1
+                                ? "super"
+                                : calculateTypeEffectiveness(
+                                      DUEL_MOVES[selectedMove].type,
+                                      unit.types,
+                                    ) < 1
+                                  ? "resisted"
+                                  : "neutral",
+                          ].join(" ")}
+                        >
+                          {calculateTypeEffectiveness(
+                            DUEL_MOVES[selectedMove].type,
+                            unit.types,
+                          ) === 0
+                            ? "SEM EFEITO"
+                            : calculateTypeEffectiveness(
+                                  DUEL_MOVES[selectedMove].type,
+                                  unit.types,
+                                ) > 1
+                              ? "SUPER EFETIVO"
+                              : calculateTypeEffectiveness(
+                                    DUEL_MOVES[selectedMove].type,
+                                    unit.types,
+                                  ) < 1
+                                ? "POUCO EFETIVO"
+                                : "DANO NORMAL"}
+                        </span>
+                      )}
                   </div>
                 </button>
               );
@@ -1501,6 +1614,7 @@ export function FirstBattle({
                   : "Resolvendo ação…"}
             </div>
           )}
+          </div>
         </div>
 
         {isPlayerTurn &&
