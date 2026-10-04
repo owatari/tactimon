@@ -235,9 +235,10 @@ function findPath(
   const previous = new Map<string, string | null>([[startKey, null]]);
   const points = new Map<string, DuelPoint>([[startKey, { ...unit.position }]]);
 
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (!current) break;
+  let queueIndex = 0;
+  while (queueIndex < queue.length) {
+    const current = queue[queueIndex];
+    queueIndex += 1;
     const currentKey = pointKey(current);
 
     if (currentKey === destinationKey) {

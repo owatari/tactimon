@@ -2723,9 +2723,10 @@ function connectedOpenCells(
   const visited = new Set<string>([pointKey(start)]);
   const result: DuelPoint[] = [{ ...start }];
 
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (!current) break;
+  let queueIndex = 0;
+  while (queueIndex < queue.length) {
+    const current = queue[queueIndex];
+    queueIndex += 1;
 
     const neighbors = [
       { x: current.x + 1, y: current.y },
