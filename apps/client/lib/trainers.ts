@@ -341,6 +341,166 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ],
   },
   {
+    id: "mtmoon-iris",
+    mapId: "mt-moon-1f",
+    name: "Lass Iris",
+    preferredPosition: { x: 20, y: 26 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Iris: O quê? Estou esperando meus amigos me encontrarem aqui.",
+    defeatedText:
+      "Iris: Vim porque ouvi dizer que existem fósseis muito raros aqui.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "clefairy",
+        level: 14,
+        moves: ["pound", "growl"],
+      },
+    ],
+  },
+  {
+    id: "mtmoon-robby",
+    mapId: "mt-moon-1f",
+    name: "Bug Catcher Robby",
+    preferredPosition: { x: 36, y: 30 },
+    facing: "east",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Robby: Você precisa atravessar esta caverna para chegar a Cerulean City.",
+    defeatedText:
+      "Robby: Zubat é resistente! Se capturar um, poderá contar com ele.",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "caterpie",
+        level: 10,
+        moves: ["tackle", "string-shot"],
+      },
+      {
+        species: "metapod",
+        level: 10,
+        moves: ["harden"],
+      },
+      {
+        species: "caterpie",
+        level: 10,
+        moves: ["tackle", "string-shot"],
+      },
+    ],
+  },
+  {
+    id: "mtmoon-kent",
+    mapId: "mt-moon-1f",
+    name: "Bug Catcher Kent",
+    preferredPosition: { x: 7, y: 26 },
+    facing: "south",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/020_bug_catcher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Kent: Há homens suspeitos na caverna. E você, o que está fazendo aqui?",
+    defeatedText:
+      "Kent: Eu os vi! Tenho certeza de que são da Team Rocket!",
+    moneyMultiplier: 3,
+    party: [
+      {
+        species: "weedle",
+        level: 11,
+        moves: ["poison-sting", "string-shot"],
+      },
+      {
+        species: "kakuna",
+        level: 11,
+        moves: ["harden"],
+      },
+    ],
+  },
+  {
+    id: "mtmoon-josh",
+    mapId: "mt-moon-1f",
+    name: "Youngster Josh",
+    preferredPosition: { x: 13, y: 17 },
+    facing: "east",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Josh: Você também veio explorar a caverna?",
+    defeatedText:
+      "Josh: Vim até aqui para me exibir para as garotas.",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "rattata",
+        level: 10,
+        moves: ["tackle", "tail-whip"],
+      },
+      {
+        species: "rattata",
+        level: 10,
+        moves: ["tackle", "tail-whip"],
+      },
+      {
+        species: "zubat",
+        level: 10,
+        moves: ["astonish"],
+      },
+    ],
+  },
+  {
+    id: "mtmoon-marcos",
+    mapId: "mt-moon-1f",
+    name: "Hiker Marcos",
+    preferredPosition: { x: 7, y: 10 },
+    facing: "south",
+    sightRange: 1,
+    spriteUrl: "/game-assets/overworld/056_hiker.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Marcos: Uau! Você me assustou! ...Ah, é só uma criança!",
+    defeatedText:
+      "Marcos: Crianças como você não deveriam andar por aqui no escuro.",
+    moneyMultiplier: 10,
+    party: [
+      {
+        species: "geodude",
+        level: 10,
+        moves: ["tackle", "defense-curl"],
+      },
+      {
+        species: "geodude",
+        level: 10,
+        moves: ["tackle", "defense-curl"],
+      },
+      {
+        species: "onix",
+        level: 10,
+        moves: ["tackle", "bind"],
+      },
+    ],
+  },
+  {
     id: "viridian-forest-rick",
     mapId: "viridian-forest",
     name: "Bug Catcher Rick",
