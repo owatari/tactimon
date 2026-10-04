@@ -55,6 +55,7 @@ import {
   depositCapturedPokemon,
   healStoryParty,
   interactWithBill,
+  interactWithCutObstacle,
   interactWithSsAnneCaptain,
   normalizeStoryState,
   runBillCellSeparator,
@@ -850,6 +851,19 @@ export function GameClient() {
           const preview = interactWithSsAnneCaptain(story);
           setStory((current) =>
             interactWithSsAnneCaptain(current).story,
+          );
+          return preview.message;
+        }}
+        onCutObstacleInteract={(obstacleId) => {
+          const preview = interactWithCutObstacle(
+            story,
+            obstacleId,
+          );
+          setStory((current) =>
+            interactWithCutObstacle(
+              current,
+              obstacleId,
+            ).story,
           );
           return preview.message;
         }}

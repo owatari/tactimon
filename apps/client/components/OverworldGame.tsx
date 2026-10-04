@@ -129,6 +129,7 @@ type Props = {
   onBillInteract: () => string;
   onBillComputerInteract: () => string;
   onSsAnneCaptainInteract: () => string;
+  onCutObstacleInteract: (obstacleId: string) => string;
   onMtMoonFossilChoice: (
     fossil: MtMoonFossilId,
   ) => {
@@ -229,6 +230,11 @@ type SsAnneCaptainStoryObject = StoryObjectBase & {
   kind: "ss-anne-captain";
 };
 
+type CutTreeStoryObject = StoryObjectBase & {
+  kind: "cut-tree";
+  obstacleId: string;
+};
+
 type StoryObject =
   | StaticStoryObject
   | TrainerStoryObject
@@ -238,7 +244,8 @@ type StoryObject =
   | PickupStoryObject
   | FossilStoryObject
   | BillStoryObject
-  | SsAnneCaptainStoryObject;
+  | SsAnneCaptainStoryObject
+  | CutTreeStoryObject;
 
 function createPlayer(
   x: number,
@@ -679,6 +686,35 @@ function ssAnneCaptainStoryObjects(): SsAnneCaptainStoryObject[] {
   ];
 }
 
+function vermilionCutTreeStoryObjects(
+  story: StoryState,
+): CutTreeStoryObject[] {
+  const obstacleId = "vermilion-gym-cut-tree";
+  if (
+    (story.clearedObstacleIds ?? []).includes(
+      obstacleId,
+    )
+  ) {
+    return [];
+  }
+
+  return [
+    {
+      id: obstacleId,
+      kind: "cut-tree",
+      obstacleId,
+      label: "Cut Tree",
+      x: 19,
+      y: 24,
+      spriteUrl: "/game-assets/overworld/095_cut_tree.png",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 16,
+      sheetHeight: 16,
+    },
+  ];
+}
+
 function pokemonCenterStoryObjects(
   mapId: string,
 ): StoryObject[] {
@@ -774,6 +810,10 @@ function mapStoryObjects(
     objects.push(...mtMoonFossilStoryObjects(story));
   }
 
+  if (mapId === "vermilion-city") {
+    objects.push(...vermilionCutTreeStoryObjects(story));
+  }
+
   for (const trainer of resolveOverworldTrainers(
     mapId,
     layout,
@@ -811,6 +851,7 @@ export function OverworldGame({
   onBillInteract,
   onBillComputerInteract,
   onSsAnneCaptainInteract,
+  onCutObstacleInteract,
   onMtMoonFossilChoice,
   onOverworldItemPickup,
 }: Props) {
@@ -1194,6 +1235,15 @@ export function OverworldGame({
         return;
       }
 
+      if (storyObject.kind === "cut-tree") {
+        showInteraction(
+          onCutObstacleInteract(
+            storyObject.obstacleId,
+          ),
+        );
+        return;
+      }
+
       if (storyObject.kind === "mart-clerk") {
         onMartOpen();
         return;
@@ -1279,6 +1329,7 @@ export function OverworldGame({
   }, [
     onBillComputerInteract,
     onBillInteract,
+    onCutObstacleInteract,
     onMartOpen,
     onMtMoonFossilChoice,
     onPokemonCenterHeal,

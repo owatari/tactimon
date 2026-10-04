@@ -59,6 +59,7 @@ export type StoryState = {
   valuables?: StoryValuables;
   keyItemIds?: StoryKeyItemId[];
   fieldTechniqueIds?: StoryFieldTechniqueId[];
+  clearedObstacleIds?: string[];
   billStage?: BillStoryStage;
 };
 
@@ -84,6 +85,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   },
   keyItemIds: [],
   fieldTechniqueIds: [],
+  clearedObstacleIds: [],
   billStage: "unmet",
 };
 
@@ -137,6 +139,7 @@ export function chooseStarter(
     },
     keyItemIds: [],
     fieldTechniqueIds: [],
+    clearedObstacleIds: [],
     billStage: "unmet",
   };
 }
@@ -432,6 +435,19 @@ export function normalizeStoryState(
     fieldTechniqueIds: normalizeFieldTechniqueIds(
       input?.fieldTechniqueIds,
     ),
+    clearedObstacleIds: Array.isArray(
+      input?.clearedObstacleIds,
+    )
+      ? Array.from(
+          new Set(
+            input.clearedObstacleIds.filter(
+              (id): id is string =>
+                typeof id === "string" &&
+                id.length > 0,
+            ),
+          ),
+        ).slice(0, 128)
+      : [],
     billStage:
       normalizeKeyItemIds(input?.keyItemIds).includes(
         "ss-ticket",
@@ -677,6 +693,38 @@ export function hasStoryFieldTechnique(
   return (story.fieldTechniqueIds ?? []).includes(
     techniqueId,
   );
+}
+
+export function interactWithCutObstacle(
+  story: StoryState,
+  obstacleId: string,
+): StoryScriptInteractionResult {
+  if ((story.clearedObstacleIds ?? []).includes(obstacleId)) {
+    return {
+      story,
+      message: "A pequena árvore já foi cortada.",
+    };
+  }
+
+  if (!hasStoryFieldTechnique(story, "cut")) {
+    return {
+      story,
+      message:
+        "Uma pequena árvore bloqueia o caminho. Você precisa aprender Cut para removê-la.",
+    };
+  }
+
+  return {
+    story: {
+      ...story,
+      clearedObstacleIds: [
+        ...(story.clearedObstacleIds ?? []),
+        obstacleId,
+      ],
+    },
+    message:
+      "Você usou Cut! A pequena árvore foi removida.",
+  };
 }
 
 export function interactWithSsAnneCaptain(
