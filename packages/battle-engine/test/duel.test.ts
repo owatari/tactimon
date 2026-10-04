@@ -2924,6 +2924,97 @@ describe("recoil moves", () => {
 });
 
 
+describe("canonical late-rival direct moves", () => {
+  it("matches FireRed power, PP, type and modeled secondary effects", () => {
+    expect(DUEL_MOVES["wing-attack"]).toMatchObject({
+      type: "flying",
+      category: "physical",
+      power: 60,
+      maxPp: 35,
+    });
+    expect(DUEL_MOVES["flame-wheel"]).toMatchObject({
+      type: "fire",
+      category: "special",
+      power: 60,
+      maxPp: 25,
+      secondaryStatus: "burn",
+      secondaryEffectChance: 10,
+    });
+    expect(DUEL_MOVES.flamethrower).toMatchObject({
+      type: "fire",
+      category: "special",
+      power: 95,
+      maxPp: 15,
+      secondaryStatus: "burn",
+      secondaryEffectChance: 10,
+    });
+    expect(DUEL_MOVES["hydro-pump"]).toMatchObject({
+      type: "water",
+      category: "special",
+      power: 120,
+      maxPp: 5,
+    });
+    expect(DUEL_MOVES.synthesis).toMatchObject({
+      type: "grass",
+      category: "status",
+      maxPp: 5,
+      effect: "heal-self",
+    });
+  });
+
+  it("heals half max HP with Synthesis in neutral weather", () => {
+    let state = createTrainerDuel({
+      seed: 1913,
+      width: 7,
+      height: 5,
+      players: [
+        {
+          species: "venusaur",
+          level: 53,
+          moves: ["synthesis"],
+          currentHp: 10,
+        },
+      ],
+      rivals: [
+        {
+          species: "pidgeot",
+          level: 47,
+          moves: ["wing-attack"],
+        },
+      ],
+    });
+    const player = state.units.find(
+      (unit) => unit.side === "player",
+    )!;
+
+    state = {
+      ...state,
+      activeUnitId: player.id,
+    };
+
+    const expectedHeal = Math.min(
+      Math.max(1, Math.floor(player.maxHp / 2)),
+      player.maxHp - player.hp,
+    );
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: player.id,
+      moveId: "synthesis",
+      targetId: player.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    const updated = result.state.units.find(
+      (unit) => unit.id === player.id,
+    )!;
+    expect(updated.hp).toBe(player.hp + expectedHeal);
+    expect(updated.movePp.synthesis).toBe(
+      DUEL_MOVES.synthesis.maxPp - 1,
+    );
+  });
+});
+
+
 describe("battle movement and deployment scale", () => {
   it("derives MP from species Speed instead of giving every Pokémon 3", () => {
     expect(
