@@ -27,16 +27,22 @@ export type WildSpeciesId =
 export type DuelSpeciesId = StarterSpeciesId | WildSpeciesId;
 export type DuelType =
   | "normal"
-  | "grass"
+  | "fighting"
+  | "flying"
+  | "poison"
+  | "ground"
+  | "rock"
+  | "bug"
+  | "ghost"
+  | "steel"
   | "fire"
   | "water"
-  | "flying"
-  | "bug"
-  | "poison"
-  | "fighting"
+  | "grass"
   | "electric"
-  | "dark"
-  | "steel";
+  | "psychic"
+  | "ice"
+  | "dragon"
+  | "dark";
 
 export type DuelSide = "player" | "rival";
 export type DuelStatus = "active" | "finished";
@@ -197,6 +203,8 @@ export type DuelPresentationEvent =
           delta: number;
         }>;
         statusApplied?: Exclude<DuelMajorStatus, null>;
+        sameTypeAttackBonus?: boolean;
+        typeEffectiveness?: number;
       }>;
     }
   | {
@@ -327,6 +335,165 @@ type SpeciesData = {
   speed: number;
   moves: DuelMoveId[];
 };
+
+const TYPE_EFFECTIVENESS: Partial<
+  Record<DuelType, Partial<Record<DuelType, 0 | 0.5 | 2>>>
+> = {
+  normal: { rock: 0.5, steel: 0.5, ghost: 0 },
+  fire: {
+    fire: 0.5,
+    water: 0.5,
+    grass: 2,
+    ice: 2,
+    bug: 2,
+    rock: 0.5,
+    dragon: 0.5,
+    steel: 2,
+  },
+  water: {
+    fire: 2,
+    water: 0.5,
+    grass: 0.5,
+    ground: 2,
+    rock: 2,
+    dragon: 0.5,
+  },
+  electric: {
+    water: 2,
+    electric: 0.5,
+    grass: 0.5,
+    ground: 0,
+    flying: 2,
+    dragon: 0.5,
+  },
+  grass: {
+    fire: 0.5,
+    water: 2,
+    grass: 0.5,
+    poison: 0.5,
+    ground: 2,
+    flying: 0.5,
+    bug: 0.5,
+    rock: 2,
+    dragon: 0.5,
+    steel: 0.5,
+  },
+  ice: {
+    fire: 0.5,
+    water: 0.5,
+    grass: 2,
+    ice: 0.5,
+    ground: 2,
+    flying: 2,
+    dragon: 2,
+    steel: 0.5,
+  },
+  fighting: {
+    normal: 2,
+    ice: 2,
+    poison: 0.5,
+    flying: 0.5,
+    psychic: 0.5,
+    bug: 0.5,
+    rock: 2,
+    ghost: 0,
+    dark: 2,
+    steel: 2,
+  },
+  poison: {
+    grass: 2,
+    poison: 0.5,
+    ground: 0.5,
+    rock: 0.5,
+    ghost: 0.5,
+    steel: 0,
+  },
+  ground: {
+    fire: 2,
+    electric: 2,
+    grass: 0.5,
+    poison: 2,
+    flying: 0,
+    bug: 0.5,
+    rock: 2,
+    steel: 2,
+  },
+  flying: {
+    electric: 0.5,
+    grass: 2,
+    fighting: 2,
+    bug: 2,
+    rock: 0.5,
+    steel: 0.5,
+  },
+  psychic: {
+    fighting: 2,
+    poison: 2,
+    psychic: 0.5,
+    dark: 0,
+    steel: 0.5,
+  },
+  bug: {
+    fire: 0.5,
+    grass: 2,
+    fighting: 0.5,
+    poison: 0.5,
+    flying: 0.5,
+    psychic: 2,
+    ghost: 0.5,
+    dark: 2,
+    steel: 0.5,
+  },
+  rock: {
+    fire: 2,
+    ice: 2,
+    fighting: 0.5,
+    ground: 0.5,
+    flying: 2,
+    bug: 2,
+    steel: 0.5,
+  },
+  ghost: {
+    normal: 0,
+    psychic: 2,
+    ghost: 2,
+    dark: 0.5,
+    steel: 0.5,
+  },
+  dragon: {
+    dragon: 2,
+    steel: 0.5,
+  },
+  dark: {
+    fighting: 0.5,
+    psychic: 2,
+    ghost: 2,
+    dark: 0.5,
+    steel: 0.5,
+  },
+  steel: {
+    fire: 0.5,
+    water: 0.5,
+    electric: 0.5,
+    ice: 2,
+    rock: 2,
+    steel: 0.5,
+  },
+};
+
+export function calculateTypeEffectiveness(
+  attackingType: DuelType,
+  defendingTypes: readonly DuelType[],
+): number {
+  let effectiveness = 1;
+
+  for (const defendingType of new Set(defendingTypes)) {
+    effectiveness *=
+      TYPE_EFFECTIVENESS[attackingType]?.[defendingType] ?? 1;
+  }
+
+  return effectiveness;
+}
 
 const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   bulbasaur: {
@@ -1839,13 +2006,23 @@ function resolveTurnEnd(
   state.winner = current.side;
 }
 
+type DuelDamageResult = {
+  damage: number;
+  sameTypeAttackBonus: boolean;
+  typeEffectiveness: number;
+};
+
 function calculateDamage(
   attacker: DuelUnit,
   defender: DuelUnit,
   move: DuelMove,
-): number {
+): DuelDamageResult {
   if (move.power === null) {
-    return 0;
+    return {
+      damage: 0,
+      sameTypeAttackBonus: false,
+      typeEffectiveness: 1,
+    };
   }
 
   const isSpecial = move.category === "special";
@@ -1859,7 +2036,7 @@ function calculateDamage(
       : defender.defense * stageMultiplier(defender.defenseStage),
   );
 
-  return Math.max(
+  let damage = Math.max(
     1,
     Math.floor(
       (((2 * attacker.level) / 5 + 2) *
@@ -1870,6 +2047,42 @@ function calculateDamage(
         2,
     ),
   );
+
+  const sameTypeAttackBonus =
+    attacker.types.includes(move.type);
+  if (sameTypeAttackBonus) {
+    damage = Math.max(
+      1,
+      Math.floor((damage * 15) / 10),
+    );
+  }
+
+  const defendingTypes = [...new Set(defender.types)];
+  const typeEffectiveness = calculateTypeEffectiveness(
+    move.type,
+    defendingTypes,
+  );
+
+  for (const defendingType of defendingTypes) {
+    const multiplier =
+      TYPE_EFFECTIVENESS[move.type]?.[defendingType] ?? 1;
+
+    if (multiplier === 0) {
+      damage = 0;
+      break;
+    }
+
+    damage = Math.max(
+      1,
+      Math.floor(damage * multiplier),
+    );
+  }
+
+  return {
+    damage,
+    sameTypeAttackBonus,
+    typeEffectiveness,
+  };
 }
 
 export function getDuelCaptureEligibility(
@@ -2160,8 +2373,20 @@ export function applyDuelAction(
     delta: number;
   }> = [];
 
+  let sameTypeAttackBonus = false;
+  let typeEffectiveness = 1;
+
   if (move.category !== "status") {
-    damage = calculateDamage(actor, target, move);
+    const damageResult = calculateDamage(
+      actor,
+      target,
+      move,
+    );
+    damage = damageResult.damage;
+    sameTypeAttackBonus =
+      damageResult.sameTypeAttackBonus;
+    typeEffectiveness =
+      damageResult.typeEffectiveness;
     target.hp = Math.max(0, target.hp - damage);
 
     appendLog(
@@ -2169,8 +2394,20 @@ export function applyDuelAction(
       `${actor.displayName} usou ${move.name}: ${damage} de dano.`,
     );
 
+    if (typeEffectiveness === 0) {
+      appendLog(
+        state,
+        `Não afeta ${target.displayName}.`,
+      );
+    } else if (typeEffectiveness > 1) {
+      appendLog(state, "É super efetivo!");
+    } else if (typeEffectiveness < 1) {
+      appendLog(state, "Não é muito efetivo.");
+    }
+
     if (
       target.hp > 0 &&
+      typeEffectiveness > 0 &&
       move.secondaryStatus &&
       target.status === null &&
       !isMajorStatusImmune(target, move.secondaryStatus) &&
@@ -2269,6 +2506,12 @@ export function applyDuelAction(
           damage,
           fainted: target.hp <= 0,
           statChanges,
+          ...(move.category !== "status"
+            ? {
+                sameTypeAttackBonus,
+                typeEffectiveness,
+              }
+            : {}),
           ...(statusApplied ? { statusApplied } : {}),
         },
       ],
@@ -2276,15 +2519,41 @@ export function applyDuelAction(
   };
 }
 
-function attackMoveFor(
-  unit: DuelUnit,
+function bestAiAttackMove(
+  actor: DuelUnit,
+  target: DuelUnit,
+  requireInRange: boolean,
 ): DuelMoveId | null {
-  return (
-    unit.moves.find(
-      (moveId) =>
-        DUEL_MOVES[moveId].category !== "status",
-    ) ?? null
+  const distance = manhattanDistance(
+    actor.position,
+    target.position,
   );
+
+  const candidates = actor.moves
+    .map((moveId) => DUEL_MOVES[moveId])
+    .filter(
+      (move) =>
+        move.category !== "status" &&
+        actor.ap >= move.apCost &&
+        (!requireInRange ||
+          (distance >= move.minRange &&
+            distance <= move.maxRange)),
+    )
+    .map((move) => ({
+      move,
+      result: calculateDamage(actor, target, move),
+    }))
+    .filter(({ result }) => result.damage > 0)
+    .sort(
+      (a, b) =>
+        b.result.damage - a.result.damage ||
+        b.result.typeEffectiveness -
+          a.result.typeEffectiveness ||
+        a.move.apCost - b.move.apCost ||
+        a.move.id.localeCompare(b.move.id),
+    );
+
+  return candidates[0]?.move.id ?? null;
 }
 
 function statusMoveFor(
@@ -2323,21 +2592,35 @@ function bestAiDestination(
   state: DuelState,
   actor: DuelUnit,
   target: DuelUnit,
+  move: DuelMove,
 ): DuelPoint | null {
   const reachable = getReachableCells(state, actor.id);
 
   return (
     reachable
-      .map((point) => ({
-        point,
-        distance: manhattanDistance(
+      .map((point) => {
+        const targetDistance = manhattanDistance(
           point,
           target.position,
-        ),
-      }))
+        );
+        return {
+          point,
+          targetDistance,
+          movementDistance: manhattanDistance(
+            actor.position,
+            point,
+          ),
+          canAttack:
+            targetDistance >= move.minRange &&
+            targetDistance <= move.maxRange,
+        };
+      })
       .sort(
         (a, b) =>
-          a.distance - b.distance ||
+          Number(b.canAttack) - Number(a.canAttack) ||
+          (a.canAttack && b.canAttack
+            ? a.movementDistance - b.movementDistance
+            : a.targetDistance - b.targetDistance) ||
           a.point.y - b.point.y ||
           a.point.x - b.point.x,
       )[0]?.point ?? null
@@ -2374,21 +2657,30 @@ export function resolveSimpleAiTurnDetailed(
     return { state, steps };
   }
 
-  const attackMoveId = attackMoveFor(actor);
-  const attackMove = attackMoveId
-    ? DUEL_MOVES[attackMoveId]
+  const preferredAttackMoveId = bestAiAttackMove(
+    actor,
+    target,
+    false,
+  );
+  const preferredAttackMove = preferredAttackMoveId
+    ? DUEL_MOVES[preferredAttackMoveId]
     : null;
+  const initialDistance = manhattanDistance(
+    actor.position,
+    target.position,
+  );
 
   if (
-    attackMove &&
-    manhattanDistance(actor.position, target.position) >
-      attackMove.maxRange &&
+    preferredAttackMove &&
+    (initialDistance < preferredAttackMove.minRange ||
+      initialDistance > preferredAttackMove.maxRange) &&
     actor.mp > 0
   ) {
     const destination = bestAiDestination(
       state,
       actor,
       target,
+      preferredAttackMove,
     );
 
     if (destination) {
@@ -2410,27 +2702,22 @@ export function resolveSimpleAiTurnDetailed(
     return { state, steps };
   }
 
-  if (attackMoveId && attackMove) {
-    const distance = manhattanDistance(
-      actor.position,
-      currentTarget.position,
-    );
+  const attackMoveId = bestAiAttackMove(
+    actor,
+    currentTarget,
+    true,
+  );
 
-    if (
-      actor.ap >= attackMove.apCost &&
-      distance >= attackMove.minRange &&
-      distance <= attackMove.maxRange
-    ) {
-      const attackResult = run({
-        kind: "use-move",
-        unitId: actor.id,
-        moveId: attackMoveId,
-        targetId: currentTarget.id,
-      });
+  if (attackMoveId) {
+    const attackResult = run({
+      kind: "use-move",
+      unitId: actor.id,
+      moveId: attackMoveId,
+      targetId: currentTarget.id,
+    });
 
-      if (attackResult.state.status === "finished") {
-        return { state, steps };
-      }
+    if (attackResult.state.status === "finished") {
+      return { state, steps };
     }
   }
 
