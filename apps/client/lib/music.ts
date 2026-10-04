@@ -31,6 +31,7 @@ const FALLBACK_MAP_MUSIC: Record<string, number> = {
   "viridian-city": FIRE_RED_TRACK_IDS.viridian,
   "oak-lab": FIRE_RED_TRACK_IDS.oakLab,
   "viridian-mart": FIRE_RED_TRACK_IDS.pokeCenter,
+  "viridian-pokemon-center": FIRE_RED_TRACK_IDS.pokeCenter,
 };
 
 function fireRedTrack(

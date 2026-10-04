@@ -140,6 +140,16 @@ const MART_TILESET: TilesetAssetDefinition = {
   attributesUrl: "/game-assets/tilesets/mart/attributes.bin",
 };
 
+const POKEMON_CENTER_TILESET: TilesetAssetDefinition = {
+  tilesUrl: "/game-assets/tilesets/pokemon-center/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/pokemon-center/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/pokemon-center/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/pokemon-center/attributes.bin",
+};
+
 export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
   "pallet-town": {
     id: "pallet-town",
@@ -204,6 +214,21 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     tilesets: {
       primary: BUILDING_TILESET,
       secondary: MART_TILESET,
+    },
+  },
+  "viridian-pokemon-center": {
+    id: "viridian-pokemon-center",
+    label: "Viridian Pokémon Center",
+    layoutUrl:
+      "/game-assets/maps/viridian-pokemon-center/layout.json",
+    previewUrl:
+      "/game-assets/maps/viridian-pokemon-center/preview.png",
+    worldUrl: null,
+    spawn: { x: 7, y: 7 },
+    fallbackMusicId: 303,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: POKEMON_CENTER_TILESET,
     },
   },
 };
@@ -320,6 +345,29 @@ export function resolveWarpTransitionAt(
     return {
       mapId: "pallet-town",
       spawn: { x: 16, y: 14 },
+    };
+  }
+
+  if (
+    mapId === "viridian-city" &&
+    x === 26 &&
+    y === 26
+  ) {
+    return {
+      mapId: "viridian-pokemon-center",
+      spawn: { x: 7, y: 7 },
+    };
+  }
+
+  if (
+    mapId === "viridian-pokemon-center" &&
+    y === 8 &&
+    x >= 6 &&
+    x <= 8
+  ) {
+    return {
+      mapId: "viridian-city",
+      spawn: { x: 26, y: 27 },
     };
   }
 

@@ -63,6 +63,14 @@ const files = [
     "maps/layouts/009_mart_layout/preview.png",
     "maps/viridian-mart/preview.png",
   ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/layout.json",
+    "maps/viridian-pokemon-center/layout.json",
+  ],
+  [
+    "maps/layouts/007_pokemoncenter_1f_layout/preview.png",
+    "maps/viridian-pokemon-center/preview.png",
+  ],
   ["overworld/000_red_normal.png", "overworld/red-normal.png"],
 
   ["tilesets/00_general/tiles.4bpp", "tilesets/general/tiles.4bpp"],
@@ -153,6 +161,23 @@ const files = [
   [
     "tilesets/13_mart/attributes.bin",
     "tilesets/mart/attributes.bin",
+  ],
+
+  [
+    "tilesets/14_pokemoncenter/tiles.4bpp",
+    "tilesets/pokemon-center/tiles.4bpp",
+  ],
+  [
+    "tilesets/14_pokemoncenter/palettes.gbapal",
+    "tilesets/pokemon-center/palettes.gbapal",
+  ],
+  [
+    "tilesets/14_pokemoncenter/metatiles.bin",
+    "tilesets/pokemon-center/metatiles.bin",
+  ],
+  [
+    "tilesets/14_pokemoncenter/attributes.bin",
+    "tilesets/pokemon-center/attributes.bin",
   ],
 ];
 

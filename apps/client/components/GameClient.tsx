@@ -29,6 +29,7 @@ import {
 import {
   chooseStarter,
   DEFAULT_STORY_STATE,
+  healStoryParty,
   normalizeStoryState,
   type StoryState,
 } from "@/lib/story";
@@ -587,6 +588,9 @@ export function GameClient() {
           }
         }}
         onMartOpen={() => setMartOpen(true)}
+        onPokemonCenterHeal={() =>
+          setStory((current) => healStoryParty(current))
+        }
       />
 
       {starterChoiceOpen && !story.starter && (

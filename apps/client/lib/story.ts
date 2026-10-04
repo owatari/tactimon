@@ -1,4 +1,5 @@
 import {
+  calculateDuelPokemonMaxHp,
   createPokemonProgression,
   createStarterProgression,
   normalizePokemonProgression,
@@ -245,4 +246,42 @@ export function storyStarterSummary(
     `Blue escolheu ${starterDisplayName(story.rivalStarter)}. ` +
     `Seu time tem ${partySize} Pokémon.`
   );
+}
+
+
+export function storyHasHealthyPokemon(
+  story: StoryState,
+): boolean {
+  return (
+    (story.playerPokemon?.currentHp ?? 0) > 0 ||
+    story.capturedPokemon.some(
+      (pokemon) => pokemon.currentHp > 0,
+    )
+  );
+}
+
+function healPokemonProgression(
+  pokemon: PokemonProgression,
+): PokemonProgression {
+  return {
+    ...pokemon,
+    currentHp: calculateDuelPokemonMaxHp(pokemon),
+  };
+}
+
+export function healStoryParty(
+  story: StoryState,
+): StoryState {
+  return {
+    ...story,
+    playerPokemon: story.playerPokemon
+      ? healPokemonProgression(story.playerPokemon)
+      : null,
+    capturedPokemon: story.capturedPokemon.map(
+      (pokemon) => ({
+        ...healPokemonProgression(pokemon),
+        species: pokemon.species,
+      }),
+    ),
+  };
 }

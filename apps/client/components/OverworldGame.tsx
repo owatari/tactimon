@@ -27,6 +27,7 @@ import {
   WorldTransition,
 } from "@/lib/maps";
 import {
+  storyHasHealthyPokemon,
   storyStarterSummary,
   type StoryState,
 } from "@/lib/story";
@@ -127,6 +128,7 @@ type Props = {
     },
   ) => void;
   onMartOpen: () => void;
+  onPokemonCenterHeal: () => void;
 };
 
 type RuntimePlayer = {
@@ -181,6 +183,10 @@ type MartClerkStoryObject = StoryObjectBase & {
   kind: "mart-clerk";
 };
 
+type PokemonCenterNurseStoryObject = StoryObjectBase & {
+  kind: "pokemon-center-nurse";
+};
+
 type DialogueStoryObject = StoryObjectBase & {
   kind: "dialogue";
   dialogue: string;
@@ -190,6 +196,7 @@ type StoryObject =
   | StaticStoryObject
   | TrainerStoryObject
   | MartClerkStoryObject
+  | PokemonCenterNurseStoryObject
   | DialogueStoryObject;
 
 function createPlayer(
@@ -415,6 +422,65 @@ function martStoryObjects(): StoryObject[] {
   ];
 }
 
+function pokemonCenterStoryObjects(): StoryObject[] {
+  return [
+    {
+      id: "viridian-center-nurse",
+      kind: "pokemon-center-nurse",
+      label: "Nurse",
+      x: 7,
+      y: 2,
+      spriteUrl: "/game-assets/overworld/064_nurse.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+    },
+    {
+      id: "viridian-center-gentleman",
+      kind: "dialogue",
+      label: "Gentleman",
+      x: 12,
+      y: 5,
+      spriteUrl: "/game-assets/overworld/061_gentleman.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+      dialogue:
+        "Gentleman: Pode usar o PC no canto à vontade. A recepcionista deixa qualquer treinador usar.",
+    },
+    {
+      id: "viridian-center-boy",
+      kind: "dialogue",
+      label: "Garoto",
+      x: 4,
+      y: 7,
+      spriteUrl: "/game-assets/overworld/019_boy.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+      dialogue:
+        "Garoto: Há Pokémon Centers em todas as cidades adiante. A cura é gratuita.",
+    },
+    {
+      id: "viridian-center-youngster",
+      kind: "dialogue",
+      label: "Youngster",
+      x: 2,
+      y: 3,
+      spriteUrl: "/game-assets/overworld/018_youngster.png",
+      frameWidth: 16,
+      frameHeight: 32,
+      sheetWidth: 96,
+      sheetHeight: 64,
+      dialogue:
+        "Youngster: Pokémon Centers curam Pokémon cansados, feridos ou desmaiados por completo.",
+    },
+  ];
+}
+
 function mapStoryObjects(
   mapId: string,
   story: StoryState,
@@ -426,7 +492,9 @@ function mapStoryObjects(
       ? [...labStoryObjects(story)]
       : mapId === "viridian-mart"
         ? martStoryObjects()
-        : [];
+        : mapId === "viridian-pokemon-center"
+          ? pokemonCenterStoryObjects()
+          : [];
 
   for (const trainer of resolveOverworldTrainers(
     mapId,
@@ -449,6 +517,7 @@ export function OverworldGame({
   onWildBattleTrigger,
   onTrainerBattleTrigger,
   onMartOpen,
+  onPokemonCenterHeal,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
@@ -673,6 +742,13 @@ export function OverworldGame({
         return;
       }
 
+      if (!storyHasHealthyPokemon(currentStory)) {
+        showInteraction(
+          "Seu time está sem HP. Procure o Pokémon Center de Viridian.",
+        );
+        return;
+      }
+
       if (trainerBattleLockRef.current) {
         return;
       }
@@ -755,6 +831,16 @@ export function OverworldGame({
         return;
       }
 
+      if (
+        storyObject.kind === "pokemon-center-nurse"
+      ) {
+        onPokemonCenterHeal();
+        showInteraction(
+          "Nurse: Pronto! Todos os seus Pokémon estão completamente saudáveis.",
+        );
+        return;
+      }
+
       if (storyObject.kind === "dialogue") {
         showInteraction(storyObject.dialogue);
         return;
@@ -786,6 +872,7 @@ export function OverworldGame({
     }
   }, [
     onMartOpen,
+    onPokemonCenterHeal,
     onRequestStarterChoice,
     showInteraction,
     triggerTrainerBattle,
@@ -1099,6 +1186,7 @@ export function OverworldGame({
         !activeLayout ||
         !currentStory.playerPokemon ||
         !currentStory.firstBattleComplete ||
+        !storyHasHealthyPokemon(currentStory) ||
         wildBattleLockRef.current
       ) {
         return;
