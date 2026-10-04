@@ -19,6 +19,9 @@ import {
 import type {
   PlayerWorldEventNamespace,
 } from "./playerWorldState";
+import {
+  interactWithVermilionGymTrashCan,
+} from "./vermilionGym";
 
 export type DialogueChoice = {
   id: string;
@@ -344,6 +347,31 @@ const DIALOGUE_DEFINITIONS: Record<
             : result.reason === "inventory-full"
               ? "Sua bolsa não tem espaço para mais desse item."
               : "Esse item já foi coletado.",
+        ),
+      };
+    },
+  },
+  "vermilion-gym-trash-can": {
+    id: "vermilion-gym-trash-can",
+    interact: (story, context) => {
+      const canId = contextString(context, "canId");
+      if (!canId) {
+        return invalidScriptContext(
+          story,
+          "vermilion-gym-trash-can",
+        );
+      }
+
+      const result =
+        interactWithVermilionGymTrashCan(
+          story,
+          canId,
+        );
+      return {
+        story: result.story,
+        presentation: dialoguePresentationFromText(
+          `vermilion-gym-trash-can:${canId}`,
+          result.message,
         ),
       };
     },
