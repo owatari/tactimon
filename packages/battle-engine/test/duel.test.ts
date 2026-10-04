@@ -1784,3 +1784,93 @@ describe("Route 24 wild mechanics", () => {
     );
   });
 });
+
+
+describe("Vermilion Gym move mechanics", () => {
+  it("makes Sonic Boom deal exactly 20 damage when the target is not immune", () => {
+    let state = createTrainerDuel({
+      seed: 1501,
+      players: [
+        {
+          species: "voltorb",
+          level: 21,
+          moves: ["sonic-boom"],
+        },
+      ],
+      rivals: [
+        {
+          species: "pikachu",
+          level: 18,
+          moves: ["quick-attack"],
+        },
+      ],
+    });
+
+    const voltorb = state.units.find(
+      (unit) => unit.species === "voltorb",
+    )!;
+    const pikachu = state.units.find(
+      (unit) => unit.species === "pikachu",
+    )!;
+    voltorb.position = { x: 2, y: 2 };
+    pikachu.position = { x: 4, y: 2 };
+    state = { ...state, activeUnitId: voltorb.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: voltorb.id,
+      moveId: "sonic-boom",
+      targetId: pikachu.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    if (result.presentation?.kind !== "move") {
+      throw new Error("Expected move presentation");
+    }
+    expect(result.presentation.results[0].damage).toBe(20);
+  });
+
+  it("makes Screech lower Defense by two stages", () => {
+    let state = createTrainerDuel({
+      seed: 1502,
+      players: [
+        {
+          species: "voltorb",
+          level: 21,
+          moves: ["screech"],
+        },
+      ],
+      rivals: [
+        {
+          species: "pikachu",
+          level: 18,
+          moves: ["quick-attack"],
+        },
+      ],
+    });
+
+    const voltorb = state.units.find(
+      (unit) => unit.species === "voltorb",
+    )!;
+    const pikachu = state.units.find(
+      (unit) => unit.species === "pikachu",
+    )!;
+    voltorb.position = { x: 2, y: 2 };
+    pikachu.position = { x: 4, y: 2 };
+    state = { ...state, activeUnitId: voltorb.id };
+
+    const result = applyDuelAction(state, {
+      kind: "use-move",
+      unitId: voltorb.id,
+      moveId: "screech",
+      targetId: pikachu.id,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(
+      result.state.units.find(
+        (unit) => unit.id === pikachu.id,
+      )?.defenseStage,
+    ).toBe(-2);
+  });
+});

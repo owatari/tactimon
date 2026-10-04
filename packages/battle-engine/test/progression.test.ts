@@ -803,3 +803,28 @@ describe("S.S. Anne rival species", () => {
     ]);
   });
 });
+
+
+describe("Vermilion Gym species", () => {
+  it("uses FireRed growth and trainer EXP for Magnemite and Raichu", () => {
+    expect(fireRedExperienceAtLevel("magnemite", 21)).toBe(9_261);
+    expect(fireRedExperienceAtLevel("raichu", 24)).toBe(13_824);
+    expect(experienceRewardForTrainer("magnemite", 21, 1)).toBe(400);
+    expect(experienceRewardForTrainer("raichu", 24, 1)).toBe(627);
+  });
+
+  it("creates playable Gym move sets", () => {
+    expect(createPokemonProgression("magnemite", 21).activeMoves).toEqual([
+      "thunder-shock",
+      "supersonic",
+      "sonic-boom",
+      "thunder-wave",
+    ]);
+    expect(createPokemonProgression("raichu", 24).activeMoves).toEqual([
+      "quick-attack",
+      "thunder-wave",
+      "double-team",
+      "shock-wave",
+    ]);
+  });
+});

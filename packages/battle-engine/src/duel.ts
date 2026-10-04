@@ -48,6 +48,8 @@ export type TrainerSpeciesId =
   | "ivysaur"
   | "charmeleon"
   | "kadabra"
+  | "magnemite"
+  | "raichu"
   | "onix"
   | "sandshrew"
   | "grimer"
@@ -117,6 +119,11 @@ export type DuelMoveId =
   | "thunder-shock"
   | "thunder-wave"
   | "double-team"
+  | "slam"
+  | "spark"
+  | "shock-wave"
+  | "sonic-boom"
+  | "screech"
   | "vine-whip"
   | "razor-leaf"
   | "seed-bomb"
@@ -259,10 +266,12 @@ export interface DuelMove {
   effect?:
     | "attack-down"
     | "defense-down"
+    | "defense-down-2"
     | "defense-up"
     | "speed-down"
     | "heal-self"
     | "drain-half"
+    | "fixed-damage-20"
     | "teleport";
 }
 
@@ -897,6 +906,18 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     speed: 90,
     moves: ["thunder-shock", "growl"],
   },
+  raichu: {
+    name: "Raichu",
+    type: "electric",
+    types: ["electric"],
+    hp: 60,
+    attack: 90,
+    defense: 55,
+    specialAttack: 90,
+    specialDefense: 80,
+    speed: 100,
+    moves: ["quick-attack", "thunder-wave", "double-team", "shock-wave"],
+  },
   ekans: {
     name: "Ekans",
     type: "poison",
@@ -1030,6 +1051,18 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 55,
     speed: 100,
     moves: ["tackle"],
+  },
+  magnemite: {
+    name: "Magnemite",
+    type: "electric",
+    types: ["electric", "steel"],
+    hp: 25,
+    attack: 35,
+    defense: 70,
+    specialAttack: 95,
+    specialDefense: 55,
+    speed: 45,
+    moves: ["thunder-shock", "supersonic", "sonic-boom", "thunder-wave"],
   },
   koffing: {
     name: "Koffing",
@@ -1690,6 +1723,89 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxPp: 15,
     minRange: 0,
     maxRange: 0,
+  },
+  slam: {
+    id: "slam",
+    name: "Slam",
+    type: "normal",
+    category: "physical",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "tackle",
+    description: "Golpe físico pesado de contato.",
+    power: 80,
+    apCost: 5,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 1,
+  },
+  spark: {
+    id: "spark",
+    name: "Spark",
+    type: "electric",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "contact",
+    vfxId: "thunder-shock",
+    description:
+      "Investida elétrica; a chance secundária de paralisia é modelada.",
+    power: 65,
+    apCost: 5,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 1,
+    secondaryStatus: "paralysis",
+    secondaryEffectChance: 30,
+  },
+  "shock-wave": {
+    id: "shock-wave",
+    name: "Shock Wave",
+    type: "electric",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "thunder-shock",
+    description:
+      "Onda elétrica de precisão garantida no FireRed.",
+    power: 60,
+    apCost: 5,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 4,
+  },
+  "sonic-boom": {
+    id: "sonic-boom",
+    name: "Sonic Boom",
+    type: "normal",
+    category: "special",
+    targeting: "single-enemy",
+    motion: "projectile",
+    vfxId: "gust",
+    description:
+      "Onda sônica que causa exatamente 20 de dano quando o alvo não é imune.",
+    power: 1,
+    apCost: 4,
+    maxPp: 20,
+    minRange: 1,
+    maxRange: 4,
+    effect: "fixed-damage-20",
+  },
+  screech: {
+    id: "screech",
+    name: "Screech",
+    type: "normal",
+    category: "status",
+    targeting: "single-enemy",
+    motion: "status",
+    vfxId: "growl",
+    description:
+      "Reduz a Defense do alvo em 2 estágios.",
+    power: null,
+    apCost: 2,
+    maxPp: 40,
+    minRange: 1,
+    maxRange: 3,
+    effect: "defense-down-2",
   },
   "vine-whip": {
     id: "vine-whip",
@@ -3252,6 +3368,18 @@ function calculateDamage(
     };
   }
 
+  if (move.effect === "fixed-damage-20") {
+    const typeEffectiveness = calculateTypeEffectiveness(
+      move.type,
+      defender.types,
+    );
+    return {
+      damage: typeEffectiveness === 0 ? 0 : 20,
+      sameTypeAttackBonus: false,
+      typeEffectiveness,
+    };
+  }
+
   const isSpecial = move.category === "special";
   const attack = isSpecial
     ? attacker.specialAttack
@@ -3799,6 +3927,20 @@ export function applyDuelAction(
       state,
       `${move.name} reduziu a Defense de ${target.displayName}.`,
     );
+  } else if (move.effect === "defense-down-2") {
+    const before = target.defenseStage;
+    target.defenseStage = Math.max(
+      -MAX_STAGE,
+      target.defenseStage - 2,
+    );
+    statChanges.push({
+      stat: "defense",
+      delta: target.defenseStage - before,
+    });
+    appendLog(
+      state,
+      `${move.name} reduziu muito a Defense de ${target.displayName}.`,
+    );
   } else if (move.effect === "defense-up") {
     const before = target.defenseStage;
     target.defenseStage = Math.min(
@@ -4018,11 +4160,16 @@ function aiStatusUtility(
     );
   }
 
-  if (move.effect === "defense-down") {
+  if (
+    move.effect === "defense-down" ||
+    move.effect === "defense-down-2"
+  ) {
     if (target.defenseStage <= -4) return -Infinity;
+    const severity =
+      move.effect === "defense-down-2" ? 18 : 0;
     return Math.max(
       0,
-      64 + target.defenseStage * 18,
+      64 + target.defenseStage * 18 + severity,
     );
   }
 
