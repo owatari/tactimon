@@ -2945,3 +2945,52 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
+/* 2x battle speed affects the whole presentation, not only AI delays. */
+.battle-speed-2 .duel-unit-position {
+  transition-duration: 70ms, 70ms, 60ms;
+}
+
+.battle-speed-2 .pokemon-battle-sprite {
+  transition-duration: 50ms, 70ms, 70ms;
+}
+
+.battle-speed-2 .combatant-hp-fill {
+  transition-duration: 110ms;
+}
+
+.battle-speed-2 .combatant-hud,
+.battle-speed-2 .duel-status-card {
+  transition-duration: 65ms, 65ms, 65ms;
+}
+
+.battle-speed-2 .vfx-scratch span {
+  animation-duration: 140ms;
+}
+
+.battle-speed-2 .vfx-scratch span:nth-child(2),
+.battle-speed-2 .vfx-scratch span:nth-child(3) {
+  animation-delay: 0ms;
+}
+
+.battle-speed-2 .vfx-tackle {
+  animation-duration: 170ms;
+}
+
+.battle-speed-2 .vfx-growl,
+.battle-speed-2 .vfx-tail-whip {
+  animation-duration: 230ms;
+}
+
+.battle-speed-2 .vfx-vine-whip,
+.battle-speed-2 .vfx-razor-leaf,
+.battle-speed-2 .vfx-seed-bomb,
+.battle-speed-2 .vfx-ember,
+.battle-speed-2 .vfx-flame-burst,
+.battle-speed-2 .vfx-water-gun,
+.battle-speed-2 .vfx-aqua-jet,
+.battle-speed-2 .vfx-metal-claw,
+.battle-speed-2 .vfx-bite {
+  animation-duration: 190ms;
+}
