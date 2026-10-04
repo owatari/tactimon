@@ -1420,6 +1420,16 @@ export function FirstBattle({
                           : "left",
                     };
               const targetable = targetableUnitIds.has(unit.id);
+              const moveEffectiveness =
+                selectedMove &&
+                unit.side === "rival" &&
+                unit.hp > 0 &&
+                DUEL_MOVES[selectedMove].category !== "status"
+                  ? calculateTypeEffectiveness(
+                      DUEL_MOVES[selectedMove].type,
+                      unit.types,
+                    )
+                  : null;
 
               return (
                 <button
@@ -1441,7 +1451,10 @@ export function FirstBattle({
                   }}
                   onClick={() => handleUnitTarget(unit.id)}
                   onMouseEnter={() => {
-                    if (targetable) {
+                    if (
+                      targetable ||
+                      moveEffectiveness !== null
+                    ) {
                       setHoveredTargetId(unit.id);
                     }
                   }}
@@ -1450,7 +1463,8 @@ export function FirstBattle({
                       current === unit.id ? null : current,
                     )
                   }
-                  disabled={!targetable || busy}
+                  aria-disabled={!targetable || busy}
+                  disabled={busy}
                 >
                   <div className="duel-unit">
                     <PokemonBattleSprite
@@ -1484,44 +1498,24 @@ export function FirstBattle({
                       {unit.displayName}
                     </span>
                     {hoveredTargetId === unit.id &&
-                      selectedMove &&
-                      DUEL_MOVES[selectedMove].category !==
-                        "status" && (
+                      moveEffectiveness !== null && (
                         <span
                           className={[
                             "move-effectiveness-preview",
-                            calculateTypeEffectiveness(
-                              DUEL_MOVES[selectedMove].type,
-                              unit.types,
-                            ) === 0
+                            moveEffectiveness === 0
                               ? "immune"
-                              : calculateTypeEffectiveness(
-                                    DUEL_MOVES[selectedMove].type,
-                                    unit.types,
-                                  ) > 1
+                              : moveEffectiveness > 1
                                 ? "super"
-                                : calculateTypeEffectiveness(
-                                      DUEL_MOVES[selectedMove].type,
-                                      unit.types,
-                                    ) < 1
+                                : moveEffectiveness < 1
                                   ? "resisted"
                                   : "neutral",
                           ].join(" ")}
                         >
-                          {calculateTypeEffectiveness(
-                            DUEL_MOVES[selectedMove].type,
-                            unit.types,
-                          ) === 0
+                          {moveEffectiveness === 0
                             ? "SEM EFEITO"
-                            : calculateTypeEffectiveness(
-                                  DUEL_MOVES[selectedMove].type,
-                                  unit.types,
-                                ) > 1
+                            : moveEffectiveness > 1
                               ? "SUPER EFETIVO"
-                              : calculateTypeEffectiveness(
-                                    DUEL_MOVES[selectedMove].type,
-                                    unit.types,
-                                  ) < 1
+                              : moveEffectiveness < 1
                                 ? "POUCO EFETIVO"
                                 : "DANO NORMAL"}
                         </span>
