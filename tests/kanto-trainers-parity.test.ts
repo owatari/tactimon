@@ -26,3 +26,29 @@ describe("Kanto trainers", () => {
     expect(count("pewter-gym")).toBe(2);
   });
 });
+
+describe("generated Kanto trainers", () => {
+  it("awards every remaining badge from its gym leader", () => {
+    const badges = new Map(
+      OVERWORLD_TRAINERS.filter((t) => t.badgeId).map((t) => [t.badgeId, t.id]),
+    );
+    for (const badge of ["boulder", "cascade", "thunder", "rainbow", "soul", "marsh", "volcano", "earth"]) {
+      expect(badges.has(badge as never), badge).toBe(true);
+    }
+    expect(badges.get("earth" as never)).toBe("viridian-city-gym-giovanni");
+  });
+
+  it("covers the Elite Four rooms and Victory Road", () => {
+    const maps = new Set(OVERWORLD_TRAINERS.map((t) => t.mapId));
+    for (const id of [
+      "pokemon-league-loreleis-room",
+      "pokemon-league-lances-room",
+      "victory-road-1f",
+      "silph-co-5f",
+      "pokemon-tower-6f",
+      "rocket-hideout-b-1f",
+    ]) {
+      expect(maps.has(id), id).toBe(true);
+    }
+  });
+});

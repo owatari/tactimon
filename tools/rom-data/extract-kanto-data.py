@@ -135,7 +135,7 @@ for m in range(1, MOVE_COUNT):
     if not name.strip() or "?" in name:
         continue
     moves[m] = {
-        "id": slug(name), "name": name, "type": TYPES[mtype],
+        "num": m, "id": slug(name), "name": name, "type": TYPES[mtype],
         "category": "status" if power == 0 else ("special" if mtype >= 10 else "physical"),
         "power": power or None, "accuracy": acc or None, "pp": pp,
         "effect": effect, "effectChance": chance, "target": target, "priority": priority - 256 if priority > 127 else priority,

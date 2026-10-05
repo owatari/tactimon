@@ -1,3 +1,5 @@
+import { GENERATED_TRAINERS } from "./generated/worldTrainers";
+import { TRAINER_TEXT_PT } from "./trainerTextsPt";
 import type {
   DuelPokemonBuild,
   StarterSpeciesId,
@@ -47,7 +49,7 @@ export type OverworldTrainerInstance =
     rewardMoney: number;
   };
 
-export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
+const HAND_OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
   {
     id: "viridian-youngster",
     mapId: "viridian-city",
@@ -2298,6 +2300,14 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       },
     ],
   },
+];
+
+export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
+  ...HAND_OVERWORLD_TRAINERS,
+  ...GENERATED_TRAINERS.map((trainer) => ({
+    ...trainer,
+    ...TRAINER_TEXT_PT[trainer.id],
+  })),
 ];
 
 export function trainerPrizeMoney(

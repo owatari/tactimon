@@ -1,5 +1,6 @@
 {
  "pound": {
+  "num": 1,
   "id": "pound",
   "name": "Pound",
   "type": "normal",
@@ -13,6 +14,7 @@
   "priority": 0
  },
  "karate-chop": {
+  "num": 2,
   "id": "karate-chop",
   "name": "Karate Chop",
   "type": "fighting",
@@ -26,6 +28,7 @@
   "priority": 0
  },
  "doubleslap": {
+  "num": 3,
   "id": "doubleslap",
   "name": "Doubleslap",
   "type": "normal",
@@ -39,6 +42,7 @@
   "priority": 0
  },
  "comet-punch": {
+  "num": 4,
   "id": "comet-punch",
   "name": "Comet Punch",
   "type": "normal",
@@ -52,6 +56,7 @@
   "priority": 0
  },
  "mega-punch": {
+  "num": 5,
   "id": "mega-punch",
   "name": "Mega Punch",
   "type": "normal",
@@ -65,6 +70,7 @@
   "priority": 0
  },
  "pay-day": {
+  "num": 6,
   "id": "pay-day",
   "name": "Pay Day",
   "type": "normal",
@@ -78,6 +84,7 @@
   "priority": 0
  },
  "fire-punch": {
+  "num": 7,
   "id": "fire-punch",
   "name": "Fire Punch",
   "type": "fire",
@@ -91,6 +98,7 @@
   "priority": 0
  },
  "ice-punch": {
+  "num": 8,
   "id": "ice-punch",
   "name": "Ice Punch",
   "type": "ice",
@@ -104,6 +112,7 @@
   "priority": 0
  },
  "thunderpunch": {
+  "num": 9,
   "id": "thunderpunch",
   "name": "Thunderpunch",
   "type": "electric",
@@ -117,6 +126,7 @@
   "priority": 0
  },
  "scratch": {
+  "num": 10,
   "id": "scratch",
   "name": "Scratch",
   "type": "normal",
@@ -130,6 +140,7 @@
   "priority": 0
  },
  "vicegrip": {
+  "num": 11,
   "id": "vicegrip",
   "name": "Vicegrip",
   "type": "normal",
@@ -143,6 +154,7 @@
   "priority": 0
  },
  "guillotine": {
+  "num": 12,
   "id": "guillotine",
   "name": "Guillotine",
   "type": "normal",
@@ -156,6 +168,7 @@
   "priority": 0
  },
  "razor-wind": {
+  "num": 13,
   "id": "razor-wind",
   "name": "Razor Wind",
   "type": "normal",
@@ -169,6 +182,7 @@
   "priority": 0
  },
  "swords-dance": {
+  "num": 14,
   "id": "swords-dance",
   "name": "Swords Dance",
   "type": "normal",
@@ -182,6 +196,7 @@
   "priority": 0
  },
  "cut": {
+  "num": 15,
   "id": "cut",
   "name": "Cut",
   "type": "normal",
@@ -195,6 +210,7 @@
   "priority": 0
  },
  "gust": {
+  "num": 16,
   "id": "gust",
   "name": "Gust",
   "type": "flying",
@@ -208,6 +224,7 @@
   "priority": 0
  },
  "wing-attack": {
+  "num": 17,
   "id": "wing-attack",
   "name": "Wing Attack",
   "type": "flying",
@@ -221,6 +238,7 @@
   "priority": 0
  },
  "whirlwind": {
+  "num": 18,
   "id": "whirlwind",
   "name": "Whirlwind",
   "type": "normal",
@@ -234,6 +252,7 @@
   "priority": -6
  },
  "fly": {
+  "num": 19,
   "id": "fly",
   "name": "Fly",
   "type": "flying",
@@ -247,6 +266,7 @@
   "priority": 0
  },
  "bind": {
+  "num": 20,
   "id": "bind",
   "name": "Bind",
   "type": "normal",
@@ -260,6 +280,7 @@
   "priority": 0
  },
  "slam": {
+  "num": 21,
   "id": "slam",
   "name": "Slam",
   "type": "normal",
@@ -273,6 +294,7 @@
   "priority": 0
  },
  "vine-whip": {
+  "num": 22,
   "id": "vine-whip",
   "name": "Vine Whip",
   "type": "grass",
@@ -286,6 +308,7 @@
   "priority": 0
  },
  "stomp": {
+  "num": 23,
   "id": "stomp",
   "name": "Stomp",
   "type": "normal",
@@ -299,6 +322,7 @@
   "priority": 0
  },
  "double-kick": {
+  "num": 24,
   "id": "double-kick",
   "name": "Double Kick",
   "type": "fighting",
@@ -312,6 +336,7 @@
   "priority": 0
  },
  "mega-kick": {
+  "num": 25,
   "id": "mega-kick",
   "name": "Mega Kick",
   "type": "normal",
@@ -325,6 +350,7 @@
   "priority": 0
  },
  "jump-kick": {
+  "num": 26,
   "id": "jump-kick",
   "name": "Jump Kick",
   "type": "fighting",
@@ -338,6 +364,7 @@
   "priority": 0
  },
  "rolling-kick": {
+  "num": 27,
   "id": "rolling-kick",
   "name": "Rolling Kick",
   "type": "fighting",
@@ -351,6 +378,7 @@
   "priority": 0
  },
  "sand-attack": {
+  "num": 28,
   "id": "sand-attack",
   "name": "Sand Attack",
   "type": "ground",
@@ -364,6 +392,7 @@
   "priority": 0
  },
  "headbutt": {
+  "num": 29,
   "id": "headbutt",
   "name": "Headbutt",
   "type": "normal",
@@ -377,6 +406,7 @@
   "priority": 0
  },
  "horn-attack": {
+  "num": 30,
   "id": "horn-attack",
   "name": "Horn Attack",
   "type": "normal",
@@ -390,6 +420,7 @@
   "priority": 0
  },
  "fury-attack": {
+  "num": 31,
   "id": "fury-attack",
   "name": "Fury Attack",
   "type": "normal",
@@ -403,6 +434,7 @@
   "priority": 0
  },
  "horn-drill": {
+  "num": 32,
   "id": "horn-drill",
   "name": "Horn Drill",
   "type": "normal",
@@ -416,6 +448,7 @@
   "priority": 0
  },
  "tackle": {
+  "num": 33,
   "id": "tackle",
   "name": "Tackle",
   "type": "normal",
@@ -429,6 +462,7 @@
   "priority": 0
  },
  "body-slam": {
+  "num": 34,
   "id": "body-slam",
   "name": "Body Slam",
   "type": "normal",
@@ -442,6 +476,7 @@
   "priority": 0
  },
  "wrap": {
+  "num": 35,
   "id": "wrap",
   "name": "Wrap",
   "type": "normal",
@@ -455,6 +490,7 @@
   "priority": 0
  },
  "take-down": {
+  "num": 36,
   "id": "take-down",
   "name": "Take Down",
   "type": "normal",
@@ -468,6 +504,7 @@
   "priority": 0
  },
  "thrash": {
+  "num": 37,
   "id": "thrash",
   "name": "Thrash",
   "type": "normal",
@@ -481,6 +518,7 @@
   "priority": 0
  },
  "double-edge": {
+  "num": 38,
   "id": "double-edge",
   "name": "Double Edge",
   "type": "normal",
@@ -494,6 +532,7 @@
   "priority": 0
  },
  "tail-whip": {
+  "num": 39,
   "id": "tail-whip",
   "name": "Tail Whip",
   "type": "normal",
@@ -507,6 +546,7 @@
   "priority": 0
  },
  "poison-sting": {
+  "num": 40,
   "id": "poison-sting",
   "name": "Poison Sting",
   "type": "poison",
@@ -520,6 +560,7 @@
   "priority": 0
  },
  "twineedle": {
+  "num": 41,
   "id": "twineedle",
   "name": "Twineedle",
   "type": "bug",
@@ -533,6 +574,7 @@
   "priority": 0
  },
  "pin-missile": {
+  "num": 42,
   "id": "pin-missile",
   "name": "Pin Missile",
   "type": "bug",
@@ -546,6 +588,7 @@
   "priority": 0
  },
  "leer": {
+  "num": 43,
   "id": "leer",
   "name": "Leer",
   "type": "normal",
@@ -559,6 +602,7 @@
   "priority": 0
  },
  "bite": {
+  "num": 44,
   "id": "bite",
   "name": "Bite",
   "type": "dark",
@@ -572,6 +616,7 @@
   "priority": 0
  },
  "growl": {
+  "num": 45,
   "id": "growl",
   "name": "Growl",
   "type": "normal",
@@ -585,6 +630,7 @@
   "priority": 0
  },
  "roar": {
+  "num": 46,
   "id": "roar",
   "name": "Roar",
   "type": "normal",
@@ -598,6 +644,7 @@
   "priority": -6
  },
  "sing": {
+  "num": 47,
   "id": "sing",
   "name": "Sing",
   "type": "normal",
@@ -611,6 +658,7 @@
   "priority": 0
  },
  "supersonic": {
+  "num": 48,
   "id": "supersonic",
   "name": "Supersonic",
   "type": "normal",
@@ -624,6 +672,7 @@
   "priority": 0
  },
  "sonicboom": {
+  "num": 49,
   "id": "sonicboom",
   "name": "Sonicboom",
   "type": "normal",
@@ -637,6 +686,7 @@
   "priority": 0
  },
  "disable": {
+  "num": 50,
   "id": "disable",
   "name": "Disable",
   "type": "normal",
@@ -650,6 +700,7 @@
   "priority": 0
  },
  "acid": {
+  "num": 51,
   "id": "acid",
   "name": "Acid",
   "type": "poison",
@@ -663,6 +714,7 @@
   "priority": 0
  },
  "ember": {
+  "num": 52,
   "id": "ember",
   "name": "Ember",
   "type": "fire",
@@ -676,6 +728,7 @@
   "priority": 0
  },
  "flamethrower": {
+  "num": 53,
   "id": "flamethrower",
   "name": "Flamethrower",
   "type": "fire",
@@ -689,6 +742,7 @@
   "priority": 0
  },
  "mist": {
+  "num": 54,
   "id": "mist",
   "name": "Mist",
   "type": "ice",
@@ -702,6 +756,7 @@
   "priority": 0
  },
  "water-gun": {
+  "num": 55,
   "id": "water-gun",
   "name": "Water Gun",
   "type": "water",
@@ -715,6 +770,7 @@
   "priority": 0
  },
  "hydro-pump": {
+  "num": 56,
   "id": "hydro-pump",
   "name": "Hydro Pump",
   "type": "water",
@@ -728,6 +784,7 @@
   "priority": 0
  },
  "surf": {
+  "num": 57,
   "id": "surf",
   "name": "Surf",
   "type": "water",
@@ -741,6 +798,7 @@
   "priority": 0
  },
  "ice-beam": {
+  "num": 58,
   "id": "ice-beam",
   "name": "Ice Beam",
   "type": "ice",
@@ -754,6 +812,7 @@
   "priority": 0
  },
  "blizzard": {
+  "num": 59,
   "id": "blizzard",
   "name": "Blizzard",
   "type": "ice",
@@ -767,6 +826,7 @@
   "priority": 0
  },
  "psybeam": {
+  "num": 60,
   "id": "psybeam",
   "name": "Psybeam",
   "type": "psychic",
@@ -780,6 +840,7 @@
   "priority": 0
  },
  "bubblebeam": {
+  "num": 61,
   "id": "bubblebeam",
   "name": "Bubblebeam",
   "type": "water",
@@ -793,6 +854,7 @@
   "priority": 0
  },
  "aurora-beam": {
+  "num": 62,
   "id": "aurora-beam",
   "name": "Aurora Beam",
   "type": "ice",
@@ -806,6 +868,7 @@
   "priority": 0
  },
  "hyper-beam": {
+  "num": 63,
   "id": "hyper-beam",
   "name": "Hyper Beam",
   "type": "normal",
@@ -819,6 +882,7 @@
   "priority": 0
  },
  "peck": {
+  "num": 64,
   "id": "peck",
   "name": "Peck",
   "type": "flying",
@@ -832,6 +896,7 @@
   "priority": 0
  },
  "drill-peck": {
+  "num": 65,
   "id": "drill-peck",
   "name": "Drill Peck",
   "type": "flying",
@@ -845,6 +910,7 @@
   "priority": 0
  },
  "submission": {
+  "num": 66,
   "id": "submission",
   "name": "Submission",
   "type": "fighting",
@@ -858,6 +924,7 @@
   "priority": 0
  },
  "low-kick": {
+  "num": 67,
   "id": "low-kick",
   "name": "Low Kick",
   "type": "fighting",
@@ -871,6 +938,7 @@
   "priority": 0
  },
  "counter": {
+  "num": 68,
   "id": "counter",
   "name": "Counter",
   "type": "fighting",
@@ -884,6 +952,7 @@
   "priority": -5
  },
  "seismic-toss": {
+  "num": 69,
   "id": "seismic-toss",
   "name": "Seismic Toss",
   "type": "fighting",
@@ -897,6 +966,7 @@
   "priority": 0
  },
  "strength": {
+  "num": 70,
   "id": "strength",
   "name": "Strength",
   "type": "normal",
@@ -910,6 +980,7 @@
   "priority": 0
  },
  "absorb": {
+  "num": 71,
   "id": "absorb",
   "name": "Absorb",
   "type": "grass",
@@ -923,6 +994,7 @@
   "priority": 0
  },
  "mega-drain": {
+  "num": 72,
   "id": "mega-drain",
   "name": "Mega Drain",
   "type": "grass",
@@ -936,6 +1008,7 @@
   "priority": 0
  },
  "leech-seed": {
+  "num": 73,
   "id": "leech-seed",
   "name": "Leech Seed",
   "type": "grass",
@@ -949,6 +1022,7 @@
   "priority": 0
  },
  "growth": {
+  "num": 74,
   "id": "growth",
   "name": "Growth",
   "type": "normal",
@@ -962,6 +1036,7 @@
   "priority": 0
  },
  "razor-leaf": {
+  "num": 75,
   "id": "razor-leaf",
   "name": "Razor Leaf",
   "type": "grass",
@@ -975,6 +1050,7 @@
   "priority": 0
  },
  "solarbeam": {
+  "num": 76,
   "id": "solarbeam",
   "name": "Solarbeam",
   "type": "grass",
@@ -988,6 +1064,7 @@
   "priority": 0
  },
  "poisonpowder": {
+  "num": 77,
   "id": "poisonpowder",
   "name": "Poisonpowder",
   "type": "poison",
@@ -1001,6 +1078,7 @@
   "priority": 0
  },
  "stun-spore": {
+  "num": 78,
   "id": "stun-spore",
   "name": "Stun Spore",
   "type": "grass",
@@ -1014,6 +1092,7 @@
   "priority": 0
  },
  "sleep-powder": {
+  "num": 79,
   "id": "sleep-powder",
   "name": "Sleep Powder",
   "type": "grass",
@@ -1027,6 +1106,7 @@
   "priority": 0
  },
  "petal-dance": {
+  "num": 80,
   "id": "petal-dance",
   "name": "Petal Dance",
   "type": "grass",
@@ -1040,6 +1120,7 @@
   "priority": 0
  },
  "string-shot": {
+  "num": 81,
   "id": "string-shot",
   "name": "String Shot",
   "type": "bug",
@@ -1053,6 +1134,7 @@
   "priority": 0
  },
  "dragon-rage": {
+  "num": 82,
   "id": "dragon-rage",
   "name": "Dragon Rage",
   "type": "dragon",
@@ -1066,6 +1148,7 @@
   "priority": 0
  },
  "fire-spin": {
+  "num": 83,
   "id": "fire-spin",
   "name": "Fire Spin",
   "type": "fire",
@@ -1079,6 +1162,7 @@
   "priority": 0
  },
  "thundershock": {
+  "num": 84,
   "id": "thundershock",
   "name": "Thundershock",
   "type": "electric",
@@ -1092,6 +1176,7 @@
   "priority": 0
  },
  "thunderbolt": {
+  "num": 85,
   "id": "thunderbolt",
   "name": "Thunderbolt",
   "type": "electric",
@@ -1105,6 +1190,7 @@
   "priority": 0
  },
  "thunder-wave": {
+  "num": 86,
   "id": "thunder-wave",
   "name": "Thunder Wave",
   "type": "electric",
@@ -1118,6 +1204,7 @@
   "priority": 0
  },
  "thunder": {
+  "num": 87,
   "id": "thunder",
   "name": "Thunder",
   "type": "electric",
@@ -1131,6 +1218,7 @@
   "priority": 0
  },
  "rock-throw": {
+  "num": 88,
   "id": "rock-throw",
   "name": "Rock Throw",
   "type": "rock",
@@ -1144,6 +1232,7 @@
   "priority": 0
  },
  "earthquake": {
+  "num": 89,
   "id": "earthquake",
   "name": "Earthquake",
   "type": "ground",
@@ -1157,6 +1246,7 @@
   "priority": 0
  },
  "fissure": {
+  "num": 90,
   "id": "fissure",
   "name": "Fissure",
   "type": "ground",
@@ -1170,6 +1260,7 @@
   "priority": 0
  },
  "dig": {
+  "num": 91,
   "id": "dig",
   "name": "Dig",
   "type": "ground",
@@ -1183,6 +1274,7 @@
   "priority": 0
  },
  "toxic": {
+  "num": 92,
   "id": "toxic",
   "name": "Toxic",
   "type": "poison",
@@ -1196,6 +1288,7 @@
   "priority": 0
  },
  "confusion": {
+  "num": 93,
   "id": "confusion",
   "name": "Confusion",
   "type": "psychic",
@@ -1209,6 +1302,7 @@
   "priority": 0
  },
  "psychic": {
+  "num": 94,
   "id": "psychic",
   "name": "Psychic",
   "type": "psychic",
@@ -1222,6 +1316,7 @@
   "priority": 0
  },
  "hypnosis": {
+  "num": 95,
   "id": "hypnosis",
   "name": "Hypnosis",
   "type": "psychic",
@@ -1235,6 +1330,7 @@
   "priority": 0
  },
  "meditate": {
+  "num": 96,
   "id": "meditate",
   "name": "Meditate",
   "type": "psychic",
@@ -1248,6 +1344,7 @@
   "priority": 0
  },
  "agility": {
+  "num": 97,
   "id": "agility",
   "name": "Agility",
   "type": "psychic",
@@ -1261,6 +1358,7 @@
   "priority": 0
  },
  "quick-attack": {
+  "num": 98,
   "id": "quick-attack",
   "name": "Quick Attack",
   "type": "normal",
@@ -1274,6 +1372,7 @@
   "priority": 1
  },
  "rage": {
+  "num": 99,
   "id": "rage",
   "name": "Rage",
   "type": "normal",
@@ -1287,6 +1386,7 @@
   "priority": 0
  },
  "teleport": {
+  "num": 100,
   "id": "teleport",
   "name": "Teleport",
   "type": "psychic",
@@ -1300,6 +1400,7 @@
   "priority": 0
  },
  "night-shade": {
+  "num": 101,
   "id": "night-shade",
   "name": "Night Shade",
   "type": "ghost",
@@ -1313,6 +1414,7 @@
   "priority": 0
  },
  "mimic": {
+  "num": 102,
   "id": "mimic",
   "name": "Mimic",
   "type": "normal",
@@ -1326,6 +1428,7 @@
   "priority": 0
  },
  "screech": {
+  "num": 103,
   "id": "screech",
   "name": "Screech",
   "type": "normal",
@@ -1339,6 +1442,7 @@
   "priority": 0
  },
  "double-team": {
+  "num": 104,
   "id": "double-team",
   "name": "Double Team",
   "type": "normal",
@@ -1352,6 +1456,7 @@
   "priority": 0
  },
  "recover": {
+  "num": 105,
   "id": "recover",
   "name": "Recover",
   "type": "normal",
@@ -1365,6 +1470,7 @@
   "priority": 0
  },
  "harden": {
+  "num": 106,
   "id": "harden",
   "name": "Harden",
   "type": "normal",
@@ -1378,6 +1484,7 @@
   "priority": 0
  },
  "minimize": {
+  "num": 107,
   "id": "minimize",
   "name": "Minimize",
   "type": "normal",
@@ -1391,6 +1498,7 @@
   "priority": 0
  },
  "smokescreen": {
+  "num": 108,
   "id": "smokescreen",
   "name": "Smokescreen",
   "type": "normal",
@@ -1404,6 +1512,7 @@
   "priority": 0
  },
  "confuse-ray": {
+  "num": 109,
   "id": "confuse-ray",
   "name": "Confuse Ray",
   "type": "ghost",
@@ -1417,6 +1526,7 @@
   "priority": 0
  },
  "withdraw": {
+  "num": 110,
   "id": "withdraw",
   "name": "Withdraw",
   "type": "water",
@@ -1430,6 +1540,7 @@
   "priority": 0
  },
  "defense-curl": {
+  "num": 111,
   "id": "defense-curl",
   "name": "Defense Curl",
   "type": "normal",
@@ -1443,6 +1554,7 @@
   "priority": 0
  },
  "barrier": {
+  "num": 112,
   "id": "barrier",
   "name": "Barrier",
   "type": "psychic",
@@ -1456,6 +1568,7 @@
   "priority": 0
  },
  "light-screen": {
+  "num": 113,
   "id": "light-screen",
   "name": "Light Screen",
   "type": "psychic",
@@ -1469,6 +1582,7 @@
   "priority": 0
  },
  "haze": {
+  "num": 114,
   "id": "haze",
   "name": "Haze",
   "type": "ice",
@@ -1482,6 +1596,7 @@
   "priority": 0
  },
  "reflect": {
+  "num": 115,
   "id": "reflect",
   "name": "Reflect",
   "type": "psychic",
@@ -1495,6 +1610,7 @@
   "priority": 0
  },
  "focus-energy": {
+  "num": 116,
   "id": "focus-energy",
   "name": "Focus Energy",
   "type": "normal",
@@ -1508,6 +1624,7 @@
   "priority": 0
  },
  "bide": {
+  "num": 117,
   "id": "bide",
   "name": "Bide",
   "type": "normal",
@@ -1521,6 +1638,7 @@
   "priority": 0
  },
  "metronome": {
+  "num": 118,
   "id": "metronome",
   "name": "Metronome",
   "type": "normal",
@@ -1534,6 +1652,7 @@
   "priority": 0
  },
  "mirror-move": {
+  "num": 119,
   "id": "mirror-move",
   "name": "Mirror Move",
   "type": "flying",
@@ -1547,6 +1666,7 @@
   "priority": 0
  },
  "selfdestruct": {
+  "num": 120,
   "id": "selfdestruct",
   "name": "Selfdestruct",
   "type": "normal",
@@ -1560,6 +1680,7 @@
   "priority": 0
  },
  "egg-bomb": {
+  "num": 121,
   "id": "egg-bomb",
   "name": "Egg Bomb",
   "type": "normal",
@@ -1573,6 +1694,7 @@
   "priority": 0
  },
  "lick": {
+  "num": 122,
   "id": "lick",
   "name": "Lick",
   "type": "ghost",
@@ -1586,6 +1708,7 @@
   "priority": 0
  },
  "smog": {
+  "num": 123,
   "id": "smog",
   "name": "Smog",
   "type": "poison",
@@ -1599,6 +1722,7 @@
   "priority": 0
  },
  "sludge": {
+  "num": 124,
   "id": "sludge",
   "name": "Sludge",
   "type": "poison",
@@ -1612,6 +1736,7 @@
   "priority": 0
  },
  "bone-club": {
+  "num": 125,
   "id": "bone-club",
   "name": "Bone Club",
   "type": "ground",
@@ -1625,6 +1750,7 @@
   "priority": 0
  },
  "fire-blast": {
+  "num": 126,
   "id": "fire-blast",
   "name": "Fire Blast",
   "type": "fire",
@@ -1638,6 +1764,7 @@
   "priority": 0
  },
  "waterfall": {
+  "num": 127,
   "id": "waterfall",
   "name": "Waterfall",
   "type": "water",
@@ -1651,6 +1778,7 @@
   "priority": 0
  },
  "clamp": {
+  "num": 128,
   "id": "clamp",
   "name": "Clamp",
   "type": "water",
@@ -1664,6 +1792,7 @@
   "priority": 0
  },
  "swift": {
+  "num": 129,
   "id": "swift",
   "name": "Swift",
   "type": "normal",
@@ -1677,6 +1806,7 @@
   "priority": 0
  },
  "skull-bash": {
+  "num": 130,
   "id": "skull-bash",
   "name": "Skull Bash",
   "type": "normal",
@@ -1690,6 +1820,7 @@
   "priority": 0
  },
  "spike-cannon": {
+  "num": 131,
   "id": "spike-cannon",
   "name": "Spike Cannon",
   "type": "normal",
@@ -1703,6 +1834,7 @@
   "priority": 0
  },
  "constrict": {
+  "num": 132,
   "id": "constrict",
   "name": "Constrict",
   "type": "normal",
@@ -1716,6 +1848,7 @@
   "priority": 0
  },
  "amnesia": {
+  "num": 133,
   "id": "amnesia",
   "name": "Amnesia",
   "type": "psychic",
@@ -1729,6 +1862,7 @@
   "priority": 0
  },
  "kinesis": {
+  "num": 134,
   "id": "kinesis",
   "name": "Kinesis",
   "type": "psychic",
@@ -1742,6 +1876,7 @@
   "priority": 0
  },
  "softboiled": {
+  "num": 135,
   "id": "softboiled",
   "name": "Softboiled",
   "type": "normal",
@@ -1755,6 +1890,7 @@
   "priority": 0
  },
  "hi-jump-kick": {
+  "num": 136,
   "id": "hi-jump-kick",
   "name": "Hi Jump Kick",
   "type": "fighting",
@@ -1768,6 +1904,7 @@
   "priority": 0
  },
  "glare": {
+  "num": 137,
   "id": "glare",
   "name": "Glare",
   "type": "normal",
@@ -1781,6 +1918,7 @@
   "priority": 0
  },
  "dream-eater": {
+  "num": 138,
   "id": "dream-eater",
   "name": "Dream Eater",
   "type": "psychic",
@@ -1794,6 +1932,7 @@
   "priority": 0
  },
  "poison-gas": {
+  "num": 139,
   "id": "poison-gas",
   "name": "Poison Gas",
   "type": "poison",
@@ -1807,6 +1946,7 @@
   "priority": 0
  },
  "barrage": {
+  "num": 140,
   "id": "barrage",
   "name": "Barrage",
   "type": "normal",
@@ -1820,6 +1960,7 @@
   "priority": 0
  },
  "leech-life": {
+  "num": 141,
   "id": "leech-life",
   "name": "Leech Life",
   "type": "bug",
@@ -1833,6 +1974,7 @@
   "priority": 0
  },
  "lovely-kiss": {
+  "num": 142,
   "id": "lovely-kiss",
   "name": "Lovely Kiss",
   "type": "normal",
@@ -1846,6 +1988,7 @@
   "priority": 0
  },
  "sky-attack": {
+  "num": 143,
   "id": "sky-attack",
   "name": "Sky Attack",
   "type": "flying",
@@ -1859,6 +2002,7 @@
   "priority": 0
  },
  "transform": {
+  "num": 144,
   "id": "transform",
   "name": "Transform",
   "type": "normal",
@@ -1872,6 +2016,7 @@
   "priority": 0
  },
  "bubble": {
+  "num": 145,
   "id": "bubble",
   "name": "Bubble",
   "type": "water",
@@ -1885,6 +2030,7 @@
   "priority": 0
  },
  "dizzy-punch": {
+  "num": 146,
   "id": "dizzy-punch",
   "name": "Dizzy Punch",
   "type": "normal",
@@ -1898,6 +2044,7 @@
   "priority": 0
  },
  "spore": {
+  "num": 147,
   "id": "spore",
   "name": "Spore",
   "type": "grass",
@@ -1911,6 +2058,7 @@
   "priority": 0
  },
  "flash": {
+  "num": 148,
   "id": "flash",
   "name": "Flash",
   "type": "normal",
@@ -1924,6 +2072,7 @@
   "priority": 0
  },
  "psywave": {
+  "num": 149,
   "id": "psywave",
   "name": "Psywave",
   "type": "psychic",
@@ -1937,6 +2086,7 @@
   "priority": 0
  },
  "splash": {
+  "num": 150,
   "id": "splash",
   "name": "Splash",
   "type": "normal",
@@ -1950,6 +2100,7 @@
   "priority": 0
  },
  "acid-armor": {
+  "num": 151,
   "id": "acid-armor",
   "name": "Acid Armor",
   "type": "poison",
@@ -1963,6 +2114,7 @@
   "priority": 0
  },
  "crabhammer": {
+  "num": 152,
   "id": "crabhammer",
   "name": "Crabhammer",
   "type": "water",
@@ -1976,6 +2128,7 @@
   "priority": 0
  },
  "explosion": {
+  "num": 153,
   "id": "explosion",
   "name": "Explosion",
   "type": "normal",
@@ -1989,6 +2142,7 @@
   "priority": 0
  },
  "fury-swipes": {
+  "num": 154,
   "id": "fury-swipes",
   "name": "Fury Swipes",
   "type": "normal",
@@ -2002,6 +2156,7 @@
   "priority": 0
  },
  "bonemerang": {
+  "num": 155,
   "id": "bonemerang",
   "name": "Bonemerang",
   "type": "ground",
@@ -2015,6 +2170,7 @@
   "priority": 0
  },
  "rest": {
+  "num": 156,
   "id": "rest",
   "name": "Rest",
   "type": "psychic",
@@ -2028,6 +2184,7 @@
   "priority": 0
  },
  "rock-slide": {
+  "num": 157,
   "id": "rock-slide",
   "name": "Rock Slide",
   "type": "rock",
@@ -2041,6 +2198,7 @@
   "priority": 0
  },
  "hyper-fang": {
+  "num": 158,
   "id": "hyper-fang",
   "name": "Hyper Fang",
   "type": "normal",
@@ -2054,6 +2212,7 @@
   "priority": 0
  },
  "sharpen": {
+  "num": 159,
   "id": "sharpen",
   "name": "Sharpen",
   "type": "normal",
@@ -2067,6 +2226,7 @@
   "priority": 0
  },
  "conversion": {
+  "num": 160,
   "id": "conversion",
   "name": "Conversion",
   "type": "normal",
@@ -2080,6 +2240,7 @@
   "priority": 0
  },
  "tri-attack": {
+  "num": 161,
   "id": "tri-attack",
   "name": "Tri Attack",
   "type": "normal",
@@ -2093,6 +2254,7 @@
   "priority": 0
  },
  "super-fang": {
+  "num": 162,
   "id": "super-fang",
   "name": "Super Fang",
   "type": "normal",
@@ -2106,6 +2268,7 @@
   "priority": 0
  },
  "slash": {
+  "num": 163,
   "id": "slash",
   "name": "Slash",
   "type": "normal",
@@ -2119,6 +2282,7 @@
   "priority": 0
  },
  "substitute": {
+  "num": 164,
   "id": "substitute",
   "name": "Substitute",
   "type": "normal",
@@ -2132,6 +2296,7 @@
   "priority": 0
  },
  "struggle": {
+  "num": 165,
   "id": "struggle",
   "name": "Struggle",
   "type": "normal",
@@ -2145,6 +2310,7 @@
   "priority": 0
  },
  "sketch": {
+  "num": 166,
   "id": "sketch",
   "name": "Sketch",
   "type": "normal",
@@ -2158,6 +2324,7 @@
   "priority": 0
  },
  "triple-kick": {
+  "num": 167,
   "id": "triple-kick",
   "name": "Triple Kick",
   "type": "fighting",
@@ -2171,6 +2338,7 @@
   "priority": 0
  },
  "thief": {
+  "num": 168,
   "id": "thief",
   "name": "Thief",
   "type": "dark",
@@ -2184,6 +2352,7 @@
   "priority": 0
  },
  "spider-web": {
+  "num": 169,
   "id": "spider-web",
   "name": "Spider Web",
   "type": "bug",
@@ -2197,6 +2366,7 @@
   "priority": 0
  },
  "mind-reader": {
+  "num": 170,
   "id": "mind-reader",
   "name": "Mind Reader",
   "type": "normal",
@@ -2210,6 +2380,7 @@
   "priority": 0
  },
  "nightmare": {
+  "num": 171,
   "id": "nightmare",
   "name": "Nightmare",
   "type": "ghost",
@@ -2223,6 +2394,7 @@
   "priority": 0
  },
  "flame-wheel": {
+  "num": 172,
   "id": "flame-wheel",
   "name": "Flame Wheel",
   "type": "fire",
@@ -2236,6 +2408,7 @@
   "priority": 0
  },
  "snore": {
+  "num": 173,
   "id": "snore",
   "name": "Snore",
   "type": "normal",
@@ -2249,6 +2422,7 @@
   "priority": 0
  },
  "curse": {
+  "num": 174,
   "id": "curse",
   "name": "Curse",
   "type": "???",
@@ -2262,6 +2436,7 @@
   "priority": 0
  },
  "flail": {
+  "num": 175,
   "id": "flail",
   "name": "Flail",
   "type": "normal",
@@ -2275,6 +2450,7 @@
   "priority": 0
  },
  "conversion-2": {
+  "num": 176,
   "id": "conversion-2",
   "name": "Conversion 2",
   "type": "normal",
@@ -2288,6 +2464,7 @@
   "priority": 0
  },
  "aeroblast": {
+  "num": 177,
   "id": "aeroblast",
   "name": "Aeroblast",
   "type": "flying",
@@ -2301,6 +2478,7 @@
   "priority": 0
  },
  "cotton-spore": {
+  "num": 178,
   "id": "cotton-spore",
   "name": "Cotton Spore",
   "type": "grass",
@@ -2314,6 +2492,7 @@
   "priority": 0
  },
  "reversal": {
+  "num": 179,
   "id": "reversal",
   "name": "Reversal",
   "type": "fighting",
@@ -2327,6 +2506,7 @@
   "priority": 0
  },
  "spite": {
+  "num": 180,
   "id": "spite",
   "name": "Spite",
   "type": "ghost",
@@ -2340,6 +2520,7 @@
   "priority": 0
  },
  "powder-snow": {
+  "num": 181,
   "id": "powder-snow",
   "name": "Powder Snow",
   "type": "ice",
@@ -2353,6 +2534,7 @@
   "priority": 0
  },
  "protect": {
+  "num": 182,
   "id": "protect",
   "name": "Protect",
   "type": "normal",
@@ -2366,6 +2548,7 @@
   "priority": 3
  },
  "mach-punch": {
+  "num": 183,
   "id": "mach-punch",
   "name": "Mach Punch",
   "type": "fighting",
@@ -2379,6 +2562,7 @@
   "priority": 1
  },
  "scary-face": {
+  "num": 184,
   "id": "scary-face",
   "name": "Scary Face",
   "type": "normal",
@@ -2392,6 +2576,7 @@
   "priority": 0
  },
  "faint-attack": {
+  "num": 185,
   "id": "faint-attack",
   "name": "Faint Attack",
   "type": "dark",
@@ -2405,6 +2590,7 @@
   "priority": 0
  },
  "sweet-kiss": {
+  "num": 186,
   "id": "sweet-kiss",
   "name": "Sweet Kiss",
   "type": "normal",
@@ -2418,6 +2604,7 @@
   "priority": 0
  },
  "belly-drum": {
+  "num": 187,
   "id": "belly-drum",
   "name": "Belly Drum",
   "type": "normal",
@@ -2431,6 +2618,7 @@
   "priority": 0
  },
  "sludge-bomb": {
+  "num": 188,
   "id": "sludge-bomb",
   "name": "Sludge Bomb",
   "type": "poison",
@@ -2444,6 +2632,7 @@
   "priority": 0
  },
  "mud-slap": {
+  "num": 189,
   "id": "mud-slap",
   "name": "Mud Slap",
   "type": "ground",
@@ -2457,6 +2646,7 @@
   "priority": 0
  },
  "octazooka": {
+  "num": 190,
   "id": "octazooka",
   "name": "Octazooka",
   "type": "water",
@@ -2470,6 +2660,7 @@
   "priority": 0
  },
  "spikes": {
+  "num": 191,
   "id": "spikes",
   "name": "Spikes",
   "type": "ground",
@@ -2483,6 +2674,7 @@
   "priority": 0
  },
  "zap-cannon": {
+  "num": 192,
   "id": "zap-cannon",
   "name": "Zap Cannon",
   "type": "electric",
@@ -2496,6 +2688,7 @@
   "priority": 0
  },
  "foresight": {
+  "num": 193,
   "id": "foresight",
   "name": "Foresight",
   "type": "normal",
@@ -2509,6 +2702,7 @@
   "priority": 0
  },
  "destiny-bond": {
+  "num": 194,
   "id": "destiny-bond",
   "name": "Destiny Bond",
   "type": "ghost",
@@ -2522,6 +2716,7 @@
   "priority": 0
  },
  "perish-song": {
+  "num": 195,
   "id": "perish-song",
   "name": "Perish Song",
   "type": "normal",
@@ -2535,6 +2730,7 @@
   "priority": 0
  },
  "icy-wind": {
+  "num": 196,
   "id": "icy-wind",
   "name": "Icy Wind",
   "type": "ice",
@@ -2548,6 +2744,7 @@
   "priority": 0
  },
  "detect": {
+  "num": 197,
   "id": "detect",
   "name": "Detect",
   "type": "fighting",
@@ -2561,6 +2758,7 @@
   "priority": 3
  },
  "bone-rush": {
+  "num": 198,
   "id": "bone-rush",
   "name": "Bone Rush",
   "type": "ground",
@@ -2574,6 +2772,7 @@
   "priority": 0
  },
  "lock-on": {
+  "num": 199,
   "id": "lock-on",
   "name": "Lock On",
   "type": "normal",
@@ -2587,6 +2786,7 @@
   "priority": 0
  },
  "outrage": {
+  "num": 200,
   "id": "outrage",
   "name": "Outrage",
   "type": "dragon",
@@ -2600,6 +2800,7 @@
   "priority": 0
  },
  "sandstorm": {
+  "num": 201,
   "id": "sandstorm",
   "name": "Sandstorm",
   "type": "rock",
@@ -2613,6 +2814,7 @@
   "priority": 0
  },
  "giga-drain": {
+  "num": 202,
   "id": "giga-drain",
   "name": "Giga Drain",
   "type": "grass",
@@ -2626,6 +2828,7 @@
   "priority": 0
  },
  "endure": {
+  "num": 203,
   "id": "endure",
   "name": "Endure",
   "type": "normal",
@@ -2639,6 +2842,7 @@
   "priority": 3
  },
  "charm": {
+  "num": 204,
   "id": "charm",
   "name": "Charm",
   "type": "normal",
@@ -2652,6 +2856,7 @@
   "priority": 0
  },
  "rollout": {
+  "num": 205,
   "id": "rollout",
   "name": "Rollout",
   "type": "rock",
@@ -2665,6 +2870,7 @@
   "priority": 0
  },
  "false-swipe": {
+  "num": 206,
   "id": "false-swipe",
   "name": "False Swipe",
   "type": "normal",
@@ -2678,6 +2884,7 @@
   "priority": 0
  },
  "swagger": {
+  "num": 207,
   "id": "swagger",
   "name": "Swagger",
   "type": "normal",
@@ -2691,6 +2898,7 @@
   "priority": 0
  },
  "milk-drink": {
+  "num": 208,
   "id": "milk-drink",
   "name": "Milk Drink",
   "type": "normal",
@@ -2704,6 +2912,7 @@
   "priority": 0
  },
  "spark": {
+  "num": 209,
   "id": "spark",
   "name": "Spark",
   "type": "electric",
@@ -2717,6 +2926,7 @@
   "priority": 0
  },
  "fury-cutter": {
+  "num": 210,
   "id": "fury-cutter",
   "name": "Fury Cutter",
   "type": "bug",
@@ -2730,6 +2940,7 @@
   "priority": 0
  },
  "steel-wing": {
+  "num": 211,
   "id": "steel-wing",
   "name": "Steel Wing",
   "type": "steel",
@@ -2743,6 +2954,7 @@
   "priority": 0
  },
  "mean-look": {
+  "num": 212,
   "id": "mean-look",
   "name": "Mean Look",
   "type": "normal",
@@ -2756,6 +2968,7 @@
   "priority": 0
  },
  "attract": {
+  "num": 213,
   "id": "attract",
   "name": "Attract",
   "type": "normal",
@@ -2769,6 +2982,7 @@
   "priority": 0
  },
  "sleep-talk": {
+  "num": 214,
   "id": "sleep-talk",
   "name": "Sleep Talk",
   "type": "normal",
@@ -2782,6 +2996,7 @@
   "priority": 0
  },
  "heal-bell": {
+  "num": 215,
   "id": "heal-bell",
   "name": "Heal Bell",
   "type": "normal",
@@ -2795,6 +3010,7 @@
   "priority": 0
  },
  "return": {
+  "num": 216,
   "id": "return",
   "name": "Return",
   "type": "normal",
@@ -2808,6 +3024,7 @@
   "priority": 0
  },
  "present": {
+  "num": 217,
   "id": "present",
   "name": "Present",
   "type": "normal",
@@ -2821,6 +3038,7 @@
   "priority": 0
  },
  "frustration": {
+  "num": 218,
   "id": "frustration",
   "name": "Frustration",
   "type": "normal",
@@ -2834,6 +3052,7 @@
   "priority": 0
  },
  "safeguard": {
+  "num": 219,
   "id": "safeguard",
   "name": "Safeguard",
   "type": "normal",
@@ -2847,6 +3066,7 @@
   "priority": 0
  },
  "pain-split": {
+  "num": 220,
   "id": "pain-split",
   "name": "Pain Split",
   "type": "normal",
@@ -2860,6 +3080,7 @@
   "priority": 0
  },
  "sacred-fire": {
+  "num": 221,
   "id": "sacred-fire",
   "name": "Sacred Fire",
   "type": "fire",
@@ -2873,6 +3094,7 @@
   "priority": 0
  },
  "magnitude": {
+  "num": 222,
   "id": "magnitude",
   "name": "Magnitude",
   "type": "ground",
@@ -2886,6 +3108,7 @@
   "priority": 0
  },
  "dynamicpunch": {
+  "num": 223,
   "id": "dynamicpunch",
   "name": "Dynamicpunch",
   "type": "fighting",
@@ -2899,6 +3122,7 @@
   "priority": 0
  },
  "megahorn": {
+  "num": 224,
   "id": "megahorn",
   "name": "Megahorn",
   "type": "bug",
@@ -2912,6 +3136,7 @@
   "priority": 0
  },
  "dragonbreath": {
+  "num": 225,
   "id": "dragonbreath",
   "name": "Dragonbreath",
   "type": "dragon",
@@ -2925,6 +3150,7 @@
   "priority": 0
  },
  "baton-pass": {
+  "num": 226,
   "id": "baton-pass",
   "name": "Baton Pass",
   "type": "normal",
@@ -2938,6 +3164,7 @@
   "priority": 0
  },
  "encore": {
+  "num": 227,
   "id": "encore",
   "name": "Encore",
   "type": "normal",
@@ -2951,6 +3178,7 @@
   "priority": 0
  },
  "pursuit": {
+  "num": 228,
   "id": "pursuit",
   "name": "Pursuit",
   "type": "dark",
@@ -2964,6 +3192,7 @@
   "priority": 0
  },
  "rapid-spin": {
+  "num": 229,
   "id": "rapid-spin",
   "name": "Rapid Spin",
   "type": "normal",
@@ -2977,6 +3206,7 @@
   "priority": 0
  },
  "sweet-scent": {
+  "num": 230,
   "id": "sweet-scent",
   "name": "Sweet Scent",
   "type": "normal",
@@ -2990,6 +3220,7 @@
   "priority": 0
  },
  "iron-tail": {
+  "num": 231,
   "id": "iron-tail",
   "name": "Iron Tail",
   "type": "steel",
@@ -3003,6 +3234,7 @@
   "priority": 0
  },
  "metal-claw": {
+  "num": 232,
   "id": "metal-claw",
   "name": "Metal Claw",
   "type": "steel",
@@ -3016,6 +3248,7 @@
   "priority": 0
  },
  "vital-throw": {
+  "num": 233,
   "id": "vital-throw",
   "name": "Vital Throw",
   "type": "fighting",
@@ -3029,6 +3262,7 @@
   "priority": -1
  },
  "morning-sun": {
+  "num": 234,
   "id": "morning-sun",
   "name": "Morning Sun",
   "type": "normal",
@@ -3042,6 +3276,7 @@
   "priority": 0
  },
  "synthesis": {
+  "num": 235,
   "id": "synthesis",
   "name": "Synthesis",
   "type": "grass",
@@ -3055,6 +3290,7 @@
   "priority": 0
  },
  "moonlight": {
+  "num": 236,
   "id": "moonlight",
   "name": "Moonlight",
   "type": "normal",
@@ -3068,6 +3304,7 @@
   "priority": 0
  },
  "hidden-power": {
+  "num": 237,
   "id": "hidden-power",
   "name": "Hidden Power",
   "type": "normal",
@@ -3081,6 +3318,7 @@
   "priority": 0
  },
  "cross-chop": {
+  "num": 238,
   "id": "cross-chop",
   "name": "Cross Chop",
   "type": "fighting",
@@ -3094,6 +3332,7 @@
   "priority": 0
  },
  "twister": {
+  "num": 239,
   "id": "twister",
   "name": "Twister",
   "type": "dragon",
@@ -3107,6 +3346,7 @@
   "priority": 0
  },
  "rain-dance": {
+  "num": 240,
   "id": "rain-dance",
   "name": "Rain Dance",
   "type": "water",
@@ -3120,6 +3360,7 @@
   "priority": 0
  },
  "sunny-day": {
+  "num": 241,
   "id": "sunny-day",
   "name": "Sunny Day",
   "type": "fire",
@@ -3133,6 +3374,7 @@
   "priority": 0
  },
  "crunch": {
+  "num": 242,
   "id": "crunch",
   "name": "Crunch",
   "type": "dark",
@@ -3146,6 +3388,7 @@
   "priority": 0
  },
  "mirror-coat": {
+  "num": 243,
   "id": "mirror-coat",
   "name": "Mirror Coat",
   "type": "psychic",
@@ -3159,6 +3402,7 @@
   "priority": -5
  },
  "psych-up": {
+  "num": 244,
   "id": "psych-up",
   "name": "Psych Up",
   "type": "normal",
@@ -3172,6 +3416,7 @@
   "priority": 0
  },
  "extremespeed": {
+  "num": 245,
   "id": "extremespeed",
   "name": "Extremespeed",
   "type": "normal",
@@ -3185,6 +3430,7 @@
   "priority": 1
  },
  "ancientpower": {
+  "num": 246,
   "id": "ancientpower",
   "name": "Ancientpower",
   "type": "rock",
@@ -3198,6 +3444,7 @@
   "priority": 0
  },
  "shadow-ball": {
+  "num": 247,
   "id": "shadow-ball",
   "name": "Shadow Ball",
   "type": "ghost",
@@ -3211,6 +3458,7 @@
   "priority": 0
  },
  "future-sight": {
+  "num": 248,
   "id": "future-sight",
   "name": "Future Sight",
   "type": "psychic",
@@ -3224,6 +3472,7 @@
   "priority": 0
  },
  "rock-smash": {
+  "num": 249,
   "id": "rock-smash",
   "name": "Rock Smash",
   "type": "fighting",
@@ -3237,6 +3486,7 @@
   "priority": 0
  },
  "whirlpool": {
+  "num": 250,
   "id": "whirlpool",
   "name": "Whirlpool",
   "type": "water",
@@ -3250,6 +3500,7 @@
   "priority": 0
  },
  "beat-up": {
+  "num": 251,
   "id": "beat-up",
   "name": "Beat Up",
   "type": "dark",
@@ -3263,6 +3514,7 @@
   "priority": 0
  },
  "fake-out": {
+  "num": 252,
   "id": "fake-out",
   "name": "Fake Out",
   "type": "normal",
@@ -3276,6 +3528,7 @@
   "priority": 1
  },
  "uproar": {
+  "num": 253,
   "id": "uproar",
   "name": "Uproar",
   "type": "normal",
@@ -3289,6 +3542,7 @@
   "priority": 0
  },
  "stockpile": {
+  "num": 254,
   "id": "stockpile",
   "name": "Stockpile",
   "type": "normal",
@@ -3302,6 +3556,7 @@
   "priority": 0
  },
  "spit-up": {
+  "num": 255,
   "id": "spit-up",
   "name": "Spit Up",
   "type": "normal",
@@ -3315,6 +3570,7 @@
   "priority": 0
  },
  "swallow": {
+  "num": 256,
   "id": "swallow",
   "name": "Swallow",
   "type": "normal",
@@ -3328,6 +3584,7 @@
   "priority": 0
  },
  "heat-wave": {
+  "num": 257,
   "id": "heat-wave",
   "name": "Heat Wave",
   "type": "fire",
@@ -3341,6 +3598,7 @@
   "priority": 0
  },
  "hail": {
+  "num": 258,
   "id": "hail",
   "name": "Hail",
   "type": "ice",
@@ -3354,6 +3612,7 @@
   "priority": 0
  },
  "torment": {
+  "num": 259,
   "id": "torment",
   "name": "Torment",
   "type": "dark",
@@ -3367,6 +3626,7 @@
   "priority": 0
  },
  "flatter": {
+  "num": 260,
   "id": "flatter",
   "name": "Flatter",
   "type": "dark",
@@ -3380,6 +3640,7 @@
   "priority": 0
  },
  "will-o-wisp": {
+  "num": 261,
   "id": "will-o-wisp",
   "name": "Will O Wisp",
   "type": "fire",
@@ -3393,6 +3654,7 @@
   "priority": 0
  },
  "memento": {
+  "num": 262,
   "id": "memento",
   "name": "Memento",
   "type": "dark",
@@ -3406,6 +3668,7 @@
   "priority": 0
  },
  "facade": {
+  "num": 263,
   "id": "facade",
   "name": "Facade",
   "type": "normal",
@@ -3419,6 +3682,7 @@
   "priority": 0
  },
  "focus-punch": {
+  "num": 264,
   "id": "focus-punch",
   "name": "Focus Punch",
   "type": "fighting",
@@ -3432,6 +3696,7 @@
   "priority": -3
  },
  "smellingsalt": {
+  "num": 265,
   "id": "smellingsalt",
   "name": "Smellingsalt",
   "type": "normal",
@@ -3445,6 +3710,7 @@
   "priority": 0
  },
  "follow-me": {
+  "num": 266,
   "id": "follow-me",
   "name": "Follow Me",
   "type": "normal",
@@ -3458,6 +3724,7 @@
   "priority": 3
  },
  "nature-power": {
+  "num": 267,
   "id": "nature-power",
   "name": "Nature Power",
   "type": "normal",
@@ -3471,6 +3738,7 @@
   "priority": 0
  },
  "charge": {
+  "num": 268,
   "id": "charge",
   "name": "Charge",
   "type": "electric",
@@ -3484,6 +3752,7 @@
   "priority": 0
  },
  "taunt": {
+  "num": 269,
   "id": "taunt",
   "name": "Taunt",
   "type": "dark",
@@ -3497,6 +3766,7 @@
   "priority": 0
  },
  "helping-hand": {
+  "num": 270,
   "id": "helping-hand",
   "name": "Helping Hand",
   "type": "normal",
@@ -3510,6 +3780,7 @@
   "priority": 5
  },
  "trick": {
+  "num": 271,
   "id": "trick",
   "name": "Trick",
   "type": "psychic",
@@ -3523,6 +3794,7 @@
   "priority": 0
  },
  "role-play": {
+  "num": 272,
   "id": "role-play",
   "name": "Role Play",
   "type": "psychic",
@@ -3536,6 +3808,7 @@
   "priority": 0
  },
  "wish": {
+  "num": 273,
   "id": "wish",
   "name": "Wish",
   "type": "normal",
@@ -3549,6 +3822,7 @@
   "priority": 0
  },
  "assist": {
+  "num": 274,
   "id": "assist",
   "name": "Assist",
   "type": "normal",
@@ -3562,6 +3836,7 @@
   "priority": 0
  },
  "ingrain": {
+  "num": 275,
   "id": "ingrain",
   "name": "Ingrain",
   "type": "grass",
@@ -3575,6 +3850,7 @@
   "priority": 0
  },
  "superpower": {
+  "num": 276,
   "id": "superpower",
   "name": "Superpower",
   "type": "fighting",
@@ -3588,6 +3864,7 @@
   "priority": 0
  },
  "magic-coat": {
+  "num": 277,
   "id": "magic-coat",
   "name": "Magic Coat",
   "type": "psychic",
@@ -3601,6 +3878,7 @@
   "priority": 4
  },
  "recycle": {
+  "num": 278,
   "id": "recycle",
   "name": "Recycle",
   "type": "normal",
@@ -3614,6 +3892,7 @@
   "priority": 0
  },
  "revenge": {
+  "num": 279,
   "id": "revenge",
   "name": "Revenge",
   "type": "fighting",
@@ -3627,6 +3906,7 @@
   "priority": -4
  },
  "brick-break": {
+  "num": 280,
   "id": "brick-break",
   "name": "Brick Break",
   "type": "fighting",
@@ -3640,6 +3920,7 @@
   "priority": 0
  },
  "yawn": {
+  "num": 281,
   "id": "yawn",
   "name": "Yawn",
   "type": "normal",
@@ -3653,6 +3934,7 @@
   "priority": 0
  },
  "knock-off": {
+  "num": 282,
   "id": "knock-off",
   "name": "Knock Off",
   "type": "dark",
@@ -3666,6 +3948,7 @@
   "priority": 0
  },
  "endeavor": {
+  "num": 283,
   "id": "endeavor",
   "name": "Endeavor",
   "type": "normal",
@@ -3679,6 +3962,7 @@
   "priority": 0
  },
  "eruption": {
+  "num": 284,
   "id": "eruption",
   "name": "Eruption",
   "type": "fire",
@@ -3692,6 +3976,7 @@
   "priority": 0
  },
  "skill-swap": {
+  "num": 285,
   "id": "skill-swap",
   "name": "Skill Swap",
   "type": "psychic",
@@ -3705,6 +3990,7 @@
   "priority": 0
  },
  "imprison": {
+  "num": 286,
   "id": "imprison",
   "name": "Imprison",
   "type": "psychic",
@@ -3718,6 +4004,7 @@
   "priority": 0
  },
  "refresh": {
+  "num": 287,
   "id": "refresh",
   "name": "Refresh",
   "type": "normal",
@@ -3731,6 +4018,7 @@
   "priority": 0
  },
  "grudge": {
+  "num": 288,
   "id": "grudge",
   "name": "Grudge",
   "type": "ghost",
@@ -3744,6 +4032,7 @@
   "priority": 0
  },
  "snatch": {
+  "num": 289,
   "id": "snatch",
   "name": "Snatch",
   "type": "dark",
@@ -3757,6 +4046,7 @@
   "priority": 4
  },
  "secret-power": {
+  "num": 290,
   "id": "secret-power",
   "name": "Secret Power",
   "type": "normal",
@@ -3770,6 +4060,7 @@
   "priority": 0
  },
  "dive": {
+  "num": 291,
   "id": "dive",
   "name": "Dive",
   "type": "water",
@@ -3783,6 +4074,7 @@
   "priority": 0
  },
  "arm-thrust": {
+  "num": 292,
   "id": "arm-thrust",
   "name": "Arm Thrust",
   "type": "fighting",
@@ -3796,6 +4088,7 @@
   "priority": 0
  },
  "camouflage": {
+  "num": 293,
   "id": "camouflage",
   "name": "Camouflage",
   "type": "normal",
@@ -3809,6 +4102,7 @@
   "priority": 0
  },
  "tail-glow": {
+  "num": 294,
   "id": "tail-glow",
   "name": "Tail Glow",
   "type": "bug",
@@ -3822,6 +4116,7 @@
   "priority": 0
  },
  "luster-purge": {
+  "num": 295,
   "id": "luster-purge",
   "name": "Luster Purge",
   "type": "psychic",
@@ -3835,6 +4130,7 @@
   "priority": 0
  },
  "mist-ball": {
+  "num": 296,
   "id": "mist-ball",
   "name": "Mist Ball",
   "type": "psychic",
@@ -3848,6 +4144,7 @@
   "priority": 0
  },
  "featherdance": {
+  "num": 297,
   "id": "featherdance",
   "name": "Featherdance",
   "type": "flying",
@@ -3861,6 +4158,7 @@
   "priority": 0
  },
  "teeter-dance": {
+  "num": 298,
   "id": "teeter-dance",
   "name": "Teeter Dance",
   "type": "normal",
@@ -3874,6 +4172,7 @@
   "priority": 0
  },
  "blaze-kick": {
+  "num": 299,
   "id": "blaze-kick",
   "name": "Blaze Kick",
   "type": "fire",
@@ -3887,6 +4186,7 @@
   "priority": 0
  },
  "mud-sport": {
+  "num": 300,
   "id": "mud-sport",
   "name": "Mud Sport",
   "type": "ground",
@@ -3900,6 +4200,7 @@
   "priority": 0
  },
  "ice-ball": {
+  "num": 301,
   "id": "ice-ball",
   "name": "Ice Ball",
   "type": "ice",
@@ -3913,6 +4214,7 @@
   "priority": 0
  },
  "needle-arm": {
+  "num": 302,
   "id": "needle-arm",
   "name": "Needle Arm",
   "type": "grass",
@@ -3926,6 +4228,7 @@
   "priority": 0
  },
  "slack-off": {
+  "num": 303,
   "id": "slack-off",
   "name": "Slack Off",
   "type": "normal",
@@ -3939,6 +4242,7 @@
   "priority": 0
  },
  "hyper-voice": {
+  "num": 304,
   "id": "hyper-voice",
   "name": "Hyper Voice",
   "type": "normal",
@@ -3952,6 +4256,7 @@
   "priority": 0
  },
  "poison-fang": {
+  "num": 305,
   "id": "poison-fang",
   "name": "Poison Fang",
   "type": "poison",
@@ -3965,6 +4270,7 @@
   "priority": 0
  },
  "crush-claw": {
+  "num": 306,
   "id": "crush-claw",
   "name": "Crush Claw",
   "type": "normal",
@@ -3978,6 +4284,7 @@
   "priority": 0
  },
  "blast-burn": {
+  "num": 307,
   "id": "blast-burn",
   "name": "Blast Burn",
   "type": "fire",
@@ -3991,6 +4298,7 @@
   "priority": 0
  },
  "hydro-cannon": {
+  "num": 308,
   "id": "hydro-cannon",
   "name": "Hydro Cannon",
   "type": "water",
@@ -4004,6 +4312,7 @@
   "priority": 0
  },
  "meteor-mash": {
+  "num": 309,
   "id": "meteor-mash",
   "name": "Meteor Mash",
   "type": "steel",
@@ -4017,6 +4326,7 @@
   "priority": 0
  },
  "astonish": {
+  "num": 310,
   "id": "astonish",
   "name": "Astonish",
   "type": "ghost",
@@ -4030,6 +4340,7 @@
   "priority": 0
  },
  "weather-ball": {
+  "num": 311,
   "id": "weather-ball",
   "name": "Weather Ball",
   "type": "normal",
@@ -4043,6 +4354,7 @@
   "priority": 0
  },
  "aromatherapy": {
+  "num": 312,
   "id": "aromatherapy",
   "name": "Aromatherapy",
   "type": "grass",
@@ -4056,6 +4368,7 @@
   "priority": 0
  },
  "fake-tears": {
+  "num": 313,
   "id": "fake-tears",
   "name": "Fake Tears",
   "type": "dark",
@@ -4069,6 +4382,7 @@
   "priority": 0
  },
  "air-cutter": {
+  "num": 314,
   "id": "air-cutter",
   "name": "Air Cutter",
   "type": "flying",
@@ -4082,6 +4396,7 @@
   "priority": 0
  },
  "overheat": {
+  "num": 315,
   "id": "overheat",
   "name": "Overheat",
   "type": "fire",
@@ -4095,6 +4410,7 @@
   "priority": 0
  },
  "odor-sleuth": {
+  "num": 316,
   "id": "odor-sleuth",
   "name": "Odor Sleuth",
   "type": "normal",
@@ -4108,6 +4424,7 @@
   "priority": 0
  },
  "rock-tomb": {
+  "num": 317,
   "id": "rock-tomb",
   "name": "Rock Tomb",
   "type": "rock",
@@ -4121,6 +4438,7 @@
   "priority": 0
  },
  "silver-wind": {
+  "num": 318,
   "id": "silver-wind",
   "name": "Silver Wind",
   "type": "bug",
@@ -4134,6 +4452,7 @@
   "priority": 0
  },
  "metal-sound": {
+  "num": 319,
   "id": "metal-sound",
   "name": "Metal Sound",
   "type": "steel",
@@ -4147,6 +4466,7 @@
   "priority": 0
  },
  "grasswhistle": {
+  "num": 320,
   "id": "grasswhistle",
   "name": "Grasswhistle",
   "type": "grass",
@@ -4160,6 +4480,7 @@
   "priority": 0
  },
  "tickle": {
+  "num": 321,
   "id": "tickle",
   "name": "Tickle",
   "type": "normal",
@@ -4173,6 +4494,7 @@
   "priority": 0
  },
  "cosmic-power": {
+  "num": 322,
   "id": "cosmic-power",
   "name": "Cosmic Power",
   "type": "psychic",
@@ -4186,6 +4508,7 @@
   "priority": 0
  },
  "water-spout": {
+  "num": 323,
   "id": "water-spout",
   "name": "Water Spout",
   "type": "water",
@@ -4199,6 +4522,7 @@
   "priority": 0
  },
  "signal-beam": {
+  "num": 324,
   "id": "signal-beam",
   "name": "Signal Beam",
   "type": "bug",
@@ -4212,6 +4536,7 @@
   "priority": 0
  },
  "shadow-punch": {
+  "num": 325,
   "id": "shadow-punch",
   "name": "Shadow Punch",
   "type": "ghost",
@@ -4225,6 +4550,7 @@
   "priority": 0
  },
  "extrasensory": {
+  "num": 326,
   "id": "extrasensory",
   "name": "Extrasensory",
   "type": "psychic",
@@ -4238,6 +4564,7 @@
   "priority": 0
  },
  "sky-uppercut": {
+  "num": 327,
   "id": "sky-uppercut",
   "name": "Sky Uppercut",
   "type": "fighting",
@@ -4251,6 +4578,7 @@
   "priority": 0
  },
  "sand-tomb": {
+  "num": 328,
   "id": "sand-tomb",
   "name": "Sand Tomb",
   "type": "ground",
@@ -4264,6 +4592,7 @@
   "priority": 0
  },
  "sheer-cold": {
+  "num": 329,
   "id": "sheer-cold",
   "name": "Sheer Cold",
   "type": "ice",
@@ -4277,6 +4606,7 @@
   "priority": 0
  },
  "muddy-water": {
+  "num": 330,
   "id": "muddy-water",
   "name": "Muddy Water",
   "type": "water",
@@ -4290,6 +4620,7 @@
   "priority": 0
  },
  "bullet-seed": {
+  "num": 331,
   "id": "bullet-seed",
   "name": "Bullet Seed",
   "type": "grass",
@@ -4303,6 +4634,7 @@
   "priority": 0
  },
  "aerial-ace": {
+  "num": 332,
   "id": "aerial-ace",
   "name": "Aerial Ace",
   "type": "flying",
@@ -4316,6 +4648,7 @@
   "priority": 0
  },
  "icicle-spear": {
+  "num": 333,
   "id": "icicle-spear",
   "name": "Icicle Spear",
   "type": "ice",
@@ -4329,6 +4662,7 @@
   "priority": 0
  },
  "iron-defense": {
+  "num": 334,
   "id": "iron-defense",
   "name": "Iron Defense",
   "type": "steel",
@@ -4342,6 +4676,7 @@
   "priority": 0
  },
  "block": {
+  "num": 335,
   "id": "block",
   "name": "Block",
   "type": "normal",
@@ -4355,6 +4690,7 @@
   "priority": 0
  },
  "howl": {
+  "num": 336,
   "id": "howl",
   "name": "Howl",
   "type": "normal",
@@ -4368,6 +4704,7 @@
   "priority": 0
  },
  "dragon-claw": {
+  "num": 337,
   "id": "dragon-claw",
   "name": "Dragon Claw",
   "type": "dragon",
@@ -4381,6 +4718,7 @@
   "priority": 0
  },
  "frenzy-plant": {
+  "num": 338,
   "id": "frenzy-plant",
   "name": "Frenzy Plant",
   "type": "grass",
@@ -4394,6 +4732,7 @@
   "priority": 0
  },
  "bulk-up": {
+  "num": 339,
   "id": "bulk-up",
   "name": "Bulk Up",
   "type": "fighting",
@@ -4407,6 +4746,7 @@
   "priority": 0
  },
  "bounce": {
+  "num": 340,
   "id": "bounce",
   "name": "Bounce",
   "type": "flying",
@@ -4420,6 +4760,7 @@
   "priority": 0
  },
  "mud-shot": {
+  "num": 341,
   "id": "mud-shot",
   "name": "Mud Shot",
   "type": "ground",
@@ -4433,6 +4774,7 @@
   "priority": 0
  },
  "poison-tail": {
+  "num": 342,
   "id": "poison-tail",
   "name": "Poison Tail",
   "type": "poison",
@@ -4446,6 +4788,7 @@
   "priority": 0
  },
  "covet": {
+  "num": 343,
   "id": "covet",
   "name": "Covet",
   "type": "normal",
@@ -4459,6 +4802,7 @@
   "priority": 0
  },
  "volt-tackle": {
+  "num": 344,
   "id": "volt-tackle",
   "name": "Volt Tackle",
   "type": "electric",
@@ -4472,6 +4816,7 @@
   "priority": 0
  },
  "magical-leaf": {
+  "num": 345,
   "id": "magical-leaf",
   "name": "Magical Leaf",
   "type": "grass",
@@ -4485,6 +4830,7 @@
   "priority": 0
  },
  "water-sport": {
+  "num": 346,
   "id": "water-sport",
   "name": "Water Sport",
   "type": "water",
@@ -4498,6 +4844,7 @@
   "priority": 0
  },
  "calm-mind": {
+  "num": 347,
   "id": "calm-mind",
   "name": "Calm Mind",
   "type": "psychic",
@@ -4511,6 +4858,7 @@
   "priority": 0
  },
  "leaf-blade": {
+  "num": 348,
   "id": "leaf-blade",
   "name": "Leaf Blade",
   "type": "grass",
@@ -4524,6 +4872,7 @@
   "priority": 0
  },
  "dragon-dance": {
+  "num": 349,
   "id": "dragon-dance",
   "name": "Dragon Dance",
   "type": "dragon",
@@ -4537,6 +4886,7 @@
   "priority": 0
  },
  "rock-blast": {
+  "num": 350,
   "id": "rock-blast",
   "name": "Rock Blast",
   "type": "rock",
@@ -4550,6 +4900,7 @@
   "priority": 0
  },
  "shock-wave": {
+  "num": 351,
   "id": "shock-wave",
   "name": "Shock Wave",
   "type": "electric",
@@ -4563,6 +4914,7 @@
   "priority": 0
  },
  "water-pulse": {
+  "num": 352,
   "id": "water-pulse",
   "name": "Water Pulse",
   "type": "water",
@@ -4576,6 +4928,7 @@
   "priority": 0
  },
  "doom-desire": {
+  "num": 353,
   "id": "doom-desire",
   "name": "Doom Desire",
   "type": "steel",
