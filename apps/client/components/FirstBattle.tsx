@@ -25,6 +25,7 @@ import {
   manhattanDistance,
   resolveSimpleAiTurnDetailed,
   type DuelActionResult,
+  type DuelPresentationEvent,
   type DuelInventory,
   type DuelItemId,
   type DuelMajorStatus,
@@ -40,6 +41,7 @@ import {
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import { BattleVfx } from "@/components/BattleVfx";
+import { t } from "@/lib/i18n";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import {
@@ -132,8 +134,75 @@ type UnitAnimationState = {
   facing?: Facing;
 };
 
+type FloaterKind =
+  | "damage"
+  | "super"
+  | "resist"
+  | "heal"
+  | "miss"
+  | "immune"
+  | "status"
+  | "stat-up"
+  | "stat-down";
+
+type Floater = {
+  id: number;
+  position: DuelPoint;
+  text: string;
+  kind: FloaterKind;
+  /** Stagger so several numbers on one tile do not overlap. */
+  offset: number;
+};
+
+type ProjectileEvent = {
+  from: DuelPoint;
+  to: DuelPoint;
+  type: string;
+  nonce: number;
+};
+
+const STAT_LABEL: Record<string, string> = {
+  attack: "ATK",
+  defense: "DEF",
+  "special-attack": "SP.ATK",
+  "special-defense": "SP.DEF",
+  accuracy: "ACC",
+  evasion: "EVA",
+  speed: "SPD",
+};
+
+const STATUS_LABEL: Record<string, string> = {
+  poison: "PSN",
+  burn: "BRN",
+  paralysis: "PAR",
+  sleep: "SLP",
+  freeze: "FRZ",
+};
+
+const TYPE_FX_COLOR: Record<string, string> = {
+  fire: "#ff7a1a",
+  water: "#4aa8ff",
+  electric: "#ffe14a",
+  grass: "#59c844",
+  bug: "#a8c820",
+  ice: "#9be8ff",
+  psychic: "#ff7bd0",
+  ghost: "#8f6bd0",
+  dark: "#5a4a6a",
+  dragon: "#6a5cff",
+  poison: "#b45ad6",
+  ground: "#b08850",
+  rock: "#8f8677",
+  flying: "#e6f0ff",
+  fighting: "#ff8a2a",
+  steel: "#d8e0f0",
+  normal: "#fff7d6",
+};
+
 type VfxEvent = {
   moveId: DuelMoveId;
+  type?: string;
+  category?: "physical" | "special" | "status";
   position: DuelPoint;
   nonce: number;
 };
@@ -497,6 +566,12 @@ export function FirstBattle({
   const animationNonceRef = useRef(0);
   const vfxNonceRef = useRef(0);
   const captureThrowNonceRef = useRef(0);
+  const [floaters, setFloaters] = useState<Floater[]>([]);
+  const floaterIdRef = useRef(0);
+  const [projectile, setProjectile] = useState<ProjectileEvent | null>(
+    null,
+  );
+  const projectileNonceRef = useRef(0);
   const vfxDoneRef = useRef<(() => void) | null>(null);
 
   const active = getActiveDuelUnit(state);
@@ -860,16 +935,132 @@ export function FirstBattle({
     }, 1800 / battleSpeedRef.current);
   };
 
+  const spawnFloater = (
+    position: DuelPoint,
+    text: string,
+    kind: FloaterKind,
+    offset = 0,
+  ) => {
+    floaterIdRef.current += 1;
+    const id = floaterIdRef.current;
+    setFloaters((current) => [
+      ...current,
+      { id, position: { ...position }, text, kind, offset },
+    ]);
+    window.setTimeout(() => {
+      setFloaters((current) =>
+        current.filter((floater) => floater.id !== id),
+      );
+    }, 1050 / battleSpeed);
+  };
+
+  /** Damage / heal / miss / status numbers rising from each affected unit. */
+  const showMoveFloaters = (
+    presentation: Extract<DuelPresentationEvent, { kind: "move" }>,
+    beforeState: DuelState,
+    afterState: DuelState,
+  ) => {
+    const spotOf = (unitId: string) => {
+      const unit = beforeState.units.find((entry) => entry.id === unitId);
+      return unit
+        ? (visualPositions[unitId] ?? unit.position)
+        : null;
+    };
+
+    presentation.results.forEach((entry, index) => {
+      const spot = spotOf(entry.targetId);
+      if (!spot) return;
+      const offset = index * 10;
+
+      if (entry.missed) {
+        spawnFloater(spot, t("MISS"), "miss", offset);
+        return;
+      }
+      if (entry.typeEffectiveness === 0) {
+        spawnFloater(spot, t("NO EFFECT"), "immune", offset);
+      } else if (entry.damage > 0) {
+        const effectiveness = entry.typeEffectiveness ?? 1;
+        spawnFloater(
+          spot,
+          `-${entry.damage}`,
+          effectiveness > 1
+            ? "super"
+            : effectiveness < 1
+              ? "resist"
+              : "damage",
+          offset,
+        );
+      }
+      if (entry.statusApplied) {
+        spawnFloater(
+          spot,
+          STATUS_LABEL[entry.statusApplied] ?? entry.statusApplied,
+          "status",
+          offset + 14,
+        );
+      }
+      entry.statChanges.forEach((change, changeIndex) => {
+        const up = Math.abs(change.delta) > 1 ? "▲▲" : "▲";
+        const down = Math.abs(change.delta) > 1 ? "▼▼" : "▼";
+        spawnFloater(
+          spot,
+          `${STAT_LABEL[change.stat] ?? change.stat} ${
+            change.delta > 0 ? up : down
+          }`,
+          change.delta > 0 ? "stat-up" : "stat-down",
+          offset + 14 + changeIndex * 10,
+        );
+      });
+    });
+
+    // The attacker itself: drained HP (+) or recoil (-).
+    const actorBefore = beforeState.units.find(
+      (unit) => unit.id === presentation.actorId,
+    );
+    const actorAfter = afterState.units.find(
+      (unit) => unit.id === presentation.actorId,
+    );
+    if (actorBefore && actorAfter && actorAfter.hp !== actorBefore.hp) {
+      const spot =
+        visualPositions[actorBefore.id] ?? actorBefore.position;
+      const delta = actorAfter.hp - actorBefore.hp;
+      spawnFloater(
+        spot,
+        delta > 0 ? `+${delta}` : `${delta}`,
+        delta > 0 ? "heal" : "damage",
+        -10,
+      );
+    }
+  };
+
+  const playProjectile = (
+    from: DuelPoint,
+    to: DuelPoint,
+    type: string,
+  ): Promise<void> => {
+    projectileNonceRef.current += 1;
+    setProjectile({
+      from: { ...from },
+      to: { ...to },
+      type,
+      nonce: projectileNonceRef.current,
+    });
+    return wait(270 / battleSpeed).then(() => setProjectile(null));
+  };
+
   const playVfx = (
     moveId: DuelMoveId,
     position: DuelPoint,
   ): Promise<void> => {
     vfxNonceRef.current += 1;
+    const move = DUEL_MOVES[moveId];
 
     return new Promise((resolve) => {
       vfxDoneRef.current = resolve;
       setVfx({
         moveId,
+        type: move?.type,
+        category: move?.category,
         position: { ...position },
         nonce: vfxNonceRef.current,
       });
@@ -963,6 +1154,14 @@ export function FirstBattle({
     );
     await wait(ATTACK_WINDUP_MS);
 
+    if (presentation.motion === "projectile") {
+      await playProjectile(
+        visualPositions[actor.id] ?? actor.position,
+        visualPositions[target.id] ?? target.position,
+        DUEL_MOVES[presentation.moveId].type,
+      );
+    }
+
     const landedTargets = affectedTargets.filter(
       ({ entry }) => !entry.missed,
     );
@@ -971,6 +1170,7 @@ export function FirstBattle({
       landedTargets.length === 0
     ) {
       setState(result.state);
+      showMoveFloaters(presentation, beforeState, result.state);
       flashNotice(
         `${DUEL_MOVES[presentation.moveId].name} errou!`,
       );
@@ -991,6 +1191,7 @@ export function FirstBattle({
     );
 
     setState(result.state);
+    showMoveFloaters(presentation, beforeState, result.state);
     if ((targetResult?.hitCount ?? 0) > 1) {
       flashNotice(
         `${targetResult?.hitCount} acertos!`,
@@ -1065,6 +1266,18 @@ export function FirstBattle({
 
     setUnitAnimation(targetId, "idle");
     setState(result.state);
+    if (presentation.healed > 0) {
+      const healed = beforeState.units.find(
+        (unit) => unit.id === targetId,
+      );
+      if (healed) {
+        spawnFloater(
+          visualPositions[healed.id] ?? healed.position,
+          `+${presentation.healed}`,
+          "heal",
+        );
+      }
+    }
     flashNotice(
       `${DUEL_ITEMS[presentation.itemId].name} usada.`,
     );
@@ -1938,6 +2151,42 @@ export function FirstBattle({
               </div>
             )}
 
+            {projectile && (
+              <div
+                key={projectile.nonce}
+                className="battle-projectile-position"
+                style={{
+                  left: `${(projectile.from.x / state.width) * 100}%`,
+                  top: `${(projectile.from.y / state.height) * 100}%`,
+                  width: `${100 / state.width}%`,
+                  height: `${100 / state.height}%`,
+                  "--proj": TYPE_FX_COLOR[projectile.type] ?? "#fff",
+                  "--proj-dx": `${(projectile.to.x - projectile.from.x) * 100}%`,
+                  "--proj-dy": `${(projectile.to.y - projectile.from.y) * 100}%`,
+                } as CSSProperties}
+              >
+                <span />
+              </div>
+            )}
+
+            {floaters.map((floater) => (
+              <div
+                key={floater.id}
+                className="battle-floater-position"
+                style={{
+                  left: `${(floater.position.x / state.width) * 100}%`,
+                  top: `${(floater.position.y / state.height) * 100}%`,
+                  width: `${100 / state.width}%`,
+                  height: `${100 / state.height}%`,
+                  transform: `translateY(${-(floater.offset + 18)}px)`,
+                }}
+              >
+                <span className={`battle-floater ${floater.kind}`}>
+                  {floater.text}
+                </span>
+              </div>
+            ))}
+
             {vfx && (
               <div
                 className="battle-vfx-position"
@@ -1950,6 +2199,8 @@ export function FirstBattle({
               >
                 <BattleVfx
                   moveId={vfx.moveId}
+                  type={vfx.type}
+                  category={vfx.category}
                   nonce={vfx.nonce}
                   speed={battleSpeed}
                   onComplete={() => {

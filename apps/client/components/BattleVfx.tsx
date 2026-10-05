@@ -22,8 +22,28 @@ type RuntimeManifest = {
   moves: Partial<Record<DuelMoveId, RuntimeVfx>>;
 };
 
+/** Moves with hand-drawn CSS effects (see globals.css `.vfx-<move>`). */
+const LEGACY_FX = new Set<string>([
+  "scratch",
+  "tackle",
+  "growl",
+  "tail-whip",
+  "vine-whip",
+  "razor-leaf",
+  "seed-bomb",
+  "ember",
+  "flame-burst",
+  "water-gun",
+  "aqua-jet",
+  "metal-claw",
+  "bite",
+]);
+
 type Props = {
   moveId: DuelMoveId;
+  /** Move type: picks the particle effect when there is no extracted sprite. */
+  type?: string;
+  category?: "physical" | "special" | "status";
   nonce: number;
   speed?: 1 | 2;
   onComplete?: () => void;
@@ -46,6 +66,8 @@ function loadManifest(): Promise<RuntimeManifest | null> {
 
 export function BattleVfx({
   moveId,
+  type,
+  category,
   nonce,
   speed = 1,
   onComplete,
@@ -77,7 +99,7 @@ export function BattleVfx({
     if (!data) {
       const timeout = window.setTimeout(() => {
         onCompleteRef.current?.();
-      }, 420 / speed);
+      }, (type && !LEGACY_FX.has(moveId) ? 640 : 420) / speed);
 
       return () => window.clearTimeout(timeout);
     }
@@ -116,6 +138,23 @@ export function BattleVfx({
       }
     };
   }, [data, nonce, speed]);
+
+  if (!data && type && !LEGACY_FX.has(moveId)) {
+    return (
+      <div
+        key={nonce}
+        className={`battle-fx fx-${type} fx-cat-${category ?? "physical"}`}
+        aria-hidden="true"
+      >
+        {Array.from({ length: 8 }, (_, index) => (
+          <span
+            key={index}
+            style={{ "--i": index } as React.CSSProperties}
+          />
+        ))}
+      </div>
+    );
+  }
 
   if (!data) {
     return (

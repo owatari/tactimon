@@ -1,6 +1,13 @@
 import type { Catalog } from "../index";
 
 export const optionsCatalog: Catalog = {
+  MISS: { pt: "ERROU", es: "FALLO", fr: "RATÉ", zh: "未命中" },
+  "NO EFFECT": {
+    pt: "SEM EFEITO",
+    es: "SIN EFECTO",
+    fr: "AUCUN EFFET",
+    zh: "没有效果",
+  },
   "{name} is a legendary Pokémon. Raid battles are a future feature: wait for the MMO!": {
     pt: "{name} é um Pokémon lendário. As batalhas de raid são um recurso futuro: aguarde o MMO!",
     es: "{name} es un Pokémon legendario. Las incursiones son una función futura: ¡espera al MMO!",

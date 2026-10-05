@@ -98,7 +98,9 @@ import {
 import {
   canStoryUseFlash,
   canStoryUseStrength,
+  techniqueBlockedMessage,
 } from "@/lib/fieldTechniques";
+import { t } from "@/lib/i18n";
 import { isDarkMap } from "@/lib/darkCaves";
 import {
   resetBoulders,
@@ -1344,10 +1346,11 @@ export function OverworldGame({
         hasStoryFieldTechnique(storyRef.current, "surf")
       ) {
         showInteraction(
-          "Você precisa da Soul Badge para usar Surf.",
+          techniqueBlockedMessage(storyRef.current, "surf") ??
+            t("The water is a deep blue."),
         );
       } else {
-        showInteraction("A água é de um azul profundo.");
+        showInteraction(t("The water is a deep blue."));
       }
       return;
     }
