@@ -15,6 +15,14 @@ import {
   playSlots,
 } from "./gameCorner";
 import {
+  IN_GAME_TRADES,
+  findInGameTrade,
+  hasCompletedTrade,
+  performTrade,
+  tradeCandidates,
+  type InGameTrade,
+} from "./inGameTrades";
+import {
   dayCareStatus,
   depositAtDayCare,
   withdrawFromDayCare,
@@ -25,7 +33,10 @@ import {
   canStoryUseStrength,
 } from "./fieldTechniques";
 import { KEY_ITEM_LABELS } from "./keyItems";
-import { speciesDisplayName } from "@tactimon/battle-engine";
+import {
+  speciesDisplayName,
+  type WildSpeciesId,
+} from "@tactimon/battle-engine";
 import { getPokedex } from "./pokedex";
 import {
   FUJI_RESCUED_EVENT,
@@ -201,7 +212,98 @@ function keyItemGiftScript(gift: KeyItemGift): DialogueDefinition {
   };
 }
 
+function tradeScript(trade: InGameTrade): DialogueDefinition {
+  const id = `trade-${trade.id}`;
+  const want = speciesDisplayName(trade.want as WildSpeciesId);
+  const give = speciesDisplayName(trade.give);
+  return {
+    id,
+    interact: (story) => {
+      if (hasCompletedTrade(story, trade.id)) {
+        return reply(
+          story,
+          id,
+          `${trade.speaker}: Cuide bem do seu ${give}! Foi uma ótima troca.`,
+          trade.speaker,
+        );
+      }
+      const candidates = tradeCandidates(story, trade);
+      if (candidates.length === 0) {
+        return reply(
+          story,
+          id,
+          `${trade.speaker}: Estou procurando um ${want}. Se você tiver um na equipe, troco pelo meu ${give}!`,
+          trade.speaker,
+        );
+      }
+      return {
+        story,
+        presentation: {
+          id,
+          pages: [
+            {
+              id: "offer",
+              speaker: trade.speaker,
+              text: `Quer trocar um ${want} pelo meu ${give}?`,
+              choices: [
+                ...candidates.map(({ captureIndex, pokemon }) => ({
+                  id: `trade-${captureIndex}`,
+                  label: `${want} Lv. ${pokemon.level}`,
+                  request: {
+                    kind: "script" as const,
+                    id: "trade-do",
+                    context: { tradeId: trade.id, captureIndex },
+                  },
+                })),
+                {
+                  id: "decline",
+                  label: "Não, obrigado",
+                  request: {
+                    kind: "text" as const,
+                    id: `${id}-decline`,
+                    speaker: trade.speaker,
+                    text: "Ah, que pena. Volte se mudar de ideia!",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  };
+}
+
 export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
+  ...Object.fromEntries(
+    IN_GAME_TRADES.map((trade) => [`trade-${trade.id}`, tradeScript(trade)]),
+  ),
+  "trade-do": {
+    id: "trade-do",
+    interact: (story, context) => {
+      const tradeId = contextString(context, "tradeId") ?? "";
+      const trade = findInGameTrade(tradeId);
+      const index = context.captureIndex;
+      const result =
+        typeof index === "number"
+          ? performTrade(story, tradeId, index)
+          : null;
+      if (!trade || !result?.ok) {
+        return reply(
+          story,
+          "trade-do",
+          "Hmm, algo deu errado. A troca não foi feita.",
+          trade?.speaker,
+        );
+      }
+      return reply(
+        result.story,
+        "trade-do",
+        `${trade.speaker}: Troca feita! Seu ${result.gave} virou ${result.received} (Lv. ${result.level}). Cuide bem dele!`,
+        trade.speaker,
+      );
+    },
+  },
   "route16-fly-woman": techniqueGiftScript({
     id: "route16-fly-woman",
     technique: "fly",
@@ -898,6 +1000,12 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
 
 /** ROM object coordinates (map:x,y) → quest dialogue script id. */
 export const QUEST_WORLD_OBJECT_DIALOGUE_IDS: Record<string, string> = {
+  ...Object.fromEntries(
+    IN_GAME_TRADES.map((trade) => [
+      `${trade.mapId}:${trade.x},${trade.y}`,
+      `trade-${trade.id}`,
+    ]),
+  ),
   "route-16-house:4,2": "route16-fly-woman",
   "route-2-east-building:4,6": "route2-flash-aide",
   "fuchsia-city-wardens-house:3,5": "fuchsia-warden",
