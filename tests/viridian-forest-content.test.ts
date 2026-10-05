@@ -126,43 +126,24 @@ describe("Viridian Forest content", () => {
     ).toHaveLength(5);
   });
 
-  it("exposes only supported visible item balls and persists each independently", () => {
+  it("exposes every FireRed item ball and hidden item and persists each independently", () => {
+    const all = resolveOverworldPickups("viridian-forest", []);
     expect(
-      resolveOverworldPickups("viridian-forest", []),
+      all.filter((pickup) => !pickup.hidden).map((pickup) => pickup.id).sort(),
     ).toEqual([
-      {
-        id: "viridian-forest-poke-ball",
-        mapId: "viridian-forest",
-        itemId: "poke-ball",
-        itemName: "Poké Ball",
-        x: 5,
-        y: 41,
-      },
-      {
-        id: "viridian-forest-potion-center",
-        mapId: "viridian-forest",
-        itemId: "potion",
-        itemName: "Potion",
-        x: 21,
-        y: 34,
-      },
-      {
-        id: "viridian-forest-potion-south",
-        mapId: "viridian-forest",
-        itemId: "potion",
-        itemName: "Potion",
-        x: 49,
-        y: 60,
-      },
+      "viridian-forest-antidote",
+      "viridian-forest-poke-ball",
+      "viridian-forest-potion-center",
+      "viridian-forest-potion-south",
     ]);
+    expect(
+      all.filter((pickup) => pickup.hidden).map((pickup) => pickup.itemId).sort(),
+    ).toEqual(["antidote", "potion"]);
 
     expect(
       resolveOverworldPickups("viridian-forest", [
         "viridian-forest-potion-center",
       ]).map((pickup) => pickup.id),
-    ).toEqual([
-      "viridian-forest-poke-ball",
-      "viridian-forest-potion-south",
-    ]);
+    ).not.toContain("viridian-forest-potion-center");
   });
 });

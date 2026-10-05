@@ -260,7 +260,7 @@ const PICKUP_OBJECTS:
   OVERWORLD_PICKUPS.map((pickup) => ({
     id: pickup.id,
     mapId: pickup.mapId,
-    label: "Item Ball",
+    label: pickup.hidden ? "Item oculto" : "Item Ball",
     x: pickup.x,
     y: pickup.y,
     spriteUrl: "/game-assets/overworld/092_item_ball.png",
@@ -268,6 +268,9 @@ const PICKUP_OBJECTS:
     frameHeight: 16,
     sheetWidth: 16,
     sheetHeight: 16,
+    ...(pickup.hidden
+      ? { blocksMovement: false, renderSprite: false }
+      : {}),
     visibleWhen: {
       kind: "event" as const,
       namespace: "pickup" as const,

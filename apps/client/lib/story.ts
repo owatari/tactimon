@@ -14,6 +14,13 @@ import {
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import {
+  BAG_ITEM_MAX_QUANTITY,
+  isBagItemId,
+  normalizeBagItems,
+  type BagItems,
+  type OverworldItemId,
+} from "./items";
+import {
   completePlayerWorldEvent,
   createEmptyPlayerWorldState,
   getPlayerWorldChoice,
@@ -75,6 +82,8 @@ export type StoryState = {
   money: number;
   inventory: DuelInventory;
   valuables?: StoryValuables;
+  /** Overworld finds the battle engine cannot use yet (see `lib/items.ts`). */
+  bagItems?: BagItems;
   keyItemIds?: StoryKeyItemId[];
   fieldTechniqueIds?: StoryFieldTechniqueId[];
   clearedObstacleIds?: string[];
@@ -112,6 +121,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   valuables: {
     nugget: 0,
   },
+  bagItems: {},
   keyItemIds: [],
   fieldTechniqueIds: [],
   clearedObstacleIds: [],
@@ -175,6 +185,7 @@ export function chooseStarter(
     valuables: {
       nugget: 0,
     },
+    bagItems: {},
     keyItemIds: [],
     fieldTechniqueIds: [],
     clearedObstacleIds: [],
@@ -505,6 +516,7 @@ export function normalizeStoryState(
     money: normalizeMoney(input?.money),
     inventory: normalizeInventory(input?.inventory),
     valuables: normalizeValuables(input?.valuables),
+    bagItems: normalizeBagItems(input?.bagItems),
     keyItemIds: normalizeKeyItemIds(input?.keyItemIds),
     fieldTechniqueIds: normalizeFieldTechniqueIds(
       input?.fieldTechniqueIds,
@@ -1277,7 +1289,7 @@ export type OverworldItemPickupResult = {
 export function collectOverworldItem(
   story: StoryState,
   pickupId: string,
-  itemId: DuelItemId,
+  itemId: OverworldItemId,
 ): OverworldItemPickupResult {
   if (hasStoryCollectedItem(story, pickupId)) {
     return {
@@ -1287,8 +1299,14 @@ export function collectOverworldItem(
     };
   }
 
-  const current = story.inventory[itemId] ?? 0;
-  if (current >= 999) {
+  const bagItemId = isBagItemId(itemId) ? itemId : null;
+  const current = bagItemId
+    ? (story.bagItems?.[bagItemId] ?? 0)
+    : (story.inventory[itemId as DuelItemId] ?? 0);
+  if (
+    current >=
+    (bagItemId ? BAG_ITEM_MAX_QUANTITY : 999)
+  ) {
     return {
       accepted: false,
       story,
@@ -1296,23 +1314,35 @@ export function collectOverworldItem(
     };
   }
 
+  const collected = {
+    ...completeStoryPlayerEvent(
+      story,
+      "pickup",
+      pickupId,
+    ),
+    collectedItemIds: [
+      ...story.collectedItemIds,
+      pickupId,
+    ],
+  };
+
   return {
     accepted: true,
-    story: {
-      ...completeStoryPlayerEvent(
-        story,
-        "pickup",
-        pickupId,
-      ),
-      inventory: {
-        ...story.inventory,
-        [itemId]: current + 1,
-      },
-      collectedItemIds: [
-        ...story.collectedItemIds,
-        pickupId,
-      ],
-    },
+    story: bagItemId
+      ? {
+          ...collected,
+          bagItems: {
+            ...story.bagItems,
+            [bagItemId]: current + 1,
+          },
+        }
+      : {
+          ...collected,
+          inventory: {
+            ...story.inventory,
+            [itemId as DuelItemId]: current + 1,
+          },
+        },
   };
 }
 

@@ -1,6 +1,6 @@
 import type {
-  DuelItemId,
-} from "@tactimon/battle-engine";
+  OverworldItemId,
+} from "./items";
 import {
   chooseMtMoonFossil,
   collectOverworldItem,
@@ -119,7 +119,7 @@ export type DialogueInteractionRequest =
   | {
       kind: "pickup";
       pickupId: string;
-      itemId: DuelItemId;
+      itemId: OverworldItemId;
       itemName: string;
     };
 
@@ -336,7 +336,7 @@ const DIALOGUE_DEFINITIONS: Record<
       const result = collectOverworldItem(
         story,
         pickupId,
-        itemId as DuelItemId,
+        itemId as OverworldItemId,
       );
       return {
         story: result.story,
