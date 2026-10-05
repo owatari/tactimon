@@ -44,6 +44,7 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 59,
     "moves": [
      "take-down",
+     "earthquake",
      "rock-tomb",
      "scary-face"
     ]
@@ -118,6 +119,7 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 59,
     "moves": [
      "take-down",
+     "earthquake",
      "rock-tomb",
      "scary-face"
     ]
@@ -127,7 +129,9 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 59,
     "moves": [
      "hydro-pump",
-     "bite"
+     "dragon-rage",
+     "bite",
+     "thrash"
     ]
    },
    {
@@ -190,6 +194,7 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 59,
     "moves": [
      "take-down",
+     "earthquake",
      "rock-tomb",
      "scary-face"
     ]
@@ -208,7 +213,9 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 61,
     "moves": [
      "hydro-pump",
-     "bite"
+     "dragon-rage",
+     "bite",
+     "thrash"
     ]
    },
    {
@@ -217,7 +224,8 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "moves": [
      "fire-blast",
      "aerial-ace",
-     "slash"
+     "slash",
+     "fire-spin"
     ]
    }
   ]
@@ -257,7 +265,7 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 23,
     "moves": [
-     "low-kick",
+     "rage",
      "karate-chop",
      "fury-swipes",
      "focus-energy"
@@ -333,7 +341,7 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 22,
     "moves": [
-     "low-kick",
+     "rage",
      "karate-chop",
      "fury-swipes",
      "focus-energy"
@@ -459,9 +467,9 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 38,
     "moves": [
-     "karate-chop",
      "fury-swipes",
      "focus-energy",
+     "seismic-toss",
      "cross-chop"
     ]
    },
@@ -469,17 +477,18 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "exeggcute",
     "level": 35,
     "moves": [
-     "tackle",
      "screech",
-     "spark"
+     "spark",
+     "selfdestruct",
+     "rollout"
     ]
    },
    {
     "species": "alakazam",
     "level": 35,
     "moves": [
-     "confusion",
      "disable",
+     "psybeam",
      "recover",
      "future-sight"
     ]
@@ -538,9 +547,9 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 35,
     "moves": [
-     "karate-chop",
      "fury-swipes",
      "focus-energy",
+     "seismic-toss",
      "cross-chop"
     ]
    },
@@ -548,8 +557,8 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "alakazam",
     "level": 35,
     "moves": [
-     "confusion",
      "disable",
+     "psybeam",
      "recover",
      "future-sight"
     ]
@@ -601,9 +610,10 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "exeggcute",
     "level": 38,
     "moves": [
-     "tackle",
      "screech",
-     "spark"
+     "spark",
+     "selfdestruct",
+     "rollout"
     ]
    },
    {
@@ -617,8 +627,8 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "alakazam",
     "level": 35,
     "moves": [
-     "confusion",
      "disable",
+     "psybeam",
      "recover",
      "future-sight"
     ]

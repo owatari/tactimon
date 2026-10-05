@@ -312,6 +312,13 @@ export const STRENGTH_BOULDERS: readonly GeneratedObstacle[] = [
 ];
 export const STATIC_POKEMON: readonly GeneratedStaticPokemon[] = [
  {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 7,
+  "y": 12,
+  "species": "mewtwo",
+  "flag": 129
+ },
+ {
   "mapId": "seafoam-islands-b-4f",
   "x": 9,
   "y": 2,

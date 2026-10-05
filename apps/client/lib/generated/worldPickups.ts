@@ -601,6 +601,79 @@ export const GENERATED_PICKUPS: readonly OverworldPickupDefinition[] = [
   "hidden": true
  },
  {
+  "id": "cerulean-cave-1f-nugget",
+  "mapId": "cerulean-cave-1f",
+  "itemId": "nugget",
+  "itemName": "Nugget",
+  "x": 7,
+  "y": 3
+ },
+ {
+  "id": "cerulean-cave-1f-full-restore",
+  "mapId": "cerulean-cave-1f",
+  "itemId": "full-restore",
+  "itemName": "Full Restore",
+  "x": 11,
+  "y": 16
+ },
+ {
+  "id": "cerulean-cave-1f-max-elixir",
+  "mapId": "cerulean-cave-1f",
+  "itemId": "max-elixir",
+  "itemName": "Max Elixir",
+  "x": 25,
+  "y": 5
+ },
+ {
+  "id": "cerulean-cave-1f-hidden-ultra-ball",
+  "mapId": "cerulean-cave-1f",
+  "itemId": "ultra-ball",
+  "itemName": "Ultra Ball",
+  "x": 12,
+  "y": 2,
+  "hidden": true
+ },
+ {
+  "id": "cerulean-cave-2f-pp-up",
+  "mapId": "cerulean-cave-2f",
+  "itemId": "pp-up",
+  "itemName": "Pp Up",
+  "x": 9,
+  "y": 18
+ },
+ {
+  "id": "cerulean-cave-2f-ultra-ball",
+  "mapId": "cerulean-cave-2f",
+  "itemId": "ultra-ball",
+  "itemName": "Ultra Ball",
+  "x": 29,
+  "y": 16
+ },
+ {
+  "id": "cerulean-cave-2f-full-restore",
+  "mapId": "cerulean-cave-2f",
+  "itemId": "full-restore",
+  "itemName": "Full Restore",
+  "x": 33,
+  "y": 12
+ },
+ {
+  "id": "cerulean-cave-b-1f-ultra-ball",
+  "mapId": "cerulean-cave-b-1f",
+  "itemId": "ultra-ball",
+  "itemName": "Ultra Ball",
+  "x": 31,
+  "y": 9
+ },
+ {
+  "id": "cerulean-cave-b-1f-max-revive",
+  "mapId": "cerulean-cave-b-1f",
+  "itemId": "max-revive",
+  "itemName": "Max Revive",
+  "x": 32,
+  "y": 2
+ },
+ {
   "id": "rock-tunnel-1f-repel",
   "mapId": "rock-tunnel-1f",
   "itemId": "repel",

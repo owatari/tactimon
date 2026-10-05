@@ -106,6 +106,29 @@ const ROCKET_HIDEOUT_GATE: PlayerWorldTileGate = {
   },
 };
 
+/** Cerulean Cave stays closed until the player is Champion. */
+const CERULEAN_CAVE_GATE: PlayerWorldTileGate = {
+  id: "gate:cerulean-cave-champion",
+  kind: "tile",
+  mapId: "cerulean-city",
+  x: 1,
+  y: 12,
+  allowWhen: {
+    kind: "any",
+    conditions: ["bulbasaur", "charmander", "squirtle"].map((starter) => ({
+      kind: "event" as const,
+      namespace: "trainer" as const,
+      id: `league-champion-blue-${starter}`,
+    })),
+  },
+  blockedRequest: {
+    kind: "text",
+    id: "gate:cerulean-cave-champion",
+    speaker: "Guarda",
+    text: "A caverna além desta porta é perigosa demais! Só deixamos entrar quem se provou o Campeão da Pokémon League.",
+  },
+};
+
 const CINNABAR_GYM_GATE: PlayerWorldTileGate = {
   id: "gate:cinnabar-gym-secret-key",
   kind: "tile",
@@ -180,6 +203,7 @@ export const QUEST_TILE_GATES: readonly PlayerWorldTileGate[] = [
   ...SAFFRON_GATES,
   ...TOWER_GHOST_GATES,
   CINNABAR_GYM_GATE,
+  CERULEAN_CAVE_GATE,
   ROCKET_HIDEOUT_GATE,
   SAFARI_ENTRANCE_GATE,
   ...SILPH_DOOR_GATES,

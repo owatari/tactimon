@@ -327,3 +327,33 @@ describe("Pokémon Mansion statue switches", () => {
     expect(isWorldOpenCell(openInA.mapId, openInA.x, openInA.y)).toBe(true);
   });
 });
+
+describe("Cerulean Cave and Mewtwo", () => {
+  it("opens only for the Champion", () => {
+    const gate = (story: StoryState) =>
+      resolveBlockedPlayerTileGate(story, "cerulean-city", 1, 12);
+    expect(gate(started())).not.toBeNull();
+    expect(
+      gate(
+        completeStoryPlayerEvent(
+          started(),
+          "trainer",
+          "league-champion-blue-squirtle",
+        ),
+      ),
+    ).toBeNull();
+  });
+
+  it("places Mewtwo at the bottom of the cave with a matching sprite sheet", () => {
+    const mewtwo = STATIC_WORLD_ENCOUNTERS.find(
+      (entry) => entry.species === "mewtwo",
+    );
+    expect(mewtwo?.mapId).toBe("cerulean-cave-b-1f");
+    expect(mewtwo?.level).toBe(70);
+    const object = resolveScriptedWorldObjects("cerulean-cave-b-1f").find(
+      (entry) => entry.id === mewtwo?.id,
+    );
+    expect(object?.sheetWidth).toBe(96);
+    expect(object?.wildBattle?.species).toBe("mewtwo");
+  });
+});

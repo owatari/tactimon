@@ -485,8 +485,8 @@ const STATIC_ENCOUNTER_OBJECTS:
     spriteUrl: encounter.spriteUrl,
     frameWidth: 32,
     frameHeight: 32,
-    sheetWidth: 192,
-    sheetHeight: 64,
+    sheetWidth: encounter.sheetWidth,
+    sheetHeight: encounter.sheetHeight,
     visibleWhen: {
       kind: "event" as const,
       namespace: "story" as const,

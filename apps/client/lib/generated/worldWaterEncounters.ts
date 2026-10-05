@@ -460,6 +460,188 @@ export const WATER_ENCOUNTERS: Readonly<Record<string, WaterEncounterEntry>> = {
    ]
   }
  },
+ "cerulean-cave-1f": {
+  "surf": {
+   "encounterRate": 2,
+   "slots": [
+    {
+     "weight": 60,
+     "species": "psyduck",
+     "level": 35
+    },
+    {
+     "weight": 30,
+     "species": "golduck",
+     "level": 45
+    },
+    {
+     "weight": 5,
+     "species": "golduck",
+     "level": 50
+    },
+    {
+     "weight": 4,
+     "species": "psyduck",
+     "level": 45
+    },
+    {
+     "weight": 1,
+     "species": "psyduck",
+     "level": 45
+    }
+   ]
+  },
+  "fishing": {
+   "encounterRate": 20,
+   "old": [
+    {
+     "weight": 70,
+     "species": "magikarp",
+     "level": 5
+    },
+    {
+     "weight": 30,
+     "species": "magikarp",
+     "level": 5
+    }
+   ],
+   "good": [
+    {
+     "weight": 60,
+     "species": "poliwag",
+     "level": 10
+    },
+    {
+     "weight": 20,
+     "species": "magikarp",
+     "level": 10
+    },
+    {
+     "weight": 20,
+     "species": "goldeen",
+     "level": 10
+    }
+   ],
+   "super": [
+    {
+     "weight": 40,
+     "species": "poliwag",
+     "level": 20
+    },
+    {
+     "weight": 40,
+     "species": "poliwhirl",
+     "level": 25
+    },
+    {
+     "weight": 15,
+     "species": "gyarados",
+     "level": 20
+    },
+    {
+     "weight": 4,
+     "species": "psyduck",
+     "level": 20
+    },
+    {
+     "weight": 1,
+     "species": "psyduck",
+     "level": 30
+    }
+   ]
+  }
+ },
+ "cerulean-cave-b-1f": {
+  "surf": {
+   "encounterRate": 2,
+   "slots": [
+    {
+     "weight": 60,
+     "species": "psyduck",
+     "level": 45
+    },
+    {
+     "weight": 30,
+     "species": "golduck",
+     "level": 55
+    },
+    {
+     "weight": 5,
+     "species": "golduck",
+     "level": 60
+    },
+    {
+     "weight": 4,
+     "species": "psyduck",
+     "level": 55
+    },
+    {
+     "weight": 1,
+     "species": "psyduck",
+     "level": 55
+    }
+   ]
+  },
+  "fishing": {
+   "encounterRate": 20,
+   "old": [
+    {
+     "weight": 70,
+     "species": "magikarp",
+     "level": 5
+    },
+    {
+     "weight": 30,
+     "species": "magikarp",
+     "level": 5
+    }
+   ],
+   "good": [
+    {
+     "weight": 60,
+     "species": "poliwag",
+     "level": 10
+    },
+    {
+     "weight": 20,
+     "species": "magikarp",
+     "level": 10
+    },
+    {
+     "weight": 20,
+     "species": "goldeen",
+     "level": 10
+    }
+   ],
+   "super": [
+    {
+     "weight": 40,
+     "species": "poliwag",
+     "level": 20
+    },
+    {
+     "weight": 40,
+     "species": "poliwhirl",
+     "level": 25
+    },
+    {
+     "weight": 15,
+     "species": "gyarados",
+     "level": 20
+    },
+    {
+     "weight": 4,
+     "species": "psyduck",
+     "level": 20
+    },
+    {
+     "weight": 1,
+     "species": "gyarados",
+     "level": 30
+    }
+   ]
+  }
+ },
  "seafoam-islands-b-3f": {
   "surf": {
    "encounterRate": 2,

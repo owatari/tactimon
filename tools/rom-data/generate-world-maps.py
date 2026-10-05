@@ -27,7 +27,7 @@ hand_ids = set(re.findall(r'^  "([a-z0-9-]+)": \{\n    id: "', maps_ts, re.M))
 EXCLUDE = re.compile(
     r"battlecolosseum|tradecenter|recordcorner|unionroom|oneisland|twoisland|threeisland|fourisland|fiveisland|sixisland|sevenisland|"
     r"navelrock|birthisland|mtember|trainertower|prototype|seviiisle|kindleroad|treasurebeach|capebrink|bondbridge|"
-    r"pokemoncenter_2f|route\d+_pokemoncenter_2f|ceruleancave|unusedhouse|unusedgatehouse|dummy|hoennbuilding|"
+    r"pokemoncenter_2f|route\d+_pokemoncenter_2f|unusedhouse|unusedgatehouse|dummy|hoennbuilding|"
     r"hall?offame|halloffame|rocketwarehouse|dunsparce|berryforest|icefall|lostcave|dottedhole|alteringcave|patternbush|"
     r"resortgorgeous|waterlabyrinth|meadow|memorialpillar|outcastisland|greenpath|waterpath|ruinvalley|sevault|tanoby|"
     r"saffroncity_connection|rockethideout_elevator|silphco_elevator|"

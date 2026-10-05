@@ -19,6 +19,8 @@ export type StaticWorldEncounter = {
   level: number;
   label: string;
   spriteUrl: string;
+  sheetWidth: number;
+  sheetHeight: number;
   /** Key item the player must own before the Pokémon can be engaged. */
   requiresKeyItem?: string;
 };
@@ -27,7 +29,7 @@ const STATIC_META: Record<
   string,
   Pick<
     StaticWorldEncounter,
-    "species" | "level" | "label" | "spriteUrl" | "requiresKeyItem"
+    "species" | "level" | "label" | "spriteUrl" | "sheetWidth" | "sheetHeight" | "requiresKeyItem"
   >
 > = {
   snorlax: {
@@ -35,6 +37,8 @@ const STATIC_META: Record<
     level: 30,
     label: "Snorlax",
     spriteUrl: "/game-assets/overworld/109_snorlax.png",
+    sheetWidth: 192,
+    sheetHeight: 64,
     requiresKeyItem: "poke-flute",
   },
   zapdos: {
@@ -42,24 +46,32 @@ const STATIC_META: Record<
     level: 50,
     label: "Zapdos",
     spriteUrl: "/game-assets/overworld/136_zapdos.png",
+    sheetWidth: 192,
+    sheetHeight: 64,
   },
   articuno: {
     species: "articuno",
     level: 50,
     label: "Articuno",
     spriteUrl: "/game-assets/overworld/138_articuno.png",
+    sheetWidth: 192,
+    sheetHeight: 64,
   },
   moltres: {
     species: "moltres",
     level: 50,
     label: "Moltres",
     spriteUrl: "/game-assets/overworld/137_moltres.png",
+    sheetWidth: 192,
+    sheetHeight: 64,
   },
   mewtwo: {
     species: "mewtwo",
     level: 70,
     label: "Mewtwo",
     spriteUrl: "/game-assets/overworld/139_mewtwo.png",
+    sheetWidth: 96,
+    sheetHeight: 32,
   },
 };
 

@@ -907,6 +907,81 @@ export const WORLD_WARPS: Readonly<
   12,
   8
  ],
+ "cerulean-cave-1f:33,21": [
+  "cerulean-city",
+  1,
+  13
+ ],
+ "cerulean-cave-1f:34,2": [
+  "cerulean-cave-2f",
+  33,
+  3
+ ],
+ "cerulean-cave-1f:1,7": [
+  "cerulean-cave-b-1f",
+  5,
+  8
+ ],
+ "cerulean-cave-1f:10,2": [
+  "cerulean-cave-2f",
+  13,
+  3
+ ],
+ "cerulean-cave-1f:5,15": [
+  "cerulean-cave-2f",
+  7,
+  13
+ ],
+ "cerulean-cave-1f:30,10": [
+  "cerulean-cave-2f",
+  26,
+  10
+ ],
+ "cerulean-cave-1f:24,11": [
+  "cerulean-cave-2f",
+  23,
+  9
+ ],
+ "cerulean-cave-1f:2,4": [
+  "cerulean-cave-2f",
+  5,
+  5
+ ],
+ "cerulean-cave-2f:33,4": [
+  "cerulean-cave-1f",
+  34,
+  3
+ ],
+ "cerulean-cave-2f:13,4": [
+  "cerulean-cave-1f",
+  9,
+  2
+ ],
+ "cerulean-cave-2f:7,14": [
+  "cerulean-cave-1f",
+  5,
+  16
+ ],
+ "cerulean-cave-2f:26,9": [
+  "cerulean-cave-1f",
+  30,
+  11
+ ],
+ "cerulean-cave-2f:23,10": [
+  "cerulean-cave-1f",
+  24,
+  12
+ ],
+ "cerulean-cave-2f:5,6": [
+  "cerulean-cave-1f",
+  2,
+  5
+ ],
+ "cerulean-cave-b-1f:5,7": [
+  "cerulean-cave-1f",
+  1,
+  6
+ ],
  "pokemon-league-loreleis-room:6,12": [
   "indigo-plateau-pokemon-center-1f",
   4,
@@ -1316,6 +1391,11 @@ export const WORLD_WARPS: Readonly<
   "viridian-city-gym",
   17,
   21
+ ],
+ "cerulean-city:1,12": [
+  "cerulean-cave-1f",
+  33,
+  20
  ],
  "lavender-town:18,6": [
   "pokemon-tower-1f",
