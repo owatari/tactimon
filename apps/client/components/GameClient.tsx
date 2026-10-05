@@ -51,6 +51,7 @@ import {
   applyStoryWhiteOut,
   chooseStarter,
   collectStoryValuable,
+  completeTutorialRivalBattle,
   DEFAULT_STORY_STATE,
   depositCapturedPokemon,
   grantStoryBadge,
@@ -547,14 +548,14 @@ export function GameClient() {
           };
         }
 
-        return {
+        // Oak's Lab rival battle: tutorial, never a whiteout.
+        return completeTutorialRivalBattle({
           ...next,
-          firstBattleComplete: true,
           money: Math.min(
             999_999,
             next.money + prizeMoney,
           ),
-        };
+        });
       });
 
       const progressionEntries =

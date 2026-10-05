@@ -1370,6 +1370,20 @@ export function computeWhiteOutMoneyLoss(
 }
 
 /**
+ * The Oak's Lab rival battle is a tutorial: like FireRed's lab script, the
+ * party is fully restored afterwards whatever the result, and a loss never
+ * whites out to a Pokémon Center.
+ */
+export function completeTutorialRivalBattle(
+  story: StoryState,
+): StoryState {
+  return {
+    ...healStoryParty(story),
+    firstBattleComplete: true,
+  };
+}
+
+/**
  * Whiteout is only legitimate outside battle, once, when the party really
  * has no conscious Pokémon left.
  */
