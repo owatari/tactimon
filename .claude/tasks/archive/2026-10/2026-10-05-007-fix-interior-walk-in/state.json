@@ -1,0 +1,13 @@
+{
+  "id": "2026-10-05-007-fix-interior-walk-in",
+  "title": "Corrigir regressão: interiores inacessíveis por walk-in",
+  "status": "done",
+  "created_at": "2026-10-05",
+  "base_head": "a96f3155",
+  "current_head": "a96f3155",
+  "skills": ["safe-main", "overworld-development", "verification", "task-ledger"],
+  "agents": ["gameplay-systems"],
+  "files": ["apps/client/lib/story.ts","apps/client/components/OverworldGame.tsx","tests/interior-walk-in.test.ts"],
+  "commits": ["1c8a859f"],
+  "tests": []
+}

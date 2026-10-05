@@ -11,3 +11,4 @@
 | 2026-10-05-005-finish-phase-c-d-mechanics | Finalizar mecânicas restantes de C e D (deixa só E pendente) | done | archive/2026-10 |
 | 2026-10-05-006-polish-i18n-fx-cycling | Polish: reset de save, FX, HMs por party, Cycling Road, raids, i18n, UI FireRed | done | archive/2026-10 |
 | 2026-10-05-004-phase-e-mmo-prep | Fase E: preparacao MMO (estado por player, contas, sync) | planned | active |
+| 2026-10-05-007-fix-interior-walk-in | Corrigir regressão: interiores inacessíveis por walk-in | done | archive/2026-10 |
