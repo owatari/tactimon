@@ -20,3 +20,12 @@ local-assets/spritecollab/*
 
 # Build/runtime copies synced from versioned extracted assets + local SpriteCollab.
 apps/client/public/game-assets/
+
+# Local build/debug clutter.
+.next/
+*.tsbuildinfo
+.battle-*.png
+.tmp_*
+.venv-pmd/
+local-assets/.tools/
+apps/client/app/battle-preview/
