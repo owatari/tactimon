@@ -9,4 +9,5 @@
 | 2026-10-05-002-phase-c-field-mechanics | Fase C: Bike, pesca, Surf, Day Care, trocas, tutors, Town Map e eventos adiados | done | archive/2026-10 |
 | 2026-10-05-003-phase-d-kanto-content | Fase D: conteudo Kanto restante (Saffron a League) e especies 1-151 | done | archive/2026-10 |
 | 2026-10-05-005-finish-phase-c-d-mechanics | Finalizar mecânicas restantes de C e D (deixa só E pendente) | done | archive/2026-10 |
+| 2026-10-05-006-polish-i18n-fx-cycling | Polish: reset de save, FX, HMs por party, Cycling Road, raids, i18n, UI FireRed | done | archive/2026-10 |
 | 2026-10-05-004-phase-e-mmo-prep | Fase E: preparacao MMO (estado por player, contas, sync) | planned | active |
