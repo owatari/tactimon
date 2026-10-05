@@ -395,7 +395,72 @@ function keyBallAfterTrainer(
   };
 }
 
+function giftBall(
+  id: string,
+  mapId: string,
+  x: number,
+  y: number,
+  scriptId: string,
+  visibleWhen: PlayerWorldCondition,
+): ScriptedWorldObjectDefinition {
+  return {
+    id,
+    mapId,
+    label: "Poké Ball",
+    x,
+    y,
+    spriteUrl: "/game-assets/overworld/092_item_ball.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    visibleWhen,
+    request: { kind: "script", id: scriptId },
+  };
+}
+
+const giftNotReceived = (giftId: string): PlayerWorldCondition => ({
+  kind: "event",
+  namespace: "reward",
+  id: `gift:${giftId}`,
+  completed: false,
+});
+
+/** Saffron Dojo: after the master falls, pick Hitmonlee or Hitmonchan. */
+const DOJO_PRIZE_VISIBLE: PlayerWorldCondition = {
+  kind: "all",
+  conditions: [
+    { kind: "event", namespace: "trainer", id: "saffron-city-dojo-koichi" },
+    giftNotReceived("hitmonlee"),
+    giftNotReceived("hitmonchan"),
+  ],
+};
+
 const QUEST_NPC_OBJECTS: readonly ScriptedWorldObjectDefinition[] = [
+  giftBall(
+    "celadon-roof-eevee",
+    "celadon-city-condominiums-roof-room",
+    7,
+    3,
+    "gift-eevee",
+    giftNotReceived("eevee"),
+  ),
+  giftBall(
+    "saffron-dojo-hitmonlee",
+    "saffron-city-dojo",
+    5,
+    3,
+    "gift-hitmonlee",
+    DOJO_PRIZE_VISIBLE,
+  ),
+  giftBall(
+    "saffron-dojo-hitmonchan",
+    "saffron-city-dojo",
+    7,
+    3,
+    "gift-hitmonchan",
+    DOJO_PRIZE_VISIBLE,
+  ),
   npcObject(
     "tower-fuji",
     "pokemon-tower-7f",

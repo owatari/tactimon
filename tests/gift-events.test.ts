@@ -108,3 +108,34 @@ describe("gift Pokémon events", () => {
     expect(talk(bought, "magikarp-salesman").story.money).toBe(1500);
   });
 });
+
+describe("ball gifts (Eevee, Saffron Dojo)", () => {
+  it("Eevee is a one-off gift", () => {
+    const first = talk(started(), "gift-eevee");
+    expect(first.story.capturedPokemon.at(-1)?.species).toBe("eevee");
+    expect(talk(first.story, "gift-eevee").story.capturedPokemon).toHaveLength(1);
+  });
+
+  it("the Dojo prize is Hitmonlee or Hitmonchan, never both", () => {
+    const lee = talk(started(), "gift-hitmonlee");
+    expect(lee.story.capturedPokemon.at(-1)?.species).toBe("hitmonlee");
+    const chan = talk(lee.story, "gift-hitmonchan");
+    expect(chan.story.capturedPokemon).toHaveLength(1);
+  });
+});
+
+describe("gift ball objects", () => {
+  it("are placed in the Dojo and on the Celadon roof", async () => {
+    const { resolveScriptedWorldObjects } = await import(
+      "../apps/client/lib/scriptedWorldObjects"
+    );
+    expect(
+      resolveScriptedWorldObjects("saffron-city-dojo").map((o) => o.id),
+    ).toEqual(["saffron-dojo-hitmonlee", "saffron-dojo-hitmonchan"]);
+    expect(
+      resolveScriptedWorldObjects("celadon-city-condominiums-roof-room").map(
+        (o) => o.id,
+      ),
+    ).toEqual(["celadon-roof-eevee"]);
+  });
+});

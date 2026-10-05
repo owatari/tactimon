@@ -49,6 +49,11 @@ import {
 } from "./tutors";
 import { getPokedex } from "./pokedex";
 import {
+  giftMessage,
+  grantGiftPokemon,
+  hasReceivedGift,
+} from "./giftPokemon";
+import {
   FUJI_RESCUED_EVENT,
   MANSION_SWITCH_CHOICE,
   SAFFRON_GUARDS_OPEN_EVENT,
@@ -220,6 +225,34 @@ function keyItemGiftScript(gift: KeyItemGift): DialogueDefinition {
         gift.id,
         `${gift.intro} Você recebeu ${KEY_ITEM_LABELS[gift.itemId]}!`,
         gift.speaker,
+      );
+    },
+  };
+}
+
+function giftBallScript(
+  id: string,
+  giftId: string,
+  species: WildSpeciesId,
+  level: number,
+  blockedBy: readonly string[] = [],
+): DialogueDefinition {
+  return {
+    id,
+    interact: (story) => {
+      if (
+        hasReceivedGift(story, giftId) ||
+        blockedBy.some((other) => hasReceivedGift(story, other))
+      ) {
+        return reply(story, id, "Não há mais nada aqui.");
+      }
+      const gift = grantGiftPokemon(story, giftId, species, level);
+      return reply(
+        gift.story,
+        id,
+        gift.granted
+          ? `Você escolheu ${speciesDisplayName(species)}! ${giftMessage(species, gift.destination)}`
+          : "Seu PC está cheio! Libere espaço e volte.",
       );
     },
   };
@@ -1158,6 +1191,21 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       );
     },
   },
+  "gift-eevee": giftBallScript("gift-eevee", "eevee", "eevee", 25),
+  "gift-hitmonlee": giftBallScript(
+    "gift-hitmonlee",
+    "hitmonlee",
+    "hitmonlee",
+    25,
+    ["hitmonchan"],
+  ),
+  "gift-hitmonchan": giftBallScript(
+    "gift-hitmonchan",
+    "hitmonchan",
+    "hitmonchan",
+    25,
+    ["hitmonlee"],
+  ),
   "silph-president": {
     id: "silph-president",
     interact: (story) => {
