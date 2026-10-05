@@ -1,0 +1,28 @@
+{
+  "id": "2026-10-04-003-fullgame-menus-roadmap",
+  "title": "Menu Start completo (Party/Summary/Bag/Trainer Card/Options) + roadmap do FireRed completo",
+  "status": "running",
+  "created_at": "2026-10-04",
+  "base_head": "e0716c8021e3bacd1793c2cf99ef8032d7af8add",
+  "current_head": "72c3beb8",
+  "skills": [
+    "task-ledger",
+    "safe-main",
+    "repo-navigation",
+    "pokemon-ui",
+    "overworld-development",
+    "verification"
+  ],
+  "agents": [
+    "ui-visual",
+    "gameplay-systems",
+    "verifier"
+  ],
+  "files": [],
+  "commits": [
+    "1bd1df75 feat: add options state, master music volume and default battle speed",
+    "adc01c49 feat: add start menu logic for party, bag pockets and trainer card",
+    "72c3beb8 feat: add FireRed start menu with party, summary, bag, trainer card and options"
+  ],
+  "tests": []
+}
