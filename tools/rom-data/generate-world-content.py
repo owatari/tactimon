@@ -473,6 +473,44 @@ for c in champion_defs:
     sw, sh = png_size(A / blue_obj["sprite_file"])
     c["sheetWidth"], c["sheetHeight"] = sw, sh
 
+
+# ---- rival story fights (one visible trainer per starter variant) --------------
+RIVAL_STAGES = [
+    # (base trainer id, map code, tile, min badges, challenge, defeat)
+    (429, "pokemon-tower-2f", (16, 5), 0,
+     "Blue: Ei, {PLAYER}! Você veio visitar os Pokémon mortos? Que gentil... Mas não vou facilitar para você!",
+     "Blue: O quê?! Como eu perdi de novo? Hmpf... Vou continuar treinando!"),
+    (432, "silph-co-7f", (2, 6), 0,
+     "Blue: Ora, ora! Se não é você de novo! A Team Rocket é um incômodo, mas você é pior. Vamos ver quem é o melhor!",
+     "Blue: Droga! Você está mais forte do que eu esperava... Vou deixar o Giovanni com você!"),
+    (435, "route-22", (25, 4), 7,
+     "Blue: Ei! Você chegou até aqui? Então vamos nos enfrentar antes da Pokémon League. Mostre o que aprendeu!",
+     "Blue: Que droga! Você me venceu... Mas na Pokémon League eu vou te superar!"),
+]
+STARTER_ORDER = ["squirtle", "bulbasaur", "charmander"]  # rival's starter -> id offset
+for base, map_code, (rx, ry), min_badges, chal, defe in RIVAL_STAGES:
+    for offset, starter in enumerate(STARTER_ORDER):
+        tid = base + offset
+        o_ = BASE_TRAINERS + tid * 40
+        flags_ = ROM[o_]
+        count_ = struct.unpack("<I", ROM[o_ + 32:o_ + 36])[0]
+        pp_ = struct.unpack("<I", ROM[o_ + 36:o_ + 40])[0] - 0x08000000
+        sz_ = 16 if flags_ & 1 else 8
+        party_ = []
+        for k in range(count_):
+            e = ROM[pp_ + k * sz_:pp_ + (k + 1) * sz_]
+            _, lvl, sp = struct.unpack("<HHH", e[:6])
+            custom = [MOVES_BY_NUM.get(mv) for mv in struct.unpack("<4H", e[8:16]) if mv] if flags_ & 1 else []
+            party_.append({"species": DEX[sp], "level": lvl, "moves": engine_moves(DEX[sp], lvl, custom)})
+        champion_defs.append({
+            "id": f"rival-{map_code}-{starter}", "mapId": map_code, "name": "Rival Blue",
+            "preferredPosition": {"x": rx, "y": ry}, "facing": "south", "sightRange": 2,
+            "spriteUrl": champion_defs[0]["spriteUrl"], "frameWidth": 16, "frameHeight": 32,
+            "sheetWidth": champion_defs[0]["sheetWidth"], "sheetHeight": champion_defs[0]["sheetHeight"],
+            "challengeText": chal.replace("{PLAYER}", "Red"), "defeatedText": defe,
+            "moneyMultiplier": 25, "requiresRivalStarter": starter, "requiresBadgeCount": min_badges, "party": party_,
+        })
+
 warps_ts = (CLIENT / "lib" / "generated" / "worldWarps.ts").read_text(encoding="utf-8")
 WARPS = json.loads(re.search(r"WORLD_WARPS: Readonly<\s*Record<string, readonly \[string, number, number\]>\s*> = (\{.*?\n\});", warps_ts, re.S).group(1))
 BADGES = ["boulder", "cascade", "thunder", "rainbow", "soul", "marsh", "volcano", "earth"]

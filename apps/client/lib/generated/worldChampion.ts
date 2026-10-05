@@ -221,5 +221,647 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ]
    }
   ]
+ },
+ {
+  "id": "rival-pokemon-tower-2f-squirtle",
+  "mapId": "pokemon-tower-2f",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 16,
+   "y": 5
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ei, Red! Você veio visitar os Pokémon mortos? Que gentil... Mas não vou facilitar para você!",
+  "defeatedText": "Blue: O quê?! Como eu perdi de novo? Hmpf... Vou continuar treinando!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "squirtle",
+  "requiresBadgeCount": 0,
+  "party": [
+   {
+    "species": "pidgeotto",
+    "level": 25,
+    "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "growlithe",
+    "level": 23,
+    "moves": [
+     "low-kick",
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "exeggcute",
+    "level": 22,
+    "moves": [
+     "tackle",
+     "screech",
+     "spark"
+    ]
+   },
+   {
+    "species": "kadabra",
+    "level": 20,
+    "moves": [
+     "teleport"
+    ]
+   },
+   {
+    "species": "wartortle",
+    "level": 25,
+    "moves": [
+     "withdraw",
+     "water-gun",
+     "bite",
+     "rapid-spin"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-pokemon-tower-2f-bulbasaur",
+  "mapId": "pokemon-tower-2f",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 16,
+   "y": 5
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ei, Red! Você veio visitar os Pokémon mortos? Que gentil... Mas não vou facilitar para você!",
+  "defeatedText": "Blue: O quê?! Como eu perdi de novo? Hmpf... Vou continuar treinando!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "bulbasaur",
+  "requiresBadgeCount": 0,
+  "party": [
+   {
+    "species": "pidgeotto",
+    "level": 25,
+    "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "gyarados",
+    "level": 23,
+    "moves": [
+     "tackle"
+    ]
+   },
+   {
+    "species": "growlithe",
+    "level": 22,
+    "moves": [
+     "low-kick",
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "kadabra",
+    "level": 20,
+    "moves": [
+     "teleport"
+    ]
+   },
+   {
+    "species": "ivysaur",
+    "level": 25,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "razor-leaf",
+     "sweet-scent"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-pokemon-tower-2f-charmander",
+  "mapId": "pokemon-tower-2f",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 16,
+   "y": 5
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ei, Red! Você veio visitar os Pokémon mortos? Que gentil... Mas não vou facilitar para você!",
+  "defeatedText": "Blue: O quê?! Como eu perdi de novo? Hmpf... Vou continuar treinando!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "charmander",
+  "requiresBadgeCount": 0,
+  "party": [
+   {
+    "species": "pidgeotto",
+    "level": 25,
+    "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "exeggcute",
+    "level": 23,
+    "moves": [
+     "tackle",
+     "screech",
+     "spark"
+    ]
+   },
+   {
+    "species": "gyarados",
+    "level": 22,
+    "moves": [
+     "tackle"
+    ]
+   },
+   {
+    "species": "kadabra",
+    "level": 20,
+    "moves": [
+     "teleport"
+    ]
+   },
+   {
+    "species": "charmeleon",
+    "level": 25,
+    "moves": [
+     "ember",
+     "metal-claw",
+     "smokescreen",
+     "scary-face"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-silph-co-7f-squirtle",
+  "mapId": "silph-co-7f",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 2,
+   "y": 6
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ora, ora! Se não é você de novo! A Team Rocket é um incômodo, mas você é pior. Vamos ver quem é o melhor!",
+  "defeatedText": "Blue: Droga! Você está mais forte do que eu esperava... Vou deixar o Giovanni com você!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "squirtle",
+  "requiresBadgeCount": 0,
+  "party": [
+   {
+    "species": "pidgeot",
+    "level": 37,
+    "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "growlithe",
+    "level": 38,
+    "moves": [
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "cross-chop"
+    ]
+   },
+   {
+    "species": "exeggcute",
+    "level": 35,
+    "moves": [
+     "tackle",
+     "screech",
+     "spark"
+    ]
+   },
+   {
+    "species": "alakazam",
+    "level": 35,
+    "moves": [
+     "confusion",
+     "disable",
+     "recover",
+     "future-sight"
+    ]
+   },
+   {
+    "species": "blastoise",
+    "level": 40,
+    "moves": [
+     "water-gun",
+     "bite",
+     "rapid-spin",
+     "rain-dance"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-silph-co-7f-bulbasaur",
+  "mapId": "silph-co-7f",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 2,
+   "y": 6
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ora, ora! Se não é você de novo! A Team Rocket é um incômodo, mas você é pior. Vamos ver quem é o melhor!",
+  "defeatedText": "Blue: Droga! Você está mais forte do que eu esperava... Vou deixar o Giovanni com você!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "bulbasaur",
+  "requiresBadgeCount": 0,
+  "party": [
+   {
+    "species": "pidgeot",
+    "level": 37,
+    "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "gyarados",
+    "level": 38,
+    "moves": [
+     "tackle"
+    ]
+   },
+   {
+    "species": "growlithe",
+    "level": 35,
+    "moves": [
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "cross-chop"
+    ]
+   },
+   {
+    "species": "alakazam",
+    "level": 35,
+    "moves": [
+     "confusion",
+     "disable",
+     "recover",
+     "future-sight"
+    ]
+   },
+   {
+    "species": "venusaur",
+    "level": 40,
+    "moves": [
+     "sleep-powder",
+     "razor-leaf",
+     "sweet-scent",
+     "growth"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-silph-co-7f-charmander",
+  "mapId": "silph-co-7f",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 2,
+   "y": 6
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ora, ora! Se não é você de novo! A Team Rocket é um incômodo, mas você é pior. Vamos ver quem é o melhor!",
+  "defeatedText": "Blue: Droga! Você está mais forte do que eu esperava... Vou deixar o Giovanni com você!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "charmander",
+  "requiresBadgeCount": 0,
+  "party": [
+   {
+    "species": "pidgeot",
+    "level": 37,
+    "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "exeggcute",
+    "level": 38,
+    "moves": [
+     "tackle",
+     "screech",
+     "spark"
+    ]
+   },
+   {
+    "species": "gyarados",
+    "level": 35,
+    "moves": [
+     "tackle"
+    ]
+   },
+   {
+    "species": "alakazam",
+    "level": 35,
+    "moves": [
+     "confusion",
+     "disable",
+     "recover",
+     "future-sight"
+    ]
+   },
+   {
+    "species": "charizard",
+    "level": 40,
+    "moves": [
+     "metal-claw",
+     "smokescreen",
+     "scary-face",
+     "flamethrower"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-route-22-squirtle",
+  "mapId": "route-22",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 25,
+   "y": 4
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ei! Você chegou até aqui? Então vamos nos enfrentar antes da Pokémon League. Mostre o que aprendeu!",
+  "defeatedText": "Blue: Que droga! Você me venceu... Mas na Pokémon League eu vou te superar!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "squirtle",
+  "requiresBadgeCount": 7,
+  "party": [
+   {
+    "species": "pidgeot",
+    "level": 47,
+    "moves": [
+     "wing-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "rhyhorn",
+    "level": 45,
+    "moves": [
+     "horn-drill",
+     "rock-blast",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "growlithe",
+    "level": 45,
+    "moves": [
+     "take-down",
+     "leer",
+     "agility"
+    ]
+   },
+   {
+    "species": "exeggcute",
+    "level": 45,
+    "moves": [
+     "sleep-powder",
+     "stun-spore"
+    ]
+   },
+   {
+    "species": "alakazam",
+    "level": 47,
+    "moves": [
+     "calm-mind",
+     "future-sight",
+     "disable"
+    ]
+   },
+   {
+    "species": "blastoise",
+    "level": 53,
+    "moves": [
+     "rain-dance",
+     "bite",
+     "rapid-spin"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-route-22-bulbasaur",
+  "mapId": "route-22",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 25,
+   "y": 4
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ei! Você chegou até aqui? Então vamos nos enfrentar antes da Pokémon League. Mostre o que aprendeu!",
+  "defeatedText": "Blue: Que droga! Você me venceu... Mas na Pokémon League eu vou te superar!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "bulbasaur",
+  "requiresBadgeCount": 7,
+  "party": [
+   {
+    "species": "pidgeot",
+    "level": 47,
+    "moves": [
+     "wing-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "rhyhorn",
+    "level": 45,
+    "moves": [
+     "horn-drill",
+     "rock-blast",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "gyarados",
+    "level": 45,
+    "moves": [
+     "twister",
+     "leer",
+     "rain-dance"
+    ]
+   },
+   {
+    "species": "growlithe",
+    "level": 45,
+    "moves": [
+     "take-down",
+     "leer",
+     "agility"
+    ]
+   },
+   {
+    "species": "alakazam",
+    "level": 47,
+    "moves": [
+     "calm-mind",
+     "future-sight",
+     "disable"
+    ]
+   },
+   {
+    "species": "venusaur",
+    "level": 53,
+    "moves": [
+     "sweet-scent",
+     "growth",
+     "synthesis"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rival-route-22-charmander",
+  "mapId": "route-22",
+  "name": "Rival Blue",
+  "preferredPosition": {
+   "x": 25,
+   "y": 4
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/072_blue.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Blue: Ei! Você chegou até aqui? Então vamos nos enfrentar antes da Pokémon League. Mostre o que aprendeu!",
+  "defeatedText": "Blue: Que droga! Você me venceu... Mas na Pokémon League eu vou te superar!",
+  "moneyMultiplier": 25,
+  "requiresRivalStarter": "charmander",
+  "requiresBadgeCount": 7,
+  "party": [
+   {
+    "species": "pidgeot",
+    "level": 47,
+    "moves": [
+     "wing-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "rhyhorn",
+    "level": 45,
+    "moves": [
+     "horn-drill",
+     "rock-blast",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "exeggcute",
+    "level": 45,
+    "moves": [
+     "sleep-powder",
+     "stun-spore"
+    ]
+   },
+   {
+    "species": "gyarados",
+    "level": 45,
+    "moves": [
+     "twister",
+     "leer",
+     "rain-dance"
+    ]
+   },
+   {
+    "species": "alakazam",
+    "level": 47,
+    "moves": [
+     "calm-mind",
+     "future-sight",
+     "disable"
+    ]
+   },
+   {
+    "species": "charizard",
+    "level": 53,
+    "moves": [
+     "wing-attack",
+     "slash",
+     "scary-face"
+    ]
+   }
+  ]
  }
 ] as unknown as OverworldTrainerDefinition[];

@@ -35,6 +35,8 @@ export type OverworldTrainerDefinition = {
   badgeId?: StoryBadgeId;
   /** Only appears for players whose rival picked this starter. */
   requiresRivalStarter?: StarterSpeciesId;
+  /** Only appears once the player holds this many badges. */
+  requiresBadgeCount?: number;
   party: readonly DuelPokemonBuild[];
 };
 
@@ -2519,8 +2521,9 @@ export function resolvePlayerOverworldTrainers(
   )
     .filter(
       (trainer) =>
-        !trainer.requiresRivalStarter ||
-        trainer.requiresRivalStarter === story.rivalStarter,
+        (!trainer.requiresRivalStarter ||
+          trainer.requiresRivalStarter === story.rivalStarter) &&
+        story.badgeIds.length >= (trainer.requiresBadgeCount ?? 0),
     )
     .map((trainer) => ({
     ...trainer,

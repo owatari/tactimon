@@ -87,3 +87,20 @@ describe("trainer text language", () => {
     expect(missing).toEqual([]);
   });
 });
+
+describe("rival story fights", () => {
+  it("places the Pokémon Tower, Silph Co and Route 22 rivals for the player's counter starter", async () => {
+    const { resolvePlayerOverworldTrainers } = await import("../apps/client/lib/trainers");
+    const { normalizeStoryState } = await import("../apps/client/lib/story");
+    const layout = { width: 40, height: 40, cells: Array.from({ length: 1600 }, () => ({ raw: 0, metatile: 1, collision: 0, elevation: 0 })) } as never;
+    const story = normalizeStoryState({ starter: "squirtle" });
+    expect(story.rivalStarter).toBe("bulbasaur");
+    const tower = resolvePlayerOverworldTrainers("pokemon-tower-2f", layout, [], story);
+    expect(tower.map((t) => t.id)).toEqual(["rival-pokemon-tower-2f-bulbasaur"]);
+    expect(tower[0].party.map((p) => p.species)).toContain("pidgeotto");
+    // Route 22's late rival waits for 7 badges.
+    expect(resolvePlayerOverworldTrainers("route-22", layout, [], story).some((t) => t.id.startsWith("rival-route-22"))).toBe(false);
+    const veteran = { ...story, badgeIds: ["boulder", "cascade", "thunder", "rainbow", "soul", "marsh", "volcano"] as never };
+    expect(resolvePlayerOverworldTrainers("route-22", layout, [], veteran).some((t) => t.id === "rival-route-22-bulbasaur")).toBe(true);
+  });
+});
