@@ -300,7 +300,8 @@ for d, code in NEW.items():
     j = world[d]
     for o in j["objects"]:
         leader_gfx = (o["graphics_name"] or "") in LEADER_GFX
-        if (o["trainer_type"] == 0 and not leader_gfx) or (o["flag_id"] != 0 and not leader_gfx) or not o["script_offset"]:
+        # Hide flags are unset on a new game, so flagged trainers start visible.
+        if (o["trainer_type"] == 0 and not leader_gfx) or (o["graphics_name"] or "") in ("BLUE", "PROF_OAK") or not o["script_offset"]:
             continue
         b = ROM[o["script_offset"]:o["script_offset"] + 160]
         tid = intro = defeat = None

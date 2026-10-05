@@ -702,6 +702,391 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
   ]
  },
  {
+  "id": "rocket-hideout-b-1f-grunt",
+  "mapId": "rocket-hideout-b-1f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 4,
+   "y": 9
+  },
+  "facing": "east",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: You broke into TEAM ROCKET's operation? What nerve!",
+  "defeatedText": "Grunt: Boom!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "raticate",
+    "level": 21,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 21,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-1f-grunt-24-12",
+  "mapId": "rocket-hideout-b-1f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 24,
+   "y": 12
+  },
+  "facing": "west",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Who are you? How did you get here?",
+  "defeatedText": "Grunt: Oww! Beaten!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "drowzee",
+    "level": 21,
+    "moves": [
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
+    ]
+   },
+   {
+    "species": "machop",
+    "level": 21,
+    "moves": [
+     "teleport",
+     "kinesis",
+     "confusion",
+     "disable"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-1f-grunt-6-32",
+  "mapId": "rocket-hideout-b-1f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 6,
+   "y": 32
+  },
+  "facing": "east",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Why did you come here?",
+  "defeatedText": "Grunt: This won't do!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "rattata",
+    "level": 19,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 19,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 19,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
+    ]
+   },
+   {
+    "species": "rattata",
+    "level": 19,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-1f-grunt-10-22",
+  "mapId": "rocket-hideout-b-1f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 10,
+   "y": 22
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Intruder alert!",
+  "defeatedText": "Grunt: I can't do it!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "grimer",
+    "level": 20,
+    "moves": [
+     "sludge",
+     "disable",
+     "harden"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 20,
+    "moves": [
+     "tackle",
+     "poison-gas"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 20,
+    "moves": [
+     "tackle",
+     "poison-gas"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-1f-grunt-21-27",
+  "mapId": "rocket-hideout-b-1f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 21,
+   "y": 27
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Are you lost, you little mouse?",
+  "defeatedText": "Grunt: Why…?",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "grimer",
+    "level": 22,
+    "moves": [
+     "sludge",
+     "disable",
+     "harden"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 22,
+    "moves": [
+     "smog",
+     "tackle",
+     "poison-gas"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-2f-grunt",
+  "mapId": "rocket-hideout-b-2f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 20,
+   "y": 6
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: BOSS said you can see ghosts with the SILPH SCOPE.",
+  "defeatedText": "Grunt: I surrender!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "zubat",
+    "level": 17,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "leech-life"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 17,
+    "moves": [
+     "tackle",
+     "poison-gas"
+    ]
+   },
+   {
+    "species": "grimer",
+    "level": 17,
+    "moves": [
+     "disable",
+     "harden",
+     "pound"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 17,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "leech-life"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 17,
+    "moves": [
+     "quick-attack",
+     "tail-whip",
+     "tackle"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-3f-grunt",
+  "mapId": "rocket-hideout-b-3f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 19,
+   "y": 9
+  },
+  "facing": "north",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: We got word from upstairs that you were coming!",
+  "defeatedText": "Grunt: What? I lost? No!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "machop",
+    "level": 21,
+    "moves": [
+     "teleport",
+     "kinesis",
+     "confusion",
+     "disable"
+    ]
+   },
+   {
+    "species": "machop",
+    "level": 21,
+    "moves": [
+     "teleport",
+     "kinesis",
+     "confusion",
+     "disable"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-3f-grunt-2-20",
+  "mapId": "rocket-hideout-b-3f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 2,
+   "y": 20
+  },
+  "facing": "east",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Stop meddling in TEAM ROCKET's affairs or else!",
+  "defeatedText": "Grunt: Oof! Taken down!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "rattata",
+    "level": 20,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 20,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "drowzee",
+    "level": 20,
+    "moves": [
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
+    ]
+   }
+  ]
+ },
+ {
   "id": "rocket-hideout-b-4f-giovanni",
   "mapId": "rocket-hideout-b-4f",
   "name": "Leader Giovanni",
@@ -751,6 +1136,1555 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
    }
   ],
   "badgeId": "earth"
+ },
+ {
+  "id": "rocket-hideout-b-4f-grunt",
+  "mapId": "rocket-hideout-b-4f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 4,
+   "y": 2
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: The elevator doesn't work? Who has the LIFT KEY?",
+  "defeatedText": "Grunt: No!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "koffing",
+    "level": 21,
+    "moves": [
+     "lick",
+     "supersonic",
+     "defense-curl"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 21,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-4f-grunt-19-14",
+  "mapId": "rocket-hideout-b-4f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 19,
+   "y": 14
+  },
+  "facing": "south",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: How can you not see the beauty of our evil?",
+  "defeatedText": "Grunt: Ayaya!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "ekans",
+    "level": 23,
+    "moves": [
+     "peck",
+     "growl",
+     "leer",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "sandshrew",
+    "level": 23,
+    "moves": [
+     "thundershock",
+     "tail-whip",
+     "quick-attack",
+     "thunderbolt"
+    ]
+   },
+   {
+    "species": "arbok",
+    "level": 23,
+    "moves": [
+     "leer",
+     "poison-sting",
+     "bite",
+     "glare"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rocket-hideout-b-4f-grunt-16-14",
+  "mapId": "rocket-hideout-b-4f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 16,
+   "y": 14
+  },
+  "facing": "south",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: I know you! You ruined our plans at MT. MOON!",
+  "defeatedText": "Grunt: Burned again!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "sandshrew",
+    "level": 23,
+    "moves": [
+     "thundershock",
+     "tail-whip",
+     "quick-attack",
+     "thunderbolt"
+    ]
+   },
+   {
+    "species": "ekans",
+    "level": 23,
+    "moves": [
+     "peck",
+     "growl",
+     "leer",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "sandslash",
+    "level": 23,
+    "moves": [
+     "defense-curl",
+     "sand-attack",
+     "poison-sting",
+     "slash"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-2f-grunt",
+  "mapId": "silph-co-2f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 29,
+   "y": 12
+  },
+  "facing": "north",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Hey, kid! What are you wandering here for?",
+  "defeatedText": "Grunt: I goofed!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "golbat",
+    "level": 25,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 25,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 25,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 25,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 25,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-2f-jerry",
+  "mapId": "silph-co-2f",
+  "name": "Scientist Jerry",
+  "preferredPosition": {
+   "x": 28,
+   "y": 18
+  },
+  "facing": "south",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Jerry: It's off-limits here! Go home!",
+  "defeatedText": "Jerry: You're good.",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "magnemite",
+    "level": 28,
+    "moves": [
+     "growl",
+     "water-gun",
+     "confusion",
+     "disable"
+    ]
+   },
+   {
+    "species": "voltorb",
+    "level": 28,
+    "moves": [
+     "leer",
+     "vicegrip",
+     "harden",
+     "mud-shot"
+    ]
+   },
+   {
+    "species": "magneton",
+    "level": 28,
+    "moves": [
+     "thundershock",
+     "supersonic",
+     "thunder-wave",
+     "spark"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-2f-grunt-20-14",
+  "mapId": "silph-co-2f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 20,
+   "y": 14
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: No kids are allowed in here!",
+  "defeatedText": "Grunt: Tough!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "cubone",
+    "level": 29,
+    "moves": [
+     "barrage",
+     "hypnosis",
+     "confusion"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 29,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-2f-connor",
+  "mapId": "silph-co-2f",
+  "name": "Scientist Connor",
+  "preferredPosition": {
+   "x": 5,
+   "y": 19
+  },
+  "facing": "south",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Connor: Help! I'm a SILPH employee.",
+  "defeatedText": "Connor: How did you know I was a ROCKET?",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "grimer",
+    "level": 26,
+    "moves": [
+     "minimize",
+     "sludge",
+     "disable"
+    ]
+   },
+   {
+    "species": "weezing",
+    "level": 26,
+    "moves": [
+     "sludge",
+     "smog",
+     "tackle"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 26,
+    "moves": [
+     "sludge",
+     "smog"
+    ]
+   },
+   {
+    "species": "weezing",
+    "level": 26,
+    "moves": [
+     "sludge",
+     "smog",
+     "tackle"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-3f-grunt",
+  "mapId": "silph-co-3f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 25,
+   "y": 9
+  },
+  "facing": "west",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Quit messing with us, kid!",
+  "defeatedText": "Grunt: I give up!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "raticate",
+    "level": 28,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "hypno",
+    "level": 28,
+    "moves": [
+     "disable",
+     "confusion",
+     "headbutt",
+     "poison-gas"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 28,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-3f-jose",
+  "mapId": "silph-co-3f",
+  "name": "Scientist Jose",
+  "preferredPosition": {
+   "x": 4,
+   "y": 12
+  },
+  "facing": "south",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Jose: I support TEAM ROCKET more than I support SILPH CO.!",
+  "defeatedText": "Jose: You really got me!",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "electrode",
+    "level": 29,
+    "moves": [
+     "screech",
+     "tackle"
+    ]
+   },
+   {
+    "species": "weezing",
+    "level": 29,
+    "moves": [
+     "sludge",
+     "smog",
+     "tackle"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-4f-grunt",
+  "mapId": "silph-co-4f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 33,
+   "y": 16
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Intruder spotted!",
+  "defeatedText": "Grunt: Who are you?",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "ekans",
+    "level": 28,
+    "moves": [
+     "peck",
+     "growl",
+     "leer",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 28,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "cubone",
+    "level": 28,
+    "moves": [
+     "barrage",
+     "hypnosis",
+     "confusion"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-4f-grunt-10-19",
+  "mapId": "silph-co-4f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 10,
+   "y": 19
+  },
+  "facing": "east",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: TEAM ROCKET has taken control of SILPH CO.!",
+  "defeatedText": "Grunt: Arrgh!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "machop",
+    "level": 29,
+    "moves": [
+     "kinesis",
+     "confusion",
+     "disable",
+     "recover"
+    ]
+   },
+   {
+    "species": "drowzee",
+    "level": 29,
+    "moves": [
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-4f-rodney",
+  "mapId": "silph-co-4f",
+  "name": "Scientist Rodney",
+  "preferredPosition": {
+   "x": 14,
+   "y": 8
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Rodney: My POKéMON is my loyal servant.",
+  "defeatedText": "Rodney: Darn! You weak POKéMON!",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "electrode",
+    "level": 33,
+    "moves": [
+     "tackle",
+     "screech",
+     "spark"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-5f-grunt",
+  "mapId": "silph-co-5f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 35,
+   "y": 7
+  },
+  "facing": "north",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Show TEAM ROCKET a little respect!",
+  "defeatedText": "Grunt: Cough… Cough…",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "hypno",
+    "level": 33,
+    "moves": [
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-5f-dalton",
+  "mapId": "silph-co-5f",
+  "name": "Rocker Dalton",
+  "preferredPosition": {
+   "x": 23,
+   "y": 13
+  },
+  "facing": "south",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/026_rocker.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Dalton: Whaaat? There shouldn't be any children here!",
+  "defeatedText": "Dalton: Oh, goodness!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "kadabra",
+    "level": 29,
+    "moves": [
+     "teleport"
+    ]
+   },
+   {
+    "species": "mr-mime",
+    "level": 29,
+    "moves": [
+     "water-gun",
+     "rapid-spin",
+     "recover",
+     "swift"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-5f-beau",
+  "mapId": "silph-co-5f",
+  "name": "Scientist Beau",
+  "preferredPosition": {
+   "x": 11,
+   "y": 6
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Beau: We study POKé BALL technology on this floor.",
+  "defeatedText": "Beau: Dang! Blast it!",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "magneton",
+    "level": 26,
+    "moves": [
+     "thunder-wave",
+     "supersonic"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 26,
+    "moves": [
+     "sludge",
+     "smog",
+     "tackle"
+    ]
+   },
+   {
+    "species": "weezing",
+    "level": 26,
+    "moves": [
+     "sludge",
+     "smog",
+     "tackle"
+    ]
+   },
+   {
+    "species": "magnemite",
+    "level": 26,
+    "moves": [
+     "thunder-wave",
+     "supersonic"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-5f-grunt-9-21",
+  "mapId": "silph-co-5f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 9,
+   "y": 21
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: I heard a kid was wandering around.",
+  "defeatedText": "Grunt: Boom!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "arbok",
+    "level": 33,
+    "moves": [
+     "bite",
+     "glare",
+     "screech",
+     "acid"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-6f-grunt",
+  "mapId": "silph-co-6f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 21,
+   "y": 5
+  },
+  "facing": "east",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: I am one of the four ROCKET BROTHERS!",
+  "defeatedText": "Grunt: Flame out!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "machop",
+    "level": 29,
+    "moves": [
+     "kinesis",
+     "confusion",
+     "disable",
+     "recover"
+    ]
+   },
+   {
+    "species": "machoke",
+    "level": 29,
+    "moves": [
+     "low-kick",
+     "leer",
+     "focus-energy",
+     "karate-chop"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-6f-taylor",
+  "mapId": "silph-co-6f",
+  "name": "Scientist Taylor",
+  "preferredPosition": {
+   "x": 9,
+   "y": 11
+  },
+  "facing": "south",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Taylor: That rotten PRESIDENT! Serves him right for shipping me off to the TIKSI BRANCH! That's why TEAM ROCKET came after us, I'm sure of it!",
+  "defeatedText": "Taylor: Shoot!",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "voltorb",
+    "level": 25,
+    "moves": [
+     "screech",
+     "tackle"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 25,
+    "moves": [
+     "sludge",
+     "smog",
+     "tackle"
+    ]
+   },
+   {
+    "species": "magneton",
+    "level": 25,
+    "moves": [
+     "supersonic",
+     "thundershock"
+    ]
+   },
+   {
+    "species": "magnemite",
+    "level": 25,
+    "moves": [
+     "supersonic",
+     "thundershock"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 25,
+    "moves": [
+     "sludge",
+     "smog"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-6f-grunt-18-17",
+  "mapId": "silph-co-6f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 18,
+   "y": 17
+  },
+  "facing": "west",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: You dare betray TEAM ROCKET?",
+  "defeatedText": "Grunt: You traitor!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "zubat",
+    "level": 28,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 28,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "golbat",
+    "level": 28,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-7f-grunt",
+  "mapId": "silph-co-7f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 24,
+   "y": 5
+  },
+  "facing": "west",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: I am one of the four ROCKET BROTHERS!",
+  "defeatedText": "Grunt: Aack! Brothers, I lost!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "cubone",
+    "level": 29,
+    "moves": [
+     "barrage",
+     "hypnosis",
+     "confusion"
+    ]
+   },
+   {
+    "species": "cubone",
+    "level": 29,
+    "moves": [
+     "barrage",
+     "hypnosis",
+     "confusion"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-7f-grunt-24-15",
+  "mapId": "silph-co-7f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 24,
+   "y": 15
+  },
+  "facing": "east",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: A child intruder? That must be you!",
+  "defeatedText": "Grunt: Fine! I lost!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "sandshrew",
+    "level": 29,
+    "moves": [
+     "thundershock",
+     "tail-whip",
+     "quick-attack",
+     "thunderbolt"
+    ]
+   },
+   {
+    "species": "sandslash",
+    "level": 29,
+    "moves": [
+     "defense-curl",
+     "sand-attack",
+     "poison-sting",
+     "slash"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-7f-grunt-13-4",
+  "mapId": "silph-co-7f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 13,
+   "y": 4
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Uh-oh! I smell a little mouse!",
+  "defeatedText": "Grunt: Lights out!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "raticate",
+    "level": 26,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 26,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "golbat",
+    "level": 26,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "rattata",
+    "level": 26,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-7f-joshua",
+  "mapId": "silph-co-7f",
+  "name": "Scientist Joshua",
+  "preferredPosition": {
+   "x": 3,
+   "y": 13
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Joshua: Heheh! You mistook me for a SILPH worker?",
+  "defeatedText": "Joshua: I'm done!",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "electrode",
+    "level": 29,
+    "moves": [
+     "tackle",
+     "screech",
+     "spark"
+    ]
+   },
+   {
+    "species": "muk",
+    "level": 29,
+    "moves": [
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-8f-grunt",
+  "mapId": "silph-co-8f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 28,
+   "y": 5
+  },
+  "facing": "west",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: That's as far as you'll go!",
+  "defeatedText": "Grunt: Not enough grit!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "raticate",
+    "level": 26,
+    "moves": [
+     "hyper-fang",
+     "quick-attack",
+     "tail-whip"
+    ]
+   },
+   {
+    "species": "arbok",
+    "level": 26,
+    "moves": [
+     "bite",
+     "poison-sting",
+     "leer"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 26,
+    "moves": [
+     "sludge",
+     "smog",
+     "tackle"
+    ]
+   },
+   {
+    "species": "golbat",
+    "level": 26,
+    "moves": [
+     "bite",
+     "astonish",
+     "supersonic"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-8f-grunt-10-17",
+  "mapId": "silph-co-8f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 10,
+   "y": 17
+  },
+  "facing": "east",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: I am one of the four ROCKET BROTHERS!",
+  "defeatedText": "Grunt: Whoo! Oh, Brothers!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "weezing",
+    "level": 28,
+    "moves": [
+     "tackle",
+     "smog",
+     "sludge",
+     "smokescreen"
+    ]
+   },
+   {
+    "species": "golbat",
+    "level": 28,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 28,
+    "moves": [
+     "lick",
+     "supersonic",
+     "defense-curl"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-8f-parker",
+  "mapId": "silph-co-8f",
+  "name": "Scientist Parker",
+  "preferredPosition": {
+   "x": 9,
+   "y": 4
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Parker: You're causing us problems!",
+  "defeatedText": "Parker: Huh? I lost?",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "grimer",
+    "level": 29,
+    "moves": [
+     "headbutt",
+     "growl",
+     "icy-wind",
+     "aurora-beam"
+    ]
+   },
+   {
+    "species": "electrode",
+    "level": 29,
+    "moves": [
+     "tackle",
+     "screech",
+     "spark"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-9f-ed",
+  "mapId": "silph-co-9f",
+  "name": "Scientist Ed",
+  "preferredPosition": {
+   "x": 26,
+   "y": 16
+  },
+  "facing": "south",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Ed: Your POKéMON have weak points! I can nail them!",
+  "defeatedText": "Ed: You hammered me!",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "voltorb",
+    "level": 28,
+    "moves": [
+     "screech",
+     "tackle"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 28,
+    "moves": [
+     "sludge",
+     "tackle",
+     "smog"
+    ]
+   },
+   {
+    "species": "magneton",
+    "level": 28,
+    "moves": [
+     "thunder-wave",
+     "supersonic"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-9f-grunt",
+  "mapId": "silph-co-9f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 15,
+   "y": 18
+  },
+  "facing": "north",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: I am one of the four ROCKET BROTHERS!",
+  "defeatedText": "Grunt: Warg! Brothers, I lost!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "golbat",
+    "level": 28,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "drowzee",
+    "level": 28,
+    "moves": [
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
+    ]
+   },
+   {
+    "species": "hypno",
+    "level": 28,
+    "moves": [
+     "disable",
+     "confusion",
+     "headbutt",
+     "poison-gas"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-9f-grunt-1-6",
+  "mapId": "silph-co-9f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 1,
+   "y": 6
+  },
+  "facing": "south",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Your POKéMON seem to adore you, kid!",
+  "defeatedText": "Grunt: Ghaaah!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "drowzee",
+    "level": 28,
+    "moves": [
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
+    ]
+   },
+   {
+    "species": "grimer",
+    "level": 28,
+    "moves": [
+     "headbutt",
+     "growl",
+     "icy-wind",
+     "aurora-beam"
+    ]
+   },
+   {
+    "species": "machop",
+    "level": 28,
+    "moves": [
+     "kinesis",
+     "confusion",
+     "disable",
+     "recover"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-10f-travis",
+  "mapId": "silph-co-10f",
+  "name": "Scientist Travis",
+  "preferredPosition": {
+   "x": 2,
+   "y": 7
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/055_scientist.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Travis: Enough of your silly games!",
+  "defeatedText": "Travis: No continues left!",
+  "moneyMultiplier": 12,
+  "party": [
+   {
+    "species": "magnemite",
+    "level": 29,
+    "moves": [
+     "water-gun",
+     "confusion",
+     "disable",
+     "headbutt"
+    ]
+   },
+   {
+    "species": "koffing",
+    "level": 29,
+    "moves": [
+     "lick",
+     "supersonic",
+     "defense-curl",
+     "wrap"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-10f-grunt",
+  "mapId": "silph-co-10f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 0,
+   "y": 13
+  },
+  "facing": "east",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Welcome to 10F! So good of you to join me!",
+  "defeatedText": "Grunt: I'm stunned!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "machoke",
+    "level": 33,
+    "moves": [
+     "low-kick",
+     "leer",
+     "focus-energy",
+     "karate-chop"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-11f-grunt",
+  "mapId": "silph-co-11f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 16,
+   "y": 12
+  },
+  "facing": "north",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Halt! Do you have an appointment with my BOSS?",
+  "defeatedText": "Grunt: Gaah! Demolished!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "rattata",
+    "level": 25,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "rattata",
+    "level": 25,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 25,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "rattata",
+    "level": 25,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "ekans",
+    "level": 25,
+    "moves": [
+     "peck",
+     "growl",
+     "leer",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-11f-grunt-2-19",
+  "mapId": "silph-co-11f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 2,
+   "y": 19
+  },
+  "facing": "north",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: Stop right there! Don't you move!",
+  "defeatedText": "Grunt: Don't… Please!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "cubone",
+    "level": 32,
+    "moves": [
+     "barrage",
+     "hypnosis",
+     "confusion",
+     "egg-bomb"
+    ]
+   },
+   {
+    "species": "drowzee",
+    "level": 32,
+    "moves": [
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
+    ]
+   },
+   {
+    "species": "marowak",
+    "level": 32,
+    "moves": [
+     "bone-club",
+     "headbutt",
+     "leer",
+     "focus-energy"
+    ]
+   }
+  ]
  },
  {
   "id": "pokemon-mansion-1f-ted",
@@ -2382,6 +4316,158 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "withdraw",
      "supersonic",
      "aurora-beam"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "pokemon-tower-7f-grunt",
+  "mapId": "pokemon-tower-7f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 9,
+   "y": 10
+  },
+  "facing": "east",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: What do you want? Why are you here?",
+  "defeatedText": "Grunt: I give up!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "zubat",
+    "level": 25,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 25,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "golbat",
+    "level": 25,
+    "moves": [
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "pokemon-tower-7f-grunt-13-8",
+  "mapId": "pokemon-tower-7f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 13,
+   "y": 8
+  },
+  "facing": "west",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: This old guy marched right up to our HIDEOUT. Then, he starts ranting about how TEAM ROCKET's abusing POKéMON. So, we're just talking it over as adults.",
+  "defeatedText": "Grunt: Please! No more!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "koffing",
+    "level": 26,
+    "moves": [
+     "lick",
+     "supersonic",
+     "defense-curl"
+    ]
+   },
+   {
+    "species": "drowzee",
+    "level": 26,
+    "moves": [
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "pokemon-tower-7f-grunt-9-6",
+  "mapId": "pokemon-tower-7f",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 9,
+   "y": 6
+  },
+  "facing": "east",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: You're not saving anyone, kid!",
+  "defeatedText": "Grunt: Don't fight us ROCKETS!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "zubat",
+    "level": 23,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
+    ]
+   },
+   {
+    "species": "rattata",
+    "level": 23,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
+    "species": "raticate",
+    "level": 23,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 23,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
     ]
    }
   ]
@@ -7368,6 +9454,47 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "moves": [
      "bite",
      "poison-sting"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "celadon-city-game-corner-grunt",
+  "mapId": "celadon-city-game-corner",
+  "name": "Team Rocket Grunt",
+  "preferredPosition": {
+   "x": 11,
+   "y": 2
+  },
+  "facing": "north",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/049_rocket_m.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Grunt: I'm guarding this poster! Go away, or else!",
+  "defeatedText": "Grunt: Dang!",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "raticate",
+    "level": 20,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
+    "species": "zubat",
+    "level": 20,
+    "moves": [
+     "sing",
+     "disable",
+     "defense-curl",
+     "doubleslap"
     ]
    }
   ]
