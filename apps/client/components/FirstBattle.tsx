@@ -1672,6 +1672,10 @@ export function FirstBattle({
                     unit.ownerKind === "party-member"
                       ? "party-member"
                       : "",
+                    position.y > 0 &&
+                    (position.x + position.y) % 2 === 0
+                      ? "label-above"
+                      : "label-below",
                     targetable ? "targetable" : "",
                     areaPreviewUnitIds.has(unit.id)
                       ? "area-preview"

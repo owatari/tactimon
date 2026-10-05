@@ -5796,3 +5796,15 @@ textarea {
 .battle-combatant-sidebar.rival .combatant-hud.has-status .combatant-meta-row {
   flex-wrap: wrap;
 }
+
+
+/* Stagger field labels so adjacent Pokémon names remain readable without boxes. */
+.duel-unit-position.label-above .duel-unit-label {
+  top: -12px;
+  bottom: auto;
+}
+
+.duel-unit-position.label-below .duel-unit-label {
+  top: auto;
+  bottom: -13px;
+}
