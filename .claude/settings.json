@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git fetch origin main *)",
+      "Bash(git rev-parse *)",
+      "Bash(git branch --show-current)",
+      "Bash(rg *)",
+      "Bash(pnpm test)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm --filter @tactimon/battle-engine typecheck)",
+      "Bash(pnpm --filter @tactimon/client typecheck)",
+      "Bash(pnpm --filter @tactimon/battle-engine exec vitest *)",
+      "Bash(pnpm exec vitest *)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fdx*)",
+      "Bash(git checkout -b *)",
+      "Bash(git switch -c *)",
+      "Read(./local-assets/extracted/**/world-asset-manifest.json)",
+      "Read(./apps/client/.next/**)",
+      "Read(./node_modules/**)"
+    ]
+  }
+}
