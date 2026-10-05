@@ -1243,12 +1243,14 @@ export function FirstBattle({
     ),
   );
   const menuTop = Math.max(
-    24,
+    10,
     Math.min(
-      88,
-      ((menuPosition.y + 0.15) / state.height) * 100,
+      90,
+      ((menuPosition.y + 0.5) / state.height) * 100,
     ),
   );
+  const menuPlacement =
+    menuPosition.y < state.height / 2 ? "below" : "above";
   const latestMessage =
     notice ?? state.log[state.log.length - 1] ?? "";
 
@@ -1292,6 +1294,7 @@ export function FirstBattle({
           unit.ownerKind === "party-member"
             ? "party-member"
             : "",
+          statusToken || badges.length > 0 ? "has-status" : "",
           active?.id === unit.id ? "active" : "",
         ]
           .filter(Boolean)
@@ -1353,10 +1356,6 @@ export function FirstBattle({
                 className={`status-chip major ${statusToken.className}`}
               >
                 {statusToken.label}
-              </span>
-            ) : badges.length === 0 ? (
-              <span className="status-chip neutral">
-                NORMAL
               </span>
             ) : null}
             {badges.map((badge) => (
@@ -1767,7 +1766,7 @@ export function FirstBattle({
               state.status === "active" &&
               command === "root" && (
                 <div
-                  className="battle-action-popover mode-root"
+                  className={`battle-action-popover mode-root menu-${menuPlacement}`}
                   style={{
                     left: `${menuLeft}%`,
                     top: `${menuTop}%`,

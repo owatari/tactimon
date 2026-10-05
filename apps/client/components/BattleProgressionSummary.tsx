@@ -1,10 +1,12 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import {
   DUEL_MOVES,
   speciesDisplayName,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
+import { PokemonEvolutionOverlay } from "@/components/PokemonEvolutionOverlay";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 
 type Props = {
@@ -45,6 +47,24 @@ export function BattleProgressionSummary({
   rewards,
   onContinue,
 }: Props) {
+  const evolutions = useMemo(
+    () => rewards.flatMap((reward) => reward.evolutions),
+    [rewards],
+  );
+  const [evolutionIndex, setEvolutionIndex] = useState(0);
+  const currentEvolution = evolutions[evolutionIndex];
+
+  if (currentEvolution) {
+    return (
+      <PokemonEvolutionOverlay
+        evolution={currentEvolution}
+        onComplete={() =>
+          setEvolutionIndex((current) => current + 1)
+        }
+      />
+    );
+  }
+
   return (
     <div className="story-overlay battle-summary-overlay">
       <section className="story-panel battle-summary-panel">
