@@ -769,6 +769,7 @@ export function StartMenu({
       <p className="start-menu-help">
         ↑↓ mover · Enter confirmar · Esc voltar
         {screen === "summary" || screen === "bag" ? " · ←→ trocar página" : ""}
+        {screen === "townmap" ? " · Enter voar (HM Fly + Thunder Badge) · ● visitada" : ""}
       </p>
     </div>
   );

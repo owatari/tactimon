@@ -943,6 +943,13 @@ export function OverworldGame({
     [onDialogueInteraction, showDialogue],
   );
 
+  // loadMap must stay referentially stable (the mount effect re-runs with it),
+  // so it reads the latest showInteraction through a ref.
+  const showInteractionRef = useRef(showInteraction);
+  useEffect(() => {
+    showInteractionRef.current = showInteraction;
+  }, [showInteraction]);
+
   const advanceDialogue = useCallback((): boolean => {
     const active = dialogueRef.current;
     if (!active) return false;
@@ -1644,7 +1651,9 @@ export function OverworldGame({
           canStoryUseFlash(storyRef.current)
         ) {
           setDarkCave(false);
-          showInteraction("Você usou Flash! A caverna se iluminou.");
+          showInteractionRef.current(
+            "Você usou Flash! A caverna se iluminou.",
+          );
         } else {
           setDarkCave(isDarkMap(nextMapId));
         }
@@ -1669,7 +1678,7 @@ export function OverworldGame({
         setIsTransitioning(false);
       }
     },
-    [onMapAudioContextChange, resetInput, showInteraction],
+    [onMapAudioContextChange, resetInput],
   );
 
   const endSafariGame = useCallback(
