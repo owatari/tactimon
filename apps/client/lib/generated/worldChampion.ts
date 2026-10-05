@@ -26,8 +26,10 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgeot",
     "level": 59,
     "moves": [
-     "aerial-ace",
-     "sand-attack"
+     "gust",
+     "quick-attack",
+     "wing-attack",
+     "agility"
     ]
    },
    {
@@ -61,7 +63,6 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "exeggutor",
     "level": 61,
     "moves": [
-     "giga-drain",
      "egg-bomb",
      "sleep-powder"
     ]
@@ -101,8 +102,10 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgeot",
     "level": 59,
     "moves": [
-     "aerial-ace",
-     "sand-attack"
+     "gust",
+     "quick-attack",
+     "wing-attack",
+     "agility"
     ]
    },
    {
@@ -176,8 +179,10 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgeot",
     "level": 59,
     "moves": [
-     "aerial-ace",
-     "sand-attack"
+     "gust",
+     "quick-attack",
+     "wing-attack",
+     "agility"
     ]
    },
    {
@@ -203,7 +208,6 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "exeggutor",
     "level": 59,
     "moves": [
-     "giga-drain",
      "egg-bomb",
      "sleep-powder"
     ]
@@ -223,7 +227,6 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 63,
     "moves": [
      "fire-blast",
-     "aerial-ace",
      "slash",
      "fire-spin"
     ]
@@ -255,36 +258,39 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgeotto",
     "level": 25,
     "moves": [
+     "tackle",
      "sand-attack",
      "gust",
-     "quick-attack",
-     "wing-attack"
+     "quick-attack"
     ]
    },
    {
     "species": "growlithe",
     "level": 23,
     "moves": [
-     "rage",
-     "karate-chop",
-     "fury-swipes",
-     "focus-energy"
+     "bite",
+     "ember",
+     "leer"
     ]
    },
    {
     "species": "exeggcute",
     "level": 22,
     "moves": [
-     "tackle",
-     "screech",
-     "spark"
+     "barrage",
+     "hypnosis",
+     "leech-seed",
+     "confusion"
     ]
    },
    {
     "species": "kadabra",
     "level": 20,
     "moves": [
-     "teleport"
+     "teleport",
+     "kinesis",
+     "confusion",
+     "disable"
     ]
    },
    {
@@ -324,44 +330,47 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgeotto",
     "level": 25,
     "moves": [
+     "tackle",
      "sand-attack",
      "gust",
-     "quick-attack",
-     "wing-attack"
+     "quick-attack"
     ]
    },
    {
     "species": "gyarados",
     "level": 23,
     "moves": [
-     "tackle"
+     "thrash",
+     "bite"
     ]
    },
    {
     "species": "growlithe",
     "level": 22,
     "moves": [
-     "rage",
-     "karate-chop",
-     "fury-swipes",
-     "focus-energy"
+     "bite",
+     "ember",
+     "leer"
     ]
    },
    {
     "species": "kadabra",
     "level": 20,
     "moves": [
-     "teleport"
+     "teleport",
+     "kinesis",
+     "confusion",
+     "disable"
     ]
    },
    {
     "species": "ivysaur",
     "level": 25,
     "moves": [
+     "leech-seed",
      "vine-whip",
      "sleep-powder",
-     "razor-leaf",
-     "sweet-scent"
+     "razor-leaf"
     ]
    }
   ]
@@ -391,43 +400,48 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgeotto",
     "level": 25,
     "moves": [
+     "tackle",
      "sand-attack",
      "gust",
-     "quick-attack",
-     "wing-attack"
+     "quick-attack"
     ]
    },
    {
     "species": "exeggcute",
     "level": 23,
     "moves": [
-     "tackle",
-     "screech",
-     "spark"
+     "barrage",
+     "hypnosis",
+     "leech-seed",
+     "confusion"
     ]
    },
    {
     "species": "gyarados",
     "level": 22,
     "moves": [
-     "tackle"
+     "thrash",
+     "bite"
     ]
    },
    {
     "species": "kadabra",
     "level": 20,
     "moves": [
-     "teleport"
+     "teleport",
+     "kinesis",
+     "confusion",
+     "disable"
     ]
    },
    {
     "species": "charmeleon",
     "level": 25,
     "moves": [
+     "growl",
      "ember",
      "metal-claw",
-     "smokescreen",
-     "scary-face"
+     "smokescreen"
     ]
    }
   ]
@@ -467,40 +481,40 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 38,
     "moves": [
-     "fury-swipes",
-     "focus-energy",
-     "seismic-toss",
-     "cross-chop"
+     "ember",
+     "leer",
+     "take-down",
+     "flame-wheel"
     ]
    },
    {
     "species": "exeggcute",
     "level": 35,
     "moves": [
-     "screech",
-     "spark",
-     "selfdestruct",
-     "rollout"
+     "hypnosis",
+     "leech-seed",
+     "confusion",
+     "stun-spore"
     ]
    },
    {
     "species": "alakazam",
     "level": 35,
     "moves": [
-     "disable",
      "psybeam",
      "recover",
-     "future-sight"
+     "future-sight",
+     "calm-mind"
     ]
    },
    {
     "species": "blastoise",
     "level": 40,
     "moves": [
+     "withdraw",
      "water-gun",
      "bite",
-     "rapid-spin",
-     "rain-dance"
+     "rapid-spin"
     ]
    }
   ]
@@ -540,37 +554,40 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gyarados",
     "level": 38,
     "moves": [
-     "tackle"
+     "bite",
+     "dragon-rage",
+     "leer",
+     "twister"
     ]
    },
    {
     "species": "growlithe",
     "level": 35,
     "moves": [
-     "fury-swipes",
-     "focus-energy",
-     "seismic-toss",
-     "cross-chop"
+     "ember",
+     "leer",
+     "take-down",
+     "flame-wheel"
     ]
    },
    {
     "species": "alakazam",
     "level": 35,
     "moves": [
-     "disable",
      "psybeam",
      "recover",
-     "future-sight"
+     "future-sight",
+     "calm-mind"
     ]
    },
    {
     "species": "venusaur",
     "level": 40,
     "moves": [
+     "vine-whip",
      "sleep-powder",
      "razor-leaf",
-     "sweet-scent",
-     "growth"
+     "sweet-scent"
     ]
    }
   ]
@@ -610,37 +627,40 @@ export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "exeggcute",
     "level": 38,
     "moves": [
-     "screech",
-     "spark",
-     "selfdestruct",
-     "rollout"
+     "leech-seed",
+     "confusion",
+     "stun-spore",
+     "sleep-powder"
     ]
    },
    {
     "species": "gyarados",
     "level": 35,
     "moves": [
-     "tackle"
+     "bite",
+     "dragon-rage",
+     "leer",
+     "twister"
     ]
    },
    {
     "species": "alakazam",
     "level": 35,
     "moves": [
-     "disable",
      "psybeam",
      "recover",
-     "future-sight"
+     "future-sight",
+     "calm-mind"
     ]
    },
    {
     "species": "charizard",
     "level": 40,
     "moves": [
-     "metal-claw",
      "smokescreen",
      "scary-face",
-     "flamethrower"
+     "flamethrower",
+     "wing-attack"
     ]
    }
   ]

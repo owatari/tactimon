@@ -3,7 +3,7 @@ import type { DuelMove } from "../duel";
 
 export const GENERATED_SPECIES_IDS = ["beedrill", "fearow", "arbok", "sandslash", "nidorina", "nidoqueen", "nidorino", "nidoking", "clefable", "vulpix", "ninetales", "wigglytuff", "golbat", "gloom", "vileplume", "venonat", "venomoth", "diglett", "dugtrio", "persian", "psyduck", "golduck", "primeape", "arcanine", "poliwag", "poliwhirl", "poliwrath", "machoke", "machamp", "weepinbell", "victreebel", "tentacruel", "graveler", "golem", "rapidash", "slowbro", "magneton", "farfetchd", "doduo", "dodrio", "seel", "dewgong", "muk", "cloyster", "gastly", "haunter", "gengar", "hypno", "krabby", "kingler", "electrode", "exeggutor", "cubone", "marowak", "hitmonlee", "hitmonchan", "lickitung", "weezing", "rhydon", "chansey", "tangela", "kangaskhan", "seadra", "seaking", "mr-mime", "scyther", "jynx", "electabuzz", "magmar", "pinsir", "tauros", "magikarp", "lapras", "ditto", "eevee", "vaporeon", "jolteon", "flareon", "porygon", "omanyte", "omastar", "kabuto", "kabutops", "aerodactyl", "snorlax", "articuno", "zapdos", "moltres", "dratini", "dragonair", "dragonite", "mewtwo", "mew"] as const;
 export type GeneratedSpeciesId = (typeof GENERATED_SPECIES_IDS)[number];
-export const GENERATED_MOVE_IDS = ["acid", "acid-armor", "aerial-ace", "air-cutter", "ancientpower", "aurora-beam", "barrage", "barrier", "blizzard", "body-slam", "bone-club", "bone-rush", "bonemerang", "bubblebeam", "clamp", "comet-punch", "constrict", "crabhammer", "cross-chop", "crunch", "double-edge", "double-kick", "doubleslap", "dragon-rage", "drill-peck", "dynamicpunch", "earthquake", "egg-bomb", "explosion", "faint-attack", "fire-blast", "fire-punch", "fire-spin", "fury-swipes", "giga-drain", "glare", "heat-wave", "hyper-beam", "hyper-voice", "ice-beam", "ice-punch", "icy-wind", "leech-life", "lick", "lovely-kiss", "magical-leaf", "mega-drain", "mega-kick", "mega-punch", "megahorn", "minimize", "mud-shot", "mud-slap", "night-shade", "outrage", "petal-dance", "pin-missile", "poison-gas", "powder-snow", "psybeam", "pursuit", "rage", "revenge", "rock-throw", "rolling-kick", "rollout", "sand-tomb", "seismic-toss", "selfdestruct", "shadow-ball", "shadow-punch", "silver-wind", "sing", "sludge", "sludge-bomb", "smog", "softboiled", "spike-cannon", "spore", "stomp", "submission", "thrash", "thunderbolt", "thunderpunch", "thundershock", "tri-attack", "vicegrip", "waterfall", "will-o-wisp", "zap-cannon"] as const;
+export const GENERATED_MOVE_IDS = ["acid", "acid-armor", "air-cutter", "ancientpower", "aurora-beam", "barrage", "barrier", "blizzard", "body-slam", "bone-club", "bone-rush", "bonemerang", "bubblebeam", "comet-punch", "constrict", "crabhammer", "cross-chop", "crunch", "dizzy-punch", "double-edge", "double-kick", "doubleslap", "dragon-rage", "drill-peck", "dynamicpunch", "earthquake", "egg-bomb", "explosion", "faint-attack", "fire-blast", "fire-punch", "fire-spin", "fury-swipes", "glare", "heat-wave", "hyper-beam", "ice-beam", "ice-punch", "icy-wind", "leech-life", "lick", "lovely-kiss", "magical-leaf", "mega-drain", "mega-kick", "mega-punch", "megahorn", "minimize", "mud-shot", "mud-slap", "night-shade", "outrage", "petal-dance", "pin-missile", "poison-gas", "powder-snow", "psybeam", "pursuit", "rage", "revenge", "rock-throw", "rolling-kick", "rollout", "sand-tomb", "seismic-toss", "selfdestruct", "shadow-ball", "shadow-punch", "signal-beam", "silver-wind", "sing", "sludge", "sludge-bomb", "smog", "softboiled", "spike-cannon", "stomp", "submission", "thrash", "thunderbolt", "thunderpunch", "thundershock", "tri-attack", "vicegrip", "waterfall", "will-o-wisp", "zap-cannon"] as const;
 export type GeneratedMoveId = (typeof GENERATED_MOVE_IDS)[number];
 
 export const GENERATED_SPECIES = {
@@ -21,7 +21,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 80,
     "speed": 75,
     "moves": [
-      "harden"
+      "focus-energy",
+      "rage",
+      "pursuit",
+      "pin-missile"
     ]
   },
   "fearow": {
@@ -38,10 +41,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 61,
     "speed": 100,
     "moves": [
+      "growl",
       "leer",
       "fury-attack",
-      "pursuit",
-      "aerial-ace"
+      "pursuit"
     ]
   },
   "arbok": {
@@ -57,10 +60,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 79,
     "speed": 80,
     "moves": [
+      "poison-sting",
       "bite",
       "glare",
-      "screech",
-      "acid"
+      "screech"
     ]
   },
   "sandslash": {
@@ -115,10 +118,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 85,
     "speed": 76,
     "moves": [
+      "tail-whip",
       "double-kick",
       "poison-sting",
-      "bite",
-      "fury-swipes"
+      "body-slam"
     ]
   },
   "nidorino": {
@@ -154,10 +157,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 75,
     "speed": 85,
     "moves": [
+      "focus-energy",
       "double-kick",
       "poison-sting",
-      "horn-attack",
-      "fury-attack"
+      "thrash"
     ]
   },
   "clefable": {
@@ -175,8 +178,7 @@ export const GENERATED_SPECIES = {
     "moves": [
       "sing",
       "doubleslap",
-      "minimize",
-      "defense-curl"
+      "minimize"
     ]
   },
   "vulpix": {
@@ -192,9 +194,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 65,
     "speed": 65,
     "moves": [
-      "sing",
-      "doubleslap",
-      "minimize"
+      "ember",
+      "tail-whip",
+      "quick-attack"
     ]
   },
   "ninetales": {
@@ -210,10 +212,8 @@ export const GENERATED_SPECIES = {
     "specialDefense": 100,
     "speed": 100,
     "moves": [
-      "tail-whip",
-      "quick-attack",
-      "will-o-wisp",
-      "flamethrower"
+      "ember",
+      "quick-attack"
     ]
   },
   "wigglytuff": {
@@ -229,10 +229,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 50,
     "speed": 45,
     "moves": [
+      "sing",
       "disable",
-      "rollout",
-      "doubleslap",
-      "body-slam"
+      "defense-curl",
+      "doubleslap"
     ]
   },
   "golbat": {
@@ -288,10 +288,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 90,
     "speed": 50,
     "moves": [
-      "poison-powder",
+      "absorb",
       "stun-spore",
-      "sleep-powder",
-      "acid"
+      "mega-drain"
     ]
   },
   "venonat": {
@@ -308,9 +307,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 55,
     "speed": 45,
     "moves": [
-      "scratch",
-      "stun-spore",
-      "poison-powder"
+      "tackle",
+      "disable",
+      "supersonic"
     ]
   },
   "venomoth": {
@@ -329,8 +328,8 @@ export const GENERATED_SPECIES = {
     "moves": [
       "leech-life",
       "stun-spore",
-      "psybeam",
-      "sleep-powder"
+      "gust",
+      "psybeam"
     ]
   },
   "diglett": {
@@ -346,10 +345,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 45,
     "speed": 95,
     "moves": [
-      "silver-wind",
-      "tackle",
-      "disable",
-      "supersonic"
+      "sand-attack",
+      "scratch",
+      "growl"
     ]
   },
   "dugtrio": {
@@ -368,7 +366,7 @@ export const GENERATED_SPECIES = {
       "growl",
       "fury-swipes",
       "mud-slap",
-      "slash"
+      "sand-tomb"
     ]
   },
   "persian": {
@@ -384,10 +382,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 65,
     "speed": 115,
     "moves": [
+      "growl",
       "bite",
       "faint-attack",
-      "screech",
-      "fury-swipes"
+      "screech"
     ]
   },
   "psyduck": {
@@ -404,8 +402,8 @@ export const GENERATED_SPECIES = {
     "speed": 55,
     "moves": [
       "scratch",
-      "growl",
-      "bite"
+      "tail-whip",
+      "disable"
     ]
   },
   "golduck": {
@@ -459,10 +457,8 @@ export const GENERATED_SPECIES = {
     "specialDefense": 80,
     "speed": 95,
     "moves": [
-      "ember",
-      "leer",
-      "take-down",
-      "flame-wheel"
+      "bite",
+      "ember"
     ]
   },
   "poliwag": {
@@ -478,8 +474,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 40,
     "speed": 90,
     "moves": [
-      "bite",
-      "ember"
+      "bubble",
+      "hypnosis",
+      "water-gun"
     ]
   },
   "poliwhirl": {
@@ -515,9 +512,9 @@ export const GENERATED_SPECIES = {
     "speed": 70,
     "moves": [
       "water-gun",
+      "hypnosis",
       "doubleslap",
-      "rain-dance",
-      "body-slam"
+      "submission"
     ]
   },
   "machoke": {
@@ -592,10 +589,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 60,
     "speed": 70,
     "moves": [
-      "poison-powder",
-      "stun-spore",
-      "acid",
-      "sweet-scent"
+      "vine-whip",
+      "sleep-powder",
+      "sweet-scent",
+      "razor-leaf"
     ]
   },
   "tentacruel": {
@@ -612,10 +609,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 120,
     "speed": 100,
     "moves": [
+      "constrict",
       "acid",
       "bubblebeam",
-      "wrap",
-      "barrier"
+      "wrap"
     ]
   },
   "graveler": {
@@ -730,10 +727,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 62,
     "speed": 60,
     "moves": [
-      "thundershock",
-      "supersonic",
-      "sonic-boom",
-      "thunder-wave"
+      "peck",
+      "sand-attack",
+      "leer",
+      "fury-attack"
     ]
   },
   "doduo": {
@@ -751,8 +748,9 @@ export const GENERATED_SPECIES = {
     "speed": 75,
     "moves": [
       "peck",
-      "sand-attack",
-      "leer"
+      "growl",
+      "pursuit",
+      "fury-attack"
     ]
   },
   "dodrio": {
@@ -788,10 +786,8 @@ export const GENERATED_SPECIES = {
     "specialDefense": 70,
     "speed": 45,
     "moves": [
-      "peck",
-      "growl",
-      "pursuit",
-      "fury-attack"
+      "headbutt",
+      "growl"
     ]
   },
   "dewgong": {
@@ -847,10 +843,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 45,
     "speed": 70,
     "moves": [
-      "icicle-spear",
+      "withdraw",
       "supersonic",
-      "aurora-beam",
-      "leer"
+      "aurora-beam"
     ]
   },
   "gastly": {
@@ -867,9 +862,8 @@ export const GENERATED_SPECIES = {
     "specialDefense": 35,
     "speed": 80,
     "moves": [
-      "withdraw",
-      "supersonic",
-      "aurora-beam"
+      "hypnosis",
+      "lick"
     ]
   },
   "haunter": {
@@ -942,10 +936,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 25,
     "speed": 50,
     "moves": [
-      "pound",
-      "hypnosis",
-      "disable",
-      "confusion"
+      "bubble",
+      "leer",
+      "vicegrip"
     ]
   },
   "kingler": {
@@ -1000,10 +993,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 65,
     "speed": 55,
     "moves": [
-      "leech-seed",
+      "hypnosis",
       "confusion",
-      "stun-spore",
-      "poison-powder"
+      "stomp",
+      "egg-bomb"
     ]
   },
   "cubone": {
@@ -1019,9 +1012,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 50,
     "speed": 35,
     "moves": [
-      "barrage",
-      "hypnosis",
-      "confusion"
+      "growl",
+      "tail-whip",
+      "bone-club",
+      "headbutt"
     ]
   },
   "marowak": {
@@ -1056,10 +1050,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 110,
     "speed": 87,
     "moves": [
-      "headbutt",
-      "leer",
-      "focus-energy",
-      "bonemerang"
+      "revenge",
+      "double-kick",
+      "rolling-kick",
+      "focus-energy"
     ]
   },
   "hitmonchan": {
@@ -1076,9 +1070,9 @@ export const GENERATED_SPECIES = {
     "speed": 76,
     "moves": [
       "revenge",
-      "double-kick",
-      "rolling-kick",
-      "focus-energy"
+      "comet-punch",
+      "agility",
+      "pursuit"
     ]
   },
   "lickitung": {
@@ -1094,10 +1088,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 75,
     "speed": 30,
     "moves": [
-      "revenge",
-      "comet-punch",
-      "agility",
-      "pursuit"
+      "lick",
+      "supersonic",
+      "defense-curl",
+      "stomp"
     ]
   },
   "weezing": {
@@ -1153,9 +1147,9 @@ export const GENERATED_SPECIES = {
     "speed": 50,
     "moves": [
       "tail-whip",
-      "stomp",
-      "fury-attack",
-      "scary-face"
+      "softboiled",
+      "doubleslap",
+      "minimize"
     ]
   },
   "tangela": {
@@ -1171,10 +1165,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 40,
     "speed": 60,
     "moves": [
-      "tail-whip",
-      "softboiled",
-      "doubleslap",
-      "minimize"
+      "absorb",
+      "growth",
+      "poison-powder",
+      "vine-whip"
     ]
   },
   "kangaskhan": {
@@ -1190,10 +1184,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 80,
     "speed": 90,
     "moves": [
-      "absorb",
-      "growth",
-      "poison-powder",
-      "vine-whip"
+      "leer",
+      "bite",
+      "tail-whip",
+      "mega-punch"
     ]
   },
   "seadra": {
@@ -1209,10 +1203,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 45,
     "speed": 85,
     "moves": [
+      "smokescreen",
       "leer",
       "water-gun",
-      "twister",
-      "agility"
+      "twister"
     ]
   },
   "seaking": {
@@ -1247,10 +1241,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 120,
     "speed": 90,
     "moves": [
-      "water-gun",
-      "rapid-spin",
-      "recover",
-      "swift"
+      "barrier",
+      "confusion",
+      "doubleslap",
+      "magical-leaf"
     ]
   },
   "scyther": {
@@ -1267,10 +1261,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 80,
     "speed": 105,
     "moves": [
-      "barrier",
-      "confusion",
-      "doubleslap",
-      "magical-leaf"
+      "leer",
+      "focus-energy",
+      "pursuit",
+      "agility"
     ]
   },
   "jynx": {
@@ -1287,10 +1281,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 95,
     "speed": 95,
     "moves": [
-      "leer",
-      "focus-energy",
-      "pursuit",
-      "agility"
+      "lovely-kiss",
+      "powder-snow",
+      "doubleslap",
+      "ice-punch"
     ]
   },
   "electabuzz": {
@@ -1306,10 +1300,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 85,
     "speed": 105,
     "moves": [
-      "lovely-kiss",
-      "powder-snow",
-      "doubleslap",
-      "ice-punch"
+      "quick-attack",
+      "leer",
+      "thunderpunch",
+      "swift"
     ]
   },
   "magmar": {
@@ -1325,10 +1319,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 85,
     "speed": 93,
     "moves": [
-      "quick-attack",
       "leer",
-      "thunderpunch",
-      "swift"
+      "smog",
+      "fire-punch",
+      "smokescreen"
     ]
   },
   "pinsir": {
@@ -1344,10 +1338,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 70,
     "speed": 85,
     "moves": [
-      "leer",
-      "smog",
-      "fire-punch",
-      "smokescreen"
+      "bind",
+      "seismic-toss",
+      "harden",
+      "revenge"
     ]
   },
   "tauros": {
@@ -1363,10 +1357,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 70,
     "speed": 110,
     "moves": [
-      "bind",
-      "seismic-toss",
-      "harden",
-      "revenge"
+      "rage",
+      "horn-attack",
+      "scary-face",
+      "pursuit"
     ]
   },
   "magikarp": {
@@ -1382,10 +1376,7 @@ export const GENERATED_SPECIES = {
     "specialDefense": 20,
     "speed": 80,
     "moves": [
-      "tail-whip",
-      "rage",
-      "horn-attack",
-      "scary-face"
+      "tackle"
     ]
   },
   "lapras": {
@@ -1402,9 +1393,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 95,
     "speed": 60,
     "moves": [
-      "thrash",
-      "bite",
-      "dragon-rage"
+      "water-gun",
+      "growl",
+      "sing",
+      "body-slam"
     ]
   },
   "ditto": {
@@ -1420,10 +1412,7 @@ export const GENERATED_SPECIES = {
     "specialDefense": 48,
     "speed": 48,
     "moves": [
-      "water-gun",
-      "growl",
-      "sing",
-      "body-slam"
+      "tackle"
     ]
   },
   "eevee": {
@@ -1439,7 +1428,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 65,
     "speed": 55,
     "moves": [
-      "tackle"
+      "tackle",
+      "tail-whip",
+      "sand-attack"
     ]
   },
   "vaporeon": {
@@ -1455,10 +1446,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 95,
     "speed": 65,
     "moves": [
-      "sand-attack",
-      "growl",
+      "water-gun",
       "quick-attack",
-      "bite"
+      "bite",
+      "aurora-beam"
     ]
   },
   "jolteon": {
@@ -1474,10 +1465,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 95,
     "speed": 130,
     "moves": [
-      "water-gun",
+      "thundershock",
       "quick-attack",
-      "bite",
-      "aurora-beam"
+      "double-kick",
+      "pin-missile"
     ]
   },
   "flareon": {
@@ -1493,10 +1484,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 110,
     "speed": 65,
     "moves": [
-      "thundershock",
+      "ember",
       "quick-attack",
-      "double-kick",
-      "pin-missile"
+      "bite",
+      "fire-spin"
     ]
   },
   "porygon": {
@@ -1512,10 +1503,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 75,
     "speed": 40,
     "moves": [
-      "tail-whip",
-      "sand-attack",
-      "ember",
-      "quick-attack"
+      "tackle",
+      "agility",
+      "psybeam",
+      "recover"
     ]
   },
   "omanyte": {
@@ -1532,9 +1523,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 55,
     "speed": 35,
     "moves": [
-      "tackle",
-      "agility",
-      "psybeam"
+      "constrict",
+      "withdraw",
+      "bite"
     ]
   },
   "omastar": {
@@ -1571,10 +1562,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 45,
     "speed": 55,
     "moves": [
-      "constrict",
-      "withdraw",
-      "bite",
-      "water-gun"
+      "scratch",
+      "harden",
+      "absorb"
     ]
   },
   "kabutops": {
@@ -1611,10 +1601,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 75,
     "speed": 130,
     "moves": [
-      "harden",
-      "absorb",
-      "leer",
-      "mud-shot"
+      "wing-attack",
+      "agility",
+      "bite",
+      "supersonic"
     ]
   },
   "snorlax": {
@@ -1630,10 +1620,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 110,
     "speed": 30,
     "moves": [
-      "wing-attack",
-      "agility",
-      "bite",
-      "supersonic"
+      "tackle",
+      "defense-curl",
+      "headbutt"
     ]
   },
   "articuno": {
@@ -1650,9 +1639,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 125,
     "speed": 85,
     "moves": [
-      "tackle",
-      "defense-curl",
-      "headbutt"
+      "gust",
+      "powder-snow",
+      "agility"
     ]
   },
   "zapdos": {
@@ -1669,8 +1658,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 90,
     "speed": 100,
     "moves": [
-      "gust",
-      "powder-snow",
+      "peck",
+      "thundershock",
+      "thunder-wave",
       "agility"
     ]
   },
@@ -1688,9 +1678,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 85,
     "speed": 90,
     "moves": [
-      "peck",
-      "thundershock",
-      "thunder-wave",
+      "wing-attack",
+      "ember",
+      "fire-spin",
       "agility"
     ]
   },
@@ -1707,9 +1697,10 @@ export const GENERATED_SPECIES = {
     "specialDefense": 50,
     "speed": 50,
     "moves": [
-      "wing-attack",
-      "ember",
-      "fire-spin"
+      "wrap",
+      "leer",
+      "thunder-wave",
+      "twister"
     ]
   },
   "dragonair": {
@@ -1764,10 +1755,9 @@ export const GENERATED_SPECIES = {
     "specialDefense": 90,
     "speed": 130,
     "moves": [
-      "leer",
-      "thunder-wave",
-      "twister",
-      "dragon-rage"
+      "confusion",
+      "disable",
+      "barrier"
     ]
   },
   "mew": {
@@ -1783,15 +1773,14 @@ export const GENERATED_SPECIES = {
     "specialDefense": 100,
     "speed": 100,
     "moves": [
-      "confusion",
-      "disable",
-      "barrier"
+      "pound",
+      "mega-punch"
     ]
   }
 };
-export const GENERATED_LEARNSETS = {"beedrill": [{"level": 1, "moveId": "harden"}, {"level": 7, "moveId": "harden"}], "fearow": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "growl"}, {"level": 7, "moveId": "leer"}, {"level": 13, "moveId": "fury-attack"}, {"level": 19, "moveId": "pursuit"}, {"level": 25, "moveId": "aerial-ace"}, {"level": 37, "moveId": "drill-peck"}, {"level": 43, "moveId": "agility"}], "arbok": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 8, "moveId": "poison-sting"}, {"level": 13, "moveId": "bite"}, {"level": 20, "moveId": "glare"}, {"level": 25, "moveId": "screech"}, {"level": 32, "moveId": "acid"}], "sandslash": [{"level": 1, "moveId": "scratch"}, {"level": 6, "moveId": "defense-curl"}, {"level": 11, "moveId": "sand-attack"}, {"level": 17, "moveId": "poison-sting"}, {"level": 23, "moveId": "slash"}, {"level": 30, "moveId": "swift"}, {"level": 37, "moveId": "fury-swipes"}, {"level": 45, "moveId": "sand-tomb"}], "nidorina": [{"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "scratch"}, {"level": 8, "moveId": "tail-whip"}, {"level": 12, "moveId": "double-kick"}, {"level": 17, "moveId": "poison-sting"}, {"level": 20, "moveId": "bite"}, {"level": 30, "moveId": "fury-swipes"}, {"level": 47, "moveId": "crunch"}], "nidoqueen": [{"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "scratch"}, {"level": 8, "moveId": "tail-whip"}, {"level": 12, "moveId": "double-kick"}, {"level": 18, "moveId": "poison-sting"}, {"level": 22, "moveId": "bite"}, {"level": 34, "moveId": "fury-swipes"}, {"level": 53, "moveId": "crunch"}], "nidorino": [{"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "peck"}, {"level": 8, "moveId": "focus-energy"}, {"level": 12, "moveId": "double-kick"}, {"level": 17, "moveId": "poison-sting"}, {"level": 20, "moveId": "horn-attack"}, {"level": 30, "moveId": "fury-attack"}, {"level": 47, "moveId": "horn-drill"}], "nidoking": [{"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "peck"}, {"level": 8, "moveId": "focus-energy"}, {"level": 12, "moveId": "double-kick"}, {"level": 18, "moveId": "poison-sting"}, {"level": 22, "moveId": "horn-attack"}, {"level": 34, "moveId": "fury-attack"}, {"level": 53, "moveId": "horn-drill"}], "clefable": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "growl"}, {"level": 9, "moveId": "sing"}, {"level": 13, "moveId": "doubleslap"}, {"level": 21, "moveId": "minimize"}, {"level": 25, "moveId": "defense-curl"}], "vulpix": [{"level": 1, "moveId": "sing"}, {"level": 1, "moveId": "doubleslap"}, {"level": 1, "moveId": "minimize"}], "ninetales": [{"level": 1, "moveId": "ember"}, {"level": 5, "moveId": "tail-whip"}, {"level": 13, "moveId": "quick-attack"}, {"level": 17, "moveId": "will-o-wisp"}, {"level": 29, "moveId": "flamethrower"}, {"level": 41, "moveId": "fire-spin"}], "wigglytuff": [{"level": 1, "moveId": "sing"}, {"level": 4, "moveId": "defense-curl"}, {"level": 9, "moveId": "pound"}, {"level": 14, "moveId": "disable"}, {"level": 19, "moveId": "rollout"}, {"level": 24, "moveId": "doubleslap"}, {"level": 34, "moveId": "body-slam"}, {"level": 44, "moveId": "hyper-voice"}, {"level": 49, "moveId": "double-edge"}], "golbat": [{"level": 1, "moveId": "leech-life"}, {"level": 6, "moveId": "astonish"}, {"level": 11, "moveId": "supersonic"}, {"level": 16, "moveId": "bite"}, {"level": 21, "moveId": "wing-attack"}, {"level": 31, "moveId": "air-cutter"}], "gloom": [{"level": 1, "moveId": "absorb"}, {"level": 7, "moveId": "sweet-scent"}, {"level": 14, "moveId": "poison-powder"}, {"level": 16, "moveId": "stun-spore"}, {"level": 18, "moveId": "sleep-powder"}, {"level": 23, "moveId": "acid"}, {"level": 39, "moveId": "petal-dance"}], "vileplume": [{"level": 1, "moveId": "absorb"}, {"level": 1, "moveId": "sweet-scent"}, {"level": 1, "moveId": "poison-powder"}, {"level": 7, "moveId": "sweet-scent"}, {"level": 14, "moveId": "poison-powder"}, {"level": 16, "moveId": "stun-spore"}, {"level": 18, "moveId": "sleep-powder"}, {"level": 24, "moveId": "acid"}, {"level": 44, "moveId": "petal-dance"}], "venonat": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "stun-spore"}, {"level": 1, "moveId": "poison-powder"}, {"level": 7, "moveId": "stun-spore"}, {"level": 13, "moveId": "poison-powder"}, {"level": 19, "moveId": "leech-life"}, {"level": 27, "moveId": "spore"}, {"level": 35, "moveId": "slash"}, {"level": 43, "moveId": "growth"}, {"level": 51, "moveId": "giga-drain"}], "venomoth": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "disable"}, {"level": 9, "moveId": "supersonic"}, {"level": 17, "moveId": "confusion"}, {"level": 20, "moveId": "poison-powder"}, {"level": 25, "moveId": "leech-life"}, {"level": 28, "moveId": "stun-spore"}, {"level": 33, "moveId": "psybeam"}, {"level": 36, "moveId": "sleep-powder"}, {"level": 41, "moveId": "psychic"}], "diglett": [{"level": 1, "moveId": "silver-wind"}, {"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "disable"}, {"level": 1, "moveId": "supersonic"}, {"level": 9, "moveId": "supersonic"}, {"level": 17, "moveId": "confusion"}, {"level": 20, "moveId": "poison-powder"}, {"level": 25, "moveId": "leech-life"}, {"level": 28, "moveId": "stun-spore"}, {"level": 31, "moveId": "gust"}, {"level": 36, "moveId": "psybeam"}, {"level": 42, "moveId": "sleep-powder"}, {"level": 52, "moveId": "psychic"}], "dugtrio": [{"level": 1, "moveId": "sand-attack"}, {"level": 1, "moveId": "scratch"}, {"level": 5, "moveId": "growl"}, {"level": 21, "moveId": "fury-swipes"}, {"level": 25, "moveId": "mud-slap"}, {"level": 33, "moveId": "slash"}, {"level": 41, "moveId": "earthquake"}], "persian": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "growl"}, {"level": 10, "moveId": "bite"}, {"level": 25, "moveId": "faint-attack"}, {"level": 31, "moveId": "screech"}, {"level": 36, "moveId": "fury-swipes"}, {"level": 40, "moveId": "slash"}], "psyduck": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "bite"}, {"level": 10, "moveId": "bite"}, {"level": 25, "moveId": "faint-attack"}, {"level": 34, "moveId": "screech"}, {"level": 42, "moveId": "fury-swipes"}, {"level": 49, "moveId": "slash"}], "golduck": [{"level": 1, "moveId": "scratch"}, {"level": 5, "moveId": "tail-whip"}, {"level": 10, "moveId": "disable"}, {"level": 16, "moveId": "confusion"}, {"level": 23, "moveId": "screech"}, {"level": 40, "moveId": "fury-swipes"}, {"level": 50, "moveId": "hydro-pump"}], "primeape": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "leer"}, {"level": 6, "moveId": "low-kick"}, {"level": 11, "moveId": "karate-chop"}, {"level": 16, "moveId": "fury-swipes"}, {"level": 21, "moveId": "focus-energy"}, {"level": 26, "moveId": "seismic-toss"}, {"level": 31, "moveId": "cross-chop"}, {"level": 41, "moveId": "screech"}, {"level": 46, "moveId": "thrash"}], "arcanine": [{"level": 1, "moveId": "bite"}, {"level": 7, "moveId": "ember"}, {"level": 13, "moveId": "leer"}, {"level": 25, "moveId": "take-down"}, {"level": 31, "moveId": "flame-wheel"}, {"level": 43, "moveId": "agility"}, {"level": 49, "moveId": "flamethrower"}], "poliwag": [{"level": 1, "moveId": "bite"}, {"level": 1, "moveId": "ember"}], "poliwhirl": [{"level": 1, "moveId": "bubble"}, {"level": 7, "moveId": "hypnosis"}, {"level": 13, "moveId": "water-gun"}, {"level": 19, "moveId": "doubleslap"}, {"level": 25, "moveId": "rain-dance"}, {"level": 31, "moveId": "body-slam"}, {"level": 43, "moveId": "hydro-pump"}], "poliwrath": [{"level": 1, "moveId": "bubble"}, {"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "water-gun"}, {"level": 7, "moveId": "hypnosis"}, {"level": 13, "moveId": "water-gun"}, {"level": 19, "moveId": "doubleslap"}, {"level": 27, "moveId": "rain-dance"}, {"level": 35, "moveId": "body-slam"}, {"level": 51, "moveId": "hydro-pump"}], "machoke": [{"level": 1, "moveId": "low-kick"}, {"level": 1, "moveId": "leer"}, {"level": 7, "moveId": "focus-energy"}, {"level": 13, "moveId": "karate-chop"}, {"level": 19, "moveId": "seismic-toss"}, {"level": 25, "moveId": "revenge"}, {"level": 37, "moveId": "submission"}, {"level": 40, "moveId": "cross-chop"}, {"level": 43, "moveId": "scary-face"}, {"level": 49, "moveId": "dynamicpunch"}], "machamp": [{"level": 1, "moveId": "low-kick"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "focus-energy"}, {"level": 7, "moveId": "focus-energy"}, {"level": 13, "moveId": "karate-chop"}, {"level": 19, "moveId": "seismic-toss"}, {"level": 25, "moveId": "revenge"}, {"level": 41, "moveId": "submission"}, {"level": 46, "moveId": "cross-chop"}, {"level": 51, "moveId": "scary-face"}, {"level": 59, "moveId": "dynamicpunch"}], "weepinbell": [{"level": 1, "moveId": "vine-whip"}, {"level": 6, "moveId": "growth"}, {"level": 11, "moveId": "wrap"}, {"level": 15, "moveId": "sleep-powder"}, {"level": 17, "moveId": "poison-powder"}, {"level": 19, "moveId": "stun-spore"}, {"level": 23, "moveId": "acid"}, {"level": 30, "moveId": "sweet-scent"}, {"level": 37, "moveId": "razor-leaf"}, {"level": 45, "moveId": "slam"}], "victreebel": [{"level": 1, "moveId": "vine-whip"}, {"level": 1, "moveId": "growth"}, {"level": 1, "moveId": "wrap"}, {"level": 6, "moveId": "growth"}, {"level": 11, "moveId": "wrap"}, {"level": 15, "moveId": "sleep-powder"}, {"level": 17, "moveId": "poison-powder"}, {"level": 19, "moveId": "stun-spore"}, {"level": 24, "moveId": "acid"}, {"level": 33, "moveId": "sweet-scent"}, {"level": 42, "moveId": "razor-leaf"}, {"level": 54, "moveId": "slam"}], "tentacruel": [{"level": 1, "moveId": "poison-sting"}, {"level": 6, "moveId": "supersonic"}, {"level": 12, "moveId": "constrict"}, {"level": 19, "moveId": "acid"}, {"level": 25, "moveId": "bubblebeam"}, {"level": 30, "moveId": "wrap"}, {"level": 36, "moveId": "barrier"}, {"level": 43, "moveId": "screech"}, {"level": 49, "moveId": "hydro-pump"}], "graveler": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "defense-curl"}, {"level": 11, "moveId": "rock-throw"}, {"level": 21, "moveId": "selfdestruct"}, {"level": 26, "moveId": "rollout"}, {"level": 31, "moveId": "rock-blast"}, {"level": 36, "moveId": "earthquake"}, {"level": 41, "moveId": "explosion"}, {"level": 46, "moveId": "double-edge"}], "golem": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "defense-curl"}, {"level": 1, "moveId": "rock-throw"}, {"level": 11, "moveId": "rock-throw"}, {"level": 21, "moveId": "selfdestruct"}, {"level": 29, "moveId": "rollout"}, {"level": 37, "moveId": "rock-blast"}, {"level": 45, "moveId": "earthquake"}, {"level": 53, "moveId": "explosion"}, {"level": 62, "moveId": "double-edge"}], "rapidash": [{"level": 1, "moveId": "quick-attack"}, {"level": 5, "moveId": "growl"}, {"level": 9, "moveId": "tail-whip"}, {"level": 14, "moveId": "ember"}, {"level": 19, "moveId": "stomp"}, {"level": 25, "moveId": "fire-spin"}, {"level": 31, "moveId": "take-down"}, {"level": 38, "moveId": "agility"}, {"level": 53, "moveId": "fire-blast"}], "slowbro": [{"level": 1, "moveId": "tackle"}, {"level": 6, "moveId": "growl"}, {"level": 13, "moveId": "water-gun"}, {"level": 17, "moveId": "confusion"}, {"level": 24, "moveId": "disable"}, {"level": 29, "moveId": "headbutt"}, {"level": 40, "moveId": "psychic"}], "magneton": [{"level": 1, "moveId": "tackle"}, {"level": 6, "moveId": "thundershock"}, {"level": 11, "moveId": "supersonic"}, {"level": 16, "moveId": "sonic-boom"}, {"level": 21, "moveId": "thunder-wave"}, {"level": 26, "moveId": "spark"}, {"level": 38, "moveId": "swift"}, {"level": 44, "moveId": "screech"}, {"level": 50, "moveId": "zap-cannon"}], "farfetchd": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "thundershock"}, {"level": 1, "moveId": "supersonic"}, {"level": 6, "moveId": "thundershock"}, {"level": 11, "moveId": "supersonic"}, {"level": 16, "moveId": "sonic-boom"}, {"level": 21, "moveId": "thunder-wave"}, {"level": 26, "moveId": "spark"}, {"level": 44, "moveId": "tri-attack"}, {"level": 53, "moveId": "screech"}, {"level": 62, "moveId": "zap-cannon"}], "doduo": [{"level": 1, "moveId": "peck"}, {"level": 6, "moveId": "sand-attack"}, {"level": 11, "moveId": "leer"}, {"level": 16, "moveId": "fury-attack"}, {"level": 36, "moveId": "agility"}, {"level": 41, "moveId": "slash"}], "dodrio": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "growl"}, {"level": 9, "moveId": "pursuit"}, {"level": 13, "moveId": "fury-attack"}, {"level": 21, "moveId": "tri-attack"}, {"level": 25, "moveId": "rage"}, {"level": 37, "moveId": "drill-peck"}, {"level": 45, "moveId": "agility"}], "seel": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "pursuit"}, {"level": 1, "moveId": "fury-attack"}, {"level": 9, "moveId": "pursuit"}, {"level": 13, "moveId": "fury-attack"}, {"level": 21, "moveId": "tri-attack"}, {"level": 25, "moveId": "rage"}, {"level": 47, "moveId": "drill-peck"}, {"level": 60, "moveId": "agility"}], "dewgong": [{"level": 1, "moveId": "headbutt"}, {"level": 9, "moveId": "growl"}, {"level": 17, "moveId": "icy-wind"}, {"level": 21, "moveId": "aurora-beam"}, {"level": 37, "moveId": "take-down"}, {"level": 41, "moveId": "ice-beam"}], "muk": [{"level": 1, "moveId": "poison-gas"}, {"level": 1, "moveId": "pound"}, {"level": 4, "moveId": "harden"}, {"level": 8, "moveId": "disable"}, {"level": 13, "moveId": "sludge"}, {"level": 19, "moveId": "minimize"}, {"level": 26, "moveId": "screech"}, {"level": 34, "moveId": "acid-armor"}, {"level": 43, "moveId": "sludge-bomb"}], "cloyster": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "withdraw"}, {"level": 8, "moveId": "icicle-spear"}, {"level": 15, "moveId": "supersonic"}, {"level": 22, "moveId": "aurora-beam"}, {"level": 36, "moveId": "leer"}, {"level": 43, "moveId": "clamp"}, {"level": 50, "moveId": "ice-beam"}], "gastly": [{"level": 1, "moveId": "withdraw"}, {"level": 1, "moveId": "supersonic"}, {"level": 1, "moveId": "aurora-beam"}, {"level": 43, "moveId": "spike-cannon"}], "haunter": [{"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "lick"}, {"level": 16, "moveId": "night-shade"}, {"level": 36, "moveId": "shadow-ball"}], "gengar": [{"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "lick"}, {"level": 16, "moveId": "night-shade"}, {"level": 25, "moveId": "shadow-punch"}, {"level": 45, "moveId": "shadow-ball"}], "hypno": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "hypnosis"}, {"level": 7, "moveId": "disable"}, {"level": 11, "moveId": "confusion"}, {"level": 17, "moveId": "headbutt"}, {"level": 21, "moveId": "poison-gas"}, {"level": 31, "moveId": "psychic"}, {"level": 47, "moveId": "future-sight"}], "krabby": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "disable"}, {"level": 1, "moveId": "confusion"}, {"level": 7, "moveId": "disable"}, {"level": 11, "moveId": "confusion"}, {"level": 17, "moveId": "headbutt"}, {"level": 21, "moveId": "poison-gas"}, {"level": 35, "moveId": "psychic"}, {"level": 57, "moveId": "future-sight"}], "kingler": [{"level": 1, "moveId": "bubble"}, {"level": 5, "moveId": "leer"}, {"level": 12, "moveId": "vicegrip"}, {"level": 16, "moveId": "harden"}, {"level": 23, "moveId": "mud-shot"}, {"level": 27, "moveId": "stomp"}, {"level": 45, "moveId": "crabhammer"}], "electrode": [{"level": 1, "moveId": "tackle"}, {"level": 8, "moveId": "screech"}, {"level": 15, "moveId": "sonic-boom"}, {"level": 21, "moveId": "spark"}, {"level": 27, "moveId": "selfdestruct"}, {"level": 32, "moveId": "rollout"}, {"level": 42, "moveId": "swift"}, {"level": 46, "moveId": "explosion"}], "exeggutor": [{"level": 1, "moveId": "barrage"}, {"level": 1, "moveId": "hypnosis"}, {"level": 13, "moveId": "leech-seed"}, {"level": 19, "moveId": "confusion"}, {"level": 25, "moveId": "stun-spore"}, {"level": 31, "moveId": "poison-powder"}, {"level": 37, "moveId": "sleep-powder"}, {"level": 43, "moveId": "solar-beam"}], "cubone": [{"level": 1, "moveId": "barrage"}, {"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "confusion"}, {"level": 19, "moveId": "stomp"}, {"level": 31, "moveId": "egg-bomb"}], "marowak": [{"level": 1, "moveId": "growl"}, {"level": 5, "moveId": "tail-whip"}, {"level": 9, "moveId": "bone-club"}, {"level": 13, "moveId": "headbutt"}, {"level": 17, "moveId": "leer"}, {"level": 21, "moveId": "focus-energy"}, {"level": 25, "moveId": "bonemerang"}, {"level": 29, "moveId": "rage"}, {"level": 37, "moveId": "thrash"}, {"level": 41, "moveId": "bone-rush"}, {"level": 45, "moveId": "double-edge"}], "hitmonlee": [{"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "bone-club"}, {"level": 1, "moveId": "headbutt"}, {"level": 5, "moveId": "tail-whip"}, {"level": 9, "moveId": "bone-club"}, {"level": 13, "moveId": "headbutt"}, {"level": 17, "moveId": "leer"}, {"level": 21, "moveId": "focus-energy"}, {"level": 25, "moveId": "bonemerang"}, {"level": 32, "moveId": "rage"}, {"level": 46, "moveId": "thrash"}, {"level": 53, "moveId": "bone-rush"}, {"level": 61, "moveId": "double-edge"}], "hitmonchan": [{"level": 1, "moveId": "revenge"}, {"level": 1, "moveId": "double-kick"}, {"level": 11, "moveId": "rolling-kick"}, {"level": 21, "moveId": "focus-energy"}, {"level": 46, "moveId": "mega-kick"}], "lickitung": [{"level": 1, "moveId": "revenge"}, {"level": 1, "moveId": "comet-punch"}, {"level": 7, "moveId": "agility"}, {"level": 13, "moveId": "pursuit"}, {"level": 26, "moveId": "thunderpunch"}, {"level": 26, "moveId": "ice-punch"}, {"level": 26, "moveId": "fire-punch"}, {"level": 38, "moveId": "mega-punch"}], "weezing": [{"level": 1, "moveId": "poison-gas"}, {"level": 1, "moveId": "tackle"}, {"level": 9, "moveId": "smog"}, {"level": 17, "moveId": "selfdestruct"}, {"level": 21, "moveId": "sludge"}, {"level": 25, "moveId": "smokescreen"}, {"level": 41, "moveId": "explosion"}], "rhydon": [{"level": 1, "moveId": "horn-attack"}, {"level": 1, "moveId": "tail-whip"}, {"level": 10, "moveId": "stomp"}, {"level": 15, "moveId": "fury-attack"}, {"level": 24, "moveId": "scary-face"}, {"level": 29, "moveId": "rock-blast"}, {"level": 38, "moveId": "horn-drill"}, {"level": 43, "moveId": "take-down"}, {"level": 52, "moveId": "earthquake"}, {"level": 57, "moveId": "megahorn"}], "chansey": [{"level": 1, "moveId": "horn-attack"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "stomp"}, {"level": 1, "moveId": "fury-attack"}, {"level": 10, "moveId": "stomp"}, {"level": 15, "moveId": "fury-attack"}, {"level": 24, "moveId": "scary-face"}, {"level": 29, "moveId": "rock-blast"}, {"level": 38, "moveId": "horn-drill"}, {"level": 46, "moveId": "take-down"}, {"level": 58, "moveId": "earthquake"}, {"level": 66, "moveId": "megahorn"}], "tangela": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "growl"}, {"level": 5, "moveId": "tail-whip"}, {"level": 13, "moveId": "softboiled"}, {"level": 17, "moveId": "doubleslap"}, {"level": 23, "moveId": "minimize"}, {"level": 29, "moveId": "sing"}, {"level": 35, "moveId": "egg-bomb"}, {"level": 41, "moveId": "defense-curl"}, {"level": 57, "moveId": "double-edge"}], "kangaskhan": [{"level": 1, "moveId": "constrict"}, {"level": 4, "moveId": "sleep-powder"}, {"level": 10, "moveId": "absorb"}, {"level": 13, "moveId": "growth"}, {"level": 19, "moveId": "poison-powder"}, {"level": 22, "moveId": "vine-whip"}, {"level": 28, "moveId": "bind"}, {"level": 31, "moveId": "mega-drain"}, {"level": 37, "moveId": "stun-spore"}, {"level": 40, "moveId": "slam"}], "seadra": [{"level": 1, "moveId": "bubble"}, {"level": 8, "moveId": "smokescreen"}, {"level": 15, "moveId": "leer"}, {"level": 22, "moveId": "water-gun"}, {"level": 29, "moveId": "twister"}, {"level": 36, "moveId": "agility"}, {"level": 43, "moveId": "hydro-pump"}], "seaking": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "tail-whip"}, {"level": 10, "moveId": "supersonic"}, {"level": 15, "moveId": "horn-attack"}, {"level": 29, "moveId": "fury-attack"}, {"level": 38, "moveId": "waterfall"}, {"level": 43, "moveId": "horn-drill"}, {"level": 52, "moveId": "agility"}, {"level": 57, "moveId": "megahorn"}], "mr-mime": [{"level": 1, "moveId": "water-gun"}, {"level": 1, "moveId": "rapid-spin"}, {"level": 1, "moveId": "recover"}, {"level": 1, "moveId": "swift"}], "scyther": [{"level": 1, "moveId": "barrier"}, {"level": 5, "moveId": "confusion"}, {"level": 15, "moveId": "doubleslap"}, {"level": 22, "moveId": "magical-leaf"}, {"level": 29, "moveId": "psybeam"}, {"level": 43, "moveId": "psychic"}], "jynx": [{"level": 1, "moveId": "quick-attack"}, {"level": 1, "moveId": "leer"}, {"level": 6, "moveId": "focus-energy"}, {"level": 11, "moveId": "pursuit"}, {"level": 21, "moveId": "agility"}, {"level": 26, "moveId": "wing-attack"}, {"level": 31, "moveId": "slash"}, {"level": 41, "moveId": "double-team"}], "electabuzz": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "lick"}, {"level": 1, "moveId": "lovely-kiss"}, {"level": 1, "moveId": "powder-snow"}, {"level": 9, "moveId": "lovely-kiss"}, {"level": 13, "moveId": "powder-snow"}, {"level": 21, "moveId": "doubleslap"}, {"level": 25, "moveId": "ice-punch"}, {"level": 51, "moveId": "body-slam"}, {"level": 67, "moveId": "blizzard"}], "magmar": [{"level": 1, "moveId": "quick-attack"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "thunderpunch"}, {"level": 9, "moveId": "thunderpunch"}, {"level": 25, "moveId": "swift"}, {"level": 36, "moveId": "screech"}, {"level": 47, "moveId": "thunderbolt"}], "pinsir": [{"level": 1, "moveId": "ember"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "smog"}, {"level": 1, "moveId": "fire-punch"}, {"level": 7, "moveId": "leer"}, {"level": 13, "moveId": "smog"}, {"level": 19, "moveId": "fire-punch"}, {"level": 25, "moveId": "smokescreen"}, {"level": 41, "moveId": "flamethrower"}, {"level": 57, "moveId": "fire-blast"}], "tauros": [{"level": 1, "moveId": "vicegrip"}, {"level": 1, "moveId": "focus-energy"}, {"level": 7, "moveId": "bind"}, {"level": 13, "moveId": "seismic-toss"}, {"level": 19, "moveId": "harden"}, {"level": 25, "moveId": "revenge"}, {"level": 43, "moveId": "submission"}], "magikarp": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 4, "moveId": "rage"}, {"level": 8, "moveId": "horn-attack"}, {"level": 13, "moveId": "scary-face"}, {"level": 19, "moveId": "pursuit"}, {"level": 43, "moveId": "thrash"}, {"level": 53, "moveId": "take-down"}], "lapras": [{"level": 1, "moveId": "thrash"}, {"level": 20, "moveId": "bite"}, {"level": 25, "moveId": "dragon-rage"}, {"level": 30, "moveId": "leer"}, {"level": 35, "moveId": "twister"}, {"level": 40, "moveId": "hydro-pump"}, {"level": 45, "moveId": "rain-dance"}, {"level": 55, "moveId": "hyper-beam"}], "ditto": [{"level": 1, "moveId": "water-gun"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "sing"}, {"level": 13, "moveId": "body-slam"}, {"level": 31, "moveId": "ice-beam"}, {"level": 37, "moveId": "rain-dance"}, {"level": 49, "moveId": "hydro-pump"}], "eevee": [{"level": 1, "moveId": "tackle"}], "vaporeon": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "growl"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "bite"}, {"level": 42, "moveId": "take-down"}], "jolteon": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "water-gun"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "bite"}, {"level": 36, "moveId": "aurora-beam"}, {"level": 47, "moveId": "acid-armor"}, {"level": 52, "moveId": "hydro-pump"}], "flareon": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "thundershock"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "double-kick"}, {"level": 36, "moveId": "pin-missile"}, {"level": 42, "moveId": "thunder-wave"}, {"level": 47, "moveId": "agility"}], "porygon": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "ember"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "bite"}, {"level": 36, "moveId": "fire-spin"}, {"level": 42, "moveId": "smog"}, {"level": 47, "moveId": "leer"}, {"level": 52, "moveId": "flamethrower"}], "omanyte": [{"level": 1, "moveId": "tackle"}, {"level": 9, "moveId": "agility"}, {"level": 12, "moveId": "psybeam"}, {"level": 20, "moveId": "recover"}, {"level": 36, "moveId": "tri-attack"}, {"level": 48, "moveId": "zap-cannon"}], "omastar": [{"level": 1, "moveId": "constrict"}, {"level": 1, "moveId": "withdraw"}, {"level": 13, "moveId": "bite"}, {"level": 19, "moveId": "water-gun"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "leer"}, {"level": 49, "moveId": "ancientpower"}, {"level": 55, "moveId": "hydro-pump"}], "kabuto": [{"level": 1, "moveId": "constrict"}, {"level": 1, "moveId": "withdraw"}, {"level": 1, "moveId": "bite"}, {"level": 1, "moveId": "water-gun"}, {"level": 13, "moveId": "bite"}, {"level": 19, "moveId": "water-gun"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "leer"}, {"level": 40, "moveId": "spike-cannon"}, {"level": 55, "moveId": "ancientpower"}, {"level": 65, "moveId": "hydro-pump"}], "kabutops": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "harden"}, {"level": 13, "moveId": "absorb"}, {"level": 19, "moveId": "leer"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "sand-attack"}, {"level": 49, "moveId": "mega-drain"}, {"level": 55, "moveId": "ancientpower"}], "aerodactyl": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "harden"}, {"level": 1, "moveId": "absorb"}, {"level": 1, "moveId": "leer"}, {"level": 13, "moveId": "absorb"}, {"level": 19, "moveId": "leer"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "sand-attack"}, {"level": 40, "moveId": "slash"}, {"level": 55, "moveId": "mega-drain"}, {"level": 65, "moveId": "ancientpower"}], "snorlax": [{"level": 1, "moveId": "wing-attack"}, {"level": 8, "moveId": "agility"}, {"level": 15, "moveId": "bite"}, {"level": 22, "moveId": "supersonic"}, {"level": 29, "moveId": "ancientpower"}, {"level": 36, "moveId": "scary-face"}, {"level": 43, "moveId": "take-down"}, {"level": 50, "moveId": "hyper-beam"}], "articuno": [{"level": 1, "moveId": "tackle"}, {"level": 9, "moveId": "defense-curl"}, {"level": 17, "moveId": "headbutt"}, {"level": 33, "moveId": "body-slam"}, {"level": 49, "moveId": "rollout"}, {"level": 53, "moveId": "hyper-beam"}], "zapdos": [{"level": 1, "moveId": "gust"}, {"level": 1, "moveId": "powder-snow"}, {"level": 25, "moveId": "agility"}, {"level": 49, "moveId": "ice-beam"}, {"level": 73, "moveId": "blizzard"}], "moltres": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "thundershock"}, {"level": 13, "moveId": "thunder-wave"}, {"level": 25, "moveId": "agility"}, {"level": 49, "moveId": "drill-peck"}], "dratini": [{"level": 1, "moveId": "wing-attack"}, {"level": 1, "moveId": "ember"}, {"level": 13, "moveId": "fire-spin"}, {"level": 25, "moveId": "agility"}, {"level": 49, "moveId": "flamethrower"}, {"level": 73, "moveId": "heat-wave"}], "dragonair": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 8, "moveId": "thunder-wave"}, {"level": 15, "moveId": "twister"}, {"level": 22, "moveId": "dragon-rage"}, {"level": 29, "moveId": "slam"}, {"level": 36, "moveId": "agility"}, {"level": 50, "moveId": "outrage"}, {"level": 57, "moveId": "hyper-beam"}], "dragonite": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "thunder-wave"}, {"level": 1, "moveId": "twister"}, {"level": 8, "moveId": "thunder-wave"}, {"level": 15, "moveId": "twister"}, {"level": 22, "moveId": "dragon-rage"}, {"level": 29, "moveId": "slam"}, {"level": 38, "moveId": "agility"}, {"level": 56, "moveId": "outrage"}, {"level": 65, "moveId": "hyper-beam"}], "mewtwo": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "thunder-wave"}, {"level": 1, "moveId": "twister"}, {"level": 8, "moveId": "thunder-wave"}, {"level": 15, "moveId": "twister"}, {"level": 22, "moveId": "dragon-rage"}, {"level": 29, "moveId": "slam"}, {"level": 38, "moveId": "agility"}, {"level": 55, "moveId": "wing-attack"}, {"level": 61, "moveId": "outrage"}, {"level": 75, "moveId": "hyper-beam"}], "mew": [{"level": 1, "moveId": "confusion"}, {"level": 1, "moveId": "disable"}, {"level": 11, "moveId": "barrier"}, {"level": 33, "moveId": "swift"}, {"level": 44, "moveId": "recover"}, {"level": 66, "moveId": "psychic"}, {"level": 88, "moveId": "future-sight"}]};
+export const GENERATED_LEARNSETS = {"beedrill": [{"level": 1, "moveId": "fury-attack"}, {"level": 10, "moveId": "fury-attack"}, {"level": 15, "moveId": "focus-energy"}, {"level": 25, "moveId": "rage"}, {"level": 30, "moveId": "pursuit"}, {"level": 35, "moveId": "pin-missile"}, {"level": 40, "moveId": "agility"}], "fearow": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "fury-attack"}, {"level": 7, "moveId": "leer"}, {"level": 13, "moveId": "fury-attack"}, {"level": 26, "moveId": "pursuit"}, {"level": 40, "moveId": "drill-peck"}, {"level": 47, "moveId": "agility"}], "arbok": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "poison-sting"}, {"level": 1, "moveId": "bite"}, {"level": 8, "moveId": "poison-sting"}, {"level": 13, "moveId": "bite"}, {"level": 20, "moveId": "glare"}, {"level": 28, "moveId": "screech"}, {"level": 38, "moveId": "acid"}], "sandslash": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "defense-curl"}, {"level": 1, "moveId": "sand-attack"}, {"level": 6, "moveId": "defense-curl"}, {"level": 11, "moveId": "sand-attack"}, {"level": 17, "moveId": "poison-sting"}, {"level": 24, "moveId": "slash"}, {"level": 33, "moveId": "swift"}, {"level": 42, "moveId": "fury-swipes"}, {"level": 52, "moveId": "sand-tomb"}], "nidorina": [{"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "scratch"}, {"level": 8, "moveId": "tail-whip"}, {"level": 12, "moveId": "double-kick"}, {"level": 18, "moveId": "poison-sting"}, {"level": 22, "moveId": "bite"}, {"level": 34, "moveId": "fury-swipes"}, {"level": 53, "moveId": "crunch"}], "nidoqueen": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "double-kick"}, {"level": 1, "moveId": "poison-sting"}, {"level": 22, "moveId": "body-slam"}], "nidorino": [{"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "peck"}, {"level": 8, "moveId": "focus-energy"}, {"level": 12, "moveId": "double-kick"}, {"level": 18, "moveId": "poison-sting"}, {"level": 22, "moveId": "horn-attack"}, {"level": 34, "moveId": "fury-attack"}, {"level": 53, "moveId": "horn-drill"}], "nidoking": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "focus-energy"}, {"level": 1, "moveId": "double-kick"}, {"level": 1, "moveId": "poison-sting"}, {"level": 22, "moveId": "thrash"}, {"level": 43, "moveId": "megahorn"}], "clefable": [{"level": 1, "moveId": "sing"}, {"level": 1, "moveId": "doubleslap"}, {"level": 1, "moveId": "minimize"}], "vulpix": [{"level": 1, "moveId": "ember"}, {"level": 5, "moveId": "tail-whip"}, {"level": 13, "moveId": "quick-attack"}, {"level": 17, "moveId": "will-o-wisp"}, {"level": 29, "moveId": "flamethrower"}, {"level": 41, "moveId": "fire-spin"}], "ninetales": [{"level": 1, "moveId": "ember"}, {"level": 1, "moveId": "quick-attack"}, {"level": 45, "moveId": "fire-spin"}], "wigglytuff": [{"level": 1, "moveId": "sing"}, {"level": 1, "moveId": "disable"}, {"level": 1, "moveId": "defense-curl"}, {"level": 1, "moveId": "doubleslap"}], "golbat": [{"level": 1, "moveId": "screech"}, {"level": 1, "moveId": "leech-life"}, {"level": 1, "moveId": "astonish"}, {"level": 1, "moveId": "supersonic"}, {"level": 6, "moveId": "astonish"}, {"level": 11, "moveId": "supersonic"}, {"level": 16, "moveId": "bite"}, {"level": 21, "moveId": "wing-attack"}, {"level": 35, "moveId": "air-cutter"}], "gloom": [{"level": 1, "moveId": "absorb"}, {"level": 1, "moveId": "sweet-scent"}, {"level": 1, "moveId": "poison-powder"}, {"level": 7, "moveId": "sweet-scent"}, {"level": 14, "moveId": "poison-powder"}, {"level": 16, "moveId": "stun-spore"}, {"level": 18, "moveId": "sleep-powder"}, {"level": 24, "moveId": "acid"}, {"level": 44, "moveId": "petal-dance"}], "vileplume": [{"level": 1, "moveId": "absorb"}, {"level": 1, "moveId": "stun-spore"}, {"level": 1, "moveId": "mega-drain"}, {"level": 44, "moveId": "petal-dance"}], "venonat": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "disable"}, {"level": 9, "moveId": "supersonic"}, {"level": 17, "moveId": "confusion"}, {"level": 20, "moveId": "poison-powder"}, {"level": 25, "moveId": "leech-life"}, {"level": 28, "moveId": "stun-spore"}, {"level": 33, "moveId": "psybeam"}, {"level": 36, "moveId": "sleep-powder"}, {"level": 41, "moveId": "psychic"}], "venomoth": [{"level": 1, "moveId": "silver-wind"}, {"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "disable"}, {"level": 1, "moveId": "supersonic"}, {"level": 9, "moveId": "supersonic"}, {"level": 17, "moveId": "confusion"}, {"level": 20, "moveId": "poison-powder"}, {"level": 25, "moveId": "leech-life"}, {"level": 28, "moveId": "stun-spore"}, {"level": 31, "moveId": "gust"}, {"level": 36, "moveId": "psybeam"}, {"level": 42, "moveId": "sleep-powder"}, {"level": 52, "moveId": "psychic"}], "diglett": [{"level": 1, "moveId": "sand-attack"}, {"level": 1, "moveId": "scratch"}, {"level": 5, "moveId": "growl"}, {"level": 21, "moveId": "fury-swipes"}, {"level": 25, "moveId": "mud-slap"}, {"level": 33, "moveId": "slash"}, {"level": 41, "moveId": "earthquake"}], "dugtrio": [{"level": 1, "moveId": "tri-attack"}, {"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "sand-attack"}, {"level": 1, "moveId": "growl"}, {"level": 5, "moveId": "growl"}, {"level": 21, "moveId": "fury-swipes"}, {"level": 25, "moveId": "mud-slap"}, {"level": 26, "moveId": "sand-tomb"}, {"level": 38, "moveId": "slash"}, {"level": 51, "moveId": "earthquake"}], "persian": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "bite"}, {"level": 10, "moveId": "bite"}, {"level": 25, "moveId": "faint-attack"}, {"level": 34, "moveId": "screech"}, {"level": 42, "moveId": "fury-swipes"}, {"level": 49, "moveId": "slash"}], "psyduck": [{"level": 1, "moveId": "scratch"}, {"level": 5, "moveId": "tail-whip"}, {"level": 10, "moveId": "disable"}, {"level": 16, "moveId": "confusion"}, {"level": 23, "moveId": "screech"}, {"level": 40, "moveId": "fury-swipes"}, {"level": 50, "moveId": "hydro-pump"}], "golduck": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "disable"}, {"level": 5, "moveId": "tail-whip"}, {"level": 10, "moveId": "disable"}, {"level": 16, "moveId": "confusion"}, {"level": 23, "moveId": "screech"}, {"level": 44, "moveId": "fury-swipes"}, {"level": 58, "moveId": "hydro-pump"}], "primeape": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "low-kick"}, {"level": 1, "moveId": "rage"}, {"level": 6, "moveId": "low-kick"}, {"level": 11, "moveId": "karate-chop"}, {"level": 16, "moveId": "fury-swipes"}, {"level": 21, "moveId": "focus-energy"}, {"level": 26, "moveId": "seismic-toss"}, {"level": 28, "moveId": "rage"}, {"level": 35, "moveId": "cross-chop"}, {"level": 53, "moveId": "screech"}, {"level": 62, "moveId": "thrash"}], "arcanine": [{"level": 1, "moveId": "bite"}, {"level": 1, "moveId": "ember"}], "poliwag": [{"level": 1, "moveId": "bubble"}, {"level": 7, "moveId": "hypnosis"}, {"level": 13, "moveId": "water-gun"}, {"level": 19, "moveId": "doubleslap"}, {"level": 25, "moveId": "rain-dance"}, {"level": 31, "moveId": "body-slam"}, {"level": 43, "moveId": "hydro-pump"}], "poliwhirl": [{"level": 1, "moveId": "bubble"}, {"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "water-gun"}, {"level": 7, "moveId": "hypnosis"}, {"level": 13, "moveId": "water-gun"}, {"level": 19, "moveId": "doubleslap"}, {"level": 27, "moveId": "rain-dance"}, {"level": 35, "moveId": "body-slam"}, {"level": 51, "moveId": "hydro-pump"}], "poliwrath": [{"level": 1, "moveId": "water-gun"}, {"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "doubleslap"}, {"level": 1, "moveId": "submission"}, {"level": 35, "moveId": "submission"}], "machoke": [{"level": 1, "moveId": "low-kick"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "focus-energy"}, {"level": 7, "moveId": "focus-energy"}, {"level": 13, "moveId": "karate-chop"}, {"level": 19, "moveId": "seismic-toss"}, {"level": 25, "moveId": "revenge"}, {"level": 41, "moveId": "submission"}, {"level": 46, "moveId": "cross-chop"}, {"level": 51, "moveId": "scary-face"}, {"level": 59, "moveId": "dynamicpunch"}], "machamp": [{"level": 1, "moveId": "low-kick"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "focus-energy"}, {"level": 7, "moveId": "focus-energy"}, {"level": 13, "moveId": "karate-chop"}, {"level": 19, "moveId": "seismic-toss"}, {"level": 25, "moveId": "revenge"}, {"level": 41, "moveId": "submission"}, {"level": 46, "moveId": "cross-chop"}, {"level": 51, "moveId": "scary-face"}, {"level": 59, "moveId": "dynamicpunch"}], "weepinbell": [{"level": 1, "moveId": "vine-whip"}, {"level": 1, "moveId": "growth"}, {"level": 1, "moveId": "wrap"}, {"level": 6, "moveId": "growth"}, {"level": 11, "moveId": "wrap"}, {"level": 15, "moveId": "sleep-powder"}, {"level": 17, "moveId": "poison-powder"}, {"level": 19, "moveId": "stun-spore"}, {"level": 24, "moveId": "acid"}, {"level": 33, "moveId": "sweet-scent"}, {"level": 42, "moveId": "razor-leaf"}, {"level": 54, "moveId": "slam"}], "victreebel": [{"level": 1, "moveId": "vine-whip"}, {"level": 1, "moveId": "sleep-powder"}, {"level": 1, "moveId": "sweet-scent"}, {"level": 1, "moveId": "razor-leaf"}], "tentacruel": [{"level": 1, "moveId": "poison-sting"}, {"level": 1, "moveId": "supersonic"}, {"level": 1, "moveId": "constrict"}, {"level": 6, "moveId": "supersonic"}, {"level": 12, "moveId": "constrict"}, {"level": 19, "moveId": "acid"}, {"level": 25, "moveId": "bubblebeam"}, {"level": 30, "moveId": "wrap"}, {"level": 38, "moveId": "barrier"}, {"level": 47, "moveId": "screech"}, {"level": 55, "moveId": "hydro-pump"}], "graveler": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "defense-curl"}, {"level": 1, "moveId": "rock-throw"}, {"level": 11, "moveId": "rock-throw"}, {"level": 21, "moveId": "selfdestruct"}, {"level": 29, "moveId": "rollout"}, {"level": 37, "moveId": "rock-blast"}, {"level": 45, "moveId": "earthquake"}, {"level": 53, "moveId": "explosion"}, {"level": 62, "moveId": "double-edge"}], "golem": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "defense-curl"}, {"level": 1, "moveId": "rock-throw"}, {"level": 11, "moveId": "rock-throw"}, {"level": 21, "moveId": "selfdestruct"}, {"level": 29, "moveId": "rollout"}, {"level": 37, "moveId": "rock-blast"}, {"level": 45, "moveId": "earthquake"}, {"level": 53, "moveId": "explosion"}, {"level": 62, "moveId": "double-edge"}], "rapidash": [{"level": 1, "moveId": "quick-attack"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "ember"}, {"level": 5, "moveId": "growl"}, {"level": 9, "moveId": "tail-whip"}, {"level": 14, "moveId": "ember"}, {"level": 19, "moveId": "stomp"}, {"level": 25, "moveId": "fire-spin"}, {"level": 31, "moveId": "take-down"}, {"level": 38, "moveId": "agility"}, {"level": 40, "moveId": "fury-attack"}, {"level": 63, "moveId": "fire-blast"}], "slowbro": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "growl"}, {"level": 6, "moveId": "growl"}, {"level": 13, "moveId": "water-gun"}, {"level": 17, "moveId": "confusion"}, {"level": 24, "moveId": "disable"}, {"level": 29, "moveId": "headbutt"}, {"level": 37, "moveId": "withdraw"}, {"level": 44, "moveId": "psychic"}], "magneton": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "thundershock"}, {"level": 1, "moveId": "supersonic"}, {"level": 6, "moveId": "thundershock"}, {"level": 11, "moveId": "supersonic"}, {"level": 16, "moveId": "sonic-boom"}, {"level": 21, "moveId": "thunder-wave"}, {"level": 26, "moveId": "spark"}, {"level": 44, "moveId": "tri-attack"}, {"level": 53, "moveId": "screech"}, {"level": 62, "moveId": "zap-cannon"}], "farfetchd": [{"level": 1, "moveId": "peck"}, {"level": 6, "moveId": "sand-attack"}, {"level": 11, "moveId": "leer"}, {"level": 16, "moveId": "fury-attack"}, {"level": 36, "moveId": "agility"}, {"level": 41, "moveId": "slash"}], "doduo": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "growl"}, {"level": 9, "moveId": "pursuit"}, {"level": 13, "moveId": "fury-attack"}, {"level": 21, "moveId": "tri-attack"}, {"level": 25, "moveId": "rage"}, {"level": 37, "moveId": "drill-peck"}, {"level": 45, "moveId": "agility"}], "dodrio": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "pursuit"}, {"level": 1, "moveId": "fury-attack"}, {"level": 9, "moveId": "pursuit"}, {"level": 13, "moveId": "fury-attack"}, {"level": 21, "moveId": "tri-attack"}, {"level": 25, "moveId": "rage"}, {"level": 47, "moveId": "drill-peck"}, {"level": 60, "moveId": "agility"}], "seel": [{"level": 1, "moveId": "headbutt"}, {"level": 9, "moveId": "growl"}, {"level": 17, "moveId": "icy-wind"}, {"level": 21, "moveId": "aurora-beam"}, {"level": 37, "moveId": "take-down"}, {"level": 41, "moveId": "ice-beam"}], "dewgong": [{"level": 1, "moveId": "signal-beam"}, {"level": 1, "moveId": "headbutt"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "icy-wind"}, {"level": 1, "moveId": "aurora-beam"}, {"level": 9, "moveId": "growl"}, {"level": 17, "moveId": "icy-wind"}, {"level": 21, "moveId": "aurora-beam"}, {"level": 42, "moveId": "take-down"}, {"level": 51, "moveId": "ice-beam"}], "muk": [{"level": 1, "moveId": "poison-gas"}, {"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "harden"}, {"level": 4, "moveId": "harden"}, {"level": 8, "moveId": "disable"}, {"level": 13, "moveId": "sludge"}, {"level": 19, "moveId": "minimize"}, {"level": 26, "moveId": "screech"}, {"level": 34, "moveId": "acid-armor"}, {"level": 47, "moveId": "sludge-bomb"}], "cloyster": [{"level": 1, "moveId": "withdraw"}, {"level": 1, "moveId": "supersonic"}, {"level": 1, "moveId": "aurora-beam"}, {"level": 43, "moveId": "spike-cannon"}], "gastly": [{"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "lick"}, {"level": 16, "moveId": "night-shade"}, {"level": 36, "moveId": "shadow-ball"}], "haunter": [{"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "lick"}, {"level": 16, "moveId": "night-shade"}, {"level": 25, "moveId": "shadow-punch"}, {"level": 45, "moveId": "shadow-ball"}], "gengar": [{"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "lick"}, {"level": 16, "moveId": "night-shade"}, {"level": 25, "moveId": "shadow-punch"}, {"level": 45, "moveId": "shadow-ball"}], "hypno": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "disable"}, {"level": 1, "moveId": "confusion"}, {"level": 7, "moveId": "disable"}, {"level": 11, "moveId": "confusion"}, {"level": 17, "moveId": "headbutt"}, {"level": 21, "moveId": "poison-gas"}, {"level": 35, "moveId": "psychic"}, {"level": 57, "moveId": "future-sight"}], "krabby": [{"level": 1, "moveId": "bubble"}, {"level": 5, "moveId": "leer"}, {"level": 12, "moveId": "vicegrip"}, {"level": 16, "moveId": "harden"}, {"level": 23, "moveId": "mud-shot"}, {"level": 27, "moveId": "stomp"}, {"level": 45, "moveId": "crabhammer"}], "kingler": [{"level": 1, "moveId": "metal-claw"}, {"level": 1, "moveId": "bubble"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "vicegrip"}, {"level": 1, "moveId": "harden"}, {"level": 5, "moveId": "leer"}, {"level": 12, "moveId": "vicegrip"}, {"level": 16, "moveId": "harden"}, {"level": 23, "moveId": "mud-shot"}, {"level": 27, "moveId": "stomp"}, {"level": 57, "moveId": "crabhammer"}], "electrode": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "screech"}, {"level": 1, "moveId": "sonic-boom"}, {"level": 8, "moveId": "screech"}, {"level": 15, "moveId": "sonic-boom"}, {"level": 21, "moveId": "spark"}, {"level": 27, "moveId": "selfdestruct"}, {"level": 34, "moveId": "rollout"}, {"level": 48, "moveId": "swift"}, {"level": 54, "moveId": "explosion"}], "exeggutor": [{"level": 1, "moveId": "barrage"}, {"level": 1, "moveId": "hypnosis"}, {"level": 1, "moveId": "confusion"}, {"level": 19, "moveId": "stomp"}, {"level": 31, "moveId": "egg-bomb"}], "cubone": [{"level": 1, "moveId": "growl"}, {"level": 5, "moveId": "tail-whip"}, {"level": 9, "moveId": "bone-club"}, {"level": 13, "moveId": "headbutt"}, {"level": 17, "moveId": "leer"}, {"level": 21, "moveId": "focus-energy"}, {"level": 25, "moveId": "bonemerang"}, {"level": 29, "moveId": "rage"}, {"level": 37, "moveId": "thrash"}, {"level": 41, "moveId": "bone-rush"}, {"level": 45, "moveId": "double-edge"}], "marowak": [{"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "bone-club"}, {"level": 1, "moveId": "headbutt"}, {"level": 5, "moveId": "tail-whip"}, {"level": 9, "moveId": "bone-club"}, {"level": 13, "moveId": "headbutt"}, {"level": 17, "moveId": "leer"}, {"level": 21, "moveId": "focus-energy"}, {"level": 25, "moveId": "bonemerang"}, {"level": 32, "moveId": "rage"}, {"level": 46, "moveId": "thrash"}, {"level": 53, "moveId": "bone-rush"}, {"level": 61, "moveId": "double-edge"}], "hitmonlee": [{"level": 1, "moveId": "revenge"}, {"level": 1, "moveId": "double-kick"}, {"level": 11, "moveId": "rolling-kick"}, {"level": 21, "moveId": "focus-energy"}, {"level": 46, "moveId": "mega-kick"}], "hitmonchan": [{"level": 1, "moveId": "revenge"}, {"level": 1, "moveId": "comet-punch"}, {"level": 7, "moveId": "agility"}, {"level": 13, "moveId": "pursuit"}, {"level": 26, "moveId": "thunderpunch"}, {"level": 26, "moveId": "ice-punch"}, {"level": 26, "moveId": "fire-punch"}, {"level": 38, "moveId": "mega-punch"}], "lickitung": [{"level": 1, "moveId": "lick"}, {"level": 7, "moveId": "supersonic"}, {"level": 12, "moveId": "defense-curl"}, {"level": 23, "moveId": "stomp"}, {"level": 29, "moveId": "wrap"}, {"level": 34, "moveId": "disable"}, {"level": 40, "moveId": "slam"}, {"level": 45, "moveId": "screech"}], "weezing": [{"level": 1, "moveId": "poison-gas"}, {"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "smog"}, {"level": 1, "moveId": "selfdestruct"}, {"level": 9, "moveId": "smog"}, {"level": 17, "moveId": "selfdestruct"}, {"level": 21, "moveId": "sludge"}, {"level": 25, "moveId": "smokescreen"}, {"level": 44, "moveId": "explosion"}], "rhydon": [{"level": 1, "moveId": "horn-attack"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "stomp"}, {"level": 1, "moveId": "fury-attack"}, {"level": 10, "moveId": "stomp"}, {"level": 15, "moveId": "fury-attack"}, {"level": 24, "moveId": "scary-face"}, {"level": 29, "moveId": "rock-blast"}, {"level": 38, "moveId": "horn-drill"}, {"level": 46, "moveId": "take-down"}, {"level": 58, "moveId": "earthquake"}, {"level": 66, "moveId": "megahorn"}], "chansey": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "growl"}, {"level": 5, "moveId": "tail-whip"}, {"level": 13, "moveId": "softboiled"}, {"level": 17, "moveId": "doubleslap"}, {"level": 23, "moveId": "minimize"}, {"level": 29, "moveId": "sing"}, {"level": 35, "moveId": "egg-bomb"}, {"level": 41, "moveId": "defense-curl"}, {"level": 57, "moveId": "double-edge"}], "tangela": [{"level": 1, "moveId": "constrict"}, {"level": 4, "moveId": "sleep-powder"}, {"level": 10, "moveId": "absorb"}, {"level": 13, "moveId": "growth"}, {"level": 19, "moveId": "poison-powder"}, {"level": 22, "moveId": "vine-whip"}, {"level": 28, "moveId": "bind"}, {"level": 31, "moveId": "mega-drain"}, {"level": 37, "moveId": "stun-spore"}, {"level": 40, "moveId": "slam"}], "kangaskhan": [{"level": 1, "moveId": "comet-punch"}, {"level": 1, "moveId": "leer"}, {"level": 7, "moveId": "bite"}, {"level": 13, "moveId": "tail-whip"}, {"level": 25, "moveId": "mega-punch"}, {"level": 31, "moveId": "rage"}, {"level": 43, "moveId": "dizzy-punch"}], "seadra": [{"level": 1, "moveId": "bubble"}, {"level": 1, "moveId": "smokescreen"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "water-gun"}, {"level": 8, "moveId": "smokescreen"}, {"level": 15, "moveId": "leer"}, {"level": 22, "moveId": "water-gun"}, {"level": 29, "moveId": "twister"}, {"level": 40, "moveId": "agility"}, {"level": 51, "moveId": "hydro-pump"}], "seaking": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "tail-whip"}, {"level": 1, "moveId": "supersonic"}, {"level": 10, "moveId": "supersonic"}, {"level": 15, "moveId": "horn-attack"}, {"level": 29, "moveId": "fury-attack"}, {"level": 41, "moveId": "waterfall"}, {"level": 49, "moveId": "horn-drill"}, {"level": 61, "moveId": "agility"}, {"level": 69, "moveId": "megahorn"}], "mr-mime": [{"level": 1, "moveId": "barrier"}, {"level": 5, "moveId": "confusion"}, {"level": 15, "moveId": "doubleslap"}, {"level": 22, "moveId": "magical-leaf"}, {"level": 29, "moveId": "psybeam"}, {"level": 43, "moveId": "psychic"}], "scyther": [{"level": 1, "moveId": "quick-attack"}, {"level": 1, "moveId": "leer"}, {"level": 6, "moveId": "focus-energy"}, {"level": 11, "moveId": "pursuit"}, {"level": 21, "moveId": "agility"}, {"level": 26, "moveId": "wing-attack"}, {"level": 31, "moveId": "slash"}, {"level": 41, "moveId": "double-team"}], "jynx": [{"level": 1, "moveId": "pound"}, {"level": 1, "moveId": "lick"}, {"level": 1, "moveId": "lovely-kiss"}, {"level": 1, "moveId": "powder-snow"}, {"level": 9, "moveId": "lovely-kiss"}, {"level": 13, "moveId": "powder-snow"}, {"level": 21, "moveId": "doubleslap"}, {"level": 25, "moveId": "ice-punch"}, {"level": 51, "moveId": "body-slam"}, {"level": 67, "moveId": "blizzard"}], "electabuzz": [{"level": 1, "moveId": "quick-attack"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "thunderpunch"}, {"level": 9, "moveId": "thunderpunch"}, {"level": 25, "moveId": "swift"}, {"level": 36, "moveId": "screech"}, {"level": 47, "moveId": "thunderbolt"}], "magmar": [{"level": 1, "moveId": "ember"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "smog"}, {"level": 1, "moveId": "fire-punch"}, {"level": 7, "moveId": "leer"}, {"level": 13, "moveId": "smog"}, {"level": 19, "moveId": "fire-punch"}, {"level": 25, "moveId": "smokescreen"}, {"level": 41, "moveId": "flamethrower"}, {"level": 57, "moveId": "fire-blast"}], "pinsir": [{"level": 1, "moveId": "vicegrip"}, {"level": 1, "moveId": "focus-energy"}, {"level": 7, "moveId": "bind"}, {"level": 13, "moveId": "seismic-toss"}, {"level": 19, "moveId": "harden"}, {"level": 25, "moveId": "revenge"}, {"level": 43, "moveId": "submission"}], "tauros": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 4, "moveId": "rage"}, {"level": 8, "moveId": "horn-attack"}, {"level": 13, "moveId": "scary-face"}, {"level": 19, "moveId": "pursuit"}, {"level": 43, "moveId": "thrash"}, {"level": 53, "moveId": "take-down"}], "magikarp": [{"level": 15, "moveId": "tackle"}], "lapras": [{"level": 1, "moveId": "water-gun"}, {"level": 1, "moveId": "growl"}, {"level": 1, "moveId": "sing"}, {"level": 13, "moveId": "body-slam"}, {"level": 31, "moveId": "ice-beam"}, {"level": 37, "moveId": "rain-dance"}, {"level": 49, "moveId": "hydro-pump"}], "ditto": [{"level": 1, "moveId": "tackle"}], "eevee": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "growl"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "bite"}, {"level": 42, "moveId": "take-down"}], "vaporeon": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "water-gun"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "bite"}, {"level": 36, "moveId": "aurora-beam"}, {"level": 47, "moveId": "acid-armor"}, {"level": 52, "moveId": "hydro-pump"}], "jolteon": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "thundershock"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "double-kick"}, {"level": 36, "moveId": "pin-missile"}, {"level": 42, "moveId": "thunder-wave"}, {"level": 47, "moveId": "agility"}], "flareon": [{"level": 1, "moveId": "tackle"}, {"level": 1, "moveId": "tail-whip"}, {"level": 8, "moveId": "sand-attack"}, {"level": 16, "moveId": "ember"}, {"level": 23, "moveId": "quick-attack"}, {"level": 30, "moveId": "bite"}, {"level": 36, "moveId": "fire-spin"}, {"level": 42, "moveId": "smog"}, {"level": 47, "moveId": "leer"}, {"level": 52, "moveId": "flamethrower"}], "porygon": [{"level": 1, "moveId": "tackle"}, {"level": 9, "moveId": "agility"}, {"level": 12, "moveId": "psybeam"}, {"level": 20, "moveId": "recover"}, {"level": 36, "moveId": "tri-attack"}, {"level": 48, "moveId": "zap-cannon"}], "omanyte": [{"level": 1, "moveId": "constrict"}, {"level": 1, "moveId": "withdraw"}, {"level": 13, "moveId": "bite"}, {"level": 19, "moveId": "water-gun"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "leer"}, {"level": 49, "moveId": "ancientpower"}, {"level": 55, "moveId": "hydro-pump"}], "omastar": [{"level": 1, "moveId": "constrict"}, {"level": 1, "moveId": "withdraw"}, {"level": 1, "moveId": "bite"}, {"level": 1, "moveId": "water-gun"}, {"level": 13, "moveId": "bite"}, {"level": 19, "moveId": "water-gun"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "leer"}, {"level": 40, "moveId": "spike-cannon"}, {"level": 55, "moveId": "ancientpower"}, {"level": 65, "moveId": "hydro-pump"}], "kabuto": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "harden"}, {"level": 13, "moveId": "absorb"}, {"level": 19, "moveId": "leer"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "sand-attack"}, {"level": 49, "moveId": "mega-drain"}, {"level": 55, "moveId": "ancientpower"}], "kabutops": [{"level": 1, "moveId": "scratch"}, {"level": 1, "moveId": "harden"}, {"level": 1, "moveId": "absorb"}, {"level": 1, "moveId": "leer"}, {"level": 13, "moveId": "absorb"}, {"level": 19, "moveId": "leer"}, {"level": 25, "moveId": "mud-shot"}, {"level": 31, "moveId": "sand-attack"}, {"level": 40, "moveId": "slash"}, {"level": 55, "moveId": "mega-drain"}, {"level": 65, "moveId": "ancientpower"}], "aerodactyl": [{"level": 1, "moveId": "wing-attack"}, {"level": 8, "moveId": "agility"}, {"level": 15, "moveId": "bite"}, {"level": 22, "moveId": "supersonic"}, {"level": 29, "moveId": "ancientpower"}, {"level": 36, "moveId": "scary-face"}, {"level": 43, "moveId": "take-down"}, {"level": 50, "moveId": "hyper-beam"}], "snorlax": [{"level": 1, "moveId": "tackle"}, {"level": 9, "moveId": "defense-curl"}, {"level": 17, "moveId": "headbutt"}, {"level": 33, "moveId": "body-slam"}, {"level": 49, "moveId": "rollout"}, {"level": 53, "moveId": "hyper-beam"}], "articuno": [{"level": 1, "moveId": "gust"}, {"level": 1, "moveId": "powder-snow"}, {"level": 25, "moveId": "agility"}, {"level": 49, "moveId": "ice-beam"}, {"level": 73, "moveId": "blizzard"}], "zapdos": [{"level": 1, "moveId": "peck"}, {"level": 1, "moveId": "thundershock"}, {"level": 13, "moveId": "thunder-wave"}, {"level": 25, "moveId": "agility"}, {"level": 49, "moveId": "drill-peck"}], "moltres": [{"level": 1, "moveId": "wing-attack"}, {"level": 1, "moveId": "ember"}, {"level": 13, "moveId": "fire-spin"}, {"level": 25, "moveId": "agility"}, {"level": 49, "moveId": "flamethrower"}, {"level": 73, "moveId": "heat-wave"}], "dratini": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 8, "moveId": "thunder-wave"}, {"level": 15, "moveId": "twister"}, {"level": 22, "moveId": "dragon-rage"}, {"level": 29, "moveId": "slam"}, {"level": 36, "moveId": "agility"}, {"level": 50, "moveId": "outrage"}, {"level": 57, "moveId": "hyper-beam"}], "dragonair": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "thunder-wave"}, {"level": 1, "moveId": "twister"}, {"level": 8, "moveId": "thunder-wave"}, {"level": 15, "moveId": "twister"}, {"level": 22, "moveId": "dragon-rage"}, {"level": 29, "moveId": "slam"}, {"level": 38, "moveId": "agility"}, {"level": 56, "moveId": "outrage"}, {"level": 65, "moveId": "hyper-beam"}], "dragonite": [{"level": 1, "moveId": "wrap"}, {"level": 1, "moveId": "leer"}, {"level": 1, "moveId": "thunder-wave"}, {"level": 1, "moveId": "twister"}, {"level": 8, "moveId": "thunder-wave"}, {"level": 15, "moveId": "twister"}, {"level": 22, "moveId": "dragon-rage"}, {"level": 29, "moveId": "slam"}, {"level": 38, "moveId": "agility"}, {"level": 55, "moveId": "wing-attack"}, {"level": 61, "moveId": "outrage"}, {"level": 75, "moveId": "hyper-beam"}], "mewtwo": [{"level": 1, "moveId": "confusion"}, {"level": 1, "moveId": "disable"}, {"level": 11, "moveId": "barrier"}, {"level": 33, "moveId": "swift"}, {"level": 44, "moveId": "recover"}, {"level": 66, "moveId": "psychic"}, {"level": 88, "moveId": "future-sight"}], "mew": [{"level": 1, "moveId": "pound"}, {"level": 20, "moveId": "mega-punch"}, {"level": 40, "moveId": "psychic"}, {"level": 50, "moveId": "ancientpower"}]};
 export const GENERATED_AUTO_EV_CYCLES = {"beedrill": ["attack", "attack", "specialDefense", "attack", "attack", "specialDefense"], "fearow": ["speed", "speed", "speed", "speed", "speed", "speed"], "arbok": ["attack", "attack", "attack", "attack", "attack", "attack"], "sandslash": ["defense", "defense", "defense", "defense", "defense", "defense"], "nidorina": ["hp", "hp", "hp", "hp", "hp", "hp"], "nidoqueen": ["hp", "hp", "hp", "hp", "hp", "hp"], "nidorino": ["attack", "attack", "attack", "attack", "attack", "attack"], "nidoking": ["attack", "attack", "attack", "attack", "attack", "attack"], "clefable": ["hp", "hp", "hp", "hp", "hp", "hp"], "vulpix": ["speed", "speed", "speed", "speed", "speed", "speed"], "ninetales": ["speed", "specialDefense", "speed", "specialDefense", "speed", "specialDefense"], "wigglytuff": ["hp", "hp", "hp", "hp", "hp", "hp"], "golbat": ["speed", "speed", "speed", "speed", "speed", "speed"], "gloom": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "vileplume": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "venonat": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "venomoth": ["speed", "specialAttack", "speed", "specialAttack", "speed", "specialAttack"], "diglett": ["speed", "speed", "speed", "speed", "speed", "speed"], "dugtrio": ["speed", "speed", "speed", "speed", "speed", "speed"], "persian": ["speed", "speed", "speed", "speed", "speed", "speed"], "psyduck": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "golduck": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "primeape": ["attack", "attack", "attack", "attack", "attack", "attack"], "arcanine": ["attack", "attack", "attack", "attack", "attack", "attack"], "poliwag": ["speed", "speed", "speed", "speed", "speed", "speed"], "poliwhirl": ["speed", "speed", "speed", "speed", "speed", "speed"], "poliwrath": ["defense", "defense", "defense", "defense", "defense", "defense"], "machoke": ["attack", "attack", "attack", "attack", "attack", "attack"], "machamp": ["attack", "attack", "attack", "attack", "attack", "attack"], "weepinbell": ["attack", "attack", "attack", "attack", "attack", "attack"], "victreebel": ["attack", "attack", "attack", "attack", "attack", "attack"], "tentacruel": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "graveler": ["defense", "defense", "defense", "defense", "defense", "defense"], "golem": ["defense", "defense", "defense", "defense", "defense", "defense"], "rapidash": ["speed", "speed", "speed", "speed", "speed", "speed"], "slowbro": ["defense", "defense", "defense", "defense", "defense", "defense"], "magneton": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "farfetchd": ["attack", "attack", "attack", "attack", "attack", "attack"], "doduo": ["attack", "attack", "attack", "attack", "attack", "attack"], "dodrio": ["attack", "attack", "attack", "attack", "attack", "attack"], "seel": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "dewgong": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "muk": ["hp", "attack", "hp", "attack", "hp", "attack"], "cloyster": ["defense", "defense", "defense", "defense", "defense", "defense"], "gastly": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "haunter": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "gengar": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "hypno": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "krabby": ["attack", "attack", "attack", "attack", "attack", "attack"], "kingler": ["attack", "attack", "attack", "attack", "attack", "attack"], "electrode": ["speed", "speed", "speed", "speed", "speed", "speed"], "exeggutor": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "cubone": ["defense", "defense", "defense", "defense", "defense", "defense"], "marowak": ["defense", "defense", "defense", "defense", "defense", "defense"], "hitmonlee": ["attack", "attack", "attack", "attack", "attack", "attack"], "hitmonchan": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "lickitung": ["hp", "hp", "hp", "hp", "hp", "hp"], "weezing": ["defense", "defense", "defense", "defense", "defense", "defense"], "rhydon": ["attack", "attack", "attack", "attack", "attack", "attack"], "chansey": ["hp", "hp", "hp", "hp", "hp", "hp"], "tangela": ["defense", "defense", "defense", "defense", "defense", "defense"], "kangaskhan": ["hp", "hp", "hp", "hp", "hp", "hp"], "seadra": ["defense", "specialAttack", "defense", "specialAttack", "defense", "specialAttack"], "seaking": ["attack", "attack", "attack", "attack", "attack", "attack"], "mr-mime": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "scyther": ["attack", "attack", "attack", "attack", "attack", "attack"], "jynx": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "electabuzz": ["speed", "speed", "speed", "speed", "speed", "speed"], "magmar": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "pinsir": ["attack", "attack", "attack", "attack", "attack", "attack"], "tauros": ["attack", "speed", "attack", "speed", "attack", "speed"], "magikarp": ["speed", "speed", "speed", "speed", "speed", "speed"], "lapras": ["hp", "hp", "hp", "hp", "hp", "hp"], "ditto": ["hp", "hp", "hp", "hp", "hp", "hp"], "eevee": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "vaporeon": ["hp", "hp", "hp", "hp", "hp", "hp"], "jolteon": ["speed", "speed", "speed", "speed", "speed", "speed"], "flareon": ["attack", "attack", "attack", "attack", "attack", "attack"], "porygon": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "omanyte": ["defense", "defense", "defense", "defense", "defense", "defense"], "omastar": ["defense", "defense", "defense", "defense", "defense", "defense"], "kabuto": ["defense", "defense", "defense", "defense", "defense", "defense"], "kabutops": ["attack", "attack", "attack", "attack", "attack", "attack"], "aerodactyl": ["speed", "speed", "speed", "speed", "speed", "speed"], "snorlax": ["hp", "hp", "hp", "hp", "hp", "hp"], "articuno": ["specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense", "specialDefense"], "zapdos": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "moltres": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "dratini": ["attack", "attack", "attack", "attack", "attack", "attack"], "dragonair": ["attack", "attack", "attack", "attack", "attack", "attack"], "dragonite": ["attack", "attack", "attack", "attack", "attack", "attack"], "mewtwo": ["specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack", "specialAttack"], "mew": ["hp", "hp", "hp", "hp", "hp", "hp"]};
-export const GENERATED_INITIAL_MOVES = {"beedrill": ["harden"], "fearow": ["leer", "fury-attack", "pursuit", "aerial-ace"], "arbok": ["bite", "glare", "screech", "acid"], "sandslash": ["sand-attack", "poison-sting", "slash", "swift"], "nidorina": ["growl", "scratch", "tail-whip", "double-kick"], "nidoqueen": ["double-kick", "poison-sting", "bite", "fury-swipes"], "nidorino": ["leer", "peck", "focus-energy", "double-kick"], "nidoking": ["double-kick", "poison-sting", "horn-attack", "fury-attack"], "clefable": ["sing", "doubleslap", "minimize", "defense-curl"], "vulpix": ["sing", "doubleslap", "minimize"], "ninetales": ["tail-whip", "quick-attack", "will-o-wisp", "flamethrower"], "wigglytuff": ["disable", "rollout", "doubleslap", "body-slam"], "golbat": ["supersonic", "bite", "wing-attack", "air-cutter"], "gloom": ["absorb", "sweet-scent", "poison-powder"], "vileplume": ["poison-powder", "stun-spore", "sleep-powder", "acid"], "venonat": ["scratch", "stun-spore", "poison-powder"], "venomoth": ["leech-life", "stun-spore", "psybeam", "sleep-powder"], "diglett": ["silver-wind", "tackle", "disable", "supersonic"], "dugtrio": ["growl", "fury-swipes", "mud-slap", "slash"], "persian": ["bite", "faint-attack", "screech", "fury-swipes"], "psyduck": ["scratch", "growl", "bite"], "golduck": ["tail-whip", "disable", "confusion", "screech"], "primeape": ["fury-swipes", "focus-energy", "seismic-toss", "cross-chop"], "arcanine": ["ember", "leer", "take-down", "flame-wheel"], "poliwag": ["bite", "ember"], "poliwhirl": ["bubble", "hypnosis", "water-gun"], "poliwrath": ["water-gun", "doubleslap", "rain-dance", "body-slam"], "machoke": ["low-kick", "leer", "focus-energy", "karate-chop"], "machamp": ["focus-energy", "karate-chop", "seismic-toss", "revenge"], "weepinbell": ["vine-whip", "growth", "wrap", "sleep-powder"], "victreebel": ["poison-powder", "stun-spore", "acid", "sweet-scent"], "tentacruel": ["acid", "bubblebeam", "wrap", "barrier"], "graveler": ["tackle", "defense-curl", "rock-throw"], "golem": ["defense-curl", "rock-throw", "selfdestruct", "rollout"], "rapidash": ["ember", "stomp", "fire-spin", "take-down"], "slowbro": ["water-gun", "confusion", "disable", "headbutt"], "magneton": ["supersonic", "sonic-boom", "thunder-wave", "spark"], "farfetchd": ["thundershock", "supersonic", "sonic-boom", "thunder-wave"], "doduo": ["peck", "sand-attack", "leer"], "dodrio": ["pursuit", "fury-attack", "tri-attack", "rage"], "seel": ["peck", "growl", "pursuit", "fury-attack"], "dewgong": ["headbutt", "growl", "icy-wind", "aurora-beam"], "muk": ["sludge", "minimize", "screech", "acid-armor"], "cloyster": ["icicle-spear", "supersonic", "aurora-beam", "leer"], "gastly": ["withdraw", "supersonic", "aurora-beam"], "haunter": ["hypnosis", "lick"], "gengar": ["hypnosis", "lick", "night-shade", "shadow-punch"], "hypno": ["confusion", "headbutt", "poison-gas", "psychic"], "krabby": ["pound", "hypnosis", "disable", "confusion"], "kingler": ["vicegrip", "harden", "mud-shot", "stomp"], "electrode": ["sonic-boom", "spark", "selfdestruct", "rollout"], "exeggutor": ["leech-seed", "confusion", "stun-spore", "poison-powder"], "cubone": ["barrage", "hypnosis", "confusion"], "marowak": ["leer", "focus-energy", "bonemerang", "rage"], "hitmonlee": ["headbutt", "leer", "focus-energy", "bonemerang"], "hitmonchan": ["revenge", "double-kick", "rolling-kick", "focus-energy"], "lickitung": ["revenge", "comet-punch", "agility", "pursuit"], "weezing": ["smog", "selfdestruct", "sludge", "smokescreen"], "rhydon": ["stomp", "fury-attack", "scary-face", "rock-blast"], "chansey": ["tail-whip", "stomp", "fury-attack", "scary-face"], "tangela": ["tail-whip", "softboiled", "doubleslap", "minimize"], "kangaskhan": ["absorb", "growth", "poison-powder", "vine-whip"], "seadra": ["leer", "water-gun", "twister", "agility"], "seaking": ["tail-whip", "supersonic", "horn-attack", "fury-attack"], "mr-mime": ["water-gun", "rapid-spin", "recover", "swift"], "scyther": ["barrier", "confusion", "doubleslap", "magical-leaf"], "jynx": ["leer", "focus-energy", "pursuit", "agility"], "electabuzz": ["lovely-kiss", "powder-snow", "doubleslap", "ice-punch"], "magmar": ["quick-attack", "leer", "thunderpunch", "swift"], "pinsir": ["leer", "smog", "fire-punch", "smokescreen"], "tauros": ["bind", "seismic-toss", "harden", "revenge"], "magikarp": ["tail-whip", "rage", "horn-attack", "scary-face"], "lapras": ["thrash", "bite", "dragon-rage"], "ditto": ["water-gun", "growl", "sing", "body-slam"], "eevee": ["tackle"], "vaporeon": ["sand-attack", "growl", "quick-attack", "bite"], "jolteon": ["water-gun", "quick-attack", "bite", "aurora-beam"], "flareon": ["thundershock", "quick-attack", "double-kick", "pin-missile"], "porygon": ["tail-whip", "sand-attack", "ember", "quick-attack"], "omanyte": ["tackle", "agility", "psybeam"], "omastar": ["bite", "water-gun", "mud-shot", "leer"], "kabuto": ["constrict", "withdraw", "bite", "water-gun"], "kabutops": ["absorb", "leer", "mud-shot", "sand-attack"], "aerodactyl": ["harden", "absorb", "leer", "mud-shot"], "snorlax": ["wing-attack", "agility", "bite", "supersonic"], "articuno": ["tackle", "defense-curl", "headbutt"], "zapdos": ["gust", "powder-snow", "agility"], "moltres": ["peck", "thundershock", "thunder-wave", "agility"], "dratini": ["wing-attack", "ember", "fire-spin"], "dragonair": ["wrap", "leer", "thunder-wave", "twister"], "dragonite": ["thunder-wave", "twister", "dragon-rage", "slam"], "mewtwo": ["leer", "thunder-wave", "twister", "dragon-rage"], "mew": ["confusion", "disable", "barrier"]};
+export const GENERATED_INITIAL_MOVES = {"beedrill": ["focus-energy", "rage", "pursuit", "pin-missile"], "fearow": ["growl", "leer", "fury-attack", "pursuit"], "arbok": ["poison-sting", "bite", "glare", "screech"], "sandslash": ["sand-attack", "poison-sting", "slash", "swift"], "nidorina": ["growl", "scratch", "tail-whip", "double-kick"], "nidoqueen": ["tail-whip", "double-kick", "poison-sting", "body-slam"], "nidorino": ["leer", "peck", "focus-energy", "double-kick"], "nidoking": ["focus-energy", "double-kick", "poison-sting", "thrash"], "clefable": ["sing", "doubleslap", "minimize"], "vulpix": ["ember", "tail-whip", "quick-attack"], "ninetales": ["ember", "quick-attack"], "wigglytuff": ["sing", "disable", "defense-curl", "doubleslap"], "golbat": ["supersonic", "bite", "wing-attack", "air-cutter"], "gloom": ["absorb", "sweet-scent", "poison-powder"], "vileplume": ["absorb", "stun-spore", "mega-drain"], "venonat": ["tackle", "disable", "supersonic"], "venomoth": ["leech-life", "stun-spore", "gust", "psybeam"], "diglett": ["sand-attack", "scratch", "growl"], "dugtrio": ["growl", "fury-swipes", "mud-slap", "sand-tomb"], "persian": ["growl", "bite", "faint-attack", "screech"], "psyduck": ["scratch", "tail-whip", "disable"], "golduck": ["tail-whip", "disable", "confusion", "screech"], "primeape": ["fury-swipes", "focus-energy", "seismic-toss", "cross-chop"], "arcanine": ["bite", "ember"], "poliwag": ["bubble", "hypnosis", "water-gun"], "poliwhirl": ["bubble", "hypnosis", "water-gun"], "poliwrath": ["water-gun", "hypnosis", "doubleslap", "submission"], "machoke": ["low-kick", "leer", "focus-energy", "karate-chop"], "machamp": ["focus-energy", "karate-chop", "seismic-toss", "revenge"], "weepinbell": ["vine-whip", "growth", "wrap", "sleep-powder"], "victreebel": ["vine-whip", "sleep-powder", "sweet-scent", "razor-leaf"], "tentacruel": ["constrict", "acid", "bubblebeam", "wrap"], "graveler": ["tackle", "defense-curl", "rock-throw"], "golem": ["defense-curl", "rock-throw", "selfdestruct", "rollout"], "rapidash": ["ember", "stomp", "fire-spin", "take-down"], "slowbro": ["water-gun", "confusion", "disable", "headbutt"], "magneton": ["supersonic", "sonic-boom", "thunder-wave", "spark"], "farfetchd": ["peck", "sand-attack", "leer", "fury-attack"], "doduo": ["peck", "growl", "pursuit", "fury-attack"], "dodrio": ["pursuit", "fury-attack", "tri-attack", "rage"], "seel": ["headbutt", "growl"], "dewgong": ["headbutt", "growl", "icy-wind", "aurora-beam"], "muk": ["sludge", "minimize", "screech", "acid-armor"], "cloyster": ["withdraw", "supersonic", "aurora-beam"], "gastly": ["hypnosis", "lick"], "haunter": ["hypnosis", "lick"], "gengar": ["hypnosis", "lick", "night-shade", "shadow-punch"], "hypno": ["confusion", "headbutt", "poison-gas", "psychic"], "krabby": ["bubble", "leer", "vicegrip"], "kingler": ["vicegrip", "harden", "mud-shot", "stomp"], "electrode": ["sonic-boom", "spark", "selfdestruct", "rollout"], "exeggutor": ["hypnosis", "confusion", "stomp", "egg-bomb"], "cubone": ["growl", "tail-whip", "bone-club", "headbutt"], "marowak": ["leer", "focus-energy", "bonemerang", "rage"], "hitmonlee": ["revenge", "double-kick", "rolling-kick", "focus-energy"], "hitmonchan": ["revenge", "comet-punch", "agility", "pursuit"], "lickitung": ["lick", "supersonic", "defense-curl", "stomp"], "weezing": ["smog", "selfdestruct", "sludge", "smokescreen"], "rhydon": ["stomp", "fury-attack", "scary-face", "rock-blast"], "chansey": ["tail-whip", "softboiled", "doubleslap", "minimize"], "tangela": ["absorb", "growth", "poison-powder", "vine-whip"], "kangaskhan": ["leer", "bite", "tail-whip", "mega-punch"], "seadra": ["smokescreen", "leer", "water-gun", "twister"], "seaking": ["tail-whip", "supersonic", "horn-attack", "fury-attack"], "mr-mime": ["barrier", "confusion", "doubleslap", "magical-leaf"], "scyther": ["leer", "focus-energy", "pursuit", "agility"], "jynx": ["lovely-kiss", "powder-snow", "doubleslap", "ice-punch"], "electabuzz": ["quick-attack", "leer", "thunderpunch", "swift"], "magmar": ["leer", "smog", "fire-punch", "smokescreen"], "pinsir": ["bind", "seismic-toss", "harden", "revenge"], "tauros": ["rage", "horn-attack", "scary-face", "pursuit"], "magikarp": ["tackle"], "lapras": ["water-gun", "growl", "sing", "body-slam"], "ditto": ["tackle"], "eevee": ["tackle", "tail-whip", "sand-attack"], "vaporeon": ["water-gun", "quick-attack", "bite", "aurora-beam"], "jolteon": ["thundershock", "quick-attack", "double-kick", "pin-missile"], "flareon": ["ember", "quick-attack", "bite", "fire-spin"], "porygon": ["tackle", "agility", "psybeam", "recover"], "omanyte": ["constrict", "withdraw", "bite"], "omastar": ["bite", "water-gun", "mud-shot", "leer"], "kabuto": ["scratch", "harden", "absorb"], "kabutops": ["absorb", "leer", "mud-shot", "sand-attack"], "aerodactyl": ["wing-attack", "agility", "bite", "supersonic"], "snorlax": ["tackle", "defense-curl", "headbutt"], "articuno": ["gust", "powder-snow", "agility"], "zapdos": ["peck", "thundershock", "thunder-wave", "agility"], "moltres": ["wing-attack", "ember", "fire-spin", "agility"], "dratini": ["wrap", "leer", "thunder-wave", "twister"], "dragonair": ["wrap", "leer", "thunder-wave", "twister"], "dragonite": ["thunder-wave", "twister", "dragon-rage", "slam"], "mewtwo": ["confusion", "disable", "barrier"], "mew": ["pound", "mega-punch"]};
 export const GENERATED_BASE_EXPERIENCE = {"beedrill": 159, "fearow": 162, "arbok": 147, "sandslash": 163, "nidorina": 117, "nidoqueen": 194, "nidorino": 118, "nidoking": 195, "clefable": 129, "vulpix": 63, "ninetales": 178, "wigglytuff": 109, "golbat": 171, "gloom": 132, "vileplume": 184, "venonat": 75, "venomoth": 138, "diglett": 81, "dugtrio": 153, "persian": 148, "psyduck": 80, "golduck": 174, "primeape": 149, "arcanine": 213, "poliwag": 77, "poliwhirl": 131, "poliwrath": 185, "machoke": 146, "machamp": 193, "weepinbell": 151, "victreebel": 191, "tentacruel": 205, "graveler": 134, "golem": 177, "rapidash": 192, "slowbro": 164, "magneton": 161, "farfetchd": 94, "doduo": 96, "dodrio": 158, "seel": 100, "dewgong": 176, "muk": 157, "cloyster": 203, "gastly": 95, "haunter": 126, "gengar": 190, "hypno": 165, "krabby": 115, "kingler": 206, "electrode": 150, "exeggutor": 212, "cubone": 87, "marowak": 124, "hitmonlee": 139, "hitmonchan": 140, "lickitung": 127, "weezing": 173, "rhydon": 204, "chansey": 255, "tangela": 166, "kangaskhan": 175, "seadra": 155, "seaking": 170, "mr-mime": 136, "scyther": 187, "jynx": 137, "electabuzz": 156, "magmar": 167, "pinsir": 200, "tauros": 211, "magikarp": 20, "lapras": 219, "ditto": 61, "eevee": 92, "vaporeon": 196, "jolteon": 197, "flareon": 198, "porygon": 130, "omanyte": 120, "omastar": 199, "kabuto": 119, "kabutops": 201, "aerodactyl": 202, "snorlax": 154, "articuno": 215, "zapdos": 216, "moltres": 217, "dratini": 67, "dragonair": 144, "dragonite": 218, "mewtwo": 220, "mew": 64};
 export const GENERATED_GROWTH_RATE = {"beedrill": "medium-fast", "fearow": "medium-fast", "arbok": "medium-fast", "sandslash": "medium-fast", "nidorina": "medium-slow", "nidoqueen": "medium-slow", "nidorino": "medium-slow", "nidoking": "medium-slow", "clefable": "fast", "vulpix": "medium-fast", "ninetales": "medium-fast", "wigglytuff": "fast", "golbat": "medium-fast", "gloom": "medium-slow", "vileplume": "medium-slow", "venonat": "medium-fast", "venomoth": "medium-fast", "diglett": "medium-fast", "dugtrio": "medium-fast", "persian": "medium-fast", "psyduck": "medium-fast", "golduck": "medium-fast", "primeape": "medium-fast", "arcanine": "slow", "poliwag": "medium-slow", "poliwhirl": "medium-slow", "poliwrath": "medium-slow", "machoke": "medium-slow", "machamp": "medium-slow", "weepinbell": "medium-slow", "victreebel": "medium-slow", "tentacruel": "slow", "graveler": "medium-slow", "golem": "medium-slow", "rapidash": "medium-fast", "slowbro": "medium-fast", "magneton": "medium-fast", "farfetchd": "medium-fast", "doduo": "medium-fast", "dodrio": "medium-fast", "seel": "medium-fast", "dewgong": "medium-fast", "muk": "medium-fast", "cloyster": "slow", "gastly": "medium-slow", "haunter": "medium-slow", "gengar": "medium-slow", "hypno": "medium-fast", "krabby": "medium-fast", "kingler": "medium-fast", "electrode": "medium-fast", "exeggutor": "slow", "cubone": "medium-fast", "marowak": "medium-fast", "hitmonlee": "medium-fast", "hitmonchan": "medium-fast", "lickitung": "medium-fast", "weezing": "medium-fast", "rhydon": "slow", "chansey": "fast", "tangela": "medium-fast", "kangaskhan": "medium-fast", "seadra": "medium-fast", "seaking": "medium-fast", "mr-mime": "medium-fast", "scyther": "medium-fast", "jynx": "medium-fast", "electabuzz": "medium-fast", "magmar": "medium-fast", "pinsir": "slow", "tauros": "slow", "magikarp": "slow", "lapras": "slow", "ditto": "medium-fast", "eevee": "medium-fast", "vaporeon": "medium-fast", "jolteon": "medium-fast", "flareon": "medium-fast", "porygon": "medium-fast", "omanyte": "medium-fast", "omastar": "medium-fast", "kabuto": "medium-fast", "kabutops": "medium-fast", "aerodactyl": "slow", "snorlax": "slow", "articuno": "slow", "zapdos": "slow", "moltres": "slow", "dratini": "slow", "dragonair": "slow", "dragonite": "slow", "mewtwo": "slow", "mew": "medium-slow"};
 export const GENERATED_CATCH_RATE = {"beedrill": 45, "fearow": 90, "arbok": 90, "sandslash": 90, "nidorina": 120, "nidoqueen": 45, "nidorino": 120, "nidoking": 45, "clefable": 25, "vulpix": 190, "ninetales": 75, "wigglytuff": 50, "golbat": 90, "gloom": 120, "vileplume": 45, "venonat": 190, "venomoth": 75, "diglett": 255, "dugtrio": 50, "persian": 90, "psyduck": 190, "golduck": 75, "primeape": 75, "arcanine": 75, "poliwag": 255, "poliwhirl": 120, "poliwrath": 45, "machoke": 90, "machamp": 45, "weepinbell": 120, "victreebel": 45, "tentacruel": 60, "graveler": 120, "golem": 45, "rapidash": 60, "slowbro": 75, "magneton": 60, "farfetchd": 45, "doduo": 190, "dodrio": 45, "seel": 190, "dewgong": 75, "muk": 75, "cloyster": 60, "gastly": 190, "haunter": 90, "gengar": 45, "hypno": 75, "krabby": 225, "kingler": 60, "electrode": 60, "exeggutor": 45, "cubone": 190, "marowak": 75, "hitmonlee": 45, "hitmonchan": 45, "lickitung": 45, "weezing": 60, "rhydon": 60, "chansey": 30, "tangela": 45, "kangaskhan": 45, "seadra": 75, "seaking": 60, "mr-mime": 45, "scyther": 45, "jynx": 45, "electabuzz": 45, "magmar": 45, "pinsir": 45, "tauros": 45, "magikarp": 255, "lapras": 45, "ditto": 35, "eevee": 45, "vaporeon": 45, "jolteon": 45, "flareon": 45, "porygon": 45, "omanyte": 45, "omastar": 45, "kabuto": 45, "kabutops": 45, "aerodactyl": 45, "snorlax": 25, "articuno": 3, "zapdos": 3, "moltres": 3, "dratini": 45, "dragonair": 45, "dragonite": 45, "mewtwo": 3, "mew": 45};
@@ -1828,22 +1817,6 @@ export const GENERATED_MOVES = {
     "maxRange": 0,
     "effect": "defense-up",
     "description": "Golpe de status gerado a partir dos dados do FireRed."
-  },
-  "aerial-ace": {
-    "id": "aerial-ace",
-    "name": "Aerial Ace",
-    "type": "flying",
-    "targeting": "single-enemy",
-    "maxPp": 20,
-    "category": "physical",
-    "motion": "contact",
-    "vfxId": "tackle",
-    "power": 60,
-    "apCost": 5,
-    "minRange": 1,
-    "maxRange": 1,
-    "alwaysHits": true,
-    "description": "Golpe gerado a partir dos dados do FireRed."
   },
   "air-cutter": {
     "id": "air-cutter",
@@ -2022,22 +1995,6 @@ export const GENERATED_MOVES = {
     "maxRange": 3,
     "description": "Golpe gerado a partir dos dados do FireRed."
   },
-  "clamp": {
-    "id": "clamp",
-    "name": "Clamp",
-    "type": "water",
-    "targeting": "single-enemy",
-    "maxPp": 10,
-    "category": "special",
-    "motion": "projectile",
-    "vfxId": "tackle",
-    "power": 35,
-    "apCost": 4,
-    "minRange": 1,
-    "maxRange": 3,
-    "accuracy": 75,
-    "description": "Golpe gerado a partir dos dados do FireRed."
-  },
   "comet-punch": {
     "id": "comet-punch",
     "name": "Comet Punch",
@@ -2115,6 +2072,21 @@ export const GENERATED_MOVES = {
     "apCost": 5,
     "minRange": 1,
     "maxRange": 3,
+    "description": "Golpe gerado a partir dos dados do FireRed."
+  },
+  "dizzy-punch": {
+    "id": "dizzy-punch",
+    "name": "Dizzy Punch",
+    "type": "normal",
+    "targeting": "single-enemy",
+    "maxPp": 10,
+    "category": "physical",
+    "motion": "contact",
+    "vfxId": "tackle",
+    "power": 70,
+    "apCost": 5,
+    "minRange": 1,
+    "maxRange": 1,
     "description": "Golpe gerado a partir dos dados do FireRed."
   },
   "double-edge": {
@@ -2344,22 +2316,6 @@ export const GENERATED_MOVES = {
     "multiHit": "two-to-five",
     "description": "Golpe gerado a partir dos dados do FireRed."
   },
-  "giga-drain": {
-    "id": "giga-drain",
-    "name": "Giga Drain",
-    "type": "grass",
-    "targeting": "single-enemy",
-    "maxPp": 5,
-    "category": "special",
-    "motion": "projectile",
-    "vfxId": "tackle",
-    "power": 60,
-    "apCost": 5,
-    "minRange": 1,
-    "maxRange": 3,
-    "effect": "drain-half",
-    "description": "Golpe gerado a partir dos dados do FireRed."
-  },
   "glare": {
     "id": "glare",
     "name": "Glare",
@@ -2410,21 +2366,6 @@ export const GENERATED_MOVES = {
     "minRange": 1,
     "maxRange": 1,
     "accuracy": 90,
-    "description": "Golpe gerado a partir dos dados do FireRed."
-  },
-  "hyper-voice": {
-    "id": "hyper-voice",
-    "name": "Hyper Voice",
-    "type": "normal",
-    "targeting": "single-enemy",
-    "maxPp": 10,
-    "category": "physical",
-    "motion": "contact",
-    "vfxId": "tackle",
-    "power": 90,
-    "apCost": 6,
-    "minRange": 1,
-    "maxRange": 1,
     "description": "Golpe gerado a partir dos dados do FireRed."
   },
   "ice-beam": {
@@ -2934,6 +2875,21 @@ export const GENERATED_MOVES = {
     "alwaysHits": true,
     "description": "Golpe gerado a partir dos dados do FireRed."
   },
+  "signal-beam": {
+    "id": "signal-beam",
+    "name": "Signal Beam",
+    "type": "bug",
+    "targeting": "single-enemy",
+    "maxPp": 15,
+    "category": "physical",
+    "motion": "contact",
+    "vfxId": "tackle",
+    "power": 75,
+    "apCost": 5,
+    "minRange": 1,
+    "maxRange": 1,
+    "description": "Golpe gerado a partir dos dados do FireRed."
+  },
   "silver-wind": {
     "id": "silver-wind",
     "name": "Silver Wind",
@@ -3050,24 +3006,6 @@ export const GENERATED_MOVES = {
     "maxRange": 1,
     "multiHit": "two-to-five",
     "description": "Golpe gerado a partir dos dados do FireRed."
-  },
-  "spore": {
-    "id": "spore",
-    "name": "Spore",
-    "type": "grass",
-    "targeting": "single-enemy",
-    "maxPp": 15,
-    "category": "status",
-    "motion": "status",
-    "vfxId": "growl",
-    "power": null,
-    "apCost": 2,
-    "minRange": 1,
-    "maxRange": 3,
-    "accuracy": 100,
-    "secondaryStatus": "sleep",
-    "secondaryEffectChance": 100,
-    "description": "Golpe de status gerado a partir dos dados do FireRed."
   },
   "stomp": {
     "id": "stomp",

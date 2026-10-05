@@ -2,6 +2,11 @@
 export const KANTO_TRAINER_TEXT_PT: Readonly<
   Record<string, { challengeText: string; defeatedText: string }>
 > = {
+  "silph-co-11f-giovanni": {
+    challengeText:
+      "Giovanni: Ah, Red! Nos encontramos de novo! O PRESIDENTE e eu discutimos um negócio importante. Fique fora de assuntos de gente grande... ou conheça um mundo de dor!",
+    defeatedText: "Giovanni: Argh!! Perdi de novo!?",
+  },
   "victory-road-1f-rolando": {
     challengeText: "Rolando: Vejo que você é bom. Vamos ver exatamente o quanto!",
     defeatedText: "Rolando: Eu tive uma chance…",

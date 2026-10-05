@@ -318,13 +318,16 @@ for d, code in NEW.items():
             continue
         gfx = o["graphics_name"] or ""
         title = CLASS_TITLES.get(gfx)
-        leader_badge = LEADER_BADGE.get(name.upper())
+        # Only gym leaders hand out badges (Giovanni in the Rocket Hideout/Silph Co. does not).
+        leader_badge = LEADER_BADGE.get(name.upper()) if code.endswith("-gym") else None
         if leader_badge:
             title = "Leader"
+        elif gfx == "GIOVANNI":
+            title = "Boss"
         elif title is None:
             title = gfx.replace("_", " ").title() or "Trainer"
         full = f"{title} {name}".strip()
-        money = 25 if leader_badge or gfx in ("LORELEI", "BRUNO", "AGATHA", "LANCE", "BLUE", "CHAMPION") else CLASS_MONEY.get(title, 5)
+        money = 25 if leader_badge or gfx in ("LORELEI", "BRUNO", "AGATHA", "LANCE", "BLUE", "CHAMPION", "GIOVANNI") else CLASS_MONEY.get(title, 5)
         slug = kebab_slug(f"{code}-{name}")
         if slug in used_ids:
             slug += f"-{o['x']}-{o['y']}"
@@ -349,6 +352,50 @@ for d, code in NEW.items():
         if leader_badge:
             trainer["badgeId"] = leader_badge
         trainers.append(trainer)
+
+# Script-triggered boss fights: Giovanni at Silph Co. 11F has no object script; the battle
+# starts from the coordinate events in front of him (trainerbattle in the coord script).
+for d, code in NEW.items():
+    j = world[d]
+    for o in j["objects"]:
+        if (o["graphics_name"] or "") != "GIOVANNI" or o["script_offset"] or not o["sprite_file"]:
+            continue
+        found = None
+        for c in j["coord_events"]:
+            b = ROM[c["script_offset"]:c["script_offset"] + 400]
+            for q in range(len(b) - 14):
+                if b[q] == 0x5C and b[q + 1] <= 9:
+                    tid = struct.unpack("<H", b[q + 2:q + 4])[0]
+                    name, mons = read_trainer(tid)
+                    if name.upper() == "GIOVANNI" and mons:
+                        defeat = ptr(struct.unpack("<I", b[q + 6:q + 10])[0])
+                        intro = None
+                        for r in range(len(b) - 6):
+                            if b[r] == 0x0F and b[r + 1] == 0 and b[r + 5] == 0x08:
+                                t_ = ptr(struct.unpack("<I", b[r + 2:r + 6])[0])
+                                if t_ and sum(ch.isalpha() for ch in decode_text(t_)) > 10 and "{?}" not in decode_text(t_):
+                                    intro = t_
+                                    break
+                        found = (tid, name, mons, intro, defeat)
+                        break
+            if found:
+                break
+        if not found:
+            continue
+        tid, name, mons, intro, defeat = found
+        sw, sh = png_size(A / o["sprite_file"])
+        trainers.append({
+            "id": kebab_slug(f"{code}-{name}"), "mapId": code, "name": f"Boss {name}",
+            "preferredPosition": {"x": o["x"], "y": o["y"]},
+            "facing": "south", "sightRange": 0,
+            "spriteUrl": "/game-assets/" + o["sprite_file"],
+            "frameWidth": o["frame_width"] or 16, "frameHeight": o["frame_height"] or 32,
+            "sheetWidth": sw, "sheetHeight": sh,
+            "challengeText": f"{name}: {story_text(intro)}" if intro else f"{name}: ...",
+            "defeatedText": f"{name}: {story_text(defeat)}" if defeat else f"{name}: ...",
+            "moneyMultiplier": 25,
+            "party": [{"species": sp, "level": lv, "moves": engine_moves(sp, lv, cm)} for sp, lv, cm in mons[:6]],
+        })
 
 (GEN / "worldTrainers.ts").write_text(
     HEADER

@@ -118,9 +118,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 42,
     "moves": [
      "quick-attack",
-     "sing",
-     "doubleslap",
-     "minimize"
+     "will-o-wisp",
+     "flamethrower",
+     "fire-spin"
     ]
    },
    {
@@ -156,30 +156,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "charmeleon",
     "level": 40,
     "moves": [
+     "metal-claw",
      "smokescreen",
      "scary-face",
-     "flamethrower",
-     "slash"
+     "flamethrower"
     ]
    },
    {
     "species": "lapras",
     "level": 40,
     "moves": [
-     "dragon-rage",
-     "leer",
-     "twister",
-     "hydro-pump"
+     "sing",
+     "body-slam",
+     "ice-beam",
+     "rain-dance"
     ]
    },
    {
     "species": "lickitung",
     "level": 40,
     "moves": [
-     "thunderpunch",
-     "ice-punch",
-     "fire-punch",
-     "mega-punch"
+     "stomp",
+     "wrap",
+     "disable",
+     "slam"
     ]
    }
   ]
@@ -207,30 +207,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machoke",
     "level": 43,
     "moves": [
+     "karate-chop",
+     "seismic-toss",
      "revenge",
-     "submission",
-     "cross-chop",
-     "scary-face"
+     "submission"
     ]
    },
    {
     "species": "machop",
     "level": 43,
     "moves": [
-     "recover",
-     "future-sight",
-     "calm-mind",
-     "psychic"
+     "revenge",
+     "submission",
+     "cross-chop",
+     "scary-face"
     ]
    },
    {
     "species": "machoke",
     "level": 43,
     "moves": [
+     "karate-chop",
+     "seismic-toss",
      "revenge",
-     "submission",
-     "cross-chop",
-     "scary-face"
+     "submission"
     ]
    }
   ]
@@ -258,10 +258,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "drowzee",
     "level": 41,
     "moves": [
-     "rock-throw",
-     "harden",
-     "rage",
-     "slam"
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
     ]
    },
    {
@@ -278,14 +278,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "kadabra",
     "level": 41,
     "moves": [
-     "teleport"
+     "psybeam",
+     "recover",
+     "future-sight",
+     "psychic"
     ]
    },
    {
     "species": "kadabra",
     "level": 41,
     "moves": [
-     "teleport"
+     "psybeam",
+     "recover",
+     "future-sight",
+     "psychic"
     ]
    }
   ]
@@ -313,10 +319,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "persian",
     "level": 44,
     "moves": [
+     "bite",
      "faint-attack",
      "screech",
-     "fury-swipes",
-     "slash"
+     "fury-swipes"
     ]
    },
    {
@@ -354,10 +360,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "mr-mime",
     "level": 48,
     "moves": [
-     "water-gun",
-     "rapid-spin",
-     "recover",
-     "swift"
+     "doubleslap",
+     "magical-leaf",
+     "psybeam",
+     "psychic"
     ]
    }
   ]
@@ -411,10 +417,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "electrode",
     "level": 42,
     "moves": [
+     "screech",
      "spark",
      "selfdestruct",
-     "rollout",
-     "swift"
+     "rollout"
     ]
    },
    {
@@ -450,10 +456,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "clefairy",
     "level": 42,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "doubleslap",
+     "sing",
+     "minimize",
+     "defense-curl"
     ]
    },
    {
@@ -726,7 +732,7 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy"
+     "scary-face"
     ]
    },
    {
@@ -736,7 +742,7 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy"
+     "scary-face"
     ]
    }
   ]
@@ -764,20 +770,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "drowzee",
     "level": 21,
     "moves": [
-     "screech",
-     "bind",
-     "rock-throw",
-     "harden"
+     "disable",
+     "confusion",
+     "headbutt",
+     "poison-gas"
     ]
    },
    {
     "species": "machop",
     "level": 21,
     "moves": [
-     "kinesis",
-     "confusion",
-     "disable",
-     "psybeam"
+     "leer",
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss"
     ]
    }
   ]
@@ -806,9 +812,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 19,
     "moves": [
      "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
     ]
    },
    {
@@ -836,9 +842,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 19,
     "moves": [
      "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
     ]
    }
   ]
@@ -1016,20 +1022,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 21,
     "moves": [
-     "kinesis",
-     "confusion",
-     "disable",
-     "psybeam"
+     "leer",
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss"
     ]
    },
    {
     "species": "machop",
     "level": 21,
     "moves": [
-     "kinesis",
-     "confusion",
-     "disable",
-     "psybeam"
+     "leer",
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss"
     ]
    }
   ]
@@ -1057,10 +1063,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "rattata",
     "level": 20,
     "moves": [
-     "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
     ]
    },
    {
@@ -1070,17 +1076,17 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy"
+     "scary-face"
     ]
    },
    {
     "species": "drowzee",
     "level": 20,
     "moves": [
-     "screech",
-     "bind",
-     "rock-throw",
-     "harden"
+     "hypnosis",
+     "disable",
+     "confusion",
+     "headbutt"
     ]
    }
   ]
@@ -1088,7 +1094,7 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
  {
   "id": "rocket-hideout-b-4f-giovanni",
   "mapId": "rocket-hideout-b-4f",
-  "name": "Leader Giovanni",
+  "name": "Boss Giovanni",
   "preferredPosition": {
    "x": 19,
    "y": 4
@@ -1108,34 +1114,33 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "onix",
     "level": 25,
     "moves": [
-     "hypnosis",
-     "lick",
-     "night-shade",
-     "shadow-punch"
+     "bind",
+     "rock-throw",
+     "harden",
+     "rage"
     ]
    },
    {
     "species": "rhyhorn",
     "level": 24,
     "moves": [
-     "tackle",
-     "smog",
-     "selfdestruct",
-     "sludge"
+     "tail-whip",
+     "stomp",
+     "fury-attack",
+     "scary-face"
     ]
    },
    {
     "species": "kangaskhan",
     "level": 29,
     "moves": [
-     "absorb",
-     "growth",
-     "vine-whip",
-     "bind"
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
     ]
    }
-  ],
-  "badgeId": "earth"
+  ]
  },
  {
   "id": "rocket-hideout-b-4f-grunt",
@@ -1160,19 +1165,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "koffing",
     "level": 21,
     "moves": [
-     "lick",
-     "supersonic",
-     "defense-curl"
+     "tackle",
+     "smog",
+     "selfdestruct",
+     "sludge"
     ]
    },
    {
     "species": "zubat",
     "level": 21,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    }
   ]
@@ -1200,20 +1206,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ekans",
     "level": 23,
     "moves": [
-     "peck",
-     "growl",
      "leer",
-     "fury-attack"
+     "poison-sting",
+     "bite",
+     "glare"
     ]
    },
    {
     "species": "sandshrew",
     "level": 23,
     "moves": [
-     "thundershock",
-     "tail-whip",
-     "quick-attack",
-     "thunderbolt"
+     "defense-curl",
+     "sand-attack",
+     "poison-sting",
+     "slash"
     ]
    },
    {
@@ -1251,30 +1257,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "sandshrew",
     "level": 23,
     "moves": [
-     "thundershock",
-     "tail-whip",
-     "quick-attack",
-     "thunderbolt"
+     "defense-curl",
+     "sand-attack",
+     "poison-sting",
+     "slash"
     ]
    },
    {
     "species": "ekans",
     "level": 23,
     "moves": [
-     "peck",
-     "growl",
      "leer",
-     "fury-attack"
+     "poison-sting",
+     "bite",
+     "glare"
     ]
    },
    {
     "species": "sandslash",
     "level": 23,
     "moves": [
+     "scratch",
      "defense-curl",
      "sand-attack",
-     "poison-sting",
-     "slash"
+     "poison-sting"
     ]
    }
   ]
@@ -1312,20 +1318,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "zubat",
     "level": 25,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
     "species": "zubat",
     "level": 25,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
@@ -1335,17 +1341,17 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy"
+     "scary-face"
     ]
    },
    {
     "species": "zubat",
     "level": 25,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    }
   ]
@@ -1373,20 +1379,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "magnemite",
     "level": 28,
     "moves": [
-     "growl",
-     "water-gun",
-     "confusion",
-     "disable"
+     "thundershock",
+     "supersonic",
+     "thunder-wave",
+     "spark"
     ]
    },
    {
     "species": "voltorb",
     "level": 28,
     "moves": [
-     "vicegrip",
-     "harden",
-     "mud-shot",
-     "stomp"
+     "tackle",
+     "screech",
+     "spark",
+     "selfdestruct"
     ]
    },
    {
@@ -1424,20 +1430,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "cubone",
     "level": 29,
     "moves": [
-     "barrage",
-     "hypnosis",
-     "confusion",
-     "stomp"
+     "leer",
+     "focus-energy",
+     "bonemerang",
+     "rage"
     ]
    },
    {
     "species": "zubat",
     "level": 29,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    }
   ]
@@ -1522,10 +1528,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "raticate",
     "level": 28,
     "moves": [
+     "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy",
-     "pursuit"
+     "scary-face"
     ]
    },
    {
@@ -1542,10 +1548,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "raticate",
     "level": 28,
     "moves": [
+     "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy",
-     "pursuit"
+     "scary-face"
     ]
    }
   ]
@@ -1611,30 +1617,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ekans",
     "level": 28,
     "moves": [
-     "growl",
-     "leer",
-     "fury-attack",
-     "pursuit"
+     "poison-sting",
+     "bite",
+     "glare",
+     "screech"
     ]
    },
    {
     "species": "zubat",
     "level": 28,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
     "species": "cubone",
     "level": 28,
     "moves": [
-     "barrage",
-     "hypnosis",
-     "confusion",
-     "stomp"
+     "headbutt",
+     "leer",
+     "focus-energy",
+     "bonemerang"
     ]
    }
   ]
@@ -1662,20 +1668,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 29,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    },
    {
     "species": "drowzee",
     "level": 29,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "disable",
+     "confusion",
+     "headbutt",
+     "poison-gas"
     ]
    }
   ]
@@ -1703,10 +1709,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "electrode",
     "level": 33,
     "moves": [
+     "tackle",
      "screech",
      "spark",
-     "selfdestruct",
-     "rollout"
+     "selfdestruct"
     ]
    }
   ]
@@ -1734,10 +1740,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "hypno",
     "level": 33,
     "moves": [
+     "disable",
      "confusion",
      "headbutt",
-     "poison-gas",
-     "psychic"
+     "poison-gas"
     ]
    }
   ]
@@ -1765,17 +1771,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "kadabra",
     "level": 29,
     "moves": [
-     "teleport"
+     "confusion",
+     "disable",
+     "psybeam",
+     "recover"
     ]
    },
    {
     "species": "mr-mime",
     "level": 29,
     "moves": [
-     "water-gun",
-     "rapid-spin",
-     "recover",
-     "swift"
+     "confusion",
+     "doubleslap",
+     "magical-leaf",
+     "psybeam"
     ]
    }
   ]
@@ -1858,10 +1867,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "arbok",
     "level": 33,
     "moves": [
+     "poison-sting",
      "bite",
      "glare",
-     "screech",
-     "acid"
+     "screech"
     ]
    }
   ]
@@ -1889,10 +1898,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 29,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    },
    {
@@ -1993,20 +2002,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "zubat",
     "level": 28,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
     "species": "zubat",
     "level": 28,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
@@ -2044,20 +2053,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "cubone",
     "level": 29,
     "moves": [
-     "barrage",
-     "hypnosis",
-     "confusion",
-     "stomp"
+     "leer",
+     "focus-energy",
+     "bonemerang",
+     "rage"
     ]
    },
    {
     "species": "cubone",
     "level": 29,
     "moves": [
-     "barrage",
-     "hypnosis",
-     "confusion",
-     "stomp"
+     "leer",
+     "focus-energy",
+     "bonemerang",
+     "rage"
     ]
    }
   ]
@@ -2085,10 +2094,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "sandshrew",
     "level": 29,
     "moves": [
-     "thundershock",
-     "tail-whip",
-     "quick-attack",
-     "thunderbolt"
+     "defense-curl",
+     "sand-attack",
+     "poison-sting",
+     "slash"
     ]
    },
    {
@@ -2129,17 +2138,17 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy"
+     "scary-face"
     ]
    },
    {
     "species": "zubat",
     "level": 26,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
@@ -2156,10 +2165,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "rattata",
     "level": 26,
     "moves": [
-     "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
     ]
    }
   ]
@@ -2305,10 +2314,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "koffing",
     "level": 28,
     "moves": [
-     "lick",
-     "supersonic",
-     "defense-curl",
-     "stomp"
+     "smog",
+     "selfdestruct",
+     "sludge",
+     "smokescreen"
     ]
    }
   ]
@@ -2336,10 +2345,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "grimer",
     "level": 29,
     "moves": [
-     "headbutt",
-     "growl",
-     "icy-wind",
-     "aurora-beam"
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
     ]
    },
    {
@@ -2433,10 +2442,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "drowzee",
     "level": 28,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "disable",
+     "confusion",
+     "headbutt",
+     "poison-gas"
     ]
    },
    {
@@ -2474,30 +2483,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "drowzee",
     "level": 28,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "disable",
+     "confusion",
+     "headbutt",
+     "poison-gas"
     ]
    },
    {
     "species": "grimer",
     "level": 28,
     "moves": [
-     "headbutt",
-     "growl",
-     "icy-wind",
-     "aurora-beam"
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
     ]
    },
    {
     "species": "machop",
     "level": 28,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    }
   ]
@@ -2525,20 +2534,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "magnemite",
     "level": 29,
     "moves": [
-     "water-gun",
-     "confusion",
-     "disable",
-     "headbutt"
+     "thundershock",
+     "supersonic",
+     "thunder-wave",
+     "spark"
     ]
    },
    {
     "species": "koffing",
     "level": 29,
     "moves": [
-     "supersonic",
-     "defense-curl",
-     "stomp",
-     "wrap"
+     "smog",
+     "selfdestruct",
+     "sludge",
+     "smokescreen"
     ]
    }
   ]
@@ -2597,50 +2606,50 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "rattata",
     "level": 25,
     "moves": [
-     "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
     ]
    },
    {
     "species": "rattata",
     "level": 25,
     "moves": [
-     "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
     ]
    },
    {
     "species": "zubat",
     "level": 25,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
     "species": "rattata",
     "level": 25,
     "moves": [
-     "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
     ]
    },
    {
     "species": "ekans",
     "level": 25,
     "moves": [
-     "peck",
-     "growl",
-     "leer",
-     "fury-attack"
+     "poison-sting",
+     "bite",
+     "glare",
+     "screech"
     ]
    }
   ]
@@ -2668,20 +2677,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "cubone",
     "level": 32,
     "moves": [
-     "hypnosis",
-     "confusion",
-     "stomp",
-     "egg-bomb"
+     "leer",
+     "focus-energy",
+     "bonemerang",
+     "rage"
     ]
    },
    {
     "species": "drowzee",
     "level": 32,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
     ]
    },
    {
@@ -2760,20 +2769,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ekans",
     "level": 33,
     "moves": [
-     "growl",
-     "leer",
-     "fury-attack",
-     "pursuit"
+     "bite",
+     "glare",
+     "screech",
+     "acid"
     ]
    },
    {
     "species": "ekans",
     "level": 33,
     "moves": [
-     "growl",
-     "leer",
-     "fury-attack",
-     "pursuit"
+     "bite",
+     "glare",
+     "screech",
+     "acid"
     ]
    },
    {
@@ -2782,7 +2791,7 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "moves": [
      "quick-attack",
      "hyper-fang",
-     "focus-energy",
+     "scary-face",
      "pursuit"
     ]
    }
@@ -2811,10 +2820,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "charmander",
     "level": 34,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "razor-leaf",
-     "sweet-scent"
+     "metal-claw",
+     "smokescreen",
+     "scary-face",
+     "flamethrower"
     ]
    },
    {
@@ -2852,10 +2861,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ninetales",
     "level": 38,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "will-o-wisp",
-     "flamethrower"
+     "ember",
+     "quick-attack"
     ]
    }
   ]
@@ -2883,10 +2890,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "magnemite",
     "level": 33,
     "moves": [
-     "water-gun",
-     "confusion",
-     "disable",
-     "headbutt"
+     "thundershock",
+     "supersonic",
+     "thunder-wave",
+     "spark"
     ]
    },
    {
@@ -2903,10 +2910,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "voltorb",
     "level": 33,
     "moves": [
-     "vicegrip",
-     "harden",
-     "mud-shot",
-     "stomp"
+     "screech",
+     "spark",
+     "selfdestruct",
+     "rollout"
     ]
    }
   ]
@@ -2934,20 +2941,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 34,
     "moves": [
-     "karate-chop",
-     "fury-swipes",
-     "focus-energy",
-     "seismic-toss"
+     "ember",
+     "leer",
+     "take-down",
+     "flame-wheel"
     ]
    },
    {
     "species": "ponyta",
     "level": 34,
     "moves": [
-     "defense-curl",
-     "rock-throw",
-     "selfdestruct",
-     "rollout"
+     "ember",
+     "stomp",
+     "fire-spin",
+     "take-down"
     ]
    }
   ]
@@ -2975,10 +2982,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "magnemite",
     "level": 34,
     "moves": [
-     "water-gun",
-     "confusion",
-     "disable",
-     "headbutt"
+     "thundershock",
+     "supersonic",
+     "thunder-wave",
+     "spark"
     ]
    },
    {
@@ -3026,19 +3033,19 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "cloyster",
     "level": 51,
     "moves": [
+     "withdraw",
+     "supersonic",
      "aurora-beam",
-     "leer",
-     "clamp",
-     "ice-beam"
+     "spike-cannon"
     ]
    },
    {
     "species": "slowbro",
     "level": 52,
     "moves": [
-     "confusion",
      "disable",
      "headbutt",
+     "withdraw",
      "psychic"
     ]
    },
@@ -3092,20 +3099,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "hitmonchan",
     "level": 53,
     "moves": [
-     "double-kick",
-     "rolling-kick",
-     "focus-energy",
-     "mega-kick"
+     "thunderpunch",
+     "ice-punch",
+     "fire-punch",
+     "mega-punch"
     ]
    },
    {
     "species": "hitmonlee",
     "level": 53,
     "moves": [
-     "bonemerang",
-     "rage",
-     "thrash",
-     "bone-rush"
+     "mega-kick",
+     "double-kick",
+     "rolling-kick",
+     "focus-energy"
     ]
    },
    {
@@ -3167,9 +3174,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "haunter",
     "level": 53,
     "moves": [
-     "hypnosis",
      "lick",
      "night-shade",
+     "shadow-punch",
      "shadow-ball"
     ]
    },
@@ -3284,28 +3291,29 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "meowth",
     "level": 20,
     "moves": [
-     "tri-attack",
      "scratch",
-     "sand-attack",
-     "growl"
+     "growl",
+     "bite"
     ]
    },
    {
     "species": "oddish",
     "level": 20,
     "moves": [
-     "leech-life",
-     "astonish",
-     "supersonic",
-     "bite"
+     "absorb",
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder"
     ]
    },
    {
     "species": "pidgey",
     "level": 20,
     "moves": [
-     "fury-attack",
-     "focus-energy"
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
     ]
    }
   ]
@@ -3333,14 +3341,6 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 19,
     "moves": [
-     "fury-attack",
-     "focus-energy"
-    ]
-   },
-   {
-    "species": "rattata",
-    "level": 19,
-    "moves": [
      "tackle",
      "sand-attack",
      "gust",
@@ -3352,19 +3352,29 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 19,
     "moves": [
      "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
+    ]
+   },
+   {
+    "species": "rattata",
+    "level": 19,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
     ]
    },
    {
     "species": "bellsprout",
     "level": 19,
     "moves": [
-     "leer",
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss"
+     "growth",
+     "wrap",
+     "sleep-powder",
+     "stun-spore"
     ]
    }
   ]
@@ -3392,20 +3402,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "bellsprout",
     "level": 22,
     "moves": [
-     "leer",
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss"
+     "growth",
+     "wrap",
+     "sleep-powder",
+     "stun-spore"
     ]
    },
    {
     "species": "clefairy",
     "level": 22,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "growl",
+     "sing",
+     "doubleslap",
+     "minimize"
     ]
    }
   ]
@@ -3470,28 +3480,29 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "onix",
     "level": 20,
     "moves": [
-     "hypnosis",
-     "lick",
-     "night-shade"
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
     ]
    },
    {
     "species": "onix",
     "level": 20,
     "moves": [
-     "hypnosis",
-     "lick",
-     "night-shade"
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
     ]
    },
    {
     "species": "geodude",
     "level": 20,
     "moves": [
-     "poison-sting",
-     "supersonic",
-     "constrict",
-     "acid"
+     "tackle",
+     "defense-curl",
+     "rock-throw"
     ]
    }
   ]
@@ -3519,40 +3530,37 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "geodude",
     "level": 19,
     "moves": [
-     "poison-sting",
-     "supersonic",
-     "constrict",
-     "acid"
+     "tackle",
+     "defense-curl",
+     "rock-throw"
     ]
    },
    {
     "species": "machop",
     "level": 19,
     "moves": [
-     "teleport",
-     "kinesis",
-     "confusion",
-     "disable"
+     "leer",
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss"
     ]
    },
    {
     "species": "geodude",
     "level": 19,
     "moves": [
-     "poison-sting",
-     "supersonic",
-     "constrict",
-     "acid"
+     "tackle",
+     "defense-curl",
+     "rock-throw"
     ]
    },
    {
     "species": "geodude",
     "level": 19,
     "moves": [
-     "poison-sting",
-     "supersonic",
-     "constrict",
-     "acid"
+     "tackle",
+     "defense-curl",
+     "rock-throw"
     ]
    }
   ]
@@ -3580,20 +3588,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "cubone",
     "level": 23,
     "moves": [
-     "barrage",
-     "hypnosis",
-     "confusion",
-     "stomp"
+     "bone-club",
+     "headbutt",
+     "leer",
+     "focus-energy"
     ]
    },
    {
     "species": "slowpoke",
     "level": 23,
     "moves": [
+     "tackle",
      "growl",
-     "tail-whip",
-     "ember",
-     "stomp"
+     "water-gun",
+     "confusion"
     ]
    }
   ]
@@ -3621,30 +3629,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "slowpoke",
     "level": 20,
     "moves": [
+     "tackle",
      "growl",
-     "tail-whip",
-     "ember",
-     "stomp"
+     "water-gun",
+     "confusion"
     ]
    },
    {
     "species": "slowpoke",
     "level": 20,
     "moves": [
+     "tackle",
      "growl",
-     "tail-whip",
-     "ember",
-     "stomp"
+     "water-gun",
+     "confusion"
     ]
    },
    {
     "species": "slowpoke",
     "level": 20,
     "moves": [
+     "tackle",
      "growl",
-     "tail-whip",
-     "ember",
-     "stomp"
+     "water-gun",
+     "confusion"
     ]
    }
   ]
@@ -3717,16 +3725,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "jigglypuff",
     "level": 21,
     "moves": [
-     "ember",
-     "quick-attack"
+     "defense-curl",
+     "pound",
+     "disable",
+     "rollout"
     ]
    },
    {
     "species": "pidgey",
     "level": 21,
     "moves": [
-     "fury-attack",
-     "focus-energy"
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
     ]
    },
    {
@@ -3734,9 +3746,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 21,
     "moves": [
      "scratch",
-     "sand-attack",
      "growl",
-     "fury-swipes"
+     "bite"
     ]
    }
   ]
@@ -3793,19 +3804,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 20,
     "moves": [
-     "teleport",
-     "kinesis",
-     "confusion",
-     "disable"
+     "leer",
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss"
     ]
    },
    {
     "species": "onix",
     "level": 20,
     "moves": [
-     "hypnosis",
-     "lick",
-     "night-shade"
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
     ]
    }
   ]
@@ -3833,20 +3845,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "charmander",
     "level": 22,
     "moves": [
-     "leech-seed",
-     "vine-whip",
-     "sleep-powder",
-     "razor-leaf"
+     "growl",
+     "ember",
+     "metal-claw",
+     "smokescreen"
     ]
    },
    {
     "species": "cubone",
     "level": 22,
     "moves": [
-     "barrage",
-     "hypnosis",
-     "confusion",
-     "stomp"
+     "bone-club",
+     "headbutt",
+     "leer",
+     "focus-energy"
     ]
    }
   ]
@@ -3874,10 +3886,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "oddish",
     "level": 22,
     "moves": [
-     "astonish",
-     "supersonic",
-     "bite",
-     "wing-attack"
+     "absorb",
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder"
     ]
    },
    {
@@ -3915,10 +3927,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "slowpoke",
     "level": 25,
     "moves": [
-     "tail-whip",
-     "ember",
-     "stomp",
-     "fire-spin"
+     "growl",
+     "water-gun",
+     "confusion",
+     "disable"
     ]
    }
   ]
@@ -3946,9 +3958,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 22,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -3976,9 +3988,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 24,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4006,9 +4018,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 23,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4036,18 +4048,18 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 23,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    },
    {
     "species": "gastly",
     "level": 23,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4075,9 +4087,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 22,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4105,9 +4117,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 24,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4135,9 +4147,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 22,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4195,9 +4207,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 24,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4225,9 +4237,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 22,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4255,27 +4267,27 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 22,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    },
    {
     "species": "gastly",
     "level": 22,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    },
    {
     "species": "gastly",
     "level": 22,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4303,9 +4315,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 24,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4333,9 +4345,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 24,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    }
   ]
@@ -4363,20 +4375,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "zubat",
     "level": 25,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
     "species": "zubat",
     "level": 25,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
@@ -4414,20 +4426,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "koffing",
     "level": 26,
     "moves": [
-     "lick",
-     "supersonic",
-     "defense-curl",
-     "stomp"
+     "smog",
+     "selfdestruct",
+     "sludge",
+     "smokescreen"
     ]
    },
    {
     "species": "drowzee",
     "level": 26,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "disable",
+     "confusion",
+     "headbutt",
+     "poison-gas"
     ]
    }
   ]
@@ -4455,24 +4467,14 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "zubat",
     "level": 23,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    },
    {
     "species": "rattata",
-    "level": 23,
-    "moves": [
-     "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
-    ]
-   },
-   {
-    "species": "raticate",
     "level": 23,
     "moves": [
      "tail-whip",
@@ -4482,13 +4484,23 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ]
    },
    {
+    "species": "raticate",
+    "level": 23,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "scary-face"
+    ]
+   },
+   {
     "species": "zubat",
     "level": 23,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "astonish",
+     "supersonic",
+     "bite",
+     "wing-attack"
     ]
    }
   ]
@@ -4516,20 +4528,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "clefairy",
     "level": 22,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "growl",
+     "sing",
+     "doubleslap",
+     "minimize"
     ]
    },
    {
     "species": "clefairy",
     "level": 22,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "growl",
+     "sing",
+     "doubleslap",
+     "minimize"
     ]
    }
   ]
@@ -4557,19 +4569,19 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 24,
     "moves": [
-     "rage",
-     "karate-chop",
-     "fury-swipes",
-     "focus-energy"
+     "bite",
+     "ember",
+     "leer"
     ]
    },
    {
     "species": "vulpix",
     "level": 24,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "ember",
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp"
     ]
    }
   ]
@@ -4597,10 +4609,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "grimer",
     "level": 22,
     "moves": [
-     "headbutt",
-     "growl",
-     "icy-wind",
-     "aurora-beam"
+     "harden",
+     "disable",
+     "sludge",
+     "minimize"
     ]
    },
    {
@@ -4617,10 +4629,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "grimer",
     "level": 22,
     "moves": [
-     "headbutt",
-     "growl",
-     "icy-wind",
-     "aurora-beam"
+     "harden",
+     "disable",
+     "sludge",
+     "minimize"
     ]
    }
   ]
@@ -4648,10 +4660,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "nidoran-f",
     "level": 23,
     "moves": [
-     "scratch",
-     "defense-curl",
-     "sand-attack",
-     "poison-sting"
+     "tail-whip",
+     "double-kick",
+     "poison-sting",
+     "bite"
     ]
    },
    {
@@ -4720,9 +4732,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 24,
     "moves": [
      "scratch",
-     "sand-attack",
      "growl",
-     "fury-swipes"
+     "bite"
     ]
    },
    {
@@ -4730,9 +4741,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 24,
     "moves": [
      "scratch",
-     "sand-attack",
      "growl",
-     "fury-swipes"
+     "bite"
     ]
    },
    {
@@ -4740,9 +4750,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 24,
     "moves": [
      "scratch",
-     "sand-attack",
      "growl",
-     "fury-swipes"
+     "bite"
     ]
    }
   ]
@@ -4770,14 +4779,6 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 19,
     "moves": [
-     "fury-attack",
-     "focus-energy"
-    ]
-   },
-   {
-    "species": "rattata",
-    "level": 19,
-    "moves": [
      "tackle",
      "sand-attack",
      "gust",
@@ -4785,11 +4786,21 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ]
    },
    {
+    "species": "rattata",
+    "level": 19,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
+    ]
+   },
+   {
     "species": "nidoran-m",
     "level": 19,
     "moves": [
-     "scratch",
-     "tail-whip",
+     "peck",
+     "focus-energy",
      "double-kick",
      "poison-sting"
     ]
@@ -4798,20 +4809,19 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "meowth",
     "level": 19,
     "moves": [
-     "tri-attack",
      "scratch",
-     "sand-attack",
-     "growl"
+     "growl",
+     "bite"
     ]
    },
    {
     "species": "pikachu",
     "level": 19,
     "moves": [
-     "wrap",
-     "leer",
-     "poison-sting",
-     "bite"
+     "tail-whip",
+     "thunder-wave",
+     "quick-attack",
+     "double-team"
     ]
    }
   ]
@@ -4839,16 +4849,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwag",
     "level": 22,
     "moves": [
-     "bite",
-     "ember"
+     "bubble",
+     "hypnosis",
+     "water-gun",
+     "doubleslap"
     ]
    },
    {
     "species": "poliwag",
     "level": 22,
     "moves": [
-     "bite",
-     "ember"
+     "bubble",
+     "hypnosis",
+     "water-gun",
+     "doubleslap"
     ]
    },
    {
@@ -4941,18 +4955,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "clefairy",
     "level": 22,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "growl",
+     "sing",
+     "doubleslap",
+     "minimize"
     ]
    },
    {
     "species": "jigglypuff",
     "level": 22,
     "moves": [
-     "ember",
-     "quick-attack"
+     "defense-curl",
+     "pound",
+     "disable",
+     "rollout"
     ]
    }
   ]
@@ -4980,18 +4996,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "clefairy",
     "level": 22,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "growl",
+     "sing",
+     "doubleslap",
+     "minimize"
     ]
    },
    {
     "species": "jigglypuff",
     "level": 22,
     "moves": [
-     "ember",
-     "quick-attack"
+     "defense-curl",
+     "pound",
+     "disable",
+     "rollout"
     ]
    }
   ]
@@ -5067,20 +5085,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "grimer",
     "level": 24,
     "moves": [
-     "headbutt",
-     "growl",
-     "icy-wind",
-     "aurora-beam"
+     "harden",
+     "disable",
+     "sludge",
+     "minimize"
     ]
    },
    {
     "species": "grimer",
     "level": 24,
     "moves": [
-     "headbutt",
-     "growl",
-     "icy-wind",
-     "aurora-beam"
+     "harden",
+     "disable",
+     "sludge",
+     "minimize"
     ]
    }
   ]
@@ -5108,40 +5126,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "oddish",
     "level": 18,
     "moves": [
-     "leech-life",
-     "astonish",
-     "supersonic",
-     "bite"
+     "absorb",
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder"
     ]
    },
    {
     "species": "bellsprout",
     "level": 18,
     "moves": [
-     "low-kick",
-     "leer",
-     "focus-energy",
-     "karate-chop"
+     "vine-whip",
+     "growth",
+     "wrap",
+     "sleep-powder"
     ]
    },
    {
     "species": "oddish",
     "level": 18,
     "moves": [
-     "leech-life",
-     "astonish",
-     "supersonic",
-     "bite"
+     "absorb",
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder"
     ]
    },
    {
     "species": "bellsprout",
     "level": 18,
     "moves": [
-     "low-kick",
-     "leer",
-     "focus-energy",
-     "karate-chop"
+     "vine-whip",
+     "growth",
+     "wrap",
+     "sleep-powder"
     ]
    }
   ]
@@ -5169,19 +5187,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 20,
     "moves": [
-     "teleport",
-     "kinesis",
-     "confusion",
-     "disable"
+     "leer",
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss"
     ]
    },
    {
     "species": "onix",
     "level": 20,
     "moves": [
-     "hypnosis",
-     "lick",
-     "night-shade"
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
     ]
    }
   ]
@@ -5247,10 +5266,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 21,
     "moves": [
-     "rage",
-     "karate-chop",
-     "fury-swipes",
-     "focus-energy"
+     "bite",
+     "ember",
+     "leer"
     ]
    },
    {
@@ -5258,9 +5276,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 21,
     "moves": [
      "growl",
-     "leech-seed",
-     "vine-whip",
-     "sleep-powder"
+     "ember",
+     "metal-claw",
+     "smokescreen"
     ]
    }
   ]
@@ -5288,14 +5306,16 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "beedrill",
     "level": 19,
     "moves": [
-     "harden"
+     "fury-attack",
+     "focus-energy"
     ]
    },
    {
     "species": "beedrill",
     "level": 19,
     "moves": [
-     "harden"
+     "fury-attack",
+     "focus-energy"
     ]
    }
   ]
@@ -5323,29 +5343,26 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "caterpie",
     "level": 20,
     "moves": [
-     "bubble",
-     "withdraw",
-     "water-gun",
-     "bite"
+     "tackle",
+     "string-shot"
     ]
    },
    {
     "species": "weedle",
     "level": 20,
     "moves": [
-     "confusion",
-     "stun-spore",
-     "sleep-powder",
-     "supersonic"
+     "poison-sting",
+     "string-shot"
     ]
    },
    {
     "species": "venonat",
     "level": 20,
     "moves": [
-     "scratch",
-     "stun-spore",
-     "leech-life"
+     "tackle",
+     "disable",
+     "supersonic",
+     "confusion"
     ]
    }
   ]
@@ -5373,30 +5390,28 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "geodude",
     "level": 20,
     "moves": [
-     "poison-sting",
-     "supersonic",
-     "constrict",
-     "acid"
+     "tackle",
+     "defense-curl",
+     "rock-throw"
     ]
    },
    {
     "species": "machop",
     "level": 20,
     "moves": [
-     "teleport",
-     "kinesis",
-     "confusion",
-     "disable"
+     "leer",
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss"
     ]
    },
    {
     "species": "geodude",
     "level": 20,
     "moves": [
-     "poison-sting",
-     "supersonic",
-     "constrict",
-     "acid"
+     "tackle",
+     "defense-curl",
+     "rock-throw"
     ]
    }
   ]
@@ -5425,9 +5440,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 23,
     "moves": [
      "scratch",
-     "sand-attack",
      "growl",
-     "fury-swipes"
+     "bite"
     ]
    }
   ]
@@ -5456,39 +5470,39 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 19,
     "moves": [
      "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
     ]
    },
    {
     "species": "sandshrew",
     "level": 19,
     "moves": [
-     "thundershock",
-     "tail-whip",
-     "quick-attack",
-     "thunderbolt"
+     "scratch",
+     "defense-curl",
+     "sand-attack",
+     "poison-sting"
     ]
    },
    {
     "species": "ekans",
     "level": 19,
     "moves": [
-     "peck",
-     "growl",
+     "wrap",
      "leer",
-     "fury-attack"
+     "poison-sting",
+     "bite"
     ]
    },
    {
     "species": "sandshrew",
     "level": 19,
     "moves": [
-     "thundershock",
-     "tail-whip",
-     "quick-attack",
-     "thunderbolt"
+     "scratch",
+     "defense-curl",
+     "sand-attack",
+     "poison-sting"
     ]
    }
   ]
@@ -5516,8 +5530,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 21,
     "moves": [
-     "fury-attack",
-     "focus-energy"
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
     ]
    },
    {
@@ -5593,20 +5609,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "cubone",
     "level": 20,
     "moves": [
-     "barrage",
-     "hypnosis",
-     "confusion",
-     "stomp"
+     "tail-whip",
+     "bone-club",
+     "headbutt",
+     "leer"
     ]
    },
    {
     "species": "slowpoke",
     "level": 20,
     "moves": [
+     "tackle",
      "growl",
-     "tail-whip",
-     "ember",
-     "stomp"
+     "water-gun",
+     "confusion"
     ]
    }
   ]
@@ -5634,9 +5650,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "onix",
     "level": 19,
     "moves": [
-     "hypnosis",
-     "lick",
-     "night-shade"
+     "screech",
+     "bind",
+     "rock-throw",
+     "harden"
     ]
    },
    {
@@ -5673,20 +5690,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "rhyhorn",
     "level": 29,
     "moves": [
-     "smog",
-     "selfdestruct",
-     "sludge",
-     "smokescreen"
+     "stomp",
+     "fury-attack",
+     "scary-face",
+     "rock-blast"
     ]
    },
    {
     "species": "lickitung",
     "level": 29,
     "moves": [
-     "pursuit",
-     "thunderpunch",
-     "ice-punch",
-     "fire-punch"
+     "supersonic",
+     "defense-curl",
+     "stomp",
+     "wrap"
     ]
    }
   ]
@@ -5714,20 +5731,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pikachu",
     "level": 20,
     "moves": [
-     "leer",
-     "poison-sting",
-     "bite",
-     "glare"
+     "thunder-wave",
+     "quick-attack",
+     "double-team",
+     "slam"
     ]
    },
    {
     "species": "clefairy",
     "level": 20,
     "moves": [
-     "peck",
-     "focus-energy",
-     "double-kick",
-     "poison-sting"
+     "pound",
+     "growl",
+     "sing",
+     "doubleslap"
     ]
    }
   ]
@@ -5755,10 +5772,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ekans",
     "level": 21,
     "moves": [
-     "peck",
-     "growl",
      "leer",
-     "fury-attack"
+     "poison-sting",
+     "bite",
+     "glare"
     ]
    }
   ]
@@ -5786,18 +5803,18 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwag",
     "level": 18,
     "moves": [
-     "bite",
-     "ember"
+     "bubble",
+     "hypnosis",
+     "water-gun"
     ]
    },
    {
     "species": "horsea",
     "level": 18,
     "moves": [
-     "comet-punch",
-     "leer",
-     "bite",
-     "tail-whip"
+     "bubble",
+     "smokescreen",
+     "leer"
     ]
    }
   ]
@@ -5825,20 +5842,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "sandshrew",
     "level": 19,
     "moves": [
-     "thundershock",
-     "tail-whip",
-     "quick-attack",
-     "thunderbolt"
+     "scratch",
+     "defense-curl",
+     "sand-attack",
+     "poison-sting"
     ]
    },
    {
     "species": "zubat",
     "level": 19,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "leech-life",
+     "astonish",
+     "supersonic",
+     "bite"
     ]
    }
   ]
@@ -5866,8 +5883,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "nidoran-m",
     "level": 18,
     "moves": [
-     "scratch",
-     "tail-whip",
+     "peck",
+     "focus-energy",
      "double-kick",
      "poison-sting"
     ]
@@ -5907,20 +5924,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "bellsprout",
     "level": 18,
     "moves": [
-     "low-kick",
-     "leer",
-     "focus-energy",
-     "karate-chop"
+     "vine-whip",
+     "growth",
+     "wrap",
+     "sleep-powder"
     ]
    },
    {
     "species": "oddish",
     "level": 18,
     "moves": [
-     "leech-life",
-     "astonish",
-     "supersonic",
-     "bite"
+     "absorb",
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder"
     ]
    }
   ]
@@ -5948,19 +5965,19 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 18,
     "moves": [
-     "low-kick",
-     "rage",
-     "karate-chop",
-     "fury-swipes"
+     "bite",
+     "ember",
+     "leer"
     ]
    },
    {
     "species": "vulpix",
     "level": 18,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "ember",
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp"
     ]
    }
   ]
@@ -5989,9 +6006,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 21,
     "moves": [
      "tackle",
-     "growl",
-     "water-gun",
-     "confusion"
+     "thundershock",
+     "supersonic",
+     "thunder-wave"
     ]
    }
   ]
@@ -6020,9 +6037,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 17,
     "moves": [
      "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
     ]
    },
    {
@@ -6030,9 +6047,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 17,
     "moves": [
      "tackle",
-     "sand-attack",
-     "gust",
-     "quick-attack"
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang"
     ]
    },
    {
@@ -6070,10 +6087,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "voltorb",
     "level": 18,
     "moves": [
-     "bubble",
-     "leer",
-     "vicegrip",
-     "harden"
+     "tackle",
+     "screech"
     ]
    },
    {
@@ -6081,9 +6096,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 18,
     "moves": [
      "tackle",
-     "growl",
-     "water-gun",
-     "confusion"
+     "thundershock",
+     "supersonic"
     ]
    }
   ]
@@ -6112,9 +6126,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 18,
     "moves": [
      "tackle",
-     "growl",
-     "water-gun",
-     "confusion"
+     "thundershock",
+     "supersonic"
     ]
    },
    {
@@ -6122,9 +6135,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 18,
     "moves": [
      "tackle",
-     "growl",
-     "water-gun",
-     "confusion"
+     "thundershock",
+     "supersonic"
     ]
    },
    {
@@ -6161,28 +6173,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 22,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    },
    {
     "species": "poliwag",
     "level": 22,
     "moves": [
-     "bite",
-     "ember"
+     "bubble",
+     "hypnosis",
+     "water-gun",
+     "doubleslap"
     ]
    },
    {
     "species": "goldeen",
     "level": 22,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    }
   ]
@@ -6210,20 +6224,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "tentacool",
     "level": 24,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "poison-sting",
+     "supersonic",
+     "constrict",
+     "acid"
     ]
    },
    {
     "species": "goldeen",
     "level": 24,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    }
   ]
@@ -6251,10 +6265,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 27,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    }
   ]
@@ -6282,38 +6296,39 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwag",
     "level": 21,
     "moves": [
-     "bite",
-     "ember"
+     "bubble",
+     "hypnosis",
+     "water-gun",
+     "doubleslap"
     ]
    },
    {
     "species": "shellder",
     "level": 21,
     "moves": [
-     "harden",
-     "disable",
-     "sludge",
-     "minimize"
+     "tackle",
+     "withdraw",
+     "icicle-spear",
+     "supersonic"
     ]
    },
    {
     "species": "goldeen",
     "level": 21,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    },
    {
     "species": "horsea",
     "level": 21,
     "moves": [
-     "comet-punch",
-     "leer",
-     "bite",
-     "tail-whip"
+     "bubble",
+     "smokescreen",
+     "leer"
     ]
    }
   ]
@@ -6341,10 +6356,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "voltorb",
     "level": 29,
     "moves": [
-     "vicegrip",
-     "harden",
-     "mud-shot",
-     "stomp"
+     "tackle",
+     "screech",
+     "spark",
+     "selfdestruct"
     ]
    },
    {
@@ -6382,10 +6397,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "nidoran-m",
     "level": 29,
     "moves": [
-     "tail-whip",
+     "focus-energy",
      "double-kick",
      "poison-sting",
-     "body-slam"
+     "horn-attack"
     ]
    },
    {
@@ -6423,20 +6438,14 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "magikarp",
     "level": 24,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    },
    {
     "species": "magikarp",
     "level": 24,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    }
   ]
@@ -6464,20 +6473,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "nidoran-m",
     "level": 24,
     "moves": [
-     "tail-whip",
+     "focus-energy",
      "double-kick",
      "poison-sting",
-     "body-slam"
+     "horn-attack"
     ]
    },
    {
     "species": "nidoran-f",
     "level": 24,
     "moves": [
-     "defense-curl",
-     "sand-attack",
+     "tail-whip",
+     "double-kick",
      "poison-sting",
-     "slash"
+     "bite"
     ]
    }
   ]
@@ -6505,20 +6514,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "nidoran-m",
     "level": 24,
     "moves": [
-     "tail-whip",
+     "focus-energy",
      "double-kick",
      "poison-sting",
-     "body-slam"
+     "horn-attack"
     ]
    },
    {
     "species": "nidoran-f",
     "level": 24,
     "moves": [
-     "defense-curl",
-     "sand-attack",
+     "tail-whip",
+     "double-kick",
      "poison-sting",
-     "slash"
+     "bite"
     ]
    }
   ]
@@ -6546,28 +6555,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 28,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    },
    {
     "species": "poliwag",
     "level": 28,
     "moves": [
-     "bite",
-     "ember"
+     "hypnosis",
+     "water-gun",
+     "doubleslap",
+     "rain-dance"
     ]
    },
    {
     "species": "horsea",
     "level": 28,
     "moves": [
+     "bubble",
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun"
     ]
    }
   ]
@@ -6595,9 +6606,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 29,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    },
    {
@@ -6635,24 +6647,6 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 24,
     "moves": [
-     "fury-attack",
-     "focus-energy"
-    ]
-   },
-   {
-    "species": "meowth",
-    "level": 24,
-    "moves": [
-     "scratch",
-     "sand-attack",
-     "growl",
-     "fury-swipes"
-    ]
-   },
-   {
-    "species": "rattata",
-    "level": 24,
-    "moves": [
      "tackle",
      "sand-attack",
      "gust",
@@ -6660,13 +6654,32 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ]
    },
    {
+    "species": "meowth",
+    "level": 24,
+    "moves": [
+     "scratch",
+     "growl",
+     "bite"
+    ]
+   },
+   {
+    "species": "rattata",
+    "level": 24,
+    "moves": [
+     "tail-whip",
+     "quick-attack",
+     "hyper-fang",
+     "focus-energy"
+    ]
+   },
+   {
     "species": "pikachu",
     "level": 24,
     "moves": [
-     "leer",
-     "poison-sting",
-     "bite",
-     "glare"
+     "thunder-wave",
+     "quick-attack",
+     "double-team",
+     "slam"
     ]
    },
    {
@@ -6674,9 +6687,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 24,
     "moves": [
      "scratch",
-     "sand-attack",
      "growl",
-     "fury-swipes"
+     "bite"
     ]
    }
   ]
@@ -6704,20 +6716,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "clefairy",
     "level": 29,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "sing",
+     "doubleslap",
+     "minimize",
+     "defense-curl"
     ]
    },
    {
     "species": "meowth",
     "level": 29,
     "moves": [
+     "scratch",
      "growl",
-     "fury-swipes",
-     "mud-slap",
-     "sand-tomb"
+     "bite",
+     "faint-attack"
     ]
    }
   ]
@@ -6745,30 +6757,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "rattata",
     "level": 27,
     "moves": [
-     "sand-attack",
-     "gust",
      "quick-attack",
-     "wing-attack"
+     "hyper-fang",
+     "focus-energy",
+     "pursuit"
     ]
    },
    {
     "species": "pikachu",
     "level": 27,
     "moves": [
-     "leer",
-     "poison-sting",
-     "bite",
-     "glare"
+     "quick-attack",
+     "double-team",
+     "slam",
+     "thunderbolt"
     ]
    },
    {
     "species": "rattata",
     "level": 27,
     "moves": [
-     "sand-attack",
-     "gust",
      "quick-attack",
-     "wing-attack"
+     "hyper-fang",
+     "focus-energy",
+     "pursuit"
     ]
    }
   ]
@@ -6796,16 +6808,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwag",
     "level": 30,
     "moves": [
-     "bite",
-     "ember"
+     "hypnosis",
+     "water-gun",
+     "doubleslap",
+     "rain-dance"
     ]
    },
    {
     "species": "poliwag",
     "level": 30,
     "moves": [
-     "bite",
-     "ember"
+     "hypnosis",
+     "water-gun",
+     "doubleslap",
+     "rain-dance"
     ]
    }
   ]
@@ -6833,28 +6849,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 27,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    },
    {
     "species": "meowth",
     "level": 27,
     "moves": [
+     "scratch",
      "growl",
-     "fury-swipes",
-     "mud-slap",
-     "sand-tomb"
+     "bite",
+     "faint-attack"
     ]
    },
    {
     "species": "pidgey",
     "level": 27,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    },
    {
@@ -6892,15 +6910,6 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 26,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
-    ]
-   },
-   {
-    "species": "pidgeotto",
-    "level": 26,
-    "moves": [
      "sand-attack",
      "gust",
      "quick-attack",
@@ -6908,23 +6917,33 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ]
    },
    {
+    "species": "pidgeotto",
+    "level": 26,
+    "moves": [
+     "tackle",
+     "sand-attack",
+     "gust",
+     "quick-attack"
+    ]
+   },
+   {
     "species": "spearow",
     "level": 26,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "fearow",
     "level": 26,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    }
   ]
@@ -6952,48 +6971,50 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "spearow",
     "level": 25,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "pidgey",
     "level": 25,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    },
    {
     "species": "pidgey",
     "level": 25,
     "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   },
+   {
+    "species": "spearow",
+    "level": 25,
+    "moves": [
+     "growl",
+     "leer",
      "fury-attack",
-     "focus-energy",
-     "rage"
+     "pursuit"
     ]
    },
    {
     "species": "spearow",
     "level": 25,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
-    ]
-   },
-   {
-    "species": "spearow",
-    "level": 25,
-    "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    }
   ]
@@ -7108,10 +7129,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "farfetchd",
     "level": 33,
     "moves": [
-     "thundershock",
-     "supersonic",
-     "thunder-wave",
-     "spark"
+     "peck",
+     "sand-attack",
+     "leer",
+     "fury-attack"
     ]
    }
   ]
@@ -7149,10 +7170,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "fearow",
     "level": 29,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    }
   ]
@@ -7180,30 +7201,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "spearow",
     "level": 28,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "doduo",
     "level": 28,
     "moves": [
-     "peck",
-     "sand-attack",
-     "leer",
-     "fury-attack"
+     "pursuit",
+     "fury-attack",
+     "tri-attack",
+     "rage"
     ]
    },
    {
     "species": "fearow",
     "level": 28,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    }
   ]
@@ -7318,38 +7339,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 26,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    },
    {
     "species": "spearow",
     "level": 26,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "pidgey",
     "level": 26,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    },
    {
     "species": "fearow",
     "level": 26,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    }
   ]
@@ -7377,19 +7400,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgey",
     "level": 28,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    },
    {
     "species": "doduo",
     "level": 28,
     "moves": [
-     "peck",
-     "sand-attack",
-     "leer",
-     "fury-attack"
+     "pursuit",
+     "fury-attack",
+     "tri-attack",
+     "rage"
     ]
    },
    {
@@ -7484,20 +7508,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "spearow",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "fearow",
     "level": 29,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    }
   ]
@@ -7525,20 +7549,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "charmander",
     "level": 29,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "razor-leaf",
-     "sweet-scent"
+     "ember",
+     "metal-claw",
+     "smokescreen",
+     "scary-face"
     ]
    },
    {
     "species": "squirtle",
     "level": 29,
     "moves": [
-     "ember",
-     "metal-claw",
-     "smokescreen",
-     "scary-face"
+     "withdraw",
+     "water-gun",
+     "bite",
+     "rapid-spin"
     ]
    }
   ]
@@ -7566,20 +7590,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "charmander",
     "level": 29,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "razor-leaf",
-     "sweet-scent"
+     "ember",
+     "metal-claw",
+     "smokescreen",
+     "scary-face"
     ]
    },
    {
     "species": "squirtle",
     "level": 29,
     "moves": [
-     "ember",
-     "metal-claw",
-     "smokescreen",
-     "scary-face"
+     "withdraw",
+     "water-gun",
+     "bite",
+     "rapid-spin"
     ]
    }
   ]
@@ -7607,30 +7631,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "bellsprout",
     "level": 29,
     "moves": [
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss",
-     "revenge"
+     "wrap",
+     "sleep-powder",
+     "stun-spore",
+     "acid"
     ]
    },
    {
     "species": "oddish",
     "level": 29,
     "moves": [
-     "astonish",
-     "supersonic",
-     "bite",
-     "wing-attack"
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder",
+     "acid"
     ]
    },
    {
     "species": "tangela",
     "level": 29,
     "moves": [
-     "softboiled",
-     "doubleslap",
-     "minimize",
-     "sing"
+     "absorb",
+     "growth",
+     "vine-whip",
+     "bind"
     ]
    }
   ]
@@ -7658,24 +7682,14 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pidgeotto",
     "level": 26,
     "moves": [
+     "tackle",
      "sand-attack",
      "gust",
-     "quick-attack",
-     "wing-attack"
+     "quick-attack"
     ]
    },
    {
     "species": "farfetchd",
-    "level": 26,
-    "moves": [
-     "thundershock",
-     "supersonic",
-     "thunder-wave",
-     "spark"
-    ]
-   },
-   {
-    "species": "doduo",
     "level": 26,
     "moves": [
      "peck",
@@ -7685,12 +7699,23 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ]
    },
    {
+    "species": "doduo",
+    "level": 26,
+    "moves": [
+     "pursuit",
+     "fury-attack",
+     "tri-attack",
+     "rage"
+    ]
+   },
+   {
     "species": "pidgey",
     "level": 26,
     "moves": [
-     "fury-attack",
-     "focus-energy",
-     "rage"
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
     ]
    }
   ]
@@ -7728,20 +7753,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "doduo",
     "level": 28,
     "moves": [
-     "peck",
-     "sand-attack",
-     "leer",
-     "fury-attack"
+     "pursuit",
+     "fury-attack",
+     "tri-attack",
+     "rage"
     ]
    },
    {
     "species": "doduo",
     "level": 28,
     "moves": [
-     "peck",
-     "sand-attack",
-     "leer",
-     "fury-attack"
+     "pursuit",
+     "fury-attack",
+     "tri-attack",
+     "rage"
     ]
    }
   ]
@@ -7779,20 +7804,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "oddish",
     "level": 28,
     "moves": [
-     "astonish",
-     "supersonic",
-     "bite",
-     "wing-attack"
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder",
+     "acid"
     ]
    },
    {
     "species": "oddish",
     "level": 28,
     "moves": [
-     "astonish",
-     "supersonic",
-     "bite",
-     "wing-attack"
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder",
+     "acid"
     ]
    }
   ]
@@ -7975,19 +8000,19 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "pikachu",
     "level": 29,
     "moves": [
-     "poison-sting",
-     "bite",
-     "glare",
-     "screech"
+     "quick-attack",
+     "double-team",
+     "slam",
+     "thunderbolt"
     ]
    },
    {
     "species": "raichu",
     "level": 29,
     "moves": [
+     "thundershock",
+     "tail-whip",
      "quick-attack",
-     "double-team",
-     "slam",
      "thunderbolt"
     ]
    }
@@ -8026,9 +8051,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "wigglytuff",
     "level": 29,
     "moves": [
-     "pound",
+     "sing",
      "disable",
-     "rollout",
+     "defense-curl",
      "doubleslap"
     ]
    }
@@ -8057,10 +8082,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "clefairy",
     "level": 33,
     "moves": [
-     "focus-energy",
-     "double-kick",
-     "poison-sting",
-     "thrash"
+     "sing",
+     "doubleslap",
+     "minimize",
+     "defense-curl"
     ]
    }
   ]
@@ -8088,20 +8113,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "hitmonchan",
     "level": 29,
     "moves": [
-     "revenge",
-     "double-kick",
-     "rolling-kick",
-     "focus-energy"
+     "pursuit",
+     "thunderpunch",
+     "ice-punch",
+     "fire-punch"
     ]
    },
    {
     "species": "hitmonlee",
     "level": 29,
     "moves": [
-     "headbutt",
-     "leer",
-     "focus-energy",
-     "bonemerang"
+     "revenge",
+     "double-kick",
+     "rolling-kick",
+     "focus-energy"
     ]
    }
   ]
@@ -8129,20 +8154,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "hitmonchan",
     "level": 29,
     "moves": [
-     "revenge",
-     "double-kick",
-     "rolling-kick",
-     "focus-energy"
+     "pursuit",
+     "thunderpunch",
+     "ice-punch",
+     "fire-punch"
     ]
    },
    {
     "species": "hitmonlee",
     "level": 29,
     "moves": [
-     "headbutt",
-     "leer",
-     "focus-energy",
-     "bonemerang"
+     "revenge",
+     "double-kick",
+     "rolling-kick",
+     "focus-energy"
     ]
    }
   ]
@@ -8209,30 +8234,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 28,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    },
    {
     "species": "mankey",
     "level": 28,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss"
     ]
    },
    {
     "species": "machop",
     "level": 28,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    }
   ]
@@ -8260,20 +8285,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "mankey",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss"
     ]
    },
    {
     "species": "machop",
     "level": 29,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    }
   ]
@@ -8380,20 +8405,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "mankey",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss"
     ]
    },
    {
     "species": "machop",
     "level": 29,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    }
   ]
@@ -8431,10 +8456,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ninetales",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "will-o-wisp",
-     "flamethrower"
+     "ember",
+     "quick-attack"
     ]
    }
   ]
@@ -8472,10 +8495,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ninetales",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "will-o-wisp",
-     "flamethrower"
+     "ember",
+     "quick-attack"
     ]
    }
   ]
@@ -8551,10 +8572,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 29,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    },
    {
@@ -8592,10 +8613,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "mankey",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss"
     ]
    },
    {
@@ -8633,20 +8654,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "voltorb",
     "level": 29,
     "moves": [
-     "vicegrip",
-     "harden",
-     "mud-shot",
-     "stomp"
+     "screech",
+     "tackle",
+     "spark",
+     "selfdestruct"
     ]
    },
    {
     "species": "voltorb",
     "level": 29,
     "moves": [
-     "vicegrip",
-     "harden",
-     "mud-shot",
-     "stomp"
+     "screech",
+     "tackle",
+     "spark",
+     "selfdestruct"
     ]
    }
   ]
@@ -8705,20 +8726,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "mankey",
     "level": 26,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss"
     ]
    },
    {
     "species": "mankey",
     "level": 26,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "karate-chop",
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss"
     ]
    },
    {
@@ -8735,10 +8756,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 26,
     "moves": [
-     "confusion",
-     "disable",
-     "psybeam",
-     "recover"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    }
   ]
@@ -8943,40 +8964,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "spearow",
     "level": 26,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "spearow",
     "level": 26,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "fearow",
     "level": 26,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    },
    {
     "species": "spearow",
     "level": 26,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    }
   ]
@@ -9035,20 +9056,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "spearow",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "hyper-fang",
-     "scary-face"
+     "growl",
+     "leer",
+     "fury-attack",
+     "pursuit"
     ]
    },
    {
     "species": "fearow",
     "level": 29,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    }
   ]
@@ -9076,6 +9097,16 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 29,
     "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 29,
+    "moves": [
      "smokescreen",
      "leer",
      "water-gun",
@@ -9083,23 +9114,13 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ]
    },
    {
-    "species": "horsea",
-    "level": 29,
-    "moves": [
-     "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
-    ]
-   },
-   {
     "species": "staryu",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "supersonic",
-     "horn-attack",
-     "fury-attack"
+     "rapid-spin",
+     "recover",
+     "swift",
+     "bubblebeam"
     ]
    }
   ]
@@ -9127,20 +9148,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "tentacool",
     "level": 30,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "constrict",
+     "acid",
+     "bubblebeam",
+     "wrap"
     ]
    },
    {
     "species": "shellder",
     "level": 30,
     "moves": [
-     "disable",
-     "sludge",
-     "minimize",
-     "screech"
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
     ]
    }
   ]
@@ -9168,20 +9189,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "horsea",
     "level": 30,
     "moves": [
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun",
+     "twister"
     ]
    },
    {
     "species": "horsea",
     "level": 30,
     "moves": [
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun",
+     "twister"
     ]
    }
   ]
@@ -9209,8 +9230,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwag",
     "level": 30,
     "moves": [
-     "bite",
-     "ember"
+     "hypnosis",
+     "water-gun",
+     "doubleslap",
+     "rain-dance"
     ]
    },
    {
@@ -9248,40 +9271,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "horsea",
     "level": 27,
     "moves": [
+     "bubble",
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun"
     ]
    },
    {
     "species": "tentacool",
     "level": 27,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "supersonic",
+     "constrict",
+     "acid",
+     "bubblebeam"
     ]
    },
    {
     "species": "tentacool",
     "level": 27,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "supersonic",
+     "constrict",
+     "acid",
+     "bubblebeam"
     ]
    },
    {
     "species": "goldeen",
     "level": 27,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    }
   ]
@@ -9309,20 +9332,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 29,
     "moves": [
-     "smokescreen",
-     "leer",
-     "water-gun",
-     "twister"
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
     ]
    },
    {
     "species": "shellder",
     "level": 29,
     "moves": [
-     "disable",
-     "sludge",
-     "minimize",
-     "screech"
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
     ]
    },
    {
@@ -9360,40 +9383,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "tentacool",
     "level": 27,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "supersonic",
+     "constrict",
+     "acid",
+     "bubblebeam"
     ]
    },
    {
     "species": "tentacool",
     "level": 27,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "supersonic",
+     "constrict",
+     "acid",
+     "bubblebeam"
     ]
    },
    {
     "species": "staryu",
     "level": 27,
     "moves": [
-     "peck",
-     "tail-whip",
-     "supersonic",
-     "horn-attack"
+     "water-gun",
+     "rapid-spin",
+     "recover",
+     "swift"
     ]
    },
    {
     "species": "horsea",
     "level": 27,
     "moves": [
+     "bubble",
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun"
     ]
    },
    {
@@ -9431,10 +9454,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 30,
     "moves": [
-     "smokescreen",
-     "leer",
-     "water-gun",
-     "twister"
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
     ]
    },
    {
@@ -9472,30 +9495,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "staryu",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "supersonic",
-     "horn-attack",
-     "fury-attack"
+     "rapid-spin",
+     "recover",
+     "swift",
+     "bubblebeam"
     ]
    },
    {
     "species": "staryu",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "supersonic",
-     "horn-attack",
-     "fury-attack"
+     "rapid-spin",
+     "recover",
+     "swift",
+     "bubblebeam"
     ]
    },
    {
     "species": "staryu",
     "level": 29,
     "moves": [
-     "tail-whip",
-     "supersonic",
-     "horn-attack",
-     "fury-attack"
+     "rapid-spin",
+     "recover",
+     "swift",
+     "bubblebeam"
     ]
    }
   ]
@@ -9523,18 +9546,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwag",
     "level": 27,
     "moves": [
-     "bite",
-     "ember"
+     "hypnosis",
+     "water-gun",
+     "doubleslap",
+     "rain-dance"
     ]
    },
    {
     "species": "goldeen",
     "level": 27,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    },
    {
@@ -9551,18 +9576,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 27,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    },
    {
     "species": "poliwag",
     "level": 27,
     "moves": [
-     "bite",
-     "ember"
+     "hypnosis",
+     "water-gun",
+     "doubleslap",
+     "rain-dance"
     ]
    }
   ]
@@ -9590,10 +9617,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 30,
     "moves": [
-     "smokescreen",
-     "leer",
-     "water-gun",
-     "twister"
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
     ]
    },
    {
@@ -9631,10 +9658,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 30,
     "moves": [
-     "smokescreen",
-     "leer",
-     "water-gun",
-     "twister"
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
     ]
    },
    {
@@ -9672,8 +9699,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwag",
     "level": 31,
     "moves": [
-     "bite",
-     "ember"
+     "water-gun",
+     "doubleslap",
+     "rain-dance",
+     "body-slam"
     ]
    },
    {
@@ -9711,10 +9740,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 31,
     "moves": [
-     "smokescreen",
-     "leer",
-     "water-gun",
-     "twister"
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
     ]
    },
    {
@@ -9752,20 +9781,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "shellder",
     "level": 30,
     "moves": [
-     "disable",
-     "sludge",
-     "minimize",
-     "screech"
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
     ]
    },
    {
     "species": "shellder",
     "level": 30,
     "moves": [
-     "disable",
-     "sludge",
-     "minimize",
-     "screech"
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
     ]
    },
    {
@@ -9773,7 +9802,6 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 30,
     "moves": [
      "withdraw",
-     "icicle-spear",
      "supersonic",
      "aurora-beam"
     ]
@@ -9803,20 +9831,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "fearow",
     "level": 30,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    },
    {
     "species": "fearow",
     "level": 30,
     "moves": [
+     "growl",
      "leer",
      "fury-attack",
-     "pursuit",
-     "aerial-ace"
+     "pursuit"
     ]
    },
    {
@@ -9854,10 +9882,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "staryu",
     "level": 35,
     "moves": [
-     "tail-whip",
-     "supersonic",
-     "horn-attack",
-     "fury-attack"
+     "recover",
+     "swift",
+     "bubblebeam",
+     "minimize"
     ]
    }
   ]
@@ -9885,30 +9913,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "tentacool",
     "level": 30,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "constrict",
+     "acid",
+     "bubblebeam",
+     "wrap"
     ]
    },
    {
     "species": "horsea",
     "level": 30,
     "moves": [
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun",
+     "twister"
     ]
    },
    {
     "species": "seel",
     "level": 30,
     "moves": [
-     "pursuit",
-     "fury-attack",
-     "tri-attack",
-     "rage"
+     "headbutt",
+     "growl",
+     "icy-wind",
+     "aurora-beam"
     ]
    }
   ]
@@ -9936,10 +9964,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "shellder",
     "level": 31,
     "moves": [
-     "disable",
-     "sludge",
-     "minimize",
-     "screech"
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
     ]
    },
    {
@@ -9947,7 +9975,6 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 31,
     "moves": [
      "withdraw",
-     "icicle-spear",
      "supersonic",
      "aurora-beam"
     ]
@@ -9977,20 +10004,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "horsea",
     "level": 28,
     "moves": [
+     "bubble",
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun"
     ]
    },
    {
     "species": "horsea",
     "level": 28,
     "moves": [
+     "bubble",
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun"
     ]
    },
    {
@@ -10007,10 +10034,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "horsea",
     "level": 28,
     "moves": [
+     "bubble",
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun"
     ]
    }
   ]
@@ -10048,10 +10075,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "horsea",
     "level": 30,
     "moves": [
+     "smokescreen",
      "leer",
-     "bite",
-     "tail-whip",
-     "mega-punch"
+     "water-gun",
+     "twister"
     ]
    },
    {
@@ -10130,10 +10157,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 28,
     "moves": [
-     "bubble",
-     "smokescreen",
-     "leer",
-     "water-gun"
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
     ]
    },
    {
@@ -10181,60 +10208,42 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "magikarp",
     "level": 27,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    },
    {
     "species": "magikarp",
     "level": 27,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    },
    {
     "species": "magikarp",
     "level": 27,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    },
    {
     "species": "magikarp",
     "level": 27,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    },
    {
     "species": "magikarp",
     "level": 27,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    },
    {
     "species": "magikarp",
     "level": 27,
     "moves": [
-     "rage",
-     "horn-attack",
-     "scary-face",
-     "pursuit"
+     "tackle"
     ]
    }
   ]
@@ -10313,10 +10322,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "starmie",
     "level": 33,
     "moves": [
+     "water-gun",
+     "rapid-spin",
      "recover",
-     "swift",
-     "bubblebeam",
-     "minimize"
+     "swift"
     ]
    }
   ]
@@ -10354,10 +10363,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "starmie",
     "level": 33,
     "moves": [
+     "water-gun",
+     "rapid-spin",
      "recover",
-     "swift",
-     "bubblebeam",
-     "minimize"
+     "swift"
     ]
    }
   ]
@@ -10385,10 +10394,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "shellder",
     "level": 31,
     "moves": [
-     "disable",
-     "sludge",
-     "minimize",
-     "screech"
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
     ]
    },
    {
@@ -10396,7 +10405,6 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 31,
     "moves": [
      "withdraw",
-     "icicle-spear",
      "supersonic",
      "aurora-beam"
     ]
@@ -10436,10 +10444,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "goldeen",
     "level": 33,
     "moves": [
-     "smokescreen",
-     "leer",
-     "water-gun",
-     "twister"
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
     ]
    }
   ]
@@ -10467,10 +10475,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "starmie",
     "level": 37,
     "moves": [
+     "water-gun",
+     "rapid-spin",
      "recover",
-     "swift",
-     "bubblebeam",
-     "minimize"
+     "swift"
     ]
    }
   ]
@@ -10498,20 +10506,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "staryu",
     "level": 33,
     "moves": [
-     "tail-whip",
-     "supersonic",
-     "horn-attack",
-     "fury-attack"
+     "recover",
+     "swift",
+     "bubblebeam",
+     "minimize"
     ]
    },
    {
     "species": "wartortle",
     "level": 33,
     "moves": [
+     "withdraw",
      "water-gun",
      "bite",
-     "rapid-spin",
-     "rain-dance"
+     "rapid-spin"
     ]
    }
   ]
@@ -10539,20 +10547,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "poliwhirl",
     "level": 32,
     "moves": [
+     "hypnosis",
      "water-gun",
      "doubleslap",
-     "rain-dance",
-     "body-slam"
+     "rain-dance"
     ]
    },
    {
     "species": "tentacool",
     "level": 32,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "sweet-scent",
-     "razor-leaf"
+     "constrict",
+     "acid",
+     "bubblebeam",
+     "wrap"
     ]
    },
    {
@@ -10590,30 +10598,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machoke",
     "level": 38,
     "moves": [
+     "focus-energy",
      "karate-chop",
      "seismic-toss",
-     "revenge",
-     "submission"
+     "revenge"
     ]
    },
    {
     "species": "machop",
     "level": 38,
     "moves": [
-     "recover",
-     "future-sight",
-     "calm-mind",
-     "psychic"
+     "karate-chop",
+     "seismic-toss",
+     "revenge",
+     "submission"
     ]
    },
    {
     "species": "machoke",
     "level": 38,
     "moves": [
+     "focus-energy",
      "karate-chop",
      "seismic-toss",
-     "revenge",
-     "submission"
+     "revenge"
     ]
    }
   ]
@@ -10650,10 +10658,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "graveler",
     "level": 38,
     "moves": [
+     "rock-throw",
      "selfdestruct",
      "rollout",
-     "rock-blast",
-     "earthquake"
+     "rock-blast"
     ]
    },
    {
@@ -10706,20 +10714,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 40,
     "moves": [
-     "recover",
-     "future-sight",
-     "calm-mind",
-     "psychic"
+     "seismic-toss",
+     "revenge",
+     "submission",
+     "cross-chop"
     ]
    },
    {
     "species": "machoke",
     "level": 40,
     "moves": [
+     "focus-energy",
+     "karate-chop",
      "seismic-toss",
-     "revenge",
-     "submission",
-     "cross-chop"
+     "revenge"
     ]
    }
   ]
@@ -10747,10 +10755,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "rhyhorn",
     "level": 43,
     "moves": [
-     "smog",
-     "selfdestruct",
-     "sludge",
-     "smokescreen"
+     "scary-face",
+     "rock-blast",
+     "horn-drill",
+     "take-down"
     ]
    }
   ]
@@ -10788,10 +10796,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "tauros",
     "level": 39,
     "moves": [
-     "bind",
-     "seismic-toss",
-     "harden",
-     "revenge"
+     "rage",
+     "horn-attack",
+     "scary-face",
+     "pursuit"
     ]
    }
   ]
@@ -10819,10 +10827,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machoke",
     "level": 43,
     "moves": [
+     "karate-chop",
+     "seismic-toss",
      "revenge",
-     "submission",
-     "cross-chop",
-     "scary-face"
+     "submission"
     ]
    }
   ]
@@ -11052,17 +11060,17 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "tail-whip",
      "quick-attack",
      "hyper-fang",
-     "focus-energy"
+     "scary-face"
     ]
    },
    {
     "species": "zubat",
     "level": 20,
     "moves": [
-     "sing",
-     "disable",
-     "defense-curl",
-     "doubleslap"
+     "leech-life",
+     "astonish",
+     "supersonic",
+     "bite"
     ]
    }
   ]
@@ -11090,20 +11098,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "bellsprout",
     "level": 23,
     "moves": [
-     "leer",
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss"
+     "wrap",
+     "sleep-powder",
+     "stun-spore",
+     "acid"
     ]
    },
    {
     "species": "weepinbell",
     "level": 23,
     "moves": [
+     "growth",
      "wrap",
      "sleep-powder",
-     "stun-spore",
-     "acid"
+     "stun-spore"
     ]
    }
   ]
@@ -11131,40 +11139,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "oddish",
     "level": 21,
     "moves": [
-     "astonish",
-     "supersonic",
-     "bite",
-     "wing-attack"
+     "absorb",
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder"
     ]
    },
    {
     "species": "bellsprout",
     "level": 21,
     "moves": [
-     "leer",
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss"
+     "growth",
+     "wrap",
+     "sleep-powder",
+     "stun-spore"
     ]
    },
    {
     "species": "oddish",
     "level": 21,
     "moves": [
-     "astonish",
-     "supersonic",
-     "bite",
-     "wing-attack"
+     "absorb",
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder"
     ]
    },
    {
     "species": "bellsprout",
     "level": 21,
     "moves": [
-     "leer",
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss"
+     "growth",
+     "wrap",
+     "sleep-powder",
+     "stun-spore"
     ]
    }
   ]
@@ -11233,20 +11241,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "bellsprout",
     "level": 24,
     "moves": [
-     "leer",
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss"
+     "wrap",
+     "sleep-powder",
+     "stun-spore",
+     "acid"
     ]
    },
    {
     "species": "bellsprout",
     "level": 24,
     "moves": [
-     "leer",
-     "focus-energy",
-     "karate-chop",
-     "seismic-toss"
+     "wrap",
+     "sleep-powder",
+     "stun-spore",
+     "acid"
     ]
    }
   ]
@@ -11274,9 +11282,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "exeggcute",
     "level": 24,
     "moves": [
-     "tackle",
-     "screech",
-     "spark"
+     "barrage",
+     "hypnosis",
+     "leech-seed",
+     "confusion"
     ]
    }
   ]
@@ -11304,20 +11313,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "oddish",
     "level": 23,
     "moves": [
-     "astonish",
-     "supersonic",
-     "bite",
-     "wing-attack"
+     "sweet-scent",
+     "stun-spore",
+     "sleep-powder",
+     "acid"
     ]
    },
    {
     "species": "gloom",
     "level": 23,
     "moves": [
+     "absorb",
      "sweet-scent",
      "stun-spore",
-     "sleep-powder",
-     "acid"
+     "sleep-powder"
     ]
    }
   ]
@@ -11345,16 +11354,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "victreebel",
     "level": 29,
     "moves": [
-     "acid",
-     "giga-drain"
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
     ]
    },
    {
     "species": "tangela",
     "level": 24,
     "moves": [
-     "constrict",
-     "giga-drain"
+     "sleep-powder",
+     "absorb",
+     "growth",
+     "vine-whip"
     ]
    },
    {
@@ -11362,8 +11375,7 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "level": 29,
     "moves": [
      "acid",
-     "stun-spore",
-     "giga-drain"
+     "stun-spore"
     ]
    }
   ],
@@ -11486,20 +11498,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "drowzee",
     "level": 34,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
     ]
    },
    {
     "species": "hypno",
     "level": 34,
     "moves": [
+     "disable",
      "confusion",
      "headbutt",
-     "poison-gas",
-     "psychic"
+     "poison-gas"
     ]
    }
   ]
@@ -11527,37 +11539,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "drowzee",
     "level": 31,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
     ]
    },
    {
     "species": "drowzee",
     "level": 31,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
     ]
    },
    {
     "species": "kadabra",
     "level": 31,
     "moves": [
-     "teleport"
+     "disable",
+     "psybeam",
+     "recover",
+     "future-sight"
     ]
    },
    {
     "species": "drowzee",
     "level": 31,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
     ]
    }
   ]
@@ -11585,10 +11600,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "arbok",
     "level": 33,
     "moves": [
+     "poison-sting",
      "bite",
      "glare",
-     "screech",
-     "acid"
+     "screech"
     ]
    },
    {
@@ -11605,10 +11620,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "arbok",
     "level": 33,
     "moves": [
+     "poison-sting",
      "bite",
      "glare",
-     "screech",
-     "acid"
+     "screech"
     ]
    }
   ]
@@ -11646,10 +11661,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "arbok",
     "level": 34,
     "moves": [
+     "poison-sting",
      "bite",
      "glare",
-     "screech",
-     "acid"
+     "screech"
     ]
    }
   ]
@@ -11677,17 +11692,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "drowzee",
     "level": 34,
     "moves": [
-     "bind",
-     "rock-throw",
-     "harden",
-     "rage"
+     "confusion",
+     "headbutt",
+     "poison-gas",
+     "psychic"
     ]
    },
    {
     "species": "kadabra",
     "level": 34,
     "moves": [
-     "teleport"
+     "disable",
+     "psybeam",
+     "recover",
+     "future-sight"
     ]
    }
   ]
@@ -11769,29 +11787,28 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 36,
     "moves": [
-     "fury-swipes",
-     "focus-energy",
-     "seismic-toss",
-     "cross-chop"
+     "ember",
+     "leer",
+     "take-down",
+     "flame-wheel"
     ]
    },
    {
     "species": "vulpix",
     "level": 36,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp",
+     "flamethrower"
     ]
    },
    {
     "species": "ninetales",
     "level": 36,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "will-o-wisp",
-     "flamethrower"
+     "ember",
+     "quick-attack"
     ]
    }
   ]
@@ -11819,28 +11836,28 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "vulpix",
     "level": 36,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp",
+     "flamethrower"
     ]
    },
    {
     "species": "vulpix",
     "level": 36,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp",
+     "flamethrower"
     ]
    },
    {
     "species": "ninetales",
     "level": 36,
     "moves": [
-     "tail-whip",
-     "quick-attack",
-     "will-o-wisp",
-     "flamethrower"
+     "ember",
+     "quick-attack"
     ]
    }
   ]
@@ -11868,39 +11885,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ponyta",
     "level": 34,
     "moves": [
-     "defense-curl",
-     "rock-throw",
-     "selfdestruct",
-     "rollout"
+     "ember",
+     "stomp",
+     "fire-spin",
+     "take-down"
     ]
    },
    {
     "species": "charmander",
     "level": 34,
     "moves": [
-     "vine-whip",
-     "sleep-powder",
-     "razor-leaf",
-     "sweet-scent"
+     "metal-claw",
+     "smokescreen",
+     "scary-face",
+     "flamethrower"
     ]
    },
    {
     "species": "vulpix",
     "level": 34,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp",
+     "flamethrower"
     ]
    },
    {
     "species": "growlithe",
     "level": 34,
     "moves": [
-     "karate-chop",
-     "fury-swipes",
-     "focus-energy",
-     "seismic-toss"
+     "ember",
+     "leer",
+     "take-down",
+     "flame-wheel"
     ]
    }
   ]
@@ -11928,10 +11946,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "ponyta",
     "level": 41,
     "moves": [
-     "rock-throw",
-     "selfdestruct",
-     "rollout",
-     "rock-blast"
+     "stomp",
+     "fire-spin",
+     "take-down",
+     "agility"
     ]
    }
   ]
@@ -11959,10 +11977,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "rapidash",
     "level": 41,
     "moves": [
-     "stomp",
      "fire-spin",
      "take-down",
-     "agility"
+     "agility",
+     "fury-attack"
     ]
    }
   ]
@@ -11990,19 +12008,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "vulpix",
     "level": 37,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp",
+     "flamethrower"
     ]
    },
    {
     "species": "growlithe",
     "level": 37,
     "moves": [
-     "fury-swipes",
-     "focus-energy",
-     "seismic-toss",
-     "cross-chop"
+     "ember",
+     "leer",
+     "take-down",
+     "flame-wheel"
     ]
    }
   ]
@@ -12030,19 +12049,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "growlithe",
     "level": 37,
     "moves": [
-     "fury-swipes",
-     "focus-energy",
-     "seismic-toss",
-     "cross-chop"
+     "ember",
+     "leer",
+     "take-down",
+     "flame-wheel"
     ]
    },
    {
     "species": "vulpix",
     "level": 37,
     "moves": [
-     "sing",
-     "doubleslap",
-     "minimize"
+     "tail-whip",
+     "quick-attack",
+     "will-o-wisp",
+     "flamethrower"
     ]
    }
   ]
@@ -12124,30 +12144,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 31,
     "moves": [
-     "disable",
-     "psybeam",
-     "recover",
-     "future-sight"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    },
    {
     "species": "mankey",
     "level": 31,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss",
+     "cross-chop"
     ]
    },
    {
     "species": "primeape",
     "level": 31,
     "moves": [
+     "karate-chop",
      "fury-swipes",
      "focus-energy",
-     "seismic-toss",
-     "cross-chop"
+     "seismic-toss"
     ]
    }
   ]
@@ -12175,10 +12195,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "machop",
     "level": 32,
     "moves": [
-     "disable",
-     "psybeam",
-     "recover",
-     "future-sight"
+     "focus-energy",
+     "karate-chop",
+     "seismic-toss",
+     "revenge"
     ]
    },
    {
@@ -12247,30 +12267,30 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "mankey",
     "level": 31,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss",
+     "cross-chop"
     ]
    },
    {
     "species": "mankey",
     "level": 31,
     "moves": [
-     "tail-whip",
-     "disable",
-     "confusion",
-     "screech"
+     "fury-swipes",
+     "focus-energy",
+     "seismic-toss",
+     "cross-chop"
     ]
    },
    {
     "species": "primeape",
     "level": 31,
     "moves": [
+     "karate-chop",
      "fury-swipes",
      "focus-energy",
-     "seismic-toss",
-     "cross-chop"
+     "seismic-toss"
     ]
    }
   ]
@@ -12298,20 +12318,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "hitmonlee",
     "level": 37,
     "moves": [
-     "leer",
-     "focus-energy",
-     "bonemerang",
-     "rage"
+     "revenge",
+     "double-kick",
+     "rolling-kick",
+     "focus-energy"
     ]
    },
    {
     "species": "hitmonchan",
     "level": 37,
     "moves": [
-     "revenge",
-     "double-kick",
-     "rolling-kick",
-     "focus-energy"
+     "pursuit",
+     "thunderpunch",
+     "ice-punch",
+     "fire-punch"
     ]
    }
   ]
@@ -12339,20 +12359,20 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "slowpoke",
     "level": 33,
     "moves": [
-     "ember",
-     "stomp",
-     "fire-spin",
-     "take-down"
+     "water-gun",
+     "confusion",
+     "disable",
+     "headbutt"
     ]
    },
    {
     "species": "slowpoke",
     "level": 33,
     "moves": [
-     "ember",
-     "stomp",
-     "fire-spin",
-     "take-down"
+     "water-gun",
+     "confusion",
+     "disable",
+     "headbutt"
     ]
    },
    {
@@ -12390,34 +12410,40 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "kadabra",
     "level": 31,
     "moves": [
-     "teleport"
+     "disable",
+     "psybeam",
+     "recover",
+     "future-sight"
     ]
    },
    {
     "species": "slowpoke",
     "level": 31,
     "moves": [
-     "ember",
-     "stomp",
-     "fire-spin",
-     "take-down"
+     "water-gun",
+     "confusion",
+     "disable",
+     "headbutt"
     ]
    },
    {
     "species": "mr-mime",
     "level": 31,
     "moves": [
-     "water-gun",
-     "rapid-spin",
-     "recover",
-     "swift"
+     "confusion",
+     "doubleslap",
+     "magical-leaf",
+     "psybeam"
     ]
    },
    {
     "species": "kadabra",
     "level": 31,
     "moves": [
-     "teleport"
+     "disable",
+     "psybeam",
+     "recover",
+     "future-sight"
     ]
    }
   ]
@@ -12445,10 +12471,10 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "slowbro",
     "level": 38,
     "moves": [
-     "water-gun",
      "confusion",
      "disable",
-     "headbutt"
+     "headbutt",
+     "withdraw"
     ]
    }
   ]
@@ -12476,9 +12502,9 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 34,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    },
    {
@@ -12487,7 +12513,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "moves": [
      "hypnosis",
      "lick",
-     "night-shade"
+     "night-shade",
+     "shadow-punch"
     ]
    }
   ]
@@ -12518,7 +12545,7 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
      "hypnosis",
      "lick",
      "night-shade",
-     "shadow-ball"
+     "shadow-punch"
     ]
    }
   ]
@@ -12546,18 +12573,18 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "gastly",
     "level": 33,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    },
    {
     "species": "gastly",
     "level": 33,
     "moves": [
-     "withdraw",
-     "supersonic",
-     "aurora-beam"
+     "hypnosis",
+     "lick",
+     "night-shade"
     ]
    },
    {
@@ -12566,7 +12593,8 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "moves": [
      "hypnosis",
      "lick",
-     "night-shade"
+     "night-shade",
+     "shadow-punch"
     ]
    }
   ]
@@ -12650,17 +12678,81 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
     "species": "mr-mime",
     "level": 34,
     "moves": [
-     "water-gun",
-     "rapid-spin",
-     "recover",
-     "swift"
+     "confusion",
+     "doubleslap",
+     "magical-leaf",
+     "psybeam"
     ]
    },
    {
     "species": "kadabra",
     "level": 34,
     "moves": [
-     "teleport"
+     "disable",
+     "psybeam",
+     "recover",
+     "future-sight"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "silph-co-11f-giovanni",
+  "mapId": "silph-co-11f",
+  "name": "Boss Giovanni",
+  "preferredPosition": {
+   "x": 6,
+   "y": 11
+  },
+  "facing": "south",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/087_giovanni.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Giovanni: Ah, Red! So we meet again! The PRESIDENT and I are discussing a vital business proposition. Keep your nose out of grown-up matters… Or, experience a world of pain!",
+  "defeatedText": "Giovanni: Arrgh!! I lost again!?",
+  "moneyMultiplier": 25,
+  "party": [
+   {
+    "species": "nidorino",
+    "level": 37,
+    "moves": [
+     "double-kick",
+     "poison-sting",
+     "horn-attack",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "kangaskhan",
+    "level": 35,
+    "moves": [
+     "bite",
+     "tail-whip",
+     "mega-punch",
+     "rage"
+    ]
+   },
+   {
+    "species": "rhyhorn",
+    "level": 37,
+    "moves": [
+     "stomp",
+     "fury-attack",
+     "scary-face",
+     "rock-blast"
+    ]
+   },
+   {
+    "species": "nidoqueen",
+    "level": 41,
+    "moves": [
+     "tail-whip",
+     "double-kick",
+     "poison-sting",
+     "body-slam"
     ]
    }
   ]

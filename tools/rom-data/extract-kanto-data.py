@@ -93,6 +93,11 @@ def species_evolutions(n):
 ls_sig = find_unique(struct.pack("<HH", (1 << 9) | 33, (4 << 9) | 45), "Bulbasaur learnset")
 ls_ptr = struct.pack("<I", 0x08000000 + ls_sig)
 ptr_hit = find_unique(ls_ptr, "learnset pointer")
+# gLevelUpLearnsets[0] (SPECIES_NONE) points at the same list as Bulbasaur: when the pointer
+# appears twice in a row the second one is species 1 (otherwise every species would read
+# the previous species' moves).
+if rom[ptr_hit + 4: ptr_hit + 8] == ls_ptr:
+    ptr_hit += 4
 ls_table = ptr_hit - 4 * 1
 
 
@@ -159,6 +164,8 @@ assert species["pikachu"]["hp"] == 35 and species["pikachu"]["types"] == ["elect
 assert species["charizard"]["types"] == ["fire", "flying"], "Charizard types"
 assert species["bulbasaur"]["evolutions"][0]["to"] == "ivysaur", "Bulbasaur evolution"
 assert species["bulbasaur"]["learnset"][0] == {"level": 1, "move": "tackle"}, "Bulbasaur learnset"
+assert species["pikachu"]["learnset"][0]["move"] == "thundershock", "Pikachu learnset (table off by one)"
+assert species["charmander"]["learnset"][0]["move"] == "scratch", "Charmander learnset (table off by one)"
 assert moves[1]["id"] == "pound" and moves[33]["id"] == "tackle", "move table"
 
 out = Path(__file__).resolve().parents[2] / "packages" / "game-data" / "data"
