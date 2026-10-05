@@ -4,10 +4,33 @@
   "status": "running",
   "created_at": "2026-10-04",
   "base_head": "149d5206f5f20c9b72f46cba9fa1bab593e274d9",
-  "current_head": "149d5206f5f20c9b72f46cba9fa1bab593e274d9",
-  "skills": ["task-ledger", "safe-main", "repo-navigation", "overworld-development", "pokemon-ui", "verification"],
-  "agents": ["repo-cartographer", "gameplay-systems", "verifier"],
+  "current_head": "6c59bef89ea9150222415d8a86159cc25283cd61",
+  "skills": [
+    "task-ledger",
+    "safe-main",
+    "repo-navigation",
+    "overworld-development",
+    "pokemon-ui",
+    "verification"
+  ],
+  "agents": [
+    "repo-cartographer",
+    "gameplay-systems",
+    "verifier"
+  ],
   "files": [],
-  "commits": [],
-  "tests": []
+  "commits": [
+    "d25efa12 chore: clean root clutter and extend gitignore",
+    "ede6ad0b chore: track pnpm lockfile and next agent rules",
+    "33f5ad44 feat: add missing FireRed overworld items and hidden items up to Vermilion",
+    "e853f978 feat: add FireRed NPCs, signs and texts for maps up to Vermilion",
+    "90430a5a feat: add missing Kanto interiors with ROM-generated warps",
+    "1cf5a1ff feat: add missing Kanto trainers, Tentacool/Ponyta and interior NPC texts",
+    "3a42e911 feat: per-city FireRed Poké Mart stock"
+  ],
+  "tests": [
+    "pnpm exec vitest run (59 files/454)",
+    "battle-engine vitest (200)",
+    "typecheck client + engine"
+  ]
 }

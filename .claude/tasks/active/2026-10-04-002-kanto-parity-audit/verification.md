@@ -16,6 +16,6 @@
 
 ## Comandos
 - `pnpm exec vitest run` → 59 arquivos / 454 testes ✓; engine `vitest` 200 ✓; typechecks client + engine ✓
-- Encounters: tabelas existentes parecem derivadas da ROM; não reconferidas slot a slot.
+- Encounters: conferidos slot a slot contra a ROM (13 tabelas: rotas 1–6/22/24/25, Mt. Moon, Viridian Forest) — todos iguais (taxa e níveis).
 - `pnpm --filter @tactimon/client typecheck` ✓
 - Screenshots: NÃO realizadas (sem ferramenta de browser na sessão; porta 3000 já ocupada por dev server do usuário). Assets sincronizados com `node apps/client/scripts/sync-assets.mjs`.

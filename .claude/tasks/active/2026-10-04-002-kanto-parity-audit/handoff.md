@@ -8,4 +8,3 @@ Pendente:
 3. Uso em batalha/campo dos itens de `bagItems` (Antidote, Revive, Repel, Escape Rope…).
 4. Gates (Route 2 East, Route 5 S, Route 6 N, Route 22 N), PC 2F, Viridian Gym.
 5. Decisão: des-versionar `local-assets/extracted/*/lz77/` (~8k arquivos).
-6. Reconferir encounters slot a slot contra a ROM.
