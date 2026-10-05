@@ -1,3 +1,4 @@
+import { withHmUsers } from "./helpers/hmParty";
 import { describe, expect, it } from "vitest";
 import { createPokemonProgression } from "../packages/battle-engine/src";
 import { runDialogueInteraction } from "../apps/client/lib/dialogueSystem";
@@ -64,7 +65,7 @@ describe("Kanto gift events", () => {
 describe("Surf", () => {
   it("is granted once at the Safari Secret House and needs the Soul Badge", async () => {
     const { canStoryUseSurf } = await import("../apps/client/lib/story");
-    const first = talk(started(), "safari-secret-house-surf");
+    const first = talk(withHmUsers(started(), "squirtle"), "safari-secret-house-surf");
     expect(first.story.fieldTechniqueIds).toContain("surf");
     expect(canStoryUseSurf(first.story)).toBe(false);
     expect(

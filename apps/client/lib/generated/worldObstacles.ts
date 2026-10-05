@@ -310,6 +310,208 @@ export const STRENGTH_BOULDERS: readonly GeneratedObstacle[] = [
   "y": 6
  }
 ];
+export const SMASHABLE_ROCKS: readonly GeneratedObstacle[] = [
+ {
+  "mapId": "cerulean-cave-1f",
+  "x": 7,
+  "y": 21
+ },
+ {
+  "mapId": "cerulean-cave-1f",
+  "x": 13,
+  "y": 21
+ },
+ {
+  "mapId": "cerulean-cave-1f",
+  "x": 5,
+  "y": 20
+ },
+ {
+  "mapId": "cerulean-cave-1f",
+  "x": 14,
+  "y": 20
+ },
+ {
+  "mapId": "cerulean-cave-1f",
+  "x": 11,
+  "y": 21
+ },
+ {
+  "mapId": "cerulean-cave-1f",
+  "x": 9,
+  "y": 18
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 33,
+  "y": 10
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 33,
+  "y": 9
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 25,
+  "y": 11
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 28,
+  "y": 20
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 30,
+  "y": 20
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 9,
+  "y": 13
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 23,
+  "y": 16
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 13,
+  "y": 6
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 4,
+  "y": 12
+ },
+ {
+  "mapId": "cerulean-cave-2f",
+  "x": 10,
+  "y": 20
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 37,
+  "y": 1
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 38,
+  "y": 2
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 35,
+  "y": 1
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 37,
+  "y": 4
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 35,
+  "y": 5
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 2,
+  "y": 2
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 4,
+  "y": 1
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 6,
+  "y": 1
+ },
+ {
+  "mapId": "cerulean-cave-b-1f",
+  "x": 3,
+  "y": 4
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 1,
+  "y": 20
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 1,
+  "y": 22
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 4,
+  "y": 23
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 2,
+  "y": 23
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 39,
+  "y": 26
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 42,
+  "y": 26
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 43,
+  "y": 28
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 45,
+  "y": 30
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 45,
+  "y": 33
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 25,
+  "y": 1
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 27,
+  "y": 4
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 23,
+  "y": 2
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 26,
+  "y": 2
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 24,
+  "y": 7
+ },
+ {
+  "mapId": "rock-tunnel-b-1f",
+  "x": 27,
+  "y": 6
+ }
+];
 export const STATIC_POKEMON: readonly GeneratedStaticPokemon[] = [
  {
   "mapId": "cerulean-cave-b-1f",

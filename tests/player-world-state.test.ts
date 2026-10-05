@@ -1,3 +1,4 @@
+import { withHmUsers } from "./helpers/hmParty";
 import { describe, expect, it } from "vitest";
 import {
   chooseMtMoonFossil,
@@ -124,7 +125,7 @@ describe("per-player world state", () => {
 
   it("Cut removes an obstacle only for the player who used it", () => {
     const playerA = interactWithSsAnneCaptain(
-      normalizeStoryState(DEFAULT_STORY_STATE),
+      withHmUsers(normalizeStoryState(DEFAULT_STORY_STATE), "rattata"),
     ).story;
     const playerB = normalizeStoryState(
       DEFAULT_STORY_STATE,

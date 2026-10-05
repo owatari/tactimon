@@ -1,3 +1,5 @@
+import { partyCanUseHm } from "./hmParty";
+import { t } from "./i18n";
 import {
   calculateDuelPokemonMaxHp,
   createPokemonProgression,
@@ -1196,8 +1198,18 @@ export function interactWithCutObstacle(
   if (!hasStoryFieldTechnique(story, "cut")) {
     return {
       story,
-      message:
-        "Uma pequena árvore bloqueia o caminho. Você precisa aprender Cut para removê-la.",
+      message: t(
+        "A small tree blocks the way. You need the HM Cut to remove it.",
+      ),
+    };
+  }
+
+  if (!partyCanUseHm(story, "cut")) {
+    return {
+      story,
+      message: t(
+        "A small tree blocks the way. None of your Pokémon can use Cut.",
+      ),
     };
   }
 
@@ -1651,7 +1663,8 @@ export function removeStoryKeyItem(
 export function canStoryUseSurf(story: StoryState): boolean {
   return (
     hasStoryFieldTechnique(story, "surf") &&
-    story.badgeIds.includes("soul")
+    story.badgeIds.includes("soul") &&
+    partyCanUseHm(story, "surf")
   );
 }
 

@@ -1,3 +1,4 @@
+import { withHmUsers } from "./helpers/hmParty";
 import { describe, expect, it } from "vitest";
 import { createPokemonProgression } from "../packages/battle-engine/src";
 import { isDarkMap } from "../apps/client/lib/darkCaves";
@@ -53,7 +54,7 @@ describe("Town Map", () => {
   });
 
   it("Fly needs the HM, the Thunder Badge and a visited destination", () => {
-    let story = registerTownVisit(player(), "vermilion-city");
+    let story = registerTownVisit(withHmUsers(player(), "pidgey"), "vermilion-city");
     expect(checkFlyDestination(story, "vermilion")).toMatchObject({
       ok: false,
       reason: "no-fly",

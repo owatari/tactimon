@@ -1,3 +1,4 @@
+import { t } from "./i18n";
 import { canStoryUseFly } from "./fieldTechniques";
 import {
   completeStoryPlayerEvent,
@@ -95,14 +96,16 @@ export function checkFlyDestination(
     return {
       ok: false,
       reason: "no-fly",
-      message: "Você precisa da HM Fly e da Thunder Badge para voar.",
+      message: t(
+        "You need the HM Fly, the Thunder Badge and a Pokémon that can use Fly.",
+      ),
     };
   }
   if (!row.visited) {
     return {
       ok: false,
       reason: "not-visited",
-      message: `Você ainda não visitou ${row.label}.`,
+      message: t("You haven't visited {place} yet.", { place: row.label }),
     };
   }
   return { ok: true, entry: row };

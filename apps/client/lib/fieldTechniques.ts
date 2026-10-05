@@ -1,3 +1,5 @@
+import { partyCanUseHm } from "./hmParty";
+import { t } from "./i18n";
 import {
   hasStoryBadge,
   hasStoryFieldTechnique,
@@ -49,7 +51,8 @@ export function canStoryUseTechnique(
 ): boolean {
   return (
     hasStoryFieldTechnique(story, technique) &&
-    hasStoryBadge(story, FIELD_TECHNIQUE_BADGE[technique])
+    hasStoryBadge(story, FIELD_TECHNIQUE_BADGE[technique]) &&
+    partyCanUseHm(story, technique)
   );
 }
 
@@ -70,7 +73,18 @@ export function techniqueBlockedMessage(
     return null;
   }
   if (!hasStoryBadge(story, FIELD_TECHNIQUE_BADGE[technique])) {
-    return `Você precisa da ${FIELD_TECHNIQUE_BADGE_LABEL[FIELD_TECHNIQUE_BADGE[technique]]} para usar ${name}.`;
+    return t("You need the {badge} to use {move}.", {
+      badge:
+        FIELD_TECHNIQUE_BADGE_LABEL[FIELD_TECHNIQUE_BADGE[technique]],
+      move: name,
+    });
+  }
+  if (!partyCanUseHm(story, technique)) {
+    return t("None of your Pokémon can use {move}.", { move: name });
   }
   return null;
 }
+
+/** Rock Smash needs no HM or badge: any capable Pokémon in the party will do. */
+export const canStoryUseRockSmash = (story: StoryState) =>
+  partyCanUseHm(story, "rock-smash");

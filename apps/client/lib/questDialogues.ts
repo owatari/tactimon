@@ -30,6 +30,7 @@ import {
 import {
   FIELD_TECHNIQUE_BADGE,
   FIELD_TECHNIQUE_BADGE_LABEL,
+  canStoryUseRockSmash,
   canStoryUseStrength,
 } from "./fieldTechniques";
 import { KEY_ITEM_LABELS } from "./keyItems";
@@ -677,6 +678,25 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         "saffron-guard",
         "Guarda: Ah, chá gelado! Obrigado! Os outros guardas também ficam satisfeitos... pode passar por todos os portões de Saffron!",
         "Guarda",
+      );
+    },
+  },
+  "rock-smash": {
+    id: "rock-smash",
+    interact: (story, context) => {
+      const obstacleId = contextString(context, "obstacleId");
+      if (!obstacleId) return reply(story, "rock-smash", "...");
+      if (!canStoryUseRockSmash(story)) {
+        return reply(
+          story,
+          "rock-smash",
+          t("A cracked rock. A Pokémon that can use Rock Smash could break it."),
+        );
+      }
+      return reply(
+        completeStoryPlayerEvent(story, "obstacle", obstacleId),
+        "rock-smash",
+        t("You used Rock Smash! The rock crumbled."),
       );
     },
   },

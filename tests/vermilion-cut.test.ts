@@ -1,3 +1,4 @@
+import { withHmUsers } from "./helpers/hmParty";
 import { describe, expect, it } from "vitest";
 import {
   DEFAULT_STORY_STATE,
@@ -19,7 +20,7 @@ describe("Vermilion Cut obstacle", () => {
 
   it("persists the cleared tree after the Captain teaches Cut", () => {
     const withCut = interactWithSsAnneCaptain(
-      DEFAULT_STORY_STATE,
+      withHmUsers(DEFAULT_STORY_STATE, "rattata"),
     ).story;
     const cut = interactWithCutObstacle(
       withCut,

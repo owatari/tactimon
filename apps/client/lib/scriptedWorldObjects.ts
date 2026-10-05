@@ -4,6 +4,7 @@ import type {
 import {
   CUT_TREES as GENERATED_CUT_TREES,
   CINNABAR_QUIZ as GENERATED_CINNABAR_QUIZ,
+  SMASHABLE_ROCKS as GENERATED_ROCKS,
   KEY_ITEM_BALLS as GENERATED_KEY_ITEM_BALLS,
   MANSION_SWITCHES as GENERATED_MANSION_SWITCHES,
   SLOT_MACHINES as GENERATED_SLOT_MACHINES,
@@ -303,6 +304,43 @@ const BOULDER_OBJECTS:
       id: "strength-boulder",
     },
   }));
+
+export function smashableRockId(
+  mapId: string,
+  x: number,
+  y: number,
+): string {
+  return `${mapId}-rock-${x}-${y}`;
+}
+
+const ROCK_SMASH_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  GENERATED_ROCKS.map((rock) => {
+    const id = smashableRockId(rock.mapId, rock.x, rock.y);
+    return {
+      id,
+      mapId: rock.mapId,
+      label: "Rock",
+      x: rock.x,
+      y: rock.y,
+      spriteUrl: "/game-assets/overworld/096_rock_smash_rock.png",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 64,
+      sheetHeight: 16,
+      visibleWhen: {
+        kind: "event" as const,
+        namespace: "obstacle" as const,
+        id,
+        completed: false,
+      },
+      request: {
+        kind: "script" as const,
+        id: "rock-smash",
+        context: { obstacleId: id },
+      },
+    };
+  });
 
 const KEY_ITEM_BALL_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] =
@@ -682,6 +720,7 @@ export const SCRIPTED_WORLD_OBJECTS:
     ...STATIC_SCRIPTED_WORLD_OBJECTS,
     ...CUT_TREE_OBJECTS,
     ...BOULDER_OBJECTS,
+    ...ROCK_SMASH_OBJECTS,
     ...KEY_ITEM_BALL_OBJECTS,
     ...SLOT_MACHINE_OBJECTS,
     ...CINNABAR_QUIZ_OBJECTS,

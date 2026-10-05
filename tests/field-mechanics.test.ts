@@ -1,3 +1,4 @@
+import { withHmUsers } from "./helpers/hmParty";
 import { describe, expect, it } from "vitest";
 import { createPokemonProgression } from "../packages/battle-engine/src";
 import { runDialogueInteraction } from "../apps/client/lib/dialogueSystem";
@@ -54,11 +55,13 @@ function started(): StoryState {
 
 describe("field HM gifts", () => {
   it("Route 16 woman gives Fly once", () => {
-    const first = talk(started(), "route16-fly-woman");
+    const first = talk(withHmUsers(started(), "pidgey"), "route16-fly-woman");
     expect(hasStoryFieldTechnique(first.story, "fly")).toBe(true);
     expect(canStoryUseFly(first.story)).toBe(false);
     const withBadge = grantStoryBadge(first.story, "thunder");
     expect(canStoryUseFly(withBadge)).toBe(true);
+    // No Pokémon able to Fly: the HM and badge are not enough.
+    expect(canStoryUseFly(grantStoryBadge(talk(started(), "route16-fly-woman").story, "thunder"))).toBe(false);
     expect(talk(first.story, "route16-fly-woman").story.fieldTechniqueIds).toEqual(["fly"]);
   });
 
