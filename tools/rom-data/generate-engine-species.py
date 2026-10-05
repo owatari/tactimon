@@ -48,6 +48,34 @@ STATUS_BY_NAME = {
 }
 SEC_STATUS_EFFECT = {2: "poison", 4: "burn", 6: "paralysis"}
 DAMAGE_OK = {0, 2, 3, 4, 5, 6, 17, 29, 31, 43, 48, 68, 69, 70, 71, 72, 73, 38}
+# Damage moves whose extra ROM behaviour the grid engine cannot express yet are kept as
+# plain damage (confusion, flinch, trapping, charge-up lock, stat boosts on hit...).
+PLAIN_APPROX = {
+    7,    # Selfdestruct / Explosion (user faints, see below)
+    27,   # Thrash / Petal Dance / Outrage (no lock-in)
+    36,   # Tri Attack
+    42,   # Fire Spin / Sand Tomb / Clamp (no trapping)
+    44,   # Double Kick / Bonemerang (exactly two hits)
+    76,   # Psybeam, Signal Beam, Dizzy Punch (no confusion)
+    80,   # Hyper Beam (no recharge turn)
+    81,   # Rage
+    117,  # Rollout
+    128,  # Pursuit
+    140,  # Silver Wind / AncientPower (no all-stat boost)
+    147,  # Earthquake
+    150,  # Stomp
+    185,  # Revenge
+    198,  # Double-Edge (recoil)
+}
+DAMAGE_OK |= PLAIN_APPROX
+# Fixed-damage moves: ROM effect -> engine effect (the ROM power is a placeholder of 1).
+FIXED_DAMAGE = {87: "level-damage", 41: "fixed-damage-40"}
+ALIASES = {
+    "poisonpowder": "poison-powder",
+    "sonicboom": "sonic-boom",
+    "solarbeam": "solar-beam",
+    "featherdance": "feather-dance",
+}
 
 
 def ts(value):
@@ -62,6 +90,17 @@ def convert(m):
     }
     if m["type"] == "???":
         return None
+    if m["effect"] in FIXED_DAMAGE:
+        contact = m["type"] in ("normal", "fighting", "bug", "ground", "rock", "ghost", "steel", "flying", "poison") and m["category"] == "physical"
+        m2 = dict(
+            base, category=m["category"], motion="contact" if contact else "projectile", vfxId="tackle",
+            power=1, apCost=4, effect=FIXED_DAMAGE[m["effect"]],
+        )
+        m2["minRange"], m2["maxRange"] = (1, 1) if contact else (1, 3)
+        if m["accuracy"] and m["accuracy"] != 100:
+            m2["accuracy"] = m["accuracy"]
+        m2["description"] = "Dano fixo gerado a partir dos dados do FireRed."
+        return m2
     if m["power"] is None:
         spec = STATUS_BY_NAME.get(m["id"])
         if spec is None:
@@ -99,6 +138,16 @@ def convert(m):
         m2["multiHit"] = "two-to-five"
     elif eff == 48:
         m2["recoilDamageFraction"] = 0.25
+    elif eff == 198:
+        m2["recoilDamageFraction"] = 0.33
+    elif eff == 7:
+        # Selfdestruct / Explosion: the user faints (huge recoil), power is halved by the engine's defense rule in the ROM
+        m2["recoilDamageFraction"] = 100
+        m2["apCost"] = 6
+    elif eff == 44:
+        m2["multiHit"] = "two"
+    elif eff == 80:
+        m2["apCost"] = 6
     elif eff == 17:
         m2["alwaysHits"] = True
     elif eff == 38:
@@ -115,6 +164,7 @@ converted = {}
 
 
 def get_move(move_id):
+    move_id = ALIASES.get(move_id, move_id) if ALIASES.get(move_id) in HAND_MOVES else move_id
     if move_id in HAND_MOVES:
         return move_id
     if move_id not in converted:

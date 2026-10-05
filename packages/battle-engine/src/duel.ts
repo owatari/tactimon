@@ -391,7 +391,7 @@ export interface DuelMove {
   };
   secondaryEffectChance?: number;
   /** FireRed-style random 2-5 hit sequence. */
-  multiHit?: "two-to-five";
+  multiHit?: "two-to-five" | "two";
   /** Fraction of actual HP damage dealt that returns to the attacker as recoil. */
   recoilDamageFraction?: number;
   effect?:
@@ -416,6 +416,10 @@ export interface DuelMove {
     | "disable"
     | "drain-half"
     | "fixed-damage-20"
+    /** Dragon Rage. */
+    | "fixed-damage-40"
+    /** Seismic Toss / Night Shade: damage equals the user's level. */
+    | "level-damage"
     | "ohko"
     | "teleport";
 }
@@ -4573,6 +4577,10 @@ function rollMultiHitCount(
   target: DuelUnit,
   move: DuelMove,
 ): number {
+  if (move.multiHit === "two") {
+    return 2;
+  }
+
   if (move.multiHit !== "two-to-five") {
     return 1;
   }
@@ -4605,6 +4613,7 @@ function rollMultiHitCount(
 
 function expectedHitCount(move: DuelMove): number {
   // FireRed distribution: 2/3 hits = 3/8 each; 4/5 hits = 1/8 each.
+  if (move.multiHit === "two") return 2;
   return move.multiHit === "two-to-five" ? 3 : 1;
 }
 
@@ -5064,13 +5073,23 @@ function calculateDamage(
     };
   }
 
-  if (move.effect === "fixed-damage-20") {
+  if (
+    move.effect === "fixed-damage-20" ||
+    move.effect === "fixed-damage-40" ||
+    move.effect === "level-damage"
+  ) {
     const typeEffectiveness = calculateTypeEffectiveness(
       move.type,
       defender.types,
     );
+    const fixedDamage =
+      move.effect === "fixed-damage-40"
+        ? 40
+        : move.effect === "level-damage"
+          ? attacker.level
+          : 20;
     return {
-      damage: typeEffectiveness === 0 ? 0 : 20,
+      damage: typeEffectiveness === 0 ? 0 : fixedDamage,
       sameTypeAttackBonus: false,
       typeEffectiveness,
     };
@@ -6089,7 +6108,7 @@ export function applyDuelAction(
     );
     damage = damageResult.damage;
     if (
-      move.multiHit === "two-to-five" &&
+      move.multiHit !== undefined &&
       damage > 0
     ) {
       const rolledHits = rollMultiHitCount(
