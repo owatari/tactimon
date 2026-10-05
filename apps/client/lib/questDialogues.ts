@@ -16,6 +16,12 @@ import {
   SAFFRON_GUARDS_OPEN_EVENT,
   silphDoorEventId,
 } from "./questEvents";
+import {
+  SAFARI_BALLS,
+  SAFARI_FEE,
+  SAFARI_STEPS,
+  startSafari,
+} from "./safari";
 import { getStaticEncounter } from "./staticEncounters";
 import {
   completeStoryPlayerEvent,
@@ -361,6 +367,71 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       );
     },
   },
+  "safari-entrance": {
+    id: "safari-entrance",
+    interact: (story) => {
+      if (story.safari) {
+        return reply(
+          story,
+          "safari-entrance",
+          "Funcionário: Seu jogo da Safari Zone está em andamento. Boa sorte!",
+          "Funcionário",
+        );
+      }
+      return {
+        story,
+        presentation: {
+          id: "safari-entrance",
+          pages: [
+            {
+              id: "offer",
+              speaker: "Funcionário",
+              text: `Bem-vindo à Safari Zone! Por ₽${SAFARI_FEE} você recebe ${SAFARI_BALLS} Safari Balls e pode andar até ${SAFARI_STEPS} passos. Quer participar?`,
+              choices: [
+                {
+                  id: "pay",
+                  label: `Pagar ₽${SAFARI_FEE}`,
+                  request: { kind: "script", id: "safari-start" },
+                },
+                {
+                  id: "decline",
+                  label: "Agora não",
+                  request: {
+                    kind: "text",
+                    id: "safari-decline",
+                    speaker: "Funcionário",
+                    text: "Volte quando quiser participar! Por favor, passe pela porta somente depois de pagar.",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  },
+  "safari-start": {
+    id: "safari-start",
+    interact: (story) => {
+      const result = startSafari(story);
+      if (result.ok) {
+        return reply(
+          result.story,
+          "safari-start",
+          `Funcionário: Aqui estão suas ${SAFARI_BALLS} Safari Balls! Avisaremos quando seus passos ou suas bolas acabarem. Entre pela porta!`,
+          "Funcionário",
+        );
+      }
+      return reply(
+        story,
+        "safari-start",
+        result.reason === "money"
+          ? `Funcionário: Você precisa de ₽${SAFARI_FEE} para entrar.`
+          : "Funcionário: Seu jogo já está em andamento!",
+        "Funcionário",
+      );
+    },
+  },
   "tower-ghost": {
     id: "tower-ghost",
     interact: (story) =>
@@ -427,6 +498,7 @@ export const QUEST_WORLD_OBJECT_DIALOGUE_IDS: Record<string, string> = {
   "route-12-fishing-house:4,4": "route12-super-rod-guru",
   "celadon-city-restaurant:1,2": "celadon-coin-case-man",
   "celadon-city-condominiums-1f:2,9": "celadon-tea-woman",
+  "fuchsia-city-safari-zone-entrance:7,3": "safari-entrance",
   "route-5-south-entrance:1,5": "saffron-guard",
   "route-6-north-entrance:7,5": "saffron-guard",
   "route-7-east-entrance:6,2": "saffron-guard",

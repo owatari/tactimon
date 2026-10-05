@@ -72,6 +72,17 @@ const TOWER_GHOST_GATES: readonly PlayerWorldTileGate[] = [
   wildBattle: TOWER_GHOST,
 }));
 
+/** Stepping onto the Safari Zone door starts (and charges for) a game. */
+const SAFARI_ENTRANCE_GATE: PlayerWorldTileGate = {
+  id: "gate:safari-entrance",
+  kind: "tile",
+  mapId: "fuchsia-city-safari-zone-entrance",
+  x: 4,
+  y: 1,
+  allowWhen: { kind: "safari-active" },
+  blockedRequest: { kind: "script", id: "safari-entrance" },
+};
+
 const CINNABAR_GYM_GATE: PlayerWorldTileGate = {
   id: "gate:cinnabar-gym-secret-key",
   kind: "tile",
@@ -115,6 +126,7 @@ export const QUEST_TILE_GATES: readonly PlayerWorldTileGate[] = [
   ...SAFFRON_GATES,
   ...TOWER_GHOST_GATES,
   CINNABAR_GYM_GATE,
+  SAFARI_ENTRANCE_GATE,
   ...SILPH_DOOR_GATES,
 ];
 

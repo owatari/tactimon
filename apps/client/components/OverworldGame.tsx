@@ -36,7 +36,6 @@ import {
   WorldTransition,
 } from "@/lib/maps";
 import {
-  applyStoryOverworldStep,
   canStoryUseSurf,
   hasStoryFieldTechnique,
   grantRunningShoes,
@@ -77,6 +76,14 @@ import {
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import { repelBlocksEncounter } from "@/lib/itemUse";
+import {
+  SAFARI_ENTRANCE_MAP_ID,
+  endSafari,
+  isSafariMap,
+  safariEndMessage,
+  safariOutOfBalls,
+} from "@/lib/safari";
+import { advanceStoryStep } from "@/lib/storySteps";
 import {
   bestOwnedRod,
   hasFishingTable,
@@ -1551,6 +1558,15 @@ export function OverworldGame({
           return;
         }
 
+        if (
+          storyRef.current.safari &&
+          !isSafariMap(nextMapId)
+        ) {
+          // Walked out through the exit door: the game is over.
+          storyRef.current = endSafari(storyRef.current);
+          onStoryUpdateRef.current(endSafari);
+        }
+
         mapIdRef.current = nextMapId;
         layoutRef.current = nextLayout;
         worldObjectsRef.current =
@@ -1622,6 +1638,46 @@ export function OverworldGame({
     },
     [onMapAudioContextChange, resetInput],
   );
+
+  const endSafariGame = useCallback(
+    (reason: "steps" | "balls") => {
+      if (!storyRef.current.safari) return;
+
+      storyRef.current = endSafari(storyRef.current);
+      onStoryUpdateRef.current(endSafari);
+      showDialogue(
+        {
+          id: "safari-end",
+          pages: [
+            {
+              id: "main",
+              speaker: "Funcionário",
+              text: safariEndMessage(reason),
+            },
+          ],
+        },
+        () => {
+          void loadMap(
+            SAFARI_ENTRANCE_MAP_ID,
+            WORLD_MAPS[SAFARI_ENTRANCE_MAP_ID].spawn,
+            "south",
+          );
+        },
+      );
+    },
+    [loadMap, showDialogue],
+  );
+
+  useEffect(() => {
+    if (
+      !paused &&
+      safariOutOfBalls(story) &&
+      isSafariMap(mapIdRef.current) &&
+      !dialogueRef.current
+    ) {
+      endSafariGame("balls");
+    }
+  }, [endSafariGame, paused, story]);
 
   useEffect(() => {
     const saved = readSavedPlayerPosition();
@@ -1874,12 +1930,15 @@ export function OverworldGame({
           return false;
         }
 
-        const nextStory =
-          applyStoryOverworldStep(
-            storyRef.current,
-          );
+        const stepMapId = mapIdRef.current;
+        const nextStory = advanceStoryStep(
+          storyRef.current,
+          stepMapId,
+        );
         storyRef.current = nextStory;
-        onStoryUpdate(applyStoryOverworldStep);
+        onStoryUpdate((current) =>
+          advanceStoryStep(current, stepMapId),
+        );
         if (!storyHasHealthyPokemon(nextStory)) {
           return false;
         }
@@ -2511,12 +2570,24 @@ export function OverworldGame({
             mapIdRef.current,
             player,
           );
-          const nextStory =
-            applyStoryOverworldStep(
-              storyRef.current,
-            );
+          const stepMapId = mapIdRef.current;
+          const nextStory = advanceStoryStep(
+            storyRef.current,
+            stepMapId,
+          );
           storyRef.current = nextStory;
-          onStoryUpdate(applyStoryOverworldStep);
+          onStoryUpdate((current) =>
+            advanceStoryStep(current, stepMapId),
+          );
+
+          if (
+            nextStory.safari &&
+            nextStory.safari.steps === 0 &&
+            isSafariMap(stepMapId)
+          ) {
+            endSafariGame("steps");
+            return;
+          }
 
           if (
             !storyHasHealthyPokemon(nextStory)
@@ -2632,6 +2703,7 @@ export function OverworldGame({
     return () => cancelAnimationFrame(animationFrame);
   }, [
     createBattleContext,
+    endSafariGame,
     loadMap,
     onFirstBattleTrigger,
     onTrainerBattleTrigger,
@@ -2769,7 +2841,14 @@ export function OverworldGame({
         <div className="world-resource-chip">
           <strong>₽{story.money.toLocaleString("pt-BR")}</strong>
           <span>Potion ×{story.inventory.potion}</span>
-          <span>Ball ×{story.inventory["poke-ball"]}</span>
+          {story.safari ? (
+            <span>
+              Safari Ball ×{story.inventory["poke-ball"]} · Passos{" "}
+              {story.safari.steps}
+            </span>
+          ) : (
+            <span>Ball ×{story.inventory["poke-ball"]}</span>
+          )}
         </div>
         {canRun(story) && (
           <button

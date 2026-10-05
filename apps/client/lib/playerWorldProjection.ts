@@ -21,6 +21,10 @@ export type PlayerWorldCondition =
       set?: boolean;
     }
   | {
+      /** A Safari Zone game is in progress. */
+      kind: "safari-active";
+    }
+  | {
       kind: "all";
       conditions: readonly PlayerWorldCondition[];
     }
@@ -69,6 +73,10 @@ export function isPlayerWorldConditionMet(
     }
 
     return value !== null;
+  }
+
+  if (condition.kind === "safari-active") {
+    return Boolean(story.safari);
   }
 
   if (condition.kind === "all") {
