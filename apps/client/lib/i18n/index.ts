@@ -134,6 +134,15 @@ export function translate(
   return interpolate(entry?.[locale as TranslatedLocale] || source, params);
 }
 
+/**
+ * Marks an English string for the catalog without translating it now. Use it in
+ * static data (gates, objects, definitions) whose text is shown later: the
+ * dialogue runner translates it when it is displayed.
+ */
+export function tx(source: string): string {
+  return source;
+}
+
 /** Placeholder names (`{name}`) used by a string, for catalog consistency checks. */
 export function placeholdersOf(text: string): string[] {
   return [...text.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();

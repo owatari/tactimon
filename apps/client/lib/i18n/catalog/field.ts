@@ -2,6 +2,13 @@ import type { Catalog } from "../index";
 
 /** Field mechanics: HMs, Rock Smash, Fly, obstacles. */
 export const fieldCatalog: Catalog = {
+  Policeman: { pt: "Policial", es: "Policía", fr: "Policier", zh: "警察" },
+  "Hey! This is the Cycling Road. Pedestrians are not allowed: you need a Bicycle to go through.": {
+    pt: "Ei! Esta é a Cycling Road. Pedestres não podem passar: você precisa de uma Bicicleta.",
+    es: "¡Eh! Esto es la Ruta Ciclista. No se permiten peatones: necesitas una Bicicleta para pasar.",
+    fr: "Hé ! C'est la Route Cyclable. Les piétons sont interdits : il te faut un Vélo pour passer.",
+    zh: "喂！这里是自行车道，行人禁止通行：你需要一辆自行车才能通过。",
+  },
   "A cracked rock. A Pokémon that can use Rock Smash could break it.": {
     pt: "Uma rocha rachada. Um Pokémon que saiba usar Rock Smash poderia quebrá-la.",
     es: "Una roca agrietada. Un Pokémon que pueda usar Fuerza Bruta podría romperla.",

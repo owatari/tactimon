@@ -31,7 +31,7 @@ function sourceFiles(dir: string): string[] {
 /** Every `t("literal")` call in client code. */
 function usedKeys(): Map<string, string> {
   const used = new Map<string, string>();
-  const call = /(?<![\w.])t\(\s*"((?:[^"\\n]|\.)*)"/g;
+  const call = /(?<![\w.])(?:t|tx)\(\s*"((?:[^"\\n]|\.)*)"/g;
   for (const dir of ["lib", "components", "app"]) {
     for (const file of sourceFiles(join(ROOT, dir))) {
       const text = readFileSync(file, "utf-8");

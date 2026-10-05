@@ -1,3 +1,4 @@
+import { tx } from "./i18n";
 import { cinnabarDoorEventId } from "./cinnabarQuiz";
 import {
   CINNABAR_QUIZ,
@@ -143,6 +144,48 @@ const ROCKET_ELEVATOR_GATES: readonly PlayerWorldTileGate[] =
     }));
   });
 
+/**
+ * Cycling Road: the gatehouse halls that lead onto it only let bicycles through
+ * (the policeman's trigger tiles in the ROM).
+ */
+const CYCLING_ROAD_CELLS: readonly {
+  mapId: string;
+  cells: readonly (readonly [number, number])[];
+}[] = [
+  {
+    mapId: "route-16-north-entrance-1f",
+    cells: [[6, 10], [6, 11], [6, 12], [6, 13], [6, 14]],
+  },
+  {
+    mapId: "route-18-east-entrance-1f",
+    cells: [[6, 4], [6, 5], [6, 6], [6, 7], [6, 8]],
+  },
+];
+
+const CYCLING_ROAD_GATES: readonly PlayerWorldTileGate[] =
+  CYCLING_ROAD_CELLS.flatMap(({ mapId, cells }) =>
+    cells.map(([x, y]) => ({
+      id: `gate:cycling-road:${mapId}:${x},${y}`,
+      kind: "tile" as const,
+      mapId,
+      x,
+      y,
+      allowWhen: {
+        kind: "event" as const,
+        namespace: "key-item" as const,
+        id: "bicycle",
+      },
+      blockedRequest: {
+        kind: "text" as const,
+        id: "gate:cycling-road",
+        speaker: tx("Policeman"),
+        text: tx(
+          "Hey! This is the Cycling Road. Pedestrians are not allowed: you need a Bicycle to go through.",
+        ),
+      },
+    })),
+  );
+
 /** Cerulean Cave stays closed until the player is Champion. */
 const CERULEAN_CAVE_GATE: PlayerWorldTileGate = {
   id: "gate:cerulean-cave-champion",
@@ -269,6 +312,7 @@ export const QUEST_TILE_GATES: readonly PlayerWorldTileGate[] = [
   ...MANSION_GATES,
   ...CINNABAR_QUIZ_GATES,
   ...ROCKET_ELEVATOR_GATES,
+  ...CYCLING_ROAD_GATES,
 ];
 
 /**

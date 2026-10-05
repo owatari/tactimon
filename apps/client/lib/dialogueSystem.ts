@@ -1,3 +1,4 @@
+import { t } from "./i18n";
 import type {
   OverworldItemId,
 } from "./items";
@@ -1041,7 +1042,36 @@ export function dialoguePresentationFromText(
   };
 }
 
+/** Translates every visible string of a dialogue into the active language. */
+function localizePresentation(
+  presentation: DialoguePresentation,
+): DialoguePresentation {
+  return {
+    ...presentation,
+    pages: presentation.pages.map((entry) => ({
+      ...entry,
+      text: t(entry.text),
+      speaker: entry.speaker ? t(entry.speaker) : entry.speaker,
+      choices: entry.choices?.map((choice) => ({
+        ...choice,
+        label: t(choice.label),
+      })),
+    })),
+  };
+}
+
 export function runDialogueInteraction(
+  story: StoryState,
+  request: DialogueInteractionRequest,
+): DialogueInteractionResult {
+  const result = runDialogueInteractionRaw(story, request);
+  return {
+    ...result,
+    presentation: localizePresentation(result.presentation),
+  };
+}
+
+function runDialogueInteractionRaw(
   story: StoryState,
   request: DialogueInteractionRequest,
 ): DialogueInteractionResult {
