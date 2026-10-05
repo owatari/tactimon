@@ -1,3 +1,4 @@
+import { GENERATED_WARPS } from "./generatedWarps";
 export const TILE_SIZE = 16;
 export const WORLD_ZOOM = 3;
 
@@ -346,6 +347,61 @@ const GENERIC_BUILDING_2_TILESET: TilesetAssetDefinition = {
     "/game-assets/tilesets/generic-building-2/metatiles.bin",
   attributesUrl:
     "/game-assets/tilesets/generic-building-2/attributes.bin",
+};
+
+const GENERIC_BUILDING_1_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/generic-building-1/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/generic-building-1/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/generic-building-1/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/generic-building-1/attributes.bin",
+};
+
+const MUSEUM_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/museum/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/museum/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/museum/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/museum/attributes.bin",
+};
+
+const BIKE_SHOP_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/bike-shop/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/bike-shop/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/bike-shop/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/bike-shop/attributes.bin",
+};
+
+const SCHOOL_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/school/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/school/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/school/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/school/attributes.bin",
+};
+
+const FAN_CLUB_DAYCARE_TILESET: TilesetAssetDefinition = {
+  tilesUrl:
+    "/game-assets/tilesets/fan-club-daycare/tiles.4bpp",
+  palettesUrl:
+    "/game-assets/tilesets/fan-club-daycare/palettes.gbapal",
+  metatilesUrl:
+    "/game-assets/tilesets/fan-club-daycare/metatiles.bin",
+  attributesUrl:
+    "/game-assets/tilesets/fan-club-daycare/attributes.bin",
 };
 
 const UNDERGROUND_PATH_TILESET: TilesetAssetDefinition = {
@@ -811,6 +867,526 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     spawn: { x: 25, y: 21 },
     fallbackMusicId: 288,
     tilesets: { primary: GENERAL_TILESET, secondary: CAVE_TILESET },
+  },
+  "pallet-players-house-1f": {
+    id: "pallet-players-house-1f",
+    label: "Player's House 1F",
+    layoutUrl: "/game-assets/maps/pallet-players-house-1f/layout.json",
+    previewUrl: "/game-assets/maps/pallet-players-house-1f/preview.png",
+    worldUrl: "/game-assets/maps/pallet-players-house-1f/world.json",
+    spawn: { x: 4, y: 7 },
+    fallbackMusicId: 300,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_1_TILESET,
+    },
+  },
+  "pallet-players-house-2f": {
+    id: "pallet-players-house-2f",
+    label: "Player's House 2F",
+    layoutUrl: "/game-assets/maps/pallet-players-house-2f/layout.json",
+    previewUrl: "/game-assets/maps/pallet-players-house-2f/preview.png",
+    worldUrl: "/game-assets/maps/pallet-players-house-2f/world.json",
+    spawn: { x: 10, y: 3 },
+    fallbackMusicId: 300,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_1_TILESET,
+    },
+  },
+  "pallet-rivals-house": {
+    id: "pallet-rivals-house",
+    label: "Rival's House",
+    layoutUrl: "/game-assets/maps/pallet-rivals-house/layout.json",
+    previewUrl: "/game-assets/maps/pallet-rivals-house/preview.png",
+    worldUrl: "/game-assets/maps/pallet-rivals-house/world.json",
+    spawn: { x: 4, y: 7 },
+    fallbackMusicId: 300,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "viridian-house": {
+    id: "viridian-house",
+    label: "Viridian House",
+    layoutUrl: "/game-assets/maps/viridian-house/layout.json",
+    previewUrl: "/game-assets/maps/viridian-house/preview.png",
+    worldUrl: "/game-assets/maps/viridian-house/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "viridian-school": {
+    id: "viridian-school",
+    label: "Viridian School",
+    layoutUrl: "/game-assets/maps/viridian-school/layout.json",
+    previewUrl: "/game-assets/maps/viridian-school/preview.png",
+    worldUrl: "/game-assets/maps/viridian-school/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: SCHOOL_TILESET,
+    },
+  },
+  "pewter-museum-1f": {
+    id: "pewter-museum-1f",
+    label: "Pewter Museum 1F",
+    layoutUrl: "/game-assets/maps/pewter-museum-1f/layout.json",
+    previewUrl: "/game-assets/maps/pewter-museum-1f/preview.png",
+    worldUrl: "/game-assets/maps/pewter-museum-1f/world.json",
+    spawn: { x: 14, y: 8 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: MUSEUM_TILESET,
+    },
+  },
+  "pewter-museum-2f": {
+    id: "pewter-museum-2f",
+    label: "Pewter Museum 2F",
+    layoutUrl: "/game-assets/maps/pewter-museum-2f/layout.json",
+    previewUrl: "/game-assets/maps/pewter-museum-2f/preview.png",
+    worldUrl: "/game-assets/maps/pewter-museum-2f/world.json",
+    spawn: { x: 11, y: 7 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: MUSEUM_TILESET,
+    },
+  },
+  "pewter-house-1": {
+    id: "pewter-house-1",
+    label: "Pewter House",
+    layoutUrl: "/game-assets/maps/pewter-house-1/layout.json",
+    previewUrl: "/game-assets/maps/pewter-house-1/preview.png",
+    worldUrl: "/game-assets/maps/pewter-house-1/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "pewter-house-2": {
+    id: "pewter-house-2",
+    label: "Pewter House",
+    layoutUrl: "/game-assets/maps/pewter-house-2/layout.json",
+    previewUrl: "/game-assets/maps/pewter-house-2/preview.png",
+    worldUrl: "/game-assets/maps/pewter-house-2/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "cerulean-house-1": {
+    id: "cerulean-house-1",
+    label: "Cerulean House",
+    layoutUrl: "/game-assets/maps/cerulean-house-1/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-house-1/preview.png",
+    worldUrl: "/game-assets/maps/cerulean-house-1/world.json",
+    spawn: { x: 3, y: 7 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "cerulean-house-3": {
+    id: "cerulean-house-3",
+    label: "Cerulean House",
+    layoutUrl: "/game-assets/maps/cerulean-house-3/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-house-3/preview.png",
+    worldUrl: "/game-assets/maps/cerulean-house-3/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_1_TILESET,
+    },
+  },
+  "cerulean-bike-shop": {
+    id: "cerulean-bike-shop",
+    label: "Cerulean Bike Shop",
+    layoutUrl: "/game-assets/maps/cerulean-bike-shop/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-bike-shop/preview.png",
+    worldUrl: "/game-assets/maps/cerulean-bike-shop/world.json",
+    spawn: { x: 5, y: 7 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: BIKE_SHOP_TILESET,
+    },
+  },
+  "cerulean-house-4": {
+    id: "cerulean-house-4",
+    label: "Cerulean House",
+    layoutUrl: "/game-assets/maps/cerulean-house-4/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-house-4/preview.png",
+    worldUrl: "/game-assets/maps/cerulean-house-4/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_1_TILESET,
+    },
+  },
+  "cerulean-house-5": {
+    id: "cerulean-house-5",
+    label: "Cerulean House",
+    layoutUrl: "/game-assets/maps/cerulean-house-5/layout.json",
+    previewUrl: "/game-assets/maps/cerulean-house-5/preview.png",
+    worldUrl: "/game-assets/maps/cerulean-house-5/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "vermilion-house-1": {
+    id: "vermilion-house-1",
+    label: "Vermilion House",
+    layoutUrl: "/game-assets/maps/vermilion-house-1/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-house-1/preview.png",
+    worldUrl: "/game-assets/maps/vermilion-house-1/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 308,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_1_TILESET,
+    },
+  },
+  "vermilion-pokemon-fan-club": {
+    id: "vermilion-pokemon-fan-club",
+    label: "Pokémon Fan Club",
+    layoutUrl: "/game-assets/maps/vermilion-pokemon-fan-club/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-pokemon-fan-club/preview.png",
+    worldUrl: "/game-assets/maps/vermilion-pokemon-fan-club/world.json",
+    spawn: { x: 5, y: 9 },
+    fallbackMusicId: 313,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: FAN_CLUB_DAYCARE_TILESET,
+    },
+  },
+  "vermilion-house-2": {
+    id: "vermilion-house-2",
+    label: "Vermilion House",
+    layoutUrl: "/game-assets/maps/vermilion-house-2/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-house-2/preview.png",
+    worldUrl: "/game-assets/maps/vermilion-house-2/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 313,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_1_TILESET,
+    },
+  },
+  "vermilion-house-3": {
+    id: "vermilion-house-3",
+    label: "Vermilion House",
+    layoutUrl: "/game-assets/maps/vermilion-house-3/layout.json",
+    previewUrl: "/game-assets/maps/vermilion-house-3/preview.png",
+    worldUrl: "/game-assets/maps/vermilion-house-3/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 313,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_1_TILESET,
+    },
+  },
+  "route-2-house": {
+    id: "route-2-house",
+    label: "Route 2 House",
+    layoutUrl: "/game-assets/maps/route-2-house/layout.json",
+    previewUrl: "/game-assets/maps/route-2-house/preview.png",
+    worldUrl: "/game-assets/maps/route-2-house/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: GENERIC_BUILDING_2_TILESET,
+    },
+  },
+  "route-5-day-care": {
+    id: "route-5-day-care",
+    label: "Pokémon Day Care",
+    layoutUrl: "/game-assets/maps/route-5-day-care/layout.json",
+    previewUrl: "/game-assets/maps/route-5-day-care/preview.png",
+    worldUrl: "/game-assets/maps/route-5-day-care/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 314,
+    tilesets: {
+      primary: BUILDING_TILESET,
+      secondary: FAN_CLUB_DAYCARE_TILESET,
+    },
+  },
+  "ss-anne-kitchen": {
+    id: "ss-anne-kitchen",
+    label: "S.S. Anne Kitchen",
+    layoutUrl: "/game-assets/maps/ss-anne-kitchen/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-kitchen/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-kitchen/world.json",
+    spawn: { x: 7, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-b1f-corridor": {
+    id: "ss-anne-b1f-corridor",
+    label: "S.S. Anne B1F Corridor",
+    layoutUrl: "/game-assets/maps/ss-anne-b1f-corridor/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-b1f-corridor/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-b1f-corridor/world.json",
+    spawn: { x: 19, y: 4 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-1f-room-1": {
+    id: "ss-anne-1f-room-1",
+    label: "S.S. Anne 1F Room 1",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-room-1/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-room-1/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-1f-room-1/world.json",
+    spawn: { x: 2, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-1f-room-2": {
+    id: "ss-anne-1f-room-2",
+    label: "S.S. Anne 1F Room 2",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-room-2/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-room-2/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-1f-room-2/world.json",
+    spawn: { x: 2, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-1f-room-3": {
+    id: "ss-anne-1f-room-3",
+    label: "S.S. Anne 1F Room 3",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-room-3/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-room-3/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-1f-room-3/world.json",
+    spawn: { x: 2, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-1f-room-4": {
+    id: "ss-anne-1f-room-4",
+    label: "S.S. Anne 1F Room 4",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-room-4/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-room-4/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-1f-room-4/world.json",
+    spawn: { x: 2, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-1f-room-5": {
+    id: "ss-anne-1f-room-5",
+    label: "S.S. Anne 1F Room 5",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-room-5/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-room-5/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-1f-room-5/world.json",
+    spawn: { x: 2, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-1f-room-6": {
+    id: "ss-anne-1f-room-6",
+    label: "S.S. Anne 1F Room 6",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-room-6/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-room-6/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-1f-room-6/world.json",
+    spawn: { x: 2, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-1f-room-7": {
+    id: "ss-anne-1f-room-7",
+    label: "S.S. Anne 1F Room 7",
+    layoutUrl: "/game-assets/maps/ss-anne-1f-room-7/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-1f-room-7/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-1f-room-7/world.json",
+    spawn: { x: 2, y: 2 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-2f-room-1": {
+    id: "ss-anne-2f-room-1",
+    label: "S.S. Anne 2F Room 1",
+    layoutUrl: "/game-assets/maps/ss-anne-2f-room-1/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-2f-room-1/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-2f-room-1/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-2f-room-2": {
+    id: "ss-anne-2f-room-2",
+    label: "S.S. Anne 2F Room 2",
+    layoutUrl: "/game-assets/maps/ss-anne-2f-room-2/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-2f-room-2/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-2f-room-2/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-2f-room-3": {
+    id: "ss-anne-2f-room-3",
+    label: "S.S. Anne 2F Room 3",
+    layoutUrl: "/game-assets/maps/ss-anne-2f-room-3/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-2f-room-3/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-2f-room-3/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-2f-room-4": {
+    id: "ss-anne-2f-room-4",
+    label: "S.S. Anne 2F Room 4",
+    layoutUrl: "/game-assets/maps/ss-anne-2f-room-4/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-2f-room-4/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-2f-room-4/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-2f-room-5": {
+    id: "ss-anne-2f-room-5",
+    label: "S.S. Anne 2F Room 5",
+    layoutUrl: "/game-assets/maps/ss-anne-2f-room-5/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-2f-room-5/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-2f-room-5/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-2f-room-6": {
+    id: "ss-anne-2f-room-6",
+    label: "S.S. Anne 2F Room 6",
+    layoutUrl: "/game-assets/maps/ss-anne-2f-room-6/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-2f-room-6/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-2f-room-6/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-b1f-room-1": {
+    id: "ss-anne-b1f-room-1",
+    label: "S.S. Anne B1F Room 1",
+    layoutUrl: "/game-assets/maps/ss-anne-b1f-room-1/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-b1f-room-1/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-b1f-room-1/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-b1f-room-2": {
+    id: "ss-anne-b1f-room-2",
+    label: "S.S. Anne B1F Room 2",
+    layoutUrl: "/game-assets/maps/ss-anne-b1f-room-2/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-b1f-room-2/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-b1f-room-2/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-b1f-room-3": {
+    id: "ss-anne-b1f-room-3",
+    label: "S.S. Anne B1F Room 3",
+    layoutUrl: "/game-assets/maps/ss-anne-b1f-room-3/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-b1f-room-3/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-b1f-room-3/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-b1f-room-4": {
+    id: "ss-anne-b1f-room-4",
+    label: "S.S. Anne B1F Room 4",
+    layoutUrl: "/game-assets/maps/ss-anne-b1f-room-4/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-b1f-room-4/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-b1f-room-4/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
+  },
+  "ss-anne-b1f-room-5": {
+    id: "ss-anne-b1f-room-5",
+    label: "S.S. Anne B1F Room 5",
+    layoutUrl: "/game-assets/maps/ss-anne-b1f-room-5/layout.json",
+    previewUrl: "/game-assets/maps/ss-anne-b1f-room-5/preview.png",
+    worldUrl: "/game-assets/maps/ss-anne-b1f-room-5/world.json",
+    spawn: { x: 4, y: 6 },
+    fallbackMusicId: 304,
+    tilesets: {
+      primary: GENERAL_TILESET,
+      secondary: SS_ANNE_TILESET,
+    },
   },
   "pewter-mart": {
     id: "pewter-mart",
@@ -1424,6 +2000,18 @@ export function isPokemonStoragePcAt(
 }
 
 export function resolveWarpTransitionAt(
+  mapId: string,
+  x: number,
+  y: number,
+): WorldTransition | null {
+  return (
+    resolveHandWrittenWarpAt(mapId, x, y) ??
+    GENERATED_WARPS[`${mapId}:${x},${y}`] ??
+    null
+  );
+}
+
+function resolveHandWrittenWarpAt(
   mapId: string,
   x: number,
   y: number,
