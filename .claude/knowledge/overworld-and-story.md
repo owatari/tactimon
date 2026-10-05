@@ -42,3 +42,10 @@ Docs longos: `docs/WORLD_STATE.md`, `docs/DIALOGUE_SYSTEM.md`, `docs/PROGRESSION
 - **Sistemas**: `safari.ts`, `dayCare.ts`, `gameCorner.ts`, `inGameTrades.ts` (9 trocas da tabela `0x26CF8C`), `tutors.ts` (Mega Punch/Kick, Route 4), `waterEncounters.ts` (tecla F pesca).
 - Pedido de movimento por diálogo: `DialogueInteractionRequest {kind:"warp"}` (elevador Rocket): `OverworldGame` carrega o mapa ao fim do diálogo.
 - Não incluídos de propósito: TMs/Held items (raids), Sevii Islands, Rock Smash/Waterfall, Cycling Road, elevadores da Silph/Dept. Store (andares por escada).
+
+## Task 006 (polish)
+- HMs de campo e Rock Smash usam a **party** (`hmParty.ts` + `generated/hmCompat.ts` da ROM `gTMHMLearnsets`): o HM do NPC continua sendo o desbloqueio + insígnia; Rock Smash só exige Pokémon compatível. Obstáculos `SMASHABLE_ROCKS`.
+- Cycling Road: tiles `x=6` das gatehouses Route 16 (y10–14) e Route 18 (y4–8) exigem Bicycle (`questGates.ts`).
+- Lendários/míticos (`staticEncounters.raid`): sem batalha, só aviso de raid futura.
+- `normalizeCapturedPokemon` agora aceita qualquer espécie da engine (antes só 21 → perdia Eevee/evoluídos no load); `partyProgress.ts` mantém a espécie evoluída.
+- Reset: Options → ERASE SAVE ou `/?reset=1` (`saveReset.ts`).

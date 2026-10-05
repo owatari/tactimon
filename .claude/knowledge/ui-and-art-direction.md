@@ -11,3 +11,9 @@
 - `components/StartMenu.tsx` + `lib/gameMenu.ts` (lógica pura testável) + `lib/options.ts` (localStorage `tactimon.options.v1`, fora do save). Abre com Esc/Tab/M no overworld (`OverworldGame.onMenuOpen`), pausa via `paused` do `GameClient`; teclas do menu: setas/WASD, Enter/Z/E confirma, Esc/X/Tab/M volta.
 - Líder da party é fixo (tipo `CapturedPokemon` ≠ starter): reordenar só slots 2–6. Bag: bolsos Items/Key/Balls + TMs e Berries reservados (dungeon/raid). `playTimeSeconds` no save (flush a cada 30 s e ao abrir o menu).
 - Sem browser nas sessões anteriores: layout do menu **não validado por screenshot**.
+
+## i18n e casca FireRed (task 006)
+- `lib/i18n`: inglês é a fonte; catálogos por domínio em `catalog/*.ts` (chave = texto inglês; texto pt legado mantém o literal pt como chave com `en`); `t()` traduz na exibição, `runDialogueInteraction` localiza páginas/speakers/escolhas; idioma = `tactimon.lang.v1` ou `navigator.languages`; `useLocale()` re-renderiza.
+- Nomes: `namesData.ts` (fr/zh espécies; pt/es/fr/zh golpes) + `localizedSpeciesName/MoveName/localizeKnownNames`; log da engine é estruturado (`state.logData` template+params) e localizado em `localizeLogEntry`.
+- Casca: sem cabeçalho/rodapé web; viewport 100dvh; caixa de texto cream com ▼; banner de mapa temporário; telas do menu limitadas a 960px.
+- Combate: números flutuantes (`battle-floater`), FX por tipo (`.fx-<type>` CSS) quando não há sprite PMD, projétil atacante→alvo.

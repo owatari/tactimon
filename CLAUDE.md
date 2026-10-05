@@ -28,7 +28,8 @@ pnpm dev                                   # client em http://localhost:3000 (/b
 ## Princípios de produto (resumo — detalhes em `.claude/knowledge/`)
 - UI deve parecer Pokémon real (FireRed): pixel art, `image-rendering: pixelated`, sem gradients/glassmorphism/cards SaaS, sem esticar sprites.
 - Nomes em batalha: aliado local preto, outro player azul, inimigo vermelho. Sem círculos de allegiance.
-- TMs e Held Items só em raids/dungeons.
+- TMs e Held Items só em raids/dungeons. Lendários/míticos são raids futuras do MMO: interagir só avisa (nunca inicia batalha).
+- **Todo texto de jogo é inglês + i18n** (en/pt/es/fr/zh, troca automática pelo idioma do navegador/opção LANGUAGE): escreva `t("English {x}", {x})` (ou `tx("…")` em dados estáticos) e registre a tradução nos 4 idiomas em `apps/client/lib/i18n/catalog/` — `tests/i18n.test.ts` falha se faltar. Nomes de espécie/golpe: `lib/i18n/names*.ts`. Detalhes: `tools/i18n/README.md`.
 - Saves são locais (localStorage) e precisam de normalização compatível com saves antigos.
 
 ## Como trabalhar
