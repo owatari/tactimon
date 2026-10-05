@@ -77,6 +77,13 @@ import {
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import { repelBlocksEncounter } from "@/lib/itemUse";
+import {
+  bestOwnedRod,
+  hasFishingTable,
+  resolveFishing,
+  resolveScaledSurfEncounter,
+  surfEncounterRate,
+} from "@/lib/waterEncounters";
 import { canStoryUseStrength } from "@/lib/fieldTechniques";
 import {
   resetBoulders,
@@ -1149,10 +1156,15 @@ export function OverworldGame({
     ],
   );
 
-  const startStaticBattle = useCallback(
-    (spec: WildBattleSpec) => {
+  const launchWildBattle = useCallback(
+    (
+      members: readonly WildEncounter[],
+      areaLevel: number,
+      staticId?: string,
+    ) => {
       const currentStory = storyRef.current;
       if (
+        members.length === 0 ||
         !currentStory.firstBattleComplete ||
         !storyHasHealthyPokemon(currentStory) ||
         wildBattleLockRef.current
@@ -1175,23 +1187,109 @@ export function OverworldGame({
         .map((pokemon) => pokemon.level);
 
       wildBattleLockRef.current = true;
+      wildEncounterCooldownRef.current = 5;
       resetInput();
       onWildBattleTrigger(context, {
-        species: spec.species as WildSpeciesId,
-        level: spec.level,
-        members: [
-          { species: spec.species as WildSpeciesId, level: spec.level },
-        ],
-        areaLevel: spec.level,
+        species: members[0].species,
+        level: members[0].level,
+        members,
+        areaLevel,
         equivalentPartyStrength: equivalentWildPartyStrength(
-          spec.level,
+          areaLevel,
           partyLevels,
         ),
-        staticId: spec.staticId,
+        staticId,
       });
     },
     [createBattleContext, onWildBattleTrigger, resetInput],
   );
+
+  const startStaticBattle = useCallback(
+    (spec: WildBattleSpec) => {
+      launchWildBattle(
+        [{ species: spec.species as WildSpeciesId, level: spec.level }],
+        spec.level,
+        spec.staticId,
+      );
+    },
+    [launchWildBattle],
+  );
+
+  const fish = useCallback(() => {
+    const player = playerRef.current;
+    if (
+      dialogueRef.current ||
+      player.moving ||
+      transitioningRef.current ||
+      wildBattleLockRef.current
+    ) {
+      return;
+    }
+
+    const currentStory = storyRef.current;
+    const rod = bestOwnedRod(currentStory);
+    if (!rod) {
+      showInteraction("Você precisa de uma vara de pesca.");
+      return;
+    }
+
+    const delta = DIRECTION_DELTA[player.facing];
+    const activeLayout = layoutRef.current;
+    if (
+      !activeLayout ||
+      !isWaterCell(
+        activeLayout,
+        player.tileX + delta.x,
+        player.tileY + delta.y,
+      )
+    ) {
+      showInteraction("Não há água na sua frente.");
+      return;
+    }
+
+    if (!hasFishingTable(mapIdRef.current)) {
+      showInteraction("Parece que não há peixes por aqui.");
+      return;
+    }
+
+    const rolls = new Uint32Array(2);
+    if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+      crypto.getRandomValues(rolls);
+    } else {
+      rolls[0] = Date.now() >>> 0;
+      rolls[1] = (Date.now() * 7) >>> 0;
+    }
+
+    const result = resolveFishing(
+      mapIdRef.current,
+      rod,
+      rolls[0],
+      rolls[1],
+    );
+    if (result.outcome === "bite") {
+      const { encounter } = result;
+      showDialogue(
+        onDialogueInteraction({
+          kind: "text",
+          id: "fishing:bite",
+          text: "Opa! Fisgou algo!",
+        }),
+        () => launchWildBattle([encounter], encounter.level),
+      );
+      return;
+    }
+
+    showInteraction(
+      result.outcome === "nibble"
+        ? "Nem uma mordida..."
+        : "Parece que não há peixes por aqui.",
+    );
+  }, [
+    launchWildBattle,
+    onDialogueInteraction,
+    showDialogue,
+    showInteraction,
+  ]);
 
   const interact = useCallback(() => {
     if (pausedRef.current) {
@@ -1627,6 +1725,17 @@ export function OverworldGame({
       }
 
       if (
+        lowerKey === "f" &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey
+      ) {
+        event.preventDefault();
+        if (!event.repeat) fish();
+        return;
+      }
+
+      if (
         event.key === " " ||
         event.key === "Enter" ||
         lowerKey === "e"
@@ -1663,6 +1772,7 @@ export function OverworldGame({
       window.removeEventListener("blur", onBlur);
     };
   }, [
+    fish,
     interact,
     onMenuOpen,
     resetInput,
@@ -2139,8 +2249,18 @@ export function OverworldGame({
       const player = playerRef.current;
       const currentStory = storyRef.current;
 
-      const encounterTable =
-        LAND_ENCOUNTERS[mapIdRef.current];
+      const surfing = surfingRef.current;
+      const surfRate = surfing
+        ? surfEncounterRate(mapIdRef.current)
+        : null;
+      const encounterTable = surfing
+        ? surfRate === null
+          ? undefined
+          : {
+              encounterRate: surfRate,
+              terrain: "water" as const,
+            }
+        : LAND_ENCOUNTERS[mapIdRef.current];
 
       if (
         !encounterTable ||
@@ -2164,10 +2284,12 @@ export function OverworldGame({
 
       const terrain = encounterTable.terrain ?? "grass";
       // Grass encounters keep the FireRed 0x00D metatile rule. Cave tables
-      // instead roll on any walkable cave-floor tile.
+      // instead roll on any walkable cave-floor tile; surfing rolls on water.
       if (
         (terrain === "grass" && cell.metatile !== 0x00d) ||
-        (terrain === "cave" && cell.collision !== 0)
+        (terrain === "cave" && cell.collision !== 0) ||
+        (terrain === "water" &&
+          !isWaterCell(activeLayout, player.tileX, player.tileY))
       ) {
         return;
       }
@@ -2204,12 +2326,17 @@ export function OverworldGame({
             pokemon.currentHp > 0,
         )
         .map((pokemon) => pokemon.level);
-      const encounter =
-        resolveScaledWildEncounter(
-          mapIdRef.current,
-          rollBuffer[0] >>> 8,
-          partyLevels,
-        );
+      const encounter = surfing
+        ? resolveScaledSurfEncounter(
+            mapIdRef.current,
+            rollBuffer[0] >>> 8,
+            partyLevels,
+          )
+        : resolveScaledWildEncounter(
+            mapIdRef.current,
+            rollBuffer[0] >>> 8,
+            partyLevels,
+          );
       if (!encounter) {
         return;
       }
