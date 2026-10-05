@@ -2,6 +2,7 @@ import {
   calculateDuelPokemonMaxHp,
   createPokemonProgression,
   createStarterProgression,
+  isDuelSpeciesId,
   normalizeDuelMajorStatus,
   normalizePokemonProgression,
   restoreDuelMovePp,
@@ -291,27 +292,8 @@ function normalizeCapturedPokemon(
   };
 
   if (
-    (candidate.species !== "pidgey" &&
-      candidate.species !== "abra" &&
-      candidate.species !== "oddish" &&
-      candidate.species !== "meowth" &&
-      candidate.species !== "rattata" &&
-      candidate.species !== "caterpie" &&
-      candidate.species !== "weedle" &&
-      candidate.species !== "spearow" &&
-      candidate.species !== "mankey" &&
-      candidate.species !== "metapod" &&
-      candidate.species !== "kakuna" &&
-      candidate.species !== "pikachu" &&
-      candidate.species !== "ekans" &&
-      candidate.species !== "nidoran-f" &&
-      candidate.species !== "nidoran-m" &&
-      candidate.species !== "jigglypuff" &&
-      candidate.species !== "zubat" &&
-      candidate.species !== "paras" &&
-      candidate.species !== "parasect" &&
-      candidate.species !== "clefairy" &&
-      candidate.species !== "geodude") ||
+    typeof candidate.species !== "string" ||
+    !isDuelSpeciesId(candidate.species) ||
     typeof candidate.level !== "number" ||
     !Number.isFinite(candidate.level)
   ) {
@@ -323,7 +305,7 @@ function normalizeCapturedPokemon(
     Math.min(100, Math.trunc(candidate.level)),
   );
   const base = createPokemonProgression(
-    candidate.species,
+    candidate.species as WildSpeciesId,
     level,
   );
   const normalized = normalizePokemonProgression({
@@ -351,7 +333,7 @@ function normalizeCapturedPokemon(
 
   return {
     ...normalized,
-    species: candidate.species,
+    species: candidate.species as WildSpeciesId,
   };
 }
 

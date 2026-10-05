@@ -31,6 +31,8 @@ import {
   type BattleEncounter,
   type BattleOutcome,
 } from "@/components/FirstBattle";
+import { clearAllSaves, wantsSaveReset } from "@/lib/saveReset";
+import { applyPartyProgressionRewards } from "@/lib/partyProgress";
 import { BattleResultsScreen } from "@/components/BattleResultsScreen";
 import {
   describeBattleResult,
@@ -128,44 +130,6 @@ type ProgressionQueueEntry = {
   position: number;
   total: number;
 };
-
-function applyPartyProgressionRewards(
-  current: StoryState,
-  rewards: readonly ProgressionReward[],
-  partyIndices: readonly number[],
-): StoryState {
-  let playerPokemon = current.playerPokemon;
-  const capturedPokemon = [...current.capturedPokemon];
-
-  rewards.forEach((reward, rewardIndex) => {
-    const partyIndex = partyIndices[rewardIndex];
-    if (partyIndex === undefined) {
-      return;
-    }
-
-    if (partyIndex === 0) {
-      playerPokemon = reward.progression;
-      return;
-    }
-
-    const capturedIndex = partyIndex - 1;
-    const existing = capturedPokemon[capturedIndex];
-    if (!existing) {
-      return;
-    }
-
-    capturedPokemon[capturedIndex] = {
-      ...reward.progression,
-      species: existing.species,
-    };
-  });
-
-  return {
-    ...current,
-    playerPokemon,
-    capturedPokemon: capturedPokemon.slice(0, 5),
-  };
-}
 
 function applyBattleHealth(
   current: StoryState,
@@ -357,6 +321,10 @@ export function GameClient() {
 
   useEffect(() => {
     try {
+      if (wantsSaveReset(window.location.search)) {
+        clearAllSaves(window.localStorage);
+        window.history.replaceState(null, "", window.location.pathname);
+      }
       const primary = window.localStorage.getItem(
         STORY_STORAGE_KEY,
       );

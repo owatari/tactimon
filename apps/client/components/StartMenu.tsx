@@ -31,6 +31,7 @@ import {
 } from "@/lib/itemUse";
 import type { OverworldItemId } from "@/lib/items";
 import type { ProgressionReward } from "@tactimon/battle-engine";
+import { clearAllSaves } from "@/lib/saveReset";
 import type { StoryState } from "@/lib/story";
 import {
   checkFlyDestination,
@@ -71,6 +72,7 @@ const OPTION_ROWS = [
   "MUSIC VOLUME",
   "MUSIC",
   "BATTLE SPEED",
+  "ERASE SAVE",
   "CLOSE",
 ] as const;
 
@@ -132,6 +134,7 @@ export function StartMenu({
   const [townIndex, setTownIndex] = useState(0);
   const [bagUse, setBagUse] = useState<BagUse | null>(null);
   const [notice, setNotice] = useState("");
+  const eraseArmedRef = useRef(false);
 
   const party = useMemo(() => getStoryParty(story), [story]);
   const pockets = useMemo(() => buildBagPockets(story), [story]);
@@ -233,6 +236,9 @@ export function StartMenu({
 
       const s = latest.current;
       setNotice("");
+      if (!(s.screen === "options" && s.optionIndex === 3 && confirm)) {
+        eraseArmedRef.current = false;
+      }
 
       if (s.screen === "root") {
         if (up) setRootIndex(wrap(s.rootIndex - 1, MENU_ENTRIES.length));
@@ -442,6 +448,15 @@ export function StartMenu({
         } else if (s.optionIndex === 2) {
           onOptionsChange({ ...o, battleSpeed: o.battleSpeed === 1 ? 2 : 1 });
         } else if (s.optionIndex === 3 && confirm) {
+          if (eraseArmedRef.current) {
+            clearAllSaves(window.localStorage);
+            window.location.reload();
+          } else {
+            eraseArmedRef.current = true;
+            setNotice("Press ENTER again to erase your save. Any other key cancels.");
+          }
+          return;
+        } else if (s.optionIndex === 4 && confirm) {
           setScreen("root");
         }
       }
