@@ -2,7 +2,9 @@ import {
   DUEL_MOVES,
   type DuelInventory,
   calculateDuelPokemonStats,
+  evolveWithStone,
   grantRareCandy,
+  speciesDisplayName,
   type DuelMajorStatus,
   type PokemonProgression,
   type ProgressionReward,
@@ -30,6 +32,7 @@ type ItemEffect =
   | { kind: "revive" }
   | { kind: "pp"; amount: number | "max"; allMoves: boolean }
   | { kind: "rare-candy" }
+  | { kind: "stone" }
   | { kind: "repel" };
 
 export const ITEM_EFFECTS: Partial<
@@ -51,6 +54,11 @@ export const ITEM_EFFECTS: Partial<
   "max-ether": { kind: "pp", amount: "max", allMoves: false },
   elixir: { kind: "pp", amount: 10, allMoves: true },
   "rare-candy": { kind: "rare-candy" },
+  "fire-stone": { kind: "stone" },
+  "thunder-stone": { kind: "stone" },
+  "water-stone": { kind: "stone" },
+  "leaf-stone": { kind: "stone" },
+  "moon-stone": { kind: "stone" },
   repel: { kind: "repel" },
 };
 
@@ -261,6 +269,22 @@ export function useBagItem(
         return { ...p, movePp };
       }),
       message: "O PP foi restaurado.",
+    };
+  }
+
+  if (effect.kind === "stone") {
+    const evolved = evolveWithStone(target, itemId);
+    if (!evolved) {
+      return refuse(story, "Não teve efeito.");
+    }
+    return {
+      accepted: true,
+      story: withPartyMember(
+        consume(story, itemId),
+        partyIndex,
+        () => evolved,
+      ),
+      message: `${speciesDisplayName(target.species)} evoluiu para ${speciesDisplayName(evolved.species)}!`,
     };
   }
 

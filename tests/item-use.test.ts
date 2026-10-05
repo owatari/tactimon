@@ -127,7 +127,8 @@ describe("field item use", () => {
   it("only exposes supported field items", () => {
     expect(isFieldUsableItem("repel")).toBe(true);
     expect(isFieldUsableItem("escape-rope")).toBe(false);
-    expect(isFieldUsableItem("moon-stone")).toBe(false);
+    expect(isFieldUsableItem("moon-stone")).toBe(true);
+    expect(isFieldUsableItem("star-piece")).toBe(false);
   });
 });
 
@@ -166,5 +167,31 @@ describe("battle bag", () => {
     expect(after.bagItems?.antidote).toBeUndefined();
     expect(after.bagItems?.["super-potion"]).toBe(1);
     expect(after.bagItems?.revive).toBe(1);
+  });
+});
+
+describe("evolution stones and generated evolutions", () => {
+  it("evolves Growlithe with a Fire Stone and refuses other species", () => {
+    const base = normalizeStoryState({
+      starter: "bulbasaur",
+      playerPokemon: createPokemonProgression("growlithe", 20),
+      bagItems: { "fire-stone": 1, "leaf-stone": 1 },
+    });
+    expect(useBagItem(base, "leaf-stone", 0).accepted).toBe(false);
+    const result = useBagItem(base, "fire-stone", 0);
+    expect(result.accepted).toBe(true);
+    expect(result.story.playerPokemon!.species).toBe("arcanine");
+    expect(result.story.bagItems?.["fire-stone"]).toBeUndefined();
+    expect(result.story.bagItems?.["leaf-stone"]).toBe(1);
+  });
+
+  it("levels Nidoran♀ into Nidorina at 16 and Kadabra into Alakazam at 37", async () => {
+    const { grantRareCandy } = await import("../packages/battle-engine/src");
+    let nido = createPokemonProgression("nidoran-f", 15);
+    nido = grantRareCandy(nido)!.progression;
+    expect(nido.species).toBe("nidorina");
+    let kadabra = createPokemonProgression("kadabra", 36);
+    kadabra = grantRareCandy(kadabra)!.progression;
+    expect(kadabra.species).toBe("alakazam");
   });
 });

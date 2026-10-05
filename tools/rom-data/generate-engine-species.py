@@ -168,9 +168,20 @@ for sid in NEW:
     out_exp[sid] = s["baseExp"]
     out_growth[sid] = GROWTH[s["growthRate"]]
     out_catch[sid] = s["catchRate"]
-    for e in s["evolutions"]:
-        if e["method"] == "level" and e["to"] in species:
+
+STONES = {93: "sun-stone", 94: "moon-stone", 95: "fire-stone", 96: "thunder-stone", 97: "water-stone", 98: "leaf-stone"}
+out_stone = {}
+for sid, s_ in species.items():
+    for e in s_["evolutions"]:
+        if e["to"] not in species:
+            continue
+        if e["method"] == "level":
             out_evo[sid] = {"level": e["param"], "species": e["to"]}
+        elif e["method"] == "trade":
+            # No trading yet: trade evolutions happen at level 37 instead.
+            out_evo.setdefault(sid, {"level": 37, "species": e["to"]})
+        elif e["method"] == "item" and e["param"] in STONES:
+            out_stone.setdefault(sid, {})[STONES[e["param"]]] = e["to"]
 
 new_moves = {k: v for k, v in converted.items() if v and k not in HAND_MOVES}
 used_moves = {e["moveId"] for l in out_learn.values() for e in l} | {m for v in out_init.values() for m in v}
@@ -194,6 +205,7 @@ lines.append("export const GENERATED_BASE_EXPERIENCE = %s;" % json.dumps(out_exp
 lines.append("export const GENERATED_GROWTH_RATE = %s;" % json.dumps(out_growth))
 lines.append("export const GENERATED_CATCH_RATE = %s;" % json.dumps(out_catch))
 lines.append("export const GENERATED_LEVEL_EVOLUTIONS = %s;" % json.dumps(out_evo))
+lines.append("export const GENERATED_STONE_EVOLUTIONS = %s;" % json.dumps(out_stone))
 lines.append("export const GENERATED_MOVES = %s;" % json.dumps({k: new_moves[k] for k in sorted(new_moves)}, ensure_ascii=False, indent=2))
 lines.append("")
 gen = ENGINE / "generated"

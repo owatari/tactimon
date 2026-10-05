@@ -5,6 +5,7 @@ import {
   GENERATED_INITIAL_MOVES,
   GENERATED_LEARNSETS,
   GENERATED_LEVEL_EVOLUTIONS,
+  GENERATED_STONE_EVOLUTIONS,
   type GeneratedSpeciesId,
 } from "./generated/kanto";
 import {
@@ -1537,6 +1538,37 @@ function grantExperience(
     pendingMoves,
     evolutions,
   };
+}
+
+/** Evolution stone (Fire/Thunder/Water/Leaf/Moon). Null when it has no effect. */
+export function evolveWithStone(
+  input: PokemonProgression,
+  stone: string,
+): PokemonProgression | null {
+  const target = (
+    GENERATED_STONE_EVOLUTIONS as Record<
+      string,
+      Record<string, string>
+    >
+  )[input.species]?.[stone];
+  if (!target) {
+    return null;
+  }
+
+  const progression = normalizePokemonProgression(input);
+  const oldMaxHp = calculateDuelPokemonMaxHp(progression);
+  progression.species = target as DuelSpeciesId;
+  const newMaxHp = calculateDuelPokemonMaxHp(progression);
+  progression.currentHp =
+    progression.currentHp <= 0
+      ? 0
+      : Math.min(
+          newMaxHp,
+          progression.currentHp +
+            Math.max(0, newMaxHp - oldMaxHp),
+        );
+
+  return progression;
 }
 
 /** Rare Candy: grants exactly the experience needed for the next level. */
