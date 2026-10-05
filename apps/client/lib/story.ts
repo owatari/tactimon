@@ -77,7 +77,7 @@ export const STORY_KEY_ITEM_IDS: readonly StoryKeyItemId[] = [
   "bike-voucher",
   "bicycle",
 ];
-export type StoryFieldTechniqueId = "cut";
+export type StoryFieldTechniqueId = "cut" | "surf";
 export type BillStoryStage =
   | "unmet"
   | "teleporter-ready"
@@ -366,7 +366,7 @@ function normalizeFieldTechniqueIds(
     new Set(
       value.filter(
         (technique): technique is StoryFieldTechniqueId =>
-          technique === "cut",
+          technique === "cut" || technique === "surf",
       ),
     ),
   );
@@ -1566,5 +1566,40 @@ export function removeStoryKeyItem(
     keyItemIds: (story.keyItemIds ?? []).filter(
       (id) => id !== itemId,
     ),
+  };
+}
+
+
+/** Surf needs the HM (field technique) and the Soul Badge, as in FireRed. */
+export function canStoryUseSurf(story: StoryState): boolean {
+  return (
+    hasStoryFieldTechnique(story, "surf") &&
+    story.badgeIds.includes("soul")
+  );
+}
+
+export function grantStoryFieldTechniqueOnce(
+  story: StoryState,
+  techniqueId: StoryFieldTechniqueId,
+): { story: StoryState; granted: boolean } {
+  if (hasStoryFieldTechnique(story, techniqueId)) {
+    return { story, granted: false };
+  }
+
+  const next = completeStoryPlayerEvent(
+    story,
+    "field-technique",
+    techniqueId,
+  );
+
+  return {
+    granted: true,
+    story: {
+      ...next,
+      fieldTechniqueIds: [
+        ...(next.fieldTechniqueIds ?? []),
+        techniqueId,
+      ],
+    },
   };
 }

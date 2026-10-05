@@ -89,6 +89,54 @@ export const GENERATED_NPC_TEXT: Readonly<Record<string, readonly string[]>> = {
   "SECRETARY: Thank you for rescuing all of us.",
   "We, from the PRESIDENT down, are indebted to you."
  ],
+ "safari-zone-center-rest-house:3,4": [
+  "I'm catching POKéMON to take home as gifts."
+ ],
+ "safari-zone-center-rest-house:7,3": [
+  "SARA: Where did my boyfriend, ERIK, go?"
+ ],
+ "safari-zone-east-rest-house:3,5": [
+  "How many did you catch? I'm bushed from the effort!"
+ ],
+ "safari-zone-east-rest-house:6,3": [
+  "I caught a CHANSEY!",
+  "That makes this all worthwhile."
+ ],
+ "safari-zone-east-rest-house:7,3": [
+  "Whew! I'm tired from all the fun!"
+ ],
+ "safari-zone-north-rest-house:3,4": [
+  "My EEVEE evolved into FLAREON.",
+  "But, a friend's EEVEE turned into a VAPOREON. I wonder why?"
+ ],
+ "safari-zone-north-rest-house:7,5": [
+  "You can keep any item you find in the SAFARI ZONE.",
+  "But, you'll run out of time if you try for all of them at once."
+ ],
+ "safari-zone-north-rest-house:6,2": [
+  "Go to the deepest part of the SAFARI ZONE. You will win a prize!"
+ ],
+ "safari-zone-north-rest-house:11,2": [
+  "The SAFARI ZONE's huge, wouldn't you say?",
+  "FUCHSIA's GYM LEADER, KOGA, patrols the grounds every so often.",
+  "Thanks to him, we can play here knowing that we're safe."
+ ],
+ "safari-zone-west-rest-house:3,4": [
+  "Tossing ROCKS at POKéMON might make them run, but they'll be easier to catch."
+ ],
+ "safari-zone-west-rest-house:2,2": [
+  "Using BAIT will make POKéMON more likely to stick around if they get busy eating."
+ ],
+ "safari-zone-west-rest-house:7,3": [
+  "I hiked a lot, but I didn't see any POKéMON I wanted."
+ ],
+ "safari-zone-secret-house:6,5": [
+  "Ah! Finally!",
+  "You're the first person to reach the SECRET HOUSE!",
+  "Although I made a campaign for our grand opening,",
+  "I was getting worried that no one would win our campaign prize.",
+  "Congratulations! You have won!"
+ ],
  "rock-tunnel-b-1f:2,29": [
   "When you're up on a rocky mountain like this, rockslides are a threat.",
   "Can you imagine? Boulders tumbling down on you?",
@@ -191,6 +239,10 @@ export const GENERATED_NPC_TEXT: Readonly<Record<string, readonly string[]>> = {
  "cinnabar-island:11,11": [
   "Scientists conduct experiments in the burned-out building.",
   "You know, the one they call the POKéMON MANSION."
+ ],
+ "route-20:69,3": [
+  "Strong TRAINERS and WATER POKéMON are common sights in these parts.",
+  "They say that MISTY of the CERULEAN GYM trains here."
  ],
  "route-23:15,149": [
   "VICTORY ROAD GATE - POKéMON LEAGUE"
@@ -1372,6 +1424,15 @@ export const GENERATED_SIGN_TEXT: Readonly<Record<string, readonly string[]>> = 
  ],
  "route-18:52,7": [
   "ROUTE 18 CELADON CITY - FUCHSIA CITY"
+ ],
+ "route-19:13,12": [
+  "SEA ROUTE 19 FUCHSIA CITY - SEAFOAM ISLANDS"
+ ],
+ "route-20:68,14": [
+  "SEAFOAM ISLANDS"
+ ],
+ "route-20:64,8": [
+  "SEAFOAM ISLANDS"
  ],
  "route-23:3,31": [
   "VICTORY ROAD GATE - POKéMON LEAGUE"

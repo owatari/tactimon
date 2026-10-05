@@ -30,8 +30,8 @@ EXCLUDE = re.compile(
     r"pokemoncenter_2f|route\d+_pokemoncenter_2f|ceruleancave|unusedhouse|unusedgatehouse|dummy|hoennbuilding|"
     r"hall?offame|halloffame|rocketwarehouse|dunsparce|berryforest|icefall|lostcave|dottedhole|alteringcave|patternbush|"
     r"resortgorgeous|waterlabyrinth|meadow|memorialpillar|outcastisland|greenpath|waterpath|ruinvalley|sevault|tanoby|"
-    r"saffroncity_connection|route21_south|route21_north|route19|route20|rockethideout_elevator|silphco_elevator|"
-    r"departmentstore_elevator|safarizone_.*resthouse|safarizone_secrethouse",
+    r"saffroncity_connection|rockethideout_elevator|silphco_elevator|"
+    r"departmentstore_elevator",
     re.I,
 )
 

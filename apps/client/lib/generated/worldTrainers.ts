@@ -9001,6 +9001,1519 @@ export const GENERATED_TRAINERS: readonly OverworldTrainerDefinition[] = [
   ]
  },
  {
+  "id": "route-19-reece",
+  "mapId": "route-19",
+  "name": "Swimmer Reece",
+  "preferredPosition": {
+   "x": 15,
+   "y": 10
+  },
+  "facing": "west",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/045_swimmer_m_land.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Reece: Wait! Slow down! You'll have a heart attack!",
+  "defeatedText": "Reece: Ooh! That's chilly!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "goldeen",
+    "level": 29,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 29,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "staryu",
+    "level": 29,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-richard",
+  "mapId": "route-19",
+  "name": "Swimmer Richard",
+  "preferredPosition": {
+   "x": 10,
+   "y": 9
+  },
+  "facing": "east",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/045_swimmer_m_land.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Richard: I have to exercise and warm up before going out for a swim.",
+  "defeatedText": "Richard: All warmed up!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "tentacool",
+    "level": 30,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
+    ]
+   },
+   {
+    "species": "shellder",
+    "level": 30,
+    "moves": [
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-tony",
+  "mapId": "route-19",
+  "name": "Swimmer Tony",
+  "preferredPosition": {
+   "x": 12,
+   "y": 17
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Tony: I look at the sea to forget all the bad things that happened.",
+  "defeatedText": "Tony: Ooh! Traumatic!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "horsea",
+    "level": 30,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 30,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-matthew",
+  "mapId": "route-19",
+  "name": "Swimmer Matthew",
+  "preferredPosition": {
+   "x": 18,
+   "y": 33
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Matthew: I love swimming! What about you?",
+  "defeatedText": "Matthew: Belly flop!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "poliwag",
+    "level": 30,
+    "moves": [
+     "bite",
+     "ember"
+    ]
+   },
+   {
+    "species": "poliwhirl",
+    "level": 30,
+    "moves": [
+     "hypnosis",
+     "water-gun",
+     "doubleslap",
+     "rain-dance"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-douglas",
+  "mapId": "route-19",
+  "name": "Swimmer Douglas",
+  "preferredPosition": {
+   "x": 8,
+   "y": 27
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Douglas: What's beyond the horizon?",
+  "defeatedText": "Douglas: Glub!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "horsea",
+    "level": 27,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "tentacool",
+    "level": 27,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
+    ]
+   },
+   {
+    "species": "tentacool",
+    "level": 27,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
+    ]
+   },
+   {
+    "species": "goldeen",
+    "level": 27,
+    "moves": [
+     "bubble",
+     "smokescreen",
+     "leer",
+     "water-gun"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-david",
+  "mapId": "route-19",
+  "name": "Swimmer David",
+  "preferredPosition": {
+   "x": 16,
+   "y": 22
+  },
+  "facing": "south",
+  "sightRange": 6,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "David: I tried diving for POKéMON, but it was a no-go.",
+  "defeatedText": "David: Help!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "goldeen",
+    "level": 29,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "shellder",
+    "level": 29,
+    "moves": [
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 29,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-axle",
+  "mapId": "route-19",
+  "name": "Swimmer Axle",
+  "preferredPosition": {
+   "x": 11,
+   "y": 47
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Axle: Ahoy, there! These waters are treacherous!",
+  "defeatedText": "Axle: Ooh! Dangerous!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "tentacool",
+    "level": 27,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
+    ]
+   },
+   {
+    "species": "tentacool",
+    "level": 27,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
+    ]
+   },
+   {
+    "species": "staryu",
+    "level": 27,
+    "moves": [
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 27,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "tentacruel",
+    "level": 27,
+    "moves": [
+     "supersonic",
+     "constrict",
+     "acid",
+     "bubblebeam"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-alice",
+  "mapId": "route-19",
+  "name": "Swimmer Alice",
+  "preferredPosition": {
+   "x": 14,
+   "y": 48
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Alice: Swimming's great! Sunburns aren't!",
+  "defeatedText": "Alice: Shocker!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "goldeen",
+    "level": 30,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 30,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-connie",
+  "mapId": "route-19",
+  "name": "Swimmer Connie",
+  "preferredPosition": {
+   "x": 12,
+   "y": 49
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Connie: I swam here with my friends… I'm tired…",
+  "defeatedText": "Connie: I'm exhausted…",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "staryu",
+    "level": 29,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "staryu",
+    "level": 29,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "staryu",
+    "level": 29,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-anya",
+  "mapId": "route-19",
+  "name": "Swimmer Anya",
+  "preferredPosition": {
+   "x": 9,
+   "y": 48
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Anya: Oh, I just love your ride! Can I have it if I win?",
+  "defeatedText": "Anya: Oh! I lost!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "poliwag",
+    "level": 27,
+    "moves": [
+     "bite",
+     "ember"
+    ]
+   },
+   {
+    "species": "goldeen",
+    "level": 27,
+    "moves": [
+     "bubble",
+     "smokescreen",
+     "leer",
+     "water-gun"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 27,
+    "moves": [
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
+    ]
+   },
+   {
+    "species": "goldeen",
+    "level": 27,
+    "moves": [
+     "bubble",
+     "smokescreen",
+     "leer",
+     "water-gun"
+    ]
+   },
+   {
+    "species": "poliwag",
+    "level": 27,
+    "moves": [
+     "bite",
+     "ember"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-lia-luc",
+  "mapId": "route-19",
+  "name": "Swimmer Lia  Luc",
+  "preferredPosition": {
+   "x": 8,
+   "y": 41
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Lia  Luc: I'm looking after my brother. He just became a TRAINER.",
+  "defeatedText": "Lia  Luc: That's no way to treat my little brother!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "goldeen",
+    "level": 30,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 30,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-19-lia-luc-9-41",
+  "mapId": "route-19",
+  "name": "Tuber Lia  Luc",
+  "preferredPosition": {
+   "x": 9,
+   "y": 41
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/036_tuber_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 16,
+  "sheetWidth": 96,
+  "sheetHeight": 32,
+  "challengeText": "Lia  Luc: My big sis taught me how to swim and train POKéMON.",
+  "defeatedText": "Lia  Luc: Oh, wow! Someone tougher than my big sis!",
+  "moneyMultiplier": 1,
+  "party": [
+   {
+    "species": "goldeen",
+    "level": 30,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 30,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-melissa",
+  "mapId": "route-20",
+  "name": "Swimmer Melissa",
+  "preferredPosition": {
+   "x": 8,
+   "y": 11
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Melissa: CINNABAR, in the west, has a LAB for POKéMON. My daddy works there.",
+  "defeatedText": "Melissa: Wait! You're supposed to wait!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "poliwag",
+    "level": 31,
+    "moves": [
+     "bite",
+     "ember"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 31,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-missy",
+  "mapId": "route-20",
+  "name": "Picnicker Missy",
+  "preferredPosition": {
+   "x": 16,
+   "y": 14
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/040_picnicker.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Missy: I swam here from CINNABAR ISLAND. It wasn't easy, I tell you.",
+  "defeatedText": "Missy: I'm so disappointed!",
+  "moneyMultiplier": 5,
+  "party": [
+   {
+    "species": "goldeen",
+    "level": 31,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 31,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-nora",
+  "mapId": "route-20",
+  "name": "Swimmer Nora",
+  "preferredPosition": {
+   "x": 34,
+   "y": 7
+  },
+  "facing": "south",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Nora: My boyfriend gave me big pearls.",
+  "defeatedText": "Nora: Oh, no! My pearls were in them!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "shellder",
+    "level": 30,
+    "moves": [
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
+    ]
+   },
+   {
+    "species": "shellder",
+    "level": 30,
+    "moves": [
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
+    ]
+   },
+   {
+    "species": "cloyster",
+    "level": 30,
+    "moves": [
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-roger",
+  "mapId": "route-20",
+  "name": "Rocker Roger",
+  "preferredPosition": {
+   "x": 43,
+   "y": 9
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/026_rocker.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Roger: I rode my bird POKéMON here.",
+  "defeatedText": "Roger: Oh, no! Now what am I to do?",
+  "moneyMultiplier": 6,
+  "party": [
+   {
+    "species": "fearow",
+    "level": 30,
+    "moves": [
+     "growl",
+     "leer",
+     "fury-attack",
+     "aerial-ace"
+    ]
+   },
+   {
+    "species": "fearow",
+    "level": 30,
+    "moves": [
+     "growl",
+     "leer",
+     "fury-attack",
+     "aerial-ace"
+    ]
+   },
+   {
+    "species": "pidgeotto",
+    "level": 30,
+    "moves": [
+     "sand-attack",
+     "gust",
+     "quick-attack",
+     "wing-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-dean",
+  "mapId": "route-20",
+  "name": "Swimmer Dean",
+  "preferredPosition": {
+   "x": 23,
+   "y": 10
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Dean: Check out my buff physique!",
+  "defeatedText": "Dean: Wimpy!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "staryu",
+    "level": 35,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-irene",
+  "mapId": "route-20",
+  "name": "Picnicker Irene",
+  "preferredPosition": {
+   "x": 73,
+   "y": 16
+  },
+  "facing": "west",
+  "sightRange": 2,
+  "spriteUrl": "/game-assets/overworld/040_picnicker.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Irene: Are you on vacation, too?",
+  "defeatedText": "Irene: No mercy at all!",
+  "moneyMultiplier": 5,
+  "party": [
+   {
+    "species": "tentacool",
+    "level": 30,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 30,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "seel",
+    "level": 30,
+    "moves": [
+     "peck",
+     "growl",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-barry",
+  "mapId": "route-20",
+  "name": "Swimmer Barry",
+  "preferredPosition": {
+   "x": 111,
+   "y": 9
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Barry: The water is shallow here. There are many people swimming.",
+  "defeatedText": "Barry: Splash!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "shellder",
+    "level": 31,
+    "moves": [
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
+    ]
+   },
+   {
+    "species": "cloyster",
+    "level": 31,
+    "moves": [
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-darrin",
+  "mapId": "route-20",
+  "name": "Swimmer Darrin",
+  "preferredPosition": {
+   "x": 106,
+   "y": 11
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Darrin: Why are you riding a POKéMON? Can't you swim?",
+  "defeatedText": "Darrin: Ouch! Torpedoed!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "horsea",
+    "level": 28,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 28,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "seadra",
+    "level": 28,
+    "moves": [
+     "bubble",
+     "smokescreen",
+     "leer",
+     "water-gun"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 28,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-shirley",
+  "mapId": "route-20",
+  "name": "Swimmer Shirley",
+  "preferredPosition": {
+   "x": 93,
+   "y": 10
+  },
+  "facing": "south",
+  "sightRange": 5,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Shirley: SEAFOAM is a quiet getaway. I'm vacationing here.",
+  "defeatedText": "Shirley: Quit it!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "seadra",
+    "level": 30,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "horsea",
+    "level": 30,
+    "moves": [
+     "leer",
+     "bite",
+     "tail-whip",
+     "mega-punch"
+    ]
+   },
+   {
+    "species": "seadra",
+    "level": 30,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-20-tiffany",
+  "mapId": "route-20",
+  "name": "Swimmer Tiffany",
+  "preferredPosition": {
+   "x": 54,
+   "y": 11
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Tiffany: I love floating with the fishes here among the waves.",
+  "defeatedText": "Tiffany: Yowch!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "seaking",
+    "level": 35,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-north-ronald",
+  "mapId": "route-21-north",
+  "name": "Fisher Ronald",
+  "preferredPosition": {
+   "x": 7,
+   "y": 27
+  },
+  "facing": "north",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/057_fisher.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Ronald: You want to know if the fish are biting?",
+  "defeatedText": "Ronald: Dang!",
+  "moneyMultiplier": 10,
+  "party": [
+   {
+    "species": "seaking",
+    "level": 28,
+    "moves": [
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
+    ]
+   },
+   {
+    "species": "goldeen",
+    "level": 28,
+    "moves": [
+     "bubble",
+     "smokescreen",
+     "leer",
+     "water-gun"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 28,
+    "moves": [
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
+    ]
+   },
+   {
+    "species": "seaking",
+    "level": 28,
+    "moves": [
+     "peck",
+     "tail-whip",
+     "supersonic",
+     "horn-attack"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-north-wade",
+  "mapId": "route-21-north",
+  "name": "Fisher Wade",
+  "preferredPosition": {
+   "x": 16,
+   "y": 26
+  },
+  "facing": "south",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/057_fisher.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Wade: I got a big haul! Wanna go for it?",
+  "defeatedText": "Wade: Heheh, MAGIKARP just don't make the grade, do they?",
+  "moneyMultiplier": 10,
+  "party": [
+   {
+    "species": "magikarp",
+    "level": 27,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "horn-attack",
+     "scary-face"
+    ]
+   },
+   {
+    "species": "magikarp",
+    "level": 27,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "horn-attack",
+     "scary-face"
+    ]
+   },
+   {
+    "species": "magikarp",
+    "level": 27,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "horn-attack",
+     "scary-face"
+    ]
+   },
+   {
+    "species": "magikarp",
+    "level": 27,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "horn-attack",
+     "scary-face"
+    ]
+   },
+   {
+    "species": "magikarp",
+    "level": 27,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "horn-attack",
+     "scary-face"
+    ]
+   },
+   {
+    "species": "magikarp",
+    "level": 27,
+    "moves": [
+     "tackle",
+     "tail-whip",
+     "horn-attack",
+     "scary-face"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-north-spencer",
+  "mapId": "route-21-north",
+  "name": "Swimmer Spencer",
+  "preferredPosition": {
+   "x": 12,
+   "y": 44
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Spencer: The sea cleanses my body and soul!",
+  "defeatedText": "Spencer: Ayah!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "seadra",
+    "level": 33,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "tentacruel",
+    "level": 33,
+    "moves": [
+     "constrict",
+     "acid",
+     "bubblebeam",
+     "wrap"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-north-lil-ian",
+  "mapId": "route-21-north",
+  "name": "Swimmer Lil  Ian",
+  "preferredPosition": {
+   "x": 14,
+   "y": 35
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/044_swimmer_f_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Lil  Ian: Huh? A battle? IAN, can't you do it alone?",
+  "defeatedText": "Lil  Ian: Oh, see? We lost. Happy now?",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "seadra",
+    "level": 33,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "starmie",
+    "level": 33,
+    "moves": [
+     "recover",
+     "swift",
+     "bubblebeam",
+     "minimize"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-north-lil-ian-15-35",
+  "mapId": "route-21-north",
+  "name": "Tuber Lil  Ian",
+  "preferredPosition": {
+   "x": 15,
+   "y": 35
+  },
+  "facing": "south",
+  "sightRange": 1,
+  "spriteUrl": "/game-assets/overworld/036_tuber_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 16,
+  "sheetWidth": 96,
+  "sheetHeight": 32,
+  "challengeText": "Lil  Ian: My sis doesn't get enough exercise, so I made her come.",
+  "defeatedText": "Lil  Ian: Awww, Sis! Get it together!",
+  "moneyMultiplier": 1,
+  "party": [
+   {
+    "species": "seadra",
+    "level": 33,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   },
+   {
+    "species": "starmie",
+    "level": 33,
+    "moves": [
+     "recover",
+     "swift",
+     "bubblebeam",
+     "minimize"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-south-claude",
+  "mapId": "route-21-south",
+  "name": "Fisher Claude",
+  "preferredPosition": {
+   "x": 11,
+   "y": 8
+  },
+  "facing": "east",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/057_fisher.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Claude: Hey, don't scare away the fish!",
+  "defeatedText": "Claude: Sorry! I'm just so frustrated from not catching anything.",
+  "moneyMultiplier": 10,
+  "party": [
+   {
+    "species": "shellder",
+    "level": 31,
+    "moves": [
+     "disable",
+     "sludge",
+     "minimize",
+     "screech"
+    ]
+   },
+   {
+    "species": "cloyster",
+    "level": 31,
+    "moves": [
+     "withdraw",
+     "icicle-spear",
+     "supersonic",
+     "aurora-beam"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-south-nolan",
+  "mapId": "route-21-south",
+  "name": "Fisher Nolan",
+  "preferredPosition": {
+   "x": 14,
+   "y": 15
+  },
+  "facing": "west",
+  "sightRange": 0,
+  "spriteUrl": "/game-assets/overworld/057_fisher.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Nolan: Keep me company till I get a hit.",
+  "defeatedText": "Nolan: That burned some time.",
+  "moneyMultiplier": 10,
+  "party": [
+   {
+    "species": "seaking",
+    "level": 33,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "goldeen",
+    "level": 33,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-south-jack",
+  "mapId": "route-21-south",
+  "name": "Swimmer Jack",
+  "preferredPosition": {
+   "x": 15,
+   "y": 24
+  },
+  "facing": "south",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Jack: I caught my POKéMON at sea.",
+  "defeatedText": "Jack: Diver!! Down!!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "starmie",
+    "level": 37,
+    "moves": [
+     "recover",
+     "swift",
+     "bubblebeam",
+     "minimize"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-south-jerome",
+  "mapId": "route-21-south",
+  "name": "Swimmer Jerome",
+  "preferredPosition": {
+   "x": 15,
+   "y": 38
+  },
+  "facing": "west",
+  "sightRange": 3,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Jerome: Right now, I'm in a triathlon meet.",
+  "defeatedText": "Jerome: Pant… Pant… Pant…",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "staryu",
+    "level": 33,
+    "moves": [
+     "tail-whip",
+     "supersonic",
+     "horn-attack",
+     "fury-attack"
+    ]
+   },
+   {
+    "species": "wartortle",
+    "level": 33,
+    "moves": [
+     "water-gun",
+     "bite",
+     "rapid-spin",
+     "rain-dance"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "route-21-south-roland",
+  "mapId": "route-21-south",
+  "name": "Swimmer Roland",
+  "preferredPosition": {
+   "x": 10,
+   "y": 29
+  },
+  "facing": "south",
+  "sightRange": 4,
+  "spriteUrl": "/game-assets/overworld/043_swimmer_m_water.png",
+  "frameWidth": 16,
+  "frameHeight": 32,
+  "sheetWidth": 96,
+  "sheetHeight": 64,
+  "challengeText": "Roland: Ahh! Feel the sun and the wind!",
+  "defeatedText": "Roland: Yow! I lost!",
+  "moneyMultiplier": 2,
+  "party": [
+   {
+    "species": "poliwhirl",
+    "level": 32,
+    "moves": [
+     "water-gun",
+     "doubleslap",
+     "rain-dance",
+     "body-slam"
+    ]
+   },
+   {
+    "species": "tentacool",
+    "level": 32,
+    "moves": [
+     "vine-whip",
+     "sleep-powder",
+     "sweet-scent",
+     "razor-leaf"
+    ]
+   },
+   {
+    "species": "seadra",
+    "level": 32,
+    "moves": [
+     "smokescreen",
+     "leer",
+     "water-gun",
+     "twister"
+    ]
+   }
+  ]
+ },
+ {
   "id": "viridian-city-gym-takashi",
   "mapId": "viridian-city-gym",
   "name": "Black Belt Takashi",

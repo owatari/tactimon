@@ -2444,6 +2444,138 @@ export const GENERATED_LAND_ENCOUNTERS: Readonly<Record<string, LandEncounterTab
    }
   ]
  },
+ "route-21-north": {
+  "encounterRate": 14,
+  "terrain": "grass",
+  "slots": [
+   {
+    "weight": 20,
+    "species": "tangela",
+    "level": 22
+   },
+   {
+    "weight": 20,
+    "species": "tangela",
+    "level": 23
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 24
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 21
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 25
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 20
+   },
+   {
+    "weight": 5,
+    "species": "tangela",
+    "level": 19
+   },
+   {
+    "weight": 5,
+    "species": "tangela",
+    "level": 26
+   },
+   {
+    "weight": 4,
+    "species": "tangela",
+    "level": 18
+   },
+   {
+    "weight": 4,
+    "species": "tangela",
+    "level": 27
+   },
+   {
+    "weight": 1,
+    "species": "tangela",
+    "level": 17
+   },
+   {
+    "weight": 1,
+    "species": "tangela",
+    "level": 28
+   }
+  ]
+ },
+ "route-21-south": {
+  "encounterRate": 14,
+  "terrain": "grass",
+  "slots": [
+   {
+    "weight": 20,
+    "species": "tangela",
+    "level": 22
+   },
+   {
+    "weight": 20,
+    "species": "tangela",
+    "level": 23
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 24
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 21
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 25
+   },
+   {
+    "weight": 10,
+    "species": "tangela",
+    "level": 20
+   },
+   {
+    "weight": 5,
+    "species": "tangela",
+    "level": 19
+   },
+   {
+    "weight": 5,
+    "species": "tangela",
+    "level": 26
+   },
+   {
+    "weight": 4,
+    "species": "tangela",
+    "level": 18
+   },
+   {
+    "weight": 4,
+    "species": "tangela",
+    "level": 27
+   },
+   {
+    "weight": 1,
+    "species": "tangela",
+    "level": 17
+   },
+   {
+    "weight": 1,
+    "species": "tangela",
+    "level": 28
+   }
+  ]
+ },
  "route-23": {
   "encounterRate": 21,
   "terrain": "grass",

@@ -60,3 +60,17 @@ describe("Kanto gift events", () => {
     expect(hasStoryKeyItem(reloaded, "bicycle")).toBe(true);
   });
 });
+
+describe("Surf", () => {
+  it("is granted once at the Safari Secret House and needs the Soul Badge", async () => {
+    const { canStoryUseSurf } = await import("../apps/client/lib/story");
+    const first = talk(started(), "safari-secret-house-surf");
+    expect(first.story.fieldTechniqueIds).toContain("surf");
+    expect(canStoryUseSurf(first.story)).toBe(false);
+    expect(
+      canStoryUseSurf({ ...first.story, badgeIds: ["soul"] }),
+    ).toBe(true);
+    const again = talk(first.story, "safari-secret-house-surf");
+    expect(again.story.fieldTechniqueIds?.filter((id) => id === "surf")).toHaveLength(1);
+  });
+});

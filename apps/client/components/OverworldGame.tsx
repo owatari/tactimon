@@ -36,6 +36,8 @@ import {
 } from "@/lib/maps";
 import {
   applyStoryOverworldStep,
+  canStoryUseSurf,
+  hasStoryFieldTechnique,
   grantRunningShoes,
   shouldGrantRunningShoes,
   hasStoryKeyItem,
@@ -688,6 +690,8 @@ export function OverworldGame({
   const layoutRef = useRef<MapLayout | null>(null);
   const worldObjectsRef = useRef<WorldObject[]>([]);
   const worldDataRef = useRef<WorldMapData | null>(null);
+  const surfingRef = useRef(false);
+  const surfKickRef = useRef<Direction | null>(null);
   const storyObjectsRef = useRef<StoryObject[]>([]);
   const mapIdRef = useRef("pallet-town");
   const storyRef = useRef(story);
@@ -1133,6 +1137,29 @@ export function OverworldGame({
     const targetY = player.tileY + delta.y;
 
     if (
+      !surfingRef.current &&
+      isWaterCell(layoutRef.current, targetX, targetY) &&
+      !worldObjectsRef.current.some(
+        (object) => object.x === targetX && object.y === targetY,
+      )
+    ) {
+      if (canStoryUseSurf(storyRef.current)) {
+        surfingRef.current = true;
+        surfKickRef.current = player.facing;
+        showInteraction("Você usou Surf!");
+      } else if (
+        hasStoryFieldTechnique(storyRef.current, "surf")
+      ) {
+        showInteraction(
+          "Você precisa da Soul Badge para usar Surf.",
+        );
+      } else {
+        showInteraction("A água é de um azul profundo.");
+      }
+      return;
+    }
+
+    if (
       mapIdRef.current === "sea-cottage" &&
       player.facing === "north" &&
       targetX === 4 &&
@@ -1576,6 +1603,8 @@ export function OverworldGame({
       const cell = activeLayout.cells[y * activeLayout.width + x];
       if (
         !cell ||
+        (isWaterCell(activeLayout, x, y) &&
+          !surfingRef.current) ||
         (cell.collision !== 0 &&
           !isVermilionGymBeamWalkable(
             storyRef.current,
@@ -2190,6 +2219,16 @@ export function OverworldGame({
           player.visualY = player.toY;
           player.tileX = player.targetTileX;
           player.tileY = player.targetTileY;
+          if (
+            surfingRef.current &&
+            !isWaterCell(
+              layoutRef.current,
+              player.tileX,
+              player.tileY,
+            )
+          ) {
+            surfingRef.current = false;
+          }
           player.moving = false;
           player.jumping = false;
           jumpLift = 0;
@@ -2240,10 +2279,18 @@ export function OverworldGame({
         !pausedRef.current &&
         now >= player.blockedUntil
       ) {
+        const kick = surfKickRef.current;
+        if (kick) {
+          surfKickRef.current = null;
+          if (!startStep(kick, now)) {
+            surfingRef.current = false;
+          }
+        }
+
         const intent =
           pressedRef.current[pressedRef.current.length - 1];
 
-        if (intent) {
+        if (intent && !player.moving) {
           startStep(intent, now);
         }
       }

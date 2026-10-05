@@ -134,6 +134,12 @@ export const GENERATED_TILESETS: Record<string, TilesetAssetDefinition> = {
     "metatilesUrl": "/game-assets/tilesets/museum/metatiles.bin",
     "attributesUrl": "/game-assets/tilesets/museum/attributes.bin"
   },
+  "pallet-town": {
+    "tilesUrl": "/game-assets/tilesets/pallet-town/tiles.4bpp",
+    "palettesUrl": "/game-assets/tilesets/pallet-town/palettes.gbapal",
+    "metatilesUrl": "/game-assets/tilesets/pallet-town/metatiles.bin",
+    "attributesUrl": "/game-assets/tilesets/pallet-town/attributes.bin"
+  },
   "pewter-gym": {
     "tilesUrl": "/game-assets/tilesets/pewter-gym/tiles.4bpp",
     "palettesUrl": "/game-assets/tilesets/pewter-gym/palettes.gbapal",
@@ -238,7 +244,7 @@ export const GENERATED_TILESETS: Record<string, TilesetAssetDefinition> = {
   }
 };
 
-export const GENERATED_MAP_SIZES: Record<string, [number, number]> = {"viridian-forest": [54, 69], "mt-moon-1f": [48, 40], "mt-moon-b1f": [49, 40], "mt-moon-b2f": [48, 40], "ss-anne-exterior": [70, 32], "ss-anne-1f-corridor": [31, 21], "ss-anne-2f-corridor": [34, 16], "ss-anne-3f-corridor": [22, 7], "ss-anne-b1f-corridor": [23, 7], "ss-anne-deck": [24, 19], "ss-anne-kitchen": [16, 14], "ss-anne-captains-office": [9, 10], "ss-anne-1f-room-1": [6, 8], "ss-anne-1f-room-2": [6, 8], "ss-anne-1f-room-3": [6, 8], "ss-anne-1f-room-4": [6, 8], "ss-anne-1f-room-5": [6, 8], "ss-anne-1f-room-7": [6, 8], "ss-anne-2f-room-1": [6, 9], "ss-anne-2f-room-2": [6, 9], "ss-anne-2f-room-3": [6, 9], "ss-anne-2f-room-4": [6, 9], "ss-anne-2f-room-5": [6, 9], "ss-anne-2f-room-6": [6, 9], "ss-anne-b1f-room-1": [6, 9], "ss-anne-b1f-room-2": [6, 9], "ss-anne-b1f-room-3": [6, 9], "ss-anne-b1f-room-4": [6, 9], "ss-anne-b1f-room-5": [6, 9], "ss-anne-1f-room-6": [6, 8], "underground-path-north-entrance": [13, 10], "underground-path-tunnel": [8, 63], "underground-path-south-entrance": [13, 10], "underground-path-west-entrance": [13, 10], "underground-path-east-west-tunnel": [80, 7], "underground-path-east-entrance": [13, 10], "digletts-cave-north-entrance": [10, 8], "digletts-cave-b-1f": [85, 80], "digletts-cave-south-entrance": [10, 8], "victory-road-1f": [48, 22], "victory-road-2f": [51, 22], "victory-road-3f": [45, 22], "rocket-hideout-b-1f": [28, 34], "rocket-hideout-b-2f": [32, 22], "rocket-hideout-b-3f": [22, 27], "rocket-hideout-b-4f": [24, 26], "silph-co-1f": [36, 22], "silph-co-2f": [36, 22], "silph-co-3f": [36, 22], "silph-co-4f": [36, 22], "silph-co-5f": [36, 22], "silph-co-6f": [31, 19], "silph-co-7f": [31, 19], "silph-co-8f": [31, 19], "silph-co-9f": [31, 19], "silph-co-10f": [17, 19], "silph-co-11f": [17, 20], "pokemon-mansion-1f": [38, 35], "pokemon-mansion-2f": [38, 38], "pokemon-mansion-3f": [38, 35], "pokemon-mansion-b-1f": [38, 35], "safari-zone-center": [51, 36], "safari-zone-east": [54, 35], "safari-zone-north": [57, 40], "safari-zone-west": [48, 36], "pokemon-league-loreleis-room": [13, 13], "pokemon-league-brunos-room": [13, 13], "pokemon-league-agathas-room": [13, 13], "pokemon-league-lances-room": [28, 24], "pokemon-league-champions-room": [13, 20], "rock-tunnel-1f": [48, 40], "rock-tunnel-b-1f": [48, 40], "seafoam-islands-1f": [38, 24], "seafoam-islands-b-1f": [38, 23], "seafoam-islands-b-2f": [38, 24], "seafoam-islands-b-3f": [38, 24], "seafoam-islands-b-4f": [38, 24], "pokemon-tower-1f": [24, 20], "pokemon-tower-2f": [24, 20], "pokemon-tower-3f": [24, 20], "pokemon-tower-4f": [24, 20], "pokemon-tower-5f": [24, 20], "pokemon-tower-6f": [24, 20], "pokemon-tower-7f": [24, 20], "power-plant": [49, 40], "pallet-town": [24, 20], "viridian-city": [48, 40], "pewter-city": [48, 40], "cerulean-city": [48, 40], "lavender-town": [24, 20], "vermilion-city": [48, 40], "celadon-city": [60, 40], "fuchsia-city": [48, 40], "cinnabar-island": [24, 20], "indigo-plateau-exterior": [24, 20], "saffron-city": [66, 55], "route-1": [24, 40], "route-2": [24, 80], "route-3": [84, 20], "route-4": [108, 20], "route-5": [48, 40], "route-6": [24, 40], "route-7": [24, 20], "route-8": [72, 20], "route-9": [72, 20], "route-10": [24, 80], "route-11": [72, 20], "route-12": [24, 120], "route-13": [72, 20], "route-14": [24, 60], "route-15": [72, 20], "route-16": [48, 20], "route-17": [24, 160], "route-18": [60, 20], "route-22": [48, 24], "route-23": [24, 160], "route-24": [24, 40], "route-25": [72, 20], "pallet-players-house-1f": [13, 10], "pallet-players-house-2f": [12, 9], "pallet-rivals-house": [13, 10], "oak-lab": [13, 14], "viridian-house": [11, 9], "viridian-city-gym": [20, 24], "viridian-school": [10, 9], "viridian-mart": [11, 9], "viridian-pokemon-center": [15, 10], "pewter-museum-1f": [28, 11], "pewter-museum-2f": [19, 10], "pewter-gym": [13, 16], "pewter-mart": [11, 9], "pewter-house-1": [11, 9], "pewter-pokemon-center": [15, 10], "pewter-house-2": [11, 9], "cerulean-house-1": [10, 10], "cerulean-house2": [10, 9], "cerulean-house-3": [11, 9], "cerulean-pokemon-center": [15, 10], "cerulean-gym": [17, 20], "cerulean-bike-shop": [11, 10], "cerulean-mart": [11, 9], "cerulean-house-4": [11, 9], "cerulean-house-5": [11, 9], "lavender-town-pokemon-center-1f": [15, 10], "lavender-town-volunteer-pokemon-house": [12, 9], "lavender-town-house-1": [11, 9], "lavender-town-house-2": [11, 9], "lavender-town-mart": [11, 9], "vermilion-house-1": [11, 9], "vermilion-pokemon-center": [15, 10], "vermilion-pokemon-fan-club": [12, 12], "vermilion-house-2": [11, 9], "vermilion-mart": [11, 9], "vermilion-gym": [11, 21], "vermilion-house-3": [11, 9], "celadon-city-department-store-1f": [13, 16], "celadon-city-department-store-2f": [13, 15], "celadon-city-department-store-3f": [13, 15], "celadon-city-department-store-4f": [13, 15], "celadon-city-department-store-5f": [13, 15], "celadon-city-department-store-roof": [19, 14], "celadon-city-condominiums-1f": [15, 20], "celadon-city-condominiums-2f": [15, 20], "celadon-city-condominiums-3f": [15, 20], "celadon-city-condominiums-roof": [14, 23], "celadon-city-condominiums-roof-room": [10, 9], "celadon-city-pokemon-center-1f": [15, 10], "celadon-city-game-corner": [18, 15], "celadon-city-game-corner-prize-room": [9, 10], "celadon-city-gym": [13, 20], "celadon-city-restaurant": [15, 11], "celadon-city-house-1": [11, 9], "celadon-city-hotel": [17, 11], "fuchsia-city-safari-zone-entrance": [9, 9], "fuchsia-city-mart": [11, 9], "fuchsia-city-safari-zone-office": [20, 11], "fuchsia-city-gym": [15, 23], "fuchsia-city-house-1": [11, 9], "fuchsia-city-pokemon-center-1f": [15, 10], "fuchsia-city-wardens-house": [13, 11], "fuchsia-city-house-2": [10, 10], "fuchsia-city-house-3": [11, 9], "cinnabar-island-gym": [30, 25], "cinnabar-island-pokemon-lab-entrance": [28, 11], "cinnabar-island-pokemon-lab-lounge": [15, 11], "cinnabar-island-pokemon-lab-research-room": [15, 11], "cinnabar-island-pokemon-lab-experiment-room": [15, 11], "cinnabar-island-pokemon-center-1f": [15, 10], "cinnabar-island-mart": [11, 9], "indigo-plateau-pokemon-center-1f": [25, 18], "saffron-city-copycats-house-1f": [13, 10], "saffron-city-copycats-house-2f": [12, 9], "saffron-city-dojo": [13, 16], "saffron-city-gym": [29, 25], "saffron-city-house": [11, 9], "saffron-city-mart": [11, 9], "saffron-city-pokemon-center-1f": [15, 10], "saffron-city-mr-psychics-house": [11, 9], "saffron-city-pokemon-trainer-fan-club": [11, 17], "route-2-forest-south-entrance": [15, 12], "route-2-house": [11, 9], "route-2-east-building": [15, 12], "route-2-forest-north-entrance": [15, 12], "route-4-pokemon-center": [15, 10], "route-5-day-care": [12, 9], "route-5-south-entrance": [9, 11], "route-6-north-entrance": [9, 11], "route-7-east-entrance": [13, 9], "route-8-west-entrance": [13, 9], "route-10-pokemon-center-1f": [15, 10], "route-11-east-entrance-1f": [13, 12], "route-11-east-entrance-2f": [13, 11], "route-12-north-entrance-1f": [11, 13], "route-12-north-entrance-2f": [13, 11], "route-12-fishing-house": [11, 9], "route-15-west-entrance-1f": [13, 12], "route-15-west-entrance-2f": [13, 11], "route-16-house": [11, 9], "route-16-north-entrance-1f": [13, 18], "route-16-north-entrance-2f": [13, 11], "route-18-east-entrance-1f": [13, 12], "route-18-east-entrance-2f": [13, 11], "route-22-north-entrance": [15, 12], "sea-cottage": [15, 11]};
+export const GENERATED_MAP_SIZES: Record<string, [number, number]> = {"viridian-forest": [54, 69], "mt-moon-1f": [48, 40], "mt-moon-b1f": [49, 40], "mt-moon-b2f": [48, 40], "ss-anne-exterior": [70, 32], "ss-anne-1f-corridor": [31, 21], "ss-anne-2f-corridor": [34, 16], "ss-anne-3f-corridor": [22, 7], "ss-anne-b1f-corridor": [23, 7], "ss-anne-deck": [24, 19], "ss-anne-kitchen": [16, 14], "ss-anne-captains-office": [9, 10], "ss-anne-1f-room-1": [6, 8], "ss-anne-1f-room-2": [6, 8], "ss-anne-1f-room-3": [6, 8], "ss-anne-1f-room-4": [6, 8], "ss-anne-1f-room-5": [6, 8], "ss-anne-1f-room-7": [6, 8], "ss-anne-2f-room-1": [6, 9], "ss-anne-2f-room-2": [6, 9], "ss-anne-2f-room-3": [6, 9], "ss-anne-2f-room-4": [6, 9], "ss-anne-2f-room-5": [6, 9], "ss-anne-2f-room-6": [6, 9], "ss-anne-b1f-room-1": [6, 9], "ss-anne-b1f-room-2": [6, 9], "ss-anne-b1f-room-3": [6, 9], "ss-anne-b1f-room-4": [6, 9], "ss-anne-b1f-room-5": [6, 9], "ss-anne-1f-room-6": [6, 8], "underground-path-north-entrance": [13, 10], "underground-path-tunnel": [8, 63], "underground-path-south-entrance": [13, 10], "underground-path-west-entrance": [13, 10], "underground-path-east-west-tunnel": [80, 7], "underground-path-east-entrance": [13, 10], "digletts-cave-north-entrance": [10, 8], "digletts-cave-b-1f": [85, 80], "digletts-cave-south-entrance": [10, 8], "victory-road-1f": [48, 22], "victory-road-2f": [51, 22], "victory-road-3f": [45, 22], "rocket-hideout-b-1f": [28, 34], "rocket-hideout-b-2f": [32, 22], "rocket-hideout-b-3f": [22, 27], "rocket-hideout-b-4f": [24, 26], "silph-co-1f": [36, 22], "silph-co-2f": [36, 22], "silph-co-3f": [36, 22], "silph-co-4f": [36, 22], "silph-co-5f": [36, 22], "silph-co-6f": [31, 19], "silph-co-7f": [31, 19], "silph-co-8f": [31, 19], "silph-co-9f": [31, 19], "silph-co-10f": [17, 19], "silph-co-11f": [17, 20], "pokemon-mansion-1f": [38, 35], "pokemon-mansion-2f": [38, 38], "pokemon-mansion-3f": [38, 35], "pokemon-mansion-b-1f": [38, 35], "safari-zone-center": [51, 36], "safari-zone-east": [54, 35], "safari-zone-north": [57, 40], "safari-zone-west": [48, 36], "safari-zone-center-rest-house": [13, 11], "safari-zone-east-rest-house": [13, 11], "safari-zone-north-rest-house": [13, 11], "safari-zone-west-rest-house": [13, 11], "safari-zone-secret-house": [13, 11], "pokemon-league-loreleis-room": [13, 13], "pokemon-league-brunos-room": [13, 13], "pokemon-league-agathas-room": [13, 13], "pokemon-league-lances-room": [28, 24], "pokemon-league-champions-room": [13, 20], "rock-tunnel-1f": [48, 40], "rock-tunnel-b-1f": [48, 40], "seafoam-islands-1f": [38, 24], "seafoam-islands-b-1f": [38, 23], "seafoam-islands-b-2f": [38, 24], "seafoam-islands-b-3f": [38, 24], "seafoam-islands-b-4f": [38, 24], "pokemon-tower-1f": [24, 20], "pokemon-tower-2f": [24, 20], "pokemon-tower-3f": [24, 20], "pokemon-tower-4f": [24, 20], "pokemon-tower-5f": [24, 20], "pokemon-tower-6f": [24, 20], "pokemon-tower-7f": [24, 20], "power-plant": [49, 40], "pallet-town": [24, 20], "viridian-city": [48, 40], "pewter-city": [48, 40], "cerulean-city": [48, 40], "lavender-town": [24, 20], "vermilion-city": [48, 40], "celadon-city": [60, 40], "fuchsia-city": [48, 40], "cinnabar-island": [24, 20], "indigo-plateau-exterior": [24, 20], "saffron-city": [66, 55], "route-1": [24, 40], "route-2": [24, 80], "route-3": [84, 20], "route-4": [108, 20], "route-5": [48, 40], "route-6": [24, 40], "route-7": [24, 20], "route-8": [72, 20], "route-9": [72, 20], "route-10": [24, 80], "route-11": [72, 20], "route-12": [24, 120], "route-13": [72, 20], "route-14": [24, 60], "route-15": [72, 20], "route-16": [48, 20], "route-17": [24, 160], "route-18": [60, 20], "route-19": [24, 60], "route-20": [120, 20], "route-21-north": [24, 50], "route-21-south": [24, 50], "route-22": [48, 24], "route-23": [24, 160], "route-24": [24, 40], "route-25": [72, 20], "pallet-players-house-1f": [13, 10], "pallet-players-house-2f": [12, 9], "pallet-rivals-house": [13, 10], "oak-lab": [13, 14], "viridian-house": [11, 9], "viridian-city-gym": [20, 24], "viridian-school": [10, 9], "viridian-mart": [11, 9], "viridian-pokemon-center": [15, 10], "pewter-museum-1f": [28, 11], "pewter-museum-2f": [19, 10], "pewter-gym": [13, 16], "pewter-mart": [11, 9], "pewter-house-1": [11, 9], "pewter-pokemon-center": [15, 10], "pewter-house-2": [11, 9], "cerulean-house-1": [10, 10], "cerulean-house2": [10, 9], "cerulean-house-3": [11, 9], "cerulean-pokemon-center": [15, 10], "cerulean-gym": [17, 20], "cerulean-bike-shop": [11, 10], "cerulean-mart": [11, 9], "cerulean-house-4": [11, 9], "cerulean-house-5": [11, 9], "lavender-town-pokemon-center-1f": [15, 10], "lavender-town-volunteer-pokemon-house": [12, 9], "lavender-town-house-1": [11, 9], "lavender-town-house-2": [11, 9], "lavender-town-mart": [11, 9], "vermilion-house-1": [11, 9], "vermilion-pokemon-center": [15, 10], "vermilion-pokemon-fan-club": [12, 12], "vermilion-house-2": [11, 9], "vermilion-mart": [11, 9], "vermilion-gym": [11, 21], "vermilion-house-3": [11, 9], "celadon-city-department-store-1f": [13, 16], "celadon-city-department-store-2f": [13, 15], "celadon-city-department-store-3f": [13, 15], "celadon-city-department-store-4f": [13, 15], "celadon-city-department-store-5f": [13, 15], "celadon-city-department-store-roof": [19, 14], "celadon-city-condominiums-1f": [15, 20], "celadon-city-condominiums-2f": [15, 20], "celadon-city-condominiums-3f": [15, 20], "celadon-city-condominiums-roof": [14, 23], "celadon-city-condominiums-roof-room": [10, 9], "celadon-city-pokemon-center-1f": [15, 10], "celadon-city-game-corner": [18, 15], "celadon-city-game-corner-prize-room": [9, 10], "celadon-city-gym": [13, 20], "celadon-city-restaurant": [15, 11], "celadon-city-house-1": [11, 9], "celadon-city-hotel": [17, 11], "fuchsia-city-safari-zone-entrance": [9, 9], "fuchsia-city-mart": [11, 9], "fuchsia-city-safari-zone-office": [20, 11], "fuchsia-city-gym": [15, 23], "fuchsia-city-house-1": [11, 9], "fuchsia-city-pokemon-center-1f": [15, 10], "fuchsia-city-wardens-house": [13, 11], "fuchsia-city-house-2": [10, 10], "fuchsia-city-house-3": [11, 9], "cinnabar-island-gym": [30, 25], "cinnabar-island-pokemon-lab-entrance": [28, 11], "cinnabar-island-pokemon-lab-lounge": [15, 11], "cinnabar-island-pokemon-lab-research-room": [15, 11], "cinnabar-island-pokemon-lab-experiment-room": [15, 11], "cinnabar-island-pokemon-center-1f": [15, 10], "cinnabar-island-mart": [11, 9], "indigo-plateau-pokemon-center-1f": [25, 18], "saffron-city-copycats-house-1f": [13, 10], "saffron-city-copycats-house-2f": [12, 9], "saffron-city-dojo": [13, 16], "saffron-city-gym": [29, 25], "saffron-city-house": [11, 9], "saffron-city-mart": [11, 9], "saffron-city-pokemon-center-1f": [15, 10], "saffron-city-mr-psychics-house": [11, 9], "saffron-city-pokemon-trainer-fan-club": [11, 17], "route-2-forest-south-entrance": [15, 12], "route-2-house": [11, 9], "route-2-east-building": [15, 12], "route-2-forest-north-entrance": [15, 12], "route-4-pokemon-center": [15, 10], "route-5-day-care": [12, 9], "route-5-south-entrance": [9, 11], "route-6-north-entrance": [9, 11], "route-7-east-entrance": [13, 9], "route-8-west-entrance": [13, 9], "route-10-pokemon-center-1f": [15, 10], "route-11-east-entrance-1f": [13, 12], "route-11-east-entrance-2f": [13, 11], "route-12-north-entrance-1f": [11, 13], "route-12-north-entrance-2f": [13, 11], "route-12-fishing-house": [11, 9], "route-15-west-entrance-1f": [13, 12], "route-15-west-entrance-2f": [13, 11], "route-16-house": [11, 9], "route-16-north-entrance-1f": [13, 18], "route-16-north-entrance-2f": [13, 11], "route-18-east-entrance-1f": [13, 12], "route-18-east-entrance-2f": [13, 11], "route-22-north-entrance": [15, 12], "sea-cottage": [15, 11]};
 
 export const GENERATED_MAP_DEFINITIONS: Record<
   string,
@@ -700,6 +706,76 @@ export const GENERATED_MAP_DEFINITIONS: Record<
     "spawn": {
       "x": 39,
       "y": 26
+    }
+  },
+  "safari-zone-center-rest-house": {
+    "id": "safari-zone-center-rest-house",
+    "label": "Safari Zone Center Rest House",
+    "layoutUrl": "/game-assets/maps/safari-zone-center-rest-house/layout.json",
+    "previewUrl": "/game-assets/maps/safari-zone-center-rest-house/preview.png",
+    "worldUrl": "/game-assets/maps/safari-zone-center-rest-house/world.json",
+    "fallbackMusicId": 264,
+    "primary": "building",
+    "secondary": "safarizonebuilding",
+    "spawn": {
+      "x": 4,
+      "y": 8
+    }
+  },
+  "safari-zone-east-rest-house": {
+    "id": "safari-zone-east-rest-house",
+    "label": "Safari Zone East Rest House",
+    "layoutUrl": "/game-assets/maps/safari-zone-east-rest-house/layout.json",
+    "previewUrl": "/game-assets/maps/safari-zone-east-rest-house/preview.png",
+    "worldUrl": "/game-assets/maps/safari-zone-east-rest-house/world.json",
+    "fallbackMusicId": 264,
+    "primary": "building",
+    "secondary": "safarizonebuilding",
+    "spawn": {
+      "x": 4,
+      "y": 8
+    }
+  },
+  "safari-zone-north-rest-house": {
+    "id": "safari-zone-north-rest-house",
+    "label": "Safari Zone North Rest House",
+    "layoutUrl": "/game-assets/maps/safari-zone-north-rest-house/layout.json",
+    "previewUrl": "/game-assets/maps/safari-zone-north-rest-house/preview.png",
+    "worldUrl": "/game-assets/maps/safari-zone-north-rest-house/world.json",
+    "fallbackMusicId": 264,
+    "primary": "building",
+    "secondary": "safarizonebuilding",
+    "spawn": {
+      "x": 4,
+      "y": 8
+    }
+  },
+  "safari-zone-west-rest-house": {
+    "id": "safari-zone-west-rest-house",
+    "label": "Safari Zone West Rest House",
+    "layoutUrl": "/game-assets/maps/safari-zone-west-rest-house/layout.json",
+    "previewUrl": "/game-assets/maps/safari-zone-west-rest-house/preview.png",
+    "worldUrl": "/game-assets/maps/safari-zone-west-rest-house/world.json",
+    "fallbackMusicId": 264,
+    "primary": "building",
+    "secondary": "safarizonebuilding",
+    "spawn": {
+      "x": 4,
+      "y": 8
+    }
+  },
+  "safari-zone-secret-house": {
+    "id": "safari-zone-secret-house",
+    "label": "Safari Zone Secret House",
+    "layoutUrl": "/game-assets/maps/safari-zone-secret-house/layout.json",
+    "previewUrl": "/game-assets/maps/safari-zone-secret-house/preview.png",
+    "worldUrl": "/game-assets/maps/safari-zone-secret-house/world.json",
+    "fallbackMusicId": 264,
+    "primary": "building",
+    "secondary": "safarizonebuilding",
+    "spawn": {
+      "x": 4,
+      "y": 8
     }
   },
   "pokemon-league-loreleis-room": {
@@ -1232,6 +1308,62 @@ export const GENERATED_MAP_DEFINITIONS: Record<
     "spawn": {
       "x": 41,
       "y": 10
+    }
+  },
+  "route-19": {
+    "id": "route-19",
+    "label": "Route 19",
+    "layoutUrl": "/game-assets/maps/route-19/layout.json",
+    "previewUrl": "/game-assets/maps/route-19/preview.png",
+    "worldUrl": "/game-assets/maps/route-19/world.json",
+    "fallbackMusicId": 293,
+    "primary": "general",
+    "secondary": "fuchsiacity",
+    "spawn": {
+      "x": 12,
+      "y": 30
+    }
+  },
+  "route-20": {
+    "id": "route-20",
+    "label": "Route 20",
+    "layoutUrl": "/game-assets/maps/route-20/layout.json",
+    "previewUrl": "/game-assets/maps/route-20/preview.png",
+    "worldUrl": "/game-assets/maps/route-20/world.json",
+    "fallbackMusicId": 293,
+    "primary": "general",
+    "secondary": "cinnabarisland",
+    "spawn": {
+      "x": 60,
+      "y": 9
+    }
+  },
+  "route-21-north": {
+    "id": "route-21-north",
+    "label": "Route 21 North",
+    "layoutUrl": "/game-assets/maps/route-21-north/layout.json",
+    "previewUrl": "/game-assets/maps/route-21-north/preview.png",
+    "worldUrl": "/game-assets/maps/route-21-north/world.json",
+    "fallbackMusicId": 293,
+    "primary": "general",
+    "secondary": "pallet-town",
+    "spawn": {
+      "x": 12,
+      "y": 25
+    }
+  },
+  "route-21-south": {
+    "id": "route-21-south",
+    "label": "Route 21 South",
+    "layoutUrl": "/game-assets/maps/route-21-south/layout.json",
+    "previewUrl": "/game-assets/maps/route-21-south/preview.png",
+    "worldUrl": "/game-assets/maps/route-21-south/world.json",
+    "fallbackMusicId": 293,
+    "primary": "general",
+    "secondary": "cinnabarisland",
+    "spawn": {
+      "x": 12,
+      "y": 25
     }
   },
   "route-23": {

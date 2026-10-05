@@ -672,6 +672,11 @@ export const WORLD_WARPS: Readonly<
   9,
   28
  ],
+ "safari-zone-center:29,25": [
+  "safari-zone-center-rest-house",
+  4,
+  8
+ ],
  "safari-zone-east:8,9": [
   "safari-zone-north",
   47,
@@ -701,6 +706,11 @@ export const WORLD_WARPS: Readonly<
   "safari-zone-center",
   42,
   17
+ ],
+ "safari-zone-east:40,14": [
+  "safari-zone-east-rest-house",
+  4,
+  8
  ],
  "safari-zone-north:10,34": [
   "safari-zone-west",
@@ -762,6 +772,11 @@ export const WORLD_WARPS: Readonly<
   27,
   6
  ],
+ "safari-zone-north:43,8": [
+  "safari-zone-north-rest-house",
+  4,
+  8
+ ],
  "safari-zone-west:30,5": [
   "safari-zone-north",
   10,
@@ -806,6 +821,91 @@ export const WORLD_WARPS: Readonly<
   "safari-zone-center",
   9,
   19
+ ],
+ "safari-zone-west:12,7": [
+  "safari-zone-secret-house",
+  4,
+  8
+ ],
+ "safari-zone-west:19,18": [
+  "safari-zone-west-rest-house",
+  4,
+  8
+ ],
+ "safari-zone-center-rest-house:3,9": [
+  "safari-zone-center",
+  29,
+  26
+ ],
+ "safari-zone-center-rest-house:4,9": [
+  "safari-zone-center",
+  29,
+  26
+ ],
+ "safari-zone-center-rest-house:5,9": [
+  "safari-zone-center",
+  29,
+  26
+ ],
+ "safari-zone-east-rest-house:3,9": [
+  "safari-zone-east",
+  40,
+  15
+ ],
+ "safari-zone-east-rest-house:4,9": [
+  "safari-zone-east",
+  40,
+  15
+ ],
+ "safari-zone-east-rest-house:5,9": [
+  "safari-zone-east",
+  40,
+  15
+ ],
+ "safari-zone-north-rest-house:3,9": [
+  "safari-zone-north",
+  43,
+  9
+ ],
+ "safari-zone-north-rest-house:4,9": [
+  "safari-zone-north",
+  43,
+  9
+ ],
+ "safari-zone-north-rest-house:5,9": [
+  "safari-zone-north",
+  43,
+  9
+ ],
+ "safari-zone-west-rest-house:3,9": [
+  "safari-zone-west",
+  19,
+  19
+ ],
+ "safari-zone-west-rest-house:4,9": [
+  "safari-zone-west",
+  19,
+  19
+ ],
+ "safari-zone-west-rest-house:5,9": [
+  "safari-zone-west",
+  19,
+  19
+ ],
+ "safari-zone-secret-house:3,9": [
+  "safari-zone-west",
+  12,
+  8
+ ],
+ "safari-zone-secret-house:4,9": [
+  "safari-zone-west",
+  12,
+  8
+ ],
+ "safari-zone-secret-house:5,9": [
+  "safari-zone-west",
+  12,
+  8
  ],
  "pokemon-league-loreleis-room:6,12": [
   "indigo-plateau-pokemon-center-1f",
@@ -916,6 +1016,16 @@ export const WORLD_WARPS: Readonly<
   "seafoam-islands-b-1f",
   27,
   19
+ ],
+ "seafoam-islands-1f:6,21": [
+  "route-20",
+  60,
+  9
+ ],
+ "seafoam-islands-1f:32,21": [
+  "route-20",
+  72,
+  15
  ],
  "seafoam-islands-1f:21,8": [
   "seafoam-islands-b-1f",
@@ -1631,6 +1741,16 @@ export const WORLD_WARPS: Readonly<
   "route-18-east-entrance-1f",
   11,
   5
+ ],
+ "route-20:60,8": [
+  "seafoam-islands-1f",
+  6,
+  20
+ ],
+ "route-20:72,14": [
+  "seafoam-islands-1f",
+  32,
+  20
  ],
  "route-22:8,5": [
   "route-22-north-entrance",
@@ -2862,6 +2982,13 @@ export type WorldConnection = {
 export const WORLD_CONNECTIONS: Readonly<
   Record<string, readonly WorldConnection[]>
 > = {
+ "pallet-town": [
+  {
+   "direction": "south",
+   "offset": 0,
+   "target": "route-21-north"
+  }
+ ],
  "cerulean-city": [
   {
    "direction": "east",
@@ -2907,6 +3034,11 @@ export const WORLD_CONNECTIONS: Readonly<
  ],
  "fuchsia-city": [
   {
+   "direction": "south",
+   "offset": 12,
+   "target": "route-19"
+  },
+  {
    "direction": "west",
    "offset": 10,
    "target": "route-18"
@@ -2915,6 +3047,18 @@ export const WORLD_CONNECTIONS: Readonly<
    "direction": "east",
    "offset": 10,
    "target": "route-15"
+  }
+ ],
+ "cinnabar-island": [
+  {
+   "direction": "north",
+   "offset": 0,
+   "target": "route-21-south"
+  },
+  {
+   "direction": "east",
+   "offset": 0,
+   "target": "route-20"
   }
  ],
  "indigo-plateau-exterior": [
@@ -3061,6 +3205,54 @@ export const WORLD_CONNECTIONS: Readonly<
    "direction": "east",
    "offset": -10,
    "target": "fuchsia-city"
+  }
+ ],
+ "route-19": [
+  {
+   "direction": "north",
+   "offset": -12,
+   "target": "fuchsia-city"
+  },
+  {
+   "direction": "west",
+   "offset": 40,
+   "target": "route-20"
+  }
+ ],
+ "route-20": [
+  {
+   "direction": "west",
+   "offset": 0,
+   "target": "cinnabar-island"
+  },
+  {
+   "direction": "east",
+   "offset": -40,
+   "target": "route-19"
+  }
+ ],
+ "route-21-north": [
+  {
+   "direction": "north",
+   "offset": 0,
+   "target": "pallet-town"
+  },
+  {
+   "direction": "south",
+   "offset": 0,
+   "target": "route-21-south"
+  }
+ ],
+ "route-21-south": [
+  {
+   "direction": "north",
+   "offset": 0,
+   "target": "route-21-north"
+  },
+  {
+   "direction": "south",
+   "offset": 0,
+   "target": "cinnabar-island"
   }
  ],
  "route-22": [

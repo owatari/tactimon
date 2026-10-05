@@ -5,6 +5,7 @@ import {
   resolveWorldNpcPages,
 } from "./worldTexts";
 import {
+  grantStoryFieldTechniqueOnce,
   grantStoryKeyItemOnce,
   removeStoryKeyItem,
 } from "./story";
@@ -610,6 +611,22 @@ const DIALOGUE_DEFINITIONS: Record<
       },
     ],
   },
+  "safari-secret-house-surf": {
+    id: "safari-secret-house-surf",
+    interact: (story) => {
+      const gift = grantStoryFieldTechniqueOnce(story, "surf");
+      return {
+        story: gift.story,
+        presentation: dialoguePresentationFromText(
+          "safari-secret-house-surf",
+          gift.granted
+            ? "Atendente: Ah! Finalmente! Você é a primeira pessoa a chegar à Casa Secreta! Para comemorar, aceite este presente. Você recebeu a HM03 Surf! Com ela você atravessa a água, desde que tenha a Soul Badge."
+            : "Atendente: Surf permite atravessar a água. Fale com a água de frente para usá-lo!",
+          "Atendente",
+        ),
+      };
+    },
+  },
   "pallet-mom": {
     id: "pallet-mom",
     interact: (story) => {
@@ -764,6 +781,7 @@ const WORLD_OBJECT_DIALOGUE_IDS: Record<
 > = {
   "pallet-town:3,10": "pallet-woman",
   "pallet-players-house-1f:8,4": "pallet-mom",
+  "safari-zone-secret-house:6,5": "safari-secret-house-surf",
   "pallet-rivals-house:10,6": "pallet-daisy",
   "pewter-museum-1f:21,3": "museum-old-amber",
   "vermilion-pokemon-fan-club:5,4": "fan-club-chairman",

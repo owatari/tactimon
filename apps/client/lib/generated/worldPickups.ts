@@ -998,6 +998,24 @@ export const GENERATED_PICKUPS: readonly OverworldPickupDefinition[] = [
   "hidden": true
  },
  {
+  "id": "route-20-hidden-stardust",
+  "mapId": "route-20",
+  "itemId": "stardust",
+  "itemName": "Stardust",
+  "x": 23,
+  "y": 6,
+  "hidden": true
+ },
+ {
+  "id": "route-21-north-hidden-pearl",
+  "mapId": "route-21-north",
+  "itemId": "pearl",
+  "itemName": "Pearl",
+  "x": 17,
+  "y": 42,
+  "hidden": true
+ },
+ {
   "id": "route-23-hidden-full-restore",
   "mapId": "route-23",
   "itemId": "full-restore",
