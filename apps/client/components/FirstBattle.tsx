@@ -51,6 +51,10 @@ import type { StoryBadgeId } from "@/lib/story";
 export type BattleOutcome = {
   won: boolean;
   escaped: boolean;
+  escapedBy?: "player" | "rival";
+  /** Trainer name or first wild Pokémon, for the results headline. */
+  opponentName: string;
+  opponentCount: number;
   inventory: DuelInventory;
   playerHp: number[];
   playerStatuses: DuelMajorStatus[];
@@ -145,6 +149,8 @@ const STEP_ANIMATION_MS = 145;
 const ATTACK_WINDUP_MS = 180;
 /** Short FireRed-like vanish; fainted units must not linger on the board. */
 const FAINT_VANISH_MS = 260;
+/** Beat after the last action before the shared results screen opens. */
+const BATTLE_END_BEAT_MS = 650;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -494,6 +500,69 @@ export function FirstBattle({
   const vfxDoneRef = useRef<(() => void) | null>(null);
 
   const active = getActiveDuelUnit(state);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
+  const completedRef = useRef(false);
+
+  // Hand the outcome to the single post-battle results screen (GameClient)
+  // shortly after the last action; there is no in-battle result panel.
+  useEffect(() => {
+    if (state.status !== "finished" || completedRef.current) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      if (completedRef.current) return;
+      completedRef.current = true;
+      const players = state.units.filter(
+        (unit) => unit.side === "player",
+      );
+      const rivals = state.units.filter(
+        (unit) => unit.side === "rival",
+      );
+      onCompleteRef.current({
+        won: !state.escaped && state.winner === "player",
+        escaped: state.escaped,
+        escapedBy:
+          state.escaped && state.escapedBy
+            ? state.escapedBy
+            : undefined,
+        opponentName:
+          encounter.kind === "trainer"
+            ? encounter.trainerName ?? "Blue"
+            : rivals[0]?.displayName ?? "Pokémon",
+        opponentCount: rivals.length,
+        inventory: { ...state.items },
+        playerHp: players.map((unit) => unit.hp),
+        playerStatuses: players.map((unit) => unit.status),
+        playerSleepTurnsRemaining: players.map(
+          (unit) => unit.sleepTurnsRemaining,
+        ),
+        playerMovePp: players.map((unit) => ({ ...unit.movePp })),
+        defeatedEnemies: rivals
+          .filter((unit) => unit.hp <= 0)
+          .map((unit) => ({
+            species: unit.species,
+            level: unit.level,
+          })),
+        capture:
+          !state.escaped && state.captureResult
+            ? {
+                success: state.captureResult.success,
+                species: state.captureResult.species,
+                level: state.captureResult.level,
+                xpRatio: state.captureResult.xpRatio,
+                status: state.captureResult.status,
+                sleepTurnsRemaining:
+                  state.captureResult.sleepTurnsRemaining,
+              }
+            : undefined,
+      });
+    }, BATTLE_END_BEAT_MS / battleSpeedRef.current);
+
+    return () => clearTimeout(timer);
+  }, [encounter, state]);
+
   // A fainted unit is already gone for the engine (no tile, turn or
   // targeting). Visually it only plays a short vanish instead of the full
   // PMD faint animation, then leaves the board.
@@ -543,30 +612,10 @@ export function FirstBattle({
       ? active
       : starterUnit;
   const rival = rivalUnits[0]!;
-  const resultRival =
-    state.captureResult
-      ? rivalUnits.find(
-          (unit) =>
-            unit.species ===
-              state.captureResult?.species &&
-            unit.level ===
-              state.captureResult?.level,
-        ) ?? rival
-      : rival;
   const trainerName =
     encounter.kind === "trainer"
       ? encounter.trainerName ?? "Blue"
       : null;
-  const defeatedEnemies = state.units
-    .filter(
-      (unit) =>
-        unit.side === "rival" &&
-        unit.hp <= 0,
-    )
-    .map((unit) => ({
-      species: unit.species,
-      level: unit.level,
-    }));
   const autoCatchReady =
     autoCatch &&
     state.status === "active" &&
@@ -2064,164 +2113,6 @@ export function FirstBattle({
           <span>{latestMessage}</span>
         </div>
 
-        {state.status === "finished" && !state.escaped && (
-          <div className="battle-result">
-            <span className="eyebrow">
-              {state.captureResult
-                ? state.captureResult.success
-                  ? "CAPTURADO"
-                  : "FUGIU"
-                : state.winner === "player"
-                  ? "VITÓRIA"
-                  : "DERROTA"}
-            </span>
-            <div
-              className="battle-result-sprites"
-              aria-hidden="true"
-            >
-              <PokemonPortrait
-                species={starterUnit.species}
-                name={starterUnit.displayName}
-              />
-              <span>
-                {rivalUnits.length > 1
-                  ? `VS ×${rivalUnits.length}`
-                  : "VS"}
-              </span>
-              <PokemonPortrait
-                species={resultRival.species}
-                name={resultRival.displayName}
-              />
-            </div>
-            <h3>
-              {state.captureResult
-                ? state.captureResult.success
-                  ? `${resultRival.displayName} foi capturado!`
-                  : `${resultRival.displayName} escapou da Poké Ball.`
-                : state.winner === "player"
-                  ? encounter.kind === "wild"
-                    ? rivalUnits.length > 1
-                      ? `${rivalUnits.length} Pokémon selvagens foram derrotados.`
-                      : `${rival.displayName} foi derrotado.`
-                    : `Seu time venceu ${trainerName}.`
-                  : encounter.kind === "wild"
-                    ? rivalUnits.length > 1
-                      ? "Seu time foi derrotado pelo grupo selvagem."
-                      : "Seu time foi derrotado."
-                    : `${trainerName} venceu desta vez.`}
-            </h3>
-            <p>
-              {state.captureResult
-                ? state.captureResult.success
-                  ? "O Pokémon foi capturado. Ele irá para sua party ou para o PC conforme houver espaço. A EXP da captura é dividida entre todos os Pokémon que entraram na arena."
-                  : `O Pokémon fugiu. Você recebe ${Math.round(
-                      state.captureResult.xpRatio * 100,
-                    )}% da recompensa total, dividida entre todos os Pokémon que entraram na arena.`
-                : encounter.kind === "wild"
-                  ? state.winner === "player"
-                    ? "A EXP da vitória é dividida entre todos os Pokémon que entraram na arena e pode gerar level up, EV e novos moves."
-                    : "Você retorna ao mapa sem receber recompensa."
-                  : defeatedEnemies.length > 0
-                    ? `A EXP de treinador dos ${defeatedEnemies.length} Pokémon derrotados será dividida entre todos os seus Pokémon que entraram na arena.`
-                    : encounter.rivals?.length
-                      ? "A batalha termina somente quando todos os Pokémon de um dos treinadores forem derrotados."
-                      : "O resultado não bloqueia a história; este combate é o tutorial do sistema tático."}
-            </p>
-            {encounter.kind === "trainer" &&
-              state.winner === "player" &&
-              (encounter.rewardMoney ?? 0) > 0 && (
-                <p>
-                  Prêmio de vitória: ₽
-                  {(encounter.rewardMoney ?? 0).toLocaleString("pt-BR")}
-                </p>
-              )}
-            <button
-              type="button"
-              onClick={() =>
-                onComplete({
-                  won: state.winner === "player",
-                  escaped: false,
-                  inventory: { ...state.items },
-                  playerHp: playerUnits.map((unit) => unit.hp),
-                  playerStatuses: playerUnits.map((unit) => unit.status),
-                  playerSleepTurnsRemaining:
-                    playerUnits.map(
-                      (unit) =>
-                        unit.sleepTurnsRemaining,
-                    ),
-                  playerMovePp: playerUnits.map(
-                    (unit) => ({ ...unit.movePp }),
-                  ),
-                  defeatedEnemies,
-                  capture: state.captureResult
-                    ? {
-                        success: state.captureResult.success,
-                        species: state.captureResult.species,
-                        level: state.captureResult.level,
-                        xpRatio: state.captureResult.xpRatio,
-                        status: state.captureResult.status,
-                        sleepTurnsRemaining:
-                          state.captureResult
-                            .sleepTurnsRemaining,
-                      }
-                    : undefined,
-                })
-              }
-            >
-              Continuar
-            </button>
-          </div>
-        )}
-
-        {state.status === "finished" && state.escaped && (
-          <div className="battle-result">
-            <span className="eyebrow">
-              {state.escapedBy === "rival" ? "FUGIU" : "ESCAPOU"}
-            </span>
-            <div
-              className="battle-result-sprites"
-              aria-hidden="true"
-            >
-              <PokemonPortrait
-                species={starterUnit.species}
-                name={starterUnit.displayName}
-              />
-              <span>↔</span>
-              <PokemonPortrait
-                species={resultRival.species}
-                name={resultRival.displayName}
-              />
-            </div>
-            <h3>
-              {state.escapedBy === "rival"
-                ? `${rival.displayName} fugiu do combate.`
-                : "Você saiu do combate."}
-            </h3>
-            <button
-              type="button"
-              onClick={() =>
-                onComplete({
-                  won: false,
-                  escaped: true,
-                  inventory: { ...state.items },
-                  playerHp: playerUnits.map((unit) => unit.hp),
-                  playerStatuses: playerUnits.map((unit) => unit.status),
-                  playerSleepTurnsRemaining:
-                    playerUnits.map(
-                      (unit) =>
-                        unit.sleepTurnsRemaining,
-                    ),
-                  playerMovePp: playerUnits.map(
-                    (unit) => ({ ...unit.movePp }),
-                  ),
-                  defeatedEnemies,
-                })
-              }
-            >
-              Voltar ao mapa
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

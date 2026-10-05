@@ -14,6 +14,7 @@ import {
   normalizeDuelMajorStatus,
   normalizeDuelMovePp,
   normalizeDuelSleepTurns,
+  speciesDisplayName,
   type DuelItemId,
   type DuelMajorStatus,
   type DuelMovePp,
@@ -31,7 +32,11 @@ import {
   type BattleEncounter,
   type BattleOutcome,
 } from "@/components/FirstBattle";
-import { BattleProgressionSummary } from "@/components/BattleProgressionSummary";
+import { BattleResultsScreen } from "@/components/BattleResultsScreen";
+import {
+  describeBattleResult,
+  type BattleResultHeadline,
+} from "@/lib/battleResult";
 import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
@@ -267,8 +272,11 @@ export function GameClient() {
     useState<BattleSession | null>(null);
   const [progressionQueue, setProgressionQueue] =
     useState<ProgressionQueueEntry[]>([]);
-  const [progressionSummary, setProgressionSummary] =
-    useState<ProgressionQueueEntry[]>([]);
+  const [battleResult, setBattleResult] = useState<{
+    headline: BattleResultHeadline;
+    prizeMoney: number;
+    rewards: ProgressionQueueEntry[];
+  } | null>(null);
   const [pendingWhiteOut, setPendingWhiteOut] =
     useState<PendingWhiteOut | null>(null);
   const [respawnRequest, setRespawnRequest] =
@@ -442,6 +450,53 @@ export function GameClient() {
       return;
     }
 
+    const isTutorial =
+      session.encounter.kind === "trainer" &&
+      !session.encounter.trainerId;
+    const resultPrizeMoney =
+      session.encounter.kind === "trainer" && outcome.won
+        ? Math.max(
+            0,
+            Math.trunc(session.encounter.rewardMoney ?? 0),
+          )
+        : 0;
+    const headline = describeBattleResult({
+      won: outcome.won,
+      escaped: outcome.escaped,
+      escapedBy: outcome.escapedBy,
+      encounterKind: session.encounter.kind,
+      opponentName: outcome.opponentName,
+      opponentCount: outcome.opponentCount,
+      tutorial: isTutorial,
+      prizeMoney: resultPrizeMoney,
+      capture: outcome.capture
+        ? {
+            success: outcome.capture.success,
+            speciesName: speciesDisplayName(
+              outcome.capture.species,
+            ),
+            level: outcome.capture.level,
+            destination: outcome.capture.success
+              ? placeCapturedPokemon(
+                  story,
+                  createPokemonProgression(
+                    outcome.capture.species,
+                    outcome.capture.level,
+                  ),
+                ).destination ?? null
+              : null,
+          }
+        : undefined,
+    });
+    const showResult = (
+      rewards: ProgressionQueueEntry[],
+    ) =>
+      setBattleResult({
+        headline,
+        prizeMoney: resultPrizeMoney,
+        rewards,
+      });
+
     setStory((current) => ({
       ...applyBattleHealth(
         current,
@@ -511,14 +566,7 @@ export function GameClient() {
         session.encounter.trainerId;
       const badgeId =
         session.encounter.badgeId;
-      const prizeMoney = outcome.won
-        ? Math.max(
-            0,
-            Math.trunc(
-              session.encounter.rewardMoney ?? 0,
-            ),
-          )
-        : 0;
+      const prizeMoney = resultPrizeMoney;
 
       setStory((current) => {
         let next = applyPartyProgressionRewards(
@@ -563,7 +611,7 @@ export function GameClient() {
           rewards,
           session.partyIndices,
         );
-      setProgressionSummary(progressionEntries);
+      showResult(progressionEntries);
       setProgressionQueue(
         pendingMoveQueue(progressionEntries),
       );
@@ -571,6 +619,7 @@ export function GameClient() {
     }
 
     if (!story.playerPokemon) {
+      showResult([]);
       return;
     }
 
@@ -602,6 +651,7 @@ export function GameClient() {
     }
 
     if (rewardEnemies.length === 0) {
+      showResult([]);
       return;
     }
 
@@ -644,7 +694,7 @@ export function GameClient() {
         rewards,
         session.partyIndices,
       );
-    setProgressionSummary(progressionEntries);
+    showResult(progressionEntries);
     setProgressionQueue(
       pendingMoveQueue(progressionEntries),
     );
@@ -843,7 +893,7 @@ export function GameClient() {
     storageOpen ||
     Boolean(battleSession) ||
     Boolean(pendingWhiteOut) ||
-    progressionSummary.length > 0 ||
+    Boolean(battleResult) ||
     progressionQueue.length > 0;
   const battleMusicKind = battleSession
     ? battleSession.encounter.kind === "wild"
@@ -1006,6 +1056,7 @@ export function GameClient() {
         )}
 
       {pendingWhiteOut &&
+        !battleResult &&
         progressionQueue.length === 0 && (
           <BlackoutOverlay
             moneyLost={pendingWhiteOut.moneyLost}
@@ -1031,18 +1082,18 @@ export function GameClient() {
           />
         )}
 
-      {progressionSummary.length > 0 && (
-        <BattleProgressionSummary
-          rewards={progressionSummary.map(
+      {battleResult && (
+        <BattleResultsScreen
+          headline={battleResult.headline}
+          prizeMoney={battleResult.prizeMoney}
+          rewards={battleResult.rewards.map(
             (entry) => entry.reward,
           )}
-          onContinue={() =>
-            setProgressionSummary([])
-          }
+          onContinue={() => setBattleResult(null)}
         />
       )}
 
-      {progressionSummary.length === 0 &&
+      {!battleResult &&
         progressionQueue[0] && (
           <ProgressionOverlay
             key={`${progressionQueue[0].partyIndex}-${progressionQueue[0].reward.experienceAfter}`}
