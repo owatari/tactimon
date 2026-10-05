@@ -143,6 +143,8 @@ type CaptureThrowEvent = {
 
 const STEP_ANIMATION_MS = 145;
 const ATTACK_WINDUP_MS = 180;
+/** Short FireRed-like vanish; fainted units must not linger on the board. */
+const FAINT_VANISH_MS = 260;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -470,6 +472,9 @@ export function FirstBattle({
   const [hiddenUnitIds, setHiddenUnitIds] = useState<
     Set<string>
   >(() => new Set());
+  const faintTimersRef = useRef(
+    new Map<string, ReturnType<typeof setTimeout>>(),
+  );
   const [visualPositions, setVisualPositions] = useState<
     Record<string, DuelPoint>
   >(() =>
@@ -489,6 +494,43 @@ export function FirstBattle({
   const vfxDoneRef = useRef<(() => void) | null>(null);
 
   const active = getActiveDuelUnit(state);
+  // A fainted unit is already gone for the engine (no tile, turn or
+  // targeting). Visually it only plays a short vanish instead of the full
+  // PMD faint animation, then leaves the board.
+  useEffect(() => {
+    const timers = faintTimersRef.current;
+    for (const unit of state.units) {
+      if (
+        unit.hp > 0 ||
+        hiddenUnitIds.has(unit.id) ||
+        timers.has(unit.id)
+      ) {
+        continue;
+      }
+
+      timers.set(
+        unit.id,
+        setTimeout(() => {
+          timers.delete(unit.id);
+          setHiddenUnitIds((current) => {
+            if (current.has(unit.id)) return current;
+            const next = new Set(current);
+            next.add(unit.id);
+            return next;
+          });
+        }, FAINT_VANISH_MS / battleSpeedRef.current),
+      );
+    }
+  }, [hiddenUnitIds, state.units]);
+
+  useEffect(() => {
+    const timers = faintTimersRef.current;
+    return () => {
+      for (const timer of timers.values()) clearTimeout(timer);
+      timers.clear();
+    };
+  }, []);
+
   const playerUnits = state.units.filter(
     (unit) => unit.side === "player",
   );
@@ -1628,14 +1670,12 @@ export function FirstBattle({
                 visualPositions[unit.id] ?? unit.position;
               const requestedAnimation =
                 animations[unit.id];
+              const fainted = unit.hp <= 0;
               const animation: UnitAnimationState =
-                unit.hp <= 0
+                fainted
                   ? {
-                      name: "faint",
-                      nonce:
-                        requestedAnimation?.name === "faint"
-                          ? requestedAnimation.nonce
-                          : 0,
+                      name: "hurt",
+                      nonce: 0,
                       facing:
                         requestedAnimation?.facing ??
                         (unit.side === "player"
@@ -1681,6 +1721,7 @@ export function FirstBattle({
                       ? "area-preview"
                       : "",
                     active?.id === unit.id ? "active-unit" : "",
+                    fainted ? "fainting" : "",
                   ]
                     .filter(Boolean)
                     .join(" ")}
@@ -1704,8 +1745,8 @@ export function FirstBattle({
                       current === unit.id ? null : current,
                     )
                   }
-                  aria-disabled={!targetable || busy}
-                  disabled={busy}
+                  aria-disabled={!targetable || busy || fainted}
+                  disabled={busy || fainted}
                 >
                   <div className="duel-unit">
                     <PokemonBattleSprite
@@ -1715,25 +1756,6 @@ export function FirstBattle({
                       animation={animation.name}
                       facing={animation.facing}
                       speed={battleSpeed}
-                      onAnimationComplete={
-                        unit.hp <= 0
-                          ? () => {
-                              setHiddenUnitIds(
-                                (current) => {
-                                  if (
-                                    current.has(unit.id)
-                                  ) {
-                                    return current;
-                                  }
-                                  const next =
-                                    new Set(current);
-                                  next.add(unit.id);
-                                  return next;
-                                },
-                              );
-                            }
-                          : undefined
-                      }
                     />
                     <span className="duel-unit-label">
                       {unit.displayName}

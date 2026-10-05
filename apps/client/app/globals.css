@@ -964,6 +964,26 @@ h1 {
   cursor: crosshair;
 }
 
+/* Fainted: gone for the engine already; quick stepped sink-and-fade only. */
+.duel-unit-position.fainting {
+  pointer-events: none;
+}
+
+.duel-unit-position.fainting .duel-unit {
+  animation: unit-faint-out 260ms steps(4, end) forwards;
+}
+
+.duel-unit-position.fainting .duel-unit-label {
+  display: none;
+}
+
+@keyframes unit-faint-out {
+  to {
+    opacity: 0;
+    transform: translate(-50%, 18%);
+  }
+}
+
 .duel-unit-position.targetable::before {
   content: "";
   position: absolute;
