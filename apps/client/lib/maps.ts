@@ -1309,6 +1309,18 @@ export type WhiteOutRespawn = {
   spawn: { x: number; y: number };
 };
 
+/**
+ * A respawn request is a one-shot command. Effects re-run on remounts and
+ * Fast Refresh, so a request must only move the player when its id has not
+ * been applied yet.
+ */
+export function shouldApplyRespawnRequest(
+  request: { id: number } | null,
+  lastAppliedId: number | null,
+): boolean {
+  return request !== null && request.id !== lastAppliedId;
+}
+
 export function resolveWhiteOutRespawn(
   healLocationId:
     | "pallet-town"

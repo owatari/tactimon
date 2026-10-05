@@ -1369,6 +1369,25 @@ export function computeWhiteOutMoneyLoss(
   );
 }
 
+/**
+ * Whiteout is only legitimate outside battle, once, when the party really
+ * has no conscious Pokémon left.
+ */
+export function shouldStartStoryWhiteOut(
+  story: StoryState,
+  context: {
+    battleActive: boolean;
+    whiteOutPending: boolean;
+  },
+): boolean {
+  return (
+    !context.battleActive &&
+    !context.whiteOutPending &&
+    Boolean(story.playerPokemon) &&
+    !storyHasHealthyPokemon(story)
+  );
+}
+
 export type StoryWhiteOutResult = {
   story: StoryState;
   moneyLost: number;

@@ -59,8 +59,8 @@ import {
   normalizeStoryState,
   placeCapturedPokemon,
   registerStoryHealLocation,
+  shouldStartStoryWhiteOut,
   storyCanCapturePokemon,
-  storyHasHealthyPokemon,
   withdrawBoxedPokemon,
   type PokemonStorageActionResult,
   type StoryState,
@@ -651,10 +651,10 @@ export function GameClient() {
 
   useEffect(() => {
     if (
-      battleSession ||
-      pendingWhiteOut ||
-      !story.playerPokemon ||
-      storyHasHealthyPokemon(story)
+      !shouldStartStoryWhiteOut(story, {
+        battleActive: Boolean(battleSession),
+        whiteOutPending: Boolean(pendingWhiteOut),
+      })
     ) {
       return;
     }
@@ -946,8 +946,13 @@ export function GameClient() {
           }
         }}
         onMartOpen={() => setMartOpen(true)}
-        onOverworldStep={(nextStory) => {
-          setStory(nextStory);
+        onRespawnApplied={(id) =>
+          setRespawnRequest((current) =>
+            current?.id === id ? null : current,
+          )
+        }
+        onStoryUpdate={(update) => {
+          setStory((current) => update(current));
         }}
         onDialogueInteraction={handleDialogueInteraction}
         onPokemonStorageOpen={() =>

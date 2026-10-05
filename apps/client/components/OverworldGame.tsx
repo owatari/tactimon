@@ -26,6 +26,7 @@ import {
   isWaterCell,
   resolveWarpTransitionAt,
   resolveWorldTransition,
+  shouldApplyRespawnRequest,
   TILE_SIZE,
   WORLD_MAPS,
   WORLD_ZOOM,
@@ -148,9 +149,11 @@ type Props = {
     },
   ) => void;
   onMartOpen: () => void;
-  onOverworldStep: (
-    nextStory: StoryState,
+  /** Functional story update applied to GameClient's latest state. */
+  onStoryUpdate: (
+    update: (story: StoryState) => StoryState,
   ) => void;
+  onRespawnApplied: (id: number) => void;
   onPokemonStorageOpen: () => void;
   onDialogueInteraction: (
     request: DialogueInteractionRequest,
@@ -682,7 +685,8 @@ export function OverworldGame({
   onWildBattleTrigger,
   onTrainerBattleTrigger,
   onMartOpen,
-  onOverworldStep,
+  onStoryUpdate,
+  onRespawnApplied,
   onPokemonStorageOpen,
   onDialogueInteraction,
 }: Props) {
@@ -715,6 +719,7 @@ export function OverworldGame({
   const loadTokenRef = useRef(0);
   const runningRef = useRef(false);
   const runningShoesGrantRef = useRef(false);
+  const appliedRespawnIdRef = useRef<number | null>(null);
 
   const [mapId, setMapId] = useState("pallet-town");
   const [layout, setLayout] = useState<MapLayout | null>(null);
@@ -849,9 +854,8 @@ export function OverworldGame({
     }
 
     runningShoesGrantRef.current = true;
-    const nextStory = grantRunningShoes(story);
-    storyRef.current = nextStory;
-    onOverworldStep(nextStory);
+    storyRef.current = grantRunningShoes(story);
+    onStoryUpdate(grantRunningShoes);
     showDialogue({
       id: "running-shoes-delivery",
       pages: [
@@ -870,7 +874,7 @@ export function OverworldGame({
   }, [
     isTransitioning,
     mapId,
-    onOverworldStep,
+    onStoryUpdate,
     showDialogue,
     story,
   ]);
@@ -1276,7 +1280,7 @@ export function OverworldGame({
     advanceDialogue,
     onDialogueInteraction,
     onMartOpen,
-    onOverworldStep,
+    onStoryUpdate,
     onPokemonStorageOpen,
     onRequestStarterChoice,
     showDialogue,
@@ -1407,16 +1411,24 @@ export function OverworldGame({
   }, [loadMap]);
 
   useEffect(() => {
-    if (!respawnRequest) {
+    if (
+      !respawnRequest ||
+      !shouldApplyRespawnRequest(
+        respawnRequest,
+        appliedRespawnIdRef.current,
+      )
+    ) {
       return;
     }
 
+    appliedRespawnIdRef.current = respawnRequest.id;
     void loadMap(
       respawnRequest.mapId,
       respawnRequest.spawn,
       "south",
     );
-  }, [loadMap, respawnRequest]);
+    onRespawnApplied(respawnRequest.id);
+  }, [loadMap, onRespawnApplied, respawnRequest]);
 
   useEffect(() => {
     if (!layout || !foregroundRef.current) {
@@ -1593,7 +1605,7 @@ export function OverworldGame({
             storyRef.current,
           );
         storyRef.current = nextStory;
-        onOverworldStep(nextStory);
+        onStoryUpdate(applyStoryOverworldStep);
         if (!storyHasHealthyPokemon(nextStory)) {
           return false;
         }
@@ -2154,7 +2166,7 @@ export function OverworldGame({
               storyRef.current,
             );
           storyRef.current = nextStory;
-          onOverworldStep(nextStory);
+          onStoryUpdate(applyStoryOverworldStep);
 
           if (
             !storyHasHealthyPokemon(nextStory)
