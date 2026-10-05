@@ -116,7 +116,7 @@ export const WORLD_NPC_TEXT: Readonly<
     "Estou ao telefone! Cai fora!",
   ],
   "pewter-pokemon-center:1,2": [
-    "Aaah!",
+    "Hoooaaam!",
     "Quando Jigglypuff canta, os Pokémon ficam sonolentos…",
     "Eu também… Zzz…",
   ],
@@ -200,6 +200,183 @@ export const WORLD_NPC_TEXT: Readonly<
   "mt-moon-1f:42,7": [
     "Olá, estou escavando fósseis aqui embaixo do Mt. Moon.",
     "Às vezes o Brock, do Pewter Gym, me dá uma mãozinha.",
+  ],
+  "viridian-house:7,4": [
+    "Inventar apelidos é divertido, mas não é tão fácil.",
+    "Apelidos inteligentes são legais, mas os simples são mais fáceis de lembrar.",
+  ],
+  "viridian-house:2,5": [
+    "Meu pai também adora Pokémon.",
+  ],
+  "viridian-house:6,6": [
+    "Speary: Tetweet!",
+  ],
+  "viridian-school:6,2": [
+    "Certo!",
+    "Leia com atenção o que está no quadro-negro!",
+  ],
+  "viridian-school:4,5": [
+    "Ufa! Estou tentando memorizar todas as minhas anotações.",
+  ],
+  "pewter-museum-1f:2,4": [
+    "Devo ser grato por minha longa vida.",
+    "Nunca pensei que veria os ossos de um dragão!",
+  ],
+  "pewter-museum-1f:26,4": [
+    "Temos dois fósseis de Pokémon pré-históricos raros em exposição.",
+  ],
+  "pewter-museum-2f:10,5": [
+    "Neste mês, estamos com uma exposição sobre o espaço.",
+  ],
+  "pewter-museum-2f:4,9": [
+    "Moon Stone, é? O que tem de especial? Parece uma pedra comum para mim.",
+  ],
+  "pewter-museum-2f:0,6": [
+    "20 de julho de 1969!",
+    "Foi o dia em que a humanidade pisou na Lua pela primeira vez.",
+    "Comprei uma TV colorida só para assistir à notícia.",
+  ],
+  "pewter-museum-2f:15,8": [
+    "Eu quero um Pikachu! É tão fofo!",
+    "Pedi para o meu pai capturar um para mim!",
+  ],
+  "pewter-museum-2f:16,8": [
+    "Sim, um Pikachu em breve, eu prometo!",
+  ],
+  "pewter-house-1:1,2": [
+    "Nosso Pokémon é um forasteiro, então é birrento e difícil de controlar.",
+    "Forasteiro é o Pokémon que você recebe em uma troca.",
+    "Ele cresce rápido, mas pode ignorar um Treinador inexperiente em batalha.",
+    "Se ao menos tivéssemos algumas Badges…",
+  ],
+  "pewter-house-1:5,3": [
+    "Nidoran, senta!",
+  ],
+  "pewter-house-1:6,3": [
+    "Nidoran?: Bowbow!",
+  ],
+  "pewter-house-2:3,3": [
+    "Os Pokémon aprendem novas técnicas conforme crescem.",
+    "Mas alguns golpes precisam ser ensinados por pessoas.",
+  ],
+  "pewter-house-2:5,3": [
+    "Um Pokémon fica mais fácil de capturar se tiver um problema de status.",
+    "Sono, veneno, queimadura ou paralisia… Todos funcionam bem.",
+    "Mas capturar Pokémon nunca é garantido!",
+  ],
+  "cerulean-house-1:6,5": [
+    "Só Treinadores habilidosos conseguem coletar Badges Pokémon.",
+    "Vejo que você tem pelo menos uma.",
+    "Essas Badges têm segredos incríveis, sabia?",
+  ],
+  "cerulean-house-3:7,5": [
+    "Meu marido gosta de trocar Pokémon.",
+    "Você está coletando Pokémon para a sua Pokédex, não está?",
+    "Poderia trocar com ele, por favor?",
+  ],
+  "cerulean-bike-shop:9,7": [
+    "Essas bicicletas são legais, mas custam uma fortuna!",
+  ],
+  "cerulean-bike-shop:5,5": [
+    "Uma bicicleta urbana comum já está bom para mim.",
+    "Afinal, você não consegue colocar uma cesta de compras em uma mountain bike.",
+  ],
+  "cerulean-house-4:5,3": [
+    "Suspiro… Tempo demais, coisa de menos para fazer…",
+    "Não está acontecendo nada divertido em lugar nenhum?",
+  ],
+  "vermilion-pokemon-fan-club:6,4": [
+    "Nosso Presidente é muito fã de Pokémon.",
+  ],
+  "vermilion-pokemon-fan-club:7,6": [
+    "Pikachu: Chu! Pikachu!",
+  ],
+  "vermilion-pokemon-fan-club:4,6": [
+    "Seel: Kyuoo!",
+  ],
+  "vermilion-pokemon-fan-club:4,5": [
+    "Eu adoro o meu Seel! Ele é tão amoroso!",
+    "Ele chia “Kyuuuh” quando eu o abraço!",
+  ],
+  "vermilion-pokemon-fan-club:7,5": [
+    "Não quer admirar a adorável cauda do meu Pikachu?",
+  ],
+  "vermilion-house-3:7,4": [
+    "Estou fazendo meu Pidgey levar uma carta voando até Saffron, ao norte.",
+  ],
+  "vermilion-house-3:2,5": [
+    "Pidgey: Kurukkoo!",
+  ],
+  "vermilion-house-3:2,4": [
+    "Quero trocar cartas com todo tipo de gente.",
+    "Mando meu Pidgey a uma Union Room para trocar as cartas por mim.",
+  ],
+  "route-2-house:4,5": [
+    "Um Pokémon desmaiado não tem mais energia para batalhar.",
+    "Mas ele ainda pode usar golpes como Cut fora de batalha.",
+  ],
+  "ss-anne-kitchen:1,5": [
+    "Você, mon petit! Estamos ocupados aqui!",
+    "Saia da frente!",
+  ],
+  "ss-anne-kitchen:6,6": [
+    "Vi uma Berry estranha no lixo. O que será que era?",
+  ],
+  "ss-anne-kitchen:10,4": [
+    "Estou tão ocupado que estou ficando tonto! Dê-me espaço aqui!",
+  ],
+  "ss-anne-kitchen:14,5": [
+    "Hum-de-hum-de-ho…",
+    "Descasco batatas todos os dias! Hum-hum…",
+  ],
+  "ss-anne-kitchen:14,7": [
+    "Você ouviu falar do Snorlax? Ele é um glutão.",
+    "Nenhum outro Pokémon come e dorme como o Snorlax!",
+  ],
+  "ss-anne-kitchen:14,9": [
+    "Snif… Fungada…",
+    "Eu só descasco cebolas… Snif…",
+  ],
+  "ss-anne-1f-room-1:2,5": [
+    "Psiu…! Sou um agente da Polícia Global.",
+    "Estou no rastro da Team Rocket. Eles não estão tramando nada de bom!",
+  ],
+  "ss-anne-1f-room-2:2,6": [
+    "Estamos dando a volta ao mundo, eu e meus filhos.",
+  ],
+  "ss-anne-1f-room-3:3,4": [
+    "Eu sempre viajo com Wigglytuff. Nunca saio de casa sem ele.",
+  ],
+  "ss-anne-1f-room-3:4,2": [
+    "Wigglytuff: Puup pupuu!",
+  ],
+  "ss-anne-1f-room-3:0,4": [
+    "Uma viagem ao redor do mundo é tão elegante e aconchegante!",
+  ],
+  "ss-anne-1f-room-4:2,4": [
+    "Garçom, eu gostaria de uma torta de cereja, por favor!",
+  ],
+  "ss-anne-2f-room-3:2,5": [
+    "Ah, sim, já vi Pokémon levando pessoas pela água!",
+  ],
+  "ss-anne-2f-room-3:3,2": [
+    "Árvores pequenas podem ser derrubadas com o golpe Cut.",
+    "Mas lembre-se! Cut é uma técnica HM.",
+    "Depois de aprendida, não é fácil de esquecer.",
+  ],
+  "ss-anne-2f-room-5:5,2": [
+    "Você já foi à Safari Zone de Fuchsia City?",
+    "Há muitos tipos de Pokémon raros lá.",
+  ],
+  "ss-anne-2f-room-5:3,5": [
+    "Eu e meu pai achamos a Safari Zone incrível!",
+    "Queria que pudéssemos ir lá de novo.",
+  ],
+  "ss-anne-2f-room-6:1,4": [
+    "Ouvi dizer que muita gente fica enjoada no mar.",
+  ],
+  "ss-anne-2f-room-6:4,4": [
+    "O Capitão disse que está muito enjoado. Estava todo pálido.",
   ],
 };
 
@@ -333,6 +510,116 @@ export const WORLD_SIGN_TEXT: Readonly<
   ],
   "ss-anne-captains-office:5,3": ["Eca! Não devia ter olhado!"],
   "route-22:7,12": ["POKÉMON LEAGUE\nPortão Principal"],
+  "pallet-players-house-1f:6,1": [
+    "Ops, lado errado…",
+  ],
+  "pallet-players-house-2f:6,5": [
+    "Você jogou no NES.",
+    "…Certo! Hora de ir!",
+  ],
+  "pallet-players-house-2f:1,1": [
+    "Você ligou o PC.",
+  ],
+  "pallet-players-house-2f:11,1": [
+    "É um aviso afixado…",
+    "Se estiver confuso, peça AJUDA! Pressione o botão L ou R!",
+  ],
+  "pallet-rivals-house:12,1": [
+    "As estantes estão lotadas de livros sobre Pokémon.",
+  ],
+  "pallet-rivals-house:11,1": [
+    "As estantes estão lotadas de livros sobre Pokémon.",
+  ],
+  "pallet-rivals-house:9,1": [
+    "“O lindo e doce Clefairy”",
+  ],
+  "viridian-house:7,1": [
+    "SPEAROW\nNome: SPEARY",
+  ],
+  "viridian-school:4,4": [
+    "Vamos ver o caderno.",
+    "Primeira página…",
+    "As Poké Balls são usadas para capturar Pokémon.",
+    "Até seis Pokémon podem ser carregados no time.",
+    "Pessoas que criam e batalham com Pokémon são chamadas de Treinadores.",
+  ],
+  "viridian-school:5,1": [
+    "O quadro-negro lista os problemas de STATUS dos Pokémon em batalha.",
+  ],
+  "viridian-school:4,1": [
+    "O quadro-negro lista os problemas de STATUS dos Pokémon em batalha.",
+  ],
+  "pewter-museum-1f:4,4": [
+    "Fóssil de AERODACTYL\nUm Pokémon primitivo e raro.",
+  ],
+  "pewter-museum-1f:4,7": [
+    "Fóssil de KABUTOPS\nUm Pokémon primitivo e raro.",
+  ],
+  "pewter-museum-2f:3,6": [
+    "Um meteorito que caiu no Mt. Moon. Acredita-se que seja uma Moon Stone.",
+  ],
+  "pewter-museum-2f:3,5": [
+    "Um meteorito que caiu no Mt. Moon. Acredita-se que seja uma Moon Stone.",
+  ],
+  "cerulean-house-5:3,1": [
+    "“POKÉMON JUMP”",
+    "Faça seu Pokémon pular a corda de Vine Whip com o botão A.",
+    "Só Pokémon pequenos, de cerca de 70 cm ou menos, podem participar.",
+    "Pokémon que só nadam, escavam ou voam não são bons em pular.",
+    "Coisas boas acontecem se todos pularem no mesmo ritmo.",
+  ],
+  "vermilion-pokemon-fan-club:2,1": [
+    "Vamos ouvir os outros Treinadores com educação!",
+  ],
+  "vermilion-pokemon-fan-club:9,1": [
+    "Se alguém se gabar, gabe-se de volta!",
+  ],
+  "vermilion-house-3:6,4": [
+    "Querida Pippi, espero ver você em breve.",
+    "Ouvi dizer que Saffron tem problemas com a Team Rocket. Vermilion parece estar segura.",
+  ],
+  "cerulean-bike-shop:4,3": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "cerulean-bike-shop:4,4": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "cerulean-bike-shop:4,5": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "cerulean-bike-shop:2,3": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "cerulean-bike-shop:1,4": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "cerulean-bike-shop:2,5": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "cerulean-bike-shop:2,7": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "cerulean-bike-shop:2,8": [
+    "Uma bicicleta novinha em folha!",
+  ],
+  "pewter-museum-2f:15,5": [
+    "Ônibus Espacial",
+  ],
+  "pewter-museum-2f:14,5": [
+    "Ônibus Espacial",
+  ],
+  "pewter-museum-2f:16,5": [
+    "Ônibus Espacial",
+  ],
+  "pewter-museum-2f:14,4": [
+    "Ônibus Espacial",
+  ],
+  "pewter-museum-2f:15,4": [
+    "Ônibus Espacial",
+  ],
+  "pewter-museum-2f:16,4": [
+    "Ônibus Espacial",
+  ],
 };
 
 export function resolveWorldNpcPages(

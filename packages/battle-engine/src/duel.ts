@@ -56,6 +56,8 @@ export type TrainerSpeciesId =
   | "voltorb"
   | "koffing"
   | "horsea"
+  | "tentacool"
+  | "ponyta"
   | "shellder"
   | "goldeen"
   | "staryu"
@@ -1336,6 +1338,30 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
     specialDefense: 25,
     speed: 60,
     moves: ["bubble", "leer"],
+  },
+  tentacool: {
+    name: "Tentacool",
+    type: "water",
+    types: ["water", "poison"],
+    hp: 40,
+    attack: 40,
+    defense: 35,
+    specialAttack: 50,
+    specialDefense: 100,
+    speed: 70,
+    moves: ["poison-sting", "supersonic", "wrap"],
+  },
+  ponyta: {
+    name: "Ponyta",
+    type: "fire",
+    types: ["fire"],
+    hp: 50,
+    attack: 85,
+    defense: 55,
+    specialAttack: 65,
+    specialDefense: 65,
+    speed: 90,
+    moves: ["tackle", "growl", "tail-whip", "ember"],
   },
   shellder: {
     name: "Shellder",

@@ -53,6 +53,8 @@ const SPECIES = {
   voltorb: "0100",
   koffing: "0109",
   horsea: "0116",
+  tentacool: "0072",
+  ponyta: "0077",
   goldeen: "0118",
   staryu: "0120",
   starmie: "0121",

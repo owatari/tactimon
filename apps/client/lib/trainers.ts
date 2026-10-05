@@ -1728,6 +1728,576 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
       },
     ],
   },
+  {
+    id: "ssanne-deck-trevor",
+    mapId: "ss-anne-deck",
+    name: "Sailor Trevor",
+    preferredPosition: { x: 12, y: 10 },
+    facing: "north",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Trevor: Ahoy! Você está enjoado?",
+    defeatedText:
+      "Trevor: Foi só um descuido!",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "machop",
+        level: 17,
+        moves: ["low-kick", "leer", "focus-energy", "karate-chop"],
+      },
+      {
+        species: "tentacool",
+        level: 17,
+        moves: ["poison-sting", "supersonic", "wrap"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-deck-edmond",
+    mapId: "ss-anne-deck",
+    name: "Sailor Edmond",
+    preferredPosition: { x: 6, y: 9 },
+    facing: "south",
+    sightRange: 1,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Edmond: Ei, camarada! Vamos dar uma dancinha?",
+    defeatedText:
+      "Edmond: Você é impressionante!",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "machop",
+        level: 18,
+        moves: ["low-kick", "leer", "focus-energy", "karate-chop"],
+      },
+      {
+        species: "shellder",
+        level: 18,
+        moves: ["tackle", "icicle-spear"],
+      },
+    ],
+  },
+  {
+    id: "mtmoon-jovan",
+    mapId: "mt-moon-1f",
+    name: "Scientist Jovan",
+    preferredPosition: { x: 30, y: 35 },
+    facing: "south",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/055_scientist.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Jovan: O quê! Não me ataque de surpresa!",
+    defeatedText:
+      "Jovan: Meu Pokémon não serviu!",
+    moneyMultiplier: 12,
+    party: [
+      {
+        species: "magnemite",
+        level: 11,
+        moves: ["tackle", "thunder-shock", "supersonic"],
+      },
+      {
+        species: "voltorb",
+        level: 11,
+        moves: ["tackle", "screech"],
+      },
+    ],
+  },
+  {
+    id: "mtmoon-miriam",
+    mapId: "mt-moon-1f",
+    name: "Lass Miriam",
+    preferredPosition: { x: 33, y: 4 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Miriam: Uau! É bem maior aqui dentro do que eu pensava!",
+    defeatedText:
+      "Miriam: Oh! Perdi!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "oddish",
+        level: 11,
+        moves: ["absorb", "sweet-scent"],
+      },
+      {
+        species: "bellsprout",
+        level: 11,
+        moves: ["vine-whip", "growth", "wrap"],
+      },
+    ],
+  },
+  {
+    id: "pewter-liam",
+    mapId: "pewter-gym",
+    name: "Camper Liam",
+    preferredPosition: { x: 3, y: 8 },
+    facing: "east",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/039_camper.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Liam: Pare aí mesmo, garoto! Você está a dez mil anos-luz de enfrentar o Brock!",
+    defeatedText:
+      "Liam: Droga! Anos-luz não é tempo… mede distância!",
+    moneyMultiplier: 5,
+    party: [
+      {
+        species: "geodude",
+        level: 10,
+        moves: ["tackle", "defense-curl"],
+      },
+      {
+        species: "sandshrew",
+        level: 11,
+        moves: ["scratch", "defense-curl"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-1f-room-2-ann",
+    mapId: "ss-anne-1f-room-2",
+    name: "Lass Ann",
+    preferredPosition: { x: 5, y: 3 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Ann: Colecionei estes Pokémon de todo o mundo!",
+    defeatedText:
+      "Ann: Ah, não! Dei a volta ao mundo por eles!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "pidgey",
+        level: 18,
+        moves: ["tackle", "sand-attack", "gust", "quick-attack"],
+      },
+      {
+        species: "nidoran-f",
+        level: 18,
+        moves: ["growl", "scratch", "tail-whip", "poison-sting"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-1f-room-2-tyler",
+    mapId: "ss-anne-1f-room-2",
+    name: "Youngster Tyler",
+    preferredPosition: { x: 0, y: 4 },
+    facing: "east",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/018_youngster.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Tyler: Eu adoro Pokémon! E você?",
+    defeatedText:
+      "Tyler: Uau! Você é demais!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "nidoran-m",
+        level: 21,
+        moves: ["leer", "peck", "poison-sting"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-1f-room-5-arthur",
+    mapId: "ss-anne-1f-room-5",
+    name: "Gentleman Arthur",
+    preferredPosition: { x: 2, y: 6 },
+    facing: "north",
+    sightRange: 4,
+    spriteUrl: "/game-assets/overworld/061_gentleman.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Arthur: Seu insolente! Como ousa invadir!",
+    defeatedText:
+      "Arthur: Humpf! Criança mal-educada! Você não tem noção de cortesia!",
+    moneyMultiplier: 18,
+    party: [
+      {
+        species: "nidoran-m",
+        level: 19,
+        moves: ["leer", "peck", "poison-sting"],
+      },
+      {
+        species: "nidoran-f",
+        level: 19,
+        moves: ["growl", "scratch", "tail-whip", "poison-sting"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-1f-room-7-thomas",
+    mapId: "ss-anne-1f-room-7",
+    name: "Gentleman Thomas",
+    preferredPosition: { x: 4, y: 3 },
+    facing: "west",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/061_gentleman.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Thomas: Sou apenas um viajante solitário… Meus únicos companheiros e amigos são os Pokémon que capturei em minhas viagens…",
+    defeatedText:
+      "Thomas: Meus amigos…",
+    moneyMultiplier: 18,
+    party: [
+      {
+        species: "growlithe",
+        level: 18,
+        moves: ["bite", "ember", "leer"],
+      },
+      {
+        species: "growlithe",
+        level: 18,
+        moves: ["bite", "ember", "leer"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-2f-room-2-dale",
+    mapId: "ss-anne-2f-room-2",
+    name: "Fisher Dale",
+    preferredPosition: { x: 5, y: 5 },
+    facing: "west",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/057_fisher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Dale: Veja o que eu pesquei!",
+    defeatedText:
+      "Dale: Fui nocauteado!",
+    moneyMultiplier: 10,
+    party: [
+      {
+        species: "goldeen",
+        level: 17,
+        moves: ["peck", "tail-whip", "horn-attack"],
+      },
+      {
+        species: "tentacool",
+        level: 17,
+        moves: ["poison-sting", "supersonic", "wrap"],
+      },
+      {
+        species: "goldeen",
+        level: 17,
+        moves: ["peck", "tail-whip", "horn-attack"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-2f-room-2-brooks",
+    mapId: "ss-anne-2f-room-2",
+    name: "Gentleman Brooks",
+    preferredPosition: { x: 1, y: 4 },
+    facing: "east",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/061_gentleman.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Brooks: Competir com os jovens me mantém jovial.",
+    defeatedText:
+      "Brooks: Boa luta! Ah, me sinto jovem de novo!",
+    moneyMultiplier: 18,
+    party: [
+      {
+        species: "pikachu",
+        level: 23,
+        moves: ["thunder-wave", "quick-attack", "double-team", "slam"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-2f-room-4-lamar",
+    mapId: "ss-anne-2f-room-4",
+    name: "Gentleman Lamar",
+    preferredPosition: { x: 0, y: 5 },
+    facing: "east",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/061_gentleman.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Lamar: O que você considera mais valioso, um Pokémon forte ou um raro?",
+    defeatedText:
+      "Lamar: Preciso saudá-lo!",
+    moneyMultiplier: 18,
+    party: [
+      {
+        species: "growlithe",
+        level: 17,
+        moves: ["bite", "ember", "leer"],
+      },
+      {
+        species: "ponyta",
+        level: 17,
+        moves: ["tackle", "growl", "tail-whip", "ember"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-2f-room-4-dawn",
+    mapId: "ss-anne-2f-room-4",
+    name: "Lass Dawn",
+    preferredPosition: { x: 3, y: 3 },
+    facing: "south",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/022_lass.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Dawn: Acho que não vi você na festa…",
+    defeatedText:
+      "Dawn: Calma!",
+    moneyMultiplier: 4,
+    party: [
+      {
+        species: "rattata",
+        level: 18,
+        moves: ["tackle", "tail-whip", "quick-attack", "hyper-fang"],
+      },
+      {
+        species: "pikachu",
+        level: 18,
+        moves: ["tail-whip", "thunder-wave", "quick-attack", "double-team"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-b1f-room-1-barny",
+    mapId: "ss-anne-b1f-room-1",
+    name: "Fisher Barny",
+    preferredPosition: { x: 5, y: 2 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/057_fisher.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Barny: Olá, estranho! Não sei dizer se você vem do mar ou das montanhas, mas pare e converse. Todos os meus Pokémon são do mar.",
+    defeatedText:
+      "Barny: Droga! Deixei esse escapar!",
+    moneyMultiplier: 10,
+    party: [
+      {
+        species: "tentacool",
+        level: 17,
+        moves: ["poison-sting", "supersonic", "wrap"],
+      },
+      {
+        species: "staryu",
+        level: 17,
+        moves: ["tackle", "harden", "water-gun", "recover"],
+      },
+      {
+        species: "shellder",
+        level: 17,
+        moves: ["tackle", "icicle-spear"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-b1f-room-1-phillip",
+    mapId: "ss-anne-b1f-room-1",
+    name: "Sailor Phillip",
+    preferredPosition: { x: 3, y: 2 },
+    facing: "south",
+    sightRange: 2,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Phillip: Camarada, você está andando na prancha se perder!",
+    defeatedText:
+      "Phillip: Argh! Derrotado por uma criança!",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "machop",
+        level: 20,
+        moves: ["low-kick", "leer", "focus-energy", "karate-chop"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-b1f-room-2-huey",
+    mapId: "ss-anne-b1f-room-2",
+    name: "Sailor Huey",
+    preferredPosition: { x: 3, y: 5 },
+    facing: "south",
+    sightRange: 1,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Huey: Até nós, marinheiros, temos Pokémon!",
+    defeatedText:
+      "Huey: Tudo bem, você não é ruim.",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "tentacool",
+        level: 18,
+        moves: ["poison-sting", "supersonic", "wrap"],
+      },
+      {
+        species: "staryu",
+        level: 18,
+        moves: ["tackle", "harden", "water-gun", "recover"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-b1f-room-3-dylan",
+    mapId: "ss-anne-b1f-room-3",
+    name: "Sailor Dylan",
+    preferredPosition: { x: 4, y: 4 },
+    facing: "south",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Dylan: Eu gosto de crianças briguentas como você!",
+    defeatedText:
+      "Dylan: Argh! Perdi!",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "horsea",
+        level: 17,
+        moves: ["bubble", "leer", "water-gun"],
+      },
+      {
+        species: "horsea",
+        level: 17,
+        moves: ["bubble", "leer", "water-gun"],
+      },
+      {
+        species: "horsea",
+        level: 17,
+        moves: ["bubble", "leer", "water-gun"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-b1f-room-4-duncan",
+    mapId: "ss-anne-b1f-room-4",
+    name: "Sailor Duncan",
+    preferredPosition: { x: 3, y: 3 },
+    facing: "south",
+    sightRange: 3,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Duncan: Vamos lá, então! O orgulho deste marinheiro está em jogo!",
+    defeatedText:
+      "Duncan: Seu espírito me afundou!",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "horsea",
+        level: 17,
+        moves: ["bubble", "leer", "water-gun"],
+      },
+      {
+        species: "shellder",
+        level: 17,
+        moves: ["tackle", "icicle-spear"],
+      },
+      {
+        species: "tentacool",
+        level: 17,
+        moves: ["poison-sting", "supersonic", "wrap"],
+      },
+    ],
+  },
+  {
+    id: "ssanne-b1f-room-4-leonard",
+    mapId: "ss-anne-b1f-room-4",
+    name: "Sailor Leonard",
+    preferredPosition: { x: 2, y: 6 },
+    facing: "south",
+    sightRange: 1,
+    spriteUrl: "/game-assets/overworld/062_sailor.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    challengeText:
+      "Leonard: Sabe o que dizem sobre marinheiros e batalhas!",
+    defeatedText:
+      "Leonard: Certo! Boa batalha, camarada!",
+    moneyMultiplier: 8,
+    party: [
+      {
+        species: "shellder",
+        level: 21,
+        moves: ["tackle", "icicle-spear"],
+      },
+    ],
+  },
 ];
 
 export function trainerPrizeMoney(
