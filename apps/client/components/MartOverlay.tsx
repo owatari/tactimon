@@ -1,34 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import type {
-  DuelInventory,
-  DuelItemId,
-} from "@tactimon/battle-engine";
+import type { DuelInventory } from "@tactimon/battle-engine";
+import {
+  BAG_ITEM_MAX_QUANTITY,
+  isBagItemId,
+  itemIconUrl,
+  type BagItems,
+  type OverworldItemId,
+} from "@/lib/items";
+import { WORLD_MAPS } from "@/lib/maps";
 import {
   MART_MAX_ITEM_QUANTITY,
-  VIRIDIAN_MART_ITEMS,
+  martStockFor,
   type MartPurchaseResult,
 } from "@/lib/mart";
 
 type Props = {
+  martId: string;
   money: number;
   inventory: DuelInventory;
+  bagItems: BagItems;
   onBuy: (
-    itemId: DuelItemId,
+    itemId: OverworldItemId,
     quantity: number,
   ) => MartPurchaseResult;
   onClose: () => void;
 };
 
-const FIRE_RED_ITEM_ICON: Record<
-  DuelItemId,
-  string
-> = {
-  potion:
-    "/game-assets/firered/ui/items/013_potion.png",
-  "poke-ball":
-    "/game-assets/firered/ui/items/004_poke_ball.png",
+const MART_CITY_LABEL: Record<string, string> = {
+  "viridian-mart": "VIRIDIAN CITY",
+  "pewter-mart": "PEWTER CITY",
+  "cerulean-mart": "CERULEAN CITY",
+  "vermilion-mart": "VERMILION CITY",
 };
 
 function purchaseMessage(
@@ -54,17 +58,20 @@ function purchaseMessage(
 }
 
 export function MartOverlay({
+  martId,
   money,
   inventory,
+  bagItems,
   onBuy,
   onClose,
 }: Props) {
+  const stock = martStockFor(martId);
   const [notice, setNotice] = useState(
-    "Clerk: Posso ajudar? Temos Poké Balls e Potions.",
+    "Clerk: Posso ajudar? Veja o que temos na loja.",
   );
 
   const buy = (
-    itemId: DuelItemId,
+    itemId: OverworldItemId,
     quantity: number,
   ) => {
     setNotice(
@@ -79,7 +86,11 @@ export function MartOverlay({
       <section className="mart-panel">
         <div className="mart-header">
           <div>
-            <span className="eyebrow">VIRIDIAN CITY</span>
+            <span className="eyebrow">
+              {MART_CITY_LABEL[martId] ??
+                WORLD_MAPS[martId]?.label ??
+                "KANTO"}
+            </span>
             <h2>Poké Mart</h2>
           </div>
           <strong>
@@ -90,14 +101,24 @@ export function MartOverlay({
         <p className="mart-copy">{notice}</p>
 
         <div className="mart-item-list">
-          {VIRIDIAN_MART_ITEMS.map((item) => {
-            const amount = inventory[item.id] ?? 0;
+          {stock.map((item) => {
+            const bagItemId = isBagItemId(item.id)
+              ? item.id
+              : null;
+            const amount = bagItemId
+              ? (bagItems[bagItemId] ?? 0)
+              : (inventory[
+                  item.id as keyof DuelInventory
+                ] ?? 0);
+            const maxQuantity = bagItemId
+              ? BAG_ITEM_MAX_QUANTITY
+              : MART_MAX_ITEM_QUANTITY;
             const canBuyOne =
               money >= item.price &&
-              amount < MART_MAX_ITEM_QUANTITY;
+              amount < maxQuantity;
             const canBuyFive =
               money >= item.price * 5 &&
-              amount <= MART_MAX_ITEM_QUANTITY - 5;
+              amount <= maxQuantity - 5;
 
             return (
               <article
@@ -106,7 +127,7 @@ export function MartOverlay({
               >
                 <img
                   className="mart-item-rom-icon"
-                  src={FIRE_RED_ITEM_ICON[item.id]}
+                  src={itemIconUrl(item.id)}
                   alt=""
                   aria-hidden="true"
                 />

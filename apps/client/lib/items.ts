@@ -23,6 +23,7 @@ export const BAG_ITEM_CATALOG = {
   "rare-candy": { name: "Rare Candy", firered: 68 },
   "x-attack": { name: "X Attack", firered: 75 },
   "escape-rope": { name: "Escape Rope", firered: 85 },
+  repel: { name: "Repel", firered: 86 },
   "moon-stone": { name: "Moon Stone", firered: 94 },
   "tiny-mushroom": { name: "TinyMushroom", firered: 103 },
   "big-mushroom": { name: "Big Mushroom", firered: 104 },
@@ -64,4 +65,17 @@ export function normalizeBagItems(value: unknown): BagItems {
   }
 
   return normalized;
+}
+
+const ENGINE_ITEM_ICON: Record<DuelItemId, string> = {
+  potion: "013_potion.png",
+  "poke-ball": "004_poke_ball.png",
+};
+
+export function itemIconUrl(id: OverworldItemId): string {
+  const file = isBagItemId(id)
+    ? `${String(BAG_ITEM_CATALOG[id].firered).padStart(3, "0")}_${(id === "parlyz-heal" ? "paralyze-heal" : id).replace(/-/g, "_")}.png`
+    : ENGINE_ITEM_ICON[id];
+
+  return `/game-assets/firered/ui/items/${file}`;
 }

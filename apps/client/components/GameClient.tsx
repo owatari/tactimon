@@ -15,7 +15,6 @@ import {
   normalizeDuelMovePp,
   normalizeDuelSleepTurns,
   speciesDisplayName,
-  type DuelItemId,
   type DuelMajorStatus,
   type DuelMovePp,
   type DuelPokemonBuild,
@@ -40,12 +39,14 @@ import {
 import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
+import type { OverworldItemId } from "@/lib/items";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
 import { StarterChoice } from "@/components/StarterChoice";
 import { StorageOverlay } from "@/components/StorageOverlay";
 import {
   buyMartItem,
+  martStockFor,
   type MartPurchaseResult,
 } from "@/lib/mart";
 import {
@@ -265,7 +266,8 @@ export function GameClient() {
     useState(false);
   const [starterChoiceOpen, setStarterChoiceOpen] =
     useState(false);
-  const [martOpen, setMartOpen] = useState(false);
+  const [martId, setMartId] = useState<string | null>(null);
+  const martOpen = martId !== null;
   const [storageOpen, setStorageOpen] =
     useState(false);
   const [battleSession, setBattleSession] =
@@ -743,14 +745,17 @@ export function GameClient() {
   };
 
   const handleMartPurchase = (
-    itemId: DuelItemId,
+    itemId: OverworldItemId,
     quantity: number,
   ): MartPurchaseResult => {
+    const stock = martStockFor(martId ?? "viridian-mart");
     const preview = buyMartItem(
       story.money,
       story.inventory,
       itemId,
       quantity,
+      story.bagItems ?? {},
+      stock,
     );
 
     if (!preview.accepted) {
@@ -763,6 +768,8 @@ export function GameClient() {
         current.inventory,
         itemId,
         quantity,
+        current.bagItems ?? {},
+        stock,
       );
 
       if (!result.accepted) {
@@ -773,6 +780,7 @@ export function GameClient() {
         ...current,
         money: result.money,
         inventory: result.inventory,
+        bagItems: result.bagItems,
       };
     });
 
@@ -996,7 +1004,7 @@ export function GameClient() {
             });
           }
         }}
-        onMartOpen={() => setMartOpen(true)}
+        onMartOpen={(id) => setMartId(id)}
         onRespawnApplied={(id) =>
           setRespawnRequest((current) =>
             current?.id === id ? null : current,
@@ -1021,10 +1029,12 @@ export function GameClient() {
 
       {martOpen && (
         <MartOverlay
+          martId={martId}
           money={story.money}
           inventory={story.inventory}
+          bagItems={story.bagItems ?? {}}
           onBuy={handleMartPurchase}
-          onClose={() => setMartOpen(false)}
+          onClose={() => setMartId(null)}
         />
       )}
 

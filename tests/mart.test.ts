@@ -103,7 +103,7 @@ describe("Viridian Mart", () => {
       validateMartPurchase(
         99_999,
         inventory(),
-        "antidote" as never,
+        "super-potion" as never,
         1,
       ),
     ).toEqual({
@@ -125,5 +125,44 @@ describe("Viridian Mart", () => {
       money: 0,
       reason: "insufficient-funds",
     });
+  });
+});
+
+describe("Per-city Poké Mart stock", () => {
+  it("uses the FireRed ROM lists", async () => {
+    const { MART_STOCK } = await import("../apps/client/lib/mart");
+    const ids = (mart: string) => MART_STOCK[mart].map((item) => item.id);
+    expect(ids("viridian-mart")).toEqual(["poke-ball", "potion", "antidote", "parlyz-heal"]);
+    expect(ids("pewter-mart")).toContain("repel");
+    expect(ids("cerulean-mart")).toContain("super-potion");
+    expect(ids("vermilion-mart")).not.toContain("potion");
+  });
+
+  it("buys bag items into the bag, not the battle inventory", async () => {
+    const { MART_STOCK } = await import("../apps/client/lib/mart");
+    const result = buyMartItem(
+      1_000,
+      inventory(),
+      "antidote",
+      3,
+      {},
+      MART_STOCK["viridian-mart"],
+    );
+    expect(result).toMatchObject({ accepted: true, money: 700 });
+    expect(result.bagItems.antidote).toBe(3);
+    expect(result.inventory).toEqual(inventory());
+  });
+
+  it("rejects items a mart does not stock", async () => {
+    const { MART_STOCK } = await import("../apps/client/lib/mart");
+    const result = buyMartItem(
+      5_000,
+      inventory(),
+      "super-potion",
+      1,
+      {},
+      MART_STOCK["viridian-mart"],
+    );
+    expect(result).toMatchObject({ accepted: false, reason: "unknown-item" });
   });
 });

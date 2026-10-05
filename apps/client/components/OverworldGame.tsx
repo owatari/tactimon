@@ -153,7 +153,7 @@ type Props = {
       party: readonly DuelPokemonBuild[];
     },
   ) => void;
-  onMartOpen: () => void;
+  onMartOpen: (martId: string) => void;
   /** Functional story update applied to GameClient's latest state. */
   onStoryUpdate: (
     update: (story: StoryState) => StoryState,
@@ -1201,7 +1201,7 @@ export function OverworldGame({
       }
 
       if (storyObject.kind === "mart-clerk") {
-        onMartOpen();
+        onMartOpen(mapIdRef.current);
         return;
       }
 
