@@ -265,7 +265,7 @@ describe("registered stateful dialogue scripts", () => {
     expect(result.story).toBe(story);
     expect(
       result.presentation.pages[0].text,
-    ).toContain("contexto inválido");
+    ).toContain("invalid context");
   });
 });
 

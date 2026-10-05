@@ -41,7 +41,7 @@ import {
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import { BattleVfx } from "@/components/BattleVfx";
-import { t } from "@/lib/i18n";
+import { t, useLocale } from "@/lib/i18n";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import {
@@ -435,6 +435,7 @@ export function FirstBattle({
   onComplete,
   initialBattleSpeed = 1,
 }: Props) {
+  useLocale();
   const initialState = useMemo(() => {
     const starterBuild: DuelPokemonBuild = {
       species: progression.species,
@@ -502,7 +503,7 @@ export function FirstBattle({
         rivals: encounter.rivals,
         items: inventory,
         trainerName:
-          encounter.trainerName ?? "Treinador rival",
+          encounter.trainerName ?? t("Rival Trainer"),
       });
     }
 
@@ -1140,7 +1141,9 @@ export function FirstBattle({
       );
       setState(result.state);
       flashNotice(
-        `${actor.displayName} está absorvendo luz!`,
+        t("{name} is absorbing light!", {
+          name: actor.displayName,
+        }),
       );
       await wait(ATTACK_WINDUP_MS);
       setUnitAnimation(actor.id, "idle");
@@ -1172,7 +1175,9 @@ export function FirstBattle({
       setState(result.state);
       showMoveFloaters(presentation, beforeState, result.state);
       flashNotice(
-        `${DUEL_MOVES[presentation.moveId].name} errou!`,
+        t("{move} missed!", {
+          move: DUEL_MOVES[presentation.moveId].name,
+        }),
       );
       setUnitAnimation(actor.id, "idle");
       await wait(100);
@@ -1253,8 +1258,8 @@ export function FirstBattle({
 
       flashNotice(
         presentation.success
-          ? "Captura bem-sucedida!"
-          : "A captura falhou. O Pokémon fugiu!",
+          ? t("Capture successful!")
+          : t("The capture failed. The Pokémon ran away!"),
       );
       if (presentation.success) {
         setUnitAnimation(targetId, "faint");
@@ -1279,7 +1284,9 @@ export function FirstBattle({
       }
     }
     flashNotice(
-      `${DUEL_ITEMS[presentation.itemId].name} usada.`,
+      t("{item} used.", {
+        item: t(DUEL_ITEMS[presentation.itemId].name),
+      }),
     );
     await wait(320);
   };
@@ -1303,7 +1310,7 @@ export function FirstBattle({
     });
 
     if (!result.accepted) {
-      flashNotice("Não é possível andar até esse tile.");
+      flashNotice(t("You cannot walk to that tile."));
       return;
     }
 
@@ -1333,8 +1340,8 @@ export function FirstBattle({
     if (!result.accepted) {
       flashNotice(
         result.reason === "target-out-of-range"
-          ? "O alvo está fora do alcance."
-          : "Esse golpe não pode ser usado agora.",
+          ? t("The target is out of range.")
+          : t("That move cannot be used right now."),
       );
       return;
     }
@@ -1364,10 +1371,10 @@ export function FirstBattle({
     if (!result.accepted) {
       flashNotice(
         result.reason === "target-full-hp"
-          ? "Esse Pokémon já está com HP cheio."
+          ? t("That Pokémon already has full HP.")
           : result.reason === "target-no-status"
-            ? "Esse Pokémon não tem esse problema de status."
-            : "Não é possível usar esse item agora.",
+            ? t("That Pokémon does not have that status condition.")
+            : t("That item cannot be used right now."),
       );
       return;
     }
@@ -1404,7 +1411,7 @@ export function FirstBattle({
     });
 
     if (!result.accepted) {
-      flashNotice("Você não pode fugir de uma batalha de treinador.");
+      flashNotice(t("You cannot flee from a trainer battle."));
       return;
     }
 
@@ -1635,15 +1642,19 @@ export function FirstBattle({
               <span
                 className={`combatant-type type-${unit.type}`}
               >
-                {unit.types.join("/")}
+                {unit.types
+                  .map((type) => t(type.toUpperCase()).toLowerCase())
+                  .join("/")}
               </span>
             </div>
             <span className="combatant-side-label">
               {isPlayer
-                ? "SEU POKÉMON"
+                ? t("YOUR POKÉMON")
                 : encounter.kind === "wild"
-                  ? "SELVAGEM"
-                  : trainerName?.toUpperCase() ?? "RIVAL"}
+                  ? t("WILD")
+                  : trainerName
+                    ? t(trainerName).toUpperCase()
+                    : t("RIVAL")}
             </span>
           </div>
 
@@ -1701,27 +1712,33 @@ export function FirstBattle({
           <div className="battle-minimal-title">
             <span className="eyebrow">
               {encounter.kind === "wild"
-                ? "ENCONTRO SELVAGEM"
+                ? t("WILD ENCOUNTER")
                 : encounter.rivals?.length
-                  ? "BATALHA DE TREINADOR"
-                  : "PRIMEIRO COMBATE"}
+                  ? t("TRAINER BATTLE")
+                  : t("FIRST BATTLE")}
             </span>
             <strong>
               {encounter.kind === "wild"
                 ? rivalUnits.length > 1
-                  ? `${rivalUnits.length} Pokémon selvagens`
-                  : `${rival.displayName} selvagem`
-                : `Você vs. ${trainerName}`}
+                  ? t("{count} wild Pokémon", {
+                      count: rivalUnits.length,
+                    })
+                  : t("Wild {name}", {
+                      name: rival.displayName,
+                    })
+                : t("You vs. {name}", {
+                    name: t(trainerName ?? ""),
+                  })}
             </strong>
             <small>{context.mapLabel}</small>
           </div>
 
           <div
             className="battle-action-order"
-            aria-label="Ordem das ações"
+            aria-label={t("Action order")}
           >
             <span className="battle-action-order-label">
-              ORDEM
+              {t("ORDER")}
             </span>
             <div className="battle-action-order-list">
               {actionOrderUnits.map((unit, index) => (
@@ -1752,14 +1769,18 @@ export function FirstBattle({
 
           <div className="battle-round-cluster">
             <div className="battle-turn">
-              Round {state.round} ·{" "}
+              {t("Round {round}", { round: state.round })} ·{" "}
               {state.status === "finished"
-                ? "Fim"
+                ? t("End")
                 : active
-                  ? `Turno de ${active.displayName}`
-                  : "Aguardando"}
+                  ? t("{name}'s turn", {
+                      name: active.displayName,
+                    })
+                  : t("Waiting")}
               {state.weather === "rain"
-                ? ` · Chuva ${state.weatherTurnsRemaining}`
+                ? ` · ${t("Rain {turns}", {
+                    turns: state.weatherTurnsRemaining,
+                  })}`
                 : ""}
             </div>
             <div className="battle-control-row">
@@ -1774,7 +1795,7 @@ export function FirstBattle({
                 disabled={state.status === "finished"}
                 onClick={toggleAutoBattle}
               >
-                Auto {autoBattle ? "ON" : "OFF"}
+                {autoBattle ? t("Auto ON") : t("Auto OFF")}
               </button>
               <button
                 type="button"
@@ -1790,9 +1811,11 @@ export function FirstBattle({
                   !state.captureAllowed
                 }
                 onClick={toggleAutoCatch}
-                title="Auto Catch usa Poké Ball automaticamente em Pokémon selvagem com 30% de HP ou menos."
+                title={t(
+                  "Auto Catch uses a Poké Ball automatically on a wild Pokémon with 30% HP or less.",
+                )}
               >
-                Auto Catch {autoCatch ? "ON" : "OFF"}
+                {autoCatch ? t("Auto Catch ON") : t("Auto Catch OFF")}
               </button>
               <button
                 type="button"
@@ -1804,11 +1827,11 @@ export function FirstBattle({
                   .join(" ")}
                 onClick={toggleBattleSpeed}
               >
-                {battleSpeed}× Speed
+                {t("{speed}× Speed", { speed: battleSpeed })}
               </button>
               <div
                 className="battle-zoom-control"
-                aria-label="Zoom da arena"
+                aria-label={t("Arena zoom")}
               >
                 <button
                   type="button"
@@ -1817,7 +1840,7 @@ export function FirstBattle({
                 >
                   −
                 </button>
-                <span>MAP {battleZoom}×</span>
+                <span>{t("MAP {zoom}×", { zoom: battleZoom })}</span>
                 <button
                   type="button"
                   disabled={battleZoom === 3}
@@ -1835,7 +1858,7 @@ export function FirstBattle({
                     className="end-turn-compact"
                     onClick={resetCommand}
                   >
-                    Cancelar ação
+                    {t("Cancel action")}
                   </button>
                 )}
             </div>
@@ -1845,10 +1868,10 @@ export function FirstBattle({
         <div className="battle-stage-layout">
           <aside
             className="battle-combatant-sidebar player"
-            aria-label="Sua equipe"
+            aria-label={t("Your team")}
           >
             <div className="battle-combatant-sidebar-title">
-              SUA EQUIPE
+              {t("YOUR TEAM")}
             </div>
             {playerUnits.map(renderCombatantHud)}
           </aside>
@@ -1932,7 +1955,7 @@ export function FirstBattle({
                     busy ||
                     (!reachableCell && !targetOnCell)
                   }
-                  aria-label={`Tile ${x}, ${y}`}
+                  aria-label={t("Tile {x}, {y}", { x, y })}
                 />
               );
             })}
@@ -2053,12 +2076,12 @@ export function FirstBattle({
                           ].join(" ")}
                         >
                           {moveEffectiveness === 0
-                            ? "SEM EFEITO"
+                            ? t("NO EFFECT")
                             : moveEffectiveness > 1
-                              ? "SUPER EFETIVO"
+                              ? t("SUPER EFFECTIVE")
                               : moveEffectiveness < 1
-                                ? "POUCO EFETIVO"
-                                : "DANO NORMAL"}
+                                ? t("NOT VERY EFFECTIVE")
+                                : t("NORMAL DAMAGE")}
                         </span>
                       )}
                   </div>
@@ -2083,25 +2106,29 @@ export function FirstBattle({
                       disabled={player.mp <= 0}
                       onClick={() => setCommand("walk")}
                     >
-                      <strong>Move</strong>
+                      <strong>{t("Move")}</strong>
                       <span>{player.mp} MP</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setCommand("moves")}
                     >
-                      <strong>Attack</strong>
+                      <strong>{t("Attack")}</strong>
                       <span>{player.ap} AP</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setCommand("items")}
                     >
-                      <strong>Item</strong>
+                      <strong>{t("Item")}</strong>
                       <span>
-                        Potion ×{state.items.potion}
+                        {t("Potion ×{count}", {
+                          count: state.items.potion,
+                        })}
                         {state.items["poke-ball"] > 0
-                          ? ` · Ball ×${state.items["poke-ball"]}`
+                          ? ` · ${t("Ball ×{count}", {
+                              count: state.items["poke-ball"],
+                            })}`
                           : ""}
                       </span>
                     </button>
@@ -2110,16 +2137,16 @@ export function FirstBattle({
                       className="run-action"
                       onClick={handleFlee}
                     >
-                      <strong>Run</strong>
-                      <span>Escape</span>
+                      <strong>{t("Run")}</strong>
+                      <span>{t("Escape")}</span>
                     </button>
                     <button
                       type="button"
                       className="end-turn-action"
                       onClick={endTurn}
                     >
-                      <strong>Encerrar turno</strong>
-                      <span>Passar para o próximo</span>
+                      <strong>{t("End turn")}</strong>
+                      <span>{t("Pass to the next")}</span>
                     </button>
                   </div>
                 </div>
@@ -2217,10 +2244,10 @@ export function FirstBattle({
           {busy && (
             <div className="battle-busy-indicator">
               {autoBattle
-                ? `Auto Battle · ${battleSpeed}×`
+                ? t("Auto Battle · {speed}×", { speed: battleSpeed })
                 : autoCatchReady
-                  ? `Auto Catch · ${battleSpeed}×`
-                  : "Resolvendo ação…"}
+                  ? t("Auto Catch · {speed}×", { speed: battleSpeed })
+                  : t("Resolving action…")}
             </div>
           )}
           </div>
@@ -2230,14 +2257,14 @@ export function FirstBattle({
             className="battle-combatant-sidebar rival"
             aria-label={
               encounter.kind === "wild"
-                ? "Pokémon selvagens"
-                : "Equipe rival"
+                ? t("Wild Pokémon")
+                : t("Rival team")
             }
           >
             <div className="battle-combatant-sidebar-title">
               {encounter.kind === "wild"
-                ? "SELVAGENS"
-                : "EQUIPE RIVAL"}
+                ? t("WILD")
+                : t("RIVAL TEAM")}
             </div>
             {rivalUnits.map(renderCombatantHud)}
           </aside>
@@ -2251,8 +2278,8 @@ export function FirstBattle({
               {command === "moves" && (
                 <>
                   <div className="battle-selection-dock-title">
-                    <strong>Escolha um golpe</strong>
-                    <span>{player.ap} AP disponível</span>
+                    <strong>{t("Choose a move")}</strong>
+                    <span>{t("{ap} AP available", { ap: player.ap })}</span>
                   </div>
                   <div className="battle-selection-dock-grid">
                     {[
@@ -2302,10 +2329,14 @@ export function FirstBattle({
                             {moveId === "struggle"
                               ? "PP —"
                               : isDisabled
-                                ? `DESABILITADO ${player.disableTurnsRemaining} · PP ${currentPp} / ${move.maxPp}`
+                                ? t("DISABLED {turns} · PP {pp} / {max}", {
+                                    turns: player.disableTurnsRemaining,
+                                    pp: currentPp ?? 0,
+                                    max: move.maxPp,
+                                  })
                                 : `PP ${currentPp} / ${move.maxPp}`} ·{" "}
                             {move.targeting === "self"
-                              ? "self"
+                              ? t("self")
                               : `${move.minRange}–${move.maxRange}`}
                           </span>
                         </button>
@@ -2318,8 +2349,8 @@ export function FirstBattle({
               {command === "items" && (
                 <>
                   <div className="battle-selection-dock-title">
-                    <strong>Escolha um item</strong>
-                    <span>Bolsa de batalha</span>
+                    <strong>{t("Choose an item")}</strong>
+                    <span>{t("Battle bag")}</span>
                   </div>
                   <div className="battle-selection-dock-grid">
                     {(Object.keys(DUEL_ITEMS) as DuelItemId[])
@@ -2349,17 +2380,17 @@ export function FirstBattle({
                                 alt=""
                                 aria-hidden="true"
                               />
-                              <strong>{item.name}</strong>
+                              <strong>{t(item.name)}</strong>
                             </span>
                             <span>
                               ×{amount} ·{" "}
                               {item.kind === "heal"
                                 ? `+${item.heal} HP`
                                 : item.kind === "cure"
-                                  ? "cura status"
+                                  ? t("cures status")
                                 : state.captureAllowed
-                                  ? "captura com HP ≤50%"
-                                  : "captura indisponível"}
+                                  ? t("captures at HP ≤50%")
+                                  : t("capture unavailable")}
                             </span>
                           </button>
                         );
@@ -2373,7 +2404,7 @@ export function FirstBattle({
                 className="battle-selection-dock-back"
                 onClick={resetCommand}
               >
-                ← Voltar
+                {t("← Back")}
               </button>
             </div>
           )}

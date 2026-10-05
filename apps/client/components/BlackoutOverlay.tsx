@@ -1,5 +1,7 @@
 "use client";
 
+import { t, useLocale } from "@/lib/i18n";
+
 type Props = {
   moneyLost: number;
   locationLabel: string;
@@ -11,27 +13,32 @@ export function BlackoutOverlay({
   locationLabel,
   onContinue,
 }: Props) {
+  useLocale();
   return (
     <div className="mart-overlay">
       <section className="mart-panel">
         <div className="mart-header">
           <div>
             <span className="eyebrow">
-              BLACKOUT
+              {t("BLACKOUT")}
             </span>
-            <h2>Seu time não consegue mais lutar.</h2>
+            <h2>{t("Your team can no longer fight.")}</h2>
           </div>
-          <strong>HP restaurado</strong>
+          <strong>{t("HP restored")}</strong>
         </div>
 
         <p className="mart-copy">
-          Você será levado para {locationLabel}.
+          {t("You will be taken to {location}.", {
+            location: t(locationLabel),
+          })}
         </p>
 
         <p className="mart-copy">
           {moneyLost > 0
-            ? `Você perdeu ₽${moneyLost.toLocaleString("pt-BR")}.`
-            : "Você não perdeu dinheiro."}
+            ? t("You lost ₽{money}.", {
+                money: moneyLost.toLocaleString("pt-BR"),
+              })
+            : t("You did not lose any money.")}
         </p>
 
         <button
@@ -39,7 +46,7 @@ export function BlackoutOverlay({
           className="mart-close"
           onClick={onContinue}
         >
-          Continuar
+          {t("Continue")}
         </button>
       </section>
     </div>

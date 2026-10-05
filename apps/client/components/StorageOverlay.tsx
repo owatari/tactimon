@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { t, useLocale } from "@/lib/i18n";
 import {
   calculateDuelPokemonMaxHp,
   type PokemonProgression,
@@ -37,19 +38,19 @@ function actionMessage(
 ): string {
   if (result.accepted) {
     return action === "deposit"
-      ? "Pokémon enviado ao PC."
-      : "Pokémon retirado para a party.";
+      ? t("Pokémon sent to the PC.")
+      : t("Pokémon withdrawn to the party.");
   }
 
   if (result.reason === "party-full") {
-    return "Sua party já está com 6 Pokémon.";
+    return t("Your party already has 6 Pokémon.");
   }
 
   if (result.reason === "storage-full") {
-    return "O PC Storage está cheio.";
+    return t("The PC Storage is full.");
   }
 
-  return "Não foi possível mover esse Pokémon.";
+  return t("That Pokémon could not be moved.");
 }
 
 function PokemonSummary({
@@ -85,8 +86,9 @@ export function StorageOverlay({
   onWithdraw,
   onClose,
 }: Props) {
-  const [notice, setNotice] = useState(
-    "PC Storage: organize os Pokémon da sua party e do Box.",
+  useLocale();
+  const [notice, setNotice] = useState<string>(() =>
+    t("PC Storage: organize the Pokémon in your party and Box."),
   );
   const partyCount = (starter ? 1 : 0) + party.length;
 
@@ -96,9 +98,9 @@ export function StorageOverlay({
         <div className="mart-header">
           <div>
             <span className="eyebrow">
-              VIRIDIAN POKÉMON CENTER
+              {t("VIRIDIAN POKÉMON CENTER")}
             </span>
-            <h2>PC Storage</h2>
+            <h2>{t("PC Storage")}</h2>
           </div>
           <strong>
             {storage.length}/{POKEMON_STORAGE_CAPACITY}
@@ -107,14 +109,16 @@ export function StorageOverlay({
 
         <p className="mart-copy">{notice}</p>
 
-        <h3>Party · {partyCount}/6</h3>
+        <h3>
+          {t("Party")} · {partyCount}/6
+        </h3>
         <div className="mart-item-list">
           {starter && (
             <article className="mart-item-card">
               <PokemonSummary pokemon={starter} />
               <div className="mart-item-actions">
                 <button type="button" disabled>
-                  Starter
+                  {t("Starter")}
                 </button>
               </div>
             </article>
@@ -142,17 +146,19 @@ export function StorageOverlay({
                     )
                   }
                 >
-                  Depositar
+                  {t("Deposit")}
                 </button>
               </div>
             </article>
           ))}
         </div>
 
-        <h3>Box · {storage.length}</h3>
+        <h3>
+          {t("Box")} · {storage.length}
+        </h3>
         {storage.length === 0 ? (
           <p className="mart-copy">
-            Nenhum Pokémon armazenado.
+            {t("No Pokémon stored.")}
           </p>
         ) : (
           <div className="mart-item-list">
@@ -175,7 +181,7 @@ export function StorageOverlay({
                       )
                     }
                   >
-                    Retirar
+                    {t("Withdraw")}
                   </button>
                 </div>
               </article>
@@ -188,7 +194,7 @@ export function StorageOverlay({
           className="mart-close"
           onClick={onClose}
         >
-          Desconectar
+          {t("Disconnect")}
         </button>
       </section>
     </div>

@@ -100,7 +100,7 @@ import {
   canStoryUseStrength,
   techniqueBlockedMessage,
 } from "@/lib/fieldTechniques";
-import { t } from "@/lib/i18n";
+import { t, useLocale } from "@/lib/i18n";
 import { isDarkMap } from "@/lib/darkCaves";
 import {
   resetBoulders,
@@ -728,6 +728,7 @@ export function OverworldGame({
   onPokemonStorageOpen,
   onDialogueInteraction,
 }: Props) {
+  useLocale();
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
   const playerElementRef = useRef<HTMLDivElement>(null);
@@ -909,13 +910,15 @@ export function OverworldGame({
       pages: [
         {
           id: "running-shoes-delivery-1",
-          speaker: "Ajudante do Prof. Oak",
-          text: "Ah, aí está você! O Prof. Oak pediu para eu te entregar isto. Você recebeu os RUNNING SHOES!",
+          speaker: t("Prof. Oak's Aide"),
+          text: t(
+            "Ah, there you are! Prof. Oak asked me to give you this. You received the RUNNING SHOES!",
+          ),
         },
         {
           id: "running-shoes-delivery-2",
-          speaker: "Ajudante do Prof. Oak",
-          text: "Pressione R para alternar entre andar (WALK) e correr (RUN).",
+          speaker: t("Prof. Oak's Aide"),
+          text: t("Press R to switch between walking (WALK) and running (RUN)."),
         },
       ],
     });
@@ -1128,7 +1131,9 @@ export function OverworldGame({
         !currentStory.firstBattleComplete
       ) {
         showInteraction(
-          `${trainer.trainerName}: Volte quando tiver começado sua jornada.`,
+          t("{name}: Come back when you have started your journey.", {
+            name: trainer.trainerName,
+          }),
         );
         return;
       }
@@ -1472,7 +1477,7 @@ export function OverworldGame({
       }
 
       showInteraction(
-        `${storyObject.label} ficou no laboratório de Oak.`,
+        t("{name} stayed in Oak's lab.", { name: storyObject.label }),
       );
       return;
     }
@@ -1696,8 +1701,8 @@ export function OverworldGame({
           pages: [
             {
               id: "main",
-              speaker: "Funcionário",
-              text: safariEndMessage(reason),
+              speaker: t("Funcionário"),
+              text: t(safariEndMessage(reason)),
             },
           ],
         },
@@ -2894,21 +2899,29 @@ export function OverworldGame({
 
       <div className="world-hud">
         <div key={mapId} className="location-chip location-enter">
-          {mapDefinition.label}
+          {t(mapDefinition.label)}
         </div>
         <div className="world-resource-chip">
           <strong>₽{story.money.toLocaleString("pt-BR")}</strong>
-          <span>Potion ×{story.inventory.potion}</span>
+          <span>
+            {t("Potion ×{count}", { count: story.inventory.potion })}
+          </span>
           {story.safari ? (
             <span>
-              Safari Ball ×{story.inventory["poke-ball"]} · Passos{" "}
-              {story.safari.steps}
+              {t("Safari Ball ×{count} · Steps {steps}", {
+                count: story.inventory["poke-ball"],
+                steps: story.safari.steps,
+              })}
             </span>
           ) : (
-            <span>Ball ×{story.inventory["poke-ball"]}</span>
+            <span>
+              {t("Ball ×{count}", {
+                count: story.inventory["poke-ball"],
+              })}
+            </span>
           )}
           {hasStoryKeyItem(story, "coin-case") && (
-            <span>Moedas {story.coins ?? 0}</span>
+            <span>{t("Coins {count}", { count: story.coins ?? 0 })}</span>
           )}
         </div>
         {canRun(story) && (
@@ -2917,14 +2930,14 @@ export function OverworldGame({
             className="run-mode-indicator"
             onClick={toggleRunning}
             aria-pressed={running}
-            title="R alterna caminhada e corrida"
+            title={t("R toggles walking and running")}
           >
-            {running ? "RUN" : "WALK"}
+            {running ? t("RUN") : t("WALK")}
           </button>
         )}
         <div className="control-hint">
-          WASD / setas · E/Space interage
-          {canRun(story) ? " · R alterna WALK/RUN" : ""}
+          {t("WASD / arrows · E/Space interact")}
+          {canRun(story) ? ` · ${t("R toggles WALK/RUN")}` : ""}
         </div>
       </div>
 
@@ -2988,7 +3001,7 @@ export function OverworldGame({
         }`}
       />
 
-      <div className="touch-dpad" aria-label="Controles direcionais">
+      <div className="touch-dpad" aria-label={t("Directional controls")}>
         {(
           [
             ["north", "▲"],

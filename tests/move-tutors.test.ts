@@ -123,6 +123,6 @@ describe("Route 4 move tutors", () => {
       kind: "script",
       id: "tutor-mega-kick",
     });
-    expect(after.presentation.pages[0].text).toContain("voltará");
+    expect(after.presentation.pages[0].text).toContain("will return");
   });
 });

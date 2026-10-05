@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-import sys as _s
-_s.stdout.reconfigure(encoding="utf-8")
 """List legacy-Portuguese literals in the client that are not catalog keys yet.
 
-Usage: python tools/i18n/audit.py [path-substring ...]   (exit code 1 when something is missing)
-A literal is covered when it equals a catalog key or is a fragment of one (long texts are
-sometimes written as concatenated pieces).
+Usage: python tools/i18n/audit.py [path-substring ...] [--brief]   (exit code 1 when something is missing)
+A literal is covered when it equals a catalog key, is a fragment of one (long texts are sometimes
+written as concatenated pieces) or equals one after removing a leading "Speaker: " prefix.
 """
 import json
 import re
 import sys
 from pathlib import Path
 
+sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from inventory import ROOT, literals  # noqa: E402
 
 CATALOG_DIR = ROOT / "lib" / "i18n" / "catalog"
 KEY = re.compile(r'^  ("(?:[^"\\\n]|\\.)*"|[A-Za-z_]\w*): \{', re.M)
+PREFIX = re.compile(r"^[^:]+:\s*")
 
 
 def catalog_keys():
@@ -29,11 +29,16 @@ def catalog_keys():
 
 
 def decode(value):
-    return value.replace("\n", "\n").replace('\\"', '"').replace("\'", "'").replace("\\\\", "\\")
+    """Evaluate the escapes of a TS string literal body the way JavaScript does."""
+    try:
+        return json.loads('"' + value.replace('\\"', '"').replace('"', '\\"') + '"')
+    except ValueError:
+        return value
 
 
 def main():
     filters = [a for a in sys.argv[1:] if not a.startswith("--")]
+    brief = "--brief" in sys.argv
     keys = catalog_keys()
     blob = "\n".join(keys)
     missing = {}
@@ -47,11 +52,11 @@ def main():
             text = decode(value)
             if "${" in value:
                 missing.setdefault(rel, []).append("[template] " + value)
-            elif text not in keys and text not in blob and re.sub(r"^[^:]+:\s*", "", text) not in blob:
+            elif text not in keys and text not in blob and PREFIX.sub("", text) not in blob:
                 missing.setdefault(rel, []).append(text)
     for rel, values in sorted(missing.items()):
         print(f"{len(values):4d} {rel}")
-        for value in values[: 3 if "--brief" in sys.argv else 999]:
+        for value in values[: 3 if brief else 999]:
             print("      ", value[:110].replace("\n", " "))
     total = sum(len(v) for v in missing.values())
     print("missing", total, "in", len(missing), "files")

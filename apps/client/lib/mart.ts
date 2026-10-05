@@ -2,6 +2,7 @@ import type {
   DuelInventory,
   DuelItemId,
 } from "@tactimon/battle-engine";
+import { tx } from "./i18n";
 import { GENERATED_MARTS } from "./generated/worldServices";
 import {
   BAG_ITEM_MAX_QUANTITY,
@@ -25,61 +26,61 @@ const POKE_BALL: MartItem = {
   id: "poke-ball",
   name: "Poké Ball",
   price: 200,
-  description: "Usada para capturar Pokémon selvagens.",
+  description: tx("Used to catch wild Pokémon."),
 };
 const POTION: MartItem = {
   id: "potion",
   name: "Potion",
   price: 300,
-  description: "Restaura 20 HP de um Pokémon em batalha.",
+  description: tx("Restores 20 HP of a Pokémon in battle."),
 };
 const SUPER_POTION: MartItem = {
   id: "super-potion",
   name: "Super Potion",
   price: 700,
-  description: "Restaura 50 HP de um Pokémon.",
+  description: tx("Restores 50 HP of a Pokémon."),
 };
 const ANTIDOTE: MartItem = {
   id: "antidote",
   name: "Antidote",
   price: 100,
-  description: "Cura um Pokémon envenenado.",
+  description: tx("Cures a poisoned Pokémon."),
 };
 const PARLYZ_HEAL: MartItem = {
   id: "parlyz-heal",
   name: "Parlyz Heal",
   price: 200,
-  description: "Cura a paralisia de um Pokémon.",
+  description: tx("Heals a Pokémon's paralysis."),
 };
 const AWAKENING: MartItem = {
   id: "awakening",
   name: "Awakening",
   price: 250,
-  description: "Acorda um Pokémon dormindo.",
+  description: tx("Wakes up a sleeping Pokémon."),
 };
 const BURN_HEAL: MartItem = {
   id: "burn-heal",
   name: "Burn Heal",
   price: 250,
-  description: "Cura a queimadura de um Pokémon.",
+  description: tx("Heals a Pokémon's burn."),
 };
 const ICE_HEAL: MartItem = {
   id: "ice-heal",
   name: "Ice Heal",
   price: 250,
-  description: "Descongela um Pokémon.",
+  description: tx("Thaws out a frozen Pokémon."),
 };
 const ESCAPE_ROPE: MartItem = {
   id: "escape-rope",
   name: "Escape Rope",
   price: 550,
-  description: "Permite fugir de cavernas e dungeons.",
+  description: tx("Lets you escape from caves and dungeons."),
 };
 const REPEL: MartItem = {
   id: "repel",
   name: "Repel",
   price: 350,
-  description: "Afasta Pokémon selvagens fracos por um tempo.",
+  description: tx("Keeps weak wild Pokémon away for a while."),
 };
 
 /** FireRed shop stock per Poké Mart (ROM `pokemart` lists, before badge upgrades). */

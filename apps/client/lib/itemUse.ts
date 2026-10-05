@@ -9,6 +9,7 @@ import {
   type PokemonProgression,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
+import { t } from "./i18n";
 import {
   isBagItemId,
   itemDisplayName,
@@ -166,36 +167,36 @@ export function useBagItem(
 ): ItemUseResult {
   const effect = ITEM_EFFECTS[itemId];
   if (!effect) {
-    return refuse(story, "Este item não pode ser usado agora.");
+    return refuse(story, t("This item cannot be used right now."));
   }
   if (quantityOf(story, itemId) <= 0) {
-    return refuse(story, "Você não tem mais este item.");
+    return refuse(story, t("You do not have this item anymore."));
   }
 
   if (effect.kind === "repel") {
     if ((story.repelSteps ?? 0) > 0) {
-      return refuse(story, "O efeito do Repel ainda está ativo.");
+      return refuse(story, t("The effect of Repel is still active."));
     }
     return {
       accepted: true,
       story: { ...consume(story, itemId), repelSteps: REPEL_STEPS },
-      message: "Repel usado! Pokémon fracos ficarão longe.",
+      message: t("Repel used! Weak Pokémon will stay away."),
     };
   }
 
   const target = memberAt(story, partyIndex);
   if (!target) {
-    return refuse(story, "Não há Pokémon nesse slot.");
+    return refuse(story, t("There is no Pokémon in that slot."));
   }
   const maxHp = calculateDuelPokemonStats(target).hp;
-  const name = itemDisplayName(itemId);
+  const name = t(itemDisplayName(itemId));
 
   if (effect.kind === "heal") {
     if (target.currentHp <= 0) {
-      return refuse(story, "Não teve efeito: o Pokémon desmaiou.");
+      return refuse(story, t("It had no effect: the Pokémon fainted."));
     }
     if (target.currentHp >= maxHp) {
-      return refuse(story, "Não teve efeito: o HP já está cheio.");
+      return refuse(story, t("It had no effect: HP is already full."));
     }
     const healed = Math.min(maxHp, target.currentHp + effect.amount);
     return {
@@ -204,7 +205,10 @@ export function useBagItem(
         ...p,
         currentHp: healed,
       })),
-      message: `${name} restaurou ${healed - target.currentHp} HP.`,
+      message: t("{item} restored {hp} HP.", {
+        item: name,
+        hp: healed - target.currentHp,
+      }),
     };
   }
 
@@ -214,7 +218,7 @@ export function useBagItem(
       !target.status ||
       !effect.statuses.includes(target.status)
     ) {
-      return refuse(story, "Não teve efeito.");
+      return refuse(story, t("It had no effect."));
     }
     return {
       accepted: true,
@@ -223,13 +227,13 @@ export function useBagItem(
         status: null,
         sleepTurnsRemaining: 0,
       })),
-      message: `${name} curou o problema de status.`,
+      message: t("{item} cured the status condition.", { item: name }),
     };
   }
 
   if (effect.kind === "revive") {
     if (target.currentHp > 0) {
-      return refuse(story, "Não teve efeito: o Pokémon não desmaiou.");
+      return refuse(story, t("It had no effect: the Pokémon did not faint."));
     }
     return {
       accepted: true,
@@ -239,7 +243,7 @@ export function useBagItem(
         status: null,
         sleepTurnsRemaining: 0,
       })),
-      message: "O Pokémon foi revivido!",
+      message: t("The Pokémon was revived!"),
     };
   }
 
@@ -253,7 +257,7 @@ export function useBagItem(
         DUEL_MOVES[moveId].maxPp,
     );
     if (restorable.length === 0) {
-      return refuse(story, "Não teve efeito: o PP já está cheio.");
+      return refuse(story, t("It had no effect: PP is already full."));
     }
     return {
       accepted: true,
@@ -268,14 +272,14 @@ export function useBagItem(
         }
         return { ...p, movePp };
       }),
-      message: "O PP foi restaurado.",
+      message: t("PP was restored."),
     };
   }
 
   if (effect.kind === "stone") {
     const evolved = evolveWithStone(target, itemId);
     if (!evolved) {
-      return refuse(story, "Não teve efeito.");
+      return refuse(story, t("It had no effect."));
     }
     return {
       accepted: true,
@@ -284,14 +288,17 @@ export function useBagItem(
         partyIndex,
         () => evolved,
       ),
-      message: `${speciesDisplayName(target.species)} evoluiu para ${speciesDisplayName(evolved.species)}!`,
+      message: t("{from} evolved into {to}!", {
+        from: speciesDisplayName(target.species),
+        to: speciesDisplayName(evolved.species),
+      }),
     };
   }
 
   // rare-candy
   const reward = grantRareCandy(target);
   if (!reward) {
-    return refuse(story, "Não teve efeito: já está no nível 100.");
+    return refuse(story, t("It had no effect: already at level 100."));
   }
   return {
     accepted: true,
@@ -300,7 +307,7 @@ export function useBagItem(
       partyIndex,
       () => reward.progression,
     ),
-    message: `Subiu para o nível ${reward.newLevel}!`,
+    message: t("Grew to level {level}!", { level: reward.newLevel }),
     reward,
     partyIndex,
   };

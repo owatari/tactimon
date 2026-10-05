@@ -343,7 +343,7 @@ const DIALOGUE_DEFINITIONS: Record<
         presentation: dialoguePresentationFromText(
           `fossil:${fossilId}`,
           result.accepted
-            ? `Você escolheu o ${fossilName}. Miguel ficará com o outro fóssil.`
+            ? t("You chose the {fossil}. Miguel will keep the other fossil.", { fossil: fossilName })
             : result.reason === "miguel-not-defeated"
               ? "Miguel ainda não concordou em dividir os fósseis."
               : "Você já escolheu um fóssil em Mt. Moon.",
@@ -380,7 +380,7 @@ const DIALOGUE_DEFINITIONS: Record<
         presentation: dialoguePresentationFromText(
           `pickup:${pickupId}`,
           result.accepted
-            ? `Você encontrou ${itemName}!`
+            ? t("You found {item}!", { item: itemName })
             : result.reason === "inventory-full"
               ? "Sua bolsa não tem espaço para mais desse item."
               : "Esse item já foi coletado.",
@@ -643,7 +643,7 @@ const DIALOGUE_DEFINITIONS: Record<
         presentation: dialoguePresentationFromText(
           "silph-lapras-gift",
           gift.granted
-            ? `Funcionário: Oh! Oi! Você não é um Rocket! Veio nos salvar? Obrigado! Quero que fique com este Pokémon por nos salvar. ${giftMessage("lapras", gift.destination)}`
+            ? t("Employee: Oh! Hi! You're not a Rocket! Did you come to save us? Thank you! I want you to have this Pokémon for saving us. {gift}", { gift: giftMessage("lapras", gift.destination) })
             : gift.reason === "storage-full"
               ? "Funcionário: Seu PC está cheio! Libere espaço e volte."
               : "Funcionário: Obrigado por nos salvar! Cuide bem do Lapras.",
@@ -672,7 +672,7 @@ const DIALOGUE_DEFINITIONS: Record<
         presentation: dialoguePresentationFromText(
           "cinnabar-fossil-revive",
           gift.granted
-            ? `Doutor: Ótimo! Vou regenerar o fóssil agora… Pronto, deu certo! ${giftMessage(fossil.species, gift.destination)}`
+            ? t("Doctor: Great! I'll revive the fossil now… There, it worked! {gift}", { gift: giftMessage(fossil.species, gift.destination) })
             : "Doutor: Seu PC está cheio! Libere espaço e volte.",
           "Doutor",
         ),
@@ -697,7 +697,7 @@ const DIALOGUE_DEFINITIONS: Record<
           story: setStoryPlayerChoice(story, "magikarp-offer", "offered"),
           presentation: dialoguePresentationFromText(
             "magikarp-salesman",
-            `Vendedor: Olá, rapaz! Tenho uma oferta imperdível! Um Pokémon secreto, o Magikarp, por apenas ₽${MAGIKARP_PRICE}! Fale comigo de novo para fechar negócio.`,
+            t("Salesman: Hey, kid! I have an unbeatable offer! A secret Pokémon, Magikarp, for only ₽{price}! Talk to me again to close the deal.", { price: MAGIKARP_PRICE }),
             "Vendedor",
           ),
         };
@@ -720,7 +720,7 @@ const DIALOGUE_DEFINITIONS: Record<
         presentation: dialoguePresentationFromText(
           "magikarp-salesman",
           gift.granted
-            ? `Vendedor: Negócio fechado! ${giftMessage("magikarp", gift.destination)}`
+            ? t("Salesman: Deal! {gift}", { gift: giftMessage("magikarp", gift.destination) })
             : "Vendedor: Seu PC está cheio! Libere espaço e volte.",
           "Vendedor",
         ),
@@ -1256,7 +1256,7 @@ function runDialogueInteractionRaw(
       presentation: dialoguePresentationFromText(
         `fossil:${request.fossilId}`,
         result.accepted
-          ? `Você escolheu o ${request.fossilName}. Miguel ficará com o outro fóssil.`
+          ? t("You chose the {fossil}. Miguel will keep the other fossil.", { fossil: request.fossilName })
           : result.reason === "miguel-not-defeated"
             ? "Miguel ainda não concordou em dividir os fósseis."
             : "Você já escolheu um fóssil em Mt. Moon.",
@@ -1275,7 +1275,7 @@ function runDialogueInteractionRaw(
     presentation: dialoguePresentationFromText(
       `pickup:${request.pickupId}`,
       result.accepted
-        ? `Você encontrou ${request.itemName}!`
+        ? t("You found {item}!", { item: request.itemName })
         : result.reason === "inventory-full"
           ? "Sua bolsa não tem espaço para mais desse item."
           : "Esse item já foi coletado.",

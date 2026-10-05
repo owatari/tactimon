@@ -281,7 +281,7 @@ describe("static encounters", () => {
     const text = (story: StoryState) =>
       talk(story, "static-pokemon", { staticId: snorlax.id }).presentation
         .pages[0].text;
-    expect(text(started())).toContain("dorme");
+    expect(text(started())).toContain("sleeps deeply");
     expect(
       text(grantStoryKeyItemOnce(started(), "poke-flute").story),
     ).toContain("Poké Flute");
@@ -443,7 +443,7 @@ describe("Rocket Hideout elevator", () => {
     const withKey = grantStoryKeyItemOnce(started(), "lift-key").story;
     const menu = talk(withKey, "rocket-elevator", { floor: "b1f" });
     const labels = menu.presentation.pages[0].choices!.map((c) => c.label);
-    expect(labels).toEqual(["B2F", "B4F", "Ficar"]);
+    expect(labels).toEqual(["B2F", "B4F", "Stay"]);
     expect(menu.presentation.pages[0].choices![1].request).toMatchObject({
       kind: "warp",
       mapId: "rocket-hideout-b-4f",

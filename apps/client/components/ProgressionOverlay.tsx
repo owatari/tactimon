@@ -10,6 +10,7 @@ import {
   type ProgressionReward,
 } from "@tactimon/battle-engine";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
+import { t, useLocale } from "@/lib/i18n";
 
 type Props = {
   reward: ProgressionReward;
@@ -39,6 +40,7 @@ export function ProgressionOverlay({
   total = 1,
   onComplete,
 }: Props) {
+  useLocale();
   const [progression, setProgression] =
     useState<PokemonProgression>(reward.progression);
   const [pendingIndex, setPendingIndex] = useState(0);
@@ -67,7 +69,7 @@ export function ProgressionOverlay({
     <div className="story-overlay progression-overlay">
       <section className="story-panel progression-panel">
         <span className="eyebrow">
-          PROGRESSÃO · {speciesDisplayName(progression.species)}
+          {t("PROGRESSION")} · {speciesDisplayName(progression.species)}
           {total > 1 ? ` · ${position}/${total}` : ""}
         </span>
 
@@ -79,11 +81,14 @@ export function ProgressionOverlay({
           <div>
             <h2>
               {reward.levelsGained > 0
-                ? `Level ${reward.oldLevel} → ${reward.newLevel}`
-                : `Level ${reward.newLevel}`}
+                ? t("Level {from} → {to}", {
+                    from: reward.oldLevel,
+                    to: reward.newLevel,
+                  })
+                : t("Level {level}", { level: reward.newLevel })}
             </h2>
             <p className="story-copy progression-reward-copy">
-              +{reward.xpGained} EXP da batalha
+              {t("+{xp} EXP from the battle", { xp: reward.xpGained })}
             </p>
           </div>
 
@@ -108,16 +113,21 @@ export function ProgressionOverlay({
             />
           </div>
           <small>
-            {progression.experience.toLocaleString("pt-BR")} EXP total
+            {t("{xp} EXP total", {
+              xp: progression.experience.toLocaleString("pt-BR"),
+            })}
             {xp.required > 0
-              ? ` · ${xp.required - xp.current} para o Lv. ${progression.level + 1}`
+              ? ` · ${t("{xp} to Lv. {level}", {
+                  xp: xp.required - xp.current,
+                  level: progression.level + 1,
+                })}`
               : ""}
           </small>
         </div>
 
         {reward.levelsGained > 0 && (
           <div className="progression-section">
-            <span className="panel-label">EV GANHO AO SUBIR DE NÍVEL</span>
+            <span className="panel-label">{t("EVs GAINED ON LEVEL UP")}</span>
             <div className="progression-chip-row">
               {evLines.length > 0 ? (
                 evLines.map((line) => (
@@ -127,7 +137,7 @@ export function ProgressionOverlay({
                 ))
               ) : (
                 <span className="progression-chip muted">
-                  Limite de EV atingido
+                  {t("EV limit reached")}
                 </span>
               )}
             </div>
@@ -136,13 +146,13 @@ export function ProgressionOverlay({
 
         {reward.autoLearnedMoves.length > 0 && (
           <div className="progression-section">
-            <span className="panel-label">NOVOS MOVES</span>
+            <span className="panel-label">{t("NEW MOVES")}</span>
             <div className="learned-move-list">
               {reward.autoLearnedMoves.map((moveId) => (
                 <div key={moveId} className="learned-move-row">
                   <strong>{DUEL_MOVES[moveId].name}</strong>
                   <span>
-                    Aprendido automaticamente porque havia um slot livre.
+                    {t("Learned automatically because there was a free slot.")}
                   </span>
                 </div>
               ))}
@@ -152,13 +162,14 @@ export function ProgressionOverlay({
 
         {hasPending && currentPending && (
           <div className="move-replace-panel">
-            <span className="panel-label">NOVO MOVE</span>
+            <span className="panel-label">{t("NEW MOVE")}</span>
             <h3>
               {DUEL_MOVES[currentPending].name}
             </h3>
             <p>
-              Seu Pokémon já conhece 4 moves. Escolha exatamente um move para
-              substituir, ou deixe de aprender este move.
+              {t(
+                "Your Pokémon already knows 4 moves. Choose exactly one move to replace, or give up on learning this move.",
+              )}
             </p>
 
             <div className="replace-move-list">
@@ -187,7 +198,9 @@ export function ProgressionOverlay({
               className="skip-move-button"
               onClick={() => resolvePending(null)}
             >
-              Não aprender {DUEL_MOVES[currentPending].name}
+              {t("Do not learn {move}", {
+                move: DUEL_MOVES[currentPending].name,
+              })}
             </button>
           </div>
         )}
@@ -198,7 +211,7 @@ export function ProgressionOverlay({
             className="progression-continue"
             onClick={() => onComplete(progression)}
           >
-            Continuar
+            {t("Continue")}
           </button>
         )}
       </section>

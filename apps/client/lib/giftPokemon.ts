@@ -1,3 +1,4 @@
+import { t } from "./i18n";
 import {
   createPokemonProgression,
   speciesDisplayName,
@@ -61,8 +62,8 @@ export function giftMessage(
 ): string {
   const name = speciesDisplayName(species);
   return destination === "storage"
-    ? `Você recebeu ${name}! Ele foi enviado ao PC.`
-    : `Você recebeu ${name}!`;
+    ? t("You received {name}! It was sent to the PC.", { name })
+    : t("You received {name}!", { name });
 }
 
 export const MAGIKARP_PRICE = 500;

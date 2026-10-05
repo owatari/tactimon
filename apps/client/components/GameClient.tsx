@@ -31,7 +31,7 @@ import {
   type BattleEncounter,
   type BattleOutcome,
 } from "@/components/FirstBattle";
-import { initLocale, useLocale } from "@/lib/i18n";
+import { initLocale, t, useLocale } from "@/lib/i18n";
 import { clearAllSaves, wantsSaveReset } from "@/lib/saveReset";
 import { applyPartyProgressionRewards } from "@/lib/partyProgress";
 import { BattleResultsScreen } from "@/components/BattleResultsScreen";
@@ -435,7 +435,7 @@ export function GameClient() {
 
   const handleMenuSave = useCallback(() => {
     flushPlayTime();
-    return "Jogo salvo!";
+    return t("Game saved!");
   }, [flushPlayTime]);
 
   const handleMapAudioContextChange = useCallback(
@@ -928,7 +928,7 @@ export function GameClient() {
       <div
         className="game-client"
         aria-busy="true"
-        aria-label="Carregando save local"
+        aria-label={t("Loading local save")}
       />
     );
   }

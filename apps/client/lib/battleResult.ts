@@ -1,3 +1,5 @@
+import { t } from "@/lib/i18n";
+
 /**
  * Headline of the single post-battle results screen. Pure so every outcome
  * (victory, defeat, capture, escape, tutorial) is described in one place.
@@ -45,21 +47,26 @@ export function describeBattleResult(
     if (success) {
       return {
         kind: "capture",
-        title: "CAPTURADO!",
-        message: `${speciesName} Lv. ${level} foi capturado!`,
+        title: t("CAPTURED!"),
+        message: t("{species} Lv. {level} was captured!", {
+          species: speciesName,
+          level,
+        }),
         note:
           destination === "storage"
-            ? "Party cheia: enviado ao PC."
+            ? t("Party full: sent to the PC.")
             : destination === "party"
-              ? "Adicionado à sua party."
+              ? t("Added to your party.")
               : null,
       };
     }
 
     return {
       kind: "capture-failed",
-      title: "ESCAPOU",
-      message: `${speciesName} escapou da Poké Ball.`,
+      title: t("ESCAPED"),
+      message: t("{species} broke free from the Poké Ball.", {
+        species: speciesName,
+      }),
       note: null,
     };
   }
@@ -68,14 +75,16 @@ export function describeBattleResult(
     return input.escapedBy === "rival"
       ? {
           kind: "opponent-fled",
-          title: "FUGIU",
-          message: `${input.opponentName} fugiu do combate.`,
+          title: t("FLED"),
+          message: t("{name} fled from the battle.", {
+            name: input.opponentName,
+          }),
           note: null,
         }
       : {
           kind: "escaped",
-          title: "ESCAPOU",
-          message: "Você fugiu em segurança.",
+          title: t("ESCAPED"),
+          message: t("You got away safely."),
           note: null,
         };
   }
@@ -86,28 +95,36 @@ export function describeBattleResult(
   if (input.won) {
     return {
       kind: "victory",
-      title: "VITÓRIA!",
+      title: t("VICTORY!"),
       message:
         input.encounterKind === "trainer"
-          ? `Você derrotou ${input.opponentName}!`
+          ? t("You defeated {name}!", {
+              name: input.opponentName,
+            })
           : wildGroup
-            ? `${input.opponentCount} Pokémon selvagens foram derrotados!`
-            : `${input.opponentName} selvagem foi derrotado!`,
+            ? t("{count} wild Pokémon were defeated!", {
+                count: input.opponentCount,
+              })
+            : t("Wild {name} was defeated!", {
+                name: input.opponentName,
+              }),
       note: null,
     };
   }
 
   return {
     kind: "defeat",
-    title: "DERROTA",
+    title: t("DEFEAT"),
     message:
       input.encounterKind === "trainer"
-        ? `${input.opponentName} venceu desta vez.`
+        ? t("{name} won this time.", {
+            name: input.opponentName,
+          })
         : wildGroup
-          ? "Seu time foi derrotado pelo grupo selvagem."
-          : "Seu time foi derrotado.",
+          ? t("Your team was defeated by the wild pack.")
+          : t("Your team was defeated."),
     note: input.tutorial
-      ? "O Prof. Oak cuidou do seu Pokémon. A jornada continua!"
+      ? t("Prof. Oak took care of your Pokémon. The journey continues!")
       : null,
   };
 }

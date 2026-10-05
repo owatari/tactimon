@@ -50,7 +50,7 @@ describe("overworld NPC dialogue", () => {
         22,
         true,
       ),
-    ).toContain("estrada");
+    ).toContain("road");
 
     expect(
       resolveNpcDialogue(
@@ -59,7 +59,7 @@ describe("overworld NPC dialogue", () => {
         1,
         true,
       ),
-    ).toContain("Continue explorando");
+    ).toContain("Keep exploring");
   });
 
   it("includes the newly imported Pallet, Route 1 and Oak Lab conversations", () => {

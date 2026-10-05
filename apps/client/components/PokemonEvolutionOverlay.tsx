@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { t, useLocale } from "@/lib/i18n";
 import {
   speciesDisplayName,
   type DuelSpeciesId,
@@ -49,6 +50,7 @@ export function PokemonEvolutionOverlay({
   evolution,
   onComplete,
 }: Props) {
+  useLocale();
   const [finished, setFinished] = useState(false);
   const fromName = speciesDisplayName(evolution.from);
   const toName = speciesDisplayName(evolution.to);
@@ -93,13 +95,16 @@ export function PokemonEvolutionOverlay({
         <div className="pokemon-evolution-dialogue">
           <p>
             {finished
-              ? `Parabéns! Seu ${fromName} evoluiu para ${toName}!`
-              : `O quê? ${fromName} está evoluindo!`}
+              ? t("Congratulations! Your {from} evolved into {to}!", {
+                  from: fromName,
+                  to: toName,
+                })
+              : t("What? {from} is evolving!", { from: fromName })}
           </p>
           <span>Lv. {evolution.level}</span>
           {finished && (
             <button type="button" onClick={onComplete}>
-              Continuar
+              {t("Continue")}
             </button>
           )}
         </div>

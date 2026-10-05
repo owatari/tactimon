@@ -10,6 +10,7 @@ import {
   type OverworldItemId,
 } from "@/lib/items";
 import { WORLD_MAPS } from "@/lib/maps";
+import { t, tx, useLocale } from "@/lib/i18n";
 import {
   MART_MAX_ITEM_QUANTITY,
   martStockFor,
@@ -29,32 +30,35 @@ type Props = {
 };
 
 const MART_CITY_LABEL: Record<string, string> = {
-  "viridian-mart": "VIRIDIAN CITY",
-  "pewter-mart": "PEWTER CITY",
-  "cerulean-mart": "CERULEAN CITY",
-  "vermilion-mart": "VERMILION CITY",
+  "viridian-mart": tx("VIRIDIAN CITY"),
+  "pewter-mart": tx("PEWTER CITY"),
+  "cerulean-mart": tx("CERULEAN CITY"),
+  "vermilion-mart": tx("VERMILION CITY"),
 };
 
 function purchaseMessage(
   result: MartPurchaseResult,
 ): string {
   if (result.accepted) {
-    return `Compra concluída: ${result.purchased} item(ns) por ₽${result.spent.toLocaleString("pt-BR")}.`;
+    return t("Purchase complete: {count} item(s) for ₽{spent}.", {
+      count: result.purchased,
+      spent: result.spent.toLocaleString("pt-BR"),
+    });
   }
 
   if (result.reason === "insufficient-funds") {
-    return "Você não tem dinheiro suficiente.";
+    return t("You do not have enough money.");
   }
 
   if (result.reason === "invalid-quantity") {
-    return "Escolha uma quantidade válida.";
+    return t("Choose a valid quantity.");
   }
 
   if (result.reason === "unknown-item") {
-    return "Esse item não está disponível nesta loja.";
+    return t("That item is not available in this shop.");
   }
 
-  return "Não há espaço para mais desse item.";
+  return t("There is no room for more of that item.");
 }
 
 export function MartOverlay({
@@ -65,9 +69,10 @@ export function MartOverlay({
   onBuy,
   onClose,
 }: Props) {
+  useLocale();
   const stock = martStockFor(martId);
-  const [notice, setNotice] = useState(
-    "Clerk: Posso ajudar? Veja o que temos na loja.",
+  const [notice, setNotice] = useState<string>(() =>
+    t("Clerk: May I help you? Take a look at what we have in the shop."),
   );
 
   const buy = (
@@ -87,11 +92,13 @@ export function MartOverlay({
         <div className="mart-header">
           <div>
             <span className="eyebrow">
-              {MART_CITY_LABEL[martId] ??
-                WORLD_MAPS[martId.split("@")[0]]?.label ??
-                "KANTO"}
+              {t(
+                MART_CITY_LABEL[martId] ??
+                  WORLD_MAPS[martId.split("@")[0]]?.label ??
+                  "KANTO",
+              )}
             </span>
-            <h2>Poké Mart</h2>
+            <h2>{t("Poké Mart")}</h2>
           </div>
           <strong>
             ₽{money.toLocaleString("pt-BR")}
@@ -132,12 +139,12 @@ export function MartOverlay({
                   aria-hidden="true"
                 />
                 <div className="mart-item-copy">
-                  <span>{item.name}</span>
+                  <span>{t(item.name)}</span>
                   <strong>
                     ₽{item.price.toLocaleString("pt-BR")}
                   </strong>
-                  <small>{item.description}</small>
-                  <em>Na bolsa: ×{amount}</em>
+                  <small>{t(item.description)}</small>
+                  <em>{t("In bag: ×{count}", { count: amount })}</em>
                 </div>
 
                 <div className="mart-item-actions">
@@ -146,14 +153,14 @@ export function MartOverlay({
                     disabled={!canBuyOne}
                     onClick={() => buy(item.id, 1)}
                   >
-                    Comprar 1
+                    {t("Buy 1")}
                   </button>
                   <button
                     type="button"
                     disabled={!canBuyFive}
                     onClick={() => buy(item.id, 5)}
                   >
-                    Comprar 5
+                    {t("Buy 5")}
                   </button>
                 </div>
               </article>
@@ -166,7 +173,7 @@ export function MartOverlay({
           className="mart-close"
           onClick={onClose}
         >
-          Sair da loja
+          {t("Leave shop")}
         </button>
       </section>
     </div>

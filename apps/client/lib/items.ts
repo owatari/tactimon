@@ -1,4 +1,5 @@
 import type { DuelItemId } from "@tactimon/battle-engine";
+import { tx } from "./i18n";
 import { GENERATED_BAG_ITEMS } from "./generated/worldItems";
 
 /**
@@ -88,36 +89,36 @@ export function itemIconUrl(id: OverworldItemId): string {
 }
 
 const ITEM_DESCRIPTIONS: Partial<Record<OverworldItemId, string>> = {
-  potion: "Restaura 20 HP de um Pokémon.",
-  "poke-ball": "Usada para capturar Pokémon selvagens.",
-  "great-ball": "Bola melhor que a Poké Ball para capturar Pokémon.",
-  "ultra-ball": "Bola de alto desempenho: captura melhor que a Great Ball.",
-  "master-ball": "A melhor bola: nunca falha em capturar um Pokémon.",
-  antidote: "Cura um Pokémon envenenado.",
-  "burn-heal": "Cura a queimadura de um Pokémon.",
-  "ice-heal": "Descongela um Pokémon.",
-  awakening: "Acorda um Pokémon dormindo.",
-  "parlyz-heal": "Cura a paralisia de um Pokémon.",
-  "hyper-potion": "Restaura 200 HP de um Pokémon.",
-  "super-potion": "Restaura 50 HP de um Pokémon.",
-  revive: "Revive um Pokémon desmaiado com metade do HP.",
-  ether: "Restaura 10 PP de um golpe.",
-  "max-ether": "Restaura todo o PP de um golpe.",
-  elixir: "Restaura 10 PP de todos os golpes.",
-  "lava-cookie": "Biscoito de Lavaridge. Cura qualquer problema de status.",
-  "rare-candy": "Faz um Pokémon subir um nível.",
-  "x-attack": "Aumenta o Ataque durante uma batalha.",
-  "escape-rope": "Permite fugir de cavernas e dungeons.",
-  repel: "Afasta Pokémon selvagens fracos por um tempo.",
-  "moon-stone": "Pedra misteriosa. Evolui certos Pokémon.",
-  "tiny-mushroom": "Cogumelo pequeno. Vende por um bom preço.",
-  "big-mushroom": "Cogumelo grande. Vende por um ótimo preço.",
-  stardust: "Pó de estrela. Vende por um bom preço.",
-  "star-piece": "Fragmento de estrela. Vende por um ótimo preço.",
+  potion: tx("Restores 20 HP of a Pokémon."),
+  "poke-ball": tx("Used to catch wild Pokémon."),
+  "great-ball": tx("A better ball than the Poké Ball for catching Pokémon."),
+  "ultra-ball": tx("A high-performance ball: catches better than the Great Ball."),
+  "master-ball": tx("The best ball: it never fails to catch a Pokémon."),
+  antidote: tx("Cures a poisoned Pokémon."),
+  "burn-heal": tx("Heals a Pokémon's burn."),
+  "ice-heal": tx("Thaws out a frozen Pokémon."),
+  awakening: tx("Wakes up a sleeping Pokémon."),
+  "parlyz-heal": tx("Heals a Pokémon's paralysis."),
+  "hyper-potion": tx("Restores 200 HP of a Pokémon."),
+  "super-potion": tx("Restores 50 HP of a Pokémon."),
+  revive: tx("Revives a fainted Pokémon with half its HP."),
+  ether: tx("Restores 10 PP of one move."),
+  "max-ether": tx("Fully restores the PP of one move."),
+  elixir: tx("Restores 10 PP of all moves."),
+  "lava-cookie": tx("A Lavaridge cookie. Heals any status condition."),
+  "rare-candy": tx("Raises a Pokémon's level by one."),
+  "x-attack": tx("Raises Attack during a battle."),
+  "escape-rope": tx("Lets you escape from caves and dungeons."),
+  repel: tx("Keeps weak wild Pokémon away for a while."),
+  "moon-stone": tx("A mysterious stone. Evolves certain Pokémon."),
+  "tiny-mushroom": tx("A small mushroom. Sells for a good price."),
+  "big-mushroom": tx("A big mushroom. Sells for a great price."),
+  stardust: tx("Stardust. Sells for a good price."),
+  "star-piece": tx("A star fragment. Sells for a great price."),
 };
 
 export function itemDescription(id: OverworldItemId): string {
-  return ITEM_DESCRIPTIONS[id] ?? "Item de Kanto.";
+  return ITEM_DESCRIPTIONS[id] ?? tx("A Kanto item.");
 }
 
 export function itemDisplayName(id: OverworldItemId): string {

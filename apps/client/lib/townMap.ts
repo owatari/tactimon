@@ -1,4 +1,4 @@
-import { t } from "./i18n";
+import { t, tx } from "./i18n";
 import { canStoryUseFly } from "./fieldTechniques";
 import {
   completeStoryPlayerEvent,
@@ -19,17 +19,17 @@ export type TownMapEntry = {
 };
 
 export const TOWN_MAP_ENTRIES: readonly TownMapEntry[] = [
-  { id: "pallet", label: "Pallet Town", mapId: "pallet-town", spawn: { x: 6, y: 8 } },
-  { id: "viridian", label: "Viridian City", mapId: "viridian-city", spawn: { x: 26, y: 27 } },
-  { id: "pewter", label: "Pewter City", mapId: "pewter-city", spawn: { x: 17, y: 26 } },
-  { id: "cerulean", label: "Cerulean City", mapId: "cerulean-city", spawn: { x: 22, y: 20 } },
-  { id: "vermilion", label: "Vermilion City", mapId: "vermilion-city", spawn: { x: 15, y: 7 } },
-  { id: "lavender", label: "Lavender Town", mapId: "lavender-town", spawn: { x: 6, y: 6 } },
-  { id: "celadon", label: "Celadon City", mapId: "celadon-city", spawn: { x: 48, y: 12 } },
-  { id: "saffron", label: "Saffron City", mapId: "saffron-city", spawn: { x: 24, y: 39 } },
-  { id: "fuchsia", label: "Fuchsia City", mapId: "fuchsia-city", spawn: { x: 25, y: 32 } },
-  { id: "cinnabar", label: "Cinnabar Island", mapId: "cinnabar-island", spawn: { x: 14, y: 12 } },
-  { id: "indigo", label: "Indigo Plateau", mapId: "indigo-plateau-exterior", spawn: { x: 11, y: 7 } },
+  { id: "pallet", label: tx("Pallet Town"), mapId: "pallet-town", spawn: { x: 6, y: 8 } },
+  { id: "viridian", label: tx("Viridian City"), mapId: "viridian-city", spawn: { x: 26, y: 27 } },
+  { id: "pewter", label: tx("Pewter City"), mapId: "pewter-city", spawn: { x: 17, y: 26 } },
+  { id: "cerulean", label: tx("Cerulean City"), mapId: "cerulean-city", spawn: { x: 22, y: 20 } },
+  { id: "vermilion", label: tx("Vermilion City"), mapId: "vermilion-city", spawn: { x: 15, y: 7 } },
+  { id: "lavender", label: tx("Lavender Town"), mapId: "lavender-town", spawn: { x: 6, y: 6 } },
+  { id: "celadon", label: tx("Celadon City"), mapId: "celadon-city", spawn: { x: 48, y: 12 } },
+  { id: "saffron", label: tx("Saffron City"), mapId: "saffron-city", spawn: { x: 24, y: 39 } },
+  { id: "fuchsia", label: tx("Fuchsia City"), mapId: "fuchsia-city", spawn: { x: 25, y: 32 } },
+  { id: "cinnabar", label: tx("Cinnabar Island"), mapId: "cinnabar-island", spawn: { x: 14, y: 12 } },
+  { id: "indigo", label: tx("Indigo Plateau"), mapId: "indigo-plateau-exterior", spawn: { x: 11, y: 7 } },
 ];
 
 const TOWN_MAP_IDS: ReadonlySet<string> = new Set(
@@ -90,7 +90,7 @@ export function checkFlyDestination(
 ): FlyCheck {
   const row = townMapRows(story).find((entry) => entry.id === entryId);
   if (!row) {
-    return { ok: false, reason: "unknown", message: "Destino desconhecido." };
+    return { ok: false, reason: "unknown", message: t("Unknown destination.") };
   }
   if (!canStoryUseFly(story)) {
     return {
@@ -105,7 +105,7 @@ export function checkFlyDestination(
     return {
       ok: false,
       reason: "not-visited",
-      message: t("You haven't visited {place} yet.", { place: row.label }),
+      message: t("You haven't visited {place} yet.", { place: t(row.label) }),
     };
   }
   return { ok: true, entry: row };

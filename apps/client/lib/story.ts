@@ -1,5 +1,5 @@
 import { partyCanUseHm } from "./hmParty";
-import { t } from "./i18n";
+import { t, tx } from "./i18n";
 import {
   calculateDuelPokemonMaxHp,
   createPokemonProgression,
@@ -219,17 +219,17 @@ export const STARTER_META: Record<
   bulbasaur: {
     name: "Bulbasaur",
     type: "grass",
-    description: "Equilibrado, resistente e ótimo para controle.",
+    description: tx("Balanced, sturdy and great for control."),
   },
   charmander: {
     name: "Charmander",
     type: "fire",
-    description: "Mais rápido e ofensivo desde o começo.",
+    description: tx("Faster and more offensive from the start."),
   },
   squirtle: {
     name: "Squirtle",
     type: "water",
-    description: "Defensivo, estável e difícil de derrubar.",
+    description: tx("Defensive, steady and hard to take down."),
   },
 };
 
@@ -678,10 +678,13 @@ export function storyStarterSummary(
 
   const partySize = 1 + story.capturedPokemon.length;
 
-  return (
-    `Você escolheu ${starterDisplayName(story.starter)}. ` +
-    `Blue escolheu ${starterDisplayName(story.rivalStarter)}. ` +
-    `Seu time tem ${partySize} Pokémon.`
+  return t(
+    "You chose {starter}. Blue chose {rival}. Your team has {count} Pokémon.",
+    {
+      starter: starterDisplayName(story.starter),
+      rival: starterDisplayName(story.rivalStarter),
+      count: partySize,
+    },
   );
 }
 

@@ -127,11 +127,11 @@ function slotPrompt(
     pages: [
       {
         id: "slots",
-        text: `${text} (Moedas: ${coins})`,
+        text: `${t(text)} ${t("(Coins: {coins})", { coins })}`,
         choices: [
           ...bets.map((bet) => ({
             id: `bet-${bet}`,
-            label: `Apostar ${bet}`,
+            label: t("Bet {bet}", { bet }),
             request: {
               kind: "script" as const,
               id: "slot-spin",
@@ -199,7 +199,7 @@ function techniqueGiftScript(
       return reply(
         result.story,
         gift.id,
-        `${gift.intro} Você recebeu a ${gift.hm}! (Para usá-la fora de batalha você precisa da ${badge}.)`,
+        t("{intro} You received the {hm}! (To use it outside battle you need the {badge}.)", { intro: t(gift.intro), hm: gift.hm, badge }),
         gift.speaker,
       );
     },
@@ -230,7 +230,7 @@ function keyItemGiftScript(gift: KeyItemGift): DialogueDefinition {
       return reply(
         result.story,
         gift.id,
-        `${gift.intro} Você recebeu ${KEY_ITEM_LABELS[gift.itemId]}!`,
+        t("{intro} You received {item}!", { intro: t(gift.intro), item: KEY_ITEM_LABELS[gift.itemId] }),
         gift.speaker,
       );
     },
@@ -258,7 +258,7 @@ function giftBallScript(
         gift.story,
         id,
         gift.granted
-          ? `Você escolheu ${speciesDisplayName(species)}! ${giftMessage(species, gift.destination)}`
+          ? t("You chose {name}! {gift}", { name: speciesDisplayName(species), gift: giftMessage(species, gift.destination) })
           : "Seu PC está cheio! Libere espaço e volte.",
       );
     },
@@ -276,7 +276,7 @@ function tradeScript(trade: InGameTrade): DialogueDefinition {
         return reply(
           story,
           id,
-          `${trade.speaker}: Cuide bem do seu ${give}! Foi uma ótima troca.`,
+          t("{speaker}: Take good care of your {give}! That was a great trade.", { speaker: t(trade.speaker), give }),
           trade.speaker,
         );
       }
@@ -285,7 +285,7 @@ function tradeScript(trade: InGameTrade): DialogueDefinition {
         return reply(
           story,
           id,
-          `${trade.speaker}: Estou procurando um ${want}. Se você tiver um na equipe, troco pelo meu ${give}!`,
+          t("{speaker}: I'm looking for a {want}. If you have one on your team, I'll trade my {give} for it!", { speaker: t(trade.speaker), want, give }),
           trade.speaker,
         );
       }
@@ -297,7 +297,7 @@ function tradeScript(trade: InGameTrade): DialogueDefinition {
             {
               id: "offer",
               speaker: trade.speaker,
-              text: `Quer trocar um ${want} pelo meu ${give}?`,
+              text: t("Want to trade a {want} for my {give}?", { want, give }),
               choices: [
                 ...candidates.map(({ captureIndex, pokemon }) => ({
                   id: `trade-${captureIndex}`,
@@ -338,7 +338,7 @@ function tutorScript(tutor: MoveTutor): DialogueDefinition {
         return reply(
           story,
           id,
-          `${speaker}: Agora somos companheiros no caminho do ${tutor.moveName}!`,
+          t("{speaker}: Now we are companions on the path of {move}!", { speaker: t(speaker), move: tutor.moveName }),
           speaker,
         );
       }
@@ -346,7 +346,7 @@ function tutorScript(tutor: MoveTutor): DialogueDefinition {
         return reply(
           story,
           id,
-          `${speaker}: Você voltará quando entender o valor do ${tutor.moveName}.`,
+          t("{speaker}: You will return when you understand the value of {move}.", { speaker: t(speaker), move: tutor.moveName }),
           speaker,
         );
       }
@@ -355,7 +355,7 @@ function tutorScript(tutor: MoveTutor): DialogueDefinition {
         return reply(
           story,
           id,
-          `${speaker}: O ${tutor.moveName} é o ataque definitivo! Mas nenhum Pokémon seu pode aprendê-lo agora.`,
+          t("{speaker}: {move} is the ultimate attack! But none of your Pokémon can learn it right now.", { speaker: t(speaker), move: tutor.moveName }),
           speaker,
         );
       }
@@ -367,7 +367,7 @@ function tutorScript(tutor: MoveTutor): DialogueDefinition {
             {
               id: "offer",
               speaker,
-              text: `${tutor.moveName} é o ataque definitivo! Eu ensino de graça, mas só um golpe por treinador. Qual Pokémon vai aprender?`,
+              text: t("{move} is the ultimate attack! I teach it for free, but only one move per trainer. Which Pokémon will learn it?", { move: tutor.moveName }),
               choices: [
                 ...candidates.map(({ partyIndex, pokemon }) => ({
                   id: `teach-${partyIndex}`,
@@ -423,7 +423,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         return reply(
           result.story,
           "tutor-teach",
-          `Faixa-preta: ${result.name} aprendeu ${tutor.moveName}!`,
+          t("Black Belt: {name} learned {move}!", { name: result.name, move: tutor.moveName }),
           "Faixa-preta",
         );
       }
@@ -438,7 +438,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
               {
                 id: "forget",
                 speaker: "Faixa-preta",
-                text: `${speciesDisplayName(pokemon.species as WildSpeciesId)} já conhece 4 golpes. Qual esquecer para aprender ${tutor.moveName}?`,
+                text: t("{name} already knows 4 moves. Which one should it forget to learn {move}?", { name: speciesDisplayName(pokemon.species as WildSpeciesId), move: tutor.moveName }),
                 choices: [
                   ...pokemon.activeMoves.map((moveId, index) => ({
                     id: `forget-${index}`,
@@ -504,7 +504,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       return reply(
         result.story,
         "trade-do",
-        `${trade.speaker}: Troca feita! Seu ${result.gave} virou ${result.received} (Lv. ${result.level}). Cuide bem dele!`,
+        t("{speaker}: Trade complete! Your {gave} became {received} (Lv. {level}). Take good care of it!", { speaker: t(trade.speaker), gave: result.gave, received: result.received, level: result.level }),
         trade.speaker,
       );
     },
@@ -772,11 +772,11 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
             {
               id: "offer",
               speaker: "Funcionário",
-              text: `Bem-vindo à Safari Zone! Por ₽${SAFARI_FEE} você recebe ${SAFARI_BALLS} Safari Balls e pode andar até ${SAFARI_STEPS} passos. Quer participar?`,
+              text: t("Welcome to the Safari Zone! For ₽{fee} you get {balls} Safari Balls and can walk up to {steps} steps. Want to join?", { fee: SAFARI_FEE, balls: SAFARI_BALLS, steps: SAFARI_STEPS }),
               choices: [
                 {
                   id: "pay",
-                  label: `Pagar ₽${SAFARI_FEE}`,
+                  label: t("Pay ₽{fee}", { fee: SAFARI_FEE }),
                   request: { kind: "script", id: "safari-start" },
                 },
                 {
@@ -804,7 +804,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         return reply(
           result.story,
           "safari-start",
-          `Funcionário: Aqui estão suas ${SAFARI_BALLS} Safari Balls! Avisaremos quando seus passos ou suas bolas acabarem. Entre pela porta!`,
+          t("Employee: Here are your {balls} Safari Balls! We'll let you know when your steps or your balls run out. Go through the door!", { balls: SAFARI_BALLS }),
           "Funcionário",
         );
       }
@@ -812,7 +812,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         story,
         "safari-start",
         result.reason === "money"
-          ? `Funcionário: Você precisa de ₽${SAFARI_FEE} para entrar.`
+          ? t("Employee: You need ₽{fee} to enter.", { fee: SAFARI_FEE })
           : "Funcionário: Seu jogo já está em andamento!",
         "Funcionário",
       );
@@ -833,12 +833,12 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
                 speaker: "Cuidador",
                 text:
                   status.levelsGained > 0
-                    ? `Seu ${status.name} cresceu ${status.levelsGained} nível(is) e está no Lv. ${status.level}! Para retirá-lo são ₽${status.fee}.`
-                    : `Seu ${status.name} está ótimo, no Lv. ${status.level}. Ele ganha experiência a cada passo que você dá. Retirá-lo custa ₽${status.fee}.`,
+                    ? t("Your {name} grew {levels} level(s) and is now Lv. {level}! Picking it up costs ₽{fee}.", { name: status.name, levels: status.levelsGained, level: status.level, fee: status.fee })
+                    : t("Your {name} is doing great, at Lv. {level}. It gains experience with every step you take. Picking it up costs ₽{fee}.", { name: status.name, level: status.level, fee: status.fee }),
                 choices: [
                   {
                     id: "withdraw",
-                    label: `Retirar (₽${status.fee})`,
+                    label: t("Pick up (₽{fee})", { fee: status.fee }),
                     request: { kind: "script", id: "daycare-withdraw" },
                   },
                   {
@@ -922,7 +922,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       return reply(
         result.story,
         "daycare-deposit",
-        `Cuidador: Muito bem, vou cuidar do seu ${result.name}. Ele ganha 1 ponto de experiência a cada passo seu!`,
+        t("Caretaker: Very well, I'll look after your {name}. It gains 1 experience point with every step you take!", { name: result.name }),
         "Cuidador",
       );
     },
@@ -936,7 +936,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
           story,
           "daycare-withdraw",
           result.reason === "money"
-            ? `Cuidador: Você não tem dinheiro suficiente! Custa ₽${result.fee}.`
+            ? t("Caretaker: You don't have enough money! It costs ₽{fee}.", { fee: result.fee ?? 0 })
             : result.reason === "storage-full"
               ? "Cuidador: Seu PC está cheio! Libere espaço primeiro."
               : "Cuidador: Não há nenhum Pokémon seu aqui.",
@@ -946,7 +946,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       return reply(
         result.story,
         "daycare-withdraw",
-        `Cuidador: Aqui está o seu ${result.name} (Lv. ${result.level}). Foram ₽${result.fee}. Ele sente sua falta!`,
+        t("Caretaker: Here is your {name} (Lv. {level}). That will be ₽{fee}. It misses you!", { name: result.name, level: result.level, fee: result.fee }),
         "Cuidador",
       );
     },
@@ -970,11 +970,11 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
             {
               id: "offer",
               speaker: "Atendente",
-              text: `Bem-vindo ao Game Corner! Você tem ${story.coins ?? 0} moedas. Quer comprar ${COIN_PACK_SIZE} moedas por ₽${COIN_PACK_PRICE}?`,
+              text: t("Welcome to the Game Corner! You have {coins} coins. Want to buy {pack} coins for ₽{price}?", { coins: story.coins ?? 0, pack: COIN_PACK_SIZE, price: COIN_PACK_PRICE }),
               choices: [
                 {
                   id: "buy",
-                  label: `Comprar (₽${COIN_PACK_PRICE})`,
+                  label: t("Buy (₽{price})", { price: COIN_PACK_PRICE }),
                   request: { kind: "script", id: "game-corner-buy-coins" },
                 },
                 {
@@ -1002,7 +1002,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         return reply(
           result.story,
           "game-corner-buy-coins",
-          `Atendente: Obrigado! Aqui estão ${COIN_PACK_SIZE} moedas. Você agora tem ${result.story.coins}.`,
+          t("Attendant: Thank you! Here are {pack} coins. You now have {coins}.", { pack: COIN_PACK_SIZE, coins: result.story.coins ?? 0 }),
           "Atendente",
         );
       }
@@ -1064,17 +1064,17 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       }
 
       const reels = result.spin.reels
-        .map((symbol) => `[${SLOT_SYMBOL_LABEL[symbol]}]`)
+        .map((symbol) => `[${t(SLOT_SYMBOL_LABEL[symbol])}]`)
         .join(" ");
       const outcome =
         result.spin.payout > 0
-          ? `Você ganhou ${result.spin.payout} moedas!`
+          ? t("You won {coins} coins!", { coins: result.spin.payout })
           : "Nada desta vez...";
       if ((result.story.coins ?? 0) <= 0) {
         return reply(
           result.story,
           "slot-spin",
-          `${reels} ${outcome} Suas moedas acabaram!`,
+          `${reels} ${outcome} ${t("Suas moedas acabaram!")}`,
         );
       }
       return {
@@ -1102,7 +1102,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
             {
               id: "menu",
               speaker: "Atendente",
-              text: `Você tem ${story.coins ?? 0} moedas. Qual Pokémon quer levar?`,
+              text: t("You have {coins} coins. Which Pokémon do you want to take?", { coins: story.coins ?? 0 }),
               choices: [
                 ...COIN_PRIZES.map((prize) => ({
                   id: prize.id,
@@ -1141,7 +1141,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         return reply(
           result.story,
           "game-corner-prize-buy",
-          `Atendente: Aqui está! Você recebeu ${speciesDisplayName(result.prize.species)}!${result.destination === "storage" ? " Ele foi enviado ao PC." : ""}`,
+          t(result.destination === "storage" ? "Attendant: Here you go! You received {name}! It was sent to the PC." : "Attendant: Here you go! You received {name}!", { name: speciesDisplayName(result.prize.species) }),
           "Atendente",
         );
       }
@@ -1267,7 +1267,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
             {
               id: "question",
               speaker: "Quiz POKéMON",
-              text: `Acerte e a porta abre para a próxima sala. ${quiz.question}`,
+              text: t("Get it right and the door opens to the next room. {question}", { question: t(quiz.question) }),
               choices: [answer(true), answer(false)],
             },
           ],
@@ -1331,7 +1331,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
                     mapId: floor.mapId,
                     x: floor.x,
                     y: floor.y,
-                    text: `O elevador leva você ao ${floor.label}.`,
+                    text: t("The elevator takes you to the {floor}.", { floor: floor.label }),
                   },
                 })),
                 {
@@ -1435,7 +1435,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         result.story,
         `key-item:${itemId}`,
         result.granted
-          ? `Você encontrou ${KEY_ITEM_LABELS[itemId]}!`
+          ? t("You found {item}!", { item: KEY_ITEM_LABELS[itemId] })
           : "Não há mais nada aqui.",
       );
     },

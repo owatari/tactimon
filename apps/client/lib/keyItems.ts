@@ -1,3 +1,4 @@
+import { tx } from "./i18n";
 /** Display names and descriptions for story key items (Bag → KEY ITEMS). */
 export const KEY_ITEM_LABELS: Record<string, string> = {
   "ss-ticket": "S.S. Ticket",
@@ -19,20 +20,20 @@ export const KEY_ITEM_LABELS: Record<string, string> = {
 };
 
 export const KEY_ITEM_DESCRIPTIONS: Record<string, string> = {
-  "ss-ticket": "Passagem para embarcar no S.S. Anne em Vermilion City.",
-  "town-map": "Mapa de Kanto dado pela Daisy.",
-  "old-amber": "Âmbar antigo que contém DNA de um Pokémon pré-histórico.",
-  "bike-voucher": "Troque na Cerulean Bike Shop por uma Bicicleta.",
-  bicycle: "Bicicleta: com ela você corre ainda mais rápido (R alterna).",
-  tea: "Chá gelado que o guarda de Saffron aceita no lugar de uma passagem.",
-  "silph-scope": "Lente que revela fantasmas na Pokémon Tower.",
-  "poke-flute": "Flauta que acorda Pokémon dormindo, como Snorlax.",
-  "card-key": "Cartão que abre as portas travadas da Silph Co.",
-  "lift-key": "Chave do elevador do esconderijo da Equipe Rocket.",
-  "secret-key": "Chave da porta do Gym de Cinnabar Island.",
-  "gold-teeth": "Dentadura de ouro perdida pelo Warden da Safari Zone.",
-  "coin-case": "Estojo para guardar até 9.999 moedas do Game Corner.",
-  "old-rod": "Vara de pesca simples: fisga Pokémon fracos.",
-  "good-rod": "Vara de pesca melhor que a Old Rod.",
-  "super-rod": "A melhor vara de pesca: atrai Pokémon raros.",
+  "ss-ticket": tx("A ticket to board the S.S. Anne in Vermilion City."),
+  "town-map": tx("A map of Kanto given by Daisy."),
+  "old-amber": tx("Ancient amber containing the DNA of a prehistoric Pokémon."),
+  "bike-voucher": tx("Exchange it at the Cerulean Bike Shop for a Bicycle."),
+  bicycle: tx("A Bicycle: it lets you move even faster (R toggles)."),
+  tea: tx("Iced tea that the Saffron guard accepts in place of a pass."),
+  "silph-scope": tx("A lens that reveals ghosts in the Pokémon Tower."),
+  "poke-flute": tx("A flute that wakes sleeping Pokémon, like Snorlax."),
+  "card-key": tx("A card that opens the locked doors of Silph Co."),
+  "lift-key": tx("The key to the elevator in Team Rocket's hideout."),
+  "secret-key": tx("The key to the door of the Cinnabar Island Gym."),
+  "gold-teeth": tx("Gold teeth lost by the Safari Zone Warden."),
+  "coin-case": tx("A case that holds up to 9,999 Game Corner coins."),
+  "old-rod": tx("A simple fishing rod: hooks weak Pokémon."),
+  "good-rod": tx("A fishing rod better than the Old Rod."),
+  "super-rod": tx("The best fishing rod: it attracts rare Pokémon."),
 };

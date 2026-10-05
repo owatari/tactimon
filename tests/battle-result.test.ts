@@ -11,7 +11,7 @@ describe("post-battle results headline", () => {
         opponentName: "Brock",
         opponentCount: 2,
       }),
-    ).toMatchObject({ kind: "victory", message: "Você derrotou Brock!" });
+    ).toMatchObject({ kind: "victory", message: "You defeated Brock!" });
     expect(
       describeBattleResult({
         won: true,
@@ -20,7 +20,7 @@ describe("post-battle results headline", () => {
         opponentName: "Pidgey",
         opponentCount: 8,
       }).message,
-    ).toBe("8 Pokémon selvagens foram derrotados!");
+    ).toBe("8 wild Pokémon were defeated!");
   });
 
   it("describes captures with their destination", () => {
@@ -65,6 +65,6 @@ describe("post-battle results headline", () => {
     expect(describeBattleResult(base).kind).toBe("escaped");
     expect(
       describeBattleResult({ ...base, escapedBy: "rival" }).message,
-    ).toBe("Abra fugiu do combate.");
+    ).toBe("Abra fled from the battle.");
   });
 });

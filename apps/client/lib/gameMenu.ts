@@ -12,6 +12,7 @@ import {
 } from "./items";
 import { isFieldUsableItem } from "./itemUse";
 import { getPokedex } from "./pokedex";
+import { tx } from "./i18n";
 import {
   KEY_ITEM_DESCRIPTIONS,
   KEY_ITEM_LABELS,
@@ -48,13 +49,13 @@ export type MenuEntry = {
 };
 
 export const MENU_ENTRIES: readonly MenuEntry[] = [
-  { id: "pokedex", label: "POKéDEX", enabled: true },
-  { id: "party", label: "POKéMON", enabled: true },
-  { id: "bag", label: "BAG", enabled: true },
-  { id: "card", label: "TRAINER CARD", enabled: true },
-  { id: "save", label: "SAVE", enabled: true },
-  { id: "options", label: "OPTION", enabled: true },
-  { id: "exit", label: "EXIT", enabled: true },
+  { id: "pokedex", label: tx("POKéDEX"), enabled: true },
+  { id: "party", label: tx("POKéMON"), enabled: true },
+  { id: "bag", label: tx("BAG"), enabled: true },
+  { id: "card", label: tx("TRAINER CARD"), enabled: true },
+  { id: "save", label: tx("SAVE"), enabled: true },
+  { id: "options", label: tx("OPTION"), enabled: true },
+  { id: "exit", label: tx("EXIT"), enabled: true },
 ];
 
 export const MAX_PARTY_SIZE = 6;
@@ -203,7 +204,7 @@ export function buildBagPockets(
       name: "Nugget",
       quantity: nuggets,
       iconUrl: null,
-      description: "Pepita de ouro puro. Vende por um ótimo preço.",
+      description: tx("A nugget of pure gold. Sells for a great price."),
       usable: false,
     });
   }
@@ -221,18 +222,18 @@ export function buildBagPockets(
   );
 
   return [
-    { id: "items", label: "ITEMS", entries: items },
-    { id: "key", label: "KEY ITEMS", entries: key },
-    { id: "balls", label: "POKé BALLS", entries: balls },
+    { id: "items", label: tx("ITEMS"), entries: items },
+    { id: "key", label: tx("KEY ITEMS"), entries: key },
+    { id: "balls", label: tx("POKé BALLS"), entries: balls },
     {
       id: "tms",
-      label: "TMs & HMs",
+      label: tx("TMs & HMs"),
       entries: [],
       reserved: true,
     },
     {
       id: "berries",
-      label: "BERRIES",
+      label: tx("BERRIES"),
       entries: [],
       reserved: true,
     },
@@ -243,14 +244,14 @@ export const BADGE_ORDER: readonly {
   id: StoryBadgeId;
   label: string;
 }[] = [
-  { id: "boulder", label: "Boulder" },
-  { id: "cascade", label: "Cascade" },
-  { id: "thunder", label: "Thunder" },
-  { id: "rainbow", label: "Rainbow" },
-  { id: "soul", label: "Soul" },
-  { id: "marsh", label: "Marsh" },
-  { id: "volcano", label: "Volcano" },
-  { id: "earth", label: "Earth" },
+  { id: "boulder", label: tx("Boulder") },
+  { id: "cascade", label: tx("Cascade") },
+  { id: "thunder", label: tx("Thunder") },
+  { id: "rainbow", label: tx("Rainbow") },
+  { id: "soul", label: tx("Soul") },
+  { id: "marsh", label: tx("Marsh") },
+  { id: "volcano", label: tx("Volcano") },
+  { id: "earth", label: tx("Earth") },
 ];
 
 export type TrainerCardData = {

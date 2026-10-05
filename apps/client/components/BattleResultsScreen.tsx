@@ -10,6 +10,7 @@ import {
 import { PokemonEvolutionOverlay } from "@/components/PokemonEvolutionOverlay";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import type { BattleResultHeadline } from "@/lib/battleResult";
+import { t, useLocale } from "@/lib/i18n";
 
 type Props = {
   headline: BattleResultHeadline;
@@ -38,6 +39,7 @@ export function BattleResultsScreen({
   rewards,
   onContinue,
 }: Props) {
+  useLocale();
   const evolutions = useMemo(
     () => rewards.flatMap((reward) => reward.evolutions),
     [rewards],
@@ -81,7 +83,7 @@ export function BattleResultsScreen({
       <section
         className={`battle-results-panel ${headline.kind}`}
         role="dialog"
-        aria-label="Resultado da batalha"
+        aria-label={t("Battle result")}
       >
         <header className="battle-results-banner">
           <strong className="battle-results-title">
@@ -94,7 +96,7 @@ export function BattleResultsScreen({
           <div className="battle-results-rewards">
             {prizeMoney > 0 && (
               <span className="battle-results-money">
-                Prêmio <b>₽{prizeMoney.toLocaleString("pt-BR")}</b>
+                {t("Prize")} <b>₽{prizeMoney.toLocaleString("pt-BR")}</b>
               </span>
             )}
             {headline.note && <span>{headline.note}</span>}
@@ -130,7 +132,7 @@ export function BattleResultsScreen({
                       </span>
                       {reward.levelsGained > 0 && (
                         <em className="battle-results-tag level">
-                          LV UP!
+                          {t("LV UP!")}
                         </em>
                       )}
                     </div>
@@ -147,17 +149,23 @@ export function BattleResultsScreen({
                       <div className="battle-results-events">
                         {reward.autoLearnedMoves.length > 0 && (
                           <span>
-                            Aprendeu {moveNames(reward.autoLearnedMoves)}
+                            {t("Learned {moves}", {
+                              moves: moveNames(reward.autoLearnedMoves),
+                            })}
                           </span>
                         )}
                         {reward.pendingMoves.length > 0 && (
                           <span className="pending">
-                            Quer aprender {moveNames(reward.pendingMoves)}
+                            {t("Wants to learn {moves}", {
+                              moves: moveNames(reward.pendingMoves),
+                            })}
                           </span>
                         )}
                         {evolution && (
                           <span className="evolution">
-                            Evoluindo → {speciesDisplayName(evolution.to)}
+                            {t("Evolving → {species}", {
+                              species: speciesDisplayName(evolution.to),
+                            })}
                           </span>
                         )}
                       </div>
@@ -176,7 +184,7 @@ export function BattleResultsScreen({
             onClick={finishSummary}
             autoFocus
           >
-            Continuar ▶
+            {t("Continue ▶")}
           </button>
         </footer>
       </section>
