@@ -34,9 +34,19 @@ import {
 } from "./fieldTechniques";
 import { KEY_ITEM_LABELS } from "./keyItems";
 import {
+  DUEL_MOVES,
   speciesDisplayName,
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
+import { getStoryParty } from "./gameMenu";
+import {
+  MOVE_TUTORS,
+  chosenMegaTutor,
+  findMoveTutor,
+  teachTutorMove,
+  tutorCandidates,
+  type MoveTutor,
+} from "./tutors";
 import { getPokedex } from "./pokedex";
 import {
   FUJI_RESCUED_EVENT,
@@ -274,7 +284,159 @@ function tradeScript(trade: InGameTrade): DialogueDefinition {
   };
 }
 
+function tutorScript(tutor: MoveTutor): DialogueDefinition {
+  const id = `tutor-${tutor.id}`;
+  const speaker = "Faixa-preta";
+  return {
+    id,
+    interact: (story) => {
+      const used = chosenMegaTutor(story);
+      if (used === tutor.id) {
+        return reply(
+          story,
+          id,
+          `${speaker}: Agora somos companheiros no caminho do ${tutor.moveName}!`,
+          speaker,
+        );
+      }
+      if (used) {
+        return reply(
+          story,
+          id,
+          `${speaker}: Você voltará quando entender o valor do ${tutor.moveName}.`,
+          speaker,
+        );
+      }
+      const candidates = tutorCandidates(story, tutor);
+      if (candidates.length === 0) {
+        return reply(
+          story,
+          id,
+          `${speaker}: O ${tutor.moveName} é o ataque definitivo! Mas nenhum Pokémon seu pode aprendê-lo agora.`,
+          speaker,
+        );
+      }
+      return {
+        story,
+        presentation: {
+          id,
+          pages: [
+            {
+              id: "offer",
+              speaker,
+              text: `${tutor.moveName} é o ataque definitivo! Eu ensino de graça, mas só um golpe por treinador. Qual Pokémon vai aprender?`,
+              choices: [
+                ...candidates.map(({ partyIndex, pokemon }) => ({
+                  id: `teach-${partyIndex}`,
+                  label: `${speciesDisplayName(pokemon.species as WildSpeciesId)} Lv. ${pokemon.level}`,
+                  request: {
+                    kind: "script" as const,
+                    id: "tutor-teach",
+                    context: { tutorId: tutor.id, partyIndex },
+                  },
+                })),
+                {
+                  id: "decline",
+                  label: "Agora não",
+                  request: {
+                    kind: "text" as const,
+                    id: `${id}-decline`,
+                    speaker,
+                    text: "Volte quando estiver pronto!",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  };
+}
+
 export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
+  ...Object.fromEntries(
+    MOVE_TUTORS.map((tutor) => [`tutor-${tutor.id}`, tutorScript(tutor)]),
+  ),
+  "tutor-teach": {
+    id: "tutor-teach",
+    interact: (story, context) => {
+      const tutor = findMoveTutor(contextString(context, "tutorId") ?? "");
+      const partyIndex =
+        typeof context.partyIndex === "number" ? context.partyIndex : -1;
+      const replaceIndex =
+        typeof context.replaceIndex === "number"
+          ? context.replaceIndex
+          : null;
+      if (!tutor) return reply(story, "tutor-teach", "...");
+
+      const result = teachTutorMove(
+        story,
+        tutor.id,
+        partyIndex,
+        replaceIndex,
+      );
+      if (result.ok) {
+        return reply(
+          result.story,
+          "tutor-teach",
+          `Faixa-preta: ${result.name} aprendeu ${tutor.moveName}!`,
+          "Faixa-preta",
+        );
+      }
+
+      if (result.reason === "no-slot") {
+        const pokemon = getStoryParty(story)[partyIndex];
+        return {
+          story,
+          presentation: {
+            id: "tutor-teach",
+            pages: [
+              {
+                id: "forget",
+                speaker: "Faixa-preta",
+                text: `${speciesDisplayName(pokemon.species as WildSpeciesId)} já conhece 4 golpes. Qual esquecer para aprender ${tutor.moveName}?`,
+                choices: [
+                  ...pokemon.activeMoves.map((moveId, index) => ({
+                    id: `forget-${index}`,
+                    label: DUEL_MOVES[moveId]?.name ?? moveId,
+                    request: {
+                      kind: "script" as const,
+                      id: "tutor-teach",
+                      context: {
+                        tutorId: tutor.id,
+                        partyIndex,
+                        replaceIndex: index,
+                      },
+                    },
+                  })),
+                  {
+                    id: "cancel",
+                    label: "Cancelar",
+                    request: {
+                      kind: "text" as const,
+                      id: "tutor-cancel",
+                      speaker: "Faixa-preta",
+                      text: "Sem problemas. Volte quando decidir.",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      }
+
+      const text: Record<string, string> = {
+        "other-tutor": "Você já aprendeu outro golpe comigo.",
+        knows: "Ele já conhece esse golpe.",
+        incompatible: "Esse Pokémon não consegue aprender este golpe.",
+        "invalid-pokemon": "Não encontrei esse Pokémon.",
+        unknown: "...",
+      };
+      return reply(story, "tutor-teach", text[result.reason], "Faixa-preta");
+    },
+  },
   ...Object.fromEntries(
     IN_GAME_TRADES.map((trade) => [`trade-${trade.id}`, tradeScript(trade)]),
   ),
@@ -1000,6 +1162,12 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
 
 /** ROM object coordinates (map:x,y) → quest dialogue script id. */
 export const QUEST_WORLD_OBJECT_DIALOGUE_IDS: Record<string, string> = {
+  ...Object.fromEntries(
+    MOVE_TUTORS.map((tutor) => [
+      `${tutor.mapId}:${tutor.x},${tutor.y}`,
+      `tutor-${tutor.id}`,
+    ]),
+  ),
   ...Object.fromEntries(
     IN_GAME_TRADES.map((trade) => [
       `${trade.mapId}:${trade.x},${trade.y}`,
