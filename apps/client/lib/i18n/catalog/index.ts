@@ -1,5 +1,6 @@
 import type { Catalog } from "../index";
 import { battleCatalog } from "./battle";
+import { battleLogCatalog } from "./battle-log";
 import { dialoguesCatalog } from "./dialogues";
 import { fieldCatalog } from "./field";
 import { itemsCatalog } from "./items";
@@ -19,6 +20,7 @@ export const CATALOG: Catalog = {
   ...fieldCatalog,
   ...uiCatalog,
   ...battleCatalog,
+  ...battleLogCatalog,
   ...dialoguesCatalog,
   ...questsCatalog,
   ...itemsCatalog,
