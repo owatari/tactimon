@@ -1,0 +1,3 @@
+# Pedido original
+
+Audite o projeto todo, elimine arquivos inúteis e poluentes. Valide o jogo e busque por coisas que já deveriam estar implementadas ou presentes no jogo e que acabaram passando batido. Valide tudo o que foi implementado e está divergente do jogo original, claro, com exceções como TMs e HELDS serem exclusivos de um sistema futuro de dungeon e raids e também a progressão e triggers de eventos serem instanciados para players, ocmo arvore de cut, itens, triggers de eventos. Froa isso, tudo o que já deveria estar no jogo no momento, valide. Já implementamos até Cerulean, então tem itens no mapa faltando, eventos, dialogos, npcs, muita coisa faltando, esta validação que deve ser feita. Após validar tudo, corrija estas divergências.
