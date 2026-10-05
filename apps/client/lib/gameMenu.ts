@@ -11,6 +11,7 @@ import {
   type OverworldItemId,
 } from "./items";
 import { isFieldUsableItem } from "./itemUse";
+import { getPokedex } from "./pokedex";
 import type {
   StoryBadgeId,
   StoryState,
@@ -18,6 +19,7 @@ import type {
 
 export type MenuScreen =
   | "root"
+  | "pokedex"
   | "party"
   | "summary"
   | "bag"
@@ -41,12 +43,7 @@ export type MenuEntry = {
 };
 
 export const MENU_ENTRIES: readonly MenuEntry[] = [
-  {
-    id: "pokedex",
-    label: "POKéDEX",
-    enabled: false,
-    hint: "Em breve",
-  },
+  { id: "pokedex", label: "POKéDEX", enabled: true },
   { id: "party", label: "POKéMON", enabled: true },
   { id: "bag", label: "BAG", enabled: true },
   { id: "card", label: "TRAINER CARD", enabled: true },
@@ -262,6 +259,8 @@ export type TrainerCardData = {
   badgeCount: number;
   partySize: number;
   playTime: string;
+  pokedexSeen: number;
+  pokedexCaught: number;
 };
 
 export function formatPlayTime(seconds: number): string {
@@ -276,6 +275,7 @@ export function buildTrainerCard(
   story: StoryState,
 ): TrainerCardData {
   const earned = new Set(story.badgeIds);
+  const dex = getPokedex(story);
 
   return {
     money: story.money,
@@ -288,5 +288,7 @@ export function buildTrainerCard(
     ).length,
     partySize: getStoryParty(story).length,
     playTime: formatPlayTime(story.playTimeSeconds ?? 0),
+    pokedexSeen: dex.seenCount,
+    pokedexCaught: dex.caughtCount,
   };
 }

@@ -5,11 +5,16 @@ import {
   DUEL_MOVES,
   calculateDuelPokemonStats,
   duelSpeciesTypes,
+  isDuelSpeciesId,
   experienceProgress,
   speciesDisplayName,
   type PokemonProgression,
 } from "@tactimon/battle-engine";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
+import {
+  getPokedex,
+  pokedexDisplayName,
+} from "@/lib/pokedex";
 import {
   MENU_ENTRIES,
   buildBagPockets,
@@ -102,6 +107,7 @@ export function StartMenu({
 }: Props) {
   const [screen, setScreen] = useState<MenuScreen>("root");
   const [rootIndex, setRootIndex] = useState(1);
+  const [dexIndex, setDexIndex] = useState(0);
   const [partyIndex, setPartyIndex] = useState(0);
   const [partyAction, setPartyAction] = useState<number | null>(
     null,
@@ -121,11 +127,14 @@ export function StartMenu({
   const party = useMemo(() => getStoryParty(story), [story]);
   const pockets = useMemo(() => buildBagPockets(story), [story]);
   const card = useMemo(() => buildTrainerCard(story), [story]);
+  const dex = useMemo(() => getPokedex(story), [story]);
 
   // Keep the key handler stable while reading the latest state.
   const latest = useRef({
     screen,
     rootIndex,
+    dexIndex,
+    dexCount: dex.entries.length,
     partyIndex,
     partyAction,
     switchFrom,
@@ -143,6 +152,8 @@ export function StartMenu({
   latest.current = {
     screen,
     rootIndex,
+    dexIndex,
+    dexCount: dex.entries.length,
     partyIndex,
     partyAction,
     switchFrom,
@@ -221,7 +232,9 @@ export function StartMenu({
           else if (entry.id === "save") setNotice(onSave());
           else {
             setScreen(
-              entry.id === "party"
+              entry.id === "pokedex"
+                ? "pokedex"
+                : entry.id === "party"
                 ? "party"
                 : entry.id === "bag"
                   ? "bag"
@@ -233,6 +246,15 @@ export function StartMenu({
             setSwitchFrom(null);
           }
         }
+        return;
+      }
+
+      if (s.screen === "pokedex") {
+        if (up) setDexIndex(wrap(s.dexIndex - 1, s.dexCount));
+        else if (down) setDexIndex(wrap(s.dexIndex + 1, s.dexCount));
+        else if (left) setDexIndex(Math.max(0, s.dexIndex - 10));
+        else if (right) setDexIndex(Math.min(s.dexCount - 1, s.dexIndex + 10));
+        else if (back || confirm) setScreen("root");
         return;
       }
 
@@ -431,6 +453,38 @@ export function StartMenu({
         </nav>
       )}
 
+      {screen === "pokedex" && (
+        <section className="start-menu-screen start-menu-pokedex">
+          <h2>
+            POKéDEX · SEEN {dex.seenCount} · OWN {dex.caughtCount}
+          </h2>
+          <div className="start-menu-dex-body">
+            <ul className="start-menu-dex-list">
+              {dex.entries
+                .slice(
+                  Math.max(0, Math.min(dex.entries.length - 9, dexIndex - 4)),
+                  Math.max(0, Math.min(dex.entries.length - 9, dexIndex - 4)) + 9,
+                )
+                .map((entry) => (
+                  <li
+                    key={entry.id}
+                    className={entry.number - 1 === dexIndex ? "selected" : ""}
+                  >
+                    <span>{String(entry.number).padStart(3, "0")}</span>
+                    <strong>
+                      {entry.status === "unseen"
+                        ? "----------"
+                        : pokedexDisplayName(entry.id)}
+                    </strong>
+                    {entry.status === "caught" && <em>●</em>}
+                  </li>
+                ))}
+            </ul>
+            <DexDetail entry={dex.entries[dexIndex]} />
+          </div>
+        </section>
+      )}
+
       {screen === "party" && (
         <section className="start-menu-screen start-menu-party">
           <h2>POKéMON</h2>
@@ -604,6 +658,10 @@ export function StartMenu({
             <dd>{card.partySize}</dd>
             <dt>TIME</dt>
             <dd>{card.playTime}</dd>
+            <dt>POKéDEX</dt>
+            <dd>
+              {card.pokedexCaught} OWN / {card.pokedexSeen} SEEN
+            </dd>
             <dt>BADGES</dt>
             <dd>{card.badgeCount}/8</dd>
           </dl>
@@ -728,5 +786,45 @@ function SummaryMoves({ pokemon }: { pokemon: PokemonProgression }) {
         );
       })}
     </ul>
+  );
+}
+
+function DexDetail({
+  entry,
+}: {
+  entry: { number: number; id: string; status: string } | undefined;
+}) {
+  if (!entry || entry.status === "unseen") {
+    return (
+      <div className="start-menu-dex-detail">
+        <p>Nenhum dado registrado.</p>
+      </div>
+    );
+  }
+
+  const implemented = isDuelSpeciesId(entry.id);
+
+  return (
+    <div className="start-menu-dex-detail">
+      {implemented && (
+        <PokemonPortrait
+          species={entry.id as never}
+          name={pokedexDisplayName(entry.id)}
+        />
+      )}
+      <h3>
+        No. {String(entry.number).padStart(3, "0")}{" "}
+        {pokedexDisplayName(entry.id)}
+      </h3>
+      {implemented && (
+        <p>
+          TYPE:{" "}
+          {duelSpeciesTypes(entry.id as never)
+            .map((type) => type.toUpperCase())
+            .join(" / ")}
+        </p>
+      )}
+      <p>{entry.status === "caught" ? "Capturado." : "Visto."}</p>
+    </div>
   );
 }

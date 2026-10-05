@@ -5944,3 +5944,46 @@ textarea {
     flex-direction: column;
   }
 }
+
+.start-menu-dex-body {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(200px, 1fr);
+  gap: 14px;
+}
+
+.start-menu-dex-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  border: 2px solid #405868;
+  background: #fffff4;
+  font-size: 14px;
+}
+
+.start-menu-dex-list li.selected {
+  background: #f8e8a0;
+  border-color: #c06820;
+}
+
+.start-menu-dex-list em {
+  margin-left: auto;
+  color: #c03020;
+  font-style: normal;
+}
+
+.start-menu-dex-detail {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.start-menu-dex-detail h3,
+.start-menu-dex-detail p {
+  margin: 0;
+}
+
+.start-menu-dex-detail .battle-portrait-frame {
+  width: 120px;
+  height: 120px;
+}

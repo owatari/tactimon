@@ -40,6 +40,7 @@ import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
 import { StartMenu } from "@/components/StartMenu";
+import { markPokedexSeen } from "@/lib/pokedex";
 import {
   DEFAULT_GAME_OPTIONS,
   effectiveMusicVolume,
@@ -433,6 +434,19 @@ export function GameClient() {
     },
     [],
   );
+
+  useEffect(() => {
+    if (!battleSession) return;
+    const encounter = battleSession.encounter;
+    const species =
+      encounter.kind === "wild"
+        ? [
+            encounter.species,
+            ...(encounter.wilds ?? []).map((w) => w.species),
+          ]
+        : (encounter.rivals ?? []).map((r) => r.species);
+    setStory((current) => markPokedexSeen(current, species));
+  }, [battleSession]);
 
   const handleMenuSave = useCallback(() => {
     flushPlayTime();

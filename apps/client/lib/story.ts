@@ -14,6 +14,10 @@ import {
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import {
+  normalizePokedex,
+  type PokedexData,
+} from "./pokedex";
+import {
   BAG_ITEM_MAX_QUANTITY,
   isBagItemId,
   normalizeBagItems,
@@ -88,6 +92,8 @@ export type StoryState = {
   playTimeSeconds?: number;
   /** Remaining Repel steps (FireRed: 100 per item). */
   repelSteps?: number;
+  /** Pokémon seen/caught (owned Pokémon always count as caught). */
+  pokedex?: PokedexData;
   keyItemIds?: StoryKeyItemId[];
   fieldTechniqueIds?: StoryFieldTechniqueId[];
   clearedObstacleIds?: string[];
@@ -523,6 +529,7 @@ export function normalizeStoryState(
     inventory: normalizeInventory(input?.inventory),
     valuables: normalizeValuables(input?.valuables),
     bagItems: normalizeBagItems(input?.bagItems),
+    pokedex: normalizePokedex(input?.pokedex),
     repelSteps:
       typeof input?.repelSteps === "number" &&
       Number.isFinite(input.repelSteps)

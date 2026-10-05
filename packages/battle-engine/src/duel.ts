@@ -3634,6 +3634,12 @@ export function calculateDuelPokemonStats(
   };
 }
 
+export function isDuelSpeciesId(
+  value: string,
+): value is DuelSpeciesId {
+  return Object.prototype.hasOwnProperty.call(SPECIES, value);
+}
+
 export function duelSpeciesTypes(
   species: DuelSpeciesId,
 ): readonly DuelType[] {
