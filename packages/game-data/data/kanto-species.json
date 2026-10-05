@@ -1,0 +1,10888 @@
+{
+ "bulbasaur": {
+  "hp": 45,
+  "attack": 49,
+  "defense": 49,
+  "speed": 45,
+  "specialAttack": 65,
+  "specialDefense": 65,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 45,
+  "baseExp": 64,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "bulbasaur",
+  "dex": 1,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 16,
+    "to": "ivysaur"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 4,
+    "move": "growl"
+   },
+   {
+    "level": 7,
+    "move": "leech-seed"
+   },
+   {
+    "level": 10,
+    "move": "vine-whip"
+   },
+   {
+    "level": 15,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 15,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 20,
+    "move": "razor-leaf"
+   },
+   {
+    "level": 25,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 32,
+    "move": "growth"
+   },
+   {
+    "level": 39,
+    "move": "synthesis"
+   },
+   {
+    "level": 46,
+    "move": "solarbeam"
+   }
+  ]
+ },
+ "ivysaur": {
+  "hp": 60,
+  "attack": 62,
+  "defense": 63,
+  "speed": 60,
+  "specialAttack": 80,
+  "specialDefense": 80,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 45,
+  "baseExp": 141,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 1
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "ivysaur",
+  "dex": 2,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 32,
+    "to": "venusaur"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 4,
+    "move": "growl"
+   },
+   {
+    "level": 7,
+    "move": "leech-seed"
+   },
+   {
+    "level": 10,
+    "move": "vine-whip"
+   },
+   {
+    "level": 15,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 15,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 20,
+    "move": "razor-leaf"
+   },
+   {
+    "level": 25,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 32,
+    "move": "growth"
+   },
+   {
+    "level": 39,
+    "move": "synthesis"
+   },
+   {
+    "level": 46,
+    "move": "solarbeam"
+   }
+  ]
+ },
+ "venusaur": {
+  "hp": 80,
+  "attack": 82,
+  "defense": 83,
+  "speed": 80,
+  "specialAttack": 100,
+  "specialDefense": 100,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 45,
+  "baseExp": 208,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 1
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "venusaur",
+  "dex": 3,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "leech-seed"
+   },
+   {
+    "level": 4,
+    "move": "growl"
+   },
+   {
+    "level": 7,
+    "move": "leech-seed"
+   },
+   {
+    "level": 10,
+    "move": "vine-whip"
+   },
+   {
+    "level": 15,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 15,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 22,
+    "move": "razor-leaf"
+   },
+   {
+    "level": 29,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 38,
+    "move": "growth"
+   },
+   {
+    "level": 47,
+    "move": "synthesis"
+   },
+   {
+    "level": 56,
+    "move": "solarbeam"
+   }
+  ]
+ },
+ "charmander": {
+  "hp": 39,
+  "attack": 52,
+  "defense": 43,
+  "speed": 65,
+  "specialAttack": 60,
+  "specialDefense": 50,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 45,
+  "baseExp": 65,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "charmander",
+  "dex": 4,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 16,
+    "to": "charmeleon"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "leech-seed"
+   },
+   {
+    "level": 1,
+    "move": "vine-whip"
+   },
+   {
+    "level": 4,
+    "move": "growl"
+   },
+   {
+    "level": 7,
+    "move": "leech-seed"
+   },
+   {
+    "level": 10,
+    "move": "vine-whip"
+   },
+   {
+    "level": 15,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 15,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 22,
+    "move": "razor-leaf"
+   },
+   {
+    "level": 29,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 41,
+    "move": "growth"
+   },
+   {
+    "level": 53,
+    "move": "synthesis"
+   },
+   {
+    "level": 65,
+    "move": "solarbeam"
+   }
+  ]
+ },
+ "charmeleon": {
+  "hp": 58,
+  "attack": 64,
+  "defense": 58,
+  "speed": 80,
+  "specialAttack": 80,
+  "specialDefense": 65,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 45,
+  "baseExp": 142,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "charmeleon",
+  "dex": 5,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 36,
+    "to": "charizard"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 7,
+    "move": "ember"
+   },
+   {
+    "level": 13,
+    "move": "metal-claw"
+   },
+   {
+    "level": 19,
+    "move": "smokescreen"
+   },
+   {
+    "level": 25,
+    "move": "scary-face"
+   },
+   {
+    "level": 31,
+    "move": "flamethrower"
+   },
+   {
+    "level": 37,
+    "move": "slash"
+   },
+   {
+    "level": 43,
+    "move": "dragon-rage"
+   },
+   {
+    "level": 49,
+    "move": "fire-spin"
+   }
+  ]
+ },
+ "charizard": {
+  "hp": 78,
+  "attack": 84,
+  "defense": 78,
+  "speed": 100,
+  "specialAttack": 109,
+  "specialDefense": 85,
+  "types": [
+   "fire",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 209,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 3,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "charizard",
+  "dex": 6,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 7,
+    "move": "ember"
+   },
+   {
+    "level": 13,
+    "move": "metal-claw"
+   },
+   {
+    "level": 20,
+    "move": "smokescreen"
+   },
+   {
+    "level": 27,
+    "move": "scary-face"
+   },
+   {
+    "level": 34,
+    "move": "flamethrower"
+   },
+   {
+    "level": 41,
+    "move": "slash"
+   },
+   {
+    "level": 48,
+    "move": "dragon-rage"
+   },
+   {
+    "level": 55,
+    "move": "fire-spin"
+   }
+  ]
+ },
+ "squirtle": {
+  "hp": 44,
+  "attack": 48,
+  "defense": 65,
+  "speed": 43,
+  "specialAttack": 50,
+  "specialDefense": 64,
+  "types": [
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 66,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "squirtle",
+  "dex": 7,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 16,
+    "to": "wartortle"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "heat-wave"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 1,
+    "move": "metal-claw"
+   },
+   {
+    "level": 7,
+    "move": "ember"
+   },
+   {
+    "level": 13,
+    "move": "metal-claw"
+   },
+   {
+    "level": 20,
+    "move": "smokescreen"
+   },
+   {
+    "level": 27,
+    "move": "scary-face"
+   },
+   {
+    "level": 34,
+    "move": "flamethrower"
+   },
+   {
+    "level": 36,
+    "move": "wing-attack"
+   },
+   {
+    "level": 44,
+    "move": "slash"
+   },
+   {
+    "level": 54,
+    "move": "dragon-rage"
+   },
+   {
+    "level": 64,
+    "move": "fire-spin"
+   }
+  ]
+ },
+ "wartortle": {
+  "hp": 59,
+  "attack": 63,
+  "defense": 80,
+  "speed": 58,
+  "specialAttack": 65,
+  "specialDefense": 80,
+  "types": [
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 143,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "wartortle",
+  "dex": 8,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 36,
+    "to": "blastoise"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 4,
+    "move": "tail-whip"
+   },
+   {
+    "level": 7,
+    "move": "bubble"
+   },
+   {
+    "level": 10,
+    "move": "withdraw"
+   },
+   {
+    "level": 13,
+    "move": "water-gun"
+   },
+   {
+    "level": 18,
+    "move": "bite"
+   },
+   {
+    "level": 23,
+    "move": "rapid-spin"
+   },
+   {
+    "level": 28,
+    "move": "protect"
+   },
+   {
+    "level": 33,
+    "move": "rain-dance"
+   },
+   {
+    "level": 40,
+    "move": "skull-bash"
+   },
+   {
+    "level": 47,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "blastoise": {
+  "hp": 79,
+  "attack": 83,
+  "defense": 100,
+  "speed": 78,
+  "specialAttack": 85,
+  "specialDefense": 105,
+  "types": [
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 210,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 3
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-slow",
+  "id": "blastoise",
+  "dex": 9,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 4,
+    "move": "tail-whip"
+   },
+   {
+    "level": 7,
+    "move": "bubble"
+   },
+   {
+    "level": 10,
+    "move": "withdraw"
+   },
+   {
+    "level": 13,
+    "move": "water-gun"
+   },
+   {
+    "level": 19,
+    "move": "bite"
+   },
+   {
+    "level": 25,
+    "move": "rapid-spin"
+   },
+   {
+    "level": 31,
+    "move": "protect"
+   },
+   {
+    "level": 37,
+    "move": "rain-dance"
+   },
+   {
+    "level": 45,
+    "move": "skull-bash"
+   },
+   {
+    "level": 53,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "caterpie": {
+  "hp": 45,
+  "attack": 30,
+  "defense": 35,
+  "speed": 45,
+  "specialAttack": 20,
+  "specialDefense": 20,
+  "types": [
+   "bug"
+  ],
+  "catchRate": 255,
+  "baseExp": 53,
+  "evYield": {
+   "hp": 1,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "caterpie",
+  "dex": 10,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 7,
+    "to": "metapod"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 1,
+    "move": "withdraw"
+   },
+   {
+    "level": 4,
+    "move": "tail-whip"
+   },
+   {
+    "level": 7,
+    "move": "bubble"
+   },
+   {
+    "level": 10,
+    "move": "withdraw"
+   },
+   {
+    "level": 13,
+    "move": "water-gun"
+   },
+   {
+    "level": 19,
+    "move": "bite"
+   },
+   {
+    "level": 25,
+    "move": "rapid-spin"
+   },
+   {
+    "level": 31,
+    "move": "protect"
+   },
+   {
+    "level": 42,
+    "move": "rain-dance"
+   },
+   {
+    "level": 55,
+    "move": "skull-bash"
+   },
+   {
+    "level": 68,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "metapod": {
+  "hp": 50,
+  "attack": 20,
+  "defense": 55,
+  "speed": 30,
+  "specialAttack": 25,
+  "specialDefense": 25,
+  "types": [
+   "bug"
+  ],
+  "catchRate": 120,
+  "baseExp": 72,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "metapod",
+  "dex": 11,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 10,
+    "to": "butterfree"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "string-shot"
+   }
+  ]
+ },
+ "butterfree": {
+  "hp": 60,
+  "attack": 45,
+  "defense": 50,
+  "speed": 70,
+  "specialAttack": 80,
+  "specialDefense": 80,
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 160,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 1
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "butterfree",
+  "dex": 12,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "harden"
+   },
+   {
+    "level": 7,
+    "move": "harden"
+   }
+  ]
+ },
+ "weedle": {
+  "hp": 40,
+  "attack": 35,
+  "defense": 30,
+  "speed": 50,
+  "specialAttack": 20,
+  "specialDefense": 20,
+  "types": [
+   "bug",
+   "poison"
+  ],
+  "catchRate": 255,
+  "baseExp": 52,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "weedle",
+  "dex": 13,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 7,
+    "to": "kakuna"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "confusion"
+   },
+   {
+    "level": 10,
+    "move": "confusion"
+   },
+   {
+    "level": 13,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 14,
+    "move": "stun-spore"
+   },
+   {
+    "level": 15,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 18,
+    "move": "supersonic"
+   },
+   {
+    "level": 23,
+    "move": "whirlwind"
+   },
+   {
+    "level": 28,
+    "move": "gust"
+   },
+   {
+    "level": 34,
+    "move": "psybeam"
+   },
+   {
+    "level": 40,
+    "move": "safeguard"
+   },
+   {
+    "level": 47,
+    "move": "silver-wind"
+   }
+  ]
+ },
+ "kakuna": {
+  "hp": 45,
+  "attack": 25,
+  "defense": 50,
+  "speed": 35,
+  "specialAttack": 25,
+  "specialDefense": 25,
+  "types": [
+   "bug",
+   "poison"
+  ],
+  "catchRate": 120,
+  "baseExp": 71,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "kakuna",
+  "dex": 14,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 10,
+    "to": "beedrill"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "poison-sting"
+   },
+   {
+    "level": 1,
+    "move": "string-shot"
+   }
+  ]
+ },
+ "beedrill": {
+  "hp": 65,
+  "attack": 80,
+  "defense": 40,
+  "speed": 75,
+  "specialAttack": 45,
+  "specialDefense": 80,
+  "types": [
+   "bug",
+   "poison"
+  ],
+  "catchRate": 45,
+  "baseExp": 159,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "beedrill",
+  "dex": 15,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "harden"
+   },
+   {
+    "level": 7,
+    "move": "harden"
+   }
+  ]
+ },
+ "pidgey": {
+  "hp": 40,
+  "attack": 45,
+  "defense": 40,
+  "speed": 56,
+  "specialAttack": 35,
+  "specialDefense": 35,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 255,
+  "baseExp": 55,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "pidgey",
+  "dex": 16,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 18,
+    "to": "pidgeotto"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "fury-attack"
+   },
+   {
+    "level": 10,
+    "move": "fury-attack"
+   },
+   {
+    "level": 15,
+    "move": "focus-energy"
+   },
+   {
+    "level": 20,
+    "move": "twineedle"
+   },
+   {
+    "level": 25,
+    "move": "rage"
+   },
+   {
+    "level": 30,
+    "move": "pursuit"
+   },
+   {
+    "level": 35,
+    "move": "pin-missile"
+   },
+   {
+    "level": 40,
+    "move": "agility"
+   },
+   {
+    "level": 45,
+    "move": "endeavor"
+   }
+  ]
+ },
+ "pidgeotto": {
+  "hp": 63,
+  "attack": 60,
+  "defense": 55,
+  "speed": 71,
+  "specialAttack": 50,
+  "specialDefense": 50,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 120,
+  "baseExp": 113,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "pidgeotto",
+  "dex": 17,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 36,
+    "to": "pidgeot"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 5,
+    "move": "sand-attack"
+   },
+   {
+    "level": 9,
+    "move": "gust"
+   },
+   {
+    "level": 13,
+    "move": "quick-attack"
+   },
+   {
+    "level": 19,
+    "move": "whirlwind"
+   },
+   {
+    "level": 25,
+    "move": "wing-attack"
+   },
+   {
+    "level": 31,
+    "move": "featherdance"
+   },
+   {
+    "level": 39,
+    "move": "agility"
+   },
+   {
+    "level": 47,
+    "move": "mirror-move"
+   }
+  ]
+ },
+ "pidgeot": {
+  "hp": 83,
+  "attack": 80,
+  "defense": 75,
+  "speed": 91,
+  "specialAttack": 70,
+  "specialDefense": 70,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 172,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 3,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "pidgeot",
+  "dex": 18,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "sand-attack"
+   },
+   {
+    "level": 1,
+    "move": "gust"
+   },
+   {
+    "level": 5,
+    "move": "sand-attack"
+   },
+   {
+    "level": 9,
+    "move": "gust"
+   },
+   {
+    "level": 13,
+    "move": "quick-attack"
+   },
+   {
+    "level": 20,
+    "move": "whirlwind"
+   },
+   {
+    "level": 27,
+    "move": "wing-attack"
+   },
+   {
+    "level": 34,
+    "move": "featherdance"
+   },
+   {
+    "level": 43,
+    "move": "agility"
+   },
+   {
+    "level": 52,
+    "move": "mirror-move"
+   }
+  ]
+ },
+ "rattata": {
+  "hp": 30,
+  "attack": 56,
+  "defense": 35,
+  "speed": 72,
+  "specialAttack": 25,
+  "specialDefense": 35,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 255,
+  "baseExp": 57,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "rattata",
+  "dex": 19,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 20,
+    "to": "raticate"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "sand-attack"
+   },
+   {
+    "level": 1,
+    "move": "gust"
+   },
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 5,
+    "move": "sand-attack"
+   },
+   {
+    "level": 9,
+    "move": "gust"
+   },
+   {
+    "level": 13,
+    "move": "quick-attack"
+   },
+   {
+    "level": 20,
+    "move": "whirlwind"
+   },
+   {
+    "level": 27,
+    "move": "wing-attack"
+   },
+   {
+    "level": 34,
+    "move": "featherdance"
+   },
+   {
+    "level": 48,
+    "move": "agility"
+   },
+   {
+    "level": 62,
+    "move": "mirror-move"
+   }
+  ]
+ },
+ "raticate": {
+  "hp": 55,
+  "attack": 81,
+  "defense": 60,
+  "speed": 97,
+  "specialAttack": 50,
+  "specialDefense": 70,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 127,
+  "baseExp": 116,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "raticate",
+  "dex": 20,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 7,
+    "move": "quick-attack"
+   },
+   {
+    "level": 13,
+    "move": "hyper-fang"
+   },
+   {
+    "level": 20,
+    "move": "focus-energy"
+   },
+   {
+    "level": 27,
+    "move": "pursuit"
+   },
+   {
+    "level": 34,
+    "move": "super-fang"
+   },
+   {
+    "level": 41,
+    "move": "endeavor"
+   }
+  ]
+ },
+ "spearow": {
+  "hp": 40,
+  "attack": 60,
+  "defense": 30,
+  "speed": 70,
+  "specialAttack": 31,
+  "specialDefense": 31,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 255,
+  "baseExp": 58,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "spearow",
+  "dex": 21,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 20,
+    "to": "fearow"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 7,
+    "move": "quick-attack"
+   },
+   {
+    "level": 13,
+    "move": "hyper-fang"
+   },
+   {
+    "level": 20,
+    "move": "scary-face"
+   },
+   {
+    "level": 30,
+    "move": "pursuit"
+   },
+   {
+    "level": 40,
+    "move": "super-fang"
+   },
+   {
+    "level": 50,
+    "move": "endeavor"
+   }
+  ]
+ },
+ "fearow": {
+  "hp": 65,
+  "attack": 90,
+  "defense": 65,
+  "speed": 100,
+  "specialAttack": 61,
+  "specialDefense": 61,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 90,
+  "baseExp": 162,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "fearow",
+  "dex": 22,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 7,
+    "move": "leer"
+   },
+   {
+    "level": 13,
+    "move": "fury-attack"
+   },
+   {
+    "level": 19,
+    "move": "pursuit"
+   },
+   {
+    "level": 25,
+    "move": "aerial-ace"
+   },
+   {
+    "level": 31,
+    "move": "mirror-move"
+   },
+   {
+    "level": 37,
+    "move": "drill-peck"
+   },
+   {
+    "level": 43,
+    "move": "agility"
+   }
+  ]
+ },
+ "ekans": {
+  "hp": 35,
+  "attack": 60,
+  "defense": 44,
+  "speed": 55,
+  "specialAttack": 40,
+  "specialDefense": 54,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 255,
+  "baseExp": 62,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "ekans",
+  "dex": 23,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 22,
+    "to": "arbok"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "fury-attack"
+   },
+   {
+    "level": 7,
+    "move": "leer"
+   },
+   {
+    "level": 13,
+    "move": "fury-attack"
+   },
+   {
+    "level": 26,
+    "move": "pursuit"
+   },
+   {
+    "level": 32,
+    "move": "mirror-move"
+   },
+   {
+    "level": 40,
+    "move": "drill-peck"
+   },
+   {
+    "level": 47,
+    "move": "agility"
+   }
+  ]
+ },
+ "arbok": {
+  "hp": 60,
+  "attack": 85,
+  "defense": 69,
+  "speed": 80,
+  "specialAttack": 65,
+  "specialDefense": 79,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 90,
+  "baseExp": 147,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "arbok",
+  "dex": 24,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "wrap"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 8,
+    "move": "poison-sting"
+   },
+   {
+    "level": 13,
+    "move": "bite"
+   },
+   {
+    "level": 20,
+    "move": "glare"
+   },
+   {
+    "level": 25,
+    "move": "screech"
+   },
+   {
+    "level": 32,
+    "move": "acid"
+   },
+   {
+    "level": 37,
+    "move": "stockpile"
+   },
+   {
+    "level": 37,
+    "move": "swallow"
+   },
+   {
+    "level": 37,
+    "move": "spit-up"
+   },
+   {
+    "level": 44,
+    "move": "haze"
+   }
+  ]
+ },
+ "pikachu": {
+  "hp": 35,
+  "attack": 55,
+  "defense": 30,
+  "speed": 90,
+  "specialAttack": 50,
+  "specialDefense": 40,
+  "types": [
+   "electric"
+  ],
+  "catchRate": 190,
+  "baseExp": 82,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "pikachu",
+  "dex": 25,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 96,
+    "to": "raichu"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "wrap"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "poison-sting"
+   },
+   {
+    "level": 1,
+    "move": "bite"
+   },
+   {
+    "level": 8,
+    "move": "poison-sting"
+   },
+   {
+    "level": 13,
+    "move": "bite"
+   },
+   {
+    "level": 20,
+    "move": "glare"
+   },
+   {
+    "level": 28,
+    "move": "screech"
+   },
+   {
+    "level": 38,
+    "move": "acid"
+   },
+   {
+    "level": 46,
+    "move": "stockpile"
+   },
+   {
+    "level": 46,
+    "move": "swallow"
+   },
+   {
+    "level": 46,
+    "move": "spit-up"
+   },
+   {
+    "level": 56,
+    "move": "haze"
+   }
+  ]
+ },
+ "raichu": {
+  "hp": 60,
+  "attack": 90,
+  "defense": 55,
+  "speed": 100,
+  "specialAttack": 90,
+  "specialDefense": 80,
+  "types": [
+   "electric"
+  ],
+  "catchRate": 75,
+  "baseExp": 122,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 3,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "raichu",
+  "dex": 26,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "thundershock"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 6,
+    "move": "tail-whip"
+   },
+   {
+    "level": 8,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 11,
+    "move": "quick-attack"
+   },
+   {
+    "level": 15,
+    "move": "double-team"
+   },
+   {
+    "level": 20,
+    "move": "slam"
+   },
+   {
+    "level": 26,
+    "move": "thunderbolt"
+   },
+   {
+    "level": 33,
+    "move": "agility"
+   },
+   {
+    "level": 41,
+    "move": "thunder"
+   },
+   {
+    "level": 50,
+    "move": "light-screen"
+   }
+  ]
+ },
+ "sandshrew": {
+  "hp": 50,
+  "attack": 75,
+  "defense": 85,
+  "speed": 40,
+  "specialAttack": 20,
+  "specialDefense": 30,
+  "types": [
+   "ground"
+  ],
+  "catchRate": 255,
+  "baseExp": 93,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "sandshrew",
+  "dex": 27,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 22,
+    "to": "sandslash"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "thundershock"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 1,
+    "move": "thunderbolt"
+   }
+  ]
+ },
+ "sandslash": {
+  "hp": 75,
+  "attack": 100,
+  "defense": 110,
+  "speed": 65,
+  "specialAttack": 45,
+  "specialDefense": 55,
+  "types": [
+   "ground"
+  ],
+  "catchRate": 90,
+  "baseExp": 163,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "sandslash",
+  "dex": 28,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 6,
+    "move": "defense-curl"
+   },
+   {
+    "level": 11,
+    "move": "sand-attack"
+   },
+   {
+    "level": 17,
+    "move": "poison-sting"
+   },
+   {
+    "level": 23,
+    "move": "slash"
+   },
+   {
+    "level": 30,
+    "move": "swift"
+   },
+   {
+    "level": 37,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 45,
+    "move": "sand-tomb"
+   },
+   {
+    "level": 53,
+    "move": "sandstorm"
+   }
+  ]
+ },
+ "nidoran-f": {
+  "hp": 55,
+  "attack": 47,
+  "defense": 52,
+  "speed": 41,
+  "specialAttack": 40,
+  "specialDefense": 40,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 235,
+  "baseExp": 59,
+  "evYield": {
+   "hp": 1,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 254,
+  "growthRate": "medium-slow",
+  "id": "nidoran-f",
+  "dex": 29,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 16,
+    "to": "nidorina"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "defense-curl"
+   },
+   {
+    "level": 1,
+    "move": "sand-attack"
+   },
+   {
+    "level": 6,
+    "move": "defense-curl"
+   },
+   {
+    "level": 11,
+    "move": "sand-attack"
+   },
+   {
+    "level": 17,
+    "move": "poison-sting"
+   },
+   {
+    "level": 24,
+    "move": "slash"
+   },
+   {
+    "level": 33,
+    "move": "swift"
+   },
+   {
+    "level": 42,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 52,
+    "move": "sand-tomb"
+   },
+   {
+    "level": 62,
+    "move": "sandstorm"
+   }
+  ]
+ },
+ "nidorina": {
+  "hp": 70,
+  "attack": 62,
+  "defense": 67,
+  "speed": 56,
+  "specialAttack": 55,
+  "specialDefense": 55,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 120,
+  "baseExp": 117,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 254,
+  "growthRate": "medium-slow",
+  "id": "nidorina",
+  "dex": 30,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 94,
+    "to": "nidoqueen"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 8,
+    "move": "tail-whip"
+   },
+   {
+    "level": 12,
+    "move": "double-kick"
+   },
+   {
+    "level": 17,
+    "move": "poison-sting"
+   },
+   {
+    "level": 20,
+    "move": "bite"
+   },
+   {
+    "level": 23,
+    "move": "helping-hand"
+   },
+   {
+    "level": 30,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 38,
+    "move": "flatter"
+   },
+   {
+    "level": 47,
+    "move": "crunch"
+   }
+  ]
+ },
+ "nidoqueen": {
+  "hp": 90,
+  "attack": 82,
+  "defense": 87,
+  "speed": 76,
+  "specialAttack": 75,
+  "specialDefense": 85,
+  "types": [
+   "poison",
+   "ground"
+  ],
+  "catchRate": 45,
+  "baseExp": 194,
+  "evYield": {
+   "hp": 3,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 254,
+  "growthRate": "medium-slow",
+  "id": "nidoqueen",
+  "dex": 31,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 8,
+    "move": "tail-whip"
+   },
+   {
+    "level": 12,
+    "move": "double-kick"
+   },
+   {
+    "level": 18,
+    "move": "poison-sting"
+   },
+   {
+    "level": 22,
+    "move": "bite"
+   },
+   {
+    "level": 26,
+    "move": "helping-hand"
+   },
+   {
+    "level": 34,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 43,
+    "move": "flatter"
+   },
+   {
+    "level": 53,
+    "move": "crunch"
+   }
+  ]
+ },
+ "nidoran-m": {
+  "hp": 46,
+  "attack": 57,
+  "defense": 40,
+  "speed": 50,
+  "specialAttack": 40,
+  "specialDefense": 40,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 235,
+  "baseExp": 60,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 0,
+  "growthRate": "medium-slow",
+  "id": "nidoran-m",
+  "dex": 32,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 16,
+    "to": "nidorino"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "double-kick"
+   },
+   {
+    "level": 1,
+    "move": "poison-sting"
+   },
+   {
+    "level": 22,
+    "move": "body-slam"
+   },
+   {
+    "level": 43,
+    "move": "superpower"
+   }
+  ]
+ },
+ "nidorino": {
+  "hp": 61,
+  "attack": 72,
+  "defense": 57,
+  "speed": 65,
+  "specialAttack": 55,
+  "specialDefense": 55,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 120,
+  "baseExp": 118,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 0,
+  "growthRate": "medium-slow",
+  "id": "nidorino",
+  "dex": 33,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 94,
+    "to": "nidoking"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 8,
+    "move": "focus-energy"
+   },
+   {
+    "level": 12,
+    "move": "double-kick"
+   },
+   {
+    "level": 17,
+    "move": "poison-sting"
+   },
+   {
+    "level": 20,
+    "move": "horn-attack"
+   },
+   {
+    "level": 23,
+    "move": "helping-hand"
+   },
+   {
+    "level": 30,
+    "move": "fury-attack"
+   },
+   {
+    "level": 38,
+    "move": "flatter"
+   },
+   {
+    "level": 47,
+    "move": "horn-drill"
+   }
+  ]
+ },
+ "nidoking": {
+  "hp": 81,
+  "attack": 92,
+  "defense": 77,
+  "speed": 85,
+  "specialAttack": 85,
+  "specialDefense": 75,
+  "types": [
+   "poison",
+   "ground"
+  ],
+  "catchRate": 45,
+  "baseExp": 195,
+  "evYield": {
+   "hp": 0,
+   "attack": 3,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 0,
+  "growthRate": "medium-slow",
+  "id": "nidoking",
+  "dex": 34,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 8,
+    "move": "focus-energy"
+   },
+   {
+    "level": 12,
+    "move": "double-kick"
+   },
+   {
+    "level": 18,
+    "move": "poison-sting"
+   },
+   {
+    "level": 22,
+    "move": "horn-attack"
+   },
+   {
+    "level": 26,
+    "move": "helping-hand"
+   },
+   {
+    "level": 34,
+    "move": "fury-attack"
+   },
+   {
+    "level": 43,
+    "move": "flatter"
+   },
+   {
+    "level": 53,
+    "move": "horn-drill"
+   }
+  ]
+ },
+ "clefairy": {
+  "hp": 70,
+  "attack": 45,
+  "defense": 48,
+  "speed": 35,
+  "specialAttack": 60,
+  "specialDefense": 65,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 150,
+  "baseExp": 68,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 191,
+  "growthRate": "fast",
+  "id": "clefairy",
+  "dex": 35,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 94,
+    "to": "clefable"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "focus-energy"
+   },
+   {
+    "level": 1,
+    "move": "double-kick"
+   },
+   {
+    "level": 1,
+    "move": "poison-sting"
+   },
+   {
+    "level": 22,
+    "move": "thrash"
+   },
+   {
+    "level": 43,
+    "move": "megahorn"
+   }
+  ]
+ },
+ "clefable": {
+  "hp": 95,
+  "attack": 70,
+  "defense": 73,
+  "speed": 60,
+  "specialAttack": 85,
+  "specialDefense": 90,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 25,
+  "baseExp": 129,
+  "evYield": {
+   "hp": 3,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 191,
+  "growthRate": "fast",
+  "id": "clefable",
+  "dex": 36,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "pound"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 5,
+    "move": "encore"
+   },
+   {
+    "level": 9,
+    "move": "sing"
+   },
+   {
+    "level": 13,
+    "move": "doubleslap"
+   },
+   {
+    "level": 17,
+    "move": "follow-me"
+   },
+   {
+    "level": 21,
+    "move": "minimize"
+   },
+   {
+    "level": 25,
+    "move": "defense-curl"
+   },
+   {
+    "level": 29,
+    "move": "metronome"
+   },
+   {
+    "level": 33,
+    "move": "cosmic-power"
+   },
+   {
+    "level": 37,
+    "move": "moonlight"
+   },
+   {
+    "level": 41,
+    "move": "light-screen"
+   },
+   {
+    "level": 45,
+    "move": "meteor-mash"
+   }
+  ]
+ },
+ "vulpix": {
+  "hp": 38,
+  "attack": 41,
+  "defense": 40,
+  "speed": 65,
+  "specialAttack": 50,
+  "specialDefense": 65,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 190,
+  "baseExp": 63,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 191,
+  "growthRate": "medium-fast",
+  "id": "vulpix",
+  "dex": 37,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 95,
+    "to": "ninetales"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "sing"
+   },
+   {
+    "level": 1,
+    "move": "doubleslap"
+   },
+   {
+    "level": 1,
+    "move": "minimize"
+   },
+   {
+    "level": 1,
+    "move": "metronome"
+   }
+  ]
+ },
+ "ninetales": {
+  "hp": 73,
+  "attack": 76,
+  "defense": 75,
+  "speed": 100,
+  "specialAttack": 81,
+  "specialDefense": 100,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 75,
+  "baseExp": 178,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 191,
+  "growthRate": "medium-fast",
+  "id": "ninetales",
+  "dex": 38,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 5,
+    "move": "tail-whip"
+   },
+   {
+    "level": 9,
+    "move": "roar"
+   },
+   {
+    "level": 13,
+    "move": "quick-attack"
+   },
+   {
+    "level": 17,
+    "move": "will-o-wisp"
+   },
+   {
+    "level": 21,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 25,
+    "move": "imprison"
+   },
+   {
+    "level": 29,
+    "move": "flamethrower"
+   },
+   {
+    "level": 33,
+    "move": "safeguard"
+   },
+   {
+    "level": 37,
+    "move": "grudge"
+   },
+   {
+    "level": 41,
+    "move": "fire-spin"
+   }
+  ]
+ },
+ "jigglypuff": {
+  "hp": 115,
+  "attack": 45,
+  "defense": 20,
+  "speed": 20,
+  "specialAttack": 45,
+  "specialDefense": 25,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 170,
+  "baseExp": 76,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 191,
+  "growthRate": "fast",
+  "id": "jigglypuff",
+  "dex": 39,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 94,
+    "to": "wigglytuff"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 1,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 1,
+    "move": "safeguard"
+   },
+   {
+    "level": 45,
+    "move": "fire-spin"
+   }
+  ]
+ },
+ "wigglytuff": {
+  "hp": 140,
+  "attack": 70,
+  "defense": 45,
+  "speed": 45,
+  "specialAttack": 75,
+  "specialDefense": 50,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 50,
+  "baseExp": 109,
+  "evYield": {
+   "hp": 3,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 191,
+  "growthRate": "fast",
+  "id": "wigglytuff",
+  "dex": 40,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "sing"
+   },
+   {
+    "level": 4,
+    "move": "defense-curl"
+   },
+   {
+    "level": 9,
+    "move": "pound"
+   },
+   {
+    "level": 14,
+    "move": "disable"
+   },
+   {
+    "level": 19,
+    "move": "rollout"
+   },
+   {
+    "level": 24,
+    "move": "doubleslap"
+   },
+   {
+    "level": 29,
+    "move": "rest"
+   },
+   {
+    "level": 34,
+    "move": "body-slam"
+   },
+   {
+    "level": 39,
+    "move": "mimic"
+   },
+   {
+    "level": 44,
+    "move": "hyper-voice"
+   },
+   {
+    "level": 49,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "zubat": {
+  "hp": 40,
+  "attack": 45,
+  "defense": 35,
+  "speed": 55,
+  "specialAttack": 30,
+  "specialDefense": 40,
+  "types": [
+   "poison",
+   "flying"
+  ],
+  "catchRate": 255,
+  "baseExp": 54,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "zubat",
+  "dex": 41,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 22,
+    "to": "golbat"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "sing"
+   },
+   {
+    "level": 1,
+    "move": "disable"
+   },
+   {
+    "level": 1,
+    "move": "defense-curl"
+   },
+   {
+    "level": 1,
+    "move": "doubleslap"
+   }
+  ]
+ },
+ "golbat": {
+  "hp": 75,
+  "attack": 80,
+  "defense": 70,
+  "speed": 90,
+  "specialAttack": 65,
+  "specialDefense": 75,
+  "types": [
+   "poison",
+   "flying"
+  ],
+  "catchRate": 90,
+  "baseExp": 171,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "golbat",
+  "dex": 42,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "leech-life"
+   },
+   {
+    "level": 6,
+    "move": "astonish"
+   },
+   {
+    "level": 11,
+    "move": "supersonic"
+   },
+   {
+    "level": 16,
+    "move": "bite"
+   },
+   {
+    "level": 21,
+    "move": "wing-attack"
+   },
+   {
+    "level": 26,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 31,
+    "move": "air-cutter"
+   },
+   {
+    "level": 36,
+    "move": "mean-look"
+   },
+   {
+    "level": 41,
+    "move": "poison-fang"
+   },
+   {
+    "level": 46,
+    "move": "haze"
+   }
+  ]
+ },
+ "oddish": {
+  "hp": 45,
+  "attack": 50,
+  "defense": 55,
+  "speed": 30,
+  "specialAttack": 75,
+  "specialDefense": 65,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 255,
+  "baseExp": 78,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "oddish",
+  "dex": 43,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 21,
+    "to": "gloom"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "screech"
+   },
+   {
+    "level": 1,
+    "move": "leech-life"
+   },
+   {
+    "level": 1,
+    "move": "astonish"
+   },
+   {
+    "level": 1,
+    "move": "supersonic"
+   },
+   {
+    "level": 6,
+    "move": "astonish"
+   },
+   {
+    "level": 11,
+    "move": "supersonic"
+   },
+   {
+    "level": 16,
+    "move": "bite"
+   },
+   {
+    "level": 21,
+    "move": "wing-attack"
+   },
+   {
+    "level": 28,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 35,
+    "move": "air-cutter"
+   },
+   {
+    "level": 42,
+    "move": "mean-look"
+   },
+   {
+    "level": 49,
+    "move": "poison-fang"
+   },
+   {
+    "level": 56,
+    "move": "haze"
+   }
+  ]
+ },
+ "gloom": {
+  "hp": 60,
+  "attack": 65,
+  "defense": 70,
+  "speed": 40,
+  "specialAttack": 85,
+  "specialDefense": 75,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 120,
+  "baseExp": 132,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "gloom",
+  "dex": 44,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 98,
+    "to": "vileplume"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "absorb"
+   },
+   {
+    "level": 7,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 14,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 16,
+    "move": "stun-spore"
+   },
+   {
+    "level": 18,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 23,
+    "move": "acid"
+   },
+   {
+    "level": 32,
+    "move": "moonlight"
+   },
+   {
+    "level": 39,
+    "move": "petal-dance"
+   }
+  ]
+ },
+ "vileplume": {
+  "hp": 75,
+  "attack": 80,
+  "defense": 85,
+  "speed": 50,
+  "specialAttack": 100,
+  "specialDefense": 90,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 45,
+  "baseExp": 184,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 3,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "vileplume",
+  "dex": 45,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "absorb"
+   },
+   {
+    "level": 1,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 1,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 7,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 14,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 16,
+    "move": "stun-spore"
+   },
+   {
+    "level": 18,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 24,
+    "move": "acid"
+   },
+   {
+    "level": 35,
+    "move": "moonlight"
+   },
+   {
+    "level": 44,
+    "move": "petal-dance"
+   }
+  ]
+ },
+ "paras": {
+  "hp": 35,
+  "attack": 70,
+  "defense": 55,
+  "speed": 25,
+  "specialAttack": 45,
+  "specialDefense": 55,
+  "types": [
+   "bug",
+   "grass"
+  ],
+  "catchRate": 190,
+  "baseExp": 70,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "paras",
+  "dex": 46,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 24,
+    "to": "parasect"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "absorb"
+   },
+   {
+    "level": 1,
+    "move": "aromatherapy"
+   },
+   {
+    "level": 1,
+    "move": "stun-spore"
+   },
+   {
+    "level": 1,
+    "move": "mega-drain"
+   },
+   {
+    "level": 44,
+    "move": "petal-dance"
+   }
+  ]
+ },
+ "parasect": {
+  "hp": 60,
+  "attack": 95,
+  "defense": 80,
+  "speed": 30,
+  "specialAttack": 60,
+  "specialDefense": 80,
+  "types": [
+   "bug",
+   "grass"
+  ],
+  "catchRate": 75,
+  "baseExp": 128,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "parasect",
+  "dex": 47,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 7,
+    "move": "stun-spore"
+   },
+   {
+    "level": 13,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 19,
+    "move": "leech-life"
+   },
+   {
+    "level": 25,
+    "move": "spore"
+   },
+   {
+    "level": 31,
+    "move": "slash"
+   },
+   {
+    "level": 37,
+    "move": "growth"
+   },
+   {
+    "level": 43,
+    "move": "giga-drain"
+   },
+   {
+    "level": 49,
+    "move": "aromatherapy"
+   }
+  ]
+ },
+ "venonat": {
+  "hp": 60,
+  "attack": 55,
+  "defense": 50,
+  "speed": 45,
+  "specialAttack": 40,
+  "specialDefense": 55,
+  "types": [
+   "bug",
+   "poison"
+  ],
+  "catchRate": 190,
+  "baseExp": 75,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "venonat",
+  "dex": 48,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 31,
+    "to": "venomoth"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "stun-spore"
+   },
+   {
+    "level": 1,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 7,
+    "move": "stun-spore"
+   },
+   {
+    "level": 13,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 19,
+    "move": "leech-life"
+   },
+   {
+    "level": 27,
+    "move": "spore"
+   },
+   {
+    "level": 35,
+    "move": "slash"
+   },
+   {
+    "level": 43,
+    "move": "growth"
+   },
+   {
+    "level": 51,
+    "move": "giga-drain"
+   },
+   {
+    "level": 59,
+    "move": "aromatherapy"
+   }
+  ]
+ },
+ "venomoth": {
+  "hp": 70,
+  "attack": 65,
+  "defense": 60,
+  "speed": 90,
+  "specialAttack": 90,
+  "specialDefense": 75,
+  "types": [
+   "bug",
+   "poison"
+  ],
+  "catchRate": 75,
+  "baseExp": 138,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "venomoth",
+  "dex": 49,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "disable"
+   },
+   {
+    "level": 1,
+    "move": "foresight"
+   },
+   {
+    "level": 9,
+    "move": "supersonic"
+   },
+   {
+    "level": 17,
+    "move": "confusion"
+   },
+   {
+    "level": 20,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 25,
+    "move": "leech-life"
+   },
+   {
+    "level": 28,
+    "move": "stun-spore"
+   },
+   {
+    "level": 33,
+    "move": "psybeam"
+   },
+   {
+    "level": 36,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 41,
+    "move": "psychic"
+   }
+  ]
+ },
+ "diglett": {
+  "hp": 10,
+  "attack": 55,
+  "defense": 25,
+  "speed": 95,
+  "specialAttack": 35,
+  "specialDefense": 45,
+  "types": [
+   "ground"
+  ],
+  "catchRate": 255,
+  "baseExp": 81,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "diglett",
+  "dex": 50,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 26,
+    "to": "dugtrio"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "silver-wind"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "disable"
+   },
+   {
+    "level": 1,
+    "move": "foresight"
+   },
+   {
+    "level": 1,
+    "move": "supersonic"
+   },
+   {
+    "level": 9,
+    "move": "supersonic"
+   },
+   {
+    "level": 17,
+    "move": "confusion"
+   },
+   {
+    "level": 20,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 25,
+    "move": "leech-life"
+   },
+   {
+    "level": 28,
+    "move": "stun-spore"
+   },
+   {
+    "level": 31,
+    "move": "gust"
+   },
+   {
+    "level": 36,
+    "move": "psybeam"
+   },
+   {
+    "level": 42,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 52,
+    "move": "psychic"
+   }
+  ]
+ },
+ "dugtrio": {
+  "hp": 35,
+  "attack": 80,
+  "defense": 50,
+  "speed": 120,
+  "specialAttack": 50,
+  "specialDefense": 70,
+  "types": [
+   "ground"
+  ],
+  "catchRate": 50,
+  "baseExp": 153,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "dugtrio",
+  "dex": 51,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "sand-attack"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 5,
+    "move": "growl"
+   },
+   {
+    "level": 9,
+    "move": "magnitude"
+   },
+   {
+    "level": 17,
+    "move": "dig"
+   },
+   {
+    "level": 21,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 25,
+    "move": "mud-slap"
+   },
+   {
+    "level": 33,
+    "move": "slash"
+   },
+   {
+    "level": 41,
+    "move": "earthquake"
+   },
+   {
+    "level": 49,
+    "move": "fissure"
+   }
+  ]
+ },
+ "meowth": {
+  "hp": 40,
+  "attack": 45,
+  "defense": 35,
+  "speed": 90,
+  "specialAttack": 40,
+  "specialDefense": 40,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 255,
+  "baseExp": 69,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "meowth",
+  "dex": 52,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 28,
+    "to": "persian"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tri-attack"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "sand-attack"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 5,
+    "move": "growl"
+   },
+   {
+    "level": 9,
+    "move": "magnitude"
+   },
+   {
+    "level": 17,
+    "move": "dig"
+   },
+   {
+    "level": 21,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 25,
+    "move": "mud-slap"
+   },
+   {
+    "level": 26,
+    "move": "sand-tomb"
+   },
+   {
+    "level": 38,
+    "move": "slash"
+   },
+   {
+    "level": 51,
+    "move": "earthquake"
+   },
+   {
+    "level": 64,
+    "move": "fissure"
+   }
+  ]
+ },
+ "persian": {
+  "hp": 65,
+  "attack": 70,
+  "defense": 60,
+  "speed": 115,
+  "specialAttack": 65,
+  "specialDefense": 65,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 90,
+  "baseExp": 148,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "persian",
+  "dex": 53,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 10,
+    "move": "bite"
+   },
+   {
+    "level": 18,
+    "move": "pay-day"
+   },
+   {
+    "level": 25,
+    "move": "faint-attack"
+   },
+   {
+    "level": 31,
+    "move": "screech"
+   },
+   {
+    "level": 36,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 40,
+    "move": "slash"
+   },
+   {
+    "level": 43,
+    "move": "fake-out"
+   },
+   {
+    "level": 45,
+    "move": "swagger"
+   }
+  ]
+ },
+ "psyduck": {
+  "hp": 50,
+  "attack": 52,
+  "defense": 48,
+  "speed": 55,
+  "specialAttack": 65,
+  "specialDefense": 50,
+  "types": [
+   "water"
+  ],
+  "catchRate": 190,
+  "baseExp": 80,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "psyduck",
+  "dex": 54,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 33,
+    "to": "golduck"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "bite"
+   },
+   {
+    "level": 10,
+    "move": "bite"
+   },
+   {
+    "level": 18,
+    "move": "pay-day"
+   },
+   {
+    "level": 25,
+    "move": "faint-attack"
+   },
+   {
+    "level": 34,
+    "move": "screech"
+   },
+   {
+    "level": 42,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 49,
+    "move": "slash"
+   },
+   {
+    "level": 55,
+    "move": "fake-out"
+   },
+   {
+    "level": 61,
+    "move": "swagger"
+   }
+  ]
+ },
+ "golduck": {
+  "hp": 80,
+  "attack": 82,
+  "defense": 78,
+  "speed": 85,
+  "specialAttack": 95,
+  "specialDefense": 80,
+  "types": [
+   "water"
+  ],
+  "catchRate": 75,
+  "baseExp": 174,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "golduck",
+  "dex": 55,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "water-sport"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 5,
+    "move": "tail-whip"
+   },
+   {
+    "level": 10,
+    "move": "disable"
+   },
+   {
+    "level": 16,
+    "move": "confusion"
+   },
+   {
+    "level": 23,
+    "move": "screech"
+   },
+   {
+    "level": 31,
+    "move": "psych-up"
+   },
+   {
+    "level": 40,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 50,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "mankey": {
+  "hp": 40,
+  "attack": 80,
+  "defense": 35,
+  "speed": 70,
+  "specialAttack": 35,
+  "specialDefense": 45,
+  "types": [
+   "fighting"
+  ],
+  "catchRate": 190,
+  "baseExp": 74,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "mankey",
+  "dex": 56,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 28,
+    "to": "primeape"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "water-sport"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "disable"
+   },
+   {
+    "level": 5,
+    "move": "tail-whip"
+   },
+   {
+    "level": 10,
+    "move": "disable"
+   },
+   {
+    "level": 16,
+    "move": "confusion"
+   },
+   {
+    "level": 23,
+    "move": "screech"
+   },
+   {
+    "level": 31,
+    "move": "psych-up"
+   },
+   {
+    "level": 44,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 58,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "primeape": {
+  "hp": 65,
+  "attack": 105,
+  "defense": 60,
+  "speed": 95,
+  "specialAttack": 60,
+  "specialDefense": 70,
+  "types": [
+   "fighting"
+  ],
+  "catchRate": 75,
+  "baseExp": 149,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "primeape",
+  "dex": 57,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 6,
+    "move": "low-kick"
+   },
+   {
+    "level": 11,
+    "move": "karate-chop"
+   },
+   {
+    "level": 16,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 21,
+    "move": "focus-energy"
+   },
+   {
+    "level": 26,
+    "move": "seismic-toss"
+   },
+   {
+    "level": 31,
+    "move": "cross-chop"
+   },
+   {
+    "level": 36,
+    "move": "swagger"
+   },
+   {
+    "level": 41,
+    "move": "screech"
+   },
+   {
+    "level": 46,
+    "move": "thrash"
+   }
+  ]
+ },
+ "growlithe": {
+  "hp": 55,
+  "attack": 70,
+  "defense": 45,
+  "speed": 60,
+  "specialAttack": 70,
+  "specialDefense": 50,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 190,
+  "baseExp": 91,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "slow",
+  "id": "growlithe",
+  "dex": 58,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 95,
+    "to": "arcanine"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "low-kick"
+   },
+   {
+    "level": 1,
+    "move": "rage"
+   },
+   {
+    "level": 6,
+    "move": "low-kick"
+   },
+   {
+    "level": 11,
+    "move": "karate-chop"
+   },
+   {
+    "level": 16,
+    "move": "fury-swipes"
+   },
+   {
+    "level": 21,
+    "move": "focus-energy"
+   },
+   {
+    "level": 26,
+    "move": "seismic-toss"
+   },
+   {
+    "level": 28,
+    "move": "rage"
+   },
+   {
+    "level": 35,
+    "move": "cross-chop"
+   },
+   {
+    "level": 44,
+    "move": "swagger"
+   },
+   {
+    "level": 53,
+    "move": "screech"
+   },
+   {
+    "level": 62,
+    "move": "thrash"
+   }
+  ]
+ },
+ "arcanine": {
+  "hp": 90,
+  "attack": 110,
+  "defense": 80,
+  "speed": 95,
+  "specialAttack": 100,
+  "specialDefense": 80,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 75,
+  "baseExp": 213,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "slow",
+  "id": "arcanine",
+  "dex": 59,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "bite"
+   },
+   {
+    "level": 1,
+    "move": "roar"
+   },
+   {
+    "level": 7,
+    "move": "ember"
+   },
+   {
+    "level": 13,
+    "move": "leer"
+   },
+   {
+    "level": 19,
+    "move": "odor-sleuth"
+   },
+   {
+    "level": 25,
+    "move": "take-down"
+   },
+   {
+    "level": 31,
+    "move": "flame-wheel"
+   },
+   {
+    "level": 37,
+    "move": "helping-hand"
+   },
+   {
+    "level": 43,
+    "move": "agility"
+   },
+   {
+    "level": 49,
+    "move": "flamethrower"
+   }
+  ]
+ },
+ "poliwag": {
+  "hp": 40,
+  "attack": 50,
+  "defense": 40,
+  "speed": 90,
+  "specialAttack": 40,
+  "specialDefense": 40,
+  "types": [
+   "water"
+  ],
+  "catchRate": 255,
+  "baseExp": 77,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "poliwag",
+  "dex": 60,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 25,
+    "to": "poliwhirl"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "bite"
+   },
+   {
+    "level": 1,
+    "move": "roar"
+   },
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 1,
+    "move": "odor-sleuth"
+   },
+   {
+    "level": 49,
+    "move": "extremespeed"
+   }
+  ]
+ },
+ "poliwhirl": {
+  "hp": 65,
+  "attack": 65,
+  "defense": 65,
+  "speed": 90,
+  "specialAttack": 50,
+  "specialDefense": 50,
+  "types": [
+   "water"
+  ],
+  "catchRate": 120,
+  "baseExp": 131,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "poliwhirl",
+  "dex": 61,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 97,
+    "to": "poliwrath"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 7,
+    "move": "hypnosis"
+   },
+   {
+    "level": 13,
+    "move": "water-gun"
+   },
+   {
+    "level": 19,
+    "move": "doubleslap"
+   },
+   {
+    "level": 25,
+    "move": "rain-dance"
+   },
+   {
+    "level": 31,
+    "move": "body-slam"
+   },
+   {
+    "level": 37,
+    "move": "belly-drum"
+   },
+   {
+    "level": 43,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "poliwrath": {
+  "hp": 90,
+  "attack": 85,
+  "defense": 95,
+  "speed": 70,
+  "specialAttack": 70,
+  "specialDefense": 90,
+  "types": [
+   "water",
+   "fighting"
+  ],
+  "catchRate": 45,
+  "baseExp": 185,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 3,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "poliwrath",
+  "dex": 62,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 1,
+    "move": "water-gun"
+   },
+   {
+    "level": 7,
+    "move": "hypnosis"
+   },
+   {
+    "level": 13,
+    "move": "water-gun"
+   },
+   {
+    "level": 19,
+    "move": "doubleslap"
+   },
+   {
+    "level": 27,
+    "move": "rain-dance"
+   },
+   {
+    "level": 35,
+    "move": "body-slam"
+   },
+   {
+    "level": 43,
+    "move": "belly-drum"
+   },
+   {
+    "level": 51,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "abra": {
+  "hp": 25,
+  "attack": 20,
+  "defense": 15,
+  "speed": 90,
+  "specialAttack": 105,
+  "specialDefense": 55,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 200,
+  "baseExp": 73,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-slow",
+  "id": "abra",
+  "dex": 63,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 16,
+    "to": "kadabra"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "water-gun"
+   },
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 1,
+    "move": "doubleslap"
+   },
+   {
+    "level": 1,
+    "move": "submission"
+   },
+   {
+    "level": 35,
+    "move": "submission"
+   },
+   {
+    "level": 51,
+    "move": "mind-reader"
+   }
+  ]
+ },
+ "kadabra": {
+  "hp": 40,
+  "attack": 35,
+  "defense": 30,
+  "speed": 105,
+  "specialAttack": 120,
+  "specialDefense": 70,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 100,
+  "baseExp": 145,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-slow",
+  "id": "kadabra",
+  "dex": 64,
+  "evolutions": [
+   {
+    "method": "trade",
+    "param": 0,
+    "to": "alakazam"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "teleport"
+   }
+  ]
+ },
+ "alakazam": {
+  "hp": 55,
+  "attack": 50,
+  "defense": 45,
+  "speed": 120,
+  "specialAttack": 135,
+  "specialDefense": 85,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 50,
+  "baseExp": 186,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 3,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-slow",
+  "id": "alakazam",
+  "dex": 65,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "teleport"
+   },
+   {
+    "level": 1,
+    "move": "kinesis"
+   },
+   {
+    "level": 1,
+    "move": "confusion"
+   },
+   {
+    "level": 16,
+    "move": "confusion"
+   },
+   {
+    "level": 18,
+    "move": "disable"
+   },
+   {
+    "level": 21,
+    "move": "psybeam"
+   },
+   {
+    "level": 23,
+    "move": "reflect"
+   },
+   {
+    "level": 25,
+    "move": "recover"
+   },
+   {
+    "level": 30,
+    "move": "future-sight"
+   },
+   {
+    "level": 33,
+    "move": "role-play"
+   },
+   {
+    "level": 36,
+    "move": "psychic"
+   },
+   {
+    "level": 43,
+    "move": "trick"
+   }
+  ]
+ },
+ "machop": {
+  "hp": 70,
+  "attack": 80,
+  "defense": 50,
+  "speed": 35,
+  "specialAttack": 35,
+  "specialDefense": 35,
+  "types": [
+   "fighting"
+  ],
+  "catchRate": 180,
+  "baseExp": 88,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-slow",
+  "id": "machop",
+  "dex": 66,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 28,
+    "to": "machoke"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "teleport"
+   },
+   {
+    "level": 1,
+    "move": "kinesis"
+   },
+   {
+    "level": 1,
+    "move": "confusion"
+   },
+   {
+    "level": 16,
+    "move": "confusion"
+   },
+   {
+    "level": 18,
+    "move": "disable"
+   },
+   {
+    "level": 21,
+    "move": "psybeam"
+   },
+   {
+    "level": 23,
+    "move": "reflect"
+   },
+   {
+    "level": 25,
+    "move": "recover"
+   },
+   {
+    "level": 30,
+    "move": "future-sight"
+   },
+   {
+    "level": 33,
+    "move": "calm-mind"
+   },
+   {
+    "level": 36,
+    "move": "psychic"
+   },
+   {
+    "level": 43,
+    "move": "trick"
+   }
+  ]
+ },
+ "machoke": {
+  "hp": 80,
+  "attack": 100,
+  "defense": 70,
+  "speed": 45,
+  "specialAttack": 50,
+  "specialDefense": 60,
+  "types": [
+   "fighting"
+  ],
+  "catchRate": 90,
+  "baseExp": 146,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-slow",
+  "id": "machoke",
+  "dex": 67,
+  "evolutions": [
+   {
+    "method": "trade",
+    "param": 0,
+    "to": "machamp"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "low-kick"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 7,
+    "move": "focus-energy"
+   },
+   {
+    "level": 13,
+    "move": "karate-chop"
+   },
+   {
+    "level": 19,
+    "move": "seismic-toss"
+   },
+   {
+    "level": 22,
+    "move": "foresight"
+   },
+   {
+    "level": 25,
+    "move": "revenge"
+   },
+   {
+    "level": 31,
+    "move": "vital-throw"
+   },
+   {
+    "level": 37,
+    "move": "submission"
+   },
+   {
+    "level": 40,
+    "move": "cross-chop"
+   },
+   {
+    "level": 43,
+    "move": "scary-face"
+   },
+   {
+    "level": 49,
+    "move": "dynamicpunch"
+   }
+  ]
+ },
+ "machamp": {
+  "hp": 90,
+  "attack": 130,
+  "defense": 80,
+  "speed": 55,
+  "specialAttack": 65,
+  "specialDefense": 85,
+  "types": [
+   "fighting"
+  ],
+  "catchRate": 45,
+  "baseExp": 193,
+  "evYield": {
+   "hp": 0,
+   "attack": 3,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-slow",
+  "id": "machamp",
+  "dex": 68,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "low-kick"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "focus-energy"
+   },
+   {
+    "level": 7,
+    "move": "focus-energy"
+   },
+   {
+    "level": 13,
+    "move": "karate-chop"
+   },
+   {
+    "level": 19,
+    "move": "seismic-toss"
+   },
+   {
+    "level": 22,
+    "move": "foresight"
+   },
+   {
+    "level": 25,
+    "move": "revenge"
+   },
+   {
+    "level": 33,
+    "move": "vital-throw"
+   },
+   {
+    "level": 41,
+    "move": "submission"
+   },
+   {
+    "level": 46,
+    "move": "cross-chop"
+   },
+   {
+    "level": 51,
+    "move": "scary-face"
+   },
+   {
+    "level": 59,
+    "move": "dynamicpunch"
+   }
+  ]
+ },
+ "bellsprout": {
+  "hp": 50,
+  "attack": 75,
+  "defense": 35,
+  "speed": 40,
+  "specialAttack": 70,
+  "specialDefense": 30,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 255,
+  "baseExp": 84,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "bellsprout",
+  "dex": 69,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 21,
+    "to": "weepinbell"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "low-kick"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "focus-energy"
+   },
+   {
+    "level": 7,
+    "move": "focus-energy"
+   },
+   {
+    "level": 13,
+    "move": "karate-chop"
+   },
+   {
+    "level": 19,
+    "move": "seismic-toss"
+   },
+   {
+    "level": 22,
+    "move": "foresight"
+   },
+   {
+    "level": 25,
+    "move": "revenge"
+   },
+   {
+    "level": 33,
+    "move": "vital-throw"
+   },
+   {
+    "level": 41,
+    "move": "submission"
+   },
+   {
+    "level": 46,
+    "move": "cross-chop"
+   },
+   {
+    "level": 51,
+    "move": "scary-face"
+   },
+   {
+    "level": 59,
+    "move": "dynamicpunch"
+   }
+  ]
+ },
+ "weepinbell": {
+  "hp": 65,
+  "attack": 90,
+  "defense": 50,
+  "speed": 55,
+  "specialAttack": 85,
+  "specialDefense": 45,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 120,
+  "baseExp": 151,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "weepinbell",
+  "dex": 70,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 98,
+    "to": "victreebel"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "vine-whip"
+   },
+   {
+    "level": 6,
+    "move": "growth"
+   },
+   {
+    "level": 11,
+    "move": "wrap"
+   },
+   {
+    "level": 15,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 17,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 19,
+    "move": "stun-spore"
+   },
+   {
+    "level": 23,
+    "move": "acid"
+   },
+   {
+    "level": 30,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 37,
+    "move": "razor-leaf"
+   },
+   {
+    "level": 45,
+    "move": "slam"
+   }
+  ]
+ },
+ "victreebel": {
+  "hp": 80,
+  "attack": 105,
+  "defense": 65,
+  "speed": 70,
+  "specialAttack": 100,
+  "specialDefense": 60,
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "catchRate": 45,
+  "baseExp": 191,
+  "evYield": {
+   "hp": 0,
+   "attack": 3,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "victreebel",
+  "dex": 71,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "vine-whip"
+   },
+   {
+    "level": 1,
+    "move": "growth"
+   },
+   {
+    "level": 1,
+    "move": "wrap"
+   },
+   {
+    "level": 6,
+    "move": "growth"
+   },
+   {
+    "level": 11,
+    "move": "wrap"
+   },
+   {
+    "level": 15,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 17,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 19,
+    "move": "stun-spore"
+   },
+   {
+    "level": 24,
+    "move": "acid"
+   },
+   {
+    "level": 33,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 42,
+    "move": "razor-leaf"
+   },
+   {
+    "level": 54,
+    "move": "slam"
+   }
+  ]
+ },
+ "tentacool": {
+  "hp": 40,
+  "attack": 40,
+  "defense": 35,
+  "speed": 70,
+  "specialAttack": 50,
+  "specialDefense": 100,
+  "types": [
+   "water",
+   "poison"
+  ],
+  "catchRate": 190,
+  "baseExp": 105,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "tentacool",
+  "dex": 72,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 30,
+    "to": "tentacruel"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "stockpile"
+   },
+   {
+    "level": 1,
+    "move": "spit-up"
+   },
+   {
+    "level": 1,
+    "move": "swallow"
+   },
+   {
+    "level": 1,
+    "move": "vine-whip"
+   },
+   {
+    "level": 1,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 1,
+    "move": "sweet-scent"
+   },
+   {
+    "level": 1,
+    "move": "razor-leaf"
+   }
+  ]
+ },
+ "tentacruel": {
+  "hp": 80,
+  "attack": 70,
+  "defense": 65,
+  "speed": 100,
+  "specialAttack": 80,
+  "specialDefense": 120,
+  "types": [
+   "water",
+   "poison"
+  ],
+  "catchRate": 60,
+  "baseExp": 205,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 2
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "tentacruel",
+  "dex": 73,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "poison-sting"
+   },
+   {
+    "level": 6,
+    "move": "supersonic"
+   },
+   {
+    "level": 12,
+    "move": "constrict"
+   },
+   {
+    "level": 19,
+    "move": "acid"
+   },
+   {
+    "level": 25,
+    "move": "bubblebeam"
+   },
+   {
+    "level": 30,
+    "move": "wrap"
+   },
+   {
+    "level": 36,
+    "move": "barrier"
+   },
+   {
+    "level": 43,
+    "move": "screech"
+   },
+   {
+    "level": 49,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "geodude": {
+  "hp": 40,
+  "attack": 80,
+  "defense": 100,
+  "speed": 20,
+  "specialAttack": 30,
+  "specialDefense": 30,
+  "types": [
+   "rock",
+   "ground"
+  ],
+  "catchRate": 255,
+  "baseExp": 86,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "geodude",
+  "dex": 74,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 25,
+    "to": "graveler"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "poison-sting"
+   },
+   {
+    "level": 1,
+    "move": "supersonic"
+   },
+   {
+    "level": 1,
+    "move": "constrict"
+   },
+   {
+    "level": 6,
+    "move": "supersonic"
+   },
+   {
+    "level": 12,
+    "move": "constrict"
+   },
+   {
+    "level": 19,
+    "move": "acid"
+   },
+   {
+    "level": 25,
+    "move": "bubblebeam"
+   },
+   {
+    "level": 30,
+    "move": "wrap"
+   },
+   {
+    "level": 38,
+    "move": "barrier"
+   },
+   {
+    "level": 47,
+    "move": "screech"
+   },
+   {
+    "level": 55,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "graveler": {
+  "hp": 55,
+  "attack": 95,
+  "defense": 115,
+  "speed": 35,
+  "specialAttack": 45,
+  "specialDefense": 45,
+  "types": [
+   "rock",
+   "ground"
+  ],
+  "catchRate": 120,
+  "baseExp": 134,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "graveler",
+  "dex": 75,
+  "evolutions": [
+   {
+    "method": "trade",
+    "param": 0,
+    "to": "golem"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "defense-curl"
+   },
+   {
+    "level": 6,
+    "move": "mud-sport"
+   },
+   {
+    "level": 11,
+    "move": "rock-throw"
+   },
+   {
+    "level": 16,
+    "move": "magnitude"
+   },
+   {
+    "level": 21,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 26,
+    "move": "rollout"
+   },
+   {
+    "level": 31,
+    "move": "rock-blast"
+   },
+   {
+    "level": 36,
+    "move": "earthquake"
+   },
+   {
+    "level": 41,
+    "move": "explosion"
+   },
+   {
+    "level": 46,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "golem": {
+  "hp": 80,
+  "attack": 110,
+  "defense": 130,
+  "speed": 45,
+  "specialAttack": 55,
+  "specialDefense": 65,
+  "types": [
+   "rock",
+   "ground"
+  ],
+  "catchRate": 45,
+  "baseExp": 177,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 3,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "golem",
+  "dex": 76,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "defense-curl"
+   },
+   {
+    "level": 1,
+    "move": "mud-sport"
+   },
+   {
+    "level": 1,
+    "move": "rock-throw"
+   },
+   {
+    "level": 6,
+    "move": "mud-sport"
+   },
+   {
+    "level": 11,
+    "move": "rock-throw"
+   },
+   {
+    "level": 16,
+    "move": "magnitude"
+   },
+   {
+    "level": 21,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 29,
+    "move": "rollout"
+   },
+   {
+    "level": 37,
+    "move": "rock-blast"
+   },
+   {
+    "level": 45,
+    "move": "earthquake"
+   },
+   {
+    "level": 53,
+    "move": "explosion"
+   },
+   {
+    "level": 62,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "ponyta": {
+  "hp": 50,
+  "attack": 85,
+  "defense": 55,
+  "speed": 90,
+  "specialAttack": 65,
+  "specialDefense": 65,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 190,
+  "baseExp": 152,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "ponyta",
+  "dex": 77,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 40,
+    "to": "rapidash"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "defense-curl"
+   },
+   {
+    "level": 1,
+    "move": "mud-sport"
+   },
+   {
+    "level": 1,
+    "move": "rock-throw"
+   },
+   {
+    "level": 6,
+    "move": "mud-sport"
+   },
+   {
+    "level": 11,
+    "move": "rock-throw"
+   },
+   {
+    "level": 16,
+    "move": "magnitude"
+   },
+   {
+    "level": 21,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 29,
+    "move": "rollout"
+   },
+   {
+    "level": 37,
+    "move": "rock-blast"
+   },
+   {
+    "level": 45,
+    "move": "earthquake"
+   },
+   {
+    "level": 53,
+    "move": "explosion"
+   },
+   {
+    "level": 62,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "rapidash": {
+  "hp": 65,
+  "attack": 100,
+  "defense": 70,
+  "speed": 105,
+  "specialAttack": 80,
+  "specialDefense": 80,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 60,
+  "baseExp": 192,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "rapidash",
+  "dex": 78,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 5,
+    "move": "growl"
+   },
+   {
+    "level": 9,
+    "move": "tail-whip"
+   },
+   {
+    "level": 14,
+    "move": "ember"
+   },
+   {
+    "level": 19,
+    "move": "stomp"
+   },
+   {
+    "level": 25,
+    "move": "fire-spin"
+   },
+   {
+    "level": 31,
+    "move": "take-down"
+   },
+   {
+    "level": 38,
+    "move": "agility"
+   },
+   {
+    "level": 45,
+    "move": "bounce"
+   },
+   {
+    "level": 53,
+    "move": "fire-blast"
+   }
+  ]
+ },
+ "slowpoke": {
+  "hp": 90,
+  "attack": 65,
+  "defense": 65,
+  "speed": 15,
+  "specialAttack": 40,
+  "specialDefense": 40,
+  "types": [
+   "water",
+   "psychic"
+  ],
+  "catchRate": 190,
+  "baseExp": 99,
+  "evYield": {
+   "hp": 1,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "slowpoke",
+  "dex": 79,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 37,
+    "to": "slowbro"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 5,
+    "move": "growl"
+   },
+   {
+    "level": 9,
+    "move": "tail-whip"
+   },
+   {
+    "level": 14,
+    "move": "ember"
+   },
+   {
+    "level": 19,
+    "move": "stomp"
+   },
+   {
+    "level": 25,
+    "move": "fire-spin"
+   },
+   {
+    "level": 31,
+    "move": "take-down"
+   },
+   {
+    "level": 38,
+    "move": "agility"
+   },
+   {
+    "level": 40,
+    "move": "fury-attack"
+   },
+   {
+    "level": 50,
+    "move": "bounce"
+   },
+   {
+    "level": 63,
+    "move": "fire-blast"
+   }
+  ]
+ },
+ "slowbro": {
+  "hp": 95,
+  "attack": 75,
+  "defense": 110,
+  "speed": 30,
+  "specialAttack": 100,
+  "specialDefense": 80,
+  "types": [
+   "water",
+   "psychic"
+  ],
+  "catchRate": 75,
+  "baseExp": 164,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "slowbro",
+  "dex": 80,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "curse"
+   },
+   {
+    "level": 1,
+    "move": "yawn"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 6,
+    "move": "growl"
+   },
+   {
+    "level": 13,
+    "move": "water-gun"
+   },
+   {
+    "level": 17,
+    "move": "confusion"
+   },
+   {
+    "level": 24,
+    "move": "disable"
+   },
+   {
+    "level": 29,
+    "move": "headbutt"
+   },
+   {
+    "level": 36,
+    "move": "amnesia"
+   },
+   {
+    "level": 40,
+    "move": "psychic"
+   },
+   {
+    "level": 47,
+    "move": "psych-up"
+   }
+  ]
+ },
+ "magnemite": {
+  "hp": 25,
+  "attack": 35,
+  "defense": 70,
+  "speed": 45,
+  "specialAttack": 95,
+  "specialDefense": 55,
+  "types": [
+   "electric",
+   "steel"
+  ],
+  "catchRate": 190,
+  "baseExp": 89,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "medium-fast",
+  "id": "magnemite",
+  "dex": 81,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 30,
+    "to": "magneton"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "curse"
+   },
+   {
+    "level": 1,
+    "move": "yawn"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 6,
+    "move": "growl"
+   },
+   {
+    "level": 13,
+    "move": "water-gun"
+   },
+   {
+    "level": 17,
+    "move": "confusion"
+   },
+   {
+    "level": 24,
+    "move": "disable"
+   },
+   {
+    "level": 29,
+    "move": "headbutt"
+   },
+   {
+    "level": 36,
+    "move": "amnesia"
+   },
+   {
+    "level": 37,
+    "move": "withdraw"
+   },
+   {
+    "level": 44,
+    "move": "psychic"
+   },
+   {
+    "level": 55,
+    "move": "psych-up"
+   }
+  ]
+ },
+ "magneton": {
+  "hp": 50,
+  "attack": 60,
+  "defense": 95,
+  "speed": 70,
+  "specialAttack": 120,
+  "specialDefense": 70,
+  "types": [
+   "electric",
+   "steel"
+  ],
+  "catchRate": 60,
+  "baseExp": 161,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "medium-fast",
+  "id": "magneton",
+  "dex": 82,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "metal-sound"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 6,
+    "move": "thundershock"
+   },
+   {
+    "level": 11,
+    "move": "supersonic"
+   },
+   {
+    "level": 16,
+    "move": "sonicboom"
+   },
+   {
+    "level": 21,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 26,
+    "move": "spark"
+   },
+   {
+    "level": 32,
+    "move": "lock-on"
+   },
+   {
+    "level": 38,
+    "move": "swift"
+   },
+   {
+    "level": 44,
+    "move": "screech"
+   },
+   {
+    "level": 50,
+    "move": "zap-cannon"
+   }
+  ]
+ },
+ "farfetchd": {
+  "hp": 52,
+  "attack": 65,
+  "defense": 55,
+  "speed": 60,
+  "specialAttack": 58,
+  "specialDefense": 62,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 94,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "farfetchd",
+  "dex": 83,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "metal-sound"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "thundershock"
+   },
+   {
+    "level": 1,
+    "move": "supersonic"
+   },
+   {
+    "level": 6,
+    "move": "thundershock"
+   },
+   {
+    "level": 11,
+    "move": "supersonic"
+   },
+   {
+    "level": 16,
+    "move": "sonicboom"
+   },
+   {
+    "level": 21,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 26,
+    "move": "spark"
+   },
+   {
+    "level": 35,
+    "move": "lock-on"
+   },
+   {
+    "level": 44,
+    "move": "tri-attack"
+   },
+   {
+    "level": 53,
+    "move": "screech"
+   },
+   {
+    "level": 62,
+    "move": "zap-cannon"
+   }
+  ]
+ },
+ "doduo": {
+  "hp": 35,
+  "attack": 85,
+  "defense": 45,
+  "speed": 75,
+  "specialAttack": 35,
+  "specialDefense": 35,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 190,
+  "baseExp": 96,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "doduo",
+  "dex": 84,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 31,
+    "to": "dodrio"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 6,
+    "move": "sand-attack"
+   },
+   {
+    "level": 11,
+    "move": "leer"
+   },
+   {
+    "level": 16,
+    "move": "fury-attack"
+   },
+   {
+    "level": 21,
+    "move": "knock-off"
+   },
+   {
+    "level": 26,
+    "move": "fury-cutter"
+   },
+   {
+    "level": 31,
+    "move": "swords-dance"
+   },
+   {
+    "level": 36,
+    "move": "agility"
+   },
+   {
+    "level": 41,
+    "move": "slash"
+   },
+   {
+    "level": 46,
+    "move": "false-swipe"
+   }
+  ]
+ },
+ "dodrio": {
+  "hp": 60,
+  "attack": 110,
+  "defense": 70,
+  "speed": 100,
+  "specialAttack": 60,
+  "specialDefense": 60,
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 158,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "dodrio",
+  "dex": 85,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 9,
+    "move": "pursuit"
+   },
+   {
+    "level": 13,
+    "move": "fury-attack"
+   },
+   {
+    "level": 21,
+    "move": "tri-attack"
+   },
+   {
+    "level": 25,
+    "move": "rage"
+   },
+   {
+    "level": 33,
+    "move": "uproar"
+   },
+   {
+    "level": 37,
+    "move": "drill-peck"
+   },
+   {
+    "level": 45,
+    "move": "agility"
+   }
+  ]
+ },
+ "seel": {
+  "hp": 65,
+  "attack": 45,
+  "defense": 55,
+  "speed": 45,
+  "specialAttack": 45,
+  "specialDefense": 70,
+  "types": [
+   "water"
+  ],
+  "catchRate": 190,
+  "baseExp": 100,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "seel",
+  "dex": 86,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 34,
+    "to": "dewgong"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "pursuit"
+   },
+   {
+    "level": 1,
+    "move": "fury-attack"
+   },
+   {
+    "level": 9,
+    "move": "pursuit"
+   },
+   {
+    "level": 13,
+    "move": "fury-attack"
+   },
+   {
+    "level": 21,
+    "move": "tri-attack"
+   },
+   {
+    "level": 25,
+    "move": "rage"
+   },
+   {
+    "level": 38,
+    "move": "uproar"
+   },
+   {
+    "level": 47,
+    "move": "drill-peck"
+   },
+   {
+    "level": 60,
+    "move": "agility"
+   }
+  ]
+ },
+ "dewgong": {
+  "hp": 90,
+  "attack": 70,
+  "defense": 80,
+  "speed": 70,
+  "specialAttack": 70,
+  "specialDefense": 95,
+  "types": [
+   "water",
+   "ice"
+  ],
+  "catchRate": 75,
+  "baseExp": 176,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 2
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "dewgong",
+  "dex": 87,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "headbutt"
+   },
+   {
+    "level": 9,
+    "move": "growl"
+   },
+   {
+    "level": 17,
+    "move": "icy-wind"
+   },
+   {
+    "level": 21,
+    "move": "aurora-beam"
+   },
+   {
+    "level": 29,
+    "move": "rest"
+   },
+   {
+    "level": 37,
+    "move": "take-down"
+   },
+   {
+    "level": 41,
+    "move": "ice-beam"
+   },
+   {
+    "level": 49,
+    "move": "safeguard"
+   }
+  ]
+ },
+ "grimer": {
+  "hp": 80,
+  "attack": 80,
+  "defense": 50,
+  "speed": 25,
+  "specialAttack": 40,
+  "specialDefense": 50,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 190,
+  "baseExp": 90,
+  "evYield": {
+   "hp": 1,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "grimer",
+  "dex": 88,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 38,
+    "to": "muk"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "signal-beam"
+   },
+   {
+    "level": 1,
+    "move": "headbutt"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "icy-wind"
+   },
+   {
+    "level": 1,
+    "move": "aurora-beam"
+   },
+   {
+    "level": 9,
+    "move": "growl"
+   },
+   {
+    "level": 17,
+    "move": "icy-wind"
+   },
+   {
+    "level": 21,
+    "move": "aurora-beam"
+   },
+   {
+    "level": 29,
+    "move": "rest"
+   },
+   {
+    "level": 34,
+    "move": "sheer-cold"
+   },
+   {
+    "level": 42,
+    "move": "take-down"
+   },
+   {
+    "level": 51,
+    "move": "ice-beam"
+   },
+   {
+    "level": 64,
+    "move": "safeguard"
+   }
+  ]
+ },
+ "muk": {
+  "hp": 105,
+  "attack": 105,
+  "defense": 75,
+  "speed": 50,
+  "specialAttack": 65,
+  "specialDefense": 100,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 75,
+  "baseExp": 157,
+  "evYield": {
+   "hp": 1,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "muk",
+  "dex": 89,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "poison-gas"
+   },
+   {
+    "level": 1,
+    "move": "pound"
+   },
+   {
+    "level": 4,
+    "move": "harden"
+   },
+   {
+    "level": 8,
+    "move": "disable"
+   },
+   {
+    "level": 13,
+    "move": "sludge"
+   },
+   {
+    "level": 19,
+    "move": "minimize"
+   },
+   {
+    "level": 26,
+    "move": "screech"
+   },
+   {
+    "level": 34,
+    "move": "acid-armor"
+   },
+   {
+    "level": 43,
+    "move": "sludge-bomb"
+   },
+   {
+    "level": 53,
+    "move": "memento"
+   }
+  ]
+ },
+ "shellder": {
+  "hp": 30,
+  "attack": 65,
+  "defense": 100,
+  "speed": 40,
+  "specialAttack": 45,
+  "specialDefense": 25,
+  "types": [
+   "water"
+  ],
+  "catchRate": 190,
+  "baseExp": 97,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "shellder",
+  "dex": 90,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 97,
+    "to": "cloyster"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "poison-gas"
+   },
+   {
+    "level": 1,
+    "move": "pound"
+   },
+   {
+    "level": 1,
+    "move": "harden"
+   },
+   {
+    "level": 4,
+    "move": "harden"
+   },
+   {
+    "level": 8,
+    "move": "disable"
+   },
+   {
+    "level": 13,
+    "move": "sludge"
+   },
+   {
+    "level": 19,
+    "move": "minimize"
+   },
+   {
+    "level": 26,
+    "move": "screech"
+   },
+   {
+    "level": 34,
+    "move": "acid-armor"
+   },
+   {
+    "level": 47,
+    "move": "sludge-bomb"
+   },
+   {
+    "level": 61,
+    "move": "memento"
+   }
+  ]
+ },
+ "cloyster": {
+  "hp": 50,
+  "attack": 95,
+  "defense": 180,
+  "speed": 70,
+  "specialAttack": 85,
+  "specialDefense": 45,
+  "types": [
+   "water",
+   "ice"
+  ],
+  "catchRate": 60,
+  "baseExp": 203,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "cloyster",
+  "dex": 91,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "withdraw"
+   },
+   {
+    "level": 8,
+    "move": "icicle-spear"
+   },
+   {
+    "level": 15,
+    "move": "supersonic"
+   },
+   {
+    "level": 22,
+    "move": "aurora-beam"
+   },
+   {
+    "level": 29,
+    "move": "protect"
+   },
+   {
+    "level": 36,
+    "move": "leer"
+   },
+   {
+    "level": 43,
+    "move": "clamp"
+   },
+   {
+    "level": 50,
+    "move": "ice-beam"
+   }
+  ]
+ },
+ "gastly": {
+  "hp": 30,
+  "attack": 35,
+  "defense": 30,
+  "speed": 80,
+  "specialAttack": 100,
+  "specialDefense": 35,
+  "types": [
+   "ghost",
+   "poison"
+  ],
+  "catchRate": 190,
+  "baseExp": 95,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "gastly",
+  "dex": 92,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 25,
+    "to": "haunter"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "withdraw"
+   },
+   {
+    "level": 1,
+    "move": "supersonic"
+   },
+   {
+    "level": 1,
+    "move": "aurora-beam"
+   },
+   {
+    "level": 1,
+    "move": "protect"
+   },
+   {
+    "level": 36,
+    "move": "spikes"
+   },
+   {
+    "level": 43,
+    "move": "spike-cannon"
+   }
+  ]
+ },
+ "haunter": {
+  "hp": 45,
+  "attack": 50,
+  "defense": 45,
+  "speed": 95,
+  "specialAttack": 115,
+  "specialDefense": 55,
+  "types": [
+   "ghost",
+   "poison"
+  ],
+  "catchRate": 90,
+  "baseExp": 126,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "haunter",
+  "dex": 93,
+  "evolutions": [
+   {
+    "method": "trade",
+    "param": 0,
+    "to": "gengar"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 1,
+    "move": "lick"
+   },
+   {
+    "level": 8,
+    "move": "spite"
+   },
+   {
+    "level": 13,
+    "move": "curse"
+   },
+   {
+    "level": 16,
+    "move": "night-shade"
+   },
+   {
+    "level": 21,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 28,
+    "move": "dream-eater"
+   },
+   {
+    "level": 33,
+    "move": "destiny-bond"
+   },
+   {
+    "level": 36,
+    "move": "shadow-ball"
+   },
+   {
+    "level": 41,
+    "move": "nightmare"
+   },
+   {
+    "level": 48,
+    "move": "mean-look"
+   }
+  ]
+ },
+ "gengar": {
+  "hp": 60,
+  "attack": 65,
+  "defense": 60,
+  "speed": 110,
+  "specialAttack": 130,
+  "specialDefense": 75,
+  "types": [
+   "ghost",
+   "poison"
+  ],
+  "catchRate": 45,
+  "baseExp": 190,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 3,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-slow",
+  "id": "gengar",
+  "dex": 94,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 1,
+    "move": "lick"
+   },
+   {
+    "level": 1,
+    "move": "spite"
+   },
+   {
+    "level": 8,
+    "move": "spite"
+   },
+   {
+    "level": 13,
+    "move": "curse"
+   },
+   {
+    "level": 16,
+    "move": "night-shade"
+   },
+   {
+    "level": 21,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 25,
+    "move": "shadow-punch"
+   },
+   {
+    "level": 31,
+    "move": "dream-eater"
+   },
+   {
+    "level": 39,
+    "move": "destiny-bond"
+   },
+   {
+    "level": 45,
+    "move": "shadow-ball"
+   },
+   {
+    "level": 53,
+    "move": "nightmare"
+   },
+   {
+    "level": 64,
+    "move": "mean-look"
+   }
+  ]
+ },
+ "onix": {
+  "hp": 35,
+  "attack": 45,
+  "defense": 160,
+  "speed": 70,
+  "specialAttack": 30,
+  "specialDefense": 45,
+  "types": [
+   "rock",
+   "ground"
+  ],
+  "catchRate": 45,
+  "baseExp": 108,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "onix",
+  "dex": 95,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 1,
+    "move": "lick"
+   },
+   {
+    "level": 1,
+    "move": "spite"
+   },
+   {
+    "level": 8,
+    "move": "spite"
+   },
+   {
+    "level": 13,
+    "move": "curse"
+   },
+   {
+    "level": 16,
+    "move": "night-shade"
+   },
+   {
+    "level": 21,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 25,
+    "move": "shadow-punch"
+   },
+   {
+    "level": 31,
+    "move": "dream-eater"
+   },
+   {
+    "level": 39,
+    "move": "destiny-bond"
+   },
+   {
+    "level": 45,
+    "move": "shadow-ball"
+   },
+   {
+    "level": 53,
+    "move": "nightmare"
+   },
+   {
+    "level": 64,
+    "move": "mean-look"
+   }
+  ]
+ },
+ "drowzee": {
+  "hp": 60,
+  "attack": 48,
+  "defense": 45,
+  "speed": 42,
+  "specialAttack": 43,
+  "specialDefense": 90,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 190,
+  "baseExp": 102,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "drowzee",
+  "dex": 96,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 26,
+    "to": "hypno"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "screech"
+   },
+   {
+    "level": 8,
+    "move": "bind"
+   },
+   {
+    "level": 12,
+    "move": "rock-throw"
+   },
+   {
+    "level": 19,
+    "move": "harden"
+   },
+   {
+    "level": 23,
+    "move": "rage"
+   },
+   {
+    "level": 30,
+    "move": "dragonbreath"
+   },
+   {
+    "level": 34,
+    "move": "sandstorm"
+   },
+   {
+    "level": 41,
+    "move": "slam"
+   },
+   {
+    "level": 45,
+    "move": "iron-tail"
+   },
+   {
+    "level": 52,
+    "move": "sand-tomb"
+   },
+   {
+    "level": 56,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "hypno": {
+  "hp": 85,
+  "attack": 73,
+  "defense": 70,
+  "speed": 67,
+  "specialAttack": 73,
+  "specialDefense": 115,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 75,
+  "baseExp": 165,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 2
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "hypno",
+  "dex": 97,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "pound"
+   },
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 7,
+    "move": "disable"
+   },
+   {
+    "level": 11,
+    "move": "confusion"
+   },
+   {
+    "level": 17,
+    "move": "headbutt"
+   },
+   {
+    "level": 21,
+    "move": "poison-gas"
+   },
+   {
+    "level": 27,
+    "move": "meditate"
+   },
+   {
+    "level": 31,
+    "move": "psychic"
+   },
+   {
+    "level": 37,
+    "move": "psych-up"
+   },
+   {
+    "level": 41,
+    "move": "swagger"
+   },
+   {
+    "level": 47,
+    "move": "future-sight"
+   }
+  ]
+ },
+ "krabby": {
+  "hp": 30,
+  "attack": 105,
+  "defense": 90,
+  "speed": 50,
+  "specialAttack": 25,
+  "specialDefense": 25,
+  "types": [
+   "water"
+  ],
+  "catchRate": 225,
+  "baseExp": 115,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "krabby",
+  "dex": 98,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 28,
+    "to": "kingler"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "nightmare"
+   },
+   {
+    "level": 1,
+    "move": "pound"
+   },
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 1,
+    "move": "disable"
+   },
+   {
+    "level": 1,
+    "move": "confusion"
+   },
+   {
+    "level": 7,
+    "move": "disable"
+   },
+   {
+    "level": 11,
+    "move": "confusion"
+   },
+   {
+    "level": 17,
+    "move": "headbutt"
+   },
+   {
+    "level": 21,
+    "move": "poison-gas"
+   },
+   {
+    "level": 29,
+    "move": "meditate"
+   },
+   {
+    "level": 35,
+    "move": "psychic"
+   },
+   {
+    "level": 43,
+    "move": "psych-up"
+   },
+   {
+    "level": 49,
+    "move": "swagger"
+   },
+   {
+    "level": 57,
+    "move": "future-sight"
+   }
+  ]
+ },
+ "kingler": {
+  "hp": 55,
+  "attack": 130,
+  "defense": 115,
+  "speed": 75,
+  "specialAttack": 50,
+  "specialDefense": 50,
+  "types": [
+   "water"
+  ],
+  "catchRate": 60,
+  "baseExp": 206,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "kingler",
+  "dex": 99,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 5,
+    "move": "leer"
+   },
+   {
+    "level": 12,
+    "move": "vicegrip"
+   },
+   {
+    "level": 16,
+    "move": "harden"
+   },
+   {
+    "level": 23,
+    "move": "mud-shot"
+   },
+   {
+    "level": 27,
+    "move": "stomp"
+   },
+   {
+    "level": 34,
+    "move": "guillotine"
+   },
+   {
+    "level": 38,
+    "move": "protect"
+   },
+   {
+    "level": 45,
+    "move": "crabhammer"
+   },
+   {
+    "level": 49,
+    "move": "flail"
+   }
+  ]
+ },
+ "voltorb": {
+  "hp": 40,
+  "attack": 30,
+  "defense": 50,
+  "speed": 100,
+  "specialAttack": 55,
+  "specialDefense": 55,
+  "types": [
+   "electric"
+  ],
+  "catchRate": 190,
+  "baseExp": 103,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "medium-fast",
+  "id": "voltorb",
+  "dex": 100,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 30,
+    "to": "electrode"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "metal-claw"
+   },
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "vicegrip"
+   },
+   {
+    "level": 1,
+    "move": "harden"
+   },
+   {
+    "level": 5,
+    "move": "leer"
+   },
+   {
+    "level": 12,
+    "move": "vicegrip"
+   },
+   {
+    "level": 16,
+    "move": "harden"
+   },
+   {
+    "level": 23,
+    "move": "mud-shot"
+   },
+   {
+    "level": 27,
+    "move": "stomp"
+   },
+   {
+    "level": 38,
+    "move": "guillotine"
+   },
+   {
+    "level": 42,
+    "move": "protect"
+   },
+   {
+    "level": 57,
+    "move": "crabhammer"
+   },
+   {
+    "level": 65,
+    "move": "flail"
+   }
+  ]
+ },
+ "electrode": {
+  "hp": 60,
+  "attack": 50,
+  "defense": 70,
+  "speed": 140,
+  "specialAttack": 80,
+  "specialDefense": 80,
+  "types": [
+   "electric"
+  ],
+  "catchRate": 60,
+  "baseExp": 150,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "medium-fast",
+  "id": "electrode",
+  "dex": 101,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "charge"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 8,
+    "move": "screech"
+   },
+   {
+    "level": 15,
+    "move": "sonicboom"
+   },
+   {
+    "level": 21,
+    "move": "spark"
+   },
+   {
+    "level": 27,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 32,
+    "move": "rollout"
+   },
+   {
+    "level": 37,
+    "move": "light-screen"
+   },
+   {
+    "level": 42,
+    "move": "swift"
+   },
+   {
+    "level": 46,
+    "move": "explosion"
+   },
+   {
+    "level": 49,
+    "move": "mirror-coat"
+   }
+  ]
+ },
+ "exeggcute": {
+  "hp": 60,
+  "attack": 40,
+  "defense": 80,
+  "speed": 40,
+  "specialAttack": 60,
+  "specialDefense": 45,
+  "types": [
+   "grass",
+   "psychic"
+  ],
+  "catchRate": 90,
+  "baseExp": 98,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "exeggcute",
+  "dex": 102,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 98,
+    "to": "exeggutor"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "charge"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "screech"
+   },
+   {
+    "level": 1,
+    "move": "sonicboom"
+   },
+   {
+    "level": 8,
+    "move": "screech"
+   },
+   {
+    "level": 15,
+    "move": "sonicboom"
+   },
+   {
+    "level": 21,
+    "move": "spark"
+   },
+   {
+    "level": 27,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 34,
+    "move": "rollout"
+   },
+   {
+    "level": 41,
+    "move": "light-screen"
+   },
+   {
+    "level": 48,
+    "move": "swift"
+   },
+   {
+    "level": 54,
+    "move": "explosion"
+   },
+   {
+    "level": 59,
+    "move": "mirror-coat"
+   }
+  ]
+ },
+ "exeggutor": {
+  "hp": 95,
+  "attack": 95,
+  "defense": 85,
+  "speed": 55,
+  "specialAttack": 125,
+  "specialDefense": 65,
+  "types": [
+   "grass",
+   "psychic"
+  ],
+  "catchRate": 45,
+  "baseExp": 212,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "exeggutor",
+  "dex": 103,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "barrage"
+   },
+   {
+    "level": 1,
+    "move": "uproar"
+   },
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 7,
+    "move": "reflect"
+   },
+   {
+    "level": 13,
+    "move": "leech-seed"
+   },
+   {
+    "level": 19,
+    "move": "confusion"
+   },
+   {
+    "level": 25,
+    "move": "stun-spore"
+   },
+   {
+    "level": 31,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 37,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 43,
+    "move": "solarbeam"
+   }
+  ]
+ },
+ "cubone": {
+  "hp": 50,
+  "attack": 50,
+  "defense": 95,
+  "speed": 35,
+  "specialAttack": 40,
+  "specialDefense": 50,
+  "types": [
+   "ground"
+  ],
+  "catchRate": 190,
+  "baseExp": 87,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "cubone",
+  "dex": 104,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 28,
+    "to": "marowak"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "barrage"
+   },
+   {
+    "level": 1,
+    "move": "hypnosis"
+   },
+   {
+    "level": 1,
+    "move": "confusion"
+   },
+   {
+    "level": 19,
+    "move": "stomp"
+   },
+   {
+    "level": 31,
+    "move": "egg-bomb"
+   }
+  ]
+ },
+ "marowak": {
+  "hp": 60,
+  "attack": 80,
+  "defense": 110,
+  "speed": 45,
+  "specialAttack": 50,
+  "specialDefense": 80,
+  "types": [
+   "ground"
+  ],
+  "catchRate": 75,
+  "baseExp": 124,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "marowak",
+  "dex": 105,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 5,
+    "move": "tail-whip"
+   },
+   {
+    "level": 9,
+    "move": "bone-club"
+   },
+   {
+    "level": 13,
+    "move": "headbutt"
+   },
+   {
+    "level": 17,
+    "move": "leer"
+   },
+   {
+    "level": 21,
+    "move": "focus-energy"
+   },
+   {
+    "level": 25,
+    "move": "bonemerang"
+   },
+   {
+    "level": 29,
+    "move": "rage"
+   },
+   {
+    "level": 33,
+    "move": "false-swipe"
+   },
+   {
+    "level": 37,
+    "move": "thrash"
+   },
+   {
+    "level": 41,
+    "move": "bone-rush"
+   },
+   {
+    "level": 45,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "hitmonlee": {
+  "hp": 50,
+  "attack": 120,
+  "defense": 53,
+  "speed": 87,
+  "specialAttack": 35,
+  "specialDefense": 110,
+  "types": [
+   "fighting"
+  ],
+  "catchRate": 45,
+  "baseExp": 139,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 0,
+  "growthRate": "medium-fast",
+  "id": "hitmonlee",
+  "dex": 106,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "bone-club"
+   },
+   {
+    "level": 1,
+    "move": "headbutt"
+   },
+   {
+    "level": 5,
+    "move": "tail-whip"
+   },
+   {
+    "level": 9,
+    "move": "bone-club"
+   },
+   {
+    "level": 13,
+    "move": "headbutt"
+   },
+   {
+    "level": 17,
+    "move": "leer"
+   },
+   {
+    "level": 21,
+    "move": "focus-energy"
+   },
+   {
+    "level": 25,
+    "move": "bonemerang"
+   },
+   {
+    "level": 32,
+    "move": "rage"
+   },
+   {
+    "level": 39,
+    "move": "false-swipe"
+   },
+   {
+    "level": 46,
+    "move": "thrash"
+   },
+   {
+    "level": 53,
+    "move": "bone-rush"
+   },
+   {
+    "level": 61,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "hitmonchan": {
+  "hp": 50,
+  "attack": 105,
+  "defense": 79,
+  "speed": 76,
+  "specialAttack": 35,
+  "specialDefense": 110,
+  "types": [
+   "fighting"
+  ],
+  "catchRate": 45,
+  "baseExp": 140,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 2
+  },
+  "genderRatio": 0,
+  "growthRate": "medium-fast",
+  "id": "hitmonchan",
+  "dex": 107,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "revenge"
+   },
+   {
+    "level": 1,
+    "move": "double-kick"
+   },
+   {
+    "level": 6,
+    "move": "meditate"
+   },
+   {
+    "level": 11,
+    "move": "rolling-kick"
+   },
+   {
+    "level": 16,
+    "move": "jump-kick"
+   },
+   {
+    "level": 20,
+    "move": "brick-break"
+   },
+   {
+    "level": 21,
+    "move": "focus-energy"
+   },
+   {
+    "level": 26,
+    "move": "hi-jump-kick"
+   },
+   {
+    "level": 31,
+    "move": "mind-reader"
+   },
+   {
+    "level": 36,
+    "move": "foresight"
+   },
+   {
+    "level": 41,
+    "move": "endure"
+   },
+   {
+    "level": 46,
+    "move": "mega-kick"
+   },
+   {
+    "level": 51,
+    "move": "reversal"
+   }
+  ]
+ },
+ "lickitung": {
+  "hp": 90,
+  "attack": 55,
+  "defense": 75,
+  "speed": 30,
+  "specialAttack": 60,
+  "specialDefense": 75,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 45,
+  "baseExp": 127,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "lickitung",
+  "dex": 108,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "revenge"
+   },
+   {
+    "level": 1,
+    "move": "comet-punch"
+   },
+   {
+    "level": 7,
+    "move": "agility"
+   },
+   {
+    "level": 13,
+    "move": "pursuit"
+   },
+   {
+    "level": 20,
+    "move": "mach-punch"
+   },
+   {
+    "level": 26,
+    "move": "thunderpunch"
+   },
+   {
+    "level": 26,
+    "move": "ice-punch"
+   },
+   {
+    "level": 26,
+    "move": "fire-punch"
+   },
+   {
+    "level": 32,
+    "move": "sky-uppercut"
+   },
+   {
+    "level": 38,
+    "move": "mega-punch"
+   },
+   {
+    "level": 44,
+    "move": "detect"
+   },
+   {
+    "level": 50,
+    "move": "counter"
+   }
+  ]
+ },
+ "koffing": {
+  "hp": 40,
+  "attack": 65,
+  "defense": 95,
+  "speed": 35,
+  "specialAttack": 60,
+  "specialDefense": 45,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 190,
+  "baseExp": 114,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "koffing",
+  "dex": 109,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 35,
+    "to": "weezing"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "lick"
+   },
+   {
+    "level": 7,
+    "move": "supersonic"
+   },
+   {
+    "level": 12,
+    "move": "defense-curl"
+   },
+   {
+    "level": 18,
+    "move": "knock-off"
+   },
+   {
+    "level": 23,
+    "move": "stomp"
+   },
+   {
+    "level": 29,
+    "move": "wrap"
+   },
+   {
+    "level": 34,
+    "move": "disable"
+   },
+   {
+    "level": 40,
+    "move": "slam"
+   },
+   {
+    "level": 45,
+    "move": "screech"
+   },
+   {
+    "level": 51,
+    "move": "refresh"
+   }
+  ]
+ },
+ "weezing": {
+  "hp": 65,
+  "attack": 90,
+  "defense": 120,
+  "speed": 60,
+  "specialAttack": 85,
+  "specialDefense": 70,
+  "types": [
+   "poison"
+  ],
+  "catchRate": 60,
+  "baseExp": 173,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "weezing",
+  "dex": 110,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "poison-gas"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 9,
+    "move": "smog"
+   },
+   {
+    "level": 17,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 21,
+    "move": "sludge"
+   },
+   {
+    "level": 25,
+    "move": "smokescreen"
+   },
+   {
+    "level": 33,
+    "move": "haze"
+   },
+   {
+    "level": 41,
+    "move": "explosion"
+   },
+   {
+    "level": 45,
+    "move": "destiny-bond"
+   },
+   {
+    "level": 49,
+    "move": "memento"
+   }
+  ]
+ },
+ "rhyhorn": {
+  "hp": 80,
+  "attack": 85,
+  "defense": 95,
+  "speed": 25,
+  "specialAttack": 30,
+  "specialDefense": 30,
+  "types": [
+   "ground",
+   "rock"
+  ],
+  "catchRate": 120,
+  "baseExp": 135,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "rhyhorn",
+  "dex": 111,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 42,
+    "to": "rhydon"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "poison-gas"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "smog"
+   },
+   {
+    "level": 1,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 9,
+    "move": "smog"
+   },
+   {
+    "level": 17,
+    "move": "selfdestruct"
+   },
+   {
+    "level": 21,
+    "move": "sludge"
+   },
+   {
+    "level": 25,
+    "move": "smokescreen"
+   },
+   {
+    "level": 33,
+    "move": "haze"
+   },
+   {
+    "level": 44,
+    "move": "explosion"
+   },
+   {
+    "level": 51,
+    "move": "destiny-bond"
+   },
+   {
+    "level": 58,
+    "move": "memento"
+   }
+  ]
+ },
+ "rhydon": {
+  "hp": 105,
+  "attack": 130,
+  "defense": 120,
+  "speed": 40,
+  "specialAttack": 45,
+  "specialDefense": 45,
+  "types": [
+   "ground",
+   "rock"
+  ],
+  "catchRate": 60,
+  "baseExp": 204,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "rhydon",
+  "dex": 112,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "horn-attack"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 10,
+    "move": "stomp"
+   },
+   {
+    "level": 15,
+    "move": "fury-attack"
+   },
+   {
+    "level": 24,
+    "move": "scary-face"
+   },
+   {
+    "level": 29,
+    "move": "rock-blast"
+   },
+   {
+    "level": 38,
+    "move": "horn-drill"
+   },
+   {
+    "level": 43,
+    "move": "take-down"
+   },
+   {
+    "level": 52,
+    "move": "earthquake"
+   },
+   {
+    "level": 57,
+    "move": "megahorn"
+   }
+  ]
+ },
+ "chansey": {
+  "hp": 250,
+  "attack": 5,
+  "defense": 5,
+  "speed": 50,
+  "specialAttack": 35,
+  "specialDefense": 105,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 30,
+  "baseExp": 255,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 254,
+  "growthRate": "fast",
+  "id": "chansey",
+  "dex": 113,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "horn-attack"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "stomp"
+   },
+   {
+    "level": 1,
+    "move": "fury-attack"
+   },
+   {
+    "level": 10,
+    "move": "stomp"
+   },
+   {
+    "level": 15,
+    "move": "fury-attack"
+   },
+   {
+    "level": 24,
+    "move": "scary-face"
+   },
+   {
+    "level": 29,
+    "move": "rock-blast"
+   },
+   {
+    "level": 38,
+    "move": "horn-drill"
+   },
+   {
+    "level": 46,
+    "move": "take-down"
+   },
+   {
+    "level": 58,
+    "move": "earthquake"
+   },
+   {
+    "level": 66,
+    "move": "megahorn"
+   }
+  ]
+ },
+ "tangela": {
+  "hp": 65,
+  "attack": 55,
+  "defense": 115,
+  "speed": 60,
+  "specialAttack": 100,
+  "specialDefense": 40,
+  "types": [
+   "grass"
+  ],
+  "catchRate": 45,
+  "baseExp": 166,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "tangela",
+  "dex": 114,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "pound"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 5,
+    "move": "tail-whip"
+   },
+   {
+    "level": 9,
+    "move": "refresh"
+   },
+   {
+    "level": 13,
+    "move": "softboiled"
+   },
+   {
+    "level": 17,
+    "move": "doubleslap"
+   },
+   {
+    "level": 23,
+    "move": "minimize"
+   },
+   {
+    "level": 29,
+    "move": "sing"
+   },
+   {
+    "level": 35,
+    "move": "egg-bomb"
+   },
+   {
+    "level": 41,
+    "move": "defense-curl"
+   },
+   {
+    "level": 49,
+    "move": "light-screen"
+   },
+   {
+    "level": 57,
+    "move": "double-edge"
+   }
+  ]
+ },
+ "kangaskhan": {
+  "hp": 105,
+  "attack": 95,
+  "defense": 80,
+  "speed": 90,
+  "specialAttack": 40,
+  "specialDefense": 80,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 45,
+  "baseExp": 175,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 254,
+  "growthRate": "medium-fast",
+  "id": "kangaskhan",
+  "dex": 115,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "ingrain"
+   },
+   {
+    "level": 1,
+    "move": "constrict"
+   },
+   {
+    "level": 4,
+    "move": "sleep-powder"
+   },
+   {
+    "level": 10,
+    "move": "absorb"
+   },
+   {
+    "level": 13,
+    "move": "growth"
+   },
+   {
+    "level": 19,
+    "move": "poisonpowder"
+   },
+   {
+    "level": 22,
+    "move": "vine-whip"
+   },
+   {
+    "level": 28,
+    "move": "bind"
+   },
+   {
+    "level": 31,
+    "move": "mega-drain"
+   },
+   {
+    "level": 37,
+    "move": "stun-spore"
+   },
+   {
+    "level": 40,
+    "move": "slam"
+   },
+   {
+    "level": 46,
+    "move": "tickle"
+   }
+  ]
+ },
+ "horsea": {
+  "hp": 30,
+  "attack": 40,
+  "defense": 70,
+  "speed": 60,
+  "specialAttack": 70,
+  "specialDefense": 25,
+  "types": [
+   "water"
+  ],
+  "catchRate": 225,
+  "baseExp": 83,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "horsea",
+  "dex": 116,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 32,
+    "to": "seadra"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "comet-punch"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 7,
+    "move": "bite"
+   },
+   {
+    "level": 13,
+    "move": "tail-whip"
+   },
+   {
+    "level": 19,
+    "move": "fake-out"
+   },
+   {
+    "level": 25,
+    "move": "mega-punch"
+   },
+   {
+    "level": 31,
+    "move": "rage"
+   },
+   {
+    "level": 37,
+    "move": "endure"
+   },
+   {
+    "level": 43,
+    "move": "dizzy-punch"
+   },
+   {
+    "level": 49,
+    "move": "reversal"
+   }
+  ]
+ },
+ "seadra": {
+  "hp": 55,
+  "attack": 65,
+  "defense": 95,
+  "speed": 85,
+  "specialAttack": 95,
+  "specialDefense": 45,
+  "types": [
+   "water"
+  ],
+  "catchRate": 75,
+  "baseExp": 155,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "seadra",
+  "dex": 117,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 8,
+    "move": "smokescreen"
+   },
+   {
+    "level": 15,
+    "move": "leer"
+   },
+   {
+    "level": 22,
+    "move": "water-gun"
+   },
+   {
+    "level": 29,
+    "move": "twister"
+   },
+   {
+    "level": 36,
+    "move": "agility"
+   },
+   {
+    "level": 43,
+    "move": "hydro-pump"
+   },
+   {
+    "level": 50,
+    "move": "dragon-dance"
+   }
+  ]
+ },
+ "goldeen": {
+  "hp": 45,
+  "attack": 67,
+  "defense": 60,
+  "speed": 63,
+  "specialAttack": 35,
+  "specialDefense": 50,
+  "types": [
+   "water"
+  ],
+  "catchRate": 225,
+  "baseExp": 111,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "goldeen",
+  "dex": 118,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 33,
+    "to": "seaking"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "bubble"
+   },
+   {
+    "level": 1,
+    "move": "smokescreen"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "water-gun"
+   },
+   {
+    "level": 8,
+    "move": "smokescreen"
+   },
+   {
+    "level": 15,
+    "move": "leer"
+   },
+   {
+    "level": 22,
+    "move": "water-gun"
+   },
+   {
+    "level": 29,
+    "move": "twister"
+   },
+   {
+    "level": 40,
+    "move": "agility"
+   },
+   {
+    "level": 51,
+    "move": "hydro-pump"
+   },
+   {
+    "level": 62,
+    "move": "dragon-dance"
+   }
+  ]
+ },
+ "seaking": {
+  "hp": 80,
+  "attack": 92,
+  "defense": 65,
+  "speed": 68,
+  "specialAttack": 65,
+  "specialDefense": 80,
+  "types": [
+   "water"
+  ],
+  "catchRate": 60,
+  "baseExp": 170,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "seaking",
+  "dex": 119,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "water-sport"
+   },
+   {
+    "level": 10,
+    "move": "supersonic"
+   },
+   {
+    "level": 15,
+    "move": "horn-attack"
+   },
+   {
+    "level": 24,
+    "move": "flail"
+   },
+   {
+    "level": 29,
+    "move": "fury-attack"
+   },
+   {
+    "level": 38,
+    "move": "waterfall"
+   },
+   {
+    "level": 43,
+    "move": "horn-drill"
+   },
+   {
+    "level": 52,
+    "move": "agility"
+   },
+   {
+    "level": 57,
+    "move": "megahorn"
+   }
+  ]
+ },
+ "staryu": {
+  "hp": 30,
+  "attack": 45,
+  "defense": 55,
+  "speed": 85,
+  "specialAttack": 70,
+  "specialDefense": 55,
+  "types": [
+   "water"
+  ],
+  "catchRate": 225,
+  "baseExp": 106,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "slow",
+  "id": "staryu",
+  "dex": 120,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 97,
+    "to": "starmie"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "water-sport"
+   },
+   {
+    "level": 1,
+    "move": "supersonic"
+   },
+   {
+    "level": 10,
+    "move": "supersonic"
+   },
+   {
+    "level": 15,
+    "move": "horn-attack"
+   },
+   {
+    "level": 24,
+    "move": "flail"
+   },
+   {
+    "level": 29,
+    "move": "fury-attack"
+   },
+   {
+    "level": 41,
+    "move": "waterfall"
+   },
+   {
+    "level": 49,
+    "move": "horn-drill"
+   },
+   {
+    "level": 61,
+    "move": "agility"
+   },
+   {
+    "level": 69,
+    "move": "megahorn"
+   }
+  ]
+ },
+ "starmie": {
+  "hp": 60,
+  "attack": 75,
+  "defense": 85,
+  "speed": 115,
+  "specialAttack": 100,
+  "specialDefense": 85,
+  "types": [
+   "water",
+   "psychic"
+  ],
+  "catchRate": 60,
+  "baseExp": 207,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "slow",
+  "id": "starmie",
+  "dex": 121,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "harden"
+   },
+   {
+    "level": 6,
+    "move": "water-gun"
+   },
+   {
+    "level": 10,
+    "move": "rapid-spin"
+   },
+   {
+    "level": 15,
+    "move": "recover"
+   },
+   {
+    "level": 19,
+    "move": "camouflage"
+   },
+   {
+    "level": 24,
+    "move": "swift"
+   },
+   {
+    "level": 28,
+    "move": "bubblebeam"
+   },
+   {
+    "level": 33,
+    "move": "minimize"
+   },
+   {
+    "level": 37,
+    "move": "light-screen"
+   },
+   {
+    "level": 42,
+    "move": "cosmic-power"
+   },
+   {
+    "level": 46,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "mr-mime": {
+  "hp": 40,
+  "attack": 45,
+  "defense": 65,
+  "speed": 90,
+  "specialAttack": 100,
+  "specialDefense": 120,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 45,
+  "baseExp": 136,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 2
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "mr-mime",
+  "dex": 122,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "water-gun"
+   },
+   {
+    "level": 1,
+    "move": "rapid-spin"
+   },
+   {
+    "level": 1,
+    "move": "recover"
+   },
+   {
+    "level": 1,
+    "move": "swift"
+   },
+   {
+    "level": 33,
+    "move": "confuse-ray"
+   }
+  ]
+ },
+ "scyther": {
+  "hp": 70,
+  "attack": 110,
+  "defense": 80,
+  "speed": 105,
+  "specialAttack": 55,
+  "specialDefense": 80,
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 187,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "medium-fast",
+  "id": "scyther",
+  "dex": 123,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "barrier"
+   },
+   {
+    "level": 5,
+    "move": "confusion"
+   },
+   {
+    "level": 8,
+    "move": "substitute"
+   },
+   {
+    "level": 12,
+    "move": "meditate"
+   },
+   {
+    "level": 15,
+    "move": "doubleslap"
+   },
+   {
+    "level": 19,
+    "move": "light-screen"
+   },
+   {
+    "level": 19,
+    "move": "reflect"
+   },
+   {
+    "level": 22,
+    "move": "magical-leaf"
+   },
+   {
+    "level": 26,
+    "move": "encore"
+   },
+   {
+    "level": 29,
+    "move": "psybeam"
+   },
+   {
+    "level": 33,
+    "move": "recycle"
+   },
+   {
+    "level": 36,
+    "move": "trick"
+   },
+   {
+    "level": 40,
+    "move": "role-play"
+   },
+   {
+    "level": 43,
+    "move": "psychic"
+   },
+   {
+    "level": 47,
+    "move": "baton-pass"
+   },
+   {
+    "level": 50,
+    "move": "safeguard"
+   }
+  ]
+ },
+ "jynx": {
+  "hp": 65,
+  "attack": 50,
+  "defense": 35,
+  "speed": 95,
+  "specialAttack": 115,
+  "specialDefense": 95,
+  "types": [
+   "ice",
+   "psychic"
+  ],
+  "catchRate": 45,
+  "baseExp": 137,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 254,
+  "growthRate": "medium-fast",
+  "id": "jynx",
+  "dex": 124,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 6,
+    "move": "focus-energy"
+   },
+   {
+    "level": 11,
+    "move": "pursuit"
+   },
+   {
+    "level": 16,
+    "move": "false-swipe"
+   },
+   {
+    "level": 21,
+    "move": "agility"
+   },
+   {
+    "level": 26,
+    "move": "wing-attack"
+   },
+   {
+    "level": 31,
+    "move": "slash"
+   },
+   {
+    "level": 36,
+    "move": "swords-dance"
+   },
+   {
+    "level": 41,
+    "move": "double-team"
+   },
+   {
+    "level": 46,
+    "move": "fury-cutter"
+   }
+  ]
+ },
+ "electabuzz": {
+  "hp": 65,
+  "attack": 83,
+  "defense": 57,
+  "speed": 105,
+  "specialAttack": 95,
+  "specialDefense": 85,
+  "types": [
+   "electric"
+  ],
+  "catchRate": 45,
+  "baseExp": 156,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-fast",
+  "id": "electabuzz",
+  "dex": 125,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "pound"
+   },
+   {
+    "level": 1,
+    "move": "lick"
+   },
+   {
+    "level": 1,
+    "move": "lovely-kiss"
+   },
+   {
+    "level": 1,
+    "move": "powder-snow"
+   },
+   {
+    "level": 9,
+    "move": "lovely-kiss"
+   },
+   {
+    "level": 13,
+    "move": "powder-snow"
+   },
+   {
+    "level": 21,
+    "move": "doubleslap"
+   },
+   {
+    "level": 25,
+    "move": "ice-punch"
+   },
+   {
+    "level": 35,
+    "move": "mean-look"
+   },
+   {
+    "level": 41,
+    "move": "fake-tears"
+   },
+   {
+    "level": 51,
+    "move": "body-slam"
+   },
+   {
+    "level": 57,
+    "move": "perish-song"
+   },
+   {
+    "level": 67,
+    "move": "blizzard"
+   }
+  ]
+ },
+ "magmar": {
+  "hp": 65,
+  "attack": 95,
+  "defense": 57,
+  "speed": 93,
+  "specialAttack": 100,
+  "specialDefense": 85,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 45,
+  "baseExp": 167,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 2,
+   "specialDefense": 0
+  },
+  "genderRatio": 63,
+  "growthRate": "medium-fast",
+  "id": "magmar",
+  "dex": 126,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "quick-attack"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "thunderpunch"
+   },
+   {
+    "level": 9,
+    "move": "thunderpunch"
+   },
+   {
+    "level": 17,
+    "move": "light-screen"
+   },
+   {
+    "level": 25,
+    "move": "swift"
+   },
+   {
+    "level": 36,
+    "move": "screech"
+   },
+   {
+    "level": 47,
+    "move": "thunderbolt"
+   },
+   {
+    "level": 58,
+    "move": "thunder"
+   }
+  ]
+ },
+ "pinsir": {
+  "hp": 65,
+  "attack": 125,
+  "defense": 100,
+  "speed": 85,
+  "specialAttack": 55,
+  "specialDefense": 70,
+  "types": [
+   "bug"
+  ],
+  "catchRate": 45,
+  "baseExp": 200,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "pinsir",
+  "dex": 127,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "smog"
+   },
+   {
+    "level": 1,
+    "move": "fire-punch"
+   },
+   {
+    "level": 7,
+    "move": "leer"
+   },
+   {
+    "level": 13,
+    "move": "smog"
+   },
+   {
+    "level": 19,
+    "move": "fire-punch"
+   },
+   {
+    "level": 25,
+    "move": "smokescreen"
+   },
+   {
+    "level": 33,
+    "move": "sunny-day"
+   },
+   {
+    "level": 41,
+    "move": "flamethrower"
+   },
+   {
+    "level": 49,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 57,
+    "move": "fire-blast"
+   }
+  ]
+ },
+ "tauros": {
+  "hp": 75,
+  "attack": 100,
+  "defense": 95,
+  "speed": 110,
+  "specialAttack": 40,
+  "specialDefense": 70,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 45,
+  "baseExp": 211,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 0,
+  "growthRate": "slow",
+  "id": "tauros",
+  "dex": 128,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "vicegrip"
+   },
+   {
+    "level": 1,
+    "move": "focus-energy"
+   },
+   {
+    "level": 7,
+    "move": "bind"
+   },
+   {
+    "level": 13,
+    "move": "seismic-toss"
+   },
+   {
+    "level": 19,
+    "move": "harden"
+   },
+   {
+    "level": 25,
+    "move": "revenge"
+   },
+   {
+    "level": 31,
+    "move": "brick-break"
+   },
+   {
+    "level": 37,
+    "move": "guillotine"
+   },
+   {
+    "level": 43,
+    "move": "submission"
+   },
+   {
+    "level": 49,
+    "move": "swords-dance"
+   }
+  ]
+ },
+ "magikarp": {
+  "hp": 20,
+  "attack": 10,
+  "defense": 55,
+  "speed": 80,
+  "specialAttack": 15,
+  "specialDefense": 20,
+  "types": [
+   "water"
+  ],
+  "catchRate": 255,
+  "baseExp": 20,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 1,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "magikarp",
+  "dex": 129,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 20,
+    "to": "gyarados"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 4,
+    "move": "rage"
+   },
+   {
+    "level": 8,
+    "move": "horn-attack"
+   },
+   {
+    "level": 13,
+    "move": "scary-face"
+   },
+   {
+    "level": 19,
+    "move": "pursuit"
+   },
+   {
+    "level": 26,
+    "move": "swagger"
+   },
+   {
+    "level": 34,
+    "move": "rest"
+   },
+   {
+    "level": 43,
+    "move": "thrash"
+   },
+   {
+    "level": 53,
+    "move": "take-down"
+   }
+  ]
+ },
+ "gyarados": {
+  "hp": 95,
+  "attack": 125,
+  "defense": 79,
+  "speed": 81,
+  "specialAttack": 60,
+  "specialDefense": 100,
+  "types": [
+   "water",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 214,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "gyarados",
+  "dex": 130,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "splash"
+   },
+   {
+    "level": 15,
+    "move": "tackle"
+   },
+   {
+    "level": 30,
+    "move": "flail"
+   }
+  ]
+ },
+ "lapras": {
+  "hp": 130,
+  "attack": 85,
+  "defense": 80,
+  "speed": 60,
+  "specialAttack": 85,
+  "specialDefense": 95,
+  "types": [
+   "water",
+   "ice"
+  ],
+  "catchRate": 45,
+  "baseExp": 219,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "lapras",
+  "dex": 131,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "thrash"
+   },
+   {
+    "level": 20,
+    "move": "bite"
+   },
+   {
+    "level": 25,
+    "move": "dragon-rage"
+   },
+   {
+    "level": 30,
+    "move": "leer"
+   },
+   {
+    "level": 35,
+    "move": "twister"
+   },
+   {
+    "level": 40,
+    "move": "hydro-pump"
+   },
+   {
+    "level": 45,
+    "move": "rain-dance"
+   },
+   {
+    "level": 50,
+    "move": "dragon-dance"
+   },
+   {
+    "level": 55,
+    "move": "hyper-beam"
+   }
+  ]
+ },
+ "ditto": {
+  "hp": 48,
+  "attack": 48,
+  "defense": 48,
+  "speed": 48,
+  "specialAttack": 48,
+  "specialDefense": 48,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 35,
+  "baseExp": 61,
+  "evYield": {
+   "hp": 1,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "medium-fast",
+  "id": "ditto",
+  "dex": 132,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "water-gun"
+   },
+   {
+    "level": 1,
+    "move": "growl"
+   },
+   {
+    "level": 1,
+    "move": "sing"
+   },
+   {
+    "level": 7,
+    "move": "mist"
+   },
+   {
+    "level": 13,
+    "move": "body-slam"
+   },
+   {
+    "level": 19,
+    "move": "confuse-ray"
+   },
+   {
+    "level": 25,
+    "move": "perish-song"
+   },
+   {
+    "level": 31,
+    "move": "ice-beam"
+   },
+   {
+    "level": 37,
+    "move": "rain-dance"
+   },
+   {
+    "level": 43,
+    "move": "safeguard"
+   },
+   {
+    "level": 49,
+    "move": "hydro-pump"
+   },
+   {
+    "level": 55,
+    "move": "sheer-cold"
+   }
+  ]
+ },
+ "eevee": {
+  "hp": 55,
+  "attack": 55,
+  "defense": 50,
+  "speed": 55,
+  "specialAttack": 45,
+  "specialDefense": 65,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 45,
+  "baseExp": 92,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 1
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "eevee",
+  "dex": 133,
+  "evolutions": [
+   {
+    "method": "item",
+    "param": 96,
+    "to": "jolteon"
+   },
+   {
+    "method": "item",
+    "param": 97,
+    "to": "vaporeon"
+   },
+   {
+    "method": "item",
+    "param": 95,
+    "to": "flareon"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "transform"
+   }
+  ]
+ },
+ "vaporeon": {
+  "hp": 130,
+  "attack": 65,
+  "defense": 60,
+  "speed": 65,
+  "specialAttack": 110,
+  "specialDefense": 95,
+  "types": [
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 196,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "vaporeon",
+  "dex": 134,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "helping-hand"
+   },
+   {
+    "level": 8,
+    "move": "sand-attack"
+   },
+   {
+    "level": 16,
+    "move": "growl"
+   },
+   {
+    "level": 23,
+    "move": "quick-attack"
+   },
+   {
+    "level": 30,
+    "move": "bite"
+   },
+   {
+    "level": 36,
+    "move": "baton-pass"
+   },
+   {
+    "level": 42,
+    "move": "take-down"
+   }
+  ]
+ },
+ "jolteon": {
+  "hp": 65,
+  "attack": 65,
+  "defense": 60,
+  "speed": 130,
+  "specialAttack": 110,
+  "specialDefense": 95,
+  "types": [
+   "electric"
+  ],
+  "catchRate": 45,
+  "baseExp": 197,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "jolteon",
+  "dex": 135,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "helping-hand"
+   },
+   {
+    "level": 8,
+    "move": "sand-attack"
+   },
+   {
+    "level": 16,
+    "move": "water-gun"
+   },
+   {
+    "level": 23,
+    "move": "quick-attack"
+   },
+   {
+    "level": 30,
+    "move": "bite"
+   },
+   {
+    "level": 36,
+    "move": "aurora-beam"
+   },
+   {
+    "level": 42,
+    "move": "haze"
+   },
+   {
+    "level": 47,
+    "move": "acid-armor"
+   },
+   {
+    "level": 52,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "flareon": {
+  "hp": 65,
+  "attack": 130,
+  "defense": 60,
+  "speed": 65,
+  "specialAttack": 95,
+  "specialDefense": 110,
+  "types": [
+   "fire"
+  ],
+  "catchRate": 45,
+  "baseExp": 198,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "flareon",
+  "dex": 136,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "helping-hand"
+   },
+   {
+    "level": 8,
+    "move": "sand-attack"
+   },
+   {
+    "level": 16,
+    "move": "thundershock"
+   },
+   {
+    "level": 23,
+    "move": "quick-attack"
+   },
+   {
+    "level": 30,
+    "move": "double-kick"
+   },
+   {
+    "level": 36,
+    "move": "pin-missile"
+   },
+   {
+    "level": 42,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 47,
+    "move": "agility"
+   },
+   {
+    "level": 52,
+    "move": "thunder"
+   }
+  ]
+ },
+ "porygon": {
+  "hp": 65,
+  "attack": 60,
+  "defense": 70,
+  "speed": 40,
+  "specialAttack": 85,
+  "specialDefense": 75,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 45,
+  "baseExp": 130,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 1,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "medium-fast",
+  "id": "porygon",
+  "dex": 137,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "tail-whip"
+   },
+   {
+    "level": 1,
+    "move": "helping-hand"
+   },
+   {
+    "level": 8,
+    "move": "sand-attack"
+   },
+   {
+    "level": 16,
+    "move": "ember"
+   },
+   {
+    "level": 23,
+    "move": "quick-attack"
+   },
+   {
+    "level": 30,
+    "move": "bite"
+   },
+   {
+    "level": 36,
+    "move": "fire-spin"
+   },
+   {
+    "level": 42,
+    "move": "smog"
+   },
+   {
+    "level": 47,
+    "move": "leer"
+   },
+   {
+    "level": 52,
+    "move": "flamethrower"
+   }
+  ]
+ },
+ "omanyte": {
+  "hp": 35,
+  "attack": 40,
+  "defense": 100,
+  "speed": 35,
+  "specialAttack": 90,
+  "specialDefense": 55,
+  "types": [
+   "rock",
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 120,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "omanyte",
+  "dex": 138,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 40,
+    "to": "omastar"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "conversion-2"
+   },
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 1,
+    "move": "conversion"
+   },
+   {
+    "level": 9,
+    "move": "agility"
+   },
+   {
+    "level": 12,
+    "move": "psybeam"
+   },
+   {
+    "level": 20,
+    "move": "recover"
+   },
+   {
+    "level": 24,
+    "move": "sharpen"
+   },
+   {
+    "level": 32,
+    "move": "lock-on"
+   },
+   {
+    "level": 36,
+    "move": "tri-attack"
+   },
+   {
+    "level": 44,
+    "move": "recycle"
+   },
+   {
+    "level": 48,
+    "move": "zap-cannon"
+   }
+  ]
+ },
+ "omastar": {
+  "hp": 70,
+  "attack": 60,
+  "defense": 125,
+  "speed": 55,
+  "specialAttack": 115,
+  "specialDefense": 70,
+  "types": [
+   "rock",
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 199,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 2,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "omastar",
+  "dex": 139,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "constrict"
+   },
+   {
+    "level": 1,
+    "move": "withdraw"
+   },
+   {
+    "level": 13,
+    "move": "bite"
+   },
+   {
+    "level": 19,
+    "move": "water-gun"
+   },
+   {
+    "level": 25,
+    "move": "mud-shot"
+   },
+   {
+    "level": 31,
+    "move": "leer"
+   },
+   {
+    "level": 37,
+    "move": "protect"
+   },
+   {
+    "level": 43,
+    "move": "tickle"
+   },
+   {
+    "level": 49,
+    "move": "ancientpower"
+   },
+   {
+    "level": 55,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "kabuto": {
+  "hp": 30,
+  "attack": 80,
+  "defense": 90,
+  "speed": 55,
+  "specialAttack": 55,
+  "specialDefense": 45,
+  "types": [
+   "rock",
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 119,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 1,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "kabuto",
+  "dex": 140,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 40,
+    "to": "kabutops"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "constrict"
+   },
+   {
+    "level": 1,
+    "move": "withdraw"
+   },
+   {
+    "level": 1,
+    "move": "bite"
+   },
+   {
+    "level": 1,
+    "move": "water-gun"
+   },
+   {
+    "level": 13,
+    "move": "bite"
+   },
+   {
+    "level": 19,
+    "move": "water-gun"
+   },
+   {
+    "level": 25,
+    "move": "mud-shot"
+   },
+   {
+    "level": 31,
+    "move": "leer"
+   },
+   {
+    "level": 37,
+    "move": "protect"
+   },
+   {
+    "level": 40,
+    "move": "spike-cannon"
+   },
+   {
+    "level": 46,
+    "move": "tickle"
+   },
+   {
+    "level": 55,
+    "move": "ancientpower"
+   },
+   {
+    "level": 65,
+    "move": "hydro-pump"
+   }
+  ]
+ },
+ "kabutops": {
+  "hp": 60,
+  "attack": 115,
+  "defense": 105,
+  "speed": 80,
+  "specialAttack": 65,
+  "specialDefense": 70,
+  "types": [
+   "rock",
+   "water"
+  ],
+  "catchRate": 45,
+  "baseExp": 201,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "medium-fast",
+  "id": "kabutops",
+  "dex": 141,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "harden"
+   },
+   {
+    "level": 13,
+    "move": "absorb"
+   },
+   {
+    "level": 19,
+    "move": "leer"
+   },
+   {
+    "level": 25,
+    "move": "mud-shot"
+   },
+   {
+    "level": 31,
+    "move": "sand-attack"
+   },
+   {
+    "level": 37,
+    "move": "endure"
+   },
+   {
+    "level": 43,
+    "move": "metal-sound"
+   },
+   {
+    "level": 49,
+    "move": "mega-drain"
+   },
+   {
+    "level": 55,
+    "move": "ancientpower"
+   }
+  ]
+ },
+ "aerodactyl": {
+  "hp": 80,
+  "attack": 105,
+  "defense": 65,
+  "speed": 130,
+  "specialAttack": 60,
+  "specialDefense": 75,
+  "types": [
+   "rock",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 202,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 2,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "slow",
+  "id": "aerodactyl",
+  "dex": 142,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "fury-cutter"
+   },
+   {
+    "level": 1,
+    "move": "scratch"
+   },
+   {
+    "level": 1,
+    "move": "harden"
+   },
+   {
+    "level": 1,
+    "move": "absorb"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 13,
+    "move": "absorb"
+   },
+   {
+    "level": 19,
+    "move": "leer"
+   },
+   {
+    "level": 25,
+    "move": "mud-shot"
+   },
+   {
+    "level": 31,
+    "move": "sand-attack"
+   },
+   {
+    "level": 37,
+    "move": "endure"
+   },
+   {
+    "level": 40,
+    "move": "slash"
+   },
+   {
+    "level": 46,
+    "move": "metal-sound"
+   },
+   {
+    "level": 55,
+    "move": "mega-drain"
+   },
+   {
+    "level": 65,
+    "move": "ancientpower"
+   }
+  ]
+ },
+ "snorlax": {
+  "hp": 160,
+  "attack": 110,
+  "defense": 65,
+  "speed": 30,
+  "specialAttack": 65,
+  "specialDefense": 110,
+  "types": [
+   "normal"
+  ],
+  "catchRate": 25,
+  "baseExp": 154,
+  "evYield": {
+   "hp": 2,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 31,
+  "growthRate": "slow",
+  "id": "snorlax",
+  "dex": 143,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "wing-attack"
+   },
+   {
+    "level": 8,
+    "move": "agility"
+   },
+   {
+    "level": 15,
+    "move": "bite"
+   },
+   {
+    "level": 22,
+    "move": "supersonic"
+   },
+   {
+    "level": 29,
+    "move": "ancientpower"
+   },
+   {
+    "level": 36,
+    "move": "scary-face"
+   },
+   {
+    "level": 43,
+    "move": "take-down"
+   },
+   {
+    "level": 50,
+    "move": "hyper-beam"
+   }
+  ]
+ },
+ "articuno": {
+  "hp": 90,
+  "attack": 85,
+  "defense": 100,
+  "speed": 85,
+  "specialAttack": 95,
+  "specialDefense": 125,
+  "types": [
+   "ice",
+   "flying"
+  ],
+  "catchRate": 3,
+  "baseExp": 215,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 3
+  },
+  "genderRatio": 255,
+  "growthRate": "slow",
+  "id": "articuno",
+  "dex": 144,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "tackle"
+   },
+   {
+    "level": 5,
+    "move": "amnesia"
+   },
+   {
+    "level": 9,
+    "move": "defense-curl"
+   },
+   {
+    "level": 13,
+    "move": "belly-drum"
+   },
+   {
+    "level": 17,
+    "move": "headbutt"
+   },
+   {
+    "level": 21,
+    "move": "yawn"
+   },
+   {
+    "level": 25,
+    "move": "rest"
+   },
+   {
+    "level": 29,
+    "move": "snore"
+   },
+   {
+    "level": 33,
+    "move": "body-slam"
+   },
+   {
+    "level": 37,
+    "move": "sleep-talk"
+   },
+   {
+    "level": 41,
+    "move": "block"
+   },
+   {
+    "level": 45,
+    "move": "covet"
+   },
+   {
+    "level": 49,
+    "move": "rollout"
+   },
+   {
+    "level": 53,
+    "move": "hyper-beam"
+   }
+  ]
+ },
+ "zapdos": {
+  "hp": 90,
+  "attack": 90,
+  "defense": 85,
+  "speed": 100,
+  "specialAttack": 125,
+  "specialDefense": 90,
+  "types": [
+   "electric",
+   "flying"
+  ],
+  "catchRate": 3,
+  "baseExp": 216,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 3,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "slow",
+  "id": "zapdos",
+  "dex": 145,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "gust"
+   },
+   {
+    "level": 1,
+    "move": "powder-snow"
+   },
+   {
+    "level": 13,
+    "move": "mist"
+   },
+   {
+    "level": 25,
+    "move": "agility"
+   },
+   {
+    "level": 37,
+    "move": "mind-reader"
+   },
+   {
+    "level": 49,
+    "move": "ice-beam"
+   },
+   {
+    "level": 61,
+    "move": "reflect"
+   },
+   {
+    "level": 73,
+    "move": "blizzard"
+   },
+   {
+    "level": 85,
+    "move": "sheer-cold"
+   }
+  ]
+ },
+ "moltres": {
+  "hp": 90,
+  "attack": 100,
+  "defense": 90,
+  "speed": 90,
+  "specialAttack": 125,
+  "specialDefense": 85,
+  "types": [
+   "fire",
+   "flying"
+  ],
+  "catchRate": 3,
+  "baseExp": 217,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 3,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "slow",
+  "id": "moltres",
+  "dex": 146,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "peck"
+   },
+   {
+    "level": 1,
+    "move": "thundershock"
+   },
+   {
+    "level": 13,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 25,
+    "move": "agility"
+   },
+   {
+    "level": 37,
+    "move": "detect"
+   },
+   {
+    "level": 49,
+    "move": "drill-peck"
+   },
+   {
+    "level": 61,
+    "move": "charge"
+   },
+   {
+    "level": 73,
+    "move": "light-screen"
+   },
+   {
+    "level": 85,
+    "move": "thunder"
+   }
+  ]
+ },
+ "dratini": {
+  "hp": 41,
+  "attack": 64,
+  "defense": 45,
+  "speed": 50,
+  "specialAttack": 50,
+  "specialDefense": 50,
+  "types": [
+   "dragon"
+  ],
+  "catchRate": 45,
+  "baseExp": 67,
+  "evYield": {
+   "hp": 0,
+   "attack": 1,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "dratini",
+  "dex": 147,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 30,
+    "to": "dragonair"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "wing-attack"
+   },
+   {
+    "level": 1,
+    "move": "ember"
+   },
+   {
+    "level": 13,
+    "move": "fire-spin"
+   },
+   {
+    "level": 25,
+    "move": "agility"
+   },
+   {
+    "level": 37,
+    "move": "endure"
+   },
+   {
+    "level": 49,
+    "move": "flamethrower"
+   },
+   {
+    "level": 61,
+    "move": "safeguard"
+   },
+   {
+    "level": 73,
+    "move": "heat-wave"
+   },
+   {
+    "level": 85,
+    "move": "sky-attack"
+   }
+  ]
+ },
+ "dragonair": {
+  "hp": 61,
+  "attack": 84,
+  "defense": 65,
+  "speed": 70,
+  "specialAttack": 70,
+  "specialDefense": 70,
+  "types": [
+   "dragon"
+  ],
+  "catchRate": 45,
+  "baseExp": 144,
+  "evYield": {
+   "hp": 0,
+   "attack": 2,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "dragonair",
+  "dex": 148,
+  "evolutions": [
+   {
+    "method": "level",
+    "param": 55,
+    "to": "dragonite"
+   }
+  ],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "wrap"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 8,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 15,
+    "move": "twister"
+   },
+   {
+    "level": 22,
+    "move": "dragon-rage"
+   },
+   {
+    "level": 29,
+    "move": "slam"
+   },
+   {
+    "level": 36,
+    "move": "agility"
+   },
+   {
+    "level": 43,
+    "move": "safeguard"
+   },
+   {
+    "level": 50,
+    "move": "outrage"
+   },
+   {
+    "level": 57,
+    "move": "hyper-beam"
+   }
+  ]
+ },
+ "dragonite": {
+  "hp": 91,
+  "attack": 134,
+  "defense": 95,
+  "speed": 80,
+  "specialAttack": 100,
+  "specialDefense": 100,
+  "types": [
+   "dragon",
+   "flying"
+  ],
+  "catchRate": 45,
+  "baseExp": 218,
+  "evYield": {
+   "hp": 0,
+   "attack": 3,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 127,
+  "growthRate": "slow",
+  "id": "dragonite",
+  "dex": 149,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "wrap"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 1,
+    "move": "twister"
+   },
+   {
+    "level": 8,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 15,
+    "move": "twister"
+   },
+   {
+    "level": 22,
+    "move": "dragon-rage"
+   },
+   {
+    "level": 29,
+    "move": "slam"
+   },
+   {
+    "level": 38,
+    "move": "agility"
+   },
+   {
+    "level": 47,
+    "move": "safeguard"
+   },
+   {
+    "level": 56,
+    "move": "outrage"
+   },
+   {
+    "level": 65,
+    "move": "hyper-beam"
+   }
+  ]
+ },
+ "mewtwo": {
+  "hp": 106,
+  "attack": 110,
+  "defense": 90,
+  "speed": 130,
+  "specialAttack": 154,
+  "specialDefense": 90,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 3,
+  "baseExp": 220,
+  "evYield": {
+   "hp": 0,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 3,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "slow",
+  "id": "mewtwo",
+  "dex": 150,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "wrap"
+   },
+   {
+    "level": 1,
+    "move": "leer"
+   },
+   {
+    "level": 1,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 1,
+    "move": "twister"
+   },
+   {
+    "level": 8,
+    "move": "thunder-wave"
+   },
+   {
+    "level": 15,
+    "move": "twister"
+   },
+   {
+    "level": 22,
+    "move": "dragon-rage"
+   },
+   {
+    "level": 29,
+    "move": "slam"
+   },
+   {
+    "level": 38,
+    "move": "agility"
+   },
+   {
+    "level": 47,
+    "move": "safeguard"
+   },
+   {
+    "level": 55,
+    "move": "wing-attack"
+   },
+   {
+    "level": 61,
+    "move": "outrage"
+   },
+   {
+    "level": 75,
+    "move": "hyper-beam"
+   }
+  ]
+ },
+ "mew": {
+  "hp": 100,
+  "attack": 100,
+  "defense": 100,
+  "speed": 100,
+  "specialAttack": 100,
+  "specialDefense": 100,
+  "types": [
+   "psychic"
+  ],
+  "catchRate": 45,
+  "baseExp": 64,
+  "evYield": {
+   "hp": 3,
+   "attack": 0,
+   "defense": 0,
+   "speed": 0,
+   "specialAttack": 0,
+   "specialDefense": 0
+  },
+  "genderRatio": 255,
+  "growthRate": "medium-slow",
+  "id": "mew",
+  "dex": 151,
+  "evolutions": [],
+  "learnset": [
+   {
+    "level": 1,
+    "move": "confusion"
+   },
+   {
+    "level": 1,
+    "move": "disable"
+   },
+   {
+    "level": 11,
+    "move": "barrier"
+   },
+   {
+    "level": 22,
+    "move": "mist"
+   },
+   {
+    "level": 33,
+    "move": "swift"
+   },
+   {
+    "level": 44,
+    "move": "recover"
+   },
+   {
+    "level": 55,
+    "move": "safeguard"
+   },
+   {
+    "level": 66,
+    "move": "psychic"
+   },
+   {
+    "level": 77,
+    "move": "psych-up"
+   },
+   {
+    "level": 88,
+    "move": "future-sight"
+   },
+   {
+    "level": 99,
+    "move": "amnesia"
+   }
+  ]
+ }
+}
