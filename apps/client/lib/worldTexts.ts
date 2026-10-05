@@ -5,10 +5,8 @@
  * elsewhere (trainers, clerks, nurses, story NPCs) or deferred.
  */
 
-import {
-  GENERATED_NPC_TEXT,
-  GENERATED_SIGN_TEXT,
-} from "./generated/worldTexts";
+import { KANTO_NPC_TEXT_PT } from "./worldTextsKantoNpcPt";
+import { KANTO_SIGN_TEXT_PT } from "./worldTextsKantoSignPt";
 
 export const WORLD_NPC_TEXT: Readonly<
   Record<string, readonly string[]>
@@ -633,7 +631,7 @@ export function resolveWorldNpcPages(
   y: number,
 ): readonly string[] | null {
   const key = `${mapId}:${x},${y}`;
-  return WORLD_NPC_TEXT[key] ?? GENERATED_NPC_TEXT[key] ?? null;
+  return WORLD_NPC_TEXT[key] ?? KANTO_NPC_TEXT_PT[key] ?? null;
 }
 
 export function resolveWorldSignPages(
@@ -642,5 +640,5 @@ export function resolveWorldSignPages(
   y: number,
 ): readonly string[] | null {
   const key = `${mapId}:${x},${y}`;
-  return WORLD_SIGN_TEXT[key] ?? GENERATED_SIGN_TEXT[key] ?? null;
+  return WORLD_SIGN_TEXT[key] ?? KANTO_SIGN_TEXT_PT[key] ?? null;
 }
