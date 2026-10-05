@@ -86,8 +86,8 @@ import {
   isVermilionGymBeamWalkable,
 } from "@/lib/vermilionGym";
 
-const STEP_DURATION_MS = 142;
-const JUMP_DURATION_MS = 250;
+const STEP_DURATION_MS = 250;
+const JUMP_DURATION_MS = 320;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
 const POSITION_STORAGE_KEY = "tactimon.position.v1";
