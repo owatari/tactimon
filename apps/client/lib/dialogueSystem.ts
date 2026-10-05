@@ -5,6 +5,13 @@ import {
   resolveWorldNpcPages,
 } from "./worldTexts";
 import {
+  MAGIKARP_PRICE,
+  fossilToRevive,
+  giftMessage,
+  grantGiftPokemon,
+  hasReceivedGift,
+} from "./giftPokemon";
+import {
   grantStoryFieldTechniqueOnce,
   grantStoryKeyItemOnce,
   removeStoryKeyItem,
@@ -19,6 +26,7 @@ import {
   interactWithCutObstacle,
   interactWithSsAnneCaptain,
   runBillCellSeparator,
+  getStoryPlayerChoice,
   setStoryPlayerChoice,
   storyStarterSummary,
   type MtMoonFossilId,
@@ -611,6 +619,99 @@ const DIALOGUE_DEFINITIONS: Record<
       },
     ],
   },
+  "silph-lapras-gift": {
+    id: "silph-lapras-gift",
+    interact: (story) => {
+      const gift = grantGiftPokemon(story, "lapras", "lapras", 25);
+      return {
+        story: gift.story,
+        presentation: dialoguePresentationFromText(
+          "silph-lapras-gift",
+          gift.granted
+            ? `Funcionário: Oh! Oi! Você não é um Rocket! Veio nos salvar? Obrigado! Quero que fique com este Pokémon por nos salvar. ${giftMessage("lapras", gift.destination)}`
+            : gift.reason === "storage-full"
+              ? "Funcionário: Seu PC está cheio! Libere espaço e volte."
+              : "Funcionário: Obrigado por nos salvar! Cuide bem do Lapras.",
+          "Funcionário",
+        ),
+      };
+    },
+  },
+  "cinnabar-fossil-revive": {
+    id: "cinnabar-fossil-revive",
+    interact: (story) => {
+      const fossil = fossilToRevive(story);
+      if (!fossil) {
+        return {
+          story,
+          presentation: dialoguePresentationFromText(
+            "cinnabar-fossil-revive",
+            "Doutor: Eu sou um doutor muito importante. Estudo fósseis de Pokémon raros o tempo todo. Você tem um fóssil para mim?",
+            "Doutor",
+          ),
+        };
+      }
+      const gift = grantGiftPokemon(story, fossil.giftId, fossil.species, 5);
+      return {
+        story: gift.story,
+        presentation: dialoguePresentationFromText(
+          "cinnabar-fossil-revive",
+          gift.granted
+            ? `Doutor: Ótimo! Vou regenerar o fóssil agora… Pronto, deu certo! ${giftMessage(fossil.species, gift.destination)}`
+            : "Doutor: Seu PC está cheio! Libere espaço e volte.",
+          "Doutor",
+        ),
+      };
+    },
+  },
+  "magikarp-salesman": {
+    id: "magikarp-salesman",
+    interact: (story) => {
+      if (hasReceivedGift(story, "magikarp")) {
+        return {
+          story,
+          presentation: dialoguePresentationFromText(
+            "magikarp-salesman",
+            "Vendedor: Bem, não faço reembolso. Você sabia o que estava comprando!",
+            "Vendedor",
+          ),
+        };
+      }
+      if (getStoryPlayerChoice(story, "magikarp-offer") !== "offered") {
+        return {
+          story: setStoryPlayerChoice(story, "magikarp-offer", "offered"),
+          presentation: dialoguePresentationFromText(
+            "magikarp-salesman",
+            `Vendedor: Olá, rapaz! Tenho uma oferta imperdível! Um Pokémon secreto, o Magikarp, por apenas ₽${MAGIKARP_PRICE}! Fale comigo de novo para fechar negócio.`,
+            "Vendedor",
+          ),
+        };
+      }
+      if (story.money < MAGIKARP_PRICE) {
+        return {
+          story,
+          presentation: dialoguePresentationFromText(
+            "magikarp-salesman",
+            "Vendedor: Você não tem dinheiro suficiente! Volte quando tiver ₽500.",
+            "Vendedor",
+          ),
+        };
+      }
+      const gift = grantGiftPokemon(story, "magikarp", "magikarp", 5);
+      return {
+        story: gift.granted
+          ? { ...gift.story, money: gift.story.money - MAGIKARP_PRICE }
+          : gift.story,
+        presentation: dialoguePresentationFromText(
+          "magikarp-salesman",
+          gift.granted
+            ? `Vendedor: Negócio fechado! ${giftMessage("magikarp", gift.destination)}`
+            : "Vendedor: Seu PC está cheio! Libere espaço e volte.",
+          "Vendedor",
+        ),
+      };
+    },
+  },
   "safari-secret-house-surf": {
     id: "safari-secret-house-surf",
     interact: (story) => {
@@ -782,6 +883,9 @@ const WORLD_OBJECT_DIALOGUE_IDS: Record<
   "pallet-town:3,10": "pallet-woman",
   "pallet-players-house-1f:8,4": "pallet-mom",
   "safari-zone-secret-house:6,5": "safari-secret-house-surf",
+  "silph-co-7f:0,7": "silph-lapras-gift",
+  "cinnabar-island-pokemon-lab-experiment-room:12,3": "cinnabar-fossil-revive",
+  "route-4-pokemon-center:1,3": "magikarp-salesman",
   "pallet-rivals-house:10,6": "pallet-daisy",
   "pewter-museum-1f:21,3": "museum-old-amber",
   "vermilion-pokemon-fan-club:5,4": "fan-club-chairman",

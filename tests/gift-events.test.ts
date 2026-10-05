@@ -74,3 +74,37 @@ describe("Surf", () => {
     expect(again.story.fieldTechniqueIds?.filter((id) => id === "surf")).toHaveLength(1);
   });
 });
+
+describe("gift Pokémon events", () => {
+  it("gives Lapras once and stores it in the party", () => {
+    const first = talk(started(), "silph-lapras-gift");
+    expect(first.story.capturedPokemon.map((p) => p.species)).toContain("lapras");
+    const again = talk(first.story, "silph-lapras-gift");
+    expect(again.story.capturedPokemon.filter((p) => p.species === "lapras")).toHaveLength(1);
+  });
+
+  it("revives the Mt. Moon fossil and the Old Amber at the Cinnabar Lab", () => {
+    const withFossil = { ...started(), mtMoonFossil: "helix" as const };
+    const omanyte = talk(withFossil, "cinnabar-fossil-revive");
+    expect(omanyte.story.capturedPokemon.map((p) => p.species)).toContain("omanyte");
+    const amber = talk(talk(omanyte.story, "museum-old-amber").story, "cinnabar-fossil-revive");
+    expect(amber.story.capturedPokemon.map((p) => p.species)).toContain("aerodactyl");
+    const nothing = talk(amber.story, "cinnabar-fossil-revive");
+    expect(nothing.story.capturedPokemon).toHaveLength(amber.story.capturedPokemon.length);
+  });
+
+  it("sells Magikarp for ₽500 after a confirming second talk", () => {
+    const poor = { ...started(), money: 100 };
+    const offer = talk(poor, "magikarp-salesman");
+    expect(offer.story.money).toBe(100);
+    expect(talk(offer.story, "magikarp-salesman").story.capturedPokemon).toHaveLength(0);
+
+    const rich = { ...started(), money: 2000 };
+    const offered = talk(rich, "magikarp-salesman").story;
+    expect(offered.capturedPokemon).toHaveLength(0);
+    const bought = talk(offered, "magikarp-salesman").story;
+    expect(bought.money).toBe(1500);
+    expect(bought.capturedPokemon.map((p) => p.species)).toContain("magikarp");
+    expect(talk(bought, "magikarp-salesman").story.money).toBe(1500);
+  });
+});
