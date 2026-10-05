@@ -1,5 +1,9 @@
-import { SILPH_DOORS } from "./generated/worldObstacles";
 import {
+  MANSION_BARRIERS,
+  SILPH_DOORS,
+} from "./generated/worldObstacles";
+import {
+  MANSION_SWITCH_CHOICE,
   SAFFRON_GUARDS_OPEN_EVENT,
   silphDoorEventId,
   staticEncounterEventId,
@@ -141,6 +145,37 @@ const SILPH_DOOR_GATES: readonly PlayerWorldTileGate[] =
     })),
   );
 
+/** Pokémon Mansion barriers: open in one state of the statue switch. */
+const MANSION_GATES: readonly PlayerWorldTileGate[] = MANSION_BARRIERS.map(
+  (barrier) => ({
+    id: `gate:mansion:${barrier.mapId}:${barrier.x},${barrier.y}`,
+    kind: "tile" as const,
+    mapId: barrier.mapId,
+    x: barrier.x,
+    y: barrier.y,
+    allowWhen:
+      barrier.openIn === "b"
+        ? {
+            kind: "choice" as const,
+            id: MANSION_SWITCH_CHOICE,
+            equals: "b",
+          }
+        : {
+            kind: "not" as const,
+            condition: {
+              kind: "choice" as const,
+              id: MANSION_SWITCH_CHOICE,
+              equals: "b",
+            },
+          },
+    blockedRequest: {
+      kind: "text" as const,
+      id: "gate:mansion-barrier",
+      text: "Uma barreira de metal bloqueia a passagem. Deve haver um interruptor secreto em alguma estátua da mansão.",
+    },
+  }),
+);
+
 export const QUEST_TILE_GATES: readonly PlayerWorldTileGate[] = [
   ...SAFFRON_GATES,
   ...TOWER_GHOST_GATES,
@@ -148,17 +183,24 @@ export const QUEST_TILE_GATES: readonly PlayerWorldTileGate[] = [
   ROCKET_HIDEOUT_GATE,
   SAFARI_ENTRANCE_GATE,
   ...SILPH_DOOR_GATES,
+  ...MANSION_GATES,
 ];
 
-/** Card Key door cells are closed metatiles; open them for the gates above. */
+/**
+ * Card Key doors and Mansion barriers are closed metatiles; their cells are
+ * walkable and the tile gates above decide when they actually let you through.
+ */
 export const QUEST_OPEN_CELLS: Readonly<
   Record<string, readonly (readonly [number, number])[]>
-> = SILPH_DOORS.reduce<Record<string, [number, number][]>>(
-  (acc, door) => {
-    (acc[door.mapId] ??= []).push(
+> = (() => {
+  const cells: Record<string, [number, number][]> = {};
+  for (const door of SILPH_DOORS) {
+    (cells[door.mapId] ??= []).push(
       ...door.cells.map(([x, y]) => [x, y] as [number, number]),
     );
-    return acc;
-  },
-  {},
-);
+  }
+  for (const barrier of MANSION_BARRIERS) {
+    (cells[barrier.mapId] ??= []).push([barrier.x, barrier.y]);
+  }
+  return cells;
+})();

@@ -300,3 +300,30 @@ describe("generated cut trees", () => {
     }
   });
 });
+
+describe("Pokémon Mansion statue switches", () => {
+  it("toggle the barriers between the two states", async () => {
+    const { MANSION_BARRIERS } = await import(
+      "../apps/client/lib/generated/worldObstacles"
+    );
+    const openInA = MANSION_BARRIERS.find((cell) => cell.openIn === "a")!;
+    const openInB = MANSION_BARRIERS.find((cell) => cell.openIn === "b")!;
+    const gateFor = (story: StoryState, cell: typeof openInA) =>
+      resolveBlockedPlayerTileGate(story, cell.mapId, cell.x, cell.y);
+
+    const initial = started();
+    expect(gateFor(initial, openInA)).toBeNull();
+    expect(gateFor(initial, openInB)).not.toBeNull();
+
+    const pressed = talk(initial, "mansion-switch-press").story;
+    expect(gateFor(pressed, openInA)).not.toBeNull();
+    expect(gateFor(pressed, openInB)).toBeNull();
+
+    const back = talk(pressed, "mansion-switch-press").story;
+    expect(gateFor(back, openInA)).toBeNull();
+
+    const prompt = talk(initial, "mansion-switch");
+    expect(prompt.presentation.pages[0].choices).toHaveLength(2);
+    expect(isWorldOpenCell(openInA.mapId, openInA.x, openInA.y)).toBe(true);
+  });
+});

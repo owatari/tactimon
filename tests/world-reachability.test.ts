@@ -139,8 +139,8 @@ describe.skipIf(!hasAssets)("world reachability", () => {
     const unreachable = Object.keys(WORLD_MAPS).filter(
       (id) => !withSurf.has(id),
     );
-    // Pokémon Mansion B1F sits behind the statue-switch puzzle (not implemented yet).
-    expect(unreachable).toEqual(["pokemon-mansion-b-1f"]);
+    // The Mansion's statue-switch barriers count as open (switches can always be toggled).
+    expect(unreachable).toEqual([]);
     expect(withSurf.has("indigo-plateau-exterior")).toBe(true);
     expect(withSurf.has("pokemon-league-champions-room")).toBe(true);
     expect(withSurf.has("cinnabar-island")).toBe(true);
@@ -150,5 +150,70 @@ describe.skipIf(!hasAssets)("world reachability", () => {
     const walking = reachable(false);
     expect(walking.has("cinnabar-island")).toBe(false);
     expect(walking.has("lavender-town")).toBe(true);
+  });
+});
+
+describe.skipIf(!hasAssets)("pokemon mansion switch puzzle", () => {
+  it("can be solved: B1F is reachable by toggling the statue switches", async () => {
+    const { MANSION_BARRIERS, MANSION_SWITCHES } = await import(
+      "../apps/client/lib/generated/worldObstacles"
+    );
+    const barrier = new Map(
+      MANSION_BARRIERS.map((b) => [`${b.mapId}:${b.x},${b.y}`, b.openIn]),
+    );
+    const switches = new Set(
+      MANSION_SWITCHES.map((s) => `${s.mapId}:${s.x},${s.y}`),
+    );
+
+    const entry = resolveWarpTransitionAt("cinnabar-island", 8, 3);
+    expect(entry?.mapId).toBe("pokemon-mansion-1f");
+
+    type Node = [string, number, number, "a" | "b"];
+    const start: Node = [entry!.mapId, entry!.spawn.x, entry!.spawn.y, "a"];
+    const seen = new Set([start.join("|")]);
+    const queue: Node[] = [start];
+    const maps = new Set<string>();
+
+    while (queue.length) {
+      const [mapId, x, y, state] = queue.pop()!;
+      maps.add(mapId);
+      const layout = layoutOf(mapId);
+      const push = (node: Node) => {
+        if (!WORLD_MAPS[node[0]] || !node[0].startsWith("pokemon-mansion")) {
+          return; // stay inside the Mansion
+        }
+        const k = node.join("|");
+        if (!seen.has(k)) {
+          seen.add(k);
+          queue.push(node);
+        }
+      };
+
+      for (const [, dx, dy] of DIRS) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= layout.width || ny >= layout.height) {
+          continue;
+        }
+        const id = `${mapId}:${nx},${ny}`;
+        if (switches.has(id)) {
+          push([mapId, x, y, state === "a" ? "b" : "a"]);
+          continue;
+        }
+        if (barrier.has(id) && barrier.get(id) !== state) continue;
+
+        const warp = resolveWarpTransitionAt(mapId, nx, ny);
+        if (warp) {
+          push([warp.mapId, warp.spawn.x, warp.spawn.y, state]);
+          continue;
+        }
+        const cell = layout.cells[ny * layout.width + nx];
+        if (cell.collision === 0 || isWorldOpenCell(mapId, nx, ny)) {
+          push([mapId, nx, ny, state]);
+        }
+      }
+    }
+
+    expect(maps.has("pokemon-mansion-b-1f")).toBe(true);
   });
 });

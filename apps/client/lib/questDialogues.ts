@@ -50,6 +50,7 @@ import {
 import { getPokedex } from "./pokedex";
 import {
   FUJI_RESCUED_EVENT,
+  MANSION_SWITCH_CHOICE,
   SAFFRON_GUARDS_OPEN_EVENT,
   silphDoorEventId,
 } from "./questEvents";
@@ -62,12 +63,14 @@ import {
 import { getStaticEncounter } from "./staticEncounters";
 import {
   completeStoryPlayerEvent,
+  getStoryPlayerChoice,
   grantStoryFieldTechniqueOnce,
   grantStoryKeyItemOnce,
   hasStoryFieldTechnique,
   hasStoryKeyItem,
   hasStoryPlayerEvent,
   removeStoryKeyItem,
+  setStoryPlayerChoice,
   type StoryFieldTechniqueId,
   type StoryKeyItemId,
   type StoryState,
@@ -1103,6 +1106,57 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
         "Atendente: Os prêmios deste balcão (TMs) estão em falta. Só são encontrados em raids e dungeons.",
         "Atendente",
       ),
+  },
+  "mansion-switch": {
+    id: "mansion-switch",
+    interact: (story) => {
+      return {
+        story,
+        presentation: {
+          id: "mansion-switch",
+          pages: [
+            {
+              id: "ask",
+              text: "Uma estátua de Pokémon com um botão escondido. Apertar o interruptor secreto?",
+              choices: [
+                {
+                  id: "press",
+                  label: "Apertar",
+                  request: { kind: "script", id: "mansion-switch-press" },
+                },
+                {
+                  id: "leave",
+                  label: "Não",
+                  request: {
+                    kind: "text",
+                    id: "mansion-switch-leave",
+                    text: "Você deixou a estátua em paz.",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  },
+  "mansion-switch-press": {
+    id: "mansion-switch-press",
+    interact: (story) => {
+      const current =
+        getStoryPlayerChoice(story, MANSION_SWITCH_CHOICE) === "b"
+          ? "b"
+          : "a";
+      return reply(
+        setStoryPlayerChoice(
+          story,
+          MANSION_SWITCH_CHOICE,
+          current === "a" ? "b" : "a",
+        ),
+        "mansion-switch-press",
+        "Você apertou o interruptor secreto! Em algum lugar da mansão, barreiras se moveram...",
+      );
+    },
   },
   "tower-ghost": {
     id: "tower-ghost",

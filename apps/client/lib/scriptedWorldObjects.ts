@@ -4,6 +4,7 @@ import type {
 import {
   CUT_TREES as GENERATED_CUT_TREES,
   KEY_ITEM_BALLS as GENERATED_KEY_ITEM_BALLS,
+  MANSION_SWITCHES as GENERATED_MANSION_SWITCHES,
   SLOT_MACHINES as GENERATED_SLOT_MACHINES,
   STRENGTH_BOULDERS as GENERATED_BOULDERS,
 } from "./generated/worldObstacles";
@@ -455,6 +456,24 @@ const SLOT_MACHINE_OBJECTS:
     request: { kind: "script" as const, id: "slot-machine" },
   }));
 
+const MANSION_SWITCH_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  GENERATED_MANSION_SWITCHES.map((statue) => ({
+    id: `${statue.mapId}-switch-${statue.x}-${statue.y}`,
+    mapId: statue.mapId,
+    label: "Statue",
+    x: statue.x,
+    y: statue.y,
+    spriteUrl: "",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    // The statue is part of the map art; the object only makes it pressable.
+    renderSprite: false,
+    request: { kind: "script" as const, id: "mansion-switch" },
+  }));
+
 const STATIC_ENCOUNTER_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] =
   STATIC_WORLD_ENCOUNTERS.map((encounter) => ({
@@ -572,6 +591,7 @@ export const SCRIPTED_WORLD_OBJECTS:
     ...BOULDER_OBJECTS,
     ...KEY_ITEM_BALL_OBJECTS,
     ...SLOT_MACHINE_OBJECTS,
+    ...MANSION_SWITCH_OBJECTS,
     ...QUEST_NPC_OBJECTS,
     ...STATIC_ENCOUNTER_OBJECTS,
     ...CENTER_NURSES,
