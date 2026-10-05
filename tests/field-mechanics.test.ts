@@ -357,3 +357,30 @@ describe("Cerulean Cave and Mewtwo", () => {
     expect(object?.wildBattle?.species).toBe("mewtwo");
   });
 });
+
+describe("Silph Co. president and ball items", () => {
+  it("hands over the Master Ball once Giovanni is beaten", () => {
+    const before = talk(started(), "silph-president");
+    expect(before.story.bagItems?.["master-ball"]).toBeUndefined();
+
+    const beaten = completeStoryPlayerEvent(
+      started(),
+      "trainer",
+      "silph-co-11f-giovanni",
+    );
+    const reward = talk(beaten, "silph-president");
+    expect(reward.story.bagItems?.["master-ball"]).toBe(1);
+    expect(talk(reward.story, "silph-president").story.bagItems?.["master-ball"]).toBe(1);
+  });
+
+  it("brings the Master Ball and Ultra Ball into battle", async () => {
+    const { toBattleInventory } = await import("../apps/client/lib/itemUse");
+    const story = {
+      ...started(),
+      bagItems: { "master-ball": 1, "ultra-ball": 2 },
+    } as StoryState;
+    const inventory = toBattleInventory(story);
+    expect(inventory["master-ball"]).toBe(1);
+    expect(inventory["ultra-ball"]).toBe(2);
+  });
+});

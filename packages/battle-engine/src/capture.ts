@@ -49,6 +49,8 @@ export interface CaptureChanceInput {
 }
 
 export function experimentalCaptureChance(input: CaptureChanceInput): number {
+  // Master Ball: the capture never fails.
+  if (input.ballModifier >= 255) return 1;
   const threshold = input.thresholdRatio ?? 0.50;
   const legalHp = Math.max(0, Math.min(threshold, input.hpRatio));
   const species = Math.max(1, Math.min(255, input.catchRate)) / 255;

@@ -8,6 +8,7 @@ import { GENERATED_BAG_ITEMS } from "./generated/worldItems";
  * dungeon/raid systems.
  */
 const HAND_BAG_ITEM_CATALOG = {
+  "master-ball": { name: "Master Ball", firered: 1 },
   "great-ball": { name: "Great Ball", firered: 3 },
   antidote: { name: "Antidote", firered: 14 },
   "burn-heal": { name: "Burn Heal", firered: 15 },
@@ -90,6 +91,8 @@ const ITEM_DESCRIPTIONS: Partial<Record<OverworldItemId, string>> = {
   potion: "Restaura 20 HP de um Pokémon.",
   "poke-ball": "Usada para capturar Pokémon selvagens.",
   "great-ball": "Bola melhor que a Poké Ball para capturar Pokémon.",
+  "ultra-ball": "Bola de alto desempenho: captura melhor que a Great Ball.",
+  "master-ball": "A melhor bola: nunca falha em capturar um Pokémon.",
   antidote: "Cura um Pokémon envenenado.",
   "burn-heal": "Cura a queimadura de um Pokémon.",
   "ice-heal": "Descongela um Pokémon.",

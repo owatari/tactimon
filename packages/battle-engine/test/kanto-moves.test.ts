@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  DUEL_ITEMS,
   DUEL_MOVES,
   applyDuelAction,
   createTrainerDuel,
@@ -97,5 +98,17 @@ describe("generated Kanto moves with special effects", () => {
       if (result.presentation?.kind !== "move") continue;
       expect(result.presentation.results[0].damage).toBeGreaterThanOrEqual(0);
     }
+  });
+});
+
+describe("Ultra Ball and Master Ball", () => {
+  it("a Master Ball never fails and an Ultra Ball beats a Great Ball", async () => {
+    const { experimentalCaptureChance } = await import("../src/capture");
+    const base = { catchRate: 3, statusModifier: 1, hpRatio: 0.4, thresholdRatio: 0.5 };
+    expect(experimentalCaptureChance({ ...base, ballModifier: 255 })).toBe(1);
+    expect(DUEL_ITEMS["ultra-ball"].kind).toBe("capture");
+    expect(
+      experimentalCaptureChance({ ...base, ballModifier: 2 }),
+    ).toBeGreaterThan(experimentalCaptureChance({ ...base, ballModifier: 1.5 }));
   });
 });

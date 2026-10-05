@@ -1158,6 +1158,42 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       );
     },
   },
+  "silph-president": {
+    id: "silph-president",
+    interact: (story) => {
+      const speaker = "Presidente";
+      if (hasStoryPlayerEvent(story, "reward", "silph-master-ball")) {
+        return reply(
+          story,
+          "silph-president",
+          "Presidente: Obrigado por salvar a Silph Co.! Cuide bem da Master Ball!",
+          speaker,
+        );
+      }
+      if (
+        !hasStoryPlayerEvent(story, "trainer", "silph-co-11f-giovanni")
+      ) {
+        return reply(
+          story,
+          "silph-president",
+          "Presidente: Socorro! A Team Rocket tomou a nossa empresa! Por favor, derrote Giovanni!",
+          speaker,
+        );
+      }
+      const bagItems = { ...story.bagItems };
+      bagItems["master-ball"] = (bagItems["master-ball"] ?? 0) + 1;
+      return reply(
+        completeStoryPlayerEvent(
+          { ...story, bagItems },
+          "reward",
+          "silph-master-ball",
+        ),
+        "silph-president",
+        "Presidente: Você nos salvou! Como agradecimento, leve a nossa criação mais valiosa: a Master Ball! Ela nunca falha em capturar um Pokémon. Você recebeu a Master Ball!",
+        speaker,
+      );
+    },
+  },
   "tower-ghost": {
     id: "tower-ghost",
     interact: (story) =>
@@ -1236,6 +1272,7 @@ export const QUEST_WORLD_OBJECT_DIALOGUE_IDS: Record<string, string> = {
   "route-12-fishing-house:4,4": "route12-super-rod-guru",
   "celadon-city-restaurant:1,2": "celadon-coin-case-man",
   "celadon-city-condominiums-1f:2,9": "celadon-tea-woman",
+  "silph-co-11f:9,9": "silph-president",
   "fuchsia-city-safari-zone-entrance:7,3": "safari-entrance",
   "celadon-city-game-corner:4,2": "game-corner-clerk",
   "celadon-city-game-corner-prize-room:4,2": "game-corner-prizes",

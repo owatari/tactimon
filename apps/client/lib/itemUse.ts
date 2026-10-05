@@ -334,6 +334,8 @@ const BATTLE_BAG_ITEM_IDS = [
   "awakening",
   "burn-heal",
   "great-ball",
+  "ultra-ball",
+  "master-ball",
 ] as const;
 
 /** Battle bag = engine inventory + usable Bag items. */

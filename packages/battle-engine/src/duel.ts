@@ -123,7 +123,9 @@ export type DuelItemId =
   | "parlyz-heal"
   | "awakening"
   | "burn-heal"
-  | "great-ball";
+  | "great-ball"
+  | "ultra-ball"
+  | "master-ball";
 const DUEL_EXTRA_ITEM_IDS = [
   "super-potion",
   "hyper-potion",
@@ -132,6 +134,8 @@ const DUEL_EXTRA_ITEM_IDS = [
   "awakening",
   "burn-heal",
   "great-ball",
+  "ultra-ball",
+  "master-ball",
 ] as const;
 export type DuelExtraItemId = (typeof DUEL_EXTRA_ITEM_IDS)[number];
 /** Potion and Poké Ball are always tracked; other items are optional. */
@@ -1524,6 +1528,21 @@ export const DUEL_ITEMS = {
     kind: "capture",
     target: "wild-enemy",
     ballModifier: 1.5,
+  },
+  "ultra-ball": {
+    id: "ultra-ball",
+    name: "Ultra Ball",
+    kind: "capture",
+    target: "wild-enemy",
+    ballModifier: 2,
+  },
+  /** A modifier of 255 or more never fails (see experimentalCaptureChance). */
+  "master-ball": {
+    id: "master-ball",
+    name: "Master Ball",
+    kind: "capture",
+    target: "wild-enemy",
+    ballModifier: 255,
   },
   "super-potion": {
     id: "super-potion",

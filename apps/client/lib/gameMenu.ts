@@ -152,6 +152,8 @@ export type BagPocket = {
 const BALL_IDS: ReadonlySet<OverworldItemId> = new Set([
   "poke-ball",
   "great-ball",
+  "ultra-ball",
+  "master-ball",
 ]);
 
 function itemEntry(
