@@ -54,7 +54,12 @@ import {
   hasReceivedGift,
 } from "./giftPokemon";
 import {
+  CINNABAR_QUIZ_QUESTIONS,
+  cinnabarDoorEventId,
+} from "./cinnabarQuiz";
+import {
   FUJI_RESCUED_EVENT,
+  ROCKET_ELEVATOR_FLOORS,
   MANSION_SWITCH_CHOICE,
   SAFFRON_GUARDS_OPEN_EVENT,
   silphDoorEventId,
@@ -1206,6 +1211,119 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
     25,
     ["hitmonlee"],
   ),
+  "cinnabar-quiz": {
+    id: "cinnabar-quiz",
+    interact: (story, context) => {
+      const quizId = typeof context.quizId === "number" ? context.quizId : 0;
+      const quiz = CINNABAR_QUIZ_QUESTIONS[quizId];
+      if (!quiz) return reply(story, "cinnabar-quiz", "...");
+      if (hasStoryPlayerEvent(story, "story", cinnabarDoorEventId(quizId))) {
+        return reply(
+          story,
+          "cinnabar-quiz",
+          "A máquina de quiz já abriu a porta desta sala.",
+        );
+      }
+      const answer = (value: boolean) => ({
+        id: value ? "yes" : "no",
+        label: value ? "Sim" : "Não",
+        request: {
+          kind: "script" as const,
+          id: "cinnabar-quiz-answer",
+          context: { quizId, answer: value },
+        },
+      });
+      return {
+        story,
+        presentation: {
+          id: "cinnabar-quiz",
+          pages: [
+            {
+              id: "question",
+              speaker: "Quiz POKéMON",
+              text: `Acerte e a porta abre para a próxima sala. ${quiz.question}`,
+              choices: [answer(true), answer(false)],
+            },
+          ],
+        },
+      };
+    },
+  },
+  "cinnabar-quiz-answer": {
+    id: "cinnabar-quiz-answer",
+    interact: (story, context) => {
+      const quizId = typeof context.quizId === "number" ? context.quizId : 0;
+      const quiz = CINNABAR_QUIZ_QUESTIONS[quizId];
+      if (!quiz) return reply(story, "cinnabar-quiz-answer", "...");
+      if (context.answer !== quiz.answer) {
+        return reply(
+          story,
+          "cinnabar-quiz-answer",
+          "Errado! A porta continua fechada. Pense bem e tente de novo.",
+          "Quiz POKéMON",
+        );
+      }
+      return reply(
+        completeStoryPlayerEvent(
+          story,
+          "story",
+          cinnabarDoorEventId(quizId),
+        ),
+        "cinnabar-quiz-answer",
+        "Resposta certa! A porta se abriu. Pode passar!",
+        "Quiz POKéMON",
+      );
+    },
+  },
+  "rocket-elevator": {
+    id: "rocket-elevator",
+    interact: (story, context) => {
+      const here = contextString(context, "floor");
+      if (!hasStoryKeyItem(story, "lift-key")) {
+        return reply(
+          story,
+          "rocket-elevator",
+          "O elevador está parado. Parece que ele precisa de uma Lift Key para funcionar.",
+        );
+      }
+      return {
+        story,
+        presentation: {
+          id: "rocket-elevator",
+          pages: [
+            {
+              id: "floors",
+              text: "Você usou a Lift Key! Para qual andar quer ir?",
+              choices: [
+                ...ROCKET_ELEVATOR_FLOORS.filter(
+                  (floor) => floor.id !== here,
+                ).map((floor) => ({
+                  id: floor.id,
+                  label: floor.label,
+                  request: {
+                    kind: "warp" as const,
+                    mapId: floor.mapId,
+                    x: floor.x,
+                    y: floor.y,
+                    text: `O elevador leva você ao ${floor.label}.`,
+                  },
+                })),
+                {
+                  id: "stay",
+                  label: "Ficar",
+                  request: {
+                    kind: "text" as const,
+                    id: "rocket-elevator-stay",
+                    text: "Você decidiu não usar o elevador.",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  },
   "silph-president": {
     id: "silph-president",
     interact: (story) => {

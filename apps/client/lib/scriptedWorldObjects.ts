@@ -3,6 +3,7 @@ import type {
 } from "./dialogueSystem";
 import {
   CUT_TREES as GENERATED_CUT_TREES,
+  CINNABAR_QUIZ as GENERATED_CINNABAR_QUIZ,
   KEY_ITEM_BALLS as GENERATED_KEY_ITEM_BALLS,
   MANSION_SWITCHES as GENERATED_MANSION_SWITCHES,
   SLOT_MACHINES as GENERATED_SLOT_MACHINES,
@@ -539,6 +540,30 @@ const MANSION_SWITCH_OBJECTS:
     request: { kind: "script" as const, id: "mansion-switch" },
   }));
 
+const CINNABAR_QUIZ_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  GENERATED_CINNABAR_QUIZ.flatMap((quiz) =>
+    quiz.machine.map(([x, y]) => ({
+      id: `${quiz.mapId}-quiz-${quiz.id}-${x}-${y}`,
+      mapId: quiz.mapId,
+      label: "Quiz Machine",
+      x,
+      y,
+      spriteUrl: "",
+      frameWidth: 16,
+      frameHeight: 16,
+      sheetWidth: 16,
+      sheetHeight: 16,
+      // The machine is part of the map art; the object only makes it answerable.
+      renderSprite: false,
+      request: {
+        kind: "script" as const,
+        id: "cinnabar-quiz",
+        context: { quizId: quiz.id },
+      },
+    })),
+  );
+
 const STATIC_ENCOUNTER_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] =
   STATIC_WORLD_ENCOUNTERS.map((encounter) => ({
@@ -656,6 +681,7 @@ export const SCRIPTED_WORLD_OBJECTS:
     ...BOULDER_OBJECTS,
     ...KEY_ITEM_BALL_OBJECTS,
     ...SLOT_MACHINE_OBJECTS,
+    ...CINNABAR_QUIZ_OBJECTS,
     ...MANSION_SWITCH_OBJECTS,
     ...QUEST_NPC_OBJECTS,
     ...STATIC_ENCOUNTER_OBJECTS,

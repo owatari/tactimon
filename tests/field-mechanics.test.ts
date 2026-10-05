@@ -384,3 +384,66 @@ describe("Silph Co. president and ball items", () => {
     expect(inventory["ultra-ball"]).toBe(2);
   });
 });
+
+describe("Cinnabar Gym quiz", () => {
+  it("opens the door only for the right answer", async () => {
+    const { CINNABAR_QUIZ } = await import(
+      "../apps/client/lib/generated/worldObstacles"
+    );
+    const { cinnabarDoorEventId, CINNABAR_QUIZ_QUESTIONS } = await import(
+      "../apps/client/lib/cinnabarQuiz"
+    );
+    const quiz = CINNABAR_QUIZ[0];
+    const [dx, dy] = quiz.door[0];
+    const gate = (story: StoryState) =>
+      resolveBlockedPlayerTileGate(story, quiz.mapId, dx, dy);
+    expect(gate(started())).not.toBeNull();
+    expect(isWorldOpenCell(quiz.mapId, dx, dy)).toBe(true);
+
+    const right = CINNABAR_QUIZ_QUESTIONS[quiz.id].answer;
+    const wrong = talk(started(), "cinnabar-quiz-answer", {
+      quizId: quiz.id,
+      answer: !right,
+    } as never);
+    expect(gate(wrong.story)).not.toBeNull();
+
+    const correct = talk(started(), "cinnabar-quiz-answer", {
+      quizId: quiz.id,
+      answer: right,
+    } as never);
+    expect(gate(correct.story)).toBeNull();
+    expect(
+      hasStoryPlayerEvent(correct.story, "story", cinnabarDoorEventId(quiz.id)),
+    ).toBe(true);
+
+    const prompt = talk(started(), "cinnabar-quiz", { quizId: quiz.id } as never);
+    expect(prompt.presentation.pages[0].choices).toHaveLength(2);
+  });
+});
+
+describe("Rocket Hideout elevator", () => {
+  it("needs the Lift Key and then offers the other floors", () => {
+    const gate = resolveBlockedPlayerTileGate(
+      started(),
+      "rocket-hideout-b-1f",
+      24,
+      25,
+    );
+    expect(gate?.blockedRequest).toMatchObject({
+      kind: "script",
+      id: "rocket-elevator",
+    });
+
+    const locked = talk(started(), "rocket-elevator", { floor: "b1f" });
+    expect(locked.presentation.pages[0].choices).toBeUndefined();
+
+    const withKey = grantStoryKeyItemOnce(started(), "lift-key").story;
+    const menu = talk(withKey, "rocket-elevator", { floor: "b1f" });
+    const labels = menu.presentation.pages[0].choices!.map((c) => c.label);
+    expect(labels).toEqual(["B2F", "B4F", "Ficar"]);
+    expect(menu.presentation.pages[0].choices![1].request).toMatchObject({
+      kind: "warp",
+      mapId: "rocket-hideout-b-4f",
+    });
+  });
+});

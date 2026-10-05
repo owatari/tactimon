@@ -2945,10 +2945,18 @@ export function OverworldGame({
                   type="button"
                   className="dialogue-continue"
                   onClick={() => {
+                    const request = choice.request;
                     showDialogue(
-                      onDialogueInteraction(
-                        choice.request,
-                      ),
+                      onDialogueInteraction(request),
+                      request.kind === "warp"
+                        ? () => {
+                            void loadMap(
+                              request.mapId,
+                              { x: request.x, y: request.y },
+                              "south",
+                            );
+                          }
+                        : undefined,
                     );
                   }}
                 >

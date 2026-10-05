@@ -1,9 +1,12 @@
+import { cinnabarDoorEventId } from "./cinnabarQuiz";
 import {
+  CINNABAR_QUIZ,
   MANSION_BARRIERS,
   SILPH_DOORS,
 } from "./generated/worldObstacles";
 import {
   MANSION_SWITCH_CHOICE,
+  ROCKET_ELEVATOR_FLOORS,
   SAFFRON_GUARDS_OPEN_EVENT,
   silphDoorEventId,
   staticEncounterEventId,
@@ -106,6 +109,40 @@ const ROCKET_HIDEOUT_GATE: PlayerWorldTileGate = {
   },
 };
 
+/** Elevator doors on B1F, B2F and B4F never open: the elevator script takes over. */
+const ELEVATOR_DOOR_CELLS: readonly {
+  floor: (typeof ROCKET_ELEVATOR_FLOORS)[number]["id"];
+  cells: readonly (readonly [number, number])[];
+}[] = [
+  { floor: "b1f", cells: [[23, 25], [24, 25], [25, 25]] },
+  { floor: "b2f", cells: [[28, 16], [29, 16]] },
+  { floor: "b4f", cells: [[20, 23], [21, 23]] },
+];
+
+const ROCKET_ELEVATOR_GATES: readonly PlayerWorldTileGate[] =
+  ELEVATOR_DOOR_CELLS.flatMap(({ floor, cells }) => {
+    const mapId = ROCKET_ELEVATOR_FLOORS.find(
+      (entry) => entry.id === floor,
+    )!.mapId;
+    return cells.map(([x, y]) => ({
+      id: `gate:rocket-elevator:${floor}:${x},${y}`,
+      kind: "tile" as const,
+      mapId,
+      x,
+      y,
+      allowWhen: {
+        kind: "event" as const,
+        namespace: "story" as const,
+        id: "rocket-elevator-never-open",
+      },
+      blockedRequest: {
+        kind: "script" as const,
+        id: "rocket-elevator",
+        context: { floor },
+      },
+    }));
+  });
+
 /** Cerulean Cave stays closed until the player is Champion. */
 const CERULEAN_CAVE_GATE: PlayerWorldTileGate = {
   id: "gate:cerulean-cave-champion",
@@ -168,6 +205,28 @@ const SILPH_DOOR_GATES: readonly PlayerWorldTileGate[] =
     })),
   );
 
+/** Cinnabar Gym quiz doors: shut until the matching machine is answered right. */
+const CINNABAR_QUIZ_GATES: readonly PlayerWorldTileGate[] =
+  CINNABAR_QUIZ.flatMap((quiz) =>
+    quiz.door.map(([x, y]) => ({
+      id: `gate:cinnabar-quiz-${quiz.id}:${x},${y}`,
+      kind: "tile" as const,
+      mapId: quiz.mapId,
+      x,
+      y,
+      allowWhen: {
+        kind: "event" as const,
+        namespace: "story" as const,
+        id: cinnabarDoorEventId(quiz.id),
+      },
+      blockedRequest: {
+        kind: "text" as const,
+        id: "gate:cinnabar-quiz",
+        text: "A porta está trancada. Responda corretamente ao quiz da máquina para abri-la.",
+      },
+    })),
+  );
+
 /** Pokémon Mansion barriers: open in one state of the statue switch. */
 const MANSION_GATES: readonly PlayerWorldTileGate[] = MANSION_BARRIERS.map(
   (barrier) => ({
@@ -208,6 +267,8 @@ export const QUEST_TILE_GATES: readonly PlayerWorldTileGate[] = [
   SAFARI_ENTRANCE_GATE,
   ...SILPH_DOOR_GATES,
   ...MANSION_GATES,
+  ...CINNABAR_QUIZ_GATES,
+  ...ROCKET_ELEVATOR_GATES,
 ];
 
 /**
@@ -221,6 +282,11 @@ export const QUEST_OPEN_CELLS: Readonly<
   for (const door of SILPH_DOORS) {
     (cells[door.mapId] ??= []).push(
       ...door.cells.map(([x, y]) => [x, y] as [number, number]),
+    );
+  }
+  for (const quiz of CINNABAR_QUIZ) {
+    (cells[quiz.mapId] ??= []).push(
+      ...quiz.door.map(([x, y]) => [x, y] as [number, number]),
     );
   }
   for (const barrier of MANSION_BARRIERS) {

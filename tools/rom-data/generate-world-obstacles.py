@@ -63,6 +63,40 @@ def mansion_barriers():
 
 
 mansion = mansion_barriers()
+cinnabar_quiz = []
+
+
+def cinnabar_quizzes(world):
+    """Cinnabar Gym: six quiz machines (bg events) each open one door (setmetatile block)."""
+    import struct
+    # on-load script: `07 01 <ptr>` (call if) entries for the six flags, then `04 <ptr>` door blocks
+    on_load = struct.unpack("<I", ROM[world["scripts_offset"] + 1:world["scripts_offset"] + 5])[0] - 0x08000000
+    body = ROM[on_load:on_load + 200]
+    blocks = []
+    for i in range(len(body) - 5):
+        if body[i] == 0x04 and body[i + 4] == 0x08 and body[i + 3] == 0x16:
+            target = struct.unpack("<I", body[i + 1:i + 5])[0] - 0x08000000
+            if ROM[target] == 0xA2 and target not in blocks:
+                blocks.append(target)
+    layout_dir = ROOT / "local-assets" / "extracted" / "firered" / "assets" / "maps" / "layouts" / f"{world['layout_index']:03d}_{world['layout_name'].lower()}"
+    layout = json.loads((layout_dir / "layout.json").read_text(encoding="utf-8"))
+    doors = []
+    for target in blocks:
+        cells, q = [], target
+        while ROM[q] == 0xA2:
+            x, y, _meta, impassable = struct.unpack("<HHHH", ROM[q + 1:q + 9])
+            # only the cells that are closed (collision) in the layout are the actual door
+            if impassable == 0 and layout["cells"][y * layout["width"] + x]["collision"] != 0:
+                cells.append([x, y])
+            q += 9
+        doors.append(cells)
+    machines = {}
+    for bg in world["bg_events"]:
+        off = bg.get("script_offset")
+        if bg["kind"] == 1 and off and ROM[off:off + 4] == bytes([0x69, 0x16, 0x01, 0x40]) and ROM[off + 6] == 0x05:
+            routine = struct.unpack("<I", ROM[off + 7:off + 11])[0]
+            machines.setdefault(routine, []).append([bg["x"], bg["y"]])
+    return doors, list(machines.values())
 for d, map_id in sorted(maps.items()):
     path = WORLD / d / "world.json"
     if not path.exists():
@@ -77,6 +111,11 @@ for d, map_id in sorted(maps.items()):
                 groups.setdefault(off, []).append([bg["x"], bg["y"]])
         for n, cells in enumerate(groups.values()):
             silph_doors.append({"id": f"{map_id}-door-{n + 1}", "mapId": map_id, "cells": sorted(cells)})
+    if map_id == "cinnabar-island-gym":
+        doors, machine_cells = cinnabar_quizzes(world)
+        assert len(doors) == 6 and len(machine_cells) == 6, (len(doors), len(machine_cells))
+        for n, (door, cells) in enumerate(zip(doors, machine_cells)):
+            cinnabar_quiz.append({"id": n + 1, "mapId": map_id, "machine": cells, "door": door})
     if map_id.startswith("pokemon-mansion-"):
         for bg in world["bg_events"]:
             off = bg.get("script_offset")
@@ -114,5 +153,6 @@ out.append(f"export const SILPH_DOORS: readonly {{ id: string; mapId: string; ce
 out.append(f"export const SLOT_MACHINES: readonly {{ mapId: string; x: number; y: number; machine: number }}[] = {json.dumps(slots)};")
 out.append(f"export const MANSION_BARRIERS: readonly {{ mapId: string; x: number; y: number; openIn: \"a\" | \"b\" }}[] = {json.dumps(mansion)};")
 out.append(f"export const MANSION_SWITCHES: readonly {{ mapId: string; x: number; y: number }}[] = {json.dumps(mansion_switches)};")
+out.append(f"export const CINNABAR_QUIZ: readonly {{ id: number; mapId: string; machine: readonly (readonly [number, number])[]; door: readonly (readonly [number, number])[] }}[] = {json.dumps(cinnabar_quiz)};")
 (GEN / "worldObstacles.ts").write_text("\n".join(out) + "\n", encoding="utf-8")
-print(len(mansion), "mansion barrier cells,", len(mansion_switches), "switches,", len(slots), "slot machines,", len(silph_doors), "silph doors,", len(key_balls), "key item balls,", len(trees), "cut trees,", len(boulders), "boulders,", len(statics), "static pokemon")
+print(len(cinnabar_quiz), "cinnabar quizzes,", len(mansion), "mansion barrier cells,", len(mansion_switches), "switches,", len(slots), "slot machines,", len(silph_doors), "silph doors,", len(key_balls), "key item balls,", len(trees), "cut trees,", len(boulders), "boulders,", len(statics), "static pokemon")

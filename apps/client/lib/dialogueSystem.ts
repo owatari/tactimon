@@ -136,6 +136,15 @@ export type DialogueInteractionRequest =
       pages: readonly string[];
       speaker?: string;
     }
+  | {
+      /** Shows `text`, then the overworld moves the player to the map/tile. */
+      kind: "warp";
+      mapId: string;
+      x: number;
+      y: number;
+      text: string;
+      speaker?: string;
+    }
   | { kind: "cut"; obstacleId: string }
   | {
       kind: "fossil";
@@ -1175,6 +1184,17 @@ export function runDialogueInteraction(
       ),
       presentation: dialoguePresentationFromText(
         "choice:" + request.choiceId,
+        request.text,
+        request.speaker,
+      ),
+    };
+  }
+
+  if (request.kind === "warp") {
+    return {
+      story,
+      presentation: dialoguePresentationFromText(
+        `warp:${request.mapId}:${request.x},${request.y}`,
         request.text,
         request.speaker,
       ),

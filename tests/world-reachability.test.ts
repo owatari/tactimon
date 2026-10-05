@@ -217,3 +217,120 @@ describe.skipIf(!hasAssets)("pokemon mansion switch puzzle", () => {
     expect(maps.has("pokemon-mansion-b-1f")).toBe(true);
   });
 });
+
+describe.skipIf(!hasAssets)("cinnabar gym quiz doors", () => {
+  it("can be solved door by door and reaches Blaine", async () => {
+    const { CINNABAR_QUIZ } = await import(
+      "../apps/client/lib/generated/worldObstacles"
+    );
+    const { GENERATED_TRAINERS } = await import(
+      "../apps/client/lib/generated/worldTrainers"
+    );
+    const mapId = "cinnabar-island-gym";
+    const layout = layoutOf(mapId);
+    const doorOf = new Map<string, number>();
+    for (const quiz of CINNABAR_QUIZ) {
+      for (const [x, y] of quiz.door) doorOf.set(`${x},${y}`, quiz.id);
+    }
+
+    const open = new Set<number>();
+    let seen = new Set<string>();
+    const explore = () => {
+      const start = WORLD_MAPS[mapId].spawn;
+      seen = new Set([`${start.x},${start.y}`]);
+      const queue: [number, number][] = [[start.x, start.y]];
+      while (queue.length) {
+        const [x, y] = queue.pop()!;
+        for (const [, dx, dy] of DIRS) {
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= layout.width || ny >= layout.height) {
+            continue;
+          }
+          const key = `${nx},${ny}`;
+          if (seen.has(key)) continue;
+          const door = doorOf.get(key);
+          if (door !== undefined && !open.has(door)) continue;
+          if (resolveWarpTransitionAt(mapId, nx, ny)) continue;
+          const cell = layout.cells[ny * layout.width + nx];
+          if (cell.collision === 0 || isWorldOpenCell(mapId, nx, ny)) {
+            seen.add(key);
+            queue.push([nx, ny]);
+          }
+        }
+      }
+    };
+
+    let progressed = true;
+    while (progressed) {
+      progressed = false;
+      explore();
+      for (const quiz of CINNABAR_QUIZ) {
+        if (open.has(quiz.id)) continue;
+        const reachable = quiz.machine.some(([mx, my]) =>
+          DIRS.some(([, dx, dy]) => seen.has(`${mx + dx},${my + dy}`)),
+        );
+        if (reachable) {
+          open.add(quiz.id);
+          progressed = true;
+        }
+      }
+    }
+
+    expect([...open].sort()).toEqual([1, 2, 3, 4, 5, 6]);
+    const blaine = GENERATED_TRAINERS.find(
+      (trainer) => trainer.id === "cinnabar-island-gym-blaine",
+    )!;
+    const { x, y } = blaine.preferredPosition;
+    const adjacent = [[0, 0], ...DIRS.map(([, dx, dy]) => [dx, dy])].some(
+      ([dx, dy]) => seen.has(`${x + dx},${y + dy}`),
+    );
+    expect(adjacent).toBe(true);
+  });
+});
+
+describe.skipIf(!hasAssets)("rocket hideout elevator", () => {
+  it("lands on walkable tiles and reaches Giovanni's wing of B4F", async () => {
+    const { ROCKET_ELEVATOR_FLOORS } = await import(
+      "../apps/client/lib/questEvents"
+    );
+    const { GENERATED_TRAINERS } = await import(
+      "../apps/client/lib/generated/worldTrainers"
+    );
+    for (const floor of ROCKET_ELEVATOR_FLOORS) {
+      const layout = layoutOf(floor.mapId);
+      expect(
+        layout.cells[floor.y * layout.width + floor.x].collision,
+        floor.label,
+      ).toBe(0);
+    }
+
+    const b4f = ROCKET_ELEVATOR_FLOORS.find((floor) => floor.id === "b4f")!;
+    const layout = layoutOf(b4f.mapId);
+    const seen = new Set([`${b4f.x},${b4f.y}`]);
+    const queue: [number, number][] = [[b4f.x, b4f.y]];
+    while (queue.length) {
+      const [x, y] = queue.pop()!;
+      for (const [, dx, dy] of DIRS) {
+        const nx = x + dx;
+        const ny = y + dy;
+        const key = `${nx},${ny}`;
+        if (nx < 0 || ny < 0 || nx >= layout.width || ny >= layout.height) continue;
+        if (seen.has(key) || resolveWarpTransitionAt(b4f.mapId, nx, ny)) continue;
+        if (layout.cells[ny * layout.width + nx].collision === 0) {
+          seen.add(key);
+          queue.push([nx, ny]);
+        }
+      }
+    }
+    const giovanni = GENERATED_TRAINERS.find(
+      (trainer) => trainer.id === "rocket-hideout-b-4f-giovanni",
+    )!;
+    const { x, y } = giovanni.preferredPosition;
+    expect(
+      [[0, 0], ...DIRS.map(([, dx, dy]) => [dx, dy])].some(([dx, dy]) =>
+        seen.has(`${x + dx},${y + dy}`),
+      ),
+    ).toBe(true);
+  });
+});
