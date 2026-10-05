@@ -5987,3 +5987,20 @@ textarea {
   width: 120px;
   height: 120px;
 }
+
+/* Dark caves: a hard-edged circle of light follows the player until Flash is used. */
+.darkness-spot {
+  position: absolute;
+  z-index: 10001;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.96);
+  pointer-events: none;
+}
+
+.start-menu-townmap .start-menu-hint {
+  margin: 6px 0 0;
+  font-size: 9px;
+  opacity: 0.75;
+}

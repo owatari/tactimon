@@ -28,7 +28,8 @@ export type MenuScreen =
   | "summary"
   | "bag"
   | "card"
-  | "options";
+  | "options"
+  | "townmap";
 
 export type MenuEntryId =
   | "pokedex"
@@ -212,7 +213,8 @@ export function buildBagPockets(
       quantity: null,
       iconUrl: null,
       description: KEY_ITEM_DESCRIPTIONS[id] ?? "",
-      usable: false,
+      // The Town Map opens its own screen (Fly lives there).
+      usable: id === "town-map",
     }),
   );
 

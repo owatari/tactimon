@@ -1112,6 +1112,16 @@ export function GameClient() {
               setProgressionQueue(queue);
             }
           }}
+          onFly={(destination) => {
+            const id = whiteOutNonceRef.current + 1;
+            whiteOutNonceRef.current = id;
+            setRespawnRequest({
+              id,
+              mapId: destination.mapId,
+              spawn: destination.spawn,
+            });
+            setMenuOpen(false);
+          }}
           onClose={() => setMenuOpen(false)}
         />
       )}

@@ -85,13 +85,21 @@ import {
 } from "@/lib/safari";
 import { advanceStoryStep } from "@/lib/storySteps";
 import {
+  isTownMapLocation,
+  registerTownVisit,
+} from "@/lib/townMap";
+import {
   bestOwnedRod,
   hasFishingTable,
   resolveFishing,
   resolveScaledSurfEncounter,
   surfEncounterRate,
 } from "@/lib/waterEncounters";
-import { canStoryUseStrength } from "@/lib/fieldTechniques";
+import {
+  canStoryUseFlash,
+  canStoryUseStrength,
+} from "@/lib/fieldTechniques";
+import { isDarkMap } from "@/lib/darkCaves";
 import {
   resetBoulders,
   resolveBoulderPosition,
@@ -757,6 +765,8 @@ export function OverworldGame({
   const [layout, setLayout] = useState<MapLayout | null>(null);
   const [worldData, setWorldData] = useState<WorldMapData | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [darkCave, setDarkCave] = useState(false);
+  const darknessRef = useRef<HTMLDivElement>(null);
   const [running, setRunning] = useState(false);
   const [dialogue, setDialogue] =
     useState<DialoguePresentation | null>(null);
@@ -1567,6 +1577,19 @@ export function OverworldGame({
           onStoryUpdateRef.current(endSafari);
         }
 
+        if (isTownMapLocation(nextMapId)) {
+          const visited = registerTownVisit(
+            storyRef.current,
+            nextMapId,
+          );
+          if (visited !== storyRef.current) {
+            storyRef.current = visited;
+            onStoryUpdateRef.current((current) =>
+              registerTownVisit(current, nextMapId),
+            );
+          }
+        }
+
         mapIdRef.current = nextMapId;
         layoutRef.current = nextLayout;
         worldObjectsRef.current =
@@ -1616,6 +1639,16 @@ export function OverworldGame({
         pendingWarpRef.current = null;
         cameraPositionRef.current.ready = false;
 
+        if (
+          isDarkMap(nextMapId) &&
+          canStoryUseFlash(storyRef.current)
+        ) {
+          setDarkCave(false);
+          showInteraction("Você usou Flash! A caverna se iluminou.");
+        } else {
+          setDarkCave(isDarkMap(nextMapId));
+        }
+
         setMapId(nextMapId);
         setLayout(nextLayout);
         setWorldData(nextWorldData);
@@ -1636,7 +1669,7 @@ export function OverworldGame({
         setIsTransitioning(false);
       }
     },
-    [onMapAudioContextChange, resetInput],
+    [onMapAudioContextChange, resetInput, showInteraction],
   );
 
   const endSafariGame = useCallback(
@@ -2651,6 +2684,12 @@ export function OverworldGame({
       playerElement.style.zIndex = String(
         100 + Math.round(player.visualY),
       );
+      const darkness = darknessRef.current;
+      if (darkness) {
+        // 80px circle of light centred on the player's tile.
+        darkness.style.left = `${player.visualX + TILE_SIZE / 2 - 40}px`;
+        darkness.style.top = `${player.visualY + TILE_SIZE / 2 - 40}px`;
+      }
 
       const viewportWidth = viewport.clientWidth;
       const viewportHeight = viewport.clientHeight;
@@ -2830,6 +2869,13 @@ export function OverworldGame({
               className="map-foreground"
               aria-hidden="true"
             />
+            {darkCave && (
+              <div
+                ref={darknessRef}
+                className="darkness-spot"
+                aria-hidden="true"
+              />
+            )}
           </div>
         </div>
       )}

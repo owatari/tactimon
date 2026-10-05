@@ -32,6 +32,11 @@ import {
 import type { OverworldItemId } from "@/lib/items";
 import type { ProgressionReward } from "@tactimon/battle-engine";
 import type { StoryState } from "@/lib/story";
+import {
+  checkFlyDestination,
+  townMapRows,
+  type TownMapEntry,
+} from "@/lib/townMap";
 
 type Props = {
   story: StoryState;
@@ -42,6 +47,8 @@ type Props = {
   onSave: () => string;
   /** Called when an item (Rare Candy) produced a level-up reward. */
   onItemReward?: (reward: ProgressionReward, partyIndex: number) => void;
+  /** Fly to a visited town (Town Map screen). */
+  onFly?: (destination: TownMapEntry) => void;
   onClose: () => void;
 };
 
@@ -103,6 +110,7 @@ export function StartMenu({
   onOptionsChange,
   onSave,
   onItemReward,
+  onFly,
   onClose,
 }: Props) {
   const [screen, setScreen] = useState<MenuScreen>("root");
@@ -121,6 +129,7 @@ export function StartMenu({
   const [pocketIndex, setPocketIndex] = useState(0);
   const [bagIndex, setBagIndex] = useState(0);
   const [optionIndex, setOptionIndex] = useState(0);
+  const [townIndex, setTownIndex] = useState(0);
   const [bagUse, setBagUse] = useState<BagUse | null>(null);
   const [notice, setNotice] = useState("");
 
@@ -128,6 +137,7 @@ export function StartMenu({
   const pockets = useMemo(() => buildBagPockets(story), [story]);
   const card = useMemo(() => buildTrainerCard(story), [story]);
   const dex = useMemo(() => getPokedex(story), [story]);
+  const townRows = useMemo(() => townMapRows(story), [story]);
 
   // Keep the key handler stable while reading the latest state.
   const latest = useRef({
@@ -143,6 +153,8 @@ export function StartMenu({
     pocketIndex,
     bagIndex,
     optionIndex,
+    townIndex,
+    townRows,
     bagUse,
     party,
     pockets,
@@ -162,6 +174,8 @@ export function StartMenu({
     pocketIndex,
     bagIndex,
     optionIndex,
+    townIndex,
+    townRows,
     bagUse,
     party,
     pockets,
@@ -357,7 +371,10 @@ export function StartMenu({
         else if (back) setScreen("root");
         else if (confirm && entries[s.bagIndex]) {
           const entry = entries[s.bagIndex];
-          if (!entry.usable) {
+          if (entry.id === "town-map") {
+            setTownIndex(0);
+            setScreen("townmap");
+          } else if (!entry.usable) {
             setNotice("Este item não pode ser usado agora.");
           } else if (itemTargetsTrainer(entry.id)) {
             applyItemRef.current(
@@ -392,6 +409,22 @@ export function StartMenu({
         return;
       }
 
+      if (s.screen === "townmap") {
+        if (up) setTownIndex(wrap(s.townIndex - 1, s.townRows.length));
+        else if (down) setTownIndex(wrap(s.townIndex + 1, s.townRows.length));
+        else if (back) setScreen("bag");
+        else if (confirm) {
+          const row = s.townRows[s.townIndex];
+          const check = checkFlyDestination(s.story, row.id);
+          if (!check.ok) {
+            setNotice(check.message);
+          } else {
+            onFly?.(check.entry);
+          }
+        }
+        return;
+      }
+
       // options
       const o = s.options;
       if (up) setOptionIndex(wrap(s.optionIndex - 1, OPTION_ROWS.length));
@@ -416,7 +449,7 @@ export function StartMenu({
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose, onOptionsChange, onSave, onStoryChange]);
+  }, [onClose, onFly, onOptionsChange, onSave, onStoryChange]);
 
   const summaryPokemon = party[summaryIndex] ?? null;
 
@@ -682,6 +715,26 @@ export function StartMenu({
               </span>
             ))}
           </div>
+        </section>
+      )}
+
+      {screen === "townmap" && (
+        <section className="start-menu-screen start-menu-options start-menu-townmap">
+          <h2>TOWN MAP</h2>
+          <ul>
+            {townRows.map((row, index) => (
+              <li
+                key={row.id}
+                className={index === townIndex ? "selected" : ""}
+              >
+                <span>{row.label}</span>
+                <em>{row.visited ? "●" : "—"}</em>
+              </li>
+            ))}
+          </ul>
+          <p className="start-menu-hint">
+            Enter: voar (HM Fly + Thunder Badge) · ● já visitada
+          </p>
         </section>
       )}
 
