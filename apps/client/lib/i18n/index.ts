@@ -109,6 +109,9 @@ export function initLocale(): Locale {
           : [],
       );
   setLocale(next, false);
+  if (typeof document !== "undefined") {
+    document.documentElement.lang = next === "zh" ? "zh-Hans" : next;
+  }
   return next;
 }
 
