@@ -6404,3 +6404,181 @@ textarea {
   60% { margin-left: -3px; }
   80% { margin-left: 3px; }
 }
+
+/* ---- FireRed shell pass: no web chrome, GBA-style text window and banners ---- */
+html,
+body {
+  background: #000;
+}
+
+.app-shell {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.game-card {
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  box-shadow: none;
+}
+
+.game-card .viewport {
+  height: 100dvh;
+  min-height: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* The bottom text window of FireRed: cream box, dark frame, blinking ▼. */
+.viewport .interaction-toast {
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  max-width: none;
+  min-width: 0;
+  transform: none;
+  min-height: 84px;
+  padding: 14px 26px 12px;
+  border: 4px solid #3a4658;
+  border-radius: 6px;
+  background: #fbfbf3;
+  box-shadow:
+    inset 0 0 0 3px #ffffff,
+    inset 0 0 0 5px #9fb0c6,
+    0 0 0 2px #000;
+  color: #1f2630;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-size: clamp(15px, 1.6vw, 21px);
+  line-height: 1.55;
+  text-align: left;
+  backdrop-filter: none;
+}
+
+.viewport .dialogue-panel {
+  position: absolute;
+  min-width: 0;
+}
+
+.viewport .dialogue-speaker {
+  color: #b03a2e;
+  font-size: 0.78em;
+  letter-spacing: 0.06em;
+}
+
+.viewport .dialogue-continue {
+  position: absolute;
+  right: 20px;
+  bottom: 8px;
+  padding: 0;
+  color: #1f2630;
+  font-size: 18px;
+  animation: fr-arrow-blink 0.9s steps(2, end) infinite;
+}
+
+.viewport .dialogue-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 6px;
+}
+
+.viewport .dialogue-choices .dialogue-continue {
+  position: static;
+  animation: none;
+  padding: 3px 10px;
+  border: 2px solid #3a4658;
+  border-radius: 3px;
+  background: #fff;
+  font-size: 0.8em;
+}
+
+@keyframes fr-arrow-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Map name banner: slides in on entering a map, then leaves (like the game). */
+.viewport .location-chip {
+  border: 2px solid #e9e9df;
+  border-radius: 4px;
+  background: rgba(16, 24, 32, 0.92);
+  color: #fff;
+  backdrop-filter: none;
+  letter-spacing: 0.05em;
+  animation: fr-map-banner 3.6s ease forwards;
+}
+
+@keyframes fr-map-banner {
+  0% {
+    opacity: 0;
+    transform: translateY(-120%);
+  }
+  8%,
+  82% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120%);
+  }
+}
+
+.viewport .control-hint {
+  border: 2px solid #e9e9df;
+  border-radius: 4px;
+  background: rgba(16, 24, 32, 0.9);
+  color: #fff;
+  backdrop-filter: none;
+  animation: fr-hint-fade 14s ease forwards;
+}
+
+@keyframes fr-hint-fade {
+  0%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.viewport .world-resource-chip {
+  border: 2px solid #e9e9df;
+  border-radius: 4px;
+  background: rgba(16, 24, 32, 0.9);
+  color: #fff;
+  backdrop-filter: none;
+}
+
+/* Menu screens stay a readable GBA-like window instead of stretching across wide monitors. */
+.start-menu-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.start-menu-screen {
+  left: 50%;
+  right: auto;
+  width: min(960px, calc(100% - 36px));
+  transform: translateX(-50%);
+}
+
+.start-menu-notice,
+.start-menu-help {
+  left: 50%;
+  right: auto;
+  width: min(960px, calc(100% - 36px));
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}

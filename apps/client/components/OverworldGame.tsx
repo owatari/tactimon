@@ -2975,8 +2975,8 @@ export function OverworldGame({
                 advanceDialogue();
               }}
             >
-              {dialoguePageIndex + 1}/{dialogue.pages.length}
-              {" · "}Avançar
+              <span aria-hidden="true">▼</span>
+              <span className="sr-only">{t("Next")}</span>
             </button>
           )}
         </div>

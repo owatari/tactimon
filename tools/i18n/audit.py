@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from inventory import ROOT, literals  # noqa: E402
 
 CATALOG_DIR = ROOT / "lib" / "i18n" / "catalog"
-KEY = re.compile(r'^  ("(?:[^"\\n]|\.)*"|[A-Za-z_]\w*): \{', re.M)
+KEY = re.compile(r'^  ("(?:[^"\\\n]|\\.)*"|[A-Za-z_]\w*): \{', re.M)
 
 
 def catalog_keys():
@@ -47,7 +47,7 @@ def main():
             text = decode(value)
             if "${" in value:
                 missing.setdefault(rel, []).append("[template] " + value)
-            elif text not in keys and text not in blob:
+            elif text not in keys and text not in blob and re.sub(r"^[^:]+:\s*", "", text) not in blob:
                 missing.setdefault(rel, []).append(text)
     for rel, values in sorted(missing.items()):
         print(f"{len(values):4d} {rel}")
