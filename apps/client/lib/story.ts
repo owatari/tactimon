@@ -79,6 +79,8 @@ export type StoryState = {
   fieldTechniqueIds?: StoryFieldTechniqueId[];
   clearedObstacleIds?: string[];
   billStage?: BillStoryStage;
+  /** FireRed-style progression flag: Prof. Oak's aide grants these on Route 3 after Brock. */
+  runningShoesReceived?: boolean;
   /** FireRed field poison advances once per completed overworld step. */
   poisonStepCounter?: number;
   /**
@@ -114,6 +116,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   fieldTechniqueIds: [],
   clearedObstacleIds: [],
   billStage: "unmet",
+  runningShoesReceived: false,
   poisonStepCounter: 0,
   playerWorld: createEmptyPlayerWorldState(),
 };
@@ -176,6 +179,7 @@ export function chooseStarter(
     fieldTechniqueIds: [],
     clearedObstacleIds: [],
     billStage: "unmet",
+    runningShoesReceived: false,
     poisonStepCounter: 0,
     playerWorld,
   };
@@ -524,6 +528,7 @@ export function normalizeStoryState(
       )
         ? "helped"
         : normalizeBillStage(input?.billStage),
+    runningShoesReceived: input?.runningShoesReceived === true,
     poisonStepCounter:
       typeof input?.poisonStepCounter === "number" &&
       Number.isFinite(input.poisonStepCounter)
@@ -948,6 +953,33 @@ export function grantStoryBadge(
   }
 
   return next;
+}
+
+export const RUNNING_SHOES_MAP_ID = "route-3";
+
+/** Oak's aide waits at the Pewter City exit once the Boulder Badge is earned. */
+export function shouldGrantRunningShoes(
+  story: StoryState,
+  mapId: string,
+): boolean {
+  return (
+    mapId === RUNNING_SHOES_MAP_ID &&
+    hasStoryBadge(story, "boulder") &&
+    story.runningShoesReceived !== true
+  );
+}
+
+export function grantRunningShoes(
+  story: StoryState,
+): StoryState {
+  if (story.runningShoesReceived) {
+    return story;
+  }
+
+  return {
+    ...story,
+    runningShoesReceived: true,
+  };
 }
 
 export function isStoryObstacleCleared(

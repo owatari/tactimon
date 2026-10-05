@@ -5808,3 +5808,23 @@ textarea {
   top: auto;
   bottom: -13px;
 }
+
+
+/* FireRed-style walk/run toggle unlocked by Running Shoes. */
+.run-mode-indicator {
+  padding: 5px 8px;
+  border: 3px solid #36566f;
+  border-radius: 0;
+  background: #fffceb;
+  color: #1f3549;
+  box-shadow: inset -2px -2px 0 #aebdbd;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.run-mode-indicator[aria-pressed="true"] {
+  background: #f5dfa0;
+}

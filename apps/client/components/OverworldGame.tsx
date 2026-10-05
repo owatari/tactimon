@@ -35,6 +35,8 @@ import {
 } from "@/lib/maps";
 import {
   applyStoryOverworldStep,
+  grantRunningShoes,
+  shouldGrantRunningShoes,
   hasStoryKeyItem,
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
@@ -88,10 +90,12 @@ import {
 } from "@/lib/vermilionGym";
 
 const STEP_DURATION_MS = 250;
+const RUN_STEP_DURATION_MS = 140;
 const JUMP_DURATION_MS = 320;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
 const POSITION_STORAGE_KEY = "tactimon.position.v1";
+const RUN_MODE_STORAGE_KEY = "tactimon.run-mode.v1";
 const FALLBACK_BATTLE_ARENA_WIDTH = 17;
 const FALLBACK_BATTLE_ARENA_HEIGHT = 9;
 
@@ -709,11 +713,14 @@ export function OverworldGame({
   const cameraPositionRef = useRef({ x: 0, y: 0, ready: false });
   const transitioningRef = useRef(false);
   const loadTokenRef = useRef(0);
+  const runningRef = useRef(false);
+  const runningShoesGrantRef = useRef(false);
 
   const [mapId, setMapId] = useState("pallet-town");
   const [layout, setLayout] = useState<MapLayout | null>(null);
   const [worldData, setWorldData] = useState<WorldMapData | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [running, setRunning] = useState(false);
   const [dialogue, setDialogue] =
     useState<DialoguePresentation | null>(null);
   const [dialoguePageIndex, setDialoguePageIndex] =
@@ -784,6 +791,24 @@ export function OverworldGame({
     pressedRef.current = [];
   }, []);
 
+  const toggleRunning = useCallback(() => {
+    if (!storyRef.current.runningShoesReceived) {
+      return;
+    }
+
+    const next = !runningRef.current;
+    runningRef.current = next;
+    setRunning(next);
+    try {
+      window.localStorage.setItem(
+        RUN_MODE_STORAGE_KEY,
+        next ? "run" : "walk",
+      );
+    } catch {
+      // Run preference persistence is optional.
+    }
+  }, []);
+
   const showDialogue = useCallback(
     (
       presentation: DialoguePresentation,
@@ -799,6 +824,56 @@ export function OverworldGame({
     },
     [resetInput],
   );
+
+  useEffect(() => {
+    try {
+      const saved =
+        window.localStorage.getItem(RUN_MODE_STORAGE_KEY);
+      const next =
+        storyRef.current.runningShoesReceived === true &&
+        saved === "run";
+      runningRef.current = next;
+      setRunning(next);
+    } catch {
+      runningRef.current = false;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      isTransitioning ||
+      runningShoesGrantRef.current ||
+      !shouldGrantRunningShoes(story, mapId)
+    ) {
+      return;
+    }
+
+    runningShoesGrantRef.current = true;
+    const nextStory = grantRunningShoes(story);
+    storyRef.current = nextStory;
+    onOverworldStep(nextStory);
+    showDialogue({
+      id: "running-shoes-delivery",
+      pages: [
+        {
+          id: "running-shoes-delivery-1",
+          speaker: "Ajudante do Prof. Oak",
+          text: "Ah, aí está você! O Prof. Oak pediu para eu te entregar isto. Você recebeu os RUNNING SHOES!",
+        },
+        {
+          id: "running-shoes-delivery-2",
+          speaker: "Ajudante do Prof. Oak",
+          text: "Pressione R para alternar entre andar (WALK) e correr (RUN).",
+        },
+      ],
+    });
+  }, [
+    isTransitioning,
+    mapId,
+    onOverworldStep,
+    showDialogue,
+    story,
+  ]);
 
   const showInteraction = useCallback(
     (
@@ -1374,6 +1449,17 @@ export function OverworldGame({
       const lowerKey = event.key.toLowerCase();
 
       if (
+        lowerKey === "r" &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey
+      ) {
+        event.preventDefault();
+        if (!event.repeat) toggleRunning();
+        return;
+      }
+
+      if (
         event.key === " " ||
         event.key === "Enter" ||
         lowerKey === "e"
@@ -1409,7 +1495,7 @@ export function OverworldGame({
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
     };
-  }, [interact, resetInput, setDirectionPressed]);
+  }, [interact, resetInput, setDirectionPressed, toggleRunning]);
 
   useEffect(() => {
     let animationFrame = 0;
@@ -1605,7 +1691,11 @@ export function OverworldGame({
 
       player.moving = true;
       player.jumping = false;
-      player.stepDuration = STEP_DURATION_MS;
+      player.stepDuration =
+        storyRef.current.runningShoesReceived &&
+        runningRef.current
+          ? RUN_STEP_DURATION_MS
+          : STEP_DURATION_MS;
       player.fromX = player.visualX;
       player.fromY = player.visualY;
       player.toX = nextX * TILE_SIZE;
@@ -2307,8 +2397,20 @@ export function OverworldGame({
           <span>Potion ×{story.inventory.potion}</span>
           <span>Ball ×{story.inventory["poke-ball"]}</span>
         </div>
+        {story.runningShoesReceived && (
+          <button
+            type="button"
+            className="run-mode-indicator"
+            onClick={toggleRunning}
+            aria-pressed={running}
+            title="R alterna caminhada e corrida"
+          >
+            {running ? "RUN" : "WALK"}
+          </button>
+        )}
         <div className="control-hint">
           WASD / setas · E/Space interage
+          {story.runningShoesReceived ? " · R alterna WALK/RUN" : ""}
         </div>
       </div>
 
