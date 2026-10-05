@@ -90,3 +90,45 @@ describe("translate", () => {
     expect(detectLocale(undefined)).toBe("en");
   });
 });
+
+describe("legacy Portuguese literals", () => {
+  it("every literal that looks Portuguese is a catalog key (new text is English + t())", () => {
+    const keys = Object.keys(CATALOG);
+    const blob = keys.join("\n");
+    const accent = /[áéíóúâêôãõçÁÉÍÓÚÂÊÔÃÕÇ]/;
+    const words = /\b(você|para|com|uma|não|está|seu|sua|dos|das|pelo|que|mais|nenhum)\b/i;
+    const literal = /"((?:[^"\\\n]|\\.)*)"|`((?:[^`\\]|\\.)*)`/g;
+    const prefix = /^[^:]+:\s*/;
+    const missing: string[] = [];
+    for (const dir of ["lib", "components"]) {
+      for (const file of sourceFiles(join(ROOT, dir))) {
+        const text = readFileSync(file, "utf-8");
+        for (const match of text.matchAll(literal)) {
+          const raw = match[1] ?? match[2] ?? "";
+          if (raw.length <= 3) continue;
+          const looksPt =
+            accent.test(raw) ||
+            (words.test(raw) && raw.includes(" ") && raw.length > 14);
+          if (!looksPt) continue;
+          let value = raw;
+          if (!raw.includes("${")) {
+            try {
+              value = JSON.parse(`"${raw.replace(/\\"/g, '"').replace(/"/g, '\\"')}"`);
+            } catch {
+              value = raw;
+            }
+          }
+          if (
+            raw.includes("${") ||
+            (!(value in CATALOG) &&
+              !blob.includes(value) &&
+              !blob.includes(value.replace(prefix, "")))
+          ) {
+            missing.push(`${file.split("client")[1]}: ${raw.slice(0, 80)}`);
+          }
+        }
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+});
