@@ -1,5 +1,10 @@
 import { GENERATED_WARPS } from "./generatedWarps";
 import {
+  POKEMON_CENTER_MAP_IDS,
+  findHealLocation,
+} from "./healLocations";
+import type { StoryHealLocationId } from "./story";
+import {
   GENERATED_MAP_DEFINITIONS,
   GENERATED_MAP_SIZES,
   GENERATED_TILESETS,
@@ -1981,45 +1986,12 @@ export function shouldApplyRespawnRequest(
 }
 
 export function resolveWhiteOutRespawn(
-  healLocationId:
-    | "pallet-town"
-    | "viridian-city"
-    | "pewter-city"
-    | "cerulean-city"
-    | "vermilion-city"
-    | "route-4",
+  healLocationId: StoryHealLocationId,
 ): WhiteOutRespawn {
-  if (healLocationId === "vermilion-city") {
+  const heal = findHealLocation(healLocationId);
+  if (heal) {
     return {
-      mapId: "vermilion-pokemon-center",
-      spawn: { x: 7, y: 7 },
-    };
-  }
-
-  if (healLocationId === "cerulean-city") {
-    return {
-      mapId: "cerulean-pokemon-center",
-      spawn: { x: 7, y: 7 },
-    };
-  }
-
-  if (healLocationId === "route-4") {
-    return {
-      mapId: "route-4-pokemon-center",
-      spawn: { x: 7, y: 7 },
-    };
-  }
-
-  if (healLocationId === "pewter-city") {
-    return {
-      mapId: "pewter-pokemon-center",
-      spawn: { x: 7, y: 7 },
-    };
-  }
-
-  if (healLocationId === "viridian-city") {
-    return {
-      mapId: "viridian-pokemon-center",
+      mapId: heal.centerMapId,
       spawn: { x: 7, y: 7 },
     };
   }
@@ -2066,11 +2038,7 @@ export function isPokemonStoragePcAt(
 ): boolean {
   // FireRed's MB_PC metatile in LAYOUT_POKEMON_CENTER_1F.
   return (
-    (mapId === "viridian-pokemon-center" ||
-      mapId === "pewter-pokemon-center" ||
-      mapId === "cerulean-pokemon-center" ||
-      mapId === "vermilion-pokemon-center" ||
-      mapId === "route-4-pokemon-center") &&
+    POKEMON_CENTER_MAP_IDS.includes(mapId) &&
     x === 11 &&
     y === 1
   );

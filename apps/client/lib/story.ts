@@ -14,6 +14,10 @@ import {
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import {
+  findHealLocation,
+  type HealLocationId,
+} from "./healLocations";
+import {
   normalizePokedex,
   type PokedexData,
 } from "./pokedex";
@@ -46,11 +50,7 @@ export const POKEMON_STORAGE_CAPACITY =
 
 export type StoryHealLocationId =
   | "pallet-town"
-  | "viridian-city"
-  | "pewter-city"
-  | "cerulean-city"
-  | "vermilion-city"
-  | "route-4";
+  | HealLocationId;
 
 export type StoryBadgeId =
   | "boulder"
@@ -526,17 +526,10 @@ export function normalizeStoryState(
         ? input.mtMoonFossil
         : null,
     healLocationId:
-      input?.healLocationId === "vermilion-city"
-        ? "vermilion-city"
-        : input?.healLocationId === "cerulean-city"
-          ? "cerulean-city"
-        : input?.healLocationId === "route-4"
-          ? "route-4"
-          : input?.healLocationId === "pewter-city"
-          ? "pewter-city"
-          : input?.healLocationId === "viridian-city"
-            ? "viridian-city"
-            : "pallet-town",
+      typeof input?.healLocationId === "string" &&
+      findHealLocation(input.healLocationId)
+        ? (input.healLocationId as HealLocationId)
+        : "pallet-town",
     money: normalizeMoney(input?.money),
     inventory: normalizeInventory(input?.inventory),
     valuables: normalizeValuables(input?.valuables),

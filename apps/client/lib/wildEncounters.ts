@@ -1,3 +1,4 @@
+import { GENERATED_LAND_ENCOUNTERS } from "./generated/worldEncounters";
 import type {
   WildSpeciesId,
 } from "@tactimon/battle-engine";
@@ -198,7 +199,7 @@ const VIRIDIAN_FOREST_SLOTS: readonly LandEncounterSlot[] = [
   { weight: 1, species: "pikachu", level: 5 },
 ];
 
-export const LAND_ENCOUNTERS: Readonly<
+const HAND_LAND_ENCOUNTERS: Readonly<
   Record<string, LandEncounterTable>
 > = {
   "route-1": {
@@ -256,6 +257,13 @@ export const LAND_ENCOUNTERS: Readonly<
     encounterRate: 14,
     slots: VIRIDIAN_FOREST_SLOTS,
   },
+};
+
+export const LAND_ENCOUNTERS: Readonly<
+  Record<string, LandEncounterTable>
+> = {
+  ...GENERATED_LAND_ENCOUNTERS,
+  ...HAND_LAND_ENCOUNTERS,
 };
 
 export function resolveLandEncounter(

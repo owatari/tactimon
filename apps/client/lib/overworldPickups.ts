@@ -1,3 +1,4 @@
+import { GENERATED_PICKUPS } from "./generated/worldPickups";
 import type {
   OverworldItemId,
 } from "./items";
@@ -21,7 +22,7 @@ export type OverworldPickupDefinition = {
  * Item balls and hidden items from the FireRed map events (TMs and held
  * items excluded: they are reserved for the future dungeon/raid systems).
  */
-export const OVERWORLD_PICKUPS:
+const HAND_OVERWORLD_PICKUPS:
   readonly OverworldPickupDefinition[] = [
     {
       id: "viridian-city-potion",
@@ -418,6 +419,11 @@ export const OVERWORLD_PICKUPS:
       y: 2,
     },
   ];
+
+export const OVERWORLD_PICKUPS: readonly OverworldPickupDefinition[] = [
+  ...HAND_OVERWORLD_PICKUPS,
+  ...GENERATED_PICKUPS,
+];
 
 export function resolveOverworldPickups(
   mapId: string,

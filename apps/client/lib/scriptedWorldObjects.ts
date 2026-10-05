@@ -1,6 +1,8 @@
 import type {
   DialogueInteractionRequest,
 } from "./dialogueSystem";
+import { GENERATED_NURSES } from "./generated/worldServices";
+import { POKEMON_CENTER_MAP_IDS } from "./healLocations";
 import {
   OVERWORLD_PICKUPS,
 } from "./overworldPickups";
@@ -228,13 +230,6 @@ const CUT_TREE_OBJECTS:
     },
   }));
 
-const POKEMON_CENTER_MAP_IDS = [
-  "viridian-pokemon-center",
-  "pewter-pokemon-center",
-  "cerulean-pokemon-center",
-  "vermilion-pokemon-center",
-  "route-4-pokemon-center",
-] as const;
 
 const CENTER_NURSES:
   readonly ScriptedWorldObjectDefinition[] =
@@ -242,8 +237,8 @@ const CENTER_NURSES:
     id: `${mapId}-nurse`,
     mapId,
     label: "Nurse",
-    x: 7,
-    y: 2,
+    x: GENERATED_NURSES[mapId]?.x ?? 7,
+    y: GENERATED_NURSES[mapId]?.y ?? 2,
     spriteUrl: "/game-assets/overworld/064_nurse.png",
     frameWidth: 16,
     frameHeight: 32,

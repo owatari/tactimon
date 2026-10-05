@@ -73,6 +73,7 @@ import {
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import { repelBlocksEncounter } from "@/lib/itemUse";
+import { GENERATED_MARTS } from "@/lib/generated/worldServices";
 import {
   resolveScriptedWorldObjects,
 } from "@/lib/scriptedWorldObjects";
@@ -232,6 +233,7 @@ type TrainerStoryObject = StoryObjectBase & {
 
 type MartClerkStoryObject = StoryObjectBase & {
   kind: "mart-clerk";
+  martId: string;
 };
 
 type DialogueStoryObject = StoryObjectBase & {
@@ -550,23 +552,39 @@ function trainerStoryObject(
   };
 }
 
+const HAND_MART_MAP_IDS: ReadonlySet<string> = new Set([
+  "viridian-mart",
+  "pewter-mart",
+  "cerulean-mart",
+  "vermilion-mart",
+]);
+
 function martStoryObjects(
   mapId: string,
 ): StoryObject[] {
-  return [
-    {
-      id: `${mapId}-clerk`,
-      kind: "mart-clerk",
-      label: "Clerk",
-      x: 2,
-      y: 3,
-      spriteUrl: "/game-assets/overworld/068_clerk.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-    },
-  ];
+  const counters = HAND_MART_MAP_IDS.has(mapId)
+    ? [{ martId: mapId, x: 2, y: 3 }]
+    : Object.entries(GENERATED_MARTS)
+        .filter(([, mart]) => mart.mapId === mapId)
+        .map(([martId, mart]) => ({
+          martId,
+          x: mart.x,
+          y: mart.y,
+        }));
+
+  return counters.map((counter) => ({
+    id: `${counter.martId}-clerk`,
+    kind: "mart-clerk" as const,
+    martId: counter.martId,
+    label: "Clerk",
+    x: counter.x,
+    y: counter.y,
+    spriteUrl: "/game-assets/overworld/068_clerk.png",
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+  }));
 }
 
 function mapDialogueStoryObjects(
@@ -612,12 +630,7 @@ function mapStoryObjects(
   const objects: StoryObject[] =
     mapId === "oak-lab"
       ? [...labStoryObjects(story)]
-      : mapId === "viridian-mart" ||
-          mapId === "pewter-mart" ||
-          mapId === "cerulean-mart" ||
-          mapId === "vermilion-mart"
-        ? martStoryObjects(mapId)
-        : [];
+      : martStoryObjects(mapId);
 
   objects.push(
     ...mapDialogueStoryObjects(mapId),
@@ -1213,7 +1226,7 @@ export function OverworldGame({
       }
 
       if (storyObject.kind === "mart-clerk") {
-        onMartOpen(mapIdRef.current);
+        onMartOpen(storyObject.martId);
         return;
       }
 

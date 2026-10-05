@@ -2,8 +2,10 @@ import type {
   DuelInventory,
   DuelItemId,
 } from "@tactimon/battle-engine";
+import { GENERATED_MARTS } from "./generated/worldServices";
 import {
   BAG_ITEM_MAX_QUANTITY,
+  itemDescription,
   isBagItemId,
   type BagItems,
   type OverworldItemId,
@@ -81,7 +83,7 @@ const REPEL: MartItem = {
 };
 
 /** FireRed shop stock per Poké Mart (ROM `pokemart` lists, before badge upgrades). */
-export const MART_STOCK: Readonly<
+const HAND_MART_STOCK: Readonly<
   Record<string, readonly MartItem[]>
 > = {
   "viridian-mart": [POKE_BALL, POTION, ANTIDOTE, PARLYZ_HEAL],
@@ -116,6 +118,24 @@ export const MART_STOCK: Readonly<
     REPEL,
   ],
 };
+
+const GENERATED_MART_STOCK: Record<string, readonly MartItem[]> =
+  Object.fromEntries(
+    Object.entries(GENERATED_MARTS).map(([martId, mart]) => [
+      martId,
+      mart.stock.map((entry) => ({
+        id: entry.id as OverworldItemId,
+        name: entry.name,
+        price: entry.price,
+        description: itemDescription(entry.id as OverworldItemId),
+      })),
+    ]),
+  );
+
+/** FireRed shop stock per Poké Mart / counter (ROM `pokemart` lists). */
+export const MART_STOCK: Readonly<
+  Record<string, readonly MartItem[]>
+> = { ...GENERATED_MART_STOCK, ...HAND_MART_STOCK };
 
 export const VIRIDIAN_MART_ITEMS: readonly MartItem[] =
   MART_STOCK["viridian-mart"];

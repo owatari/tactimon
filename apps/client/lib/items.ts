@@ -1,4 +1,5 @@
 import type { DuelItemId } from "@tactimon/battle-engine";
+import { GENERATED_BAG_ITEMS } from "./generated/worldItems";
 
 /**
  * Overworld items that the battle engine cannot use yet. They live in the
@@ -6,7 +7,7 @@ import type { DuelItemId } from "@tactimon/battle-engine";
  * TMs and held items are intentionally absent: they belong to the future
  * dungeon/raid systems.
  */
-export const BAG_ITEM_CATALOG = {
+const HAND_BAG_ITEM_CATALOG = {
   "great-ball": { name: "Great Ball", firered: 3 },
   antidote: { name: "Antidote", firered: 14 },
   "burn-heal": { name: "Burn Heal", firered: 15 },
@@ -29,6 +30,11 @@ export const BAG_ITEM_CATALOG = {
   "big-mushroom": { name: "Big Mushroom", firered: 104 },
   stardust: { name: "Stardust", firered: 108 },
   "star-piece": { name: "Star Piece", firered: 109 },
+} as const;
+
+export const BAG_ITEM_CATALOG = {
+  ...GENERATED_BAG_ITEMS,
+  ...HAND_BAG_ITEM_CATALOG,
 } as const;
 
 export type BagItemId = keyof typeof BAG_ITEM_CATALOG;
@@ -80,7 +86,7 @@ export function itemIconUrl(id: OverworldItemId): string {
   return `/game-assets/firered/ui/items/${file}`;
 }
 
-const ITEM_DESCRIPTIONS: Record<OverworldItemId, string> = {
+const ITEM_DESCRIPTIONS: Partial<Record<OverworldItemId, string>> = {
   potion: "Restaura 20 HP de um Pokémon.",
   "poke-ball": "Usada para capturar Pokémon selvagens.",
   "great-ball": "Bola melhor que a Poké Ball para capturar Pokémon.",
@@ -108,7 +114,7 @@ const ITEM_DESCRIPTIONS: Record<OverworldItemId, string> = {
 };
 
 export function itemDescription(id: OverworldItemId): string {
-  return ITEM_DESCRIPTIONS[id];
+  return ITEM_DESCRIPTIONS[id] ?? "Item de Kanto.";
 }
 
 export function itemDisplayName(id: OverworldItemId): string {

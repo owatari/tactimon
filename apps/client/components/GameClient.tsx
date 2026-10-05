@@ -40,6 +40,10 @@ import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
 import { StartMenu } from "@/components/StartMenu";
+import {
+  findHealLocation,
+  findHealLocationByCenter,
+} from "@/lib/healLocations";
 import { markPokedexSeen } from "@/lib/pokedex";
 import {
   DEFAULT_GAME_OPTIONS,
@@ -466,48 +470,10 @@ export function GameClient() {
           : next,
       );
 
-      if (next.mapId === "viridian-pokemon-center") {
+      const heal = findHealLocationByCenter(next.mapId);
+      if (heal) {
         setStory((current) =>
-          registerStoryHealLocation(
-            current,
-            "viridian-city",
-          ),
-        );
-      } else if (
-        next.mapId === "pewter-pokemon-center"
-      ) {
-        setStory((current) =>
-          registerStoryHealLocation(
-            current,
-            "pewter-city",
-          ),
-        );
-      } else if (
-        next.mapId === "vermilion-pokemon-center"
-      ) {
-        setStory((current) =>
-          registerStoryHealLocation(
-            current,
-            "vermilion-city",
-          ),
-        );
-      } else if (
-        next.mapId === "cerulean-pokemon-center"
-      ) {
-        setStory((current) =>
-          registerStoryHealLocation(
-            current,
-            "cerulean-city",
-          ),
-        );
-      } else if (
-        next.mapId === "route-4-pokemon-center"
-      ) {
-        setStory((current) =>
-          registerStoryHealLocation(
-            current,
-            "route-4",
-          ),
+          registerStoryHealLocation(current, heal.id),
         );
       }
     },
@@ -1178,22 +1144,8 @@ export function GameClient() {
           <BlackoutOverlay
             moneyLost={pendingWhiteOut.moneyLost}
             locationLabel={
-              pendingWhiteOut.healLocationId ===
-                "vermilion-city"
-                ? "Vermilion Pokémon Center"
-                : pendingWhiteOut.healLocationId ===
-                    "cerulean-city"
-                  ? "Cerulean Pokémon Center"
-                : pendingWhiteOut.healLocationId ===
-                    "route-4"
-                  ? "Route 4 Pokémon Center"
-                  : pendingWhiteOut.healLocationId ===
-                      "pewter-city"
-                  ? "Pewter Pokémon Center"
-                  : pendingWhiteOut.healLocationId ===
-                      "viridian-city"
-                    ? "Viridian Pokémon Center"
-                    : "Pallet Town"
+              findHealLocation(pendingWhiteOut.healLocationId)?.label ??
+              "Pallet Town"
             }
             onContinue={continueAfterWhiteOut}
           />

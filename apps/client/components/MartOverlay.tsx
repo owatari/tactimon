@@ -88,7 +88,7 @@ export function MartOverlay({
           <div>
             <span className="eyebrow">
               {MART_CITY_LABEL[martId] ??
-                WORLD_MAPS[martId]?.label ??
+                WORLD_MAPS[martId.split("@")[0]]?.label ??
                 "KANTO"}
             </span>
             <h2>Poké Mart</h2>

@@ -73,3 +73,24 @@ describe("generated Kanto world", () => {
     expect(resolveWarpTransitionAt("lavender-town", x, y)?.mapId).toBe(entry[1][0]);
   });
 });
+
+describe("generated Kanto content", () => {
+  it("adds encounters, pickups, marts and heal points for new areas", async () => {
+    const { LAND_ENCOUNTERS, resolveAreaWildLevel } = await import("../apps/client/lib/wildEncounters");
+    const { OVERWORLD_PICKUPS } = await import("../apps/client/lib/overworldPickups");
+    const { MART_STOCK } = await import("../apps/client/lib/mart");
+    const { HEAL_LOCATIONS } = await import("../apps/client/lib/healLocations");
+    const { resolveWhiteOutRespawn } = await import("../apps/client/lib/maps");
+
+    expect(LAND_ENCOUNTERS["route-11"]?.slots.length).toBe(12);
+    expect(resolveAreaWildLevel("route-12")).toBeGreaterThan(10);
+    expect(OVERWORLD_PICKUPS.some((p) => p.mapId === "pokemon-tower-3f" || p.mapId === "rocket-hideout-b-1f")).toBe(true);
+    expect(OVERWORLD_PICKUPS.every((p) => !/^tm\d|berry/i.test(p.itemName))).toBe(true);
+    expect(MART_STOCK["celadon-city-department-store-5f@1,7"] ?? MART_STOCK["celadon-city-department-store-5f@1,6"]).toBeDefined();
+    expect(MART_STOCK["fuchsia-city-mart"].length).toBeGreaterThan(3);
+    for (const heal of HEAL_LOCATIONS) {
+      expect(WORLD_MAPS[heal.centerMapId], heal.id).toBeDefined();
+      expect(resolveWhiteOutRespawn(heal.id).mapId).toBe(heal.centerMapId);
+    }
+  });
+});
