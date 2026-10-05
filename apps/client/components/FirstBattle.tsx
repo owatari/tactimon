@@ -104,6 +104,8 @@ type Props = {
   encounter: BattleEncounter;
   context: BattleSceneContext;
   onComplete: (outcome: BattleOutcome) => void;
+  /** Options menu default; the battle HUD can still toggle it. */
+  initialBattleSpeed?: 1 | 2;
 };
 
 type CommandMode =
@@ -365,6 +367,7 @@ export function FirstBattle({
   encounter,
   context,
   onComplete,
+  initialBattleSpeed = 1,
 }: Props) {
   const initialState = useMemo(() => {
     const starterBuild: DuelPokemonBuild = {
@@ -462,7 +465,7 @@ export function FirstBattle({
   const [busy, setBusy] = useState(false);
   const [autoBattle, setAutoBattle] = useState(false);
   const [autoCatch, setAutoCatch] = useState(false);
-  const [battleSpeed, setBattleSpeed] = useState<1 | 2>(1);
+  const [battleSpeed, setBattleSpeed] = useState<1 | 2>(initialBattleSpeed);
   const [battleZoom, setBattleZoom] = useState<1 | 2 | 3>(
     WORLD_ZOOM as 3,
   );
@@ -493,7 +496,7 @@ export function FirstBattle({
   );
 
   const aiRunningRef = useRef(false);
-  const battleSpeedRef = useRef<1 | 2>(1);
+  const battleSpeedRef = useRef<1 | 2>(initialBattleSpeed);
   const animationNonceRef = useRef(0);
   const vfxNonceRef = useRef(0);
   const captureThrowNonceRef = useRef(0);

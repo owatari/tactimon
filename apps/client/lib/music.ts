@@ -115,6 +115,7 @@ class MusicManager {
   private unlockInstalled = false;
   private transitionToken = 0;
   private readonly fadeMs = 520;
+  private master = 1;
   private readonly failedTracks = new Set<string>();
 
   installUnlock(): () => void {
@@ -142,6 +143,18 @@ class MusicManager {
     window.addEventListener("touchstart", unlock, { passive: true });
 
     return cleanup;
+  }
+
+  /** User option: scales every track volume (0 = muted, 1 = full). */
+  setMasterVolume(value: number): void {
+    this.master = Math.max(
+      0,
+      Math.min(1, Number.isFinite(value) ? value : 1),
+    );
+    if (this.current) {
+      this.current.audio.volume =
+        this.current.track.volume * this.master;
+    }
   }
 
   setTrack(track: MusicTrack | null): void {
@@ -191,7 +204,8 @@ class MusicManager {
 
     this.stopFadingOut();
     if (this.current) {
-      this.current.audio.volume = this.current.track.volume;
+      this.current.audio.volume =
+        this.current.track.volume * this.master;
     }
 
     const incoming: AudioSlot = {
@@ -241,11 +255,12 @@ class MusicManager {
         1,
         (now - startedAt) / this.fadeMs,
       );
-      incoming.audio.volume = track.volume * progress;
+      incoming.audio.volume =
+        track.volume * this.master * progress;
 
       if (outgoing) {
         outgoing.audio.volume =
-          outgoing.track.volume * (1 - progress);
+          outgoing.track.volume * this.master * (1 - progress);
       }
 
       if (progress < 1) {
