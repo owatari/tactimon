@@ -25,3 +25,9 @@ Docs longos: `docs/WORLD_STATE.md`, `docs/DIALOGUE_SYSTEM.md`, `docs/PROGRESSION
 - **Itens**: `OVERWORLD_PICKUPS` (bolas + `hidden: true`) vêm dos eventos da ROM; engine só tem Potion/Poké Ball → demais itens vão para `StoryState.bagItems` (`lib/items.ts`), sem uso em batalha ainda. TMs/berries/held ficam fora (dungeon/raid).
 - **Marts**: `MART_STOCK` por cidade (listas `pokemart` da ROM). Trainers extras gerados da tabela `gTrainers` (base `0x23EAC8`, 40 bytes/struct).
 - Texto/ROM: ROM FireRed em `local-assets/roms/firered.gba`; scripts de NPC = `loadword 0 ptr; callstd 4`; item ball = `1a 00 80 <item16>`; hidden item = `raw_value` (item16, flag8, qty7|underfoot1).
+
+## Mundo gerado da ROM (fase D)
+- Geradores em `tools/rom-data/` (rodam com a ROM local; só o TS gerado é versionado): `extract-kanto-data.py` → `packages/game-data/data/*.json`; `generate-engine-species.py` → `packages/battle-engine/src/generated/kanto.ts` (151 espécies/golpes/evoluções); `generate-world-maps.py` → `apps/client/lib/generated/{worldMaps,worldWarps}.ts` + `scripts/generated-sync.json`; `generate-world-content.py` → encontros, itens, marts, trainers, gates, textos EN. Reexecutar na ordem maps → content depois de `sync-assets`.
+- Mapas novos usam kebab da ROM (`celadon-city-gym`, `silph-co-11f`, `pokemon-tower-7f`…). Textos pt-BR: `worldTextsKantoNpcPt.ts`, `worldTextsKantoSignPt.ts`, `trainerTextsKantoPt.ts`, `trainerTextsPt.ts` (líderes/E4). NPC de evento sem tradução **não** é renderizado (evita oferecer gifts/tutors que não existem).
+- Água bloqueia sem Surf (`canStoryUseSurf` = HM + Soul Badge); Champion Blue depende de `rivalStarter` (`requiresRivalStarter`); portas da League abrem pelo trainer derrotado (`generated/worldGates.ts`).
+- `tests/world-reachability.test.ts` percorre warps/conexões/ledges/água e falha se um mapa do mainland ficar inalcançável.
