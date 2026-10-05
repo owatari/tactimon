@@ -1,3 +1,4 @@
+import { GENERATED_TILE_GATES } from "./generated/worldGates";
 import type {
   DialogueInteractionRequest,
 } from "./dialogueSystem";
@@ -122,7 +123,7 @@ export const VIRIDIAN_GYM_UNLOCK_BADGES = [
   "volcano",
 ] as const;
 
-const TILE_GATES: readonly PlayerWorldTileGate[] = [
+const HAND_TILE_GATES: readonly PlayerWorldTileGate[] = [
   {
     id: "viridian-gym-story-lock",
     kind: "tile",
@@ -264,6 +265,11 @@ const TILE_GATES: readonly PlayerWorldTileGate[] = [
         "A casa foi arrombada. A passagem fica isolada até terminarmos de verificar a ocorrência.",
     },
   },
+];
+
+const TILE_GATES: readonly PlayerWorldTileGate[] = [
+  ...HAND_TILE_GATES,
+  ...GENERATED_TILE_GATES,
 ];
 
 function coordinateMatches(

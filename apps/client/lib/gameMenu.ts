@@ -269,6 +269,8 @@ export type TrainerCardData = {
   playTime: string;
   pokedexSeen: number;
   pokedexCaught: number;
+  /** True after beating the Champion (Hall of Fame). */
+  champion: boolean;
 };
 
 export function formatPlayTime(seconds: number): string {
@@ -298,5 +300,8 @@ export function buildTrainerCard(
     playTime: formatPlayTime(story.playTimeSeconds ?? 0),
     pokedexSeen: dex.seenCount,
     pokedexCaught: dex.caughtCount,
+    champion: story.defeatedTrainerIds.some((id) =>
+      id.startsWith("league-champion-blue-"),
+    ),
   };
 }

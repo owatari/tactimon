@@ -52,3 +52,26 @@ describe("generated Kanto trainers", () => {
     }
   });
 });
+
+describe("Champion and League gates", () => {
+  it("shows only the Champion variant that matches the rival's starter", async () => {
+    const { resolvePlayerOverworldTrainers } = await import("../apps/client/lib/trainers");
+    const { normalizeStoryState } = await import("../apps/client/lib/story");
+    const story = normalizeStoryState({ starter: "bulbasaur" });
+    expect(story.rivalStarter).toBe("charmander");
+    const layout = { width: 12, height: 12, cells: Array.from({ length: 144 }, () => ({ raw: 0, metatile: 1, collision: 0, elevation: 0 })) } as never;
+    const visible = resolvePlayerOverworldTrainers("pokemon-league-champions-room", layout, [], story);
+    expect(visible.map((t) => t.id)).toEqual(["league-champion-blue-charmander"]);
+    expect(visible[0].party).toHaveLength(6);
+    expect(visible[0].party.map((p) => p.species)).toContain("charizard");
+  });
+
+  it("keeps each League door locked until its member is beaten", async () => {
+    const { resolveBlockedPlayerTileGate } = await import("../apps/client/lib/playerWorldGates");
+    const { normalizeStoryState, completeStoryPlayerEvent } = await import("../apps/client/lib/story");
+    const story = normalizeStoryState({ starter: "bulbasaur" });
+    expect(resolveBlockedPlayerTileGate(story, "pokemon-league-loreleis-room", 6, 2)?.id).toBe("gate:pokemon-league-loreleis-room-exit");
+    const beaten = completeStoryPlayerEvent(story, "trainer", "pokemon-league-loreleis-room-lorelei");
+    expect(resolveBlockedPlayerTileGate(beaten, "pokemon-league-loreleis-room", 6, 2)).toBeNull();
+  });
+});

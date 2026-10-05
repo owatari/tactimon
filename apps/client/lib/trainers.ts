@@ -1,3 +1,4 @@
+import { CHAMPION_TRAINERS } from "./generated/worldChampion";
 import { GENERATED_TRAINERS } from "./generated/worldTrainers";
 import { TRAINER_TEXT_PT } from "./trainerTextsPt";
 import type {
@@ -31,6 +32,8 @@ export type OverworldTrainerDefinition = {
   defeatedText: string;
   moneyMultiplier: number;
   badgeId?: StoryBadgeId;
+  /** Only appears for players whose rival picked this starter. */
+  requiresRivalStarter?: StarterSpeciesId;
   party: readonly DuelPokemonBuild[];
 };
 
@@ -2304,6 +2307,7 @@ const HAND_OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
 
 export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
   ...HAND_OVERWORLD_TRAINERS,
+  ...CHAMPION_TRAINERS,
   ...GENERATED_TRAINERS.map((trainer) => ({
     ...trainer,
     ...TRAINER_TEXT_PT[trainer.id],
@@ -2510,7 +2514,13 @@ export function resolvePlayerOverworldTrainers(
     layout,
     worldObjects,
     [],
-  ).map((trainer) => ({
+  )
+    .filter(
+      (trainer) =>
+        !trainer.requiresRivalStarter ||
+        trainer.requiresRivalStarter === story.rivalStarter,
+    )
+    .map((trainer) => ({
     ...trainer,
     defeated: isStoryTrainerDefeated(
       story,

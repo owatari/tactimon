@@ -441,4 +441,90 @@ for d, code in NEW.items():
 )
 print(f"npc_texts={len(npc_texts)} sign_texts={len(sign_texts)}")
 
+# ---- champion (starter-dependent rival) and progression gates -----------------
+CHAMPION = {"squirtle": 438, "bulbasaur": 439, "charmander": 440}  # keyed by the rival's starter
+champion_defs = []
+for starter, tid in CHAMPION.items():
+    o_ = BASE_TRAINERS + tid * 40
+    flags_ = ROM[o_]
+    count_ = struct.unpack("<I", ROM[o_ + 32:o_ + 36])[0]
+    pp_ = struct.unpack("<I", ROM[o_ + 36:o_ + 40])[0] - 0x08000000
+    sz_ = 16 if flags_ & 1 else 8
+    party_ = []
+    for k in range(count_):
+        e = ROM[pp_ + k * sz_:pp_ + (k + 1) * sz_]
+        _, lvl, sp = struct.unpack("<HHH", e[:6])
+        custom = [MOVES_BY_NUM.get(mv) for mv in struct.unpack("<4H", e[8:16]) if mv] if flags_ & 1 else []
+        party_.append({"species": DEX[sp], "level": lvl, "moves": engine_moves(DEX[sp], lvl, custom)})
+    champion_defs.append({
+        "id": f"league-champion-blue-{starter}", "mapId": "pokemon-league-champions-room", "name": "Champion Blue",
+        "preferredPosition": {"x": 6, "y": 8}, "facing": "south", "sightRange": 0,
+        "spriteUrl": "/game-assets/overworld/%s" % "000_red_normal.png",
+        "frameWidth": 16, "frameHeight": 32, "sheetWidth": 96, "sheetHeight": 128,
+        "challengeText": "Blue: Eu sou o Campeão! Você chegou longe... mas hoje eu mostro quem é o melhor Treinador!",
+        "defeatedText": "Blue: O quê?! Eu perdi?! Eu era o Campeão... Agora é você! Você é o novo Campeão da Pokémon League!",
+        "moneyMultiplier": 25, "requiresRivalStarter": starter, "party": party_,
+    })
+
+# sprite for Blue: use the rival overworld sprite when extracted
+blue_obj = [o for o in world[next(d for d, c in NEW.items() if c == "pokemon-league-champions-room")]["objects"] if o["graphics_name"] == "BLUE"][0]
+for c in champion_defs:
+    c["spriteUrl"] = "/game-assets/" + blue_obj["sprite_file"]
+    sw, sh = png_size(A / blue_obj["sprite_file"])
+    c["sheetWidth"], c["sheetHeight"] = sw, sh
+
+warps_ts = (CLIENT / "lib" / "generated" / "worldWarps.ts").read_text(encoding="utf-8")
+WARPS = json.loads(re.search(r"WORLD_WARPS: Readonly<\s*Record<string, readonly \[string, number, number\]>\s*> = (\{.*?\n\});", warps_ts, re.S).group(1))
+BADGES = ["boulder", "cascade", "thunder", "rainbow", "soul", "marsh", "volcano", "earth"]
+
+
+def badge_condition(ids):
+    return {"kind": "all", "conditions": [{"kind": "event", "namespace": "badge", "id": b} for b in ids]}
+
+
+gates = []
+league_rooms = [
+    ("pokemon-league-loreleis-room", "pokemon-league-loreleis-room-lorelei"),
+    ("pokemon-league-brunos-room", "pokemon-league-brunos-room-bruno"),
+    ("pokemon-league-agathas-room", "pokemon-league-agathas-room-agatha"),
+    ("pokemon-league-lances-room", "pokemon-league-lances-room-lance"),
+]
+for room, trainer_id in league_rooms:
+    for key, (target, _x, _y) in WARPS.items():
+        src, xy = key.split(":")
+        if src == room and target.startswith("pokemon-league") and target != room and "halls" not in target and (target != "pokemon-league-lorelei-room"):
+            # only the forward door (the one that leads to a higher room)
+            order = [r for r, _ in league_rooms] + ["pokemon-league-champions-room"]
+            if target in order and order.index(target) > order.index(room):
+                x, y = map(int, xy.split(","))
+                gates.append({
+                    "id": f"gate:{room}-exit", "kind": "tile", "mapId": room, "x": x, "y": y,
+                    "allowWhen": {"kind": "event", "namespace": "trainer", "id": trainer_id},
+                    "blockedRequest": {"kind": "text", "id": f"gate:{room}-exit", "text": "A porta está trancada. Derrote o membro da Elite Four para seguir adiante."},
+                })
+
+for key, (target, _x, _y) in WARPS.items():
+    src, xy = key.split(":")
+    x, y = map(int, xy.split(","))
+    if target == "victory-road-1f" and src.startswith("route-23"):
+        gates.append({
+            "id": f"gate:victory-road-{src}-{x}-{y}", "kind": "tile", "mapId": src, "x": x, "y": y,
+            "allowWhen": badge_condition(BADGES),
+            "blockedRequest": {"kind": "text", "id": "gate:victory-road", "text": "O guarda não deixa você passar sem as 8 insígnias."},
+        })
+
+(GEN / "worldGates.ts").write_text(
+    HEADER
+    + 'import type { PlayerWorldTileGate } from "../playerWorldGates";\n\n'
+    + "export const GENERATED_TILE_GATES: readonly PlayerWorldTileGate[] = %s as unknown as PlayerWorldTileGate[];\n" % js(gates, 1),
+    encoding="utf-8",
+)
+(GEN / "worldChampion.ts").write_text(
+    HEADER
+    + 'import type { OverworldTrainerDefinition } from "../trainers";\n\n'
+    + "export const CHAMPION_TRAINERS: readonly OverworldTrainerDefinition[] = %s as unknown as OverworldTrainerDefinition[];\n" % js(champion_defs, 1),
+    encoding="utf-8",
+)
+print(f"gates={len(gates)} champion={len(champion_defs)}")
+
 print(f"encounters={len(enc_out)} pickups={len(pickups)} extra_items={len(extra_items)} marts={len(marts)} nurses={len(nurses)} skipped_items={len(skipped_items)}")

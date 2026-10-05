@@ -662,6 +662,12 @@ export function StartMenu({
             <dd>
               {card.pokedexCaught} OWN / {card.pokedexSeen} SEEN
             </dd>
+            {card.champion && (
+              <>
+                <dt>HALL OF FAME</dt>
+                <dd>CAMPEÃO ★</dd>
+              </>
+            )}
             <dt>BADGES</dt>
             <dd>{card.badgeCount}/8</dd>
           </dl>
