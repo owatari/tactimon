@@ -67,7 +67,7 @@ export function normalizeBagItems(value: unknown): BagItems {
   return normalized;
 }
 
-const ENGINE_ITEM_ICON: Record<DuelItemId, string> = {
+const ENGINE_ITEM_ICON: Record<"potion" | "poke-ball", string> = {
   potion: "013_potion.png",
   "poke-ball": "004_poke_ball.png",
 };
@@ -75,7 +75,7 @@ const ENGINE_ITEM_ICON: Record<DuelItemId, string> = {
 export function itemIconUrl(id: OverworldItemId): string {
   const file = isBagItemId(id)
     ? `${String(BAG_ITEM_CATALOG[id].firered).padStart(3, "0")}_${(id === "parlyz-heal" ? "paralyze-heal" : id).replace(/-/g, "_")}.png`
-    : ENGINE_ITEM_ICON[id];
+    : ENGINE_ITEM_ICON[id as "potion" | "poke-ball"];
 
   return `/game-assets/firered/ui/items/${file}`;
 }

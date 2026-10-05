@@ -1,5 +1,6 @@
 import {
   DUEL_MOVES,
+  type DuelInventory,
   calculateDuelPokemonStats,
   grantRareCandy,
   type DuelMajorStatus,
@@ -298,4 +299,52 @@ export function repelBlocksEncounter(
     Boolean(lead) &&
     members.every((member) => member.level < (lead?.level ?? 0))
   );
+}
+
+/** Bag items that the battle engine can use (stored in `bagItems`). */
+const BATTLE_BAG_ITEM_IDS = [
+  "super-potion",
+  "hyper-potion",
+  "antidote",
+  "parlyz-heal",
+  "awakening",
+  "burn-heal",
+  "great-ball",
+] as const;
+
+/** Battle bag = engine inventory + usable Bag items. */
+export function toBattleInventory(
+  story: StoryState,
+): DuelInventory {
+  const inventory: DuelInventory = { ...story.inventory };
+  for (const id of BATTLE_BAG_ITEM_IDS) {
+    const amount = story.bagItems?.[id] ?? 0;
+    if (amount > 0) {
+      inventory[id] = amount;
+    }
+  }
+
+  return inventory;
+}
+
+/** Writes the post-battle counts back to the inventory and the Bag. */
+export function applyBattleInventory(
+  story: StoryState,
+  inventory: DuelInventory,
+): StoryState {
+  const bagItems = { ...story.bagItems };
+  for (const id of BATTLE_BAG_ITEM_IDS) {
+    const amount = inventory[id] ?? 0;
+    if (amount > 0) bagItems[id] = amount;
+    else delete bagItems[id];
+  }
+
+  return {
+    ...story,
+    inventory: {
+      potion: inventory.potion,
+      "poke-ball": inventory["poke-ball"],
+    },
+    bagItems,
+  };
 }

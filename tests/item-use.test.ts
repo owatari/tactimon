@@ -7,7 +7,9 @@ import {
   REPEL_STEPS,
   isFieldUsableItem,
   itemNeedsMoveTarget,
+  applyBattleInventory,
   repelBlocksEncounter,
+  toBattleInventory,
   useBagItem,
 } from "../apps/client/lib/itemUse";
 import {
@@ -144,5 +146,25 @@ describe("Repel", () => {
       walking = applyStoryOverworldStep(walking);
     }
     expect(walking.repelSteps).toBe(0);
+  });
+});
+
+describe("battle bag", () => {
+  it("merges usable Bag items into the battle inventory and writes counts back", () => {
+    const base = story();
+    const battle = toBattleInventory(base);
+    expect(battle["super-potion"]).toBe(1);
+    expect(battle.antidote).toBe(1);
+    expect(battle.revive).toBeUndefined();
+
+    const after = applyBattleInventory(base, {
+      ...battle,
+      potion: 1,
+      antidote: 0,
+    });
+    expect(after.inventory).toEqual({ potion: 1, "poke-ball": 5 });
+    expect(after.bagItems?.antidote).toBeUndefined();
+    expect(after.bagItems?.["super-potion"]).toBe(1);
+    expect(after.bagItems?.revive).toBe(1);
   });
 });

@@ -60,6 +60,10 @@ import {
   type MartPurchaseResult,
 } from "@/lib/mart";
 import {
+  applyBattleInventory,
+  toBattleInventory,
+} from "@/lib/itemUse";
+import {
   ROUTE24_NUGGET_REWARD_ID,
   ROUTE24_ROCKET_TRAINER_ID,
 } from "@/lib/trainers";
@@ -574,17 +578,19 @@ export function GameClient() {
         rewards,
       });
 
-    setStory((current) => ({
-      ...applyBattleHealth(
-        current,
-        session.partyIndices,
-        outcome.playerHp,
-        outcome.playerStatuses,
-        outcome.playerSleepTurnsRemaining,
-        outcome.playerMovePp,
+    setStory((current) =>
+      applyBattleInventory(
+        applyBattleHealth(
+          current,
+          session.partyIndices,
+          outcome.playerHp,
+          outcome.playerStatuses,
+          outcome.playerSleepTurnsRemaining,
+          outcome.playerMovePp,
+        ),
+        outcome.inventory,
       ),
-      inventory: { ...outcome.inventory },
-    }));
+    );
 
     const fullPartySnapshot = story.playerPokemon
       ? [
@@ -1158,7 +1164,7 @@ export function GameClient() {
             progression={deployedParty[0].pokemon}
             party={battleParty}
             captureAllowed={storyCanCapturePokemon(story)}
-            inventory={story.inventory}
+            inventory={toBattleInventory(story)}
             encounter={battleSession.encounter}
             context={battleSession.context}
             onComplete={handleBattleComplete}

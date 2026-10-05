@@ -1,5 +1,6 @@
 "use client";
 
+import { itemIconUrl } from "@/lib/items";
 import {
   useEffect,
   useMemo,
@@ -116,14 +117,8 @@ type CommandMode =
   | "items"
   | "item-target";
 
-const FIRE_RED_ITEM_ICON: Record<
-  DuelItemId,
-  string
-> = {
-  potion:
-    "/game-assets/firered/ui/items/013_potion.png",
-  "poke-ball":
-    "/game-assets/firered/ui/items/004_poke_ball.png",
+const FIRE_RED_ITEM_ICON = {
+  get: itemIconUrl,
 };
 
 type SpriteAnimation = "idle" | "walk" | "attack" | "hurt" | "faint";
@@ -745,6 +740,20 @@ export function FirstBattle({
             .map((unit) => unit.id),
         );
       }
+      if (item.kind === "cure") {
+        const cures = item.cures as readonly string[];
+        return new Set(
+          state.units
+            .filter(
+              (unit) =>
+                unit.hp > 0 &&
+                unit.side === player.side &&
+                unit.status !== null &&
+                cures.includes(unit.status),
+            )
+            .map((unit) => unit.id),
+        );
+      }
       return new Set(
         state.units
           .filter(
@@ -1141,7 +1150,9 @@ export function FirstBattle({
       flashNotice(
         result.reason === "target-full-hp"
           ? "Esse Pokémon já está com HP cheio."
-          : "Não é possível usar esse item agora.",
+          : result.reason === "target-no-status"
+            ? "Esse Pokémon não tem esse problema de status."
+            : "Não é possível usar esse item agora.",
       );
       return;
     }
@@ -1919,7 +1930,7 @@ export function FirstBattle({
                 } as CSSProperties}
               >
                 <img
-                  src={FIRE_RED_ITEM_ICON["poke-ball"]}
+                  src={FIRE_RED_ITEM_ICON.get("poke-ball")}
                   alt=""
                 />
               </div>
@@ -2081,7 +2092,7 @@ export function FirstBattle({
                           >
                             <span className="battle-item-choice-name">
                               <img
-                                src={FIRE_RED_ITEM_ICON[itemId]}
+                                src={FIRE_RED_ITEM_ICON.get(itemId)}
                                 alt=""
                                 aria-hidden="true"
                               />
@@ -2091,6 +2102,8 @@ export function FirstBattle({
                               ×{amount} ·{" "}
                               {item.kind === "heal"
                                 ? `+${item.heal} HP`
+                                : item.kind === "cure"
+                                  ? "cura status"
                                 : state.captureAllowed
                                   ? "captura com HP ≤50%"
                                   : "captura indisponível"}

@@ -104,8 +104,29 @@ export type DuelMajorStatus =
   | "burn"
   | "sleep"
   | null;
-export type DuelItemId = "potion" | "poke-ball";
-export type DuelInventory = Record<DuelItemId, number>;
+export type DuelItemId =
+  | "potion"
+  | "poke-ball"
+  | "super-potion"
+  | "hyper-potion"
+  | "antidote"
+  | "parlyz-heal"
+  | "awakening"
+  | "burn-heal"
+  | "great-ball";
+const DUEL_EXTRA_ITEM_IDS = [
+  "super-potion",
+  "hyper-potion",
+  "antidote",
+  "parlyz-heal",
+  "awakening",
+  "burn-heal",
+  "great-ball",
+] as const;
+export type DuelExtraItemId = (typeof DUEL_EXTRA_ITEM_IDS)[number];
+/** Potion and Poké Ball are always tracked; other items are optional. */
+export type DuelInventory = Record<"potion" | "poke-ball", number> &
+  Partial<Record<DuelExtraItemId, number>>;
 export type DuelMoveId =
   | "tackle"
   | "take-down"
@@ -286,8 +307,15 @@ export interface WildDuelOptions {
 }
 
 export type DuelItem =
-  | { id: "potion"; name: string; kind: "heal"; target: "ally"; heal: number }
-  | { id: "poke-ball"; name: string; kind: "capture"; target: "wild-enemy"; ballModifier: number };
+  | { id: DuelItemId; name: string; kind: "heal"; target: "ally"; heal: number }
+  | {
+      id: DuelItemId;
+      name: string;
+      kind: "cure";
+      target: "ally";
+      cures: readonly Exclude<DuelMajorStatus, null>[];
+    }
+  | { id: DuelItemId; name: string; kind: "capture"; target: "wild-enemy"; ballModifier: number };
 
 export function normalizeDuelMajorStatus(
   value: unknown,
@@ -423,7 +451,7 @@ export type DuelPresentationEvent =
   | {
       kind: "capture";
       actorId: string;
-      itemId: "poke-ball";
+      itemId: DuelItemId;
       targetIds: string[];
       success: boolean;
       chance: number;
@@ -1464,6 +1492,55 @@ export const DUEL_ITEMS = {
     target: "wild-enemy",
     ballModifier: 1,
   },
+  "great-ball": {
+    id: "great-ball",
+    name: "Great Ball",
+    kind: "capture",
+    target: "wild-enemy",
+    ballModifier: 1.5,
+  },
+  "super-potion": {
+    id: "super-potion",
+    name: "Super Potion",
+    kind: "heal",
+    target: "ally",
+    heal: 50,
+  },
+  "hyper-potion": {
+    id: "hyper-potion",
+    name: "Hyper Potion",
+    kind: "heal",
+    target: "ally",
+    heal: 200,
+  },
+  antidote: {
+    id: "antidote",
+    name: "Antidote",
+    kind: "cure",
+    target: "ally",
+    cures: ["poison"],
+  },
+  "parlyz-heal": {
+    id: "parlyz-heal",
+    name: "Parlyz Heal",
+    kind: "cure",
+    target: "ally",
+    cures: ["paralysis"],
+  },
+  awakening: {
+    id: "awakening",
+    name: "Awakening",
+    kind: "cure",
+    target: "ally",
+    cures: ["sleep"],
+  },
+  "burn-heal": {
+    id: "burn-heal",
+    name: "Burn Heal",
+    kind: "cure",
+    target: "ally",
+    cures: ["burn"],
+  },
 } satisfies Record<DuelItemId, DuelItem>;
 
 const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
@@ -1499,13 +1576,21 @@ function normalizeDuelItems(
       ? Math.max(0, Math.min(999, Math.trunc(value)))
       : fallbackValue;
 
-  return {
+  const items: DuelInventory = {
     potion: normalize(input?.potion, fallback.potion),
     "poke-ball": normalize(
       input?.["poke-ball"],
       fallback["poke-ball"],
     ),
   };
+  for (const id of DUEL_EXTRA_ITEM_IDS) {
+    const amount = normalize(input?.[id], fallback[id] ?? 0);
+    if (amount > 0) {
+      items[id] = amount;
+    }
+  }
+
+  return items;
 }
 
 export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
@@ -5587,7 +5672,7 @@ export function applyDuelAction(
       );
       const resolution = resolveCaptureRoll(random(), chance, target.hp, target.maxHp);
       target.captureAttempted = true;
-      actorItems[item.id] -= 1;
+      actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
       state.status = "finished";
       state.winner = resolution.success ? "player" : null;
       state.captureResult = {
@@ -5612,7 +5697,7 @@ export function applyDuelAction(
         presentation: {
           kind: "capture",
           actorId: actor.id,
-          itemId: "poke-ball",
+          itemId: item.id,
           targetIds: [target.id],
           success: resolution.success,
           chance,
@@ -5625,12 +5710,33 @@ export function applyDuelAction(
     if (target.side !== actor.side) {
       return { state: input, accepted: false, reason: "invalid-item-target" };
     }
+    if (item.kind === "cure") {
+      if (!target.status || !(item.cures as readonly string[]).includes(target.status)) {
+        return { state: input, accepted: false, reason: "target-no-status" };
+      }
+      target.status = null;
+      target.sleepTurnsRemaining = 0;
+      actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
+      appendLog(state, `${target.displayName} foi curado com ${item.name}.`);
+      resolveTurnEnd(state, actor);
+      return {
+        state,
+        accepted: true,
+        presentation: {
+          kind: "item",
+          actorId: actor.id,
+          itemId: item.id,
+          targetIds: [target.id],
+          healed: 0,
+        },
+      };
+    }
     if (target.hp >= target.maxHp) {
       return { state: input, accepted: false, reason: "target-full-hp" };
     }
     const healed = Math.min(item.heal, target.maxHp - target.hp);
     target.hp += healed;
-    actorItems[item.id] -= 1;
+    actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
     appendLog(state, `${target.displayName} recuperou ${healed} HP com ${item.name}.`);
     resolveTurnEnd(state, actor);
     return {
