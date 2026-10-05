@@ -44,13 +44,23 @@ function usedKeys(): Map<string, string> {
 }
 
 describe("i18n catalog", () => {
-  it("has all four translations for every entry, with the same placeholders", () => {
+  it("has every translation for every entry, with the same placeholders", () => {
     for (const [source, entry] of Object.entries(CATALOG)) {
-      for (const locale of TRANSLATED_LOCALES) {
+      for (const locale of ["es", "fr", "zh"] as const) {
         expect(entry[locale]?.trim(), `${locale}: ${source}`).toBeTruthy();
-        expect(placeholdersOf(entry[locale]), `${locale}: ${source}`).toEqual(
-          placeholdersOf(source),
-        );
+      }
+      // The key is either English (needs pt) or legacy Portuguese (needs en).
+      expect(
+        Boolean(entry.en?.trim()) || Boolean(entry.pt?.trim()),
+        `en or pt: ${source}`,
+      ).toBe(true);
+      for (const locale of LOCALES) {
+        const text = entry[locale];
+        if (text) {
+          expect(placeholdersOf(text), `${locale}: ${source}`).toEqual(
+            placeholdersOf(source),
+          );
+        }
       }
     }
   });

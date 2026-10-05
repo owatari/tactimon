@@ -28,8 +28,19 @@ export const LOCALE_LABELS: Record<Locale, string> = {
   zh: "中文",
 };
 
-/** A catalog entry: the English source text is the key. */
-export type CatalogEntry = Record<TranslatedLocale, string>;
+/**
+ * A catalog entry. The key is the source text, normally English. Legacy
+ * hand-written Portuguese text keeps its Portuguese literal as the key and
+ * supplies the English translation in `en`. `es`, `fr` and `zh` are always
+ * required; exactly one of `en` / `pt` is the key itself and may be omitted.
+ */
+export type CatalogEntry = {
+  en?: string;
+  pt?: string;
+  es: string;
+  fr: string;
+  zh: string;
+};
 export type Catalog = Readonly<Record<string, CatalogEntry>>;
 
 export const LOCALE_STORAGE_KEY = "tactimon.lang.v1";
@@ -130,8 +141,8 @@ export function translate(
   locale: Locale,
   params?: TParams,
 ): string {
-  const entry = locale === "en" ? undefined : CATALOG[source];
-  return interpolate(entry?.[locale as TranslatedLocale] || source, params);
+  const entry = CATALOG[source];
+  return interpolate(entry?.[locale] || source, params);
 }
 
 /**
