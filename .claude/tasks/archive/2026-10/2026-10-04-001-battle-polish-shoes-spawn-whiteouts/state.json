@@ -1,0 +1,41 @@
+{
+  "id": "2026-10-04-001-battle-polish-shoes-spawn-whiteouts",
+  "title": "Polish de combate, sprites, pós-batalha, tutorial do Blue, Running Shoes, spawn e teleports indevidos",
+  "status": "done",
+  "created_at": "2026-10-04",
+  "base_head": "1842fcfb4220010b84b723913686ed74a1992112",
+  "current_head": "b0899064",
+  "skills": [
+    "safe-main",
+    "task-ledger",
+    "verification",
+    "battle-development",
+    "overworld-development",
+    "pokemon-ui"
+  ],
+  "agents": [
+    "verifier"
+  ],
+  "files": [
+    "packages/battle-engine/src/duel.ts",
+    "apps/client/components/{GameClient,OverworldGame,FirstBattle,PokemonBattleSprite,BattleResultsScreen}.tsx",
+    "apps/client/lib/{story,maps,spriteLayout,battleResult}.ts",
+    "apps/client/app/globals.css",
+    "tools/sprite-importer/*"
+  ],
+  "commits": [
+    "438b1acb fix: improve battle team spawn placement",
+    "27b6d0a8 feat: add running shoes progression",
+    "8d28abf0 fix: prevent unintended pokemon center respawns",
+    "00fcade6 fix: keep tutorial loss inside oak lab",
+    "5f6333aa fix: remove faint disappearance delay",
+    "cb0b7a81 fix: normalize pokemon battle sprite sizing",
+    "4b869a01 fix: keep fainting units on their tile",
+    "5dc224a0 fix: unify post battle results flow",
+    "b0899064 fix: place walk/run indicator in the overworld HUD"
+  ],
+  "tests": [
+    "pnpm test: 49 files/238 + engine 200 passed",
+    "typecheck engine+client ok"
+  ]
+}

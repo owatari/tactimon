@@ -12,7 +12,9 @@
 - Estado `DuelState` local; anima resultados (`animateResolvedMove`, `animateResolvedItem`), `setUnitAnimation(id, "faint" | ...)`.
 - Sprites: `PokemonBattleSprite.tsx` (manifest SpriteCollab runtime). VFX: `BattleVfx.tsx`. Portraits: `PokemonPortrait.tsx`.
 - Fim: `onComplete(BattleOutcome)` com HP/status/PP por índice de party, `defeatedEnemies`, `capture`, `won`, `inventory`.
-- Pós-batalha: `GameClient` → `BattleProgressionSummary` (resumo XP/levels) → `ProgressionOverlay` (moves) → `PokemonEvolutionOverlay`.
+- Fim de batalha: `FirstBattle` chama `onComplete` sozinho ~650 ms após `status: finished` (sem painel interno).
+- Pós-batalha (tela única): `GameClient.battleResult` → `BattleResultsScreen` (cabeçalho de `lib/battleResult.ts` `describeBattleResult` + prêmio + EXP/level/golpes por Pokémon) → `PokemonEvolutionOverlay` → `ProgressionOverlay` (golpes pendentes) → whiteout se aplicável.
+- Faint: unidade HP 0 some em 260 ms (classe `.fainting` + timer em `FirstBattle`); a engine já a ignora para tile/turno/alvo.
 - Arena: o client monta `BattleSceneContext` em `OverworldGame.tsx` (recorte do mapa; `blocked` = colisão, água via `isWaterCell`, fallback 17×9).
 
 ## Testes
