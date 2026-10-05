@@ -6,6 +6,7 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
+import { measureAnimation, readPng } from "./sprite-metrics.mjs";
 
 const SPECIES = {
   bulbasaur: "0001",
@@ -172,10 +173,24 @@ export async function buildRuntimeSpriteAssets(
       const outputFile = join(speciesOutput, filename);
       await copyFile(sourceFile, outputFile);
 
+      // Visible body + ground point drive runtime scale and anchoring.
+      const shadowFile = join(
+        sourceDir,
+        `${animationName}-Shadow.png`,
+      );
+      const metrics = measureAnimation(
+        await readPng(sourceFile),
+        (await exists(shadowFile)) ? await readPng(shadowFile) : null,
+        metadata,
+      );
+
       animations[animationName.toLowerCase()] = {
         ...metadata,
         file: `${species}/${filename}`,
         directionRows: 8,
+        bounds: metrics.bounds,
+        groundX: metrics.groundX,
+        groundY: metrics.groundY,
       };
     }
 

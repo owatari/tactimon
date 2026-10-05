@@ -2831,13 +2831,10 @@ h1 {
 }
 
 .pokemon-battle-sprite-frame {
+  /* Size and position come from sprite metadata (lib/spriteLayout.ts). */
   position: absolute;
-  left: 50%;
-  bottom: 0;
   min-width: 1px;
   min-height: 1px;
-  transform: translateX(-50%) scale(var(--pokemon-visual-scale, 1));
-  transform-origin: center bottom;
   background-repeat: no-repeat;
   image-rendering: pixelated;
 }
@@ -3391,12 +3388,6 @@ h1 {
   backdrop-filter: none;
 }
 
-.pokemon-battle-sprite-frame {
-  transform:
-    translateX(-50%)
-    scale(var(--pokemon-visual-scale, 1));
-}
-
 .move-effectiveness-preview {
   position: absolute;
   left: 50%;
@@ -3609,10 +3600,6 @@ h1 {
   flex: 0 0 24px;
   object-fit: contain;
   image-rendering: pixelated;
-}
-
-.pokemon-battle-sprite-frame {
-  transform-origin: 50% 100%;
 }
 
 

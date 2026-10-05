@@ -4,9 +4,13 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import type { DuelSpeciesId } from "@tactimon/battle-engine";
+import {
+  SPRITE_GROUND_Y,
+  spriteFrameLayout,
+  type SpriteBounds,
+} from "@/lib/spriteLayout";
 
 type AnimationName = "idle" | "walk" | "attack" | "hurt" | "faint";
 
@@ -17,6 +21,9 @@ type RuntimeAnimation = {
   durations: number[];
   file: string;
   directionRows: number;
+  bounds?: SpriteBounds | null;
+  groundX?: number;
+  groundY?: number;
 };
 
 type RuntimeSpecies = {
@@ -41,42 +48,6 @@ type Props = {
   speed?: 1 | 2;
   onAnimationComplete?: () => void;
 };
-
-const SPRITE_TILE_FILL = 1.18;
-
-const SPECIES_VISUAL_SCALE: Partial<
-  Record<DuelSpeciesId, number>
-> = {
-  caterpie: 0.86,
-  weedle: 0.84,
-  metapod: 0.94,
-  kakuna: 0.94,
-  pidgey: 0.92,
-  rattata: 0.92,
-  pikachu: 0.96,
-  zubat: 0.96,
-  paras: 0.98,
-  abra: 0.98,
-  jigglypuff: 1,
-  geodude: 1.12,
-  machop: 1.08,
-  raticate: 1.08,
-  raichu: 1.12,
-  wartortle: 1.12,
-  ivysaur: 1.18,
-  charmeleon: 1.18,
-  butterfree: 1.22,
-  slowpoke: 1.2,
-  staryu: 1.15,
-  starmie: 1.24,
-  onix: 2.05,
-};
-
-export function pokemonVisualTileScale(
-  species: DuelSpeciesId,
-): number {
-  return SPECIES_VISUAL_SCALE[species] ?? 1.04;
-}
 
 let manifestPromise: Promise<RuntimeManifest> | null = null;
 
@@ -222,21 +193,12 @@ export function PokemonBattleSprite({
   const idle =
     manifest.species[species]?.animations.idle ??
     data;
-  const referenceSide =
-    Math.max(
-      1,
-      idle.frameWidth,
-      idle.frameHeight,
-    ) / SPRITE_TILE_FILL;
-
-  // Keep one source pixel at the same visual scale for every animation.
-  // The idle canvas slightly overfills one tile to compensate for transparent
-  // SpriteCollab margins; every other animation reuses that exact source-pixel
-  // scale and may extend outside the tile without changing Pokémon size.
-  const frameWidthPercent =
-    (data.frameWidth / referenceSide) * 100;
-  const frameHeightPercent =
-    (data.frameHeight / referenceSide) * 100;
+  // Scale from the visible idle body (shared by every animation, so the
+  // Pokémon never changes size between frames) and anchor the frame by its
+  // ground point instead of the transparent canvas edges.
+  const layout = spriteFrameLayout(idle, data);
+  const tile = (value: number) =>
+    `calc(${value.toFixed(4)} * 100cqmin)`;
   const backgroundX =
     data.frames <= 1
       ? 0
@@ -250,20 +212,18 @@ export function PokemonBattleSprite({
     <div
       className={`pokemon-battle-sprite ${side}`}
       title={`${species} · ${manifest.source}`}
-      style={
-        {
-          "--pokemon-visual-scale":
-            pokemonVisualTileScale(species),
-        } as CSSProperties
-      }
     >
       <div
         className="pokemon-battle-sprite-frame"
         style={{
-          width:
-            `min(${frameWidthPercent}cqw, ${frameWidthPercent}cqh)`,
-          height:
-            `min(${frameHeightPercent}cqw, ${frameHeightPercent}cqh)`,
+          width: tile(layout.width),
+          height: tile(layout.height),
+          left: `calc(50% + ${tile(layout.left - 0.5)})`,
+          top: `calc(${SPRITE_GROUND_Y * 100}% + ${tile(
+            layout.top - SPRITE_GROUND_Y,
+          )})`,
+          bottom: "auto",
+          transform: "none",
           backgroundImage:
             `url("/game-assets/pokemon-sprites/${data.file}")`,
           backgroundSize:

@@ -56,3 +56,13 @@ apps/client/public/game-assets/pokemon-sprites/
 The manifest contains frame dimensions, frame durations and direction-row metadata so the client displays one animation frame at a time instead of rendering an entire sprite sheet.
 
 `scan-spritecollab.mjs` remains useful for scanning the full upstream catalog.
+
+## Battle sizing metadata
+
+Each animation also stores `bounds` (visible pixels over the left/right battle rows) and `groundX`/`groundY` (frame centre + PMD shadow offset), measured by `sprite-metrics.mjs`. The client (`apps/client/lib/spriteLayout.ts`) scales every animation of a species from the visible idle body and anchors frames by the ground point, so canvas padding never changes size or baseline.
+
+Audit after re-importing:
+
+```bash
+node tools/sprite-importer/audit-sprites.mjs
+```
