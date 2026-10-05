@@ -2,9 +2,11 @@ import { CHAMPION_TRAINERS } from "./generated/worldChampion";
 import { GENERATED_TRAINERS } from "./generated/worldTrainers";
 import { KANTO_TRAINER_TEXT_PT } from "./trainerTextsKantoPt";
 import { TRAINER_TEXT_PT } from "./trainerTextsPt";
-import type {
-  DuelPokemonBuild,
-  StarterSpeciesId,
+import {
+  defaultMovesForSpecies,
+  type DuelPokemonBuild,
+  type DuelSpeciesId,
+  type StarterSpeciesId,
 } from "@tactimon/battle-engine";
 import {
   isStoryTrainerDefeated,
@@ -2308,6 +2310,60 @@ const HAND_OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
   },
 ];
 
+export const GYM_LEADER_PARTY_SIZE = 6;
+
+/**
+ * Extra members that fill every gym leader's team up to six. Levels are
+ * clamped to the leader's original level range (only the size changes).
+ */
+const GYM_LEADER_EXTRA_PARTY: Readonly<
+  Record<string, readonly (readonly [DuelSpeciesId, number])[]>
+> = {
+  "pewter-brock": [["sandshrew", 12], ["diglett", 12], ["machop", 13], ["rhyhorn", 13]],
+  "cerulean-misty": [["horsea", 18], ["goldeen", 19], ["shellder", 19], ["psyduck", 20]],
+  "vermilion-lt-surge": [["magnemite", 19], ["magneton", 23], ["electrode", 24]],
+  "celadon-city-gym-erika": [["bellsprout", 25], ["exeggcute", 26], ["gloom", 27]],
+  "fuchsia-city-gym-koga": [["golbat", 38], ["arbok", 41]],
+  "cinnabar-island-gym-blaine": [["magmar", 45], ["ninetales", 44]],
+  "saffron-city-gym-sabrina": [["hypno", 39], ["exeggutor", 41]],
+  "viridian-city-gym-giovanni": [["rhydon", 48]],
+};
+
+export function fillGymLeaderParty(
+  trainer: OverworldTrainerDefinition,
+): OverworldTrainerDefinition {
+  if (
+    !trainer.badgeId ||
+    !trainer.mapId.endsWith("-gym") ||
+    trainer.party.length >= GYM_LEADER_PARTY_SIZE
+  ) {
+    return trainer;
+  }
+
+  const levels = trainer.party.map((member) => member.level);
+  const minLevel = Math.min(...levels);
+  const maxLevel = Math.max(...levels);
+  const extras = (GYM_LEADER_EXTRA_PARTY[trainer.id] ?? [])
+    .slice(0, GYM_LEADER_PARTY_SIZE - trainer.party.length)
+    .map(
+      ([species, level]): DuelPokemonBuild => ({
+        species,
+        level: Math.min(maxLevel, Math.max(minLevel, level)),
+        moves: defaultMovesForSpecies(species),
+      }),
+    );
+
+  // Extras go before the original ace so it stays the final fight (and the FireRed prize money, based on the last member, is unchanged).
+  return {
+    ...trainer,
+    party: [
+      ...trainer.party.slice(0, -1),
+      ...extras,
+      trainer.party[trainer.party.length - 1],
+    ],
+  };
+}
+
 export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
   ...HAND_OVERWORLD_TRAINERS,
   ...CHAMPION_TRAINERS,
@@ -2316,7 +2372,7 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
     ...KANTO_TRAINER_TEXT_PT[trainer.id],
     ...TRAINER_TEXT_PT[trainer.id],
   })),
-];
+].map(fillGymLeaderParty);
 
 export function trainerPrizeMoney(
   party: readonly DuelPokemonBuild[],
