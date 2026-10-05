@@ -1,5 +1,6 @@
 import { CHAMPION_TRAINERS } from "./generated/worldChampion";
 import { GENERATED_TRAINERS } from "./generated/worldTrainers";
+import { KANTO_TRAINER_TEXT_PT } from "./trainerTextsKantoPt";
 import { TRAINER_TEXT_PT } from "./trainerTextsPt";
 import type {
   DuelPokemonBuild,
@@ -2310,6 +2311,7 @@ export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
   ...CHAMPION_TRAINERS,
   ...GENERATED_TRAINERS.map((trainer) => ({
     ...trainer,
+    ...KANTO_TRAINER_TEXT_PT[trainer.id],
     ...TRAINER_TEXT_PT[trainer.id],
   })),
 ];

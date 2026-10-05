@@ -75,3 +75,15 @@ describe("Champion and League gates", () => {
     expect(resolveBlockedPlayerTileGate(beaten, "pokemon-league-loreleis-room", 6, 2)).toBeNull();
   });
 });
+
+describe("trainer text language", () => {
+  it("has a pt-BR line for every generated trainer", async () => {
+    const { GENERATED_TRAINERS } = await import("../apps/client/lib/generated/worldTrainers");
+    const { KANTO_TRAINER_TEXT_PT } = await import("../apps/client/lib/trainerTextsKantoPt");
+    const { TRAINER_TEXT_PT } = await import("../apps/client/lib/trainerTextsPt");
+    const missing = GENERATED_TRAINERS.filter(
+      (trainer) => !KANTO_TRAINER_TEXT_PT[trainer.id] && !TRAINER_TEXT_PT[trainer.id],
+    ).map((trainer) => trainer.id);
+    expect(missing).toEqual([]);
+  });
+});
