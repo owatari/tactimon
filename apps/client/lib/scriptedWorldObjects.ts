@@ -4,6 +4,7 @@ import type {
 import {
   CUT_TREES as GENERATED_CUT_TREES,
   KEY_ITEM_BALLS as GENERATED_KEY_ITEM_BALLS,
+  SLOT_MACHINES as GENERATED_SLOT_MACHINES,
   STRENGTH_BOULDERS as GENERATED_BOULDERS,
 } from "./generated/worldObstacles";
 import {
@@ -436,6 +437,24 @@ const QUEST_NPC_OBJECTS: readonly ScriptedWorldObjectDefinition[] = [
   ),
 ];
 
+const SLOT_MACHINE_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  GENERATED_SLOT_MACHINES.map((machine) => ({
+    id: `${machine.mapId}-slot-${machine.machine}`,
+    mapId: machine.mapId,
+    label: "Slot Machine",
+    x: machine.x,
+    y: machine.y,
+    spriteUrl: "",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    // The machine is part of the map art; the object only makes it talkable.
+    renderSprite: false,
+    request: { kind: "script" as const, id: "slot-machine" },
+  }));
+
 const STATIC_ENCOUNTER_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] =
   STATIC_WORLD_ENCOUNTERS.map((encounter) => ({
@@ -552,6 +571,7 @@ export const SCRIPTED_WORLD_OBJECTS:
     ...CUT_TREE_OBJECTS,
     ...BOULDER_OBJECTS,
     ...KEY_ITEM_BALL_OBJECTS,
+    ...SLOT_MACHINE_OBJECTS,
     ...QUEST_NPC_OBJECTS,
     ...STATIC_ENCOUNTER_OBJECTS,
     ...CENTER_NURSES,

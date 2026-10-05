@@ -83,6 +83,25 @@ const SAFARI_ENTRANCE_GATE: PlayerWorldTileGate = {
   blockedRequest: { kind: "script", id: "safari-entrance" },
 };
 
+/** The poster stairs to the Rocket Hideout open once the guard is beaten. */
+const ROCKET_HIDEOUT_GATE: PlayerWorldTileGate = {
+  id: "gate:celadon-rocket-hideout",
+  kind: "tile",
+  mapId: "celadon-city-game-corner",
+  x: 15,
+  y: 2,
+  allowWhen: {
+    kind: "event",
+    namespace: "trainer",
+    id: "celadon-city-game-corner-grunt",
+  },
+  blockedRequest: {
+    kind: "text",
+    id: "gate:celadon-rocket-hideout",
+    text: "Um pôster da Equipe Rocket cobre a parede. O Rocket de guarda está de olho em você: vença-o primeiro.",
+  },
+};
+
 const CINNABAR_GYM_GATE: PlayerWorldTileGate = {
   id: "gate:cinnabar-gym-secret-key",
   kind: "tile",
@@ -126,6 +145,7 @@ export const QUEST_TILE_GATES: readonly PlayerWorldTileGate[] = [
   ...SAFFRON_GATES,
   ...TOWER_GHOST_GATES,
   CINNABAR_GYM_GATE,
+  ROCKET_HIDEOUT_GATE,
   SAFARI_ENTRANCE_GATE,
   ...SILPH_DOOR_GATES,
 ];

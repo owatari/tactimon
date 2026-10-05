@@ -5,6 +5,16 @@ import type {
   DialogueScriptContext,
 } from "./dialogueSystem";
 import {
+  COIN_PACK_PRICE,
+  COIN_PACK_SIZE,
+  COIN_PRIZES,
+  MAX_SLOT_BET,
+  SLOT_SYMBOL_LABEL,
+  buyCoins,
+  buyPrize,
+  playSlots,
+} from "./gameCorner";
+import {
   dayCareStatus,
   depositAtDayCare,
   withdrawFromDayCare,
@@ -66,6 +76,45 @@ function reply(
   speaker?: string,
 ): DialogueInteractionResult {
   return { story, presentation: say(id, text, speaker) };
+}
+
+function slotPrompt(
+  story: StoryState,
+  text: string,
+): DialoguePresentation {
+  const coins = story.coins ?? 0;
+  const bets = [MAX_SLOT_BET, 1].filter(
+    (bet, index, all) => bet <= coins && all.indexOf(bet) === index,
+  );
+  return {
+    id: "slot-machine",
+    pages: [
+      {
+        id: "slots",
+        text: `${text} (Moedas: ${coins})`,
+        choices: [
+          ...bets.map((bet) => ({
+            id: `bet-${bet}`,
+            label: `Apostar ${bet}`,
+            request: {
+              kind: "script" as const,
+              id: "slot-spin",
+              context: { bet },
+            },
+          })),
+          {
+            id: "leave",
+            label: "Sair",
+            request: {
+              kind: "text" as const,
+              id: "slot-leave",
+              text: "Você se afastou da máquina.",
+            },
+          },
+        ],
+      },
+    ],
+  };
 }
 
 function contextString(
@@ -571,6 +620,226 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       );
     },
   },
+  "game-corner-clerk": {
+    id: "game-corner-clerk",
+    interact: (story) => {
+      if (!hasStoryKeyItem(story, "coin-case")) {
+        return reply(
+          story,
+          "game-corner-clerk",
+          "Atendente: Bem-vindo ao Game Corner! Você precisa de um Coin Case para guardar suas moedas.",
+          "Atendente",
+        );
+      }
+      return {
+        story,
+        presentation: {
+          id: "game-corner-clerk",
+          pages: [
+            {
+              id: "offer",
+              speaker: "Atendente",
+              text: `Bem-vindo ao Game Corner! Você tem ${story.coins ?? 0} moedas. Quer comprar ${COIN_PACK_SIZE} moedas por ₽${COIN_PACK_PRICE}?`,
+              choices: [
+                {
+                  id: "buy",
+                  label: `Comprar (₽${COIN_PACK_PRICE})`,
+                  request: { kind: "script", id: "game-corner-buy-coins" },
+                },
+                {
+                  id: "no",
+                  label: "Não, obrigado",
+                  request: {
+                    kind: "text",
+                    id: "game-corner-no",
+                    speaker: "Atendente",
+                    text: "Divirta-se nas máquinas!",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  },
+  "game-corner-buy-coins": {
+    id: "game-corner-buy-coins",
+    interact: (story) => {
+      const result = buyCoins(story);
+      if (result.ok) {
+        return reply(
+          result.story,
+          "game-corner-buy-coins",
+          `Atendente: Obrigado! Aqui estão ${COIN_PACK_SIZE} moedas. Você agora tem ${result.story.coins}.`,
+          "Atendente",
+        );
+      }
+      return reply(
+        story,
+        "game-corner-buy-coins",
+        result.reason === "money"
+          ? "Atendente: Você não tem dinheiro suficiente."
+          : result.reason === "coins-full"
+            ? "Atendente: Seu Coin Case está cheio!"
+            : "Atendente: Você precisa de um Coin Case.",
+        "Atendente",
+      );
+    },
+  },
+  "slot-machine": {
+    id: "slot-machine",
+    interact: (story) => {
+      if (!hasStoryKeyItem(story, "coin-case")) {
+        return reply(
+          story,
+          "slot-machine",
+          "Uma máquina caça-níquel. Você precisa de um Coin Case para jogar.",
+        );
+      }
+      if ((story.coins ?? 0) <= 0) {
+        return reply(
+          story,
+          "slot-machine",
+          "Uma máquina caça-níquel. Você está sem moedas! Compre mais no balcão.",
+        );
+      }
+      return {
+        story,
+        presentation: slotPrompt(
+          story,
+          "Uma máquina caça-níquel. Quanto quer apostar?",
+        ),
+      };
+    },
+  },
+  "slot-spin": {
+    id: "slot-spin",
+    interact: (story, context) => {
+      const bet =
+        typeof context.bet === "number" ? context.bet : MAX_SLOT_BET;
+      const rolls = [0, 0, 0].map(() =>
+        Math.floor(Math.random() * 6_000_000),
+      ) as [number, number, number];
+      const result = playSlots(story, rolls, bet);
+      if (!result.ok) {
+        return reply(
+          story,
+          "slot-spin",
+          result.reason === "no-coins"
+            ? "Você ficou sem moedas!"
+            : "Você precisa de um Coin Case.",
+        );
+      }
+
+      const reels = result.spin.reels
+        .map((symbol) => `[${SLOT_SYMBOL_LABEL[symbol]}]`)
+        .join(" ");
+      const outcome =
+        result.spin.payout > 0
+          ? `Você ganhou ${result.spin.payout} moedas!`
+          : "Nada desta vez...";
+      if ((result.story.coins ?? 0) <= 0) {
+        return reply(
+          result.story,
+          "slot-spin",
+          `${reels} ${outcome} Suas moedas acabaram!`,
+        );
+      }
+      return {
+        story: result.story,
+        presentation: slotPrompt(result.story, `${reels} ${outcome}`),
+      };
+    },
+  },
+  "game-corner-prizes": {
+    id: "game-corner-prizes",
+    interact: (story) => {
+      if (!hasStoryKeyItem(story, "coin-case")) {
+        return reply(
+          story,
+          "game-corner-prizes",
+          "Atendente: Aqui você troca moedas por prêmios. Traga o seu Coin Case!",
+          "Atendente",
+        );
+      }
+      return {
+        story,
+        presentation: {
+          id: "game-corner-prizes",
+          pages: [
+            {
+              id: "menu",
+              speaker: "Atendente",
+              text: `Você tem ${story.coins ?? 0} moedas. Qual Pokémon quer levar?`,
+              choices: [
+                ...COIN_PRIZES.map((prize) => ({
+                  id: prize.id,
+                  label: `${speciesDisplayName(prize.species)} Lv. ${prize.level} — ${prize.cost}`,
+                  request: {
+                    kind: "script" as const,
+                    id: "game-corner-prize-buy",
+                    context: { prizeId: prize.id },
+                  },
+                })),
+                {
+                  id: "leave",
+                  label: "Sair",
+                  request: {
+                    kind: "text" as const,
+                    id: "game-corner-prizes-leave",
+                    speaker: "Atendente",
+                    text: "Volte quando tiver mais moedas!",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  },
+  "game-corner-prize-buy": {
+    id: "game-corner-prize-buy",
+    interact: (story, context) => {
+      const result = buyPrize(
+        story,
+        contextString(context, "prizeId") ?? "",
+      );
+      if (result.ok) {
+        return reply(
+          result.story,
+          "game-corner-prize-buy",
+          `Atendente: Aqui está! Você recebeu ${speciesDisplayName(result.prize.species)}!${result.destination === "storage" ? " Ele foi enviado ao PC." : ""}`,
+          "Atendente",
+        );
+      }
+      const text: Record<string, string> = {
+        coins: "Atendente: Você não tem moedas suficientes.",
+        "no-case": "Atendente: Você precisa de um Coin Case.",
+        "already-received":
+          "Atendente: Você já levou este prêmio. Cada Pokémon só pode ser trocado uma vez.",
+        "storage-full": "Atendente: Seu PC está cheio! Libere espaço.",
+        unknown: "Atendente: Não conheço esse prêmio.",
+      };
+      return reply(
+        story,
+        "game-corner-prize-buy",
+        text[result.reason],
+        "Atendente",
+      );
+    },
+  },
+  "game-corner-tm-counter": {
+    id: "game-corner-tm-counter",
+    interact: (story) =>
+      reply(
+        story,
+        "game-corner-tm-counter",
+        "Atendente: Os prêmios deste balcão (TMs) estão em falta. Só são encontrados em raids e dungeons.",
+        "Atendente",
+      ),
+  },
   "tower-ghost": {
     id: "tower-ghost",
     interact: (story) =>
@@ -638,6 +907,10 @@ export const QUEST_WORLD_OBJECT_DIALOGUE_IDS: Record<string, string> = {
   "celadon-city-restaurant:1,2": "celadon-coin-case-man",
   "celadon-city-condominiums-1f:2,9": "celadon-tea-woman",
   "fuchsia-city-safari-zone-entrance:7,3": "safari-entrance",
+  "celadon-city-game-corner:4,2": "game-corner-clerk",
+  "celadon-city-game-corner-prize-room:4,2": "game-corner-prizes",
+  "celadon-city-game-corner-prize-room:2,2": "game-corner-tm-counter",
+  "celadon-city-game-corner-prize-room:6,2": "game-corner-tm-counter",
   "route-5-day-care:4,4": "daycare-gentleman",
   "route-5-south-entrance:1,5": "saffron-guard",
   "route-6-north-entrance:7,5": "saffron-guard",

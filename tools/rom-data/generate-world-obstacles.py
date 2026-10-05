@@ -30,7 +30,7 @@ STATIC = {
 # ROM item id -> StoryKeyItemId (key items lying on the ground)
 KEY_ITEMS = {351: "secret-key", 353: "gold-teeth", 355: "card-key", 356: "lift-key", 359: "silph-scope", 369: "tea"}
 
-trees, boulders, statics, key_balls, silph_doors = [], [], [], [], []
+trees, boulders, statics, key_balls, silph_doors, slots = [], [], [], [], [], []
 for d, map_id in sorted(maps.items()):
     path = WORLD / d / "world.json"
     if not path.exists():
@@ -45,6 +45,11 @@ for d, map_id in sorted(maps.items()):
                 groups.setdefault(off, []).append([bg["x"], bg["y"]])
         for n, cells in enumerate(groups.values()):
             silph_doors.append({"id": f"{map_id}-door-{n + 1}", "mapId": map_id, "cells": sorted(cells)})
+    # Game Corner slot machines: bg events whose script is `lockall; setvar 0x8004, n; special ...`
+    for bg in world["bg_events"]:
+        off = bg.get("script_offset")
+        if bg["kind"] in (3, 4) and off and ROM[off:off + 4] == bytes([0x69, 0x16, 0x04, 0x80]):
+            slots.append({"mapId": map_id, "x": bg["x"], "y": bg["y"], "machine": ROM[off + 4]})
     for o in world["objects"]:
         g = o.get("graphics_name") or ""
         if o["x"] < 0 or o["y"] < 0:
@@ -69,5 +74,6 @@ for name, rows in (("CUT_TREES", trees), ("STRENGTH_BOULDERS", boulders)):
 out.append(f"export const STATIC_POKEMON: readonly GeneratedStaticPokemon[] = {json.dumps(statics, indent=1)};")
 out.append(f"export const KEY_ITEM_BALLS: readonly (GeneratedObstacle & {{ keyItem: string }})[] = {json.dumps(key_balls, indent=1)};")
 out.append(f"export const SILPH_DOORS: readonly {{ id: string; mapId: string; cells: readonly (readonly [number, number])[] }}[] = {json.dumps(silph_doors)};")
+out.append(f"export const SLOT_MACHINES: readonly {{ mapId: string; x: number; y: number; machine: number }}[] = {json.dumps(slots)};")
 (GEN / "worldObstacles.ts").write_text("\n".join(out) + "\n", encoding="utf-8")
-print(len(silph_doors), "silph doors,", len(key_balls), "key item balls,", len(trees), "cut trees,", len(boulders), "boulders,", len(statics), "static pokemon")
+print(len(slots), "slot machines,", len(silph_doors), "silph doors,", len(key_balls), "key item balls,", len(trees), "cut trees,", len(boulders), "boulders,", len(statics), "static pokemon")

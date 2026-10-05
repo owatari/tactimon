@@ -2849,6 +2849,9 @@ export function OverworldGame({
           ) : (
             <span>Ball ×{story.inventory["poke-ball"]}</span>
           )}
+          {hasStoryKeyItem(story, "coin-case") && (
+            <span>Moedas {story.coins ?? 0}</span>
+          )}
         </div>
         {canRun(story) && (
           <button
