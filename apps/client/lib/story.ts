@@ -700,6 +700,19 @@ export function storyHasHealthyPokemon(
   );
 }
 
+/** True only when the player owns Pokémon and every one has fainted (a new save has none, and must still walk). */
+export function storyIsKnockedOut(
+  story: StoryState,
+): boolean {
+  const hasAnyPokemon =
+    story.playerPokemon !== null ||
+    story.capturedPokemon.length > 0;
+
+  return (
+    hasAnyPokemon && !storyHasHealthyPokemon(story)
+  );
+}
+
 function healPokemonProgression(
   pokemon: PokemonProgression,
 ): PokemonProgression {

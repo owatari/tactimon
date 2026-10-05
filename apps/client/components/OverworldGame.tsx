@@ -43,6 +43,7 @@ import {
   hasStoryKeyItem,
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
+  storyIsKnockedOut,
   type StoryBadgeId,
   type StoryKeyItemId,
   type StoryState,
@@ -1989,7 +1990,7 @@ export function OverworldGame({
         onStoryUpdate((current) =>
           advanceStoryStep(current, stepMapId),
         );
-        if (!storyHasHealthyPokemon(nextStory)) {
+        if (storyIsKnockedOut(nextStory)) {
           return false;
         }
 
@@ -2639,9 +2640,7 @@ export function OverworldGame({
             return;
           }
 
-          if (
-            !storyHasHealthyPokemon(nextStory)
-          ) {
+          if (storyIsKnockedOut(nextStory)) {
             return;
           }
 
