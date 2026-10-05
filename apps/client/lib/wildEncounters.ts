@@ -353,32 +353,83 @@ export function equivalentWildPartyStrength(
     }, 0);
 }
 
+export type WildLevelRange = {
+  min: number;
+  max: number;
+};
+
+/** Hard cap so a full party never overflows the battle grid. */
+export const MAX_WILD_PACK_SIZE = 10;
+/** A party member this many levels above the area ceiling counts as over-levelled. */
+export const WILD_OVERLEVEL_MARGIN = 10;
+export const WILD_HEAVY_OVERLEVEL_MARGIN = 20;
+
+export function resolveAreaLevelRange(
+  slots: readonly { level: number }[],
+): WildLevelRange | null {
+  if (slots.length === 0) {
+    return null;
+  }
+
+  return {
+    min: Math.min(...slots.map((slot) => slot.level)),
+    max: Math.max(...slots.map((slot) => slot.level)),
+  };
+}
+
+/**
+ * Wild count contributed by ONE party member:
+ * under the area range → 1; inside it (up to +9 over the ceiling) → 1–2;
+ * +10 over the ceiling → 2; +20 over the ceiling → 2–3.
+ */
+export function wildCountForPartyLevel(
+  level: number,
+  range: WildLevelRange,
+  roll: number,
+): number {
+  const variation =
+    Math.abs(Math.trunc(roll)) % 2;
+
+  if (level < range.min) {
+    return 1;
+  }
+  if (level >= range.max + WILD_HEAVY_OVERLEVEL_MARGIN) {
+    return 2 + variation;
+  }
+  if (level >= range.max + WILD_OVERLEVEL_MARGIN) {
+    return 2;
+  }
+
+  return 1 + variation;
+}
+
 export function resolveWildPackSize(
-  areaLevel: number,
+  area: number | WildLevelRange,
   partyLevels: readonly number[],
   roll: number,
 ): number {
-  const strength = equivalentWildPartyStrength(
-    areaLevel,
-    partyLevels,
+  const range: WildLevelRange =
+    typeof area === "number"
+      ? { min: area, max: area }
+      : area;
+  const levels = partyLevels.filter(
+    (level) => Number.isFinite(level) && level > 0,
   );
-  const range: readonly [number, number] =
-    strength <= 0.65
-      ? [1, 2]
-      : strength <= 1.3
-        ? [2, 4]
-        : strength <= 2.3
-          ? [4, 6]
-          : strength <= 4
-            ? [6, 8]
-            : [8, 10];
+  const total = levels.reduce(
+    (sum, level, index) =>
+      sum +
+      wildCountForPartyLevel(
+        level,
+        range,
+        Math.trunc(roll * 17 + 31) + index * 7,
+      ),
+    0,
+  );
 
-  const width = range[1] - range[0] + 1;
-  const normalized =
-    Math.abs(Math.trunc(roll * 17 + 31)) %
-    width;
-
-  return range[0] + normalized;
+  return Math.min(
+    MAX_WILD_PACK_SIZE,
+    Math.max(1, total),
+  );
 }
 
 export function resolveScaledWildEncounter(
@@ -392,7 +443,9 @@ export function resolveScaledWildEncounter(
   }
 
   const size = resolveWildPackSize(
-    areaLevel,
+    resolveAreaLevelRange(
+      LAND_ENCOUNTERS[mapId]?.slots ?? [],
+    ) ?? areaLevel,
     partyLevels,
     roll,
   );

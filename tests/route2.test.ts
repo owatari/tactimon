@@ -5,8 +5,9 @@ import {
 } from "../apps/client/lib/maps";
 import {
   LAND_ENCOUNTERS,
-  resolveAreaWildLevel,
   resolveLandEncounter,
+  MAX_WILD_PACK_SIZE,
+  resolveScaledWildEncounter,
   resolveWildPackSize,
 } from "../apps/client/lib/wildEncounters";
 
@@ -84,35 +85,53 @@ describe("Route 2", () => {
 
 
 describe("scaled wild packs", () => {
-  it("uses party count and relative level as the same encounter-strength measure", () => {
-    const areaLevel = resolveAreaWildLevel("route-1");
-    expect(areaLevel).not.toBeNull();
-    const area = areaLevel ?? 3;
+  const range = { min: 3, max: 5 };
+  const rolls = [0, 0.13, 0.37, 0.5, 0.71, 0.99];
 
-    const underleveledSolo =
-      resolveWildPackSize(area, [1], 0);
-    const overleveledSolo =
-      resolveWildPackSize(area, [15], 0);
-    const threeAtLevel =
-      resolveWildPackSize(
-        area,
-        [area, area, area],
-        0,
-      );
-    const sixAtLevel =
-      resolveWildPackSize(
-        area,
-        [area, area, area, area, area, area],
-        0,
-      );
+  it("gives a single party member in range 1-2 wilds, never a swarm", () => {
+    for (const roll of rolls) {
+      const size = resolveWildPackSize(range, [5], roll);
+      expect(size).toBeGreaterThanOrEqual(1);
+      expect(size).toBeLessThanOrEqual(2);
+    }
+  });
 
-    expect(underleveledSolo).toBeGreaterThanOrEqual(1);
-    expect(underleveledSolo).toBeLessThanOrEqual(2);
-    expect(overleveledSolo).toBeGreaterThanOrEqual(8);
-    expect(overleveledSolo).toBeLessThanOrEqual(10);
-    expect(threeAtLevel).toBeGreaterThanOrEqual(6);
-    expect(threeAtLevel).toBeLessThanOrEqual(8);
-    expect(sixAtLevel).toBeGreaterThanOrEqual(8);
-    expect(sixAtLevel).toBeLessThanOrEqual(10);
+  it("gives an under-levelled member exactly 1 wild", () => {
+    for (const roll of rolls) {
+      expect(resolveWildPackSize(range, [2], roll)).toBe(1);
+    }
+  });
+
+  it("gives an over-levelled (+10) member exactly 2 and a +20 member 2-3", () => {
+    for (const roll of rolls) {
+      expect(resolveWildPackSize(range, [15], roll)).toBe(2);
+      const heavy = resolveWildPackSize(range, [25], roll);
+      expect(heavy).toBeGreaterThanOrEqual(2);
+      expect(heavy).toBeLessThanOrEqual(3);
+    }
+  });
+
+  it("sums per party member and caps the pack", () => {
+    for (const roll of rolls) {
+      const mixed = resolveWildPackSize(range, [2, 15], roll);
+      expect(mixed).toBe(3);
+      expect(
+        resolveWildPackSize(range, [30, 30, 30, 30, 30, 30], roll),
+      ).toBe(MAX_WILD_PACK_SIZE);
+    }
+  });
+
+  it("is deterministic for the same roll", () => {
+    expect(resolveWildPackSize(range, [5, 7], 0.42)).toBe(
+      resolveWildPackSize(range, [5, 7], 0.42),
+    );
+  });
+
+  it("first Route 1 encounter with a lone starter has at most 2 wilds", () => {
+    for (const roll of rolls) {
+      const encounter = resolveScaledWildEncounter("route-1", roll, [5]);
+      expect(encounter).not.toBeNull();
+      expect(encounter!.members.length).toBeLessThanOrEqual(2);
+    }
   });
 });

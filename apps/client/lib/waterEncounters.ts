@@ -7,6 +7,7 @@ import type { StoryKeyItemId, StoryState } from "./story";
 import { hasStoryKeyItem } from "./story";
 import {
   equivalentWildPartyStrength,
+  resolveAreaLevelRange,
   resolveWildPackSize,
   type ScaledWildEncounter,
   type WildEncounter,
@@ -117,7 +118,11 @@ export function resolveScaledSurfEncounter(
 
   const size = Math.min(
     4,
-    resolveWildPackSize(areaLevel, partyLevels, roll),
+    resolveWildPackSize(
+      resolveAreaLevelRange(table.slots) ?? areaLevel,
+      partyLevels,
+      roll,
+    ),
   );
   const members: WildEncounter[] = [];
   for (let index = 0; index < size; index += 1) {
