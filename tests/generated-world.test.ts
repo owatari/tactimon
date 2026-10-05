@@ -94,3 +94,24 @@ describe("generated Kanto content", () => {
     }
   });
 });
+
+describe("generated Kanto text", () => {
+  it("serves NPC and sign text for imported maps", async () => {
+    const { GENERATED_NPC_TEXT, GENERATED_SIGN_TEXT } = await import("../apps/client/lib/generated/worldTexts");
+    const { resolveWorldNpcPages, resolveWorldSignPages } = await import("../apps/client/lib/worldTexts");
+
+    expect(Object.keys(GENERATED_NPC_TEXT).length).toBeGreaterThan(150);
+    expect(Object.keys(GENERATED_SIGN_TEXT).length).toBeGreaterThan(150);
+    for (const key of [...Object.keys(GENERATED_NPC_TEXT), ...Object.keys(GENERATED_SIGN_TEXT)]) {
+      expect(WORLD_MAPS[key.split(":")[0]], key).toBeDefined();
+    }
+    const [npcKey] = Object.keys(GENERATED_NPC_TEXT);
+    const [map, xy] = npcKey.split(":");
+    const [x, y] = xy.split(",").map(Number);
+    expect(resolveWorldNpcPages(map, x, y)).toEqual(GENERATED_NPC_TEXT[npcKey]);
+    const [signKey] = Object.keys(GENERATED_SIGN_TEXT);
+    const [smap, sxy] = signKey.split(":");
+    const [sx, sy] = sxy.split(",").map(Number);
+    expect(resolveWorldSignPages(smap, sx, sy)).toEqual(GENERATED_SIGN_TEXT[signKey]);
+  });
+});

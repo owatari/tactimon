@@ -5,6 +5,11 @@
  * elsewhere (trainers, clerks, nurses, story NPCs) or deferred.
  */
 
+import {
+  GENERATED_NPC_TEXT,
+  GENERATED_SIGN_TEXT,
+} from "./generated/worldTexts";
+
 export const WORLD_NPC_TEXT: Readonly<
   Record<string, readonly string[]>
 > = {
@@ -627,7 +632,8 @@ export function resolveWorldNpcPages(
   x: number,
   y: number,
 ): readonly string[] | null {
-  return WORLD_NPC_TEXT[`${mapId}:${x},${y}`] ?? null;
+  const key = `${mapId}:${x},${y}`;
+  return WORLD_NPC_TEXT[key] ?? GENERATED_NPC_TEXT[key] ?? null;
 }
 
 export function resolveWorldSignPages(
@@ -635,5 +641,6 @@ export function resolveWorldSignPages(
   x: number,
   y: number,
 ): readonly string[] | null {
-  return WORLD_SIGN_TEXT[`${mapId}:${x},${y}`] ?? null;
+  const key = `${mapId}:${x},${y}`;
+  return WORLD_SIGN_TEXT[key] ?? GENERATED_SIGN_TEXT[key] ?? null;
 }

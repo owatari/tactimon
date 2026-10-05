@@ -358,4 +358,87 @@ for d, code in NEW.items():
 )
 print(f"trainers={len(trainers)}")
 
+# ---- NPC and sign texts (English ROM fallback) ---------------------------------
+TERMINATOR = re.compile(rb"(\x09[\x02-\x08](\x6c|\x6d)?\x02)|(\x6c\x02)|(\x6d\x02)|(\x02\x02)")
+SKIP_GFX = {"CLERK", "NURSE", "ITEM_BALL", "CUT_TREE", "ROCK_SMASH_ROCK", "STRENGTH_BOULDER", "SNORLAX", "PC", "CLIPBOARD"}
+
+
+def text_ok(t):
+    return bool(t) and sum(ch.isalpha() for ch in t) > 3 and "{?}" not in t
+
+
+def first_text(offset):
+    b = ROM[offset:offset + 300]
+    m = TERMINATOR.search(b)
+    end = m.end() if m else len(b)
+    alts = []
+    q = 0
+    while q < end - 5:
+        if b[q] == 0x0F and b[q + 1] == 0 and b[q + 5] == 0x08:
+            p_ = ptr(struct.unpack("<I", b[q + 2:q + 6])[0])
+            t = decode_text(p_) if p_ else ""
+            if text_ok(t):
+                return t
+            q += 6
+            continue
+        if b[q] in (4, 5) and b[q + 4] == 0x08:
+            alts.append(ptr(struct.unpack("<I", b[q + 1:q + 5])[0]))
+            q += 5
+            continue
+        if b[q] in (6, 7) and b[q + 1] < 6 and b[q + 5] == 0x08:
+            alts.append(ptr(struct.unpack("<I", b[q + 2:q + 6])[0]))
+            q += 6
+            continue
+        q += 1
+    for a in alts:
+        c = ROM[a:a + 300]
+        m = TERMINATOR.search(c)
+        e = m.end() if m else 120
+        for j in range(max(0, e - 5)):
+            if c[j] == 0x0F and c[j + 1] == 0 and c[j + 5] == 0x08:
+                p_ = ptr(struct.unpack("<I", c[j + 2:j + 6])[0])
+                t = decode_text(p_) if p_ else ""
+                if text_ok(t):
+                    return t
+                break
+    return None
+
+
+def pages_of(text):
+    pages = []
+    for chunk in text.split("\f"):
+        chunk = re.sub(r"\s+", " ", chunk).strip()
+        if chunk:
+            pages.append(chunk.replace("{PLAYER}", "Red").replace("{RIVAL}", "Blue"))
+    return pages
+
+
+npc_texts, sign_texts = {}, {}
+for d, code in NEW.items():
+    j = world[d]
+    for o in j["objects"]:
+        gfx = o["graphics_name"] or ""
+        if gfx in SKIP_GFX or "BOULDER" in gfx or o["trainer_type"] != 0 or o["flag_id"] != 0 or not o["script_offset"]:
+            continue
+        if gfx in LEADER_GFX or not o["sprite_file"]:
+            continue
+        t = first_text(o["script_offset"])
+        if t:
+            npc_texts[f"{code}:{o['x']},{o['y']}"] = pages_of(t)
+    for bg in j["bg_events"]:
+        if bg["kind"] != 0 or not bg["script_offset"]:
+            continue
+        t = first_text(bg["script_offset"])
+        if t:
+            sign_texts[f"{code}:{bg['x']},{bg['y']}"] = pages_of(t)
+
+(GEN / "worldTexts.ts").write_text(
+    HEADER
+    + "/** English FireRed text; lib/worldTexts.ts holds curated pt-BR overrides. */\n"
+    + "export const GENERATED_NPC_TEXT: Readonly<Record<string, readonly string[]>> = %s;\n\n" % js(npc_texts, 1)
+    + "export const GENERATED_SIGN_TEXT: Readonly<Record<string, readonly string[]>> = %s;\n" % js(sign_texts, 1),
+    encoding="utf-8",
+)
+print(f"npc_texts={len(npc_texts)} sign_texts={len(sign_texts)}")
+
 print(f"encounters={len(enc_out)} pickups={len(pickups)} extra_items={len(extra_items)} marts={len(marts)} nurses={len(nurses)} skipped_items={len(skipped_items)}")
