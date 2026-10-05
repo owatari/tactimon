@@ -29,3 +29,5 @@ apps/client/public/game-assets/
 .venv-pmd/
 local-assets/.tools/
 apps/client/app/battle-preview/
+
+__pycache__/
