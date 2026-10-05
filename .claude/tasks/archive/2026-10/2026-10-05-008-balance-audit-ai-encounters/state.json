@@ -1,0 +1,13 @@
+{
+  "id": "2026-10-05-008-balance-audit-ai-encounters",
+  "title": "Auditoria de balanceamento: IA, autobattle, packs selvagens e ginásios com 6",
+  "status": "done",
+  "created_at": "2026-10-05",
+  "base_head": "e0c64e77",
+  "current_head": "e0c64e77",
+  "skills": ["safe-main", "battle-development", "overworld-development", "verification", "task-ledger", "pokemon-ui"],
+  "agents": ["battle-engine", "gameplay-systems"],
+  "files": [],
+  "commits": ["e43eee7a","09ecdb1e","f7d8e769"],
+  "tests": []
+}
