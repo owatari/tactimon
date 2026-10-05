@@ -19,6 +19,13 @@ import {
   type MenuScreen,
 } from "@/lib/gameMenu";
 import type { GameOptions } from "@/lib/options";
+import {
+  itemNeedsMoveTarget,
+  itemTargetsTrainer,
+  useBagItem,
+} from "@/lib/itemUse";
+import type { OverworldItemId } from "@/lib/items";
+import type { ProgressionReward } from "@tactimon/battle-engine";
 import type { StoryState } from "@/lib/story";
 
 type Props = {
@@ -28,7 +35,17 @@ type Props = {
   onOptionsChange: (next: GameOptions) => void;
   /** Flushes pending play time and returns the confirmation text. */
   onSave: () => string;
+  /** Called when an item (Rare Candy) produced a level-up reward. */
+  onItemReward?: (reward: ProgressionReward, partyIndex: number) => void;
   onClose: () => void;
+};
+
+type BagUse = {
+  itemId: string;
+  name: string;
+  step: "pokemon" | "move";
+  partyIndex: number;
+  moveIndex: number;
 };
 
 type SummaryPage = "info" | "stats" | "moves";
@@ -80,6 +97,7 @@ export function StartMenu({
   onStoryChange,
   onOptionsChange,
   onSave,
+  onItemReward,
   onClose,
 }: Props) {
   const [screen, setScreen] = useState<MenuScreen>("root");
@@ -97,6 +115,7 @@ export function StartMenu({
   const [pocketIndex, setPocketIndex] = useState(0);
   const [bagIndex, setBagIndex] = useState(0);
   const [optionIndex, setOptionIndex] = useState(0);
+  const [bagUse, setBagUse] = useState<BagUse | null>(null);
   const [notice, setNotice] = useState("");
 
   const party = useMemo(() => getStoryParty(story), [story]);
@@ -115,6 +134,7 @@ export function StartMenu({
     pocketIndex,
     bagIndex,
     optionIndex,
+    bagUse,
     party,
     pockets,
     story,
@@ -131,11 +151,38 @@ export function StartMenu({
     pocketIndex,
     bagIndex,
     optionIndex,
+    bagUse,
     party,
     pockets,
     story,
     options,
   };
+
+  const applyItem = (
+    use: BagUse,
+    partyIndex: number,
+    moveIndex: number,
+  ) => {
+    const result = useBagItem(
+      latest.current.story,
+      use.itemId as OverworldItemId,
+      partyIndex,
+      moveIndex,
+    );
+    setNotice(result.message);
+    if (result.accepted) {
+      onStoryChange(result.story);
+      setBagUse(null);
+      setBagIndex(0);
+      if (result.reward) {
+        onItemReward?.(result.reward, partyIndex);
+      }
+    } else if (itemTargetsTrainer(use.itemId)) {
+      setBagUse(null);
+    }
+  };
+  const applyItemRef = useRef(applyItem);
+  applyItemRef.current = applyItem;
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -254,6 +301,29 @@ export function StartMenu({
 
       if (s.screen === "bag") {
         const entries = s.pockets[s.pocketIndex]?.entries ?? [];
+        if (s.bagUse) {
+          const use = s.bagUse;
+          const target = s.party[use.partyIndex];
+          if (use.step === "pokemon") {
+            if (up) setBagUse({ ...use, partyIndex: wrap(use.partyIndex - 1, s.party.length) });
+            else if (down) setBagUse({ ...use, partyIndex: wrap(use.partyIndex + 1, s.party.length) });
+            else if (back) setBagUse(null);
+            else if (confirm) {
+              if (itemNeedsMoveTarget(use.itemId)) {
+                setBagUse({ ...use, step: "move", moveIndex: 0 });
+              } else {
+                applyItemRef.current(use, use.partyIndex, 0);
+              }
+            }
+          } else {
+            const moveCount = target?.activeMoves.length ?? 0;
+            if (up) setBagUse({ ...use, moveIndex: wrap(use.moveIndex - 1, moveCount) });
+            else if (down) setBagUse({ ...use, moveIndex: wrap(use.moveIndex + 1, moveCount) });
+            else if (back) setBagUse({ ...use, step: "pokemon" });
+            else if (confirm) applyItemRef.current(use, use.partyIndex, use.moveIndex);
+          }
+          return;
+        }
         if (left) {
           setPocketIndex(wrap(s.pocketIndex - 1, s.pockets.length));
           setBagIndex(0);
@@ -264,11 +334,33 @@ export function StartMenu({
         else if (down) setBagIndex(wrap(s.bagIndex + 1, entries.length));
         else if (back) setScreen("root");
         else if (confirm && entries[s.bagIndex]) {
-          setNotice(
-            entries[s.bagIndex].usable
-              ? ""
-              : "Este item ainda não pode ser usado aqui.",
-          );
+          const entry = entries[s.bagIndex];
+          if (!entry.usable) {
+            setNotice("Este item não pode ser usado agora.");
+          } else if (itemTargetsTrainer(entry.id)) {
+            applyItemRef.current(
+              {
+                itemId: entry.id,
+                name: entry.name,
+                step: "pokemon",
+                partyIndex: 0,
+                moveIndex: 0,
+              },
+              0,
+              0,
+            );
+          } else if (s.party.length === 0) {
+            setNotice("Você não tem Pokémon.");
+          } else {
+            setBagUse({
+              itemId: entry.id,
+              name: entry.name,
+              step: "pokemon",
+              partyIndex: 0,
+              moveIndex: 0,
+            });
+            setNotice(`Usar ${entry.name} em qual Pokémon?`);
+          }
         }
         return;
       }
@@ -468,6 +560,33 @@ export function StartMenu({
           <p className="start-menu-description">
             {pockets[pocketIndex].entries[bagIndex]?.description ?? ""}
           </p>
+          {bagUse && (
+            <div className="start-menu-popup start-menu-bag-target">
+              {bagUse.step === "pokemon"
+                ? party.map((pokemon, index) => (
+                    <div
+                      key={`${pokemon.species}-${index}`}
+                      className={index === bagUse.partyIndex ? "selected" : ""}
+                    >
+                      {speciesDisplayName(pokemon.species)} Lv{pokemon.level}{" "}
+                      {pokemon.currentHp}HP
+                    </div>
+                  ))
+                : (party[bagUse.partyIndex]?.activeMoves ?? []).map(
+                    (moveId, index) => (
+                      <div
+                        key={moveId}
+                        className={index === bagUse.moveIndex ? "selected" : ""}
+                      >
+                        {DUEL_MOVES[moveId].name} PP{" "}
+                        {party[bagUse.partyIndex].movePp[moveId] ??
+                          DUEL_MOVES[moveId].maxPp}
+                        /{DUEL_MOVES[moveId].maxPp}
+                      </div>
+                    ),
+                  )}
+            </div>
+          )}
         </section>
       )}
 

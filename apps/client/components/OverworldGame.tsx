@@ -72,6 +72,7 @@ import {
   type DialogueInteractionRequest,
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
+import { repelBlocksEncounter } from "@/lib/itemUse";
 import {
   resolveScriptedWorldObjects,
 } from "@/lib/scriptedWorldObjects";
@@ -2014,6 +2015,10 @@ export function OverworldGame({
           partyLevels,
         );
       if (!encounter) {
+        return;
+      }
+
+      if (repelBlocksEncounter(currentStory, encounter.members)) {
         return;
       }
 

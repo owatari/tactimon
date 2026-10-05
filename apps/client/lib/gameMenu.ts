@@ -10,6 +10,7 @@ import {
   type BagItemId,
   type OverworldItemId,
 } from "./items";
+import { isFieldUsableItem } from "./itemUse";
 import type {
   StoryBadgeId,
   StoryState,
@@ -169,7 +170,7 @@ function itemEntry(
     quantity,
     iconUrl: itemIconUrl(id),
     description: itemDescription(id),
-    usable: false,
+    usable: isFieldUsableItem(id),
   };
 }
 

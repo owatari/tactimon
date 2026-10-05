@@ -1100,6 +1100,15 @@ export function GameClient() {
           onStoryChange={setStory}
           onOptionsChange={handleOptionsChange}
           onSave={handleMenuSave}
+          onItemReward={(reward, partyIndex) => {
+            const queue = pendingMoveQueue(
+              progressionQueueFor([reward], [partyIndex]),
+            );
+            if (queue.length > 0) {
+              setMenuOpen(false);
+              setProgressionQueue(queue);
+            }
+          }}
           onClose={() => setMenuOpen(false)}
         />
       )}

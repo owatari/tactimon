@@ -1496,6 +1496,24 @@ function grantExperience(
   };
 }
 
+/** Rare Candy: grants exactly the experience needed for the next level. */
+export function grantRareCandy(
+  input: PokemonProgression,
+): ProgressionReward | null {
+  const progression = normalizePokemonProgression(input);
+  if (progression.level >= 100) {
+    return null;
+  }
+
+  return grantExperience(
+    progression,
+    fireRedExperienceAtLevel(
+      progression.species,
+      progression.level + 1,
+    ) - progression.experience,
+  );
+}
+
 export function grantWildBattleProgress(
   input: PokemonProgression,
   enemy: {

@@ -86,6 +86,8 @@ export type StoryState = {
   bagItems?: BagItems;
   /** Seconds played, shown on the Trainer Card. */
   playTimeSeconds?: number;
+  /** Remaining Repel steps (FireRed: 100 per item). */
+  repelSteps?: number;
   keyItemIds?: StoryKeyItemId[];
   fieldTechniqueIds?: StoryFieldTechniqueId[];
   clearedObstacleIds?: string[];
@@ -521,6 +523,11 @@ export function normalizeStoryState(
     inventory: normalizeInventory(input?.inventory),
     valuables: normalizeValuables(input?.valuables),
     bagItems: normalizeBagItems(input?.bagItems),
+    repelSteps:
+      typeof input?.repelSteps === "number" &&
+      Number.isFinite(input.repelSteps)
+        ? Math.max(0, Math.min(250, Math.trunc(input.repelSteps)))
+        : 0,
     playTimeSeconds:
       typeof input?.playTimeSeconds === "number" &&
       Number.isFinite(input.playTimeSeconds)
@@ -656,8 +663,12 @@ function applyFieldPoisonToPokemon(
  * step. Field poison is allowed to faint a Pokémon.
  */
 export function applyStoryOverworldStep(
-  story: StoryState,
+  input: StoryState,
 ): StoryState {
+  const story =
+    (input.repelSteps ?? 0) > 0
+      ? { ...input, repelSteps: (input.repelSteps ?? 0) - 1 }
+      : input;
   const nextCounter =
     ((story.poisonStepCounter ?? 0) + 1) % 5;
 
