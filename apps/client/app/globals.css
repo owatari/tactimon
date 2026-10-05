@@ -5582,3 +5582,365 @@ textarea {
   outline: none;
   background: #f8e070;
 }
+
+/* ---- Start menu (FireRed style) ---- */
+.start-menu-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  align-content: start;
+  justify-items: end;
+  padding: 18px;
+  background: rgba(8, 16, 24, 0.35);
+  color: #182838;
+  font-family: "Courier New", ui-monospace, monospace;
+  image-rendering: pixelated;
+}
+
+.start-menu-root,
+.start-menu-screen,
+.start-menu-popup,
+.start-menu-notice,
+.start-menu-help {
+  border: 4px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  box-shadow:
+    inset 0 0 0 3px #a8c0d0,
+    5px 5px 0 rgba(24, 40, 56, 0.4);
+}
+
+.start-menu-root {
+  display: grid;
+  min-width: 190px;
+  padding: 10px 8px;
+}
+
+.start-menu-entry {
+  padding: 6px 10px 6px 24px;
+  border: 0;
+  background: transparent;
+  color: #182838;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.start-menu-entry.disabled {
+  color: #8898a8;
+}
+
+.start-menu-entry.selected {
+  background: #f8e8a0;
+}
+
+.start-menu-entry.selected::before {
+  content: "▶";
+  margin-left: -16px;
+  margin-right: 6px;
+}
+
+.start-menu-screen {
+  position: absolute;
+  inset: 18px 18px 74px;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 14px 16px;
+  overflow: auto;
+}
+
+.start-menu-screen h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+}
+
+.start-menu-screen ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.start-menu-party-row,
+.start-menu-bag-list li,
+.start-menu-options li,
+.start-menu-moves li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 2px solid #405868;
+  background: #fffff4;
+}
+
+.start-menu-party-row.selected,
+.start-menu-bag-list li.selected,
+.start-menu-options li.selected {
+  background: #f8e8a0;
+  border-color: #c06820;
+}
+
+.start-menu-party-row.switching {
+  outline: 3px dashed #c06820;
+}
+
+.start-menu-party-row.fainted {
+  opacity: 0.6;
+}
+
+.start-menu-party-row .battle-portrait-frame {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+}
+
+.start-menu-party-copy {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  min-width: 170px;
+}
+
+.start-menu-party-copy strong {
+  font-size: 15px;
+}
+
+.start-menu-hp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.start-menu-hp-track {
+  width: 110px;
+  height: 8px;
+  border: 2px solid #203850;
+  background: #d8d8c8;
+}
+
+.start-menu-hp-fill {
+  height: 100%;
+  background: #38b048;
+}
+
+.start-menu-hp-fill.mid {
+  background: #e8b820;
+}
+
+.start-menu-hp-fill.low {
+  background: #d83020;
+}
+
+.start-menu-hp em {
+  min-width: 64px;
+  font-style: normal;
+  text-align: right;
+}
+
+.start-menu-status {
+  padding: 0 4px;
+  border: 2px solid #203850;
+  background: #b8a8d8;
+  font-size: 11px;
+}
+
+.start-menu-popup {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  display: grid;
+  min-width: 150px;
+  padding: 8px;
+  z-index: 2;
+}
+
+.start-menu-popup div {
+  padding: 4px 8px 4px 22px;
+  font-weight: 700;
+}
+
+.start-menu-popup .selected {
+  background: #f8e8a0;
+}
+
+.start-menu-popup .selected::before {
+  content: "▶";
+  margin-left: -16px;
+  margin-right: 6px;
+}
+
+.start-menu-summary-tabs,
+.start-menu-pockets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.start-menu-summary-tabs span,
+.start-menu-pockets span {
+  padding: 3px 8px;
+  border: 2px solid #405868;
+  background: #e8e8d8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.start-menu-summary-tabs .selected,
+.start-menu-pockets .selected {
+  background: #f8e8a0;
+  border-color: #c06820;
+}
+
+.start-menu-summary-body {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.start-menu-summary-body .battle-portrait-frame {
+  width: 120px;
+  height: 120px;
+  flex: 0 0 120px;
+}
+
+.start-menu-dl,
+.start-menu-card dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 18px;
+  margin: 0;
+  font-size: 15px;
+}
+
+.start-menu-dl dt,
+.start-menu-card dt {
+  font-weight: 700;
+  color: #304858;
+}
+
+.start-menu-dl dd,
+.start-menu-card dd {
+  margin: 0;
+}
+
+.start-menu-dl-wide {
+  grid-column: 1 / -1;
+}
+
+.start-menu-moves {
+  flex: 1;
+}
+
+.start-menu-moves li {
+  display: grid;
+  grid-template-columns: 76px 1fr auto auto;
+  gap: 10px;
+}
+
+.start-menu-type {
+  padding: 1px 4px;
+  border: 2px solid #203850;
+  background: #d8d8c8;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.start-menu-bag-list img {
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+}
+
+.start-menu-bag-icon-blank {
+  width: 28px;
+  height: 28px;
+}
+
+.start-menu-bag-list li em,
+.start-menu-options li em {
+  margin-left: auto;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.start-menu-options li {
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.start-menu-description {
+  margin: 0;
+  padding: 8px 10px;
+  border: 2px solid #405868;
+  background: #fffff4;
+  font-size: 14px;
+  min-height: 2.6em;
+}
+
+.start-menu-empty {
+  padding: 8px 10px;
+  color: #607080;
+}
+
+.start-menu-badges {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.start-menu-badges span {
+  padding: 10px 4px;
+  border: 2px solid #405868;
+  background: #d8d8c8;
+  color: #8898a8;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.start-menu-badges .earned {
+  background: #f8d878;
+  border-color: #c06820;
+  color: #182838;
+}
+
+.start-menu-notice {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 50px;
+  margin: 0;
+  padding: 8px 12px;
+  font-weight: 700;
+}
+
+.start-menu-help {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 14px;
+  margin: 0;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .start-menu-hp-track {
+    width: 60px;
+  }
+
+  .start-menu-summary-body {
+    flex-direction: column;
+  }
+}

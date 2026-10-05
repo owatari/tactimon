@@ -154,6 +154,7 @@ type Props = {
     },
   ) => void;
   onMartOpen: (martId: string) => void;
+  onMenuOpen: () => void;
   /** Functional story update applied to GameClient's latest state. */
   onStoryUpdate: (
     update: (story: StoryState) => StoryState,
@@ -650,6 +651,7 @@ export function OverworldGame({
   onWildBattleTrigger,
   onTrainerBattleTrigger,
   onMartOpen,
+  onMenuOpen,
   onStoryUpdate,
   onRespawnApplied,
   onPokemonStorageOpen,
@@ -1449,6 +1451,22 @@ export function OverworldGame({
       const lowerKey = event.key.toLowerCase();
 
       if (
+        (lowerKey === "escape" ||
+          lowerKey === "tab" ||
+          lowerKey === "m") &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey
+      ) {
+        event.preventDefault();
+        if (!event.repeat && !dialogueRef.current) {
+          resetInput();
+          onMenuOpen();
+        }
+        return;
+      }
+
+      if (
         lowerKey === "r" &&
         !event.ctrlKey &&
         !event.metaKey &&
@@ -1495,7 +1513,13 @@ export function OverworldGame({
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
     };
-  }, [interact, resetInput, setDirectionPressed, toggleRunning]);
+  }, [
+    interact,
+    onMenuOpen,
+    resetInput,
+    setDirectionPressed,
+    toggleRunning,
+  ]);
 
   useEffect(() => {
     let animationFrame = 0;

@@ -39,6 +39,15 @@ import {
 import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
+import { StartMenu } from "@/components/StartMenu";
+import {
+  DEFAULT_GAME_OPTIONS,
+  effectiveMusicVolume,
+  loadGameOptions,
+  saveGameOptions,
+  type GameOptions,
+} from "@/lib/options";
+import { musicManager } from "@/lib/music";
 import type { OverworldItemId } from "@/lib/items";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
@@ -268,6 +277,11 @@ export function GameClient() {
     useState(false);
   const [martId, setMartId] = useState<string | null>(null);
   const martOpen = martId !== null;
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [options, setOptions] = useState<GameOptions>(
+    DEFAULT_GAME_OPTIONS,
+  );
+  const pendingPlaySecondsRef = useRef(0);
   const [storageOpen, setStorageOpen] =
     useState(false);
   const [battleSession, setBattleSession] =
@@ -377,6 +391,53 @@ export function GameClient() {
       // Local storage is an enhancement, not a runtime dependency.
     }
   }, [story, storyHydrated]);
+
+  useEffect(() => {
+    setOptions(loadGameOptions());
+  }, []);
+
+  useEffect(() => {
+    musicManager.setMasterVolume(
+      effectiveMusicVolume(options),
+    );
+  }, [options]);
+
+  const flushPlayTime = useCallback(() => {
+    const seconds = pendingPlaySecondsRef.current;
+    if (seconds <= 0) return;
+    pendingPlaySecondsRef.current = 0;
+    setStory((current) => ({
+      ...current,
+      playTimeSeconds:
+        (current.playTimeSeconds ?? 0) + seconds,
+    }));
+  }, []);
+
+  useEffect(() => {
+    if (!storyHydrated) return;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      pendingPlaySecondsRef.current += 1;
+      if (pendingPlaySecondsRef.current >= 30) {
+        flushPlayTime();
+      }
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [storyHydrated, flushPlayTime]);
+
+  const handleOptionsChange = useCallback(
+    (next: GameOptions) => {
+      setOptions(next);
+      saveGameOptions(next);
+    },
+    [],
+  );
+
+  const handleMenuSave = useCallback(() => {
+    flushPlayTime();
+    return "Jogo salvo!";
+  }, [flushPlayTime]);
 
   const handleMapAudioContextChange = useCallback(
     (next: { mapId: string; musicId: number | null }) => {
@@ -898,6 +959,7 @@ export function GameClient() {
   const paused =
     starterChoiceOpen ||
     martOpen ||
+    menuOpen ||
     storageOpen ||
     Boolean(battleSession) ||
     Boolean(pendingWhiteOut) ||
@@ -920,6 +982,10 @@ export function GameClient() {
       <OverworldGame
         story={story}
         paused={paused}
+        onMenuOpen={() => {
+          flushPlayTime();
+          setMenuOpen(true);
+        }}
         respawnRequest={respawnRequest}
         onRequestStarterChoice={() => setStarterChoiceOpen(true)}
         onMapAudioContextChange={handleMapAudioContextChange}
@@ -1027,6 +1093,17 @@ export function GameClient() {
         />
       )}
 
+      {menuOpen && (
+        <StartMenu
+          story={story}
+          options={options}
+          onStoryChange={setStory}
+          onOptionsChange={handleOptionsChange}
+          onSave={handleMenuSave}
+          onClose={() => setMenuOpen(false)}
+        />
+      )}
+
       {martOpen && (
         <MartOverlay
           martId={martId}
@@ -1062,6 +1139,7 @@ export function GameClient() {
             encounter={battleSession.encounter}
             context={battleSession.context}
             onComplete={handleBattleComplete}
+            initialBattleSpeed={options.battleSpeed}
           />
         )}
 

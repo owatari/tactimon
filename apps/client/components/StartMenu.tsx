@@ -1,0 +1,613 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  DUEL_MOVES,
+  calculateDuelPokemonStats,
+  duelSpeciesTypes,
+  experienceProgress,
+  speciesDisplayName,
+  type PokemonProgression,
+} from "@tactimon/battle-engine";
+import { PokemonPortrait } from "@/components/PokemonPortrait";
+import {
+  MENU_ENTRIES,
+  buildBagPockets,
+  buildTrainerCard,
+  getStoryParty,
+  reorderStoryParty,
+  type MenuScreen,
+} from "@/lib/gameMenu";
+import type { GameOptions } from "@/lib/options";
+import type { StoryState } from "@/lib/story";
+
+type Props = {
+  story: StoryState;
+  options: GameOptions;
+  onStoryChange: (next: StoryState) => void;
+  onOptionsChange: (next: GameOptions) => void;
+  /** Flushes pending play time and returns the confirmation text. */
+  onSave: () => string;
+  onClose: () => void;
+};
+
+type SummaryPage = "info" | "stats" | "moves";
+const SUMMARY_PAGES: readonly SummaryPage[] = [
+  "info",
+  "stats",
+  "moves",
+];
+const PARTY_ACTIONS = ["SUMMARY", "SWITCH", "CANCEL"] as const;
+const OPTION_ROWS = [
+  "MUSIC VOLUME",
+  "MUSIC",
+  "BATTLE SPEED",
+  "CLOSE",
+] as const;
+
+const wrap = (value: number, size: number) =>
+  size <= 0 ? 0 : (value + size) % size;
+
+function hpClass(pokemon: PokemonProgression, maxHp: number) {
+  const ratio = pokemon.currentHp / Math.max(1, maxHp);
+  return ratio <= 0.2 ? "low" : ratio <= 0.5 ? "mid" : "high";
+}
+
+function HpBar({ pokemon }: { pokemon: PokemonProgression }) {
+  const maxHp = calculateDuelPokemonStats(pokemon).hp;
+
+  return (
+    <div className="start-menu-hp">
+      <span>HP</span>
+      <div className="start-menu-hp-track">
+        <div
+          className={`start-menu-hp-fill ${hpClass(pokemon, maxHp)}`}
+          style={{
+            width: `${Math.max(0, Math.min(100, (pokemon.currentHp / Math.max(1, maxHp)) * 100))}%`,
+          }}
+        />
+      </div>
+      <em>
+        {pokemon.currentHp}/{maxHp}
+      </em>
+    </div>
+  );
+}
+
+export function StartMenu({
+  story,
+  options,
+  onStoryChange,
+  onOptionsChange,
+  onSave,
+  onClose,
+}: Props) {
+  const [screen, setScreen] = useState<MenuScreen>("root");
+  const [rootIndex, setRootIndex] = useState(1);
+  const [partyIndex, setPartyIndex] = useState(0);
+  const [partyAction, setPartyAction] = useState<number | null>(
+    null,
+  );
+  const [switchFrom, setSwitchFrom] = useState<number | null>(
+    null,
+  );
+  const [summaryIndex, setSummaryIndex] = useState(0);
+  const [summaryPage, setSummaryPage] =
+    useState<SummaryPage>("info");
+  const [pocketIndex, setPocketIndex] = useState(0);
+  const [bagIndex, setBagIndex] = useState(0);
+  const [optionIndex, setOptionIndex] = useState(0);
+  const [notice, setNotice] = useState("");
+
+  const party = useMemo(() => getStoryParty(story), [story]);
+  const pockets = useMemo(() => buildBagPockets(story), [story]);
+  const card = useMemo(() => buildTrainerCard(story), [story]);
+
+  // Keep the key handler stable while reading the latest state.
+  const latest = useRef({
+    screen,
+    rootIndex,
+    partyIndex,
+    partyAction,
+    switchFrom,
+    summaryIndex,
+    summaryPage,
+    pocketIndex,
+    bagIndex,
+    optionIndex,
+    party,
+    pockets,
+    story,
+    options,
+  });
+  latest.current = {
+    screen,
+    rootIndex,
+    partyIndex,
+    partyAction,
+    switchFrom,
+    summaryIndex,
+    summaryPage,
+    pocketIndex,
+    bagIndex,
+    optionIndex,
+    party,
+    pockets,
+    story,
+    options,
+  };
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+      const k = event.key.toLowerCase();
+      const up = k === "arrowup" || k === "w";
+      const down = k === "arrowdown" || k === "s";
+      const left = k === "arrowleft" || k === "a";
+      const right = k === "arrowright" || k === "d";
+      const confirm =
+        k === "enter" || k === " " || k === "z" || k === "e";
+      const back =
+        k === "escape" ||
+        k === "x" ||
+        k === "backspace" ||
+        k === "tab" ||
+        k === "m";
+      if (!(up || down || left || right || confirm || back)) {
+        return;
+      }
+      event.preventDefault();
+      if (event.repeat && (confirm || back)) return;
+
+      const s = latest.current;
+      setNotice("");
+
+      if (s.screen === "root") {
+        if (up) setRootIndex(wrap(s.rootIndex - 1, MENU_ENTRIES.length));
+        else if (down) setRootIndex(wrap(s.rootIndex + 1, MENU_ENTRIES.length));
+        else if (back) onClose();
+        else if (confirm) {
+          const entry = MENU_ENTRIES[s.rootIndex];
+          if (!entry.enabled) {
+            setNotice(`${entry.label}: ${entry.hint ?? "indisponível"}.`);
+          } else if (entry.id === "exit") onClose();
+          else if (entry.id === "save") setNotice(onSave());
+          else {
+            setScreen(
+              entry.id === "party"
+                ? "party"
+                : entry.id === "bag"
+                  ? "bag"
+                  : entry.id === "card"
+                    ? "card"
+                    : "options",
+            );
+            setPartyAction(null);
+            setSwitchFrom(null);
+          }
+        }
+        return;
+      }
+
+      if (s.screen === "party") {
+        const count = s.party.length;
+        if (s.partyAction !== null) {
+          if (up) setPartyAction(wrap(s.partyAction - 1, PARTY_ACTIONS.length));
+          else if (down) setPartyAction(wrap(s.partyAction + 1, PARTY_ACTIONS.length));
+          else if (back) setPartyAction(null);
+          else if (confirm) {
+            const action = PARTY_ACTIONS[s.partyAction];
+            setPartyAction(null);
+            if (action === "SUMMARY") {
+              setSummaryIndex(s.partyIndex);
+              setSummaryPage("info");
+              setScreen("summary");
+            } else if (action === "SWITCH") {
+              if (s.partyIndex === 0) {
+                setNotice("O Pokémon líder não pode ser trocado de lugar.");
+              } else {
+                setSwitchFrom(s.partyIndex);
+                setNotice("Escolha o outro Pokémon.");
+              }
+            }
+          }
+          return;
+        }
+        if (up) setPartyIndex(wrap(s.partyIndex - 1, count));
+        else if (down) setPartyIndex(wrap(s.partyIndex + 1, count));
+        else if (back) {
+          if (s.switchFrom !== null) setSwitchFrom(null);
+          else setScreen("root");
+        } else if (confirm && count > 0) {
+          if (s.switchFrom !== null) {
+            const result = reorderStoryParty(
+              s.story,
+              s.switchFrom,
+              s.partyIndex,
+            );
+            if (result.accepted) {
+              onStoryChange(result.story);
+              setNotice("Pokémon trocados de lugar.");
+            } else if (result.reason === "lead-locked") {
+              setNotice("O Pokémon líder não pode ser trocado de lugar.");
+            }
+            setSwitchFrom(null);
+          } else {
+            setPartyAction(0);
+          }
+        }
+        return;
+      }
+
+      if (s.screen === "summary") {
+        const pageIndex = SUMMARY_PAGES.indexOf(s.summaryPage);
+        if (up) setSummaryIndex(wrap(s.summaryIndex - 1, s.party.length));
+        else if (down) setSummaryIndex(wrap(s.summaryIndex + 1, s.party.length));
+        else if (left) setSummaryPage(SUMMARY_PAGES[wrap(pageIndex - 1, SUMMARY_PAGES.length)]);
+        else if (right || confirm) setSummaryPage(SUMMARY_PAGES[wrap(pageIndex + 1, SUMMARY_PAGES.length)]);
+        else if (back) {
+          setPartyIndex(s.summaryIndex);
+          setScreen("party");
+        }
+        return;
+      }
+
+      if (s.screen === "bag") {
+        const entries = s.pockets[s.pocketIndex]?.entries ?? [];
+        if (left) {
+          setPocketIndex(wrap(s.pocketIndex - 1, s.pockets.length));
+          setBagIndex(0);
+        } else if (right) {
+          setPocketIndex(wrap(s.pocketIndex + 1, s.pockets.length));
+          setBagIndex(0);
+        } else if (up) setBagIndex(wrap(s.bagIndex - 1, entries.length));
+        else if (down) setBagIndex(wrap(s.bagIndex + 1, entries.length));
+        else if (back) setScreen("root");
+        else if (confirm && entries[s.bagIndex]) {
+          setNotice(
+            entries[s.bagIndex].usable
+              ? ""
+              : "Este item ainda não pode ser usado aqui.",
+          );
+        }
+        return;
+      }
+
+      if (s.screen === "card") {
+        if (back || confirm) setScreen("root");
+        return;
+      }
+
+      // options
+      const o = s.options;
+      if (up) setOptionIndex(wrap(s.optionIndex - 1, OPTION_ROWS.length));
+      else if (down) setOptionIndex(wrap(s.optionIndex + 1, OPTION_ROWS.length));
+      else if (back) setScreen("root");
+      else if (left || right || confirm) {
+        const step = left ? -10 : 10;
+        if (s.optionIndex === 0 && (left || right)) {
+          onOptionsChange({
+            ...o,
+            musicVolume: Math.max(0, Math.min(100, o.musicVolume + step)),
+          });
+        } else if (s.optionIndex === 1) {
+          onOptionsChange({ ...o, musicMuted: !o.musicMuted });
+        } else if (s.optionIndex === 2) {
+          onOptionsChange({ ...o, battleSpeed: o.battleSpeed === 1 ? 2 : 1 });
+        } else if (s.optionIndex === 3 && confirm) {
+          setScreen("root");
+        }
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose, onOptionsChange, onSave, onStoryChange]);
+
+  const summaryPokemon = party[summaryIndex] ?? null;
+
+  return (
+    <div
+      className="start-menu-overlay"
+      role="dialog"
+      aria-label="Menu"
+    >
+      {screen === "root" && (
+        <nav className="start-menu-root">
+          {MENU_ENTRIES.map((entry, index) => (
+            <button
+              key={entry.id}
+              type="button"
+              className={[
+                "start-menu-entry",
+                index === rootIndex ? "selected" : "",
+                entry.enabled ? "" : "disabled",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              onMouseEnter={() => setRootIndex(index)}
+              onClick={() => {
+                setRootIndex(index);
+                window.dispatchEvent(
+                  new KeyboardEvent("keydown", { key: "Enter" }),
+                );
+              }}
+            >
+              {entry.label}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {screen === "party" && (
+        <section className="start-menu-screen start-menu-party">
+          <h2>POKéMON</h2>
+          <ul>
+            {party.map((pokemon, index) => (
+              <li
+                key={`${pokemon.species}-${index}`}
+                className={[
+                  "start-menu-party-row",
+                  index === partyIndex ? "selected" : "",
+                  index === switchFrom ? "switching" : "",
+                  pokemon.currentHp <= 0 ? "fainted" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                <PokemonPortrait
+                  species={pokemon.species}
+                  name={speciesDisplayName(pokemon.species)}
+                  compact
+                />
+                <div className="start-menu-party-copy">
+                  <strong>{speciesDisplayName(pokemon.species)}</strong>
+                  <span>Lv{pokemon.level}</span>
+                  {pokemon.status && (
+                    <b className={`start-menu-status ${pokemon.status}`}>
+                      {pokemon.status.slice(0, 3).toUpperCase()}
+                    </b>
+                  )}
+                </div>
+                <HpBar pokemon={pokemon} />
+              </li>
+            ))}
+            {party.length === 0 && (
+              <li className="start-menu-empty">Você ainda não tem Pokémon.</li>
+            )}
+          </ul>
+          {partyAction !== null && (
+            <div className="start-menu-popup">
+              {PARTY_ACTIONS.map((action, index) => (
+                <div
+                  key={action}
+                  className={index === partyAction ? "selected" : ""}
+                >
+                  {action}
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {screen === "summary" && summaryPokemon && (
+        <section className="start-menu-screen start-menu-summary">
+          <h2>
+            {speciesDisplayName(summaryPokemon.species)} · Lv
+            {summaryPokemon.level}
+          </h2>
+          <div className="start-menu-summary-tabs">
+            {SUMMARY_PAGES.map((page) => (
+              <span
+                key={page}
+                className={page === summaryPage ? "selected" : ""}
+              >
+                {page === "info"
+                  ? "INFO"
+                  : page === "stats"
+                    ? "SKILLS"
+                    : "MOVES"}
+              </span>
+            ))}
+          </div>
+          <div className="start-menu-summary-body">
+            <PokemonPortrait
+              species={summaryPokemon.species}
+              name={speciesDisplayName(summaryPokemon.species)}
+            />
+            {summaryPage === "info" && (
+              <SummaryInfo pokemon={summaryPokemon} />
+            )}
+            {summaryPage === "stats" && (
+              <SummaryStats pokemon={summaryPokemon} />
+            )}
+            {summaryPage === "moves" && (
+              <SummaryMoves pokemon={summaryPokemon} />
+            )}
+          </div>
+        </section>
+      )}
+
+      {screen === "bag" && (
+        <section className="start-menu-screen start-menu-bag">
+          <h2>BAG · {pockets[pocketIndex].label}</h2>
+          <div className="start-menu-pockets">
+            {pockets.map((pocket, index) => (
+              <span
+                key={pocket.id}
+                className={index === pocketIndex ? "selected" : ""}
+              >
+                {pocket.label}
+              </span>
+            ))}
+          </div>
+          <ul className="start-menu-bag-list">
+            {pockets[pocketIndex].entries.map((entry, index) => (
+              <li
+                key={entry.id}
+                className={index === bagIndex ? "selected" : ""}
+              >
+                {entry.iconUrl ? (
+                  <img src={entry.iconUrl} alt="" />
+                ) : (
+                  <span className="start-menu-bag-icon-blank" />
+                )}
+                <span>{entry.name}</span>
+                {entry.quantity !== null && <em>×{entry.quantity}</em>}
+              </li>
+            ))}
+            {pockets[pocketIndex].entries.length === 0 && (
+              <li className="start-menu-empty">
+                {pockets[pocketIndex].reserved
+                  ? "Reservado para Dungeons e Raids."
+                  : "Vazio."}
+              </li>
+            )}
+          </ul>
+          <p className="start-menu-description">
+            {pockets[pocketIndex].entries[bagIndex]?.description ?? ""}
+          </p>
+        </section>
+      )}
+
+      {screen === "card" && (
+        <section className="start-menu-screen start-menu-card">
+          <h2>TRAINER CARD</h2>
+          <dl>
+            <dt>STARTER</dt>
+            <dd>
+              {story.starter ? speciesDisplayName(story.starter) : "—"}
+            </dd>
+            <dt>MONEY</dt>
+            <dd>₽{card.money.toLocaleString("pt-BR")}</dd>
+            <dt>POKéMON</dt>
+            <dd>{card.partySize}</dd>
+            <dt>TIME</dt>
+            <dd>{card.playTime}</dd>
+            <dt>BADGES</dt>
+            <dd>{card.badgeCount}/8</dd>
+          </dl>
+          <div className="start-menu-badges">
+            {card.badges.map((badge) => (
+              <span
+                key={badge.id}
+                className={badge.earned ? "earned" : ""}
+                title={badge.label}
+              >
+                {badge.label}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {screen === "options" && (
+        <section className="start-menu-screen start-menu-options">
+          <h2>OPTION</h2>
+          <ul>
+            {OPTION_ROWS.map((row, index) => (
+              <li
+                key={row}
+                className={index === optionIndex ? "selected" : ""}
+              >
+                <span>{row}</span>
+                <em>
+                  {index === 0
+                    ? `◀ ${options.musicVolume}% ▶`
+                    : index === 1
+                      ? options.musicMuted
+                        ? "OFF"
+                        : "ON"
+                      : index === 2
+                        ? `${options.battleSpeed}x`
+                        : ""}
+                </em>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {notice && <p className="start-menu-notice">{notice}</p>}
+      <p className="start-menu-help">
+        ↑↓ mover · Enter confirmar · Esc voltar
+        {screen === "summary" || screen === "bag" ? " · ←→ trocar página" : ""}
+      </p>
+    </div>
+  );
+}
+
+function SummaryInfo({ pokemon }: { pokemon: PokemonProgression }) {
+  const progress = experienceProgress(pokemon);
+  const types = duelSpeciesTypes(pokemon.species);
+
+  return (
+    <dl className="start-menu-dl">
+      <dt>TYPE</dt>
+      <dd>{types.map((type) => type.toUpperCase()).join(" / ")}</dd>
+      <dt>EXP. POINTS</dt>
+      <dd>{progress.total}</dd>
+      <dt>NEXT LV.</dt>
+      <dd>{Math.max(0, progress.nextLevelTotal - progress.total)}</dd>
+      <dt>STATUS</dt>
+      <dd>
+        {pokemon.currentHp <= 0
+          ? "FNT"
+          : (pokemon.status ?? "OK").toUpperCase()}
+      </dd>
+      <dd className="start-menu-dl-wide">
+        <HpBar pokemon={pokemon} />
+      </dd>
+    </dl>
+  );
+}
+
+function SummaryStats({ pokemon }: { pokemon: PokemonProgression }) {
+  const stats = calculateDuelPokemonStats(pokemon);
+
+  return (
+    <dl className="start-menu-dl">
+      <dt>HP</dt>
+      <dd>
+        {pokemon.currentHp}/{stats.hp}
+      </dd>
+      <dt>ATTACK</dt>
+      <dd>{stats.attack}</dd>
+      <dt>DEFENSE</dt>
+      <dd>{stats.defense}</dd>
+      <dt>SP. ATK</dt>
+      <dd>{stats.specialAttack}</dd>
+      <dt>SP. DEF</dt>
+      <dd>{stats.specialDefense}</dd>
+      <dt>SPEED</dt>
+      <dd>{stats.speed}</dd>
+    </dl>
+  );
+}
+
+function SummaryMoves({ pokemon }: { pokemon: PokemonProgression }) {
+  return (
+    <ul className="start-menu-moves">
+      {pokemon.activeMoves.map((moveId) => {
+        const move = DUEL_MOVES[moveId];
+        const pp = pokemon.movePp[moveId] ?? move.maxPp;
+
+        return (
+          <li key={moveId}>
+            <span className={`start-menu-type ${move.type}`}>
+              {move.type.toUpperCase()}
+            </span>
+            <strong>{move.name.toUpperCase()}</strong>
+            <em>
+              PP {pp}/{move.maxPp}
+            </em>
+            <small>
+              {move.power ? `PWR ${move.power}` : "—"}
+            </small>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
