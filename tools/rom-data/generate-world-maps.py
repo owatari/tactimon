@@ -171,6 +171,9 @@ def cell(d, x, y):
     return l["cells"][y * l["width"] + x]
 
 
+open_cells = {}
+
+
 def spawn_for(d, x, y):
     exterior = world[d]["map_type"] in EXTERIOR_TYPES
     order = [(0, 1), (0, -1), (-1, 0), (1, 0)] if exterior else [(0, -1), (0, 1), (-1, 0), (1, 0)]
@@ -179,6 +182,12 @@ def spawn_for(d, x, y):
         c = cell(d, x + dx, y + dy)
         if c is not None and c["collision"] == 0 and (x + dx, y + dy) not in tiles:
             return x + dx, y + dy
+    # Closed door (League rooms): the cell inside the door opens on arrival.
+    dx, dy = (0, 1) if exterior else (0, -1)
+    inside = cell(d, x + dx, y + dy)
+    if inside is not None:
+        open_cells.setdefault(code_of[d], set()).add((x + dx, y + dy))
+        return x + dx, y + dy
     return x, y
 
 
@@ -270,6 +279,11 @@ warps_out = [
     "export const WORLD_CONNECTIONS: Readonly<",
     "  Record<string, readonly WorldConnection[]>",
     "> = %s;" % js(connections, 1),
+    "",
+    "/** Cells that are closed doors in the layout but open when entered. */",
+    "export const WORLD_OPEN_CELLS: Readonly<",
+    "  Record<string, readonly (readonly [number, number])[]>",
+    "> = %s;" % js({k: sorted(v) for k, v in open_cells.items()}, 1),
     "",
 ]
 (gen / "worldWarps.ts").write_text("\n".join(warps_out), encoding="utf-8")

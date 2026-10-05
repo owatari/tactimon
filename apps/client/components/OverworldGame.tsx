@@ -24,6 +24,7 @@ import {
   isLedgeForDirection,
   isPokemonStoragePcAt,
   isWaterCell,
+  isWorldOpenCell,
   resolveWarpTransitionAt,
   resolveWorldTransition,
   shouldApplyRespawnRequest,
@@ -1606,6 +1607,7 @@ export function OverworldGame({
         (isWaterCell(activeLayout, x, y) &&
           !surfingRef.current) ||
         (cell.collision !== 0 &&
+          !isWorldOpenCell(mapIdRef.current, x, y) &&
           !isVermilionGymBeamWalkable(
             storyRef.current,
             mapIdRef.current,

@@ -11,6 +11,7 @@ import {
 } from "./generated/worldMaps";
 import {
   WORLD_CONNECTIONS,
+  WORLD_OPEN_CELLS,
   WORLD_WARPS,
 } from "./generated/worldWarps";
 export const TILE_SIZE = 16;
@@ -2789,4 +2790,15 @@ function resolveHandWrittenWarpAt(
   }
 
   return null;
+}
+
+/** True for door cells that open when the player arrives (League rooms). */
+export function isWorldOpenCell(
+  mapId: string,
+  x: number,
+  y: number,
+): boolean {
+  return (WORLD_OPEN_CELLS[mapId] ?? []).some(
+    (cell) => cell[0] === x && cell[1] === y,
+  );
 }

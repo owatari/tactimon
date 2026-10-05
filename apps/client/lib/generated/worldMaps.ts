@@ -803,7 +803,7 @@ export const GENERATED_MAP_DEFINITIONS: Record<
     "secondary": "pokemonleague",
     "spawn": {
       "x": 6,
-      "y": 12
+      "y": 11
     }
   },
   "pokemon-league-agathas-room": {
@@ -817,7 +817,7 @@ export const GENERATED_MAP_DEFINITIONS: Record<
     "secondary": "pokemonleague",
     "spawn": {
       "x": 6,
-      "y": 12
+      "y": 11
     }
   },
   "pokemon-league-lances-room": {

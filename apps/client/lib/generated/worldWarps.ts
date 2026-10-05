@@ -755,7 +755,7 @@ export const WORLD_WARPS: Readonly<
  "safari-zone-north:48,33": [
   "safari-zone-east",
   8,
-  11
+  12
  ],
  "safari-zone-north:30,34": [
   "safari-zone-center",
@@ -915,7 +915,7 @@ export const WORLD_WARPS: Readonly<
  "pokemon-league-loreleis-room:6,2": [
   "pokemon-league-brunos-room",
   6,
-  12
+  11
  ],
  "pokemon-league-brunos-room:6,12": [
   "pokemon-league-loreleis-room",
@@ -925,7 +925,7 @@ export const WORLD_WARPS: Readonly<
  "pokemon-league-brunos-room:6,2": [
   "pokemon-league-agathas-room",
   6,
-  12
+  11
  ],
  "pokemon-league-agathas-room:6,12": [
   "pokemon-league-brunos-room",
@@ -2395,7 +2395,7 @@ export const WORLD_WARPS: Readonly<
  "indigo-plateau-pokemon-center-1f:4,1": [
   "pokemon-league-loreleis-room",
   6,
-  12
+  11
  ],
  "saffron-city-copycats-house-1f:3,8": [
   "saffron-city",
@@ -3273,5 +3273,35 @@ export const WORLD_CONNECTIONS: Readonly<
    "offset": 0,
    "target": "route-22"
   }
+ ]
+};
+
+/** Cells that are closed doors in the layout but open when entered. */
+export const WORLD_OPEN_CELLS: Readonly<
+  Record<string, readonly (readonly [number, number])[]>
+> = {
+ "safari-zone-east": [
+  [
+   8,
+   12
+  ]
+ ],
+ "pokemon-league-brunos-room": [
+  [
+   6,
+   11
+  ]
+ ],
+ "pokemon-league-agathas-room": [
+  [
+   6,
+   11
+  ]
+ ],
+ "pokemon-league-loreleis-room": [
+  [
+   6,
+   11
+  ]
  ]
 };
