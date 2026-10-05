@@ -1,4 +1,11 @@
 import {
+  GENERATED_CATCH_RATE,
+  GENERATED_MOVES,
+  GENERATED_SPECIES,
+  type GeneratedMoveId,
+  type GeneratedSpeciesId,
+} from "./generated/kanto";
+import {
   calculateHpStat,
   calculateOtherStat,
 } from "./stats";
@@ -14,7 +21,7 @@ export type StarterSpeciesId =
   | "charmander"
   | "squirtle";
 
-export type WildSpeciesId =
+export type HandWildSpeciesId =
   | "pidgey"
   | "abra"
   | "oddish"
@@ -36,6 +43,9 @@ export type WildSpeciesId =
   | "parasect"
   | "clefairy"
   | "geodude";
+export type WildSpeciesId =
+  | HandWildSpeciesId
+  | GeneratedSpeciesId;
 export type TrainerSpeciesId =
   | "pidgeotto"
   | "bellsprout"
@@ -127,7 +137,7 @@ export type DuelExtraItemId = (typeof DUEL_EXTRA_ITEM_IDS)[number];
 /** Potion and Poké Ball are always tracked; other items are optional. */
 export type DuelInventory = Record<"potion" | "poke-ball", number> &
   Partial<Record<DuelExtraItemId, number>>;
-export type DuelMoveId =
+export type HandDuelMoveId =
   | "tackle"
   | "take-down"
   | "scratch"
@@ -210,6 +220,7 @@ export type DuelMoveId =
   | "pound"
   | "astonish"
   | "struggle";
+export type DuelMoveId = HandDuelMoveId | GeneratedMoveId;
 
 export type DuelMovePp = Partial<Record<DuelMoveId, number>>;
 
@@ -776,7 +787,10 @@ export function calculateTypeEffectiveness(
   return effectiveness;
 }
 
-const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
+const HAND_SPECIES_TABLE: Record<
+  Exclude<DuelSpeciesId, GeneratedSpeciesId>,
+  SpeciesData
+> = {
   bulbasaur: {
     name: "Bulbasaur",
     type: "grass",
@@ -1477,6 +1491,14 @@ const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
   },
 };
 
+const SPECIES: Record<DuelSpeciesId, SpeciesData> = {
+  ...HAND_SPECIES_TABLE,
+  ...(GENERATED_SPECIES as unknown as Record<
+    GeneratedSpeciesId,
+    SpeciesData
+  >),
+};
+
 export const DUEL_ITEMS = {
   potion: {
     id: "potion",
@@ -1543,7 +1565,7 @@ export const DUEL_ITEMS = {
   },
 } satisfies Record<DuelItemId, DuelItem>;
 
-const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
+const HAND_WILD_CATCH_RATE: Record<HandWildSpeciesId, number> = {
   pidgey: 255,
   abra: 200,
   oddish: 255,
@@ -1565,6 +1587,11 @@ const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
   parasect: 75,
   clefairy: 150,
   geodude: 255,
+};
+
+const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
+  ...HAND_WILD_CATCH_RATE,
+  ...GENERATED_CATCH_RATE,
 };
 
 function normalizeDuelItems(
@@ -1593,7 +1620,7 @@ function normalizeDuelItems(
   return items;
 }
 
-export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
+const HAND_DUEL_MOVES: Record<HandDuelMoveId, DuelMove> = {
   tackle: {
     id: "tackle",
     name: "Tackle",
@@ -2967,6 +2994,14 @@ export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
     maxRange: 1,
   },
 
+};
+
+export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
+  ...HAND_DUEL_MOVES,
+  ...(GENERATED_MOVES as unknown as Record<
+    GeneratedMoveId,
+    DuelMove
+  >),
 };
 
 export function normalizeDuelMovePp(

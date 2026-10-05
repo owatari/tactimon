@@ -1,4 +1,13 @@
 import {
+  GENERATED_AUTO_EV_CYCLES,
+  GENERATED_BASE_EXPERIENCE,
+  GENERATED_GROWTH_RATE,
+  GENERATED_INITIAL_MOVES,
+  GENERATED_LEARNSETS,
+  GENERATED_LEVEL_EVOLUTIONS,
+  type GeneratedSpeciesId,
+} from "./generated/kanto";
+import {
   calculateDuelPokemonMaxHp,
   DUEL_MOVES,
   normalizeDuelMajorStatus,
@@ -83,7 +92,7 @@ export interface LearnsetEntry {
   moveId: DuelMoveId;
 }
 
-const LEVEL_EVOLUTIONS: Partial<
+const HAND_LEVEL_EVOLUTIONS: Partial<
   Record<
     DuelSpeciesId,
     { level: number; species: DuelSpeciesId }
@@ -103,6 +112,15 @@ const LEVEL_EVOLUTIONS: Partial<
   weedle: { level: 7, species: "kakuna" },
   abra: { level: 16, species: "kadabra" },
   paras: { level: 24, species: "parasect" },
+};
+
+const LEVEL_EVOLUTIONS: Partial<
+  Record<DuelSpeciesId, { level: number; species: DuelSpeciesId }>
+> = {
+  ...(GENERATED_LEVEL_EVOLUTIONS as Partial<
+    Record<DuelSpeciesId, { level: number; species: DuelSpeciesId }>
+  >),
+  ...HAND_LEVEL_EVOLUTIONS,
 };
 
 function applyEligibleLevelEvolutions(
@@ -129,8 +147,8 @@ function applyEligibleLevelEvolutions(
   }
 }
 
-export const POKEMON_LEARNSETS: Record<
-  DuelSpeciesId,
+const HAND_POKEMON_LEARNSETS: Record<
+  Exclude<DuelSpeciesId, GeneratedSpeciesId>,
   LearnsetEntry[]
 > = {
   bulbasaur: [
@@ -477,6 +495,11 @@ export const POKEMON_LEARNSETS: Record<
   ],
 };
 
+export const POKEMON_LEARNSETS: Record<DuelSpeciesId, LearnsetEntry[]> = {
+  ...HAND_POKEMON_LEARNSETS,
+  ...(GENERATED_LEARNSETS as unknown as Record<GeneratedSpeciesId, LearnsetEntry[]>),
+};
+
 export const STARTER_LEARNSETS: Record<
   StarterSpeciesId,
   LearnsetEntry[]
@@ -495,7 +518,7 @@ const ZERO_EVS: EvSpread = {
   speed: 0,
 };
 
-const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
+const HAND_AUTO_EV_CYCLES: Record<Exclude<DuelSpeciesId, GeneratedSpeciesId>, EvStat[]> = {
   bulbasaur: [
     "hp",
     "specialAttack",
@@ -871,7 +894,12 @@ const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
   charizard: ["specialAttack", "speed", "specialAttack", "speed", "attack", "specialAttack"],
 };
 
-const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
+const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
+  ...HAND_AUTO_EV_CYCLES,
+  ...(GENERATED_AUTO_EV_CYCLES as Record<GeneratedSpeciesId, EvStat[]>),
+};
+
+const HAND_INITIAL_MOVES: Record<Exclude<DuelSpeciesId, GeneratedSpeciesId>, DuelMoveId[]> = {
   bulbasaur: ["tackle", "growl"],
   charmander: ["scratch", "growl"],
   squirtle: ["tackle", "tail-whip"],
@@ -932,13 +960,18 @@ const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
   charizard: ["scratch", "growl", "ember", "metal-claw"],
 };
 
+const INITIAL_MOVES: Record<DuelSpeciesId, DuelMoveId[]> = {
+  ...HAND_INITIAL_MOVES,
+  ...(GENERATED_INITIAL_MOVES as Record<GeneratedSpeciesId, DuelMoveId[]>),
+};
+
 /**
  * FireRed / Generation III base EXP yields.
  * These are the values used by the defeated species in the flat Gen I-IV
  * experience formula.
  */
-export const GEN_III_BASE_EXPERIENCE: Record<
-  DuelSpeciesId,
+const HAND_GEN_III_BASE_EXPERIENCE: Record<
+  Exclude<DuelSpeciesId, GeneratedSpeciesId>,
   number
 > = {
   bulbasaur: 64,
@@ -1001,8 +1034,13 @@ export const GEN_III_BASE_EXPERIENCE: Record<
   charizard: 209,
 };
 
-export const POKEMON_GROWTH_RATE: Record<
-  DuelSpeciesId,
+export const GEN_III_BASE_EXPERIENCE: Record<DuelSpeciesId, number> = {
+  ...HAND_GEN_III_BASE_EXPERIENCE,
+  ...GENERATED_BASE_EXPERIENCE,
+};
+
+const HAND_POKEMON_GROWTH_RATE: Record<
+  Exclude<DuelSpeciesId, GeneratedSpeciesId>,
   GrowthRate
 > = {
   bulbasaur: "medium-slow",
@@ -1063,6 +1101,11 @@ export const POKEMON_GROWTH_RATE: Record<
   blastoise: "medium-slow",
   venusaur: "medium-slow",
   charizard: "medium-slow",
+};
+
+export const POKEMON_GROWTH_RATE: Record<DuelSpeciesId, GrowthRate> = {
+  ...HAND_POKEMON_GROWTH_RATE,
+  ...(GENERATED_GROWTH_RATE as Record<GeneratedSpeciesId, GrowthRate>),
 };
 
 export const STARTER_GROWTH_RATE: Record<
