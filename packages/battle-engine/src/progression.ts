@@ -1571,6 +1571,14 @@ export function evolveWithStone(
   return progression;
 }
 
+/** Raw experience (Day Care steps): levels up, learns moves and evolves as usual. */
+export function grantExperiencePoints(
+  input: PokemonProgression,
+  experience: number,
+): ProgressionReward {
+  return grantExperience(input, experience);
+}
+
 /** Rare Candy: grants exactly the experience needed for the next level. */
 export function grantRareCandy(
   input: PokemonProgression,

@@ -5,11 +5,17 @@ import type {
   DialogueScriptContext,
 } from "./dialogueSystem";
 import {
+  dayCareStatus,
+  depositAtDayCare,
+  withdrawFromDayCare,
+} from "./dayCare";
+import {
   FIELD_TECHNIQUE_BADGE,
   FIELD_TECHNIQUE_BADGE_LABEL,
   canStoryUseStrength,
 } from "./fieldTechniques";
 import { KEY_ITEM_LABELS } from "./keyItems";
+import { speciesDisplayName } from "@tactimon/battle-engine";
 import { getPokedex } from "./pokedex";
 import {
   FUJI_RESCUED_EVENT,
@@ -432,6 +438,139 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       );
     },
   },
+  "daycare-gentleman": {
+    id: "daycare-gentleman",
+    interact: (story) => {
+      const status = dayCareStatus(story);
+      if (status) {
+        return {
+          story,
+          presentation: {
+            id: "daycare-gentleman",
+            pages: [
+              {
+                id: "status",
+                speaker: "Cuidador",
+                text:
+                  status.levelsGained > 0
+                    ? `Seu ${status.name} cresceu ${status.levelsGained} nível(is) e está no Lv. ${status.level}! Para retirá-lo são ₽${status.fee}.`
+                    : `Seu ${status.name} está ótimo, no Lv. ${status.level}. Ele ganha experiência a cada passo que você dá. Retirá-lo custa ₽${status.fee}.`,
+                choices: [
+                  {
+                    id: "withdraw",
+                    label: `Retirar (₽${status.fee})`,
+                    request: { kind: "script", id: "daycare-withdraw" },
+                  },
+                  {
+                    id: "stay",
+                    label: "Deixar mais um pouco",
+                    request: {
+                      kind: "text",
+                      id: "daycare-stay",
+                      speaker: "Cuidador",
+                      text: "Certo! Cuidaremos bem dele. Volte quando quiser.",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      }
+      if (story.capturedPokemon.length === 0) {
+        return reply(
+          story,
+          "daycare-gentleman",
+          "Cuidador: Eu cuido de Pokémon e os treino enquanto você viaja! Venha com um Pokémon da sua equipe (que não seja o primeiro) e eu o deixo mais forte.",
+          "Cuidador",
+        );
+      }
+      return {
+        story,
+        presentation: {
+          id: "daycare-gentleman",
+          pages: [
+            {
+              id: "offer",
+              speaker: "Cuidador",
+              text: "Eu cuido de Pokémon! Ele ganha experiência a cada passo que você dá. Quer deixar algum?",
+              choices: [
+                ...story.capturedPokemon.map((pokemon, index) => ({
+                  id: `deposit-${index}`,
+                  label: `${speciesDisplayName(pokemon.species)} Lv. ${pokemon.level}`,
+                  request: {
+                    kind: "script" as const,
+                    id: "daycare-deposit",
+                    context: { captureIndex: index },
+                  },
+                })),
+                {
+                  id: "decline",
+                  label: "Agora não",
+                  request: {
+                    kind: "text" as const,
+                    id: "daycare-decline",
+                    speaker: "Cuidador",
+                    text: "Tudo bem. Volte quando precisar!",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+    },
+  },
+  "daycare-deposit": {
+    id: "daycare-deposit",
+    interact: (story, context) => {
+      const index = context.captureIndex;
+      const result =
+        typeof index === "number"
+          ? depositAtDayCare(story, index)
+          : null;
+      if (!result?.ok) {
+        return reply(
+          story,
+          "daycare-deposit",
+          result?.reason === "last-healthy"
+            ? "Cuidador: Se eu ficar com ele, você ficará sem Pokémon em condições de lutar!"
+            : "Cuidador: Não consigo ficar com ele agora.",
+          "Cuidador",
+        );
+      }
+      return reply(
+        result.story,
+        "daycare-deposit",
+        `Cuidador: Muito bem, vou cuidar do seu ${result.name}. Ele ganha 1 ponto de experiência a cada passo seu!`,
+        "Cuidador",
+      );
+    },
+  },
+  "daycare-withdraw": {
+    id: "daycare-withdraw",
+    interact: (story) => {
+      const result = withdrawFromDayCare(story);
+      if (!result.ok) {
+        return reply(
+          story,
+          "daycare-withdraw",
+          result.reason === "money"
+            ? `Cuidador: Você não tem dinheiro suficiente! Custa ₽${result.fee}.`
+            : result.reason === "storage-full"
+              ? "Cuidador: Seu PC está cheio! Libere espaço primeiro."
+              : "Cuidador: Não há nenhum Pokémon seu aqui.",
+          "Cuidador",
+        );
+      }
+      return reply(
+        result.story,
+        "daycare-withdraw",
+        `Cuidador: Aqui está o seu ${result.name} (Lv. ${result.level}). Foram ₽${result.fee}. Ele sente sua falta!`,
+        "Cuidador",
+      );
+    },
+  },
   "tower-ghost": {
     id: "tower-ghost",
     interact: (story) =>
@@ -499,6 +638,7 @@ export const QUEST_WORLD_OBJECT_DIALOGUE_IDS: Record<string, string> = {
   "celadon-city-restaurant:1,2": "celadon-coin-case-man",
   "celadon-city-condominiums-1f:2,9": "celadon-tea-woman",
   "fuchsia-city-safari-zone-entrance:7,3": "safari-entrance",
+  "route-5-day-care:4,4": "daycare-gentleman",
   "route-5-south-entrance:1,5": "saffron-guard",
   "route-6-north-entrance:7,5": "saffron-guard",
   "route-7-east-entrance:6,2": "saffron-guard",
