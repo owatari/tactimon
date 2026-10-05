@@ -78,7 +78,7 @@ export function localizeKnownNames(
   for (const { from, to } of swapsFor(locale)) {
     if (out.includes(from)) {
       out = out.replace(
-        new RegExp(`(?<![\\p{L}\\p{N}])${from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}\\p{N}])`, "g"),
+        new RegExp(`(?<![A-Za-z0-9])${from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![A-Za-z0-9])`, "g"),
         to,
       );
     }
