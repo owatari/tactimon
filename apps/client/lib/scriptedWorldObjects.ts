@@ -590,12 +590,15 @@ const STATIC_ENCOUNTER_OBJECTS:
         staticId: encounter.id,
       },
     },
-    wildBattle: {
-      staticId: encounter.id,
-      species: encounter.species,
-      level: encounter.level,
-      requiresKeyItem: encounter.requiresKeyItem,
-    },
+    // Legendary/mythical Pokémon are future MMO raids: no solo battle.
+    wildBattle: encounter.raid
+      ? undefined
+      : {
+          staticId: encounter.id,
+          species: encounter.species,
+          level: encounter.level,
+          requiresKeyItem: encounter.requiresKeyItem,
+        },
   }));
 
 const CENTER_NURSES:

@@ -354,7 +354,7 @@ describe("Cerulean Cave and Mewtwo", () => {
       (entry) => entry.id === mewtwo?.id,
     );
     expect(object?.sheetWidth).toBe(96);
-    expect(object?.wildBattle?.species).toBe("mewtwo");
+    expect(object?.wildBattle).toBeUndefined();
   });
 });
 
@@ -445,5 +445,29 @@ describe("Rocket Hideout elevator", () => {
       kind: "warp",
       mapId: "rocket-hideout-b-4f",
     });
+  });
+});
+
+describe("legendary raids", () => {
+  it("never start a solo battle; they announce the future MMO raid", () => {
+    const raids = STATIC_WORLD_ENCOUNTERS.filter((entry) => entry.raid);
+    expect(raids.map((entry) => entry.species).sort()).toEqual([
+      "articuno",
+      "mewtwo",
+      "zapdos",
+    ]);
+    for (const raid of raids) {
+      const object = resolveScriptedWorldObjects(raid.mapId).find(
+        (entry) => entry.id === raid.id,
+      );
+      expect(object?.wildBattle).toBeUndefined();
+      const text = talk(started(), "static-pokemon", { staticId: raid.id })
+        .presentation.pages[0].text;
+      expect(text).toContain("Raid");
+    }
+    // Snorlax stays a normal battle.
+    expect(
+      STATIC_WORLD_ENCOUNTERS.find((entry) => entry.species === "snorlax")?.raid,
+    ).toBe(false);
   });
 });

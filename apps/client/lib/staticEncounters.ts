@@ -23,13 +23,15 @@ export type StaticWorldEncounter = {
   sheetHeight: number;
   /** Key item the player must own before the Pokémon can be engaged. */
   requiresKeyItem?: string;
+  /** Legendary/mythical: a future MMO raid boss, never a solo battle. */
+  raid: boolean;
 };
 
 const STATIC_META: Record<
   string,
   Pick<
     StaticWorldEncounter,
-    "species" | "level" | "label" | "spriteUrl" | "sheetWidth" | "sheetHeight" | "requiresKeyItem"
+    "species" | "level" | "label" | "spriteUrl" | "sheetWidth" | "sheetHeight" | "requiresKeyItem" | "raid"
   >
 > = {
   snorlax: {
@@ -40,6 +42,7 @@ const STATIC_META: Record<
     sheetWidth: 192,
     sheetHeight: 64,
     requiresKeyItem: "poke-flute",
+    raid: false,
   },
   zapdos: {
     species: "zapdos",
@@ -48,6 +51,7 @@ const STATIC_META: Record<
     spriteUrl: "/game-assets/overworld/136_zapdos.png",
     sheetWidth: 192,
     sheetHeight: 64,
+    raid: true,
   },
   articuno: {
     species: "articuno",
@@ -56,6 +60,7 @@ const STATIC_META: Record<
     spriteUrl: "/game-assets/overworld/138_articuno.png",
     sheetWidth: 192,
     sheetHeight: 64,
+    raid: true,
   },
   moltres: {
     species: "moltres",
@@ -64,6 +69,7 @@ const STATIC_META: Record<
     spriteUrl: "/game-assets/overworld/137_moltres.png",
     sheetWidth: 192,
     sheetHeight: 64,
+    raid: true,
   },
   mewtwo: {
     species: "mewtwo",
@@ -72,6 +78,7 @@ const STATIC_META: Record<
     spriteUrl: "/game-assets/overworld/139_mewtwo.png",
     sheetWidth: 96,
     sheetHeight: 32,
+    raid: true,
   },
 };
 

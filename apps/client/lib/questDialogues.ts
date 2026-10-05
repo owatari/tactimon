@@ -70,6 +70,7 @@ import {
   SAFARI_STEPS,
   startSafari,
 } from "./safari";
+import { t } from "./i18n";
 import { getStaticEncounter } from "./staticEncounters";
 import {
   completeStoryPlayerEvent,
@@ -723,7 +724,12 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       return reply(
         story,
         `static:${staticId}`,
-        `${encounter.label.toUpperCase()}: Gyaaah!`,
+        encounter.raid
+          ? t(
+              "{name} is a legendary Pokémon. Raid battles are a future feature: wait for the MMO!",
+              { name: encounter.label },
+            )
+          : `${encounter.label.toUpperCase()}: Gyaaah!`,
       );
     },
   },

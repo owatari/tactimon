@@ -1,6 +1,12 @@
 import type { Catalog } from "../index";
 
 export const optionsCatalog: Catalog = {
+  "{name} is a legendary Pokémon. Raid battles are a future feature: wait for the MMO!": {
+    pt: "{name} é um Pokémon lendário. As batalhas de raid são um recurso futuro: aguarde o MMO!",
+    es: "{name} es un Pokémon legendario. Las incursiones son una función futura: ¡espera al MMO!",
+    fr: "{name} est un Pokémon légendaire. Les raids arriveront plus tard : attends le MMO !",
+    zh: "{name}是传说宝可梦。团队突袭是未来的功能，请等待MMO上线！",
+  },
   "MUSIC VOLUME": {
     pt: "VOLUME DA MÚSICA",
     es: "VOLUMEN DE MÚSICA",
