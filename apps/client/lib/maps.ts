@@ -4,6 +4,7 @@ import {
   findHealLocation,
 } from "./healLocations";
 import type { StoryHealLocationId } from "./story";
+import { QUEST_OPEN_CELLS } from "./questGates";
 import {
   GENERATED_MAP_DEFINITIONS,
   GENERATED_MAP_SIZES,
@@ -2798,7 +2799,12 @@ export function isWorldOpenCell(
   x: number,
   y: number,
 ): boolean {
-  return (WORLD_OPEN_CELLS[mapId] ?? []).some(
-    (cell) => cell[0] === x && cell[1] === y,
+  return (
+    (WORLD_OPEN_CELLS[mapId] ?? []).some(
+      (cell) => cell[0] === x && cell[1] === y,
+    ) ||
+    (QUEST_OPEN_CELLS[mapId] ?? []).some(
+      (cell) => cell[0] === x && cell[1] === y,
+    )
   );
 }

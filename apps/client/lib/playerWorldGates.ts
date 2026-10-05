@@ -1,4 +1,6 @@
 import { GENERATED_TILE_GATES } from "./generated/worldGates";
+import { QUEST_TILE_GATES } from "./questGates";
+import type { WildBattleSpec } from "./staticEncounters";
 import type {
   DialogueInteractionRequest,
 } from "./dialogueSystem";
@@ -29,6 +31,8 @@ export type PlayerWorldTileGate = PlayerWorldGateBase & {
   y?: number;
   xRange?: readonly [number, number];
   yRange?: readonly [number, number];
+  /** Shown after the blocked dialogue: starts this wild battle when allowed. */
+  wildBattle?: WildBattleSpec;
 };
 
 const EDGE_GATES: readonly PlayerWorldEdgeGate[] = [
@@ -269,6 +273,7 @@ const HAND_TILE_GATES: readonly PlayerWorldTileGate[] = [
 
 const TILE_GATES: readonly PlayerWorldTileGate[] = [
   ...HAND_TILE_GATES,
+  ...QUEST_TILE_GATES,
   ...GENERATED_TILE_GATES,
 ];
 

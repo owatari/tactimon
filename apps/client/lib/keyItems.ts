@@ -1,0 +1,38 @@
+/** Display names and descriptions for story key items (Bag → KEY ITEMS). */
+export const KEY_ITEM_LABELS: Record<string, string> = {
+  "ss-ticket": "S.S. Ticket",
+  "town-map": "Town Map",
+  "old-amber": "Old Amber",
+  "bike-voucher": "Bike Voucher",
+  bicycle: "Bicycle",
+  tea: "Tea",
+  "silph-scope": "Silph Scope",
+  "poke-flute": "Poké Flute",
+  "card-key": "Card Key",
+  "lift-key": "Lift Key",
+  "secret-key": "Secret Key",
+  "gold-teeth": "Gold Teeth",
+  "coin-case": "Coin Case",
+  "old-rod": "Old Rod",
+  "good-rod": "Good Rod",
+  "super-rod": "Super Rod",
+};
+
+export const KEY_ITEM_DESCRIPTIONS: Record<string, string> = {
+  "ss-ticket": "Passagem para embarcar no S.S. Anne em Vermilion City.",
+  "town-map": "Mapa de Kanto dado pela Daisy.",
+  "old-amber": "Âmbar antigo que contém DNA de um Pokémon pré-histórico.",
+  "bike-voucher": "Troque na Cerulean Bike Shop por uma Bicicleta.",
+  bicycle: "Bicicleta: com ela você corre ainda mais rápido (R alterna).",
+  tea: "Chá gelado que o guarda de Saffron aceita no lugar de uma passagem.",
+  "silph-scope": "Lente que revela fantasmas na Pokémon Tower.",
+  "poke-flute": "Flauta que acorda Pokémon dormindo, como Snorlax.",
+  "card-key": "Cartão que abre as portas travadas da Silph Co.",
+  "lift-key": "Chave do elevador do esconderijo da Equipe Rocket.",
+  "secret-key": "Chave da porta do Gym de Cinnabar Island.",
+  "gold-teeth": "Dentadura de ouro perdida pelo Warden da Safari Zone.",
+  "coin-case": "Estojo para guardar até 9.999 moedas do Game Corner.",
+  "old-rod": "Vara de pesca simples: fisga Pokémon fracos.",
+  "good-rod": "Vara de pesca melhor que a Old Rod.",
+  "super-rod": "A melhor vara de pesca: atrai Pokémon raros.",
+};

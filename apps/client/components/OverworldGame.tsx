@@ -45,6 +45,7 @@ import {
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
   type StoryBadgeId,
+  type StoryKeyItemId,
   type StoryState,
 } from "@/lib/story";
 import {
@@ -76,6 +77,14 @@ import {
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import { repelBlocksEncounter } from "@/lib/itemUse";
+import { canStoryUseStrength } from "@/lib/fieldTechniques";
+import {
+  resetBoulders,
+  resolveBoulderPosition,
+  resolveBoulderPush,
+  setBoulderPosition,
+} from "@/lib/boulders";
+import type { WildBattleSpec } from "@/lib/staticEncounters";
 import { GENERATED_MARTS } from "@/lib/generated/worldServices";
 import {
   resolveScriptedWorldObjects,
@@ -85,6 +94,7 @@ import {
 } from "@/lib/overworldDialogues";
 import {
   LAND_ENCOUNTERS,
+  equivalentWildPartyStrength,
   resolveScaledWildEncounter,
   type WildEncounter,
 } from "@/lib/wildEncounters";
@@ -155,6 +165,8 @@ type Props = {
       members: readonly WildEncounter[];
       areaLevel: number;
       equivalentPartyStrength: number;
+      /** Set for one-off battles (Snorlax, ghost, birds): won → event done. */
+      staticId?: string;
     },
   ) => void;
   onTrainerBattleTrigger: (
@@ -242,6 +254,8 @@ type MartClerkStoryObject = StoryObjectBase & {
 type DialogueStoryObject = StoryObjectBase & {
   kind: "dialogue";
   request: DialogueInteractionRequest;
+  wildBattle?: WildBattleSpec;
+  pushable?: boolean;
 };
 
 type StoryObject =
@@ -637,7 +651,14 @@ function mapStoryObjects(
 
   objects.push(
     ...mapDialogueStoryObjects(mapId),
-    ...scriptedStoryObjects(mapId),
+    ...scriptedStoryObjects(mapId).map((object) =>
+      object.pushable
+        ? {
+            ...object,
+            ...resolveBoulderPosition(story, object.id, object),
+          }
+        : object,
+    ),
   );
 
   for (const playerTrainer of resolvePlayerOverworldTrainers(
@@ -696,6 +717,7 @@ export function OverworldGame({
   const storyObjectsRef = useRef<StoryObject[]>([]);
   const mapIdRef = useRef("pallet-town");
   const storyRef = useRef(story);
+  const onStoryUpdateRef = useRef(onStoryUpdate);
   const pausedRef = useRef(paused);
   const pendingWarpRef = useRef<WorldTransition | null>(null);
   const battleTriggerRef = useRef(false);
@@ -741,6 +763,10 @@ export function OverworldGame({
     layout,
     visibleObjects,
   );
+
+  useEffect(() => {
+    onStoryUpdateRef.current = onStoryUpdate;
+  }, [onStoryUpdate]);
 
   useEffect(() => {
     storyRef.current = story;
@@ -1123,6 +1149,50 @@ export function OverworldGame({
     ],
   );
 
+  const startStaticBattle = useCallback(
+    (spec: WildBattleSpec) => {
+      const currentStory = storyRef.current;
+      if (
+        !currentStory.firstBattleComplete ||
+        !storyHasHealthyPokemon(currentStory) ||
+        wildBattleLockRef.current
+      ) {
+        return;
+      }
+
+      const context = createBattleContext();
+      if (!context) return;
+
+      const partyLevels = [
+        currentStory.playerPokemon,
+        ...currentStory.capturedPokemon,
+      ]
+        .slice(0, 6)
+        .filter(
+          (pokemon): pokemon is NonNullable<typeof pokemon> =>
+            pokemon !== null && pokemon.currentHp > 0,
+        )
+        .map((pokemon) => pokemon.level);
+
+      wildBattleLockRef.current = true;
+      resetInput();
+      onWildBattleTrigger(context, {
+        species: spec.species as WildSpeciesId,
+        level: spec.level,
+        members: [
+          { species: spec.species as WildSpeciesId, level: spec.level },
+        ],
+        areaLevel: spec.level,
+        equivalentPartyStrength: equivalentWildPartyStrength(
+          spec.level,
+          partyLevels,
+        ),
+        staticId: spec.staticId,
+      });
+    },
+    [createBattleContext, onWildBattleTrigger, resetInput],
+  );
+
   const interact = useCallback(() => {
     if (pausedRef.current) {
       return;
@@ -1259,8 +1329,19 @@ export function OverworldGame({
       }
 
       if (storyObject.kind === "dialogue") {
+        const wild = storyObject.wildBattle;
+        const engages =
+          wild !== undefined &&
+          (!wild.requiresKeyItem ||
+            hasStoryKeyItem(
+              storyRef.current,
+              wild.requiresKeyItem as StoryKeyItemId,
+            ));
         showDialogue(
           onDialogueInteraction(storyObject.request),
+          engages && wild
+            ? () => startStaticBattle(wild)
+            : undefined,
         );
         return;
       }
@@ -1325,6 +1406,7 @@ export function OverworldGame({
     onRequestStarterChoice,
     showDialogue,
     showInteraction,
+    startStaticBattle,
     triggerTrainerBattle,
   ]);
 
@@ -1376,6 +1458,22 @@ export function OverworldGame({
         worldObjectsRef.current =
           renderableObjects(nextWorldData, nextMapId);
         worldDataRef.current = nextWorldData;
+        const boulderIds = resolveScriptedWorldObjects(nextMapId)
+          .filter((object) => object.pushable)
+          .map((object) => object.id);
+        if (boulderIds.length > 0) {
+          // Pushed boulders go back to their home tiles on every map load.
+          const resetStory = resetBoulders(
+            storyRef.current,
+            boulderIds,
+          );
+          if (resetStory !== storyRef.current) {
+            storyRef.current = resetStory;
+            onStoryUpdateRef.current((current) =>
+              resetBoulders(current, boulderIds),
+            );
+          }
+        }
         storyObjectsRef.current = mapStoryObjects(
           nextMapId,
           storyRef.current,
@@ -1696,10 +1794,21 @@ export function OverworldGame({
           nextY,
         );
       if (blockedTileGate) {
+        const gateWild = blockedTileGate.wildBattle;
+        const gateEngages =
+          gateWild !== undefined &&
+          (!gateWild.requiresKeyItem ||
+            hasStoryKeyItem(
+              storyRef.current,
+              gateWild.requiresKeyItem as StoryKeyItemId,
+            ));
         showDialogue(
           onDialogueInteraction(
             blockedTileGate.blockedRequest,
           ),
+          gateEngages && gateWild
+            ? () => startStaticBattle(gateWild)
+            : undefined,
         );
         player.blockedUntil = now + 500;
         return false;
@@ -1754,6 +1863,38 @@ export function OverworldGame({
         // A directional ledge approached from the wrong side remains blocked.
         player.blockedUntil = now + BLOCKED_RETRY_MS;
         return false;
+      }
+
+      const boulder = storyObjectsRef.current.find(
+        (
+          object,
+        ): object is DialogueStoryObject =>
+          object.kind === "dialogue" &&
+          object.pushable === true &&
+          object.x === nextX &&
+          object.y === nextY,
+      );
+      if (boulder && canStoryUseStrength(storyRef.current)) {
+        const pushedTo = resolveBoulderPush(
+          boulder,
+          delta,
+          (x, y) =>
+            canWalk(activeLayout, x, y) &&
+            !isWaterCell(activeLayout, x, y) &&
+            !resolveWarpTransitionAt(mapIdRef.current, x, y),
+        );
+        if (pushedTo) {
+          boulder.x = pushedTo.x;
+          boulder.y = pushedTo.y;
+          storyRef.current = setBoulderPosition(
+            storyRef.current,
+            boulder.id,
+            pushedTo,
+          );
+          onStoryUpdate((current) =>
+            setBoulderPosition(current, boulder.id, pushedTo),
+          );
+        }
       }
 
       const warp = resolveWarpTransitionAt(
@@ -2368,8 +2509,10 @@ export function OverworldGame({
     onFirstBattleTrigger,
     onTrainerBattleTrigger,
     onWildBattleTrigger,
+    onStoryUpdate,
     resetInput,
     showInteraction,
+    startStaticBattle,
     triggerTrainerBattle,
   ]);
 
@@ -2454,7 +2597,9 @@ export function OverworldGame({
                 className="world-object story-object"
                 title={object.label}
                 style={{
-                  left: object.x * TILE_SIZE,
+                  left:
+                    object.x * TILE_SIZE -
+                    (object.frameWidth - TILE_SIZE) / 2,
                   top:
                     object.y * TILE_SIZE +
                     TILE_SIZE -

@@ -94,6 +94,8 @@ export type BattleEncounter =
       }[];
       areaLevel?: number;
       equivalentPartyStrength?: number;
+      /** One-off overworld battle (Snorlax, ghost, legendary bird). */
+      staticId?: string;
     };
 
 type Props = {

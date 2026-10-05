@@ -1,7 +1,20 @@
 import type {
   DialogueInteractionRequest,
 } from "./dialogueSystem";
+import {
+  CUT_TREES as GENERATED_CUT_TREES,
+  KEY_ITEM_BALLS as GENERATED_KEY_ITEM_BALLS,
+  STRENGTH_BOULDERS as GENERATED_BOULDERS,
+} from "./generated/worldObstacles";
+import {
+  FUJI_RESCUED_EVENT,
+  staticEncounterEventId,
+} from "./questEvents";
 import { GENERATED_NURSES } from "./generated/worldServices";
+import {
+  STATIC_WORLD_ENCOUNTERS,
+  type WildBattleSpec,
+} from "./staticEncounters";
 import { POKEMON_CENTER_MAP_IDS } from "./healLocations";
 import {
   OVERWORLD_PICKUPS,
@@ -28,6 +41,10 @@ export type ScriptedWorldObjectDefinition = {
   renderSprite?: boolean;
   visibleWhen?: PlayerWorldCondition;
   request: DialogueInteractionRequest;
+  /** Interacting (after the dialogue) starts a one-off wild battle. */
+  wildBattle?: WildBattleSpec;
+  /** Strength boulder: can be pushed by walking into it. */
+  pushable?: boolean;
 };
 
 const MT_MOON_FOSSIL_VISIBLE: PlayerWorldCondition = {
@@ -170,7 +187,7 @@ const STATIC_SCRIPTED_WORLD_OBJECTS:
       spriteUrl: "/game-assets/overworld/095_cut_tree.png",
       frameWidth: 16,
       frameHeight: 16,
-      sheetWidth: 16,
+      sheetWidth: 64,
       sheetHeight: 16,
       visibleWhen: {
         kind: "event",
@@ -202,9 +219,35 @@ const CUT_TREE_LOCATIONS = [
   { id: "route-25-cut-tree", mapId: "route-25", x: 30, y: 3 },
 ] as const;
 
+const HAND_CUT_TREE_IDS = new Set<string>(
+  CUT_TREE_LOCATIONS.map(
+    (tree) => `${tree.mapId}:${tree.x},${tree.y}`,
+  ),
+);
+// Vermilion's tree is a scripted object of its own (see above).
+HAND_CUT_TREE_IDS.add("vermilion-city:19,24");
+
+const ALL_CUT_TREE_LOCATIONS: readonly {
+  id: string;
+  mapId: string;
+  x: number;
+  y: number;
+}[] = [
+  ...CUT_TREE_LOCATIONS,
+  ...GENERATED_CUT_TREES.filter(
+    (tree) =>
+      !HAND_CUT_TREE_IDS.has(`${tree.mapId}:${tree.x},${tree.y}`),
+  ).map((tree) => ({
+    id: `${tree.mapId}-cut-tree-${tree.x}-${tree.y}`,
+    mapId: tree.mapId,
+    x: tree.x,
+    y: tree.y,
+  })),
+];
+
 const CUT_TREE_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] =
-  CUT_TREE_LOCATIONS.map((tree) => ({
+  ALL_CUT_TREE_LOCATIONS.map((tree) => ({
     id: tree.id,
     mapId: tree.mapId,
     label: "Cut Tree",
@@ -213,7 +256,7 @@ const CUT_TREE_OBJECTS:
     spriteUrl: "/game-assets/overworld/095_cut_tree.png",
     frameWidth: 16,
     frameHeight: 16,
-    sheetWidth: 16,
+    sheetWidth: 64,
     sheetHeight: 16,
     visibleWhen: {
       kind: "event" as const,
@@ -230,6 +273,202 @@ const CUT_TREE_OBJECTS:
     },
   }));
 
+export function strengthBoulderId(
+  mapId: string,
+  x: number,
+  y: number,
+): string {
+  return `${mapId}-boulder-${x}-${y}`;
+}
+
+const BOULDER_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  GENERATED_BOULDERS.map((boulder) => ({
+    id: strengthBoulderId(boulder.mapId, boulder.x, boulder.y),
+    mapId: boulder.mapId,
+    label: "Boulder",
+    x: boulder.x,
+    y: boulder.y,
+    spriteUrl: "/game-assets/overworld/097_pushable_boulder.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    pushable: true,
+    request: {
+      kind: "script" as const,
+      id: "strength-boulder",
+    },
+  }));
+
+const KEY_ITEM_BALL_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  GENERATED_KEY_ITEM_BALLS.map((ball) => ({
+    id: `${ball.mapId}-key-${ball.keyItem}`,
+    mapId: ball.mapId,
+    label: "Item Ball",
+    x: ball.x,
+    y: ball.y,
+    spriteUrl: "/game-assets/overworld/092_item_ball.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    visibleWhen: {
+      kind: "event" as const,
+      namespace: "key-item" as const,
+      id: ball.keyItem,
+      completed: false,
+    },
+    request: {
+      kind: "script" as const,
+      id: "key-item-ball",
+      context: {
+        keyItemId: ball.keyItem,
+      },
+    },
+  }));
+
+function npcObject(
+  id: string,
+  mapId: string,
+  label: string,
+  x: number,
+  y: number,
+  spriteFile: string,
+  scriptId: string,
+  visibleWhen: PlayerWorldCondition,
+): ScriptedWorldObjectDefinition {
+  return {
+    id,
+    mapId,
+    label,
+    x,
+    y,
+    spriteUrl: `/game-assets/overworld/${spriteFile}`,
+    frameWidth: 16,
+    frameHeight: 32,
+    sheetWidth: 96,
+    sheetHeight: 64,
+    visibleWhen,
+    request: { kind: "script", id: scriptId },
+  };
+}
+
+function keyBallAfterTrainer(
+  mapId: string,
+  x: number,
+  y: number,
+  keyItem: string,
+  trainerId: string,
+): ScriptedWorldObjectDefinition {
+  return {
+    id: `${mapId}-key-${keyItem}`,
+    mapId,
+    label: "Item Ball",
+    x,
+    y,
+    spriteUrl: "/game-assets/overworld/092_item_ball.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    visibleWhen: {
+      kind: "all",
+      conditions: [
+        { kind: "event", namespace: "trainer", id: trainerId },
+        {
+          kind: "event",
+          namespace: "key-item",
+          id: keyItem,
+          completed: false,
+        },
+      ],
+    },
+    request: {
+      kind: "script",
+      id: "key-item-ball",
+      context: { keyItemId: keyItem },
+    },
+  };
+}
+
+const QUEST_NPC_OBJECTS: readonly ScriptedWorldObjectDefinition[] = [
+  npcObject(
+    "tower-fuji",
+    "pokemon-tower-7f",
+    "Mr. Fuji",
+    11,
+    4,
+    "078_mr_fuji.png",
+    "tower-fuji-rescue",
+    {
+      kind: "event",
+      namespace: "story",
+      id: FUJI_RESCUED_EVENT,
+      completed: false,
+    },
+  ),
+  npcObject(
+    "lavender-fuji-house",
+    "lavender-town-volunteer-pokemon-house",
+    "Mr. Fuji",
+    3,
+    3,
+    "078_mr_fuji.png",
+    "lavender-fuji-house",
+    { kind: "event", namespace: "story", id: FUJI_RESCUED_EVENT },
+  ),
+  // The Rocket Hideout B4F grunt/Giovanni drop the Lift Key / Silph Scope.
+  keyBallAfterTrainer(
+    "rocket-hideout-b-4f",
+    3,
+    2,
+    "lift-key",
+    "rocket-hideout-b-4f-grunt",
+  ),
+  keyBallAfterTrainer(
+    "rocket-hideout-b-4f",
+    20,
+    5,
+    "silph-scope",
+    "rocket-hideout-b-4f-giovanni",
+  ),
+];
+
+const STATIC_ENCOUNTER_OBJECTS:
+  readonly ScriptedWorldObjectDefinition[] =
+  STATIC_WORLD_ENCOUNTERS.map((encounter) => ({
+    id: encounter.id,
+    mapId: encounter.mapId,
+    label: encounter.label,
+    x: encounter.x,
+    y: encounter.y,
+    spriteUrl: encounter.spriteUrl,
+    frameWidth: 32,
+    frameHeight: 32,
+    sheetWidth: 192,
+    sheetHeight: 64,
+    visibleWhen: {
+      kind: "event" as const,
+      namespace: "story" as const,
+      id: staticEncounterEventId(encounter.id),
+      completed: false,
+    },
+    request: {
+      kind: "script" as const,
+      id: "static-pokemon",
+      context: {
+        staticId: encounter.id,
+      },
+    },
+    wildBattle: {
+      staticId: encounter.id,
+      species: encounter.species,
+      level: encounter.level,
+      requiresKeyItem: encounter.requiresKeyItem,
+    },
+  }));
 
 const CENTER_NURSES:
   readonly ScriptedWorldObjectDefinition[] =
@@ -311,6 +550,10 @@ export const SCRIPTED_WORLD_OBJECTS:
   readonly ScriptedWorldObjectDefinition[] = [
     ...STATIC_SCRIPTED_WORLD_OBJECTS,
     ...CUT_TREE_OBJECTS,
+    ...BOULDER_OBJECTS,
+    ...KEY_ITEM_BALL_OBJECTS,
+    ...QUEST_NPC_OBJECTS,
+    ...STATIC_ENCOUNTER_OBJECTS,
     ...CENTER_NURSES,
     ...PICKUP_OBJECTS,
     ...VERMILION_GYM_TRASH_OBJECTS,

@@ -67,6 +67,7 @@ import {
   applyBattleInventory,
   toBattleInventory,
 } from "@/lib/itemUse";
+import { staticEncounterEventId } from "@/lib/questEvents";
 import {
   ROUTE24_NUGGET_REWARD_ID,
   ROUTE24_ROCKET_TRAINER_ID,
@@ -75,6 +76,7 @@ import {
   applyStoryWhiteOut,
   chooseStarter,
   collectStoryValuable,
+  completeStoryPlayerEvent,
   completeTutorialRivalBattle,
   DEFAULT_STORY_STATE,
   depositCapturedPokemon,
@@ -558,6 +560,20 @@ export function GameClient() {
       ),
     );
 
+    const staticId =
+      session.encounter.kind === "wild"
+        ? session.encounter.staticId
+        : undefined;
+    if (staticId && (outcome.won || outcome.capture?.success)) {
+      setStory((current) =>
+        completeStoryPlayerEvent(
+          current,
+          "story",
+          staticEncounterEventId(staticId),
+        ),
+      );
+    }
+
     const fullPartySnapshot = story.playerPokemon
       ? [
           story.playerPokemon,
@@ -1015,6 +1031,7 @@ export function GameClient() {
                 areaLevel: encounter.areaLevel,
                 equivalentPartyStrength:
                   encounter.equivalentPartyStrength,
+                staticId: encounter.staticId,
               },
             });
           }

@@ -12,6 +12,10 @@ import {
 } from "./items";
 import { isFieldUsableItem } from "./itemUse";
 import { getPokedex } from "./pokedex";
+import {
+  KEY_ITEM_DESCRIPTIONS,
+  KEY_ITEM_LABELS,
+} from "./keyItems";
 import type {
   StoryBadgeId,
   StoryState,
@@ -148,22 +152,6 @@ const BALL_IDS: ReadonlySet<OverworldItemId> = new Set([
   "poke-ball",
   "great-ball",
 ]);
-
-const KEY_ITEM_LABELS: Record<string, string> = {
-  "ss-ticket": "S.S. Ticket",
-  "town-map": "Town Map",
-  "old-amber": "Old Amber",
-  "bike-voucher": "Bike Voucher",
-  bicycle: "Bicycle",
-};
-
-const KEY_ITEM_DESCRIPTIONS: Record<string, string> = {
-  "ss-ticket": "Passagem para embarcar no S.S. Anne em Vermilion City.",
-  "town-map": "Mapa de Kanto dado pela Daisy.",
-  "old-amber": "Âmbar antigo que contém DNA de um Pokémon pré-histórico.",
-  "bike-voucher": "Troque na Cerulean Bike Shop por uma Bicicleta.",
-  bicycle: "Bicicleta: com ela você corre ainda mais rápido (R alterna).",
-};
 
 function itemEntry(
   id: OverworldItemId,

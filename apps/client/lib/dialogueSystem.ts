@@ -5,6 +5,10 @@ import {
   resolveWorldNpcPages,
 } from "./worldTexts";
 import {
+  QUEST_DIALOGUES,
+  QUEST_WORLD_OBJECT_DIALOGUE_IDS,
+} from "./questDialogues";
+import {
   MAGIKARP_PRICE,
   fossilToRevive,
   giftMessage,
@@ -195,6 +199,7 @@ const DIALOGUE_DEFINITIONS: Record<
   string,
   DialogueDefinition
 > = {
+  ...QUEST_DIALOGUES,
   "lab-oak": {
     id: "lab-oak",
     variants: [
@@ -880,6 +885,7 @@ const WORLD_OBJECT_DIALOGUE_IDS: Record<
   string,
   string
 > = {
+  ...QUEST_WORLD_OBJECT_DIALOGUE_IDS,
   "pallet-town:3,10": "pallet-woman",
   "pallet-players-house-1f:8,4": "pallet-mom",
   "safari-zone-secret-house:6,5": "safari-secret-house-surf",

@@ -69,19 +69,66 @@ export type StoryKeyItemId =
   | "town-map"
   | "old-amber"
   | "bike-voucher"
-  | "bicycle";
+  | "bicycle"
+  | "tea"
+  | "silph-scope"
+  | "poke-flute"
+  | "card-key"
+  | "lift-key"
+  | "secret-key"
+  | "gold-teeth"
+  | "coin-case"
+  | "old-rod"
+  | "good-rod"
+  | "super-rod";
 export const STORY_KEY_ITEM_IDS: readonly StoryKeyItemId[] = [
   "ss-ticket",
   "town-map",
   "old-amber",
   "bike-voucher",
   "bicycle",
+  "tea",
+  "silph-scope",
+  "poke-flute",
+  "card-key",
+  "lift-key",
+  "secret-key",
+  "gold-teeth",
+  "coin-case",
+  "old-rod",
+  "good-rod",
+  "super-rod",
 ];
-export type StoryFieldTechniqueId = "cut" | "surf";
+export const STORY_FIELD_TECHNIQUE_IDS = [
+  "cut",
+  "surf",
+  "strength",
+  "flash",
+  "fly",
+] as const;
+export type StoryFieldTechniqueId =
+  (typeof STORY_FIELD_TECHNIQUE_IDS)[number];
 export type BillStoryStage =
   | "unmet"
   | "teleporter-ready"
   | "helped";
+
+/** Safari Zone game in progress (FireRed: 30 Safari Balls, 500 steps). */
+export type SafariSession = {
+  steps: number;
+  balls: number;
+  /** Regular Poké Balls set aside while the player holds Safari Balls. */
+  savedBalls: number;
+};
+
+/** Pokémon left at the Route 5 Day Care (gains 1 XP per step walked). */
+export type DayCareState = {
+  pokemon: CapturedPokemon;
+  startLevel: number;
+  steps: number;
+};
+
+export const MAX_GAME_CORNER_COINS = 9999;
 
 export type StoryState = {
   starter: StarterSpeciesId | null;
@@ -100,6 +147,10 @@ export type StoryState = {
   valuables?: StoryValuables;
   /** Overworld finds the battle engine cannot use yet (see `lib/items.ts`). */
   bagItems?: BagItems;
+  /** Game Corner coins (needs the Coin Case). */
+  coins?: number;
+  safari?: SafariSession | null;
+  dayCare?: DayCareState | null;
   /** Seconds played, shown on the Trainer Card. */
   playTimeSeconds?: number;
   /** Remaining Repel steps (FireRed: 100 per item). */
@@ -366,7 +417,9 @@ function normalizeFieldTechniqueIds(
     new Set(
       value.filter(
         (technique): technique is StoryFieldTechniqueId =>
-          technique === "cut" || technique === "surf",
+          STORY_FIELD_TECHNIQUE_IDS.includes(
+            technique as StoryFieldTechniqueId,
+          ),
       ),
     ),
   );
@@ -586,7 +639,49 @@ export function normalizeStoryState(
             ),
           )
         : 0,
+    coins: normalizeCoins(input?.coins),
+    safari: normalizeSafari(input?.safari),
+    dayCare: normalizeDayCare(input?.dayCare),
     playerWorld,
+  };
+}
+
+function normalizeCoins(value: unknown): number {
+  return typeof value === "number" && Number.isFinite(value)
+    ? Math.max(0, Math.min(MAX_GAME_CORNER_COINS, Math.trunc(value)))
+    : 0;
+}
+
+function normalizeSafari(value: unknown): SafariSession | null {
+  if (!value || typeof value !== "object") return null;
+  const raw = value as Partial<SafariSession>;
+  const clamp = (entry: unknown, max: number) =>
+    typeof entry === "number" && Number.isFinite(entry)
+      ? Math.max(0, Math.min(max, Math.trunc(entry)))
+      : 0;
+  return {
+    steps: clamp(raw.steps, 500),
+    balls: clamp(raw.balls, 30),
+    savedBalls: clamp(raw.savedBalls, 999),
+  };
+}
+
+function normalizeDayCare(value: unknown): DayCareState | null {
+  if (!value || typeof value !== "object") return null;
+  const raw = value as Partial<DayCareState>;
+  const pokemon = normalizeCapturedPokemon(raw.pokemon);
+  if (!pokemon) return null;
+  return {
+    pokemon,
+    startLevel:
+      typeof raw.startLevel === "number" &&
+      Number.isFinite(raw.startLevel)
+        ? Math.max(1, Math.min(100, Math.trunc(raw.startLevel)))
+        : pokemon.level,
+    steps:
+      typeof raw.steps === "number" && Number.isFinite(raw.steps)
+        ? Math.max(0, Math.min(1_000_000, Math.trunc(raw.steps)))
+        : 0,
   };
 }
 
