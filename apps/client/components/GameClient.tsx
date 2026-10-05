@@ -31,6 +31,7 @@ import {
   type BattleEncounter,
   type BattleOutcome,
 } from "@/components/FirstBattle";
+import { initLocale, useLocale } from "@/lib/i18n";
 import { clearAllSaves, wantsSaveReset } from "@/lib/saveReset";
 import { applyPartyProgressionRewards } from "@/lib/partyProgress";
 import { BattleResultsScreen } from "@/components/BattleResultsScreen";
@@ -243,6 +244,8 @@ function pendingMoveQueue(
 }
 
 export function GameClient() {
+  // Re-render the whole client when the language changes.
+  useLocale();
   const [story, setStory] = useState<StoryState>(
     DEFAULT_STORY_STATE,
   );
@@ -318,6 +321,10 @@ export function GameClient() {
       })),
     [deployedParty],
   );
+
+  useEffect(() => {
+    initLocale();
+  }, []);
 
   useEffect(() => {
     try {

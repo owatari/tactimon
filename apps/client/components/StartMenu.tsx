@@ -31,6 +31,14 @@ import {
 } from "@/lib/itemUse";
 import type { OverworldItemId } from "@/lib/items";
 import type { ProgressionReward } from "@tactimon/battle-engine";
+import {
+  LOCALES,
+  LOCALE_LABELS,
+  getLocale,
+  setLocale,
+  t,
+  useLocale,
+} from "@/lib/i18n";
 import { clearAllSaves } from "@/lib/saveReset";
 import type { StoryState } from "@/lib/story";
 import {
@@ -72,6 +80,7 @@ const OPTION_ROWS = [
   "MUSIC VOLUME",
   "MUSIC",
   "BATTLE SPEED",
+  "LANGUAGE",
   "ERASE SAVE",
   "CLOSE",
 ] as const;
@@ -115,6 +124,15 @@ export function StartMenu({
   onFly,
   onClose,
 }: Props) {
+  const locale = useLocale();
+  const optionLabels = [
+    t("MUSIC VOLUME"),
+    t("MUSIC"),
+    t("BATTLE SPEED"),
+    t("LANGUAGE"),
+    t("ERASE SAVE"),
+    t("CLOSE"),
+  ];
   const [screen, setScreen] = useState<MenuScreen>("root");
   const [rootIndex, setRootIndex] = useState(1);
   const [dexIndex, setDexIndex] = useState(0);
@@ -236,7 +254,7 @@ export function StartMenu({
 
       const s = latest.current;
       setNotice("");
-      if (!(s.screen === "options" && s.optionIndex === 3 && confirm)) {
+      if (!(s.screen === "options" && s.optionIndex === 4 && confirm)) {
         eraseArmedRef.current = false;
       }
 
@@ -447,16 +465,22 @@ export function StartMenu({
           onOptionsChange({ ...o, musicMuted: !o.musicMuted });
         } else if (s.optionIndex === 2) {
           onOptionsChange({ ...o, battleSpeed: o.battleSpeed === 1 ? 2 : 1 });
-        } else if (s.optionIndex === 3 && confirm) {
+        } else if (s.optionIndex === 3 && (left || right || confirm)) {
+          const dir = left ? -1 : 1;
+          const at = LOCALES.indexOf(getLocale());
+          setLocale(LOCALES[wrap(at + dir, LOCALES.length)]);
+        } else if (s.optionIndex === 4 && confirm) {
           if (eraseArmedRef.current) {
             clearAllSaves(window.localStorage);
             window.location.reload();
           } else {
             eraseArmedRef.current = true;
-            setNotice("Press ENTER again to erase your save. Any other key cancels.");
+            setNotice(
+              t("Press ENTER again to erase your save. Any other key cancels."),
+            );
           }
           return;
-        } else if (s.optionIndex === 4 && confirm) {
+        } else if (s.optionIndex === 5 && confirm) {
           setScreen("root");
         }
       }
@@ -762,17 +786,19 @@ export function StartMenu({
                 key={row}
                 className={index === optionIndex ? "selected" : ""}
               >
-                <span>{row}</span>
+                <span>{optionLabels[index]}</span>
                 <em>
                   {index === 0
                     ? `◀ ${options.musicVolume}% ▶`
                     : index === 1
                       ? options.musicMuted
-                        ? "OFF"
-                        : "ON"
+                        ? t("OFF")
+                        : t("ON")
                       : index === 2
                         ? `${options.battleSpeed}x`
-                        : ""}
+                        : index === 3
+                          ? `◀ ${LOCALE_LABELS[locale]} ▶`
+                          : ""}
                 </em>
               </li>
             ))}
