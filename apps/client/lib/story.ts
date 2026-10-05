@@ -64,7 +64,19 @@ export type StoryBadgeId =
 export type MtMoonFossilId = "dome" | "helix";
 export type StoryValuableId = "nugget";
 export type StoryValuables = Record<StoryValuableId, number>;
-export type StoryKeyItemId = "ss-ticket";
+export type StoryKeyItemId =
+  | "ss-ticket"
+  | "town-map"
+  | "old-amber"
+  | "bike-voucher"
+  | "bicycle";
+export const STORY_KEY_ITEM_IDS: readonly StoryKeyItemId[] = [
+  "ss-ticket",
+  "town-map",
+  "old-amber",
+  "bike-voucher",
+  "bicycle",
+];
 export type StoryFieldTechniqueId = "cut";
 export type BillStoryStage =
   | "unmet"
@@ -337,7 +349,7 @@ function normalizeKeyItemIds(
     new Set(
       value.filter(
         (item): item is StoryKeyItemId =>
-          item === "ss-ticket",
+          STORY_KEY_ITEM_IDS.includes(item as StoryKeyItemId),
       ),
     ),
   );
@@ -1524,5 +1536,42 @@ export function chooseMtMoonFossil(
       ),
       mtMoonFossil: fossil,
     },
+  };
+}
+
+
+export type KeyItemGiftResult = {
+  story: StoryState;
+  granted: boolean;
+};
+
+/** One-shot key item gift, remembered per player (never granted twice). */
+export function grantStoryKeyItemOnce(
+  story: StoryState,
+  itemId: StoryKeyItemId,
+): KeyItemGiftResult {
+  if (hasStoryKeyItem(story, itemId)) {
+    return { story, granted: false };
+  }
+
+  return {
+    granted: true,
+    story: {
+      ...completeStoryPlayerEvent(story, "key-item", itemId),
+      keyItemIds: [...(story.keyItemIds ?? []), itemId],
+    },
+  };
+}
+
+/** Spends a key item (e.g. the Bike Voucher); the gift flag stays set. */
+export function removeStoryKeyItem(
+  story: StoryState,
+  itemId: StoryKeyItemId,
+): StoryState {
+  return {
+    ...story,
+    keyItemIds: (story.keyItemIds ?? []).filter(
+      (id) => id !== itemId,
+    ),
   };
 }

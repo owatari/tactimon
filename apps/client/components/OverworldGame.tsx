@@ -98,6 +98,15 @@ import {
 
 const STEP_DURATION_MS = 250;
 const RUN_STEP_DURATION_MS = 140;
+const BIKE_STEP_DURATION_MS = 95;
+
+function hasBicycle(story: StoryState): boolean {
+  return (story.keyItemIds ?? []).includes("bicycle");
+}
+
+function canRun(story: StoryState): boolean {
+  return story.runningShoesReceived === true || hasBicycle(story);
+}
 const JUMP_DURATION_MS = 320;
 const BLOCKED_RETRY_MS = 90;
 const CAMERA_RESPONSE_MS = 72;
@@ -766,7 +775,7 @@ export function OverworldGame({
   }, []);
 
   const toggleRunning = useCallback(() => {
-    if (!storyRef.current.runningShoesReceived) {
+    if (!canRun(storyRef.current)) {
       return;
     }
 
@@ -804,7 +813,7 @@ export function OverworldGame({
       const saved =
         window.localStorage.getItem(RUN_MODE_STORAGE_KEY);
       const next =
-        storyRef.current.runningShoesReceived === true &&
+        canRun(storyRef.current) &&
         saved === "run";
       runningRef.current = next;
       setRunning(next);
@@ -1717,9 +1726,11 @@ export function OverworldGame({
       player.moving = true;
       player.jumping = false;
       player.stepDuration =
-        storyRef.current.runningShoesReceived &&
+        canRun(storyRef.current) &&
         runningRef.current
-          ? RUN_STEP_DURATION_MS
+          ? hasBicycle(storyRef.current)
+            ? BIKE_STEP_DURATION_MS
+            : RUN_STEP_DURATION_MS
           : STEP_DURATION_MS;
       player.fromX = player.visualX;
       player.fromY = player.visualY;
@@ -2426,7 +2437,7 @@ export function OverworldGame({
           <span>Potion ×{story.inventory.potion}</span>
           <span>Ball ×{story.inventory["poke-ball"]}</span>
         </div>
-        {story.runningShoesReceived && (
+        {canRun(story) && (
           <button
             type="button"
             className="run-mode-indicator"
@@ -2439,7 +2450,7 @@ export function OverworldGame({
         )}
         <div className="control-hint">
           WASD / setas · E/Space interage
-          {story.runningShoesReceived ? " · R alterna WALK/RUN" : ""}
+          {canRun(story) ? " · R alterna WALK/RUN" : ""}
         </div>
       </div>
 

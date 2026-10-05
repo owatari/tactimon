@@ -5,6 +5,10 @@ import {
   resolveWorldNpcPages,
 } from "./worldTexts";
 import {
+  grantStoryKeyItemOnce,
+  removeStoryKeyItem,
+} from "./story";
+import {
   chooseMtMoonFossil,
   collectOverworldItem,
   completeStoryPlayerEvent,
@@ -606,6 +610,128 @@ const DIALOGUE_DEFINITIONS: Record<
       },
     ],
   },
+  "pallet-mom": {
+    id: "pallet-mom",
+    interact: (story) => {
+      if (!story.starter) {
+        return {
+          story,
+          presentation: dialoguePresentationFromText(
+            "pallet-mom",
+            "Mãe: Vá ver o Prof. Oak no laboratório! Ele está esperando por você.",
+            "Mãe",
+          ),
+        };
+      }
+
+      return {
+        story: healStoryParty(story),
+        presentation: dialoguePresentationFromText(
+          "pallet-mom",
+          "Mãe: Você está de volta! Descanse um pouco. Pronto! Seus Pokémon estão totalmente recuperados.",
+          "Mãe",
+        ),
+      };
+    },
+  },
+  "pallet-daisy": {
+    id: "pallet-daisy",
+    interact: (story) => {
+      if (!story.starter) {
+        return {
+          story,
+          presentation: dialoguePresentationFromText(
+            "pallet-daisy",
+            "Daisy: Oi! Meu irmão Blue está no laboratório do vovô.",
+            "Daisy",
+          ),
+        };
+      }
+
+      const gift = grantStoryKeyItemOnce(story, "town-map");
+      return {
+        story: gift.story,
+        presentation: dialoguePresentationFromText(
+          "pallet-daisy",
+          gift.granted
+            ? "Daisy: Oi! Que bom ver você. Tome este Town Map: ele mostra onde você está em Kanto. Você recebeu o Town Map!"
+            : "Daisy: Boa sorte na sua viagem! Cuide bem dos seus Pokémon.",
+          "Daisy",
+        ),
+      };
+    },
+  },
+  "museum-old-amber": {
+    id: "museum-old-amber",
+    interact: (story) => {
+      const gift = grantStoryKeyItemOnce(story, "old-amber");
+      return {
+        story: gift.story,
+        presentation: dialoguePresentationFromText(
+          "museum-old-amber",
+          gift.granted
+            ? "Cientista: Psiu! Preciso contar um segredo. Acho que este pedaço de âmbar contém DNA de Pokémon! Mas meus colegas me ignoram. Leve isto a um laboratório Pokémon, por favor! Você recebeu o Old Amber!"
+            : "Cientista: Por favor, leve o Old Amber a um laboratório Pokémon para examiná-lo!",
+          "Cientista",
+        ),
+      };
+    },
+  },
+  "fan-club-chairman": {
+    id: "fan-club-chairman",
+    interact: (story) => {
+      const gift = grantStoryKeyItemOnce(story, "bike-voucher");
+      const hadBike = (story.keyItemIds ?? []).includes("bicycle");
+      return {
+        story: hadBike ? story : gift.story,
+        presentation: dialoguePresentationFromText(
+          "fan-club-chairman",
+          hadBike
+            ? "Presidente: Que Bicicleta ótima! Meus Pokémon são ainda mais especiais, é claro!"
+            : gift.granted
+              ? "Presidente: Eu presido o Pokémon Fan Club! Crio mais de cem Pokémon e sou muito exigente! Obrigado por me ouvir. Tome este Bike Voucher! Você recebeu o Bike Voucher!"
+              : "Presidente: Use o Bike Voucher na Bike Shop de Cerulean City!",
+          "Presidente",
+        ),
+      };
+    },
+  },
+  "bike-shop-clerk": {
+    id: "bike-shop-clerk",
+    interact: (story) => {
+      if ((story.keyItemIds ?? []).includes("bicycle")) {
+        return {
+          story,
+          presentation: dialoguePresentationFromText(
+            "bike-shop-clerk",
+            "Atendente: Como está a Bicicleta? Você pode usá-la na Cycling Road e até em cavernas!",
+            "Atendente",
+          ),
+        };
+      }
+
+      if ((story.keyItemIds ?? []).includes("bike-voucher")) {
+        const spent = removeStoryKeyItem(story, "bike-voucher");
+        return {
+          story: grantStoryKeyItemOnce(spent, "bicycle").story,
+          presentation: dialoguePresentationFromText(
+            "bike-shop-clerk",
+            "Atendente: Ah, um Bike Voucher! Aqui está a sua Bicicleta! Você recebeu a Bicycle!",
+            "Atendente",
+          ),
+        };
+      }
+
+      return {
+        story,
+        presentation: dialoguePresentationFromText(
+          "bike-shop-clerk",
+          "Atendente: Uma bicicleta nova custa ₽1.000.000! Receio que não temos descontos.",
+          "Atendente",
+        ),
+      };
+    },
+  },
   "viridian-npc-21-6": {
     id: "viridian-npc-21-6",
     variants: [
@@ -637,6 +763,11 @@ const WORLD_OBJECT_DIALOGUE_IDS: Record<
   string
 > = {
   "pallet-town:3,10": "pallet-woman",
+  "pallet-players-house-1f:8,4": "pallet-mom",
+  "pallet-rivals-house:10,6": "pallet-daisy",
+  "pewter-museum-1f:21,3": "museum-old-amber",
+  "vermilion-pokemon-fan-club:5,4": "fan-club-chairman",
+  "cerulean-bike-shop:9,3": "bike-shop-clerk",
   "pallet-town:13,17": "pallet-fat-man",
   "route-1:6,28": "route1-mart-clerk",
   "route-1:19,16": "route1-boy",
