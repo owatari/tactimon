@@ -89,6 +89,10 @@ export type WorldTransition = {
 const PRIMARY_METATILE_COUNT = 640;
 const METATILE_BEHAVIOR_MASK = 0x1ff;
 const MB_COUNTER = 0x80;
+// FireRed surf-only water: MB_POND_WATER (0x10) .. MB_OCEAN_WATER (0x15).
+// Puddles (0x16) and shallow water (0x17) stay walkable.
+const WATER_BEHAVIOR_MIN = 0x10;
+const WATER_BEHAVIOR_MAX = 0x15;
 const JUMP_BEHAVIOR_BY_DIRECTION: Record<Direction, number> = {
   east: 0x38,
   west: 0x39,
@@ -169,6 +173,19 @@ export function isCounterCell(
   y: number,
 ): boolean {
   return getMapCell(layout, x, y)?.behavior === MB_COUNTER;
+}
+
+export function isWaterCell(
+  layout: MapLayout | null,
+  x: number,
+  y: number,
+): boolean {
+  const behavior = getMapCell(layout, x, y)?.behavior;
+  return (
+    typeof behavior === "number" &&
+    behavior >= WATER_BEHAVIOR_MIN &&
+    behavior <= WATER_BEHAVIOR_MAX
+  );
 }
 
 export function isLedgeCell(

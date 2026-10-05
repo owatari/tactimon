@@ -23,6 +23,7 @@ import {
   isLedgeCell,
   isLedgeForDirection,
   isPokemonStoragePcAt,
+  isWaterCell,
   resolveWarpTransitionAt,
   resolveWorldTransition,
   TILE_SIZE,
@@ -928,6 +929,7 @@ export function OverworldGame({
 
           if (
             !cell ||
+            isWaterCell(activeLayout, worldX, worldY) ||
             (cell.collision !== 0 &&
               !isVermilionGymBeamWalkable(
                 storyRef.current,

@@ -3043,6 +3043,153 @@ function connectedOpenCells(
   return result;
 }
 
+function openNeighborCount(
+  point: DuelPoint,
+  width: number,
+  height: number,
+  blockedKeys: ReadonlySet<string>,
+): number {
+  let open = 0;
+  for (let dy = -1; dy <= 1; dy += 1) {
+    for (let dx = -1; dx <= 1; dx += 1) {
+      if (dx === 0 && dy === 0) continue;
+      const x = point.x + dx;
+      const y = point.y + dy;
+      if (
+        x >= 0 &&
+        y >= 0 &&
+        x < width &&
+        y < height &&
+        !blockedKeys.has(pointKey({ x, y }))
+      ) {
+        open += 1;
+      }
+    }
+  }
+  return open;
+}
+
+function largestOpenRegion(
+  width: number,
+  height: number,
+  blockedKeys: ReadonlySet<string>,
+): DuelPoint[] {
+  const visited = new Set<string>();
+  let largest: DuelPoint[] = [];
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const point = { x, y };
+      const key = pointKey(point);
+      if (blockedKeys.has(key) || visited.has(key)) {
+        continue;
+      }
+
+      const region = connectedOpenCells(
+        point,
+        width,
+        height,
+        blockedKeys,
+      );
+      for (const cell of region) {
+        visited.add(pointKey(cell));
+      }
+      if (region.length > largest.length) {
+        largest = region;
+      }
+    }
+  }
+
+  return largest;
+}
+
+/**
+ * Free cells in the 5x5 window around a point (inner ring weighted double).
+ * Approximates how much room a team has to gather and manoeuvre there.
+ */
+function openAreaScore(
+  point: DuelPoint,
+  regionKeys: ReadonlySet<string>,
+): number {
+  let score = 0;
+  for (let dy = -2; dy <= 2; dy += 1) {
+    for (let dx = -2; dx <= 2; dx += 1) {
+      if (
+        regionKeys.has(
+          pointKey({ x: point.x + dx, y: point.y + dy }),
+        )
+      ) {
+        score +=
+          Math.abs(dx) <= 1 && Math.abs(dy) <= 1 ? 2 : 1;
+      }
+    }
+  }
+  return score;
+}
+
+const MAX_OPEN_AREA_SCORE = 34;
+
+function orthogonalOpenCount(
+  point: DuelPoint,
+  width: number,
+  height: number,
+  blockedKeys: ReadonlySet<string>,
+): number {
+  return [
+    { x: point.x + 1, y: point.y },
+    { x: point.x - 1, y: point.y },
+    { x: point.x, y: point.y + 1 },
+    { x: point.x, y: point.y - 1 },
+  ].filter(
+    (next) =>
+      next.x >= 0 &&
+      next.y >= 0 &&
+      next.x < width &&
+      next.y < height &&
+      !blockedKeys.has(pointKey(next)),
+  ).length;
+}
+
+function isArenaBorder(
+  point: DuelPoint,
+  width: number,
+  height: number,
+): boolean {
+  return (
+    point.x === 0 ||
+    point.y === 0 ||
+    point.x === width - 1 ||
+    point.y === height - 1
+  );
+}
+
+/** Lower is better. Picks randomly among the best few to keep variety. */
+function pickBestScored(
+  points: readonly DuelPoint[],
+  score: (point: DuelPoint) => number,
+  random: () => number,
+): DuelPoint {
+  const ranked = points
+    .map((point) => ({ point, score: score(point) }))
+    .sort(
+      (a, b) =>
+        a.score - b.score ||
+        a.point.y - b.point.y ||
+        a.point.x - b.point.x,
+    );
+  const best = ranked[0].score;
+  const near = ranked
+    .filter((entry) => entry.score <= best + 1.5)
+    .slice(0, 4);
+  return { ...randomItem(near, random).point };
+}
+
+/**
+ * Picks one anchor per team inside the largest navigable region: the player
+ * anchor left of centre, the rival anchor right of it, both in open interior
+ * ground, separated by a tactical gap (~4-7 tiles) that is crossed in one or
+ * two turns instead of several turns of plain walking.
+ */
 function pickSpawnPositions(
   width: number,
   height: number,
@@ -3050,18 +3197,9 @@ function pickSpawnPositions(
   seed: number,
 ): [DuelPoint, DuelPoint] {
   const blockedKeys = new Set(blocked.map(pointKey));
-  const open: DuelPoint[] = [];
+  const region = largestOpenRegion(width, height, blockedKeys);
 
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      const point = { x, y };
-      if (!blockedKeys.has(pointKey(point))) {
-        open.push(point);
-      }
-    }
-  }
-
-  if (open.length < 2) {
+  if (region.length < 2) {
     return [
       { x: 0, y: 0 },
       {
@@ -3072,106 +3210,62 @@ function pickSpawnPositions(
   }
 
   const random = createSeededRandom(seed);
-  const leftBoundary = Math.max(
-    1,
-    Math.floor((width - 1) * 0.3),
-  );
-  const rightBoundary = Math.min(
-    width - 2,
-    Math.ceil((width - 1) * 0.62),
-  );
-  const isInterior = (point: DuelPoint) =>
-    point.x > 0 &&
-    point.x < width - 1 &&
-    point.y > 0 &&
-    point.y < height - 1;
-
-  const left = open.filter(
-    (point) =>
-      point.x <= leftBoundary &&
-      isInterior(point),
-  );
-  const playerPool =
-    left.length > 0
-      ? left
-      : open.filter(
-          (point) => point.x < width / 2,
-        );
-  const player = randomItem(
-    playerPool.length > 0 ? playerPool : open,
-    random,
-  );
-
-  const connected = connectedOpenCells(
-    player,
-    width,
-    height,
-    blockedKeys,
-  ).filter(
-    (point) => pointKey(point) !== pointKey(player),
-  );
-
-  const right = connected.filter(
-    (point) =>
-      point.x >= rightBoundary &&
-      isInterior(point),
-  );
-  const rivalPool =
-    right.length > 0
-      ? right
-      : connected.filter(
-          (point) => point.x > width / 2,
-        );
-  const fallback =
-    rivalPool.length > 0
-      ? rivalPool
-      : connected.length > 0
-        ? connected
-        : open.filter(
-            (point) =>
-              pointKey(point) !== pointKey(player),
-          );
-
-  // Keep opposing teams clearly separated without wasting the first
-  // several turns only closing an unnecessarily huge gap.
+  const regionKeys = new Set(region.map(pointKey));
   const desiredDistance = Math.max(
     4,
     Math.min(7, Math.round(width * 0.42)),
   );
-  const ranked = [...fallback].sort((a, b) => {
-    const aDistance = manhattanDistance(a, player);
-    const bDistance = manhattanDistance(b, player);
+  const centerX = (width - 1) / 2;
+  const centerY = (height - 1) / 2;
+  const playerTargetX = centerX - desiredDistance / 2;
+  const rivalTargetX = centerX + desiredDistance / 2;
+  const crampedPenalty = (point: DuelPoint) =>
+    (MAX_OPEN_AREA_SCORE - openAreaScore(point, regionKeys)) *
+      0.5 +
+    (isArenaBorder(point, width, height) ? 4 : 0) +
+    (orthogonalOpenCount(point, width, height, blockedKeys) <= 1
+      ? 6
+      : 0);
 
-    return (
-      Math.abs(aDistance - desiredDistance) -
-        Math.abs(bDistance - desiredDistance) ||
-      aDistance - bDistance ||
-      a.y - b.y ||
-      a.x - b.x
-    );
-  });
-  const bestDelta = Math.abs(
-    manhattanDistance(ranked[0], player) -
-      desiredDistance,
-  );
-  const nearIdeal = ranked.filter(
+  const player = pickBestScored(
+    region,
     (point) =>
-      Math.abs(
-        manhattanDistance(point, player) -
-          desiredDistance,
-      ) <= bestDelta + 1,
-  );
-  const rival = randomItem(
-    nearIdeal.length > 0 ? nearIdeal : ranked,
+      Math.abs(point.x - playerTargetX) * 1.5 +
+      Math.abs(point.y - centerY) * 0.6 +
+      (point.x > centerX ? 12 : 0) +
+      crampedPenalty(point),
     random,
   );
 
-  return [
-    { ...player },
-    { ...rival },
-  ];
+  const rivalCandidates = region.filter(
+    (point) => pointKey(point) !== pointKey(player),
+  );
+  const rival = pickBestScored(
+    rivalCandidates,
+    (point) => {
+      const distance = manhattanDistance(point, player);
+      return (
+        Math.abs(distance - desiredDistance) * 2 +
+        (distance < 3 ? 12 : 0) +
+        Math.abs(point.x - rivalTargetX) * 0.75 +
+        Math.abs(point.y - player.y) * 0.5 +
+        (point.x <= centerX ? 12 : 0) +
+        (point.x <= player.x ? 8 : 0) +
+        crampedPenalty(point)
+      );
+    },
+    random,
+  );
+
+  return [player, rival];
 }
 
+/**
+ * Gathers a team around its anchor: compact, on its own half of the arena,
+ * away from the opposing anchor and out of dead ends. Cells connected to the
+ * anchor are always preferred; disconnected free cells are a last resort so
+ * oversized packs still deploy every unit.
+ */
 function clusterSpawnPositions(
   anchor: DuelPoint,
   opposingAnchor: DuelPoint,
@@ -3196,52 +3290,76 @@ function clusterSpawnPositions(
 
   add(anchor);
 
-  const candidates = connectedOpenCells(
+  const centerX = (width - 1) / 2;
+  const sideAware =
+    Math.abs(anchor.x - opposingAnchor.x) >= 2;
+  const anchorOnRight = anchor.x > opposingAnchor.x;
+  const isWrongSide = (point: DuelPoint) =>
+    sideAware &&
+    (anchorOnRight
+      ? point.x <= centerX
+      : point.x > centerX);
+  const score = (point: DuelPoint) => {
+    const enemyDistance = manhattanDistance(
+      point,
+      opposingAnchor,
+    );
+    return (
+      manhattanDistance(point, anchor) * 2 +
+      (isWrongSide(point) ? 14 : 0) +
+      (enemyDistance < 3 ? (3 - enemyDistance) * 5 : 0) +
+      (isArenaBorder(point, width, height) ? 1.5 : 0) +
+      (8 -
+        openNeighborCount(
+          point,
+          width,
+          height,
+          blockedKeys,
+        )) *
+        0.4 +
+      (orthogonalOpenCount(
+        point,
+        width,
+        height,
+        blockedKeys,
+      ) <= 1
+        ? 4
+        : 0)
+    );
+  };
+  const rank = (points: readonly DuelPoint[]) =>
+    points
+      .filter((point) => !reserved.has(pointKey(point)))
+      .map((point) => ({ point, score: score(point) }))
+      .sort(
+        (a, b) =>
+          a.score - b.score ||
+          a.point.y - b.point.y ||
+          a.point.x - b.point.x,
+      )
+      .map((entry) => entry.point);
+
+  const connected = connectedOpenCells(
     anchor,
     width,
     height,
     blockedKeys,
-  )
-    .filter((point) => !reserved.has(pointKey(point)))
-    .sort((a, b) => {
-      const aBorder =
-        a.x === 0 ||
-        a.y === 0 ||
-        a.x === width - 1 ||
-        a.y === height - 1
-          ? 1
-          : 0;
-      const bBorder =
-        b.x === 0 ||
-        b.y === 0 ||
-        b.x === width - 1 ||
-        b.y === height - 1
-          ? 1
-          : 0;
-
-      return (
-        aBorder - bBorder ||
-        manhattanDistance(a, anchor) -
-          manhattanDistance(b, anchor) ||
-        manhattanDistance(b, opposingAnchor) -
-          manhattanDistance(a, opposingAnchor) ||
-        a.y - b.y ||
-        a.x - b.x
-      );
-    });
-
-  for (const point of candidates) {
+  );
+  for (const point of rank(connected)) {
     if (positions.length >= count) break;
     add(point);
   }
 
   if (positions.length < count) {
+    const remaining: DuelPoint[] = [];
     for (let y = 0; y < height; y += 1) {
       for (let x = 0; x < width; x += 1) {
-        if (positions.length >= count) break;
-        add({ x, y });
+        remaining.push({ x, y });
       }
+    }
+    for (const point of rank(remaining)) {
       if (positions.length >= count) break;
+      add(point);
     }
   }
 
@@ -3269,7 +3387,6 @@ function pickTeamSpawnPositions(
   const blockedKeys = new Set(blocked.map(pointKey));
   const reserved = new Set<string>();
 
-  // Keep both team anchors free while the first cluster is selected.
   reserved.add(pointKey(rivalAnchor));
   const players = clusterSpawnPositions(
     playerAnchor,
@@ -3282,7 +3399,6 @@ function pickTeamSpawnPositions(
   );
 
   reserved.delete(pointKey(rivalAnchor));
-  reserved.add(pointKey(playerAnchor));
   for (const point of players) {
     reserved.add(pointKey(point));
   }
