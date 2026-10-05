@@ -40,7 +40,8 @@ describe("Pokédex", () => {
     expect(seen.pokedex?.seen).toEqual(["pidgey"]);
     expect(markPokedexSeen(seen, ["pidgey"])).toBe(seen);
     expect(getPokedex(seen).entries[15].status).toBe("seen");
-    expect(buildTrainerCard(seen).pokedexSeen).toBe(1);
+    // the starter counts as owned, so seen = starter + pidgey
+    expect(buildTrainerCard(seen).pokedexSeen).toBe(2);
   });
 
   it("migrates saves without a Pokédex", () => {
