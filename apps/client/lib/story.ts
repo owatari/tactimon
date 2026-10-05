@@ -84,6 +84,8 @@ export type StoryState = {
   valuables?: StoryValuables;
   /** Overworld finds the battle engine cannot use yet (see `lib/items.ts`). */
   bagItems?: BagItems;
+  /** Seconds played, shown on the Trainer Card. */
+  playTimeSeconds?: number;
   keyItemIds?: StoryKeyItemId[];
   fieldTechniqueIds?: StoryFieldTechniqueId[];
   clearedObstacleIds?: string[];
@@ -122,6 +124,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
     nugget: 0,
   },
   bagItems: {},
+  playTimeSeconds: 0,
   keyItemIds: [],
   fieldTechniqueIds: [],
   clearedObstacleIds: [],
@@ -186,6 +189,7 @@ export function chooseStarter(
       nugget: 0,
     },
     bagItems: {},
+    playTimeSeconds: 0,
     keyItemIds: [],
     fieldTechniqueIds: [],
     clearedObstacleIds: [],
@@ -517,6 +521,17 @@ export function normalizeStoryState(
     inventory: normalizeInventory(input?.inventory),
     valuables: normalizeValuables(input?.valuables),
     bagItems: normalizeBagItems(input?.bagItems),
+    playTimeSeconds:
+      typeof input?.playTimeSeconds === "number" &&
+      Number.isFinite(input.playTimeSeconds)
+        ? Math.max(
+            0,
+            Math.min(
+              359_999 * 60,
+              Math.trunc(input.playTimeSeconds),
+            ),
+          )
+        : 0,
     keyItemIds: normalizeKeyItemIds(input?.keyItemIds),
     fieldTechniqueIds: normalizeFieldTechniqueIds(
       input?.fieldTechniqueIds,

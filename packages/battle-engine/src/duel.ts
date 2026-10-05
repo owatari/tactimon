@@ -3588,6 +3588,58 @@ export function calculateDuelPokemonMaxHp(
   });
 }
 
+export type DuelPokemonStatSheet = {
+  hp: number;
+  attack: number;
+  defense: number;
+  specialAttack: number;
+  specialDefense: number;
+  speed: number;
+};
+
+/** Battle stats shown in menus; same formula `makeUnit` uses in battle. */
+export function calculateDuelPokemonStats(
+  build: Pick<
+    DuelPokemonBuild,
+    "species" | "level" | "evs"
+  >,
+): DuelPokemonStatSheet {
+  const base = SPECIES[build.species];
+  const level = Math.max(
+    1,
+    Math.min(100, Math.trunc(build.level)),
+  );
+  const other = (
+    stat:
+      | "attack"
+      | "defense"
+      | "specialAttack"
+      | "specialDefense"
+      | "speed",
+  ) =>
+    calculateOtherStat({
+      base: base[stat],
+      iv: FIXED_IV,
+      ev: build.evs?.[stat] ?? 0,
+      level,
+    });
+
+  return {
+    hp: calculateDuelPokemonMaxHp(build),
+    attack: other("attack"),
+    defense: other("defense"),
+    specialAttack: other("specialAttack"),
+    specialDefense: other("specialDefense"),
+    speed: other("speed"),
+  };
+}
+
+export function duelSpeciesTypes(
+  species: DuelSpeciesId,
+): readonly DuelType[] {
+  return SPECIES[species].types;
+}
+
 function makeUnit(
   build: DuelPokemonBuild,
   side: DuelSide,

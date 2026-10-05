@@ -79,3 +79,42 @@ export function itemIconUrl(id: OverworldItemId): string {
 
   return `/game-assets/firered/ui/items/${file}`;
 }
+
+const ITEM_DESCRIPTIONS: Record<OverworldItemId, string> = {
+  potion: "Restaura 20 HP de um Pokémon.",
+  "poke-ball": "Usada para capturar Pokémon selvagens.",
+  "great-ball": "Bola melhor que a Poké Ball para capturar Pokémon.",
+  antidote: "Cura um Pokémon envenenado.",
+  "burn-heal": "Cura a queimadura de um Pokémon.",
+  "ice-heal": "Descongela um Pokémon.",
+  awakening: "Acorda um Pokémon dormindo.",
+  "parlyz-heal": "Cura a paralisia de um Pokémon.",
+  "hyper-potion": "Restaura 200 HP de um Pokémon.",
+  "super-potion": "Restaura 50 HP de um Pokémon.",
+  revive: "Revive um Pokémon desmaiado com metade do HP.",
+  ether: "Restaura 10 PP de um golpe.",
+  "max-ether": "Restaura todo o PP de um golpe.",
+  elixir: "Restaura 10 PP de todos os golpes.",
+  "lava-cookie": "Biscoito de Lavaridge. Cura qualquer problema de status.",
+  "rare-candy": "Faz um Pokémon subir um nível.",
+  "x-attack": "Aumenta o Ataque durante uma batalha.",
+  "escape-rope": "Permite fugir de cavernas e dungeons.",
+  repel: "Afasta Pokémon selvagens fracos por um tempo.",
+  "moon-stone": "Pedra misteriosa. Evolui certos Pokémon.",
+  "tiny-mushroom": "Cogumelo pequeno. Vende por um bom preço.",
+  "big-mushroom": "Cogumelo grande. Vende por um ótimo preço.",
+  stardust: "Pó de estrela. Vende por um bom preço.",
+  "star-piece": "Fragmento de estrela. Vende por um ótimo preço.",
+};
+
+export function itemDescription(id: OverworldItemId): string {
+  return ITEM_DESCRIPTIONS[id];
+}
+
+export function itemDisplayName(id: OverworldItemId): string {
+  return isBagItemId(id)
+    ? BAG_ITEM_CATALOG[id].name
+    : id === "potion"
+      ? "Potion"
+      : "Poké Ball";
+}
