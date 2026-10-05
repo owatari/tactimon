@@ -18,3 +18,10 @@ Docs longos: `docs/WORLD_STATE.md`, `docs/DIALOGUE_SYSTEM.md`, `docs/PROGRESSION
 - Whiteout: `storyHasHealthyPokemon`, `applyStoryWhiteOut` (cura + perda de dinheiro FireRed), `registerStoryHealLocation` (ao entrar em Pokémon Center, via `GameClient.handleMapAudioContextChange`).
 - Trainers: `lib/trainers.ts` (`OVERWORLD_TRAINERS`, encontros de rival).
 - Diálogos/eventos: `dialogueSystem.ts`, `overworldDialogues.ts`, `npcDialogues.ts`, `scriptedWorldObjects.ts`, `playerWorldGates.ts`.
+
+## Paridade FireRed (task 2026-10-04-002)
+- **world.json de todos os mapas** (`maps.ts` `worldUrl`, `sync-assets.mjs`). Só renderiza NPC de ROM se houver texto curado em `lib/worldTexts.ts` (`WORLD_NPC_TEXT`, chave `mapId:x,y` em coordenadas da ROM) ou script em `dialogueSystem.ts`; exceção: `FULL_WORLD_OBJECT_MAPS` (Pallet, Route 1, Viridian City, Oak Lab). Trainers/clerks/nurses/story NPCs continuam autorais. Placas = `bg_events` kind 0 com texto em `WORLD_SIGN_TEXT`.
+- **Warps de interiores novos**: `lib/generatedWarps.ts` (gerado da ROM; `resolveWarpTransitionAt` consulta a tabela manual primeiro). Mapas novos usam `<tipo>-<n>` (ex.: `ss-anne-2f-room-4`, `cerulean-house-3`).
+- **Itens**: `OVERWORLD_PICKUPS` (bolas + `hidden: true`) vêm dos eventos da ROM; engine só tem Potion/Poké Ball → demais itens vão para `StoryState.bagItems` (`lib/items.ts`), sem uso em batalha ainda. TMs/berries/held ficam fora (dungeon/raid).
+- **Marts**: `MART_STOCK` por cidade (listas `pokemart` da ROM). Trainers extras gerados da tabela `gTrainers` (base `0x23EAC8`, 40 bytes/struct).
+- Texto/ROM: ROM FireRed em `local-assets/roms/firered.gba`; scripts de NPC = `loadword 0 ptr; callstd 4`; item ball = `1a 00 80 <item16>`; hidden item = `raw_value` (item16, flag8, qty7|underfoot1).
