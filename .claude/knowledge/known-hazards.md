@@ -11,3 +11,9 @@
 - `duel.ts` é enorme: edite com `rg -n` + ranges; rode o typecheck da engine logo após editar.
 - Deny em `.claude/settings.json` bloqueia leitura de `node_modules/**` também via Bash (`ls`).
 - Git Bash no Windows: heredocs longos com aspas podem falhar; prefira a ferramenta Write.
+- **`loadMap` precisa ser estável** (`OverworldGame`): o efeito de montagem depende dele; qualquer dependência instável (ex.: `showInteraction`, que muda com `onDialogueInteraction`) recarrega o mapa a cada update de story (resetava boulders/posição). Use refs.
+- **`extract-kanto-data.py`**: `gLevelUpLearnsets[0]` aponta para a lista do Bulbasaur; a tabela é achada pelo 2º ponteiro (bug antigo deixava cada espécie com o learnset da anterior). Os `assert` de Pikachu/Charmander protegem.
+- **`apps/client/scripts/generated-sync.json`** é gerado e versionado: commitar junto com mudanças em `generate-world-maps.py`.
+- **Auditoria de alcance por célula**: `tests/world-reachability.test.ts` cobre mapas inteiros + Mansion/Cinnabar/elevador; ao importar mapas/portas novos, teste também as células dos NPCs/trainers (gyms com portas/spinners podem ficar inalcançáveis).
+- Git Bash: heredoc Python grande com `'''` pode falhar no parser da tool; use Write/Edit. Arquivos TS do repo estão em CRLF: scripts de patch devem normalizar `
+`.

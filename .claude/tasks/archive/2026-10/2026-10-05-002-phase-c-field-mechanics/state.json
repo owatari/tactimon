@@ -1,13 +1,14 @@
 {
   "id": "2026-10-05-002-phase-c-field-mechanics",
   "title": "Fase C: Bike, pesca, Surf, Day Care, trocas, tutors, Town Map e eventos adiados",
-  "status": "running",
+  "status": "done",
   "created_at": "2026-10-05",
   "base_head": "72c3beb8",
-  "current_head": "72c3beb8",
+  "current_head": "28ce54c9",
   "skills": [],
   "agents": [],
   "files": [],
   "commits": [],
-  "tests": []
+  "tests": [],
+  "superseded_by": "2026-10-05-005-finish-phase-c-d-mechanics"
 }

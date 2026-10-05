@@ -13,3 +13,6 @@
 - Safari Zone (taxa, 30 bolas, passos, Gold Teeth/Strength), Game Corner, Fly/Flash/Strength, Day Care, pesca/água
 - Textos pt-BR dos NPCs de evento (gifts, tutors) e conteúdo de Cinnabar Lab (fósseis)
 - Validação visual (sem browser)
+
+## 2026-10-05 — fechamento
+- [x] Pendências restantes entregues em `2026-10-05-005-finish-phase-c-d-mechanics`.

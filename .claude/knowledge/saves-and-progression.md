@@ -14,3 +14,9 @@
 - `GameClient.applyPartyProgressionRewards` grava no StoryState.
 
 Testes: `tests/story-persistence.test.ts`, `tests/storage.test.ts`, `tests/whiteout.test.ts`, `packages/battle-engine/test/progression.test.ts`.
+
+## Campos adicionados na fase C/D final
+- `coins`, `safari`, `dayCare` (normalizados em `normalizeStoryState`; saves antigos → `0/null/null`).
+- Key items novos em `StoryKeyItemId` (tea, silph-scope, poke-flute, card-key, lift-key, secret-key, gold-teeth, coin-case, 3 varas) e HMs `strength/flash/fly` em `STORY_FIELD_TECHNIQUE_IDS`; valores desconhecidos são filtrados.
+- Eventos `reward:gift:<id>`, `reward:trade:<id>`, `story:static:<id>`, `story:visited:<mapId>`, `story:silph-door:*`, `story:cinnabar-door:*`; choices `mansion-switch`, `route-4-mega-tutor`, `boulder:*`.
+- Bag: `master-ball`, `ultra-ball` entram na batalha via `toBattleInventory`.
