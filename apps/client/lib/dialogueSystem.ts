@@ -2,6 +2,9 @@ import type {
   OverworldItemId,
 } from "./items";
 import {
+  resolveWorldNpcPages,
+} from "./worldTexts";
+import {
   chooseMtMoonFossil,
   collectOverworldItem,
   completeStoryPlayerEvent,
@@ -108,6 +111,12 @@ export type DialogueInteractionRequest =
       choiceId: string;
       value: string;
       text: string;
+      speaker?: string;
+    }
+  | {
+      kind: "pages";
+      id: string;
+      pages: readonly string[];
       speaker?: string;
     }
   | { kind: "cut"; obstacleId: string }
@@ -708,6 +717,16 @@ export function resolveWorldObjectDialogueRequest(
     };
   }
 
+  const pages = resolveWorldNpcPages(mapId, x, y);
+  if (pages) {
+    return {
+      kind: "pages",
+      id: `world-npc:${mapId}:${x},${y}`,
+      pages,
+      speaker,
+    };
+  }
+
   return {
     kind: "text",
     id: `world-npc:${mapId}:${x},${y}`,
@@ -775,6 +794,18 @@ export function runDialogueInteraction(
           request.id,
           "Olá! Continue explorando e conversando com as pessoas pelo caminho. Sempre há algo novo para descobrir.",
         ),
+    };
+  }
+
+  if (request.kind === "pages") {
+    return {
+      story,
+      presentation: {
+        id: request.id,
+        pages: request.pages.map((text, index) =>
+          page(`${index}`, text, request.speaker),
+        ),
+      },
     };
   }
 

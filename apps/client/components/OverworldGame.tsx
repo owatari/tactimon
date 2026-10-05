@@ -63,6 +63,11 @@ import {
   type OverworldTrainerInstance,
 } from "@/lib/trainers";
 import {
+  resolveWorldNpcPages,
+  resolveWorldSignPages,
+} from "@/lib/worldTexts";
+import {
+  resolveWorldObjectDialogueId,
   resolveWorldObjectDialogueRequest,
   type DialogueInteractionRequest,
   type DialoguePresentation,
@@ -367,18 +372,71 @@ function framePosition(frame: number) {
   };
 }
 
+/**
+ * Maps whose full ROM object list was already vetted: every unflagged object
+ * is rendered. Every other map only renders objects with curated text (or a
+ * scripted dialogue), so trainers, clerks, nurses and story NPCs stay with
+ * their hand-authored implementations.
+ */
+const FULL_WORLD_OBJECT_MAPS: ReadonlySet<string> = new Set([
+  "pallet-town",
+  "route-1",
+  "viridian-city",
+  "oak-lab",
+]);
+
+function reservedObjectTiles(mapId: string): Set<string> {
+  return new Set([
+    ...resolveOverworldDialogues(mapId).map(
+      (dialogue) => `${dialogue.x},${dialogue.y}`,
+    ),
+    ...resolveScriptedWorldObjects(mapId).map(
+      (object) => `${object.x},${object.y}`,
+    ),
+  ]);
+}
+
 function renderableObjects(
   data: WorldMapData | null,
+  mapId: string,
 ): WorldObject[] {
   if (!data) return [];
+
+  const reserved = reservedObjectTiles(mapId);
+  const fullMap = FULL_WORLD_OBJECT_MAPS.has(mapId);
 
   return data.objects.filter(
     (object) =>
       object.flag_id === 0 &&
       Boolean(object.sprite_file) &&
       Boolean(object.frame_width) &&
-      Boolean(object.frame_height),
+      Boolean(object.frame_height) &&
+      !reserved.has(`${object.x},${object.y}`) &&
+      (fullMap ||
+        resolveWorldObjectDialogueId(
+          mapId,
+          object.x,
+          object.y,
+        ) !== null ||
+        resolveWorldNpcPages(mapId, object.x, object.y) !==
+          null),
   );
+}
+
+function worldSignAt(
+  data: WorldMapData | null,
+  mapId: string,
+  x: number,
+  y: number,
+): readonly string[] | null {
+  const sign = data?.bg_events?.find(
+    (event) =>
+      event.kind === 0 && event.x === x && event.y === y,
+  );
+
+  return sign
+    ? resolveWorldSignPages(mapId, sign.x, sign.y)
+    : null;
 }
 
 function displayObjectName(object: WorldObject): string {
@@ -497,38 +555,6 @@ function martStoryObjects(
       sheetWidth: 96,
       sheetHeight: 64,
     },
-    {
-      id: `${mapId}-youngster`,
-      kind: "dialogue",
-      label: "Youngster",
-      x: 6,
-      y: 2,
-      spriteUrl: "/game-assets/overworld/018_youngster.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-      request: {
-        kind: "script",
-        id: "mart-youngster",
-      },
-    },
-    {
-      id: `${mapId}-woman`,
-      kind: "dialogue",
-      label: "Mulher",
-      x: 9,
-      y: 5,
-      spriteUrl: "/game-assets/overworld/023_woman_1.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-      request: {
-        kind: "script",
-        id: "mart-woman",
-      },
-    },
   ];
 }
 
@@ -566,61 +592,6 @@ function scriptedStoryObjects(
   );
 }
 
-function pokemonCenterStoryObjects(
-  mapId: string,
-): StoryObject[] {
-  return [
-    {
-      id: `${mapId}-gentleman`,
-      kind: "dialogue",
-      label: "Gentleman",
-      x: 12,
-      y: 5,
-      spriteUrl: "/game-assets/overworld/061_gentleman.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-      request: {
-        kind: "script",
-        id: "center-gentleman",
-      },
-    },
-    {
-      id: `${mapId}-boy`,
-      kind: "dialogue",
-      label: "Garoto",
-      x: 4,
-      y: 7,
-      spriteUrl: "/game-assets/overworld/019_boy.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-      request: {
-        kind: "script",
-        id: "center-boy",
-      },
-    },
-    {
-      id: `${mapId}-youngster`,
-      kind: "dialogue",
-      label: "Youngster",
-      x: 2,
-      y: 3,
-      spriteUrl: "/game-assets/overworld/018_youngster.png",
-      frameWidth: 16,
-      frameHeight: 32,
-      sheetWidth: 96,
-      sheetHeight: 64,
-      request: {
-        kind: "script",
-        id: "center-youngster",
-      },
-    },
-  ];
-}
-
 function mapStoryObjects(
   mapId: string,
   story: StoryState,
@@ -635,13 +606,7 @@ function mapStoryObjects(
           mapId === "cerulean-mart" ||
           mapId === "vermilion-mart"
         ? martStoryObjects(mapId)
-        : mapId === "viridian-pokemon-center" ||
-            mapId === "pewter-pokemon-center" ||
-            mapId === "cerulean-pokemon-center" ||
-            mapId === "vermilion-pokemon-center" ||
-            mapId === "route-4-pokemon-center"
-          ? pokemonCenterStoryObjects(mapId)
-          : [];
+        : [];
 
   objects.push(
     ...mapDialogueStoryObjects(mapId),
@@ -697,6 +662,7 @@ export function OverworldGame({
 
   const layoutRef = useRef<MapLayout | null>(null);
   const worldObjectsRef = useRef<WorldObject[]>([]);
+  const worldDataRef = useRef<WorldMapData | null>(null);
   const storyObjectsRef = useRef<StoryObject[]>([]);
   const mapIdRef = useRef("pallet-town");
   const storyRef = useRef(story);
@@ -738,7 +704,7 @@ export function OverworldGame({
     useRef<(() => void) | null>(null);
 
   const mapDefinition = WORLD_MAPS[mapId];
-  const visibleObjects = renderableObjects(worldData);
+  const visibleObjects = renderableObjects(worldData, mapId);
   const storyObjects = mapStoryObjects(
     mapId,
     story,
@@ -1264,6 +1230,27 @@ export function OverworldGame({
           candidate !== undefined,
       );
 
+    if (!object) {
+      for (const { x, y } of interactionPoints) {
+        const pages = worldSignAt(
+          worldDataRef.current,
+          mapIdRef.current,
+          x,
+          y,
+        );
+        if (pages) {
+          showDialogue(
+            onDialogueInteraction({
+              kind: "pages",
+              id: `world-sign:${mapIdRef.current}:${x},${y}`,
+              pages,
+            }),
+          );
+          return;
+        }
+      }
+    }
+
     if (object) {
       showDialogue(
         onDialogueInteraction(
@@ -1334,7 +1321,8 @@ export function OverworldGame({
         mapIdRef.current = nextMapId;
         layoutRef.current = nextLayout;
         worldObjectsRef.current =
-          renderableObjects(nextWorldData);
+          renderableObjects(nextWorldData, nextMapId);
+        worldDataRef.current = nextWorldData;
         storyObjectsRef.current = mapStoryObjects(
           nextMapId,
           storyRef.current,

@@ -51,6 +51,12 @@ export type WorldMapData = {
   name: string;
   music: number | null;
   objects: WorldObject[];
+  bg_events?: Array<{
+    index: number;
+    x: number;
+    y: number;
+    kind: number;
+  }>;
   warps: Array<{
     index: number;
     x: number;
@@ -421,7 +427,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 2",
     layoutUrl: "/game-assets/maps/route-2/layout.json",
     previewUrl: "/game-assets/maps/route-2/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-2/world.json",
     spawn: { x: 9, y: 79 },
     fallbackMusicId: 291,
     tilesets: {
@@ -434,7 +440,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Pewter City",
     layoutUrl: "/game-assets/maps/pewter-city/layout.json",
     previewUrl: "/game-assets/maps/pewter-city/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/pewter-city/world.json",
     spawn: { x: 21, y: 39 },
     fallbackMusicId: 314,
     tilesets: {
@@ -447,7 +453,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 3",
     layoutUrl: "/game-assets/maps/route-3/layout.json",
     previewUrl: "/game-assets/maps/route-3/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-3/world.json",
     spawn: { x: 0, y: 10 },
     fallbackMusicId: 293,
     tilesets: {
@@ -460,7 +466,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 4",
     layoutUrl: "/game-assets/maps/route-4/layout.json",
     previewUrl: "/game-assets/maps/route-4/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-4/world.json",
     spawn: { x: 11, y: 19 },
     fallbackMusicId: 293,
     tilesets: {
@@ -473,7 +479,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Cerulean City",
     layoutUrl: "/game-assets/maps/cerulean-city/layout.json",
     previewUrl: "/game-assets/maps/cerulean-city/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/cerulean-city/world.json",
     spawn: { x: 0, y: 13 },
     fallbackMusicId: 308,
     tilesets: {
@@ -486,7 +492,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 24",
     layoutUrl: "/game-assets/maps/route-24/layout.json",
     previewUrl: "/game-assets/maps/route-24/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-24/world.json",
     spawn: { x: 11, y: 39 },
     fallbackMusicId: 292,
     tilesets: {
@@ -499,7 +505,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 25",
     layoutUrl: "/game-assets/maps/route-25/layout.json",
     previewUrl: "/game-assets/maps/route-25/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-25/world.json",
     spawn: { x: 0, y: 10 },
     fallbackMusicId: 292,
     tilesets: {
@@ -512,7 +518,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Sea Cottage",
     layoutUrl: "/game-assets/maps/sea-cottage/layout.json",
     previewUrl: "/game-assets/maps/sea-cottage/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/sea-cottage/world.json",
     spawn: { x: 7, y: 8 },
     fallbackMusicId: 308,
     tilesets: {
@@ -525,7 +531,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Burgled House",
     layoutUrl: "/game-assets/maps/cerulean-house2/layout.json",
     previewUrl: "/game-assets/maps/cerulean-house2/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/cerulean-house2/world.json",
     spawn: { x: 3, y: 6 },
     fallbackMusicId: 308,
     tilesets: {
@@ -538,7 +544,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 5",
     layoutUrl: "/game-assets/maps/route-5/layout.json",
     previewUrl: "/game-assets/maps/route-5/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-5/world.json",
     spawn: { x: 24, y: 0 },
     fallbackMusicId: 293,
     tilesets: {
@@ -553,7 +559,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       "/game-assets/maps/underground-path-north-entrance/layout.json",
     previewUrl:
       "/game-assets/maps/underground-path-north-entrance/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/underground-path-north-entrance/world.json",
     spawn: { x: 6, y: 7 },
     fallbackMusicId: 314,
     tilesets: {
@@ -568,7 +574,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       "/game-assets/maps/underground-path-tunnel/layout.json",
     previewUrl:
       "/game-assets/maps/underground-path-tunnel/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/underground-path-tunnel/world.json",
     spawn: { x: 4, y: 4 },
     fallbackMusicId: 291,
     tilesets: {
@@ -583,7 +589,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       "/game-assets/maps/underground-path-south-entrance/layout.json",
     previewUrl:
       "/game-assets/maps/underground-path-south-entrance/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/underground-path-south-entrance/world.json",
     spawn: { x: 6, y: 7 },
     fallbackMusicId: 314,
     tilesets: {
@@ -596,7 +602,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 6",
     layoutUrl: "/game-assets/maps/route-6/layout.json",
     previewUrl: "/game-assets/maps/route-6/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-6/world.json",
     spawn: { x: 19, y: 14 },
     fallbackMusicId: 293,
     tilesets: {
@@ -609,7 +615,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Vermilion City",
     layoutUrl: "/game-assets/maps/vermilion-city/layout.json",
     previewUrl: "/game-assets/maps/vermilion-city/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/vermilion-city/world.json",
     spawn: { x: 24, y: 0 },
     fallbackMusicId: 313,
     tilesets: {
@@ -622,7 +628,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "S.S. Anne",
     layoutUrl: "/game-assets/maps/ss-anne-exterior/layout.json",
     previewUrl: "/game-assets/maps/ss-anne-exterior/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/ss-anne-exterior/world.json",
     spawn: { x: 32, y: 6 },
     fallbackMusicId: 304,
     tilesets: {
@@ -635,7 +641,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "S.S. Anne 1F",
     layoutUrl: "/game-assets/maps/ss-anne-1f-corridor/layout.json",
     previewUrl: "/game-assets/maps/ss-anne-1f-corridor/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/ss-anne-1f-corridor/world.json",
     spawn: { x: 19, y: 1 },
     fallbackMusicId: 304,
     tilesets: {
@@ -648,7 +654,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "S.S. Anne 2F",
     layoutUrl: "/game-assets/maps/ss-anne-2f-corridor/layout.json",
     previewUrl: "/game-assets/maps/ss-anne-2f-corridor/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/ss-anne-2f-corridor/world.json",
     spawn: { x: 2, y: 3 },
     fallbackMusicId: 304,
     tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
@@ -658,7 +664,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "S.S. Anne 3F",
     layoutUrl: "/game-assets/maps/ss-anne-3f-corridor/layout.json",
     previewUrl: "/game-assets/maps/ss-anne-3f-corridor/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/ss-anne-3f-corridor/world.json",
     spawn: { x: 18, y: 3 },
     fallbackMusicId: 304,
     tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
@@ -668,7 +674,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "S.S. Anne Deck",
     layoutUrl: "/game-assets/maps/ss-anne-deck/layout.json",
     previewUrl: "/game-assets/maps/ss-anne-deck/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/ss-anne-deck/world.json",
     spawn: { x: 16, y: 10 },
     fallbackMusicId: 304,
     tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
@@ -678,7 +684,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "S.S. Anne Captain's Office",
     layoutUrl: "/game-assets/maps/ss-anne-captains-office/layout.json",
     previewUrl: "/game-assets/maps/ss-anne-captains-office/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/ss-anne-captains-office/world.json",
     spawn: { x: 3, y: 6 },
     fallbackMusicId: 304,
     tilesets: { primary: GENERAL_TILESET, secondary: SS_ANNE_TILESET },
@@ -688,7 +694,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Vermilion Pokémon Center",
     layoutUrl: "/game-assets/maps/vermilion-pokemon-center/layout.json",
     previewUrl: "/game-assets/maps/vermilion-pokemon-center/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/vermilion-pokemon-center/world.json",
     spawn: { x: 7, y: 7 },
     fallbackMusicId: 303,
     tilesets: {
@@ -701,7 +707,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Vermilion Poké Mart",
     layoutUrl: "/game-assets/maps/vermilion-mart/layout.json",
     previewUrl: "/game-assets/maps/vermilion-mart/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/vermilion-mart/world.json",
     spawn: { x: 4, y: 6 },
     fallbackMusicId: 303,
     tilesets: {
@@ -714,7 +720,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Vermilion Gym",
     layoutUrl: "/game-assets/maps/vermilion-gym/layout.json",
     previewUrl: "/game-assets/maps/vermilion-gym/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/vermilion-gym/world.json",
     spawn: { x: 5, y: 18 },
     fallbackMusicId: 275,
     tilesets: {
@@ -727,7 +733,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Cerulean Pokémon Center",
     layoutUrl: "/game-assets/maps/cerulean-pokemon-center/layout.json",
     previewUrl: "/game-assets/maps/cerulean-pokemon-center/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/cerulean-pokemon-center/world.json",
     spawn: { x: 7, y: 7 },
     fallbackMusicId: 303,
     tilesets: {
@@ -740,7 +746,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Cerulean Poké Mart",
     layoutUrl: "/game-assets/maps/cerulean-mart/layout.json",
     previewUrl: "/game-assets/maps/cerulean-mart/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/cerulean-mart/world.json",
     spawn: { x: 4, y: 6 },
     fallbackMusicId: 303,
     tilesets: {
@@ -753,7 +759,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Cerulean Gym",
     layoutUrl: "/game-assets/maps/cerulean-gym/layout.json",
     previewUrl: "/game-assets/maps/cerulean-gym/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/cerulean-gym/world.json",
     spawn: { x: 8, y: 17 },
     fallbackMusicId: 275,
     tilesets: {
@@ -768,7 +774,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       "/game-assets/maps/route-4-pokemon-center/layout.json",
     previewUrl:
       "/game-assets/maps/route-4-pokemon-center/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-4-pokemon-center/world.json",
     spawn: { x: 7, y: 7 },
     fallbackMusicId: 303,
     tilesets: {
@@ -781,7 +787,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Mt. Moon 1F",
     layoutUrl: "/game-assets/maps/mt-moon-1f/layout.json",
     previewUrl: "/game-assets/maps/mt-moon-1f/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/mt-moon-1f/world.json",
     spawn: { x: 18, y: 37 },
     fallbackMusicId: 288,
     tilesets: { primary: GENERAL_TILESET, secondary: CAVE_TILESET },
@@ -791,7 +797,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Mt. Moon B1F",
     layoutUrl: "/game-assets/maps/mt-moon-b1f/layout.json",
     previewUrl: "/game-assets/maps/mt-moon-b1f/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/mt-moon-b1f/world.json",
     spawn: { x: 3, y: 3 },
     fallbackMusicId: 288,
     tilesets: { primary: GENERAL_TILESET, secondary: CAVE_TILESET },
@@ -801,7 +807,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Mt. Moon B2F",
     layoutUrl: "/game-assets/maps/mt-moon-b2f/layout.json",
     previewUrl: "/game-assets/maps/mt-moon-b2f/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/mt-moon-b2f/world.json",
     spawn: { x: 25, y: 21 },
     fallbackMusicId: 288,
     tilesets: { primary: GENERAL_TILESET, secondary: CAVE_TILESET },
@@ -811,7 +817,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Pewter Poké Mart",
     layoutUrl: "/game-assets/maps/pewter-mart/layout.json",
     previewUrl: "/game-assets/maps/pewter-mart/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/pewter-mart/world.json",
     spawn: { x: 4, y: 6 },
     fallbackMusicId: 303,
     tilesets: {
@@ -824,7 +830,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Pewter Pokémon Center",
     layoutUrl: "/game-assets/maps/pewter-pokemon-center/layout.json",
     previewUrl: "/game-assets/maps/pewter-pokemon-center/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/pewter-pokemon-center/world.json",
     spawn: { x: 7, y: 7 },
     fallbackMusicId: 303,
     tilesets: {
@@ -837,7 +843,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Pewter Gym",
     layoutUrl: "/game-assets/maps/pewter-gym/layout.json",
     previewUrl: "/game-assets/maps/pewter-gym/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/pewter-gym/world.json",
     spawn: { x: 6, y: 13 },
     fallbackMusicId: 275,
     tilesets: {
@@ -850,7 +856,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Route 22",
     layoutUrl: "/game-assets/maps/route-22/layout.json",
     previewUrl: "/game-assets/maps/route-22/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-22/world.json",
     spawn: { x: 47, y: 6 },
     fallbackMusicId: 293,
     tilesets: {
@@ -865,7 +871,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       "/game-assets/maps/route-2-forest-south-entrance/layout.json",
     previewUrl:
       "/game-assets/maps/route-2-forest-south-entrance/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-2-forest-south-entrance/world.json",
     spawn: { x: 7, y: 9 },
     fallbackMusicId: 314,
     tilesets: {
@@ -878,7 +884,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Viridian Forest",
     layoutUrl: "/game-assets/maps/viridian-forest/layout.json",
     previewUrl: "/game-assets/maps/viridian-forest/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/viridian-forest/world.json",
     spawn: { x: 29, y: 61 },
     fallbackMusicId: 287,
     tilesets: {
@@ -893,7 +899,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       "/game-assets/maps/route-2-forest-north-entrance/layout.json",
     previewUrl:
       "/game-assets/maps/route-2-forest-north-entrance/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/route-2-forest-north-entrance/world.json",
     spawn: { x: 7, y: 9 },
     fallbackMusicId: 314,
     tilesets: {
@@ -932,7 +938,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
     label: "Viridian Poké Mart",
     layoutUrl: "/game-assets/maps/viridian-mart/layout.json",
     previewUrl: "/game-assets/maps/viridian-mart/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/viridian-mart/world.json",
     spawn: { x: 4, y: 6 },
     fallbackMusicId: 303,
     tilesets: {
@@ -947,7 +953,7 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
       "/game-assets/maps/viridian-pokemon-center/layout.json",
     previewUrl:
       "/game-assets/maps/viridian-pokemon-center/preview.png",
-    worldUrl: null,
+    worldUrl: "/game-assets/maps/viridian-pokemon-center/world.json",
     spawn: { x: 7, y: 7 },
     fallbackMusicId: 303,
     tilesets: {
