@@ -44,6 +44,7 @@ import { BattleVfx } from "@/components/BattleVfx";
 import { t, useLocale } from "@/lib/i18n";
 import {
   localizedMoveName,
+  localizeLogEntry,
   localizedSpeciesName,
 } from "@/lib/i18n/names";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
@@ -1583,7 +1584,11 @@ export function FirstBattle({
   const menuPlacement =
     menuPosition.y < state.height / 2 ? "below" : "above";
   const latestMessage =
-    notice ?? state.log[state.log.length - 1] ?? "";
+    notice ??
+    localizeLogEntry(
+      state.logData[state.logData.length - 1],
+      state.log[state.log.length - 1] ?? "",
+    );
 
   const battleTilePixels =
     TILE_SIZE * battleZoom;

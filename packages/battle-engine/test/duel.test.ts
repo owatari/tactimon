@@ -1899,7 +1899,7 @@ describe("Cerulean rival moves", () => {
     expect(result.state.status).toBe("active");
     expect(
       result.state.log.some((entry) =>
-        entry.includes("não pode fugir de uma batalha de Treinador"),
+        entry.includes("can't flee from a Trainer battle"),
       ),
     ).toBe(true);
   });

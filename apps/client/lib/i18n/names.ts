@@ -1,5 +1,5 @@
 import { DUEL_MOVES, speciesDisplayName } from "@tactimon/battle-engine";
-import { getLocale, type Locale } from "./index";
+import { getLocale, t, type Locale, type TParams } from "./index";
 import { MOVE_NAMES, SPECIES_NAMES } from "./namesData";
 
 /** Localized species name (pt/es keep the English name, fr/zh have their own). */
@@ -54,6 +54,15 @@ function swapsFor(locale: Locale): NameSwap[] {
     swapCache.set(locale, swaps);
   }
   return swaps;
+}
+
+/** A structured engine log line, localized (template + params, names swapped). */
+export function localizeLogEntry(
+  entry: { template: string; params: Record<string, string | number> } | undefined,
+  fallback: string,
+): string {
+  if (!entry) return localizeKnownNames(fallback);
+  return localizeKnownNames(t(entry.template, entry.params as TParams));
 }
 
 /**

@@ -45,3 +45,20 @@ describe("localized names", () => {
     );
   });
 });
+
+describe("battle log localization", () => {
+  it("translates the template and swaps the names", async () => {
+    const { setLocale } = await import("../apps/client/lib/i18n");
+    const { localizeLogEntry } = await import("../apps/client/lib/i18n/names");
+    const entry = {
+      template: "{target} fainted.",
+      params: { target: "Bulbasaur" },
+    };
+    setLocale("fr", false);
+    expect(localizeLogEntry(entry, "x")).toContain("Bulbizarre");
+    setLocale("zh", false);
+    expect(localizeLogEntry(entry, "x")).toContain("妙蛙种子");
+    setLocale("en", false);
+    expect(localizeLogEntry(entry, "x")).toBe("Bulbasaur fainted.");
+  });
+});

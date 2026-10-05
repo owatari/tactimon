@@ -562,6 +562,39 @@ export interface DuelState {
   } | null;
   units: DuelUnit[];
   log: string[];
+  logData: DuelLogEntry[];
+}
+
+export type DuelLogEntry = {
+  template: string;
+  params: Record<string, string | number>;
+};
+
+type LogLine = readonly [
+  template: string,
+  params: Record<string, string | number>,
+];
+
+function L(
+  template: string,
+  params: Record<string, string | number> = {},
+): LogLine {
+  return [template, params];
+}
+
+function buildLog(lines: (LogLine | null)[]): {
+  log: string[];
+  logData: DuelLogEntry[];
+} {
+  const logData = lines
+    .filter((line): line is LogLine => line !== null)
+    .map(([template, params]) => ({ template, params }));
+  return {
+    log: logData.map((entry) =>
+      interpolateLog(entry.template, entry.params),
+    ),
+    logData,
+  };
 }
 
 export type DuelAction =
@@ -4009,15 +4042,15 @@ export function createTrainerDuel(
     winner: null,
     captureResult: null,
     units,
-    log: [
-      `${trainerName} desafia você!`,
+    ...buildLog([
+      L("{trainer} challenges you!", { trainer: trainerName }),
       players.length > 1
-        ? `${players.length} Pokémon do seu time entram na arena.`
-        : `${players[0].displayName} entra na arena.`,
+        ? L("{n} Pokémon from your team enter the arena.", { n: players.length })
+        : L("{actor} enters the arena.", { actor: players[0].displayName }),
       rivals.length > 1
-        ? `${trainerName} coloca ${rivals.length} Pokémon na arena.`
-        : `${rivals[0].displayName} entra pelo lado rival.`,
-    ],
+        ? L("{trainer} sends out {n} Pokémon.", { trainer: trainerName, n: rivals.length })
+        : L("{actor} enters from the rival side.", { actor: rivals[0].displayName }),
+    ]),
   };
   activateNextTurnUnit(state, 0);
   return state;
@@ -4187,14 +4220,15 @@ export function createWildDuel(
     winner: null,
     captureResult: null,
     units,
-    log: [
+    ...buildLog([
       wilds.length === 1
-        ? `Um ${wilds[0].displayName} selvagem apareceu!`
-        : `${wilds.length} Pokémon selvagens cercaram seu time!`,
+        ? L("A wild {target} appeared!", { target: wilds[0].displayName })
+        : L("{n} wild Pokémon surrounded your team!", { n: wilds.length }),
       players.length > 1
-        ? `${players.length} Pokémon do seu time entram na arena.`
-        : `${players[0].displayName} entra na arena.`,
-    ],
+        ? L("{n} Pokémon from your team enter the arena.", { n: players.length })
+        : L("{actor} enters the arena.", { actor: players[0].displayName }),
+
+    ]),
   };
   activateNextTurnUnit(state, 0);
   return state;
@@ -4363,11 +4397,34 @@ function cloneState(state: DuelState): DuelState {
       disableTurnsRemaining: unit.disableTurnsRemaining,
     })),
     log: [...state.log],
+    logData: state.logData.map((entry) => ({
+      template: entry.template,
+      params: { ...entry.params },
+    })),
   };
 }
 
-function appendLog(state: DuelState, message: string): void {
-  state.log = [...state.log, message].slice(-12);
+function interpolateLog(
+  template: string,
+  params: Record<string, string | number>,
+): string {
+  return template.replace(/\{(\w+)\}/g, (match, key: string) =>
+    key in params ? String(params[key]) : match,
+  );
+}
+
+function appendLog(
+  state: DuelState,
+  template: string | LogLine,
+  params: Record<string, string | number> = {},
+): void {
+  const [tpl, prm] =
+    typeof template === "string" ? [template, params] : template;
+  state.log = [...state.log, interpolateLog(tpl, prm)].slice(-12);
+  state.logData = [
+    ...state.logData,
+    { template: tpl, params: { ...prm } },
+  ].slice(-12);
 }
 
 function inBounds(
@@ -4755,16 +4812,16 @@ function paralysisBlocksMove(
 function statusAppliedMessage(
   target: DuelUnit,
   status: Exclude<DuelMajorStatus, null>,
-): string {
+): LogLine {
   switch (status) {
     case "poison":
-      return `${target.displayName} foi envenenado.`;
+      return L("{target} was poisoned.", { target: target.displayName });
     case "paralysis":
-      return `${target.displayName} ficou paralisado.`;
+      return L("{target} was paralyzed.", { target: target.displayName });
     case "burn":
-      return `${target.displayName} ficou queimado.`;
+      return L("{target} was burned.", { target: target.displayName });
     case "sleep":
-      return `${target.displayName} adormeceu.`;
+      return L("{target} fell asleep.", { target: target.displayName });
   }
 }
 
@@ -4790,13 +4847,13 @@ function applyEndTurnMajorStatus(
 
   appendLog(
     state,
-    `${statusName} causou ${damage} de dano em ${current.displayName}.`,
+    "{status} dealt {damage} damage to {target}.", { status: statusName, damage, target: current.displayName },
   );
 
   if (current.hp <= 0) {
     appendLog(
       state,
-      `${current.displayName} desmaiou por causa de ${statusName}.`,
+      "{target} fainted from {status}.", { target: current.displayName, status: statusName },
     );
   }
 }
@@ -4826,7 +4883,7 @@ function tickRoundDisable(state: DuelState): void {
     unit.disabledMove = null;
     appendLog(
       state,
-      `${unit.displayName} pode usar ${DUEL_MOVES[disabledMove].name} novamente.`,
+      "{actor} can use {move} again.", { actor: unit.displayName, move: DUEL_MOVES[disabledMove].name },
     );
   }
 }
@@ -4862,7 +4919,7 @@ function tickRoundFutureSight(state: DuelState): void {
     ) {
       appendLog(
         state,
-        `${move.name} não acertou ${target.displayName}.`,
+        "{move} didn't hit {target}.", { move: move.name, target: target.displayName },
       );
       continue;
     }
@@ -4877,13 +4934,13 @@ function tickRoundFutureSight(state: DuelState): void {
     );
     appendLog(
       state,
-      `${target.displayName} foi atingido por ${move.name}: ${damage} de dano.`,
+      "{target} was hit by {move}: {damage} damage.", { target: target.displayName, move: move.name, damage },
     );
 
     if (target.hp <= 0) {
       appendLog(
         state,
-        `${target.displayName} desmaiou.`,
+        "{target} fainted.", { target: target.displayName },
       );
     }
   }
@@ -4919,13 +4976,13 @@ function tickRoundWeather(state: DuelState): void {
   if (state.weatherTurnsRemaining <= 0) {
     state.weather = null;
     state.weatherTurnsRemaining = 0;
-    appendLog(state, "A chuva parou.");
+    appendLog(state, "The rain stopped.");
     return;
   }
 
   appendLog(
     state,
-    `A chuva continua. ${state.weatherTurnsRemaining} rounds restantes.`,
+    "It keeps raining. {n} rounds left.", { n: state.weatherTurnsRemaining },
   );
 }
 
@@ -4964,7 +5021,7 @@ function activateNextTurnUnit(
           next.sleepTurnsRemaining = 0;
           appendLog(
             state,
-            `${next.displayName} acordou!`,
+            "{actor} woke up!", { actor: next.displayName },
           );
         } else {
           next.sleepTurnsRemaining = remaining - 1;
@@ -4972,7 +5029,7 @@ function activateNextTurnUnit(
           next.mp = 0;
           appendLog(
             state,
-            `${next.displayName} está dormindo profundamente.`,
+            "{actor} is fast asleep.", { actor: next.displayName },
           );
           continue;
         }
@@ -4982,7 +5039,7 @@ function activateNextTurnUnit(
       state.turnIndex = nextIndex;
       appendLog(
         state,
-        `Turno de ${next.displayName}. AP ${next.ap}, MP ${next.mp}.`,
+        "{actor}'s turn. AP {ap}, MP {mp}.", { actor: next.displayName, ap: next.ap, mp: next.mp },
       );
       return true;
     }
@@ -5266,7 +5323,7 @@ function releaseChargedMove(
     actor.mp = 0;
     appendLog(
       state,
-      `${actor.displayName} perdeu o alvo do golpe carregado.`,
+      "{actor} lost the target of the charged attack.", { actor: actor.displayName },
     );
     resolveTurnEnd(state, actor);
     return {
@@ -5288,7 +5345,7 @@ function releaseChargedMove(
     actor.mp = 0;
     appendLog(
       state,
-      `${actor.displayName} liberou ${move.name}, mas ${target.displayName} saiu do alcance.`,
+      "{actor} released {move}, but {target} moved out of range.", { actor: actor.displayName, move: move.name, target: target.displayName },
     );
     resolveTurnEnd(state, actor);
     return {
@@ -5307,7 +5364,7 @@ function releaseChargedMove(
     actor.mp = 0;
     appendLog(
       state,
-      `${actor.displayName} está paralisado e não conseguiu liberar ${move.name}.`,
+      "{actor} is paralyzed and couldn't release {move}.", { actor: actor.displayName, move: move.name },
     );
     resolveTurnEnd(state, actor);
     return {
@@ -5323,7 +5380,7 @@ function releaseChargedMove(
   if (!moveAccuracySucceeds(state, actor, target, move)) {
     appendLog(
       state,
-      `${actor.displayName} liberou ${move.name}, mas errou.`,
+      "{actor} released {move}, but missed.", { actor: actor.displayName, move: move.name },
     );
     resolveTurnEnd(state, actor);
     return {
@@ -5353,24 +5410,24 @@ function releaseChargedMove(
   );
   appendLog(
     state,
-    `${actor.displayName} liberou ${move.name}: ${damageDealt} de dano.`,
+    "{actor} released {move}: {damage} damage.", { actor: actor.displayName, move: move.name, damage: damageDealt },
   );
 
   if (damageResult.typeEffectiveness === 0) {
     appendLog(
       state,
-      `Não afeta ${target.displayName}.`,
+      "It doesn't affect {target}.", { target: target.displayName },
     );
   } else if (damageResult.typeEffectiveness > 1) {
-    appendLog(state, "É super efetivo!");
+    appendLog(state, "It's super effective!");
   } else if (damageResult.typeEffectiveness < 1) {
-    appendLog(state, "Não é muito efetivo.");
+    appendLog(state, "It's not very effective.");
   }
 
   if (target.hp <= 0) {
     appendLog(
       state,
-      `${target.displayName} desmaiou.`,
+      "{target} fainted.", { target: target.displayName },
     );
   }
 
@@ -5489,8 +5546,8 @@ function resolveAreaDamageAction(
   appendLog(
     state,
     targetIds.length > 1
-      ? `${actor.displayName} usou ${move.name} e atingiu uma área.`
-      : `${actor.displayName} usou ${move.name}.`,
+      ? L("{actor} used {move} and hit an area.", { actor: actor.displayName, move: move.name })
+      : L("{actor} used {move}.", { actor: actor.displayName, move: move.name }),
   );
 
   for (const targetId of targetIds) {
@@ -5511,7 +5568,7 @@ function resolveAreaDamageAction(
     ) {
       appendLog(
         state,
-        `${move.name} errou ${target.displayName}.`,
+        "{move} missed {target}.", { move: move.name, target: target.displayName },
       );
       results.push({
         targetId: target.id,
@@ -5578,13 +5635,13 @@ function resolveAreaDamageAction(
 
     appendLog(
       state,
-      `${target.displayName} recebeu ${damageDealt} de dano.`,
+      "{target} took {damage} damage.", { target: target.displayName, damage: damageDealt },
     );
 
     if (target.hp <= 0) {
       appendLog(
         state,
-        `${target.displayName} desmaiou.`,
+        "{target} fainted.", { target: target.displayName },
       );
     }
 
@@ -5683,7 +5740,7 @@ export function applyDuelAction(
     if (state.battleKind === "trainer") {
       appendLog(
         state,
-        "Não é possível fugir de uma batalha de treinador.",
+        "You can't flee from a trainer battle.",
       );
       return {
         state,
@@ -5696,7 +5753,7 @@ export function applyDuelAction(
     state.escaped = true;
     state.escapedBy = actor.side;
     state.winner = null;
-    appendLog(state, `${actor.displayName} escapou da batalha.`);
+    appendLog(state, "{actor} escaped from the battle.", { actor: actor.displayName });
     return { state, accepted: true };
   }
 
@@ -5761,8 +5818,8 @@ export function applyDuelAction(
       appendLog(
         state,
         resolution.success
-          ? `${target.displayName} foi capturado!`
-          : `${target.displayName} escapou da Poké Ball e fugiu.`,
+          ? L("{target} was caught!", { target: target.displayName })
+          : L("{target} broke free from the Poké Ball and fled.", { target: target.displayName }),
       );
       return {
         state,
@@ -5790,7 +5847,7 @@ export function applyDuelAction(
       target.status = null;
       target.sleepTurnsRemaining = 0;
       actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
-      appendLog(state, `${target.displayName} foi curado com ${item.name}.`);
+      appendLog(state, "{target} was healed with {item}.", { target: target.displayName, item: item.name });
       resolveTurnEnd(state, actor);
       return {
         state,
@@ -5810,7 +5867,7 @@ export function applyDuelAction(
     const healed = Math.min(item.heal, target.maxHp - target.hp);
     target.hp += healed;
     actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
-    appendLog(state, `${target.displayName} recuperou ${healed} HP com ${item.name}.`);
+    appendLog(state, "{target} recovered {n} HP with {item}.", { target: target.displayName, n: healed, item: item.name });
     resolveTurnEnd(state, actor);
     return {
       state,
@@ -5859,7 +5916,7 @@ export function applyDuelAction(
 
     appendLog(
       state,
-      `${actor.displayName} se moveu ${cost} tile${cost === 1 ? "" : "s"}.`,
+      "{actor} moved {n} tile(s).", { actor: actor.displayName, n: cost },
     );
 
     return {
@@ -5964,7 +6021,7 @@ export function applyDuelAction(
   if (paralysisBlocksMove(state, actor)) {
     appendLog(
       state,
-      `${actor.displayName} está paralisado e não conseguiu atacar.`,
+      "{actor} is paralyzed and couldn't attack.", { actor: actor.displayName },
     );
     resolveTurnEnd(state, actor);
     return {
@@ -5981,7 +6038,7 @@ export function applyDuelAction(
     if (target.futureSight) {
       appendLog(
         state,
-        `${move.name} falhou: já existe um ataque futuro mirando ${target.displayName}.`,
+        "{move} failed: a future attack is already targeting {target}.", { move: move.name, target: target.displayName },
       );
       return {
         state,
@@ -6002,7 +6059,7 @@ export function applyDuelAction(
     };
     appendLog(
       state,
-      `${actor.displayName} previu um ataque futuro contra ${target.displayName}.`,
+      "{actor} foresaw an attack against {target}.", { actor: actor.displayName, target: target.displayName },
     );
     return {
       state,
@@ -6037,7 +6094,7 @@ export function applyDuelAction(
     actor.mp = 0;
     appendLog(
       state,
-      `${actor.displayName} absorveu luz para ${move.name}!`,
+      "{actor} absorbed light for {move}!", { actor: actor.displayName, move: move.name },
     );
     resolveTurnEnd(state, actor);
     return {
@@ -6080,8 +6137,8 @@ export function applyDuelAction(
       state,
       move.effect === "ohko" &&
         actor.level < target.level
-        ? `${move.name} falhou: ${target.displayName} tem nível maior.`
-        : `${actor.displayName} usou ${move.name}, mas errou.`,
+        ? L("{move} failed: {target} has a higher level.", { move: move.name, target: target.displayName })
+        : L("{actor} used {move}, but missed.", { actor: actor.displayName, move: move.name }),
     );
     return {
       state,
@@ -6155,24 +6212,24 @@ export function applyDuelAction(
 
     appendLog(
       state,
-      `${actor.displayName} usou ${move.name}: ${damageDealt} de dano.`,
+      "{actor} used {move}: {damage} damage.", { actor: actor.displayName, move: move.name, damage: damageDealt },
     );
     if (hitCount !== undefined) {
       appendLog(
         state,
-        `${move.name} acertou ${hitCount} vezes.`,
+        "{move} hit {n} times.", { move: move.name, n: hitCount },
       );
     }
 
     if (typeEffectiveness === 0) {
       appendLog(
         state,
-        `Não afeta ${target.displayName}.`,
+        "It doesn't affect {target}.", { target: target.displayName },
       );
     } else if (typeEffectiveness > 1) {
-      appendLog(state, "É super efetivo!");
+      appendLog(state, "It's super effective!");
     } else if (typeEffectiveness < 1) {
-      appendLog(state, "Não é muito efetivo.");
+      appendLog(state, "It's not very effective.");
     }
 
     if (
@@ -6226,7 +6283,7 @@ export function applyDuelAction(
       });
       appendLog(
         state,
-        `${move.name} reduziu a Special Defense de ${target.displayName}.`,
+        "{move} lowered {target}'s Special Defense.", { move: move.name, target: target.displayName },
       );
     }
 
@@ -6246,7 +6303,7 @@ export function applyDuelAction(
       });
       appendLog(
         state,
-        `${move.name} reduziu a Speed de ${target.displayName}.`,
+        "{move} lowered {target}'s Speed.", { move: move.name, target: target.displayName },
       );
     }
 
@@ -6263,7 +6320,7 @@ export function applyDuelAction(
       actor.hp += healed;
       appendLog(
         state,
-        `${actor.displayName} drenou ${healed} HP com ${move.name}.`,
+        "{actor} drained {n} HP with {move}.", { actor: actor.displayName, n: healed, move: move.name },
       );
     }
 
@@ -6283,14 +6340,14 @@ export function applyDuelAction(
       recoilFainted = actor.hp <= 0;
       appendLog(
         state,
-        `${move.name} causou ${recoil} de recoil em ${actor.displayName}.`,
+        "{move} dealt {n} recoil damage to {actor}.", { move: move.name, n: recoil, actor: actor.displayName },
       );
     }
 
     if (target.hp <= 0) {
       appendLog(
         state,
-        `${target.displayName} desmaiou.`,
+        "{target} fainted.", { target: target.displayName },
       );
 
       if (!sideHasLivingUnit(state, target.side)) {
@@ -6302,7 +6359,7 @@ export function applyDuelAction(
     if (recoilFainted) {
       appendLog(
         state,
-        `${actor.displayName} desmaiou com o recoil de ${move.name}.`,
+        "{actor} fainted from the recoil of {move}.", { actor: actor.displayName, move: move.name },
       );
 
       const actorSideAlive = sideHasLivingUnit(
@@ -6334,13 +6391,13 @@ export function applyDuelAction(
       actor.hp = Math.max(0, actor.hp - recoil);
       appendLog(
         state,
-        `Struggle causou ${recoil} de recoil em ${actor.displayName}.`,
+        "Struggle dealt {n} recoil damage to {actor}.", { n: recoil, actor: actor.displayName },
       );
 
       if (actor.hp <= 0) {
         appendLog(
           state,
-          `${actor.displayName} desmaiou com o recoil de Struggle.`,
+          "{actor} fainted from the recoil of Struggle.", { actor: actor.displayName },
         );
 
         const actorSideAlive = sideHasLivingUnit(
@@ -6395,7 +6452,7 @@ export function applyDuelAction(
     } else {
       appendLog(
         state,
-        `${move.name} não teve efeito em ${target.displayName}.`,
+        "{move} had no effect on {target}.", { move: move.name, target: target.displayName },
       );
     }
   } else if (
@@ -6416,8 +6473,8 @@ export function applyDuelAction(
     appendLog(
       state,
       move.effect === "attack-down-2"
-        ? `${move.name} reduziu muito o Attack de ${target.displayName}.`
-        : `${move.name} reduziu o Attack de ${target.displayName}.`,
+        ? L("{move} harshly lowered {target}'s Attack.", { move: move.name, target: target.displayName })
+        : L("{move} lowered {target}'s Attack.", { move: move.name, target: target.displayName }),
     );
   } else if (move.effect === "defense-down") {
     const before = target.defenseStage;
@@ -6431,7 +6488,7 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} reduziu a Defense de ${target.displayName}.`,
+      "{move} lowered {target}'s Defense.", { move: move.name, target: target.displayName },
     );
   } else if (move.effect === "defense-down-2") {
     const before = target.defenseStage;
@@ -6445,7 +6502,7 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} reduziu muito a Defense de ${target.displayName}.`,
+      "{move} harshly lowered {target}'s Defense.", { move: move.name, target: target.displayName },
     );
   } else if (move.effect === "defense-up") {
     const before = target.defenseStage;
@@ -6459,7 +6516,7 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} aumentou a Defense de ${target.displayName}.`,
+      "{move} raised {target}'s Defense.", { move: move.name, target: target.displayName },
     );
   } else if (move.effect === "special-attack-up") {
     const before = actor.specialAttackStage;
@@ -6473,7 +6530,7 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} aumentou o Special Attack de ${actor.displayName}.`,
+      "{move} raised {actor}'s Special Attack.", { move: move.name, actor: actor.displayName },
     );
   } else if (move.effect === "disable") {
     const lastMove = target.lastMoveUsed;
@@ -6489,7 +6546,7 @@ export function applyDuelAction(
     ) {
       appendLog(
         state,
-        `${move.name} falhou contra ${target.displayName}.`,
+        "{move} failed against {target}.", { move: move.name, target: target.displayName },
       );
     } else {
       const turns = rollDisableTurns(
@@ -6502,7 +6559,7 @@ export function applyDuelAction(
       target.disableTurnsRemaining = turns;
       appendLog(
         state,
-        `${DUEL_MOVES[lastMove].name} de ${target.displayName} foi desabilitado por ${turns} rounds.`,
+        "{target}'s {move} was disabled for {n} rounds.", { move: DUEL_MOVES[lastMove].name, target: target.displayName, n: turns },
       );
     }
   } else if (move.effect === "calm-mind") {
@@ -6534,7 +6591,7 @@ export function applyDuelAction(
     );
     appendLog(
       state,
-      `${move.name} aumentou o Special Attack e a Special Defense de ${actor.displayName}.`,
+      "{move} raised {actor}'s Special Attack and Special Defense.", { move: move.name, actor: actor.displayName },
     );
   } else if (move.effect === "accuracy-down") {
     const before = target.accuracyStage;
@@ -6548,7 +6605,7 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} reduziu a Accuracy de ${target.displayName}.`,
+      "{move} lowered {target}'s Accuracy.", { move: move.name, target: target.displayName },
     );
   } else if (move.effect === "evasion-up") {
     const before = actor.evasionStage;
@@ -6562,7 +6619,7 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} aumentou a Evasion de ${actor.displayName}.`,
+      "{move} raised {actor}'s Evasion.", { move: move.name, actor: actor.displayName },
     );
   } else if (move.effect === "evasion-down") {
     const before = target.evasionStage;
@@ -6576,7 +6633,7 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} reduziu a Evasion de ${target.displayName}.`,
+      "{move} lowered {target}'s Evasion.", { move: move.name, target: target.displayName },
     );
   } else if (
     move.effect === "speed-down" ||
@@ -6596,8 +6653,8 @@ export function applyDuelAction(
     appendLog(
       state,
       move.effect === "speed-down-2"
-        ? `${move.name} reduziu muito a Speed de ${target.displayName}.`
-        : `${move.name} reduziu a Speed de ${target.displayName}.`,
+        ? L("{move} harshly lowered {target}'s Speed.", { move: move.name, target: target.displayName })
+        : L("{move} lowered {target}'s Speed.", { move: move.name, target: target.displayName }),
     );
   } else if (move.effect === "speed-up-2") {
     const before = actor.speedStage;
@@ -6611,20 +6668,20 @@ export function applyDuelAction(
     });
     appendLog(
       state,
-      `${move.name} aumentou muito a Speed de ${actor.displayName}.`,
+      "{move} sharply raised {actor}'s Speed.", { move: move.name, actor: actor.displayName },
     );
   } else if (move.effect === "rain-dance") {
     if (state.weather === "rain") {
       appendLog(
         state,
-        `${move.name} falhou: já está chovendo.`,
+        "{move} failed: it's already raining.", { move: move.name },
       );
     } else {
       state.weather = "rain";
       state.weatherTurnsRemaining = 5;
       appendLog(
         state,
-        `${actor.displayName} usou ${move.name}. Começou a chover!`,
+        "{actor} used {move}. It started to rain!", { actor: actor.displayName, move: move.name },
       );
     }
   } else if (move.effect === "synthesis") {
@@ -6640,7 +6697,7 @@ export function applyDuelAction(
     actor.hp += healed;
     appendLog(
       state,
-      `${actor.displayName} recuperou ${healed} HP com ${move.name}.`,
+      "{actor} recovered {n} HP with {move}.", { actor: actor.displayName, n: healed, move: move.name },
     );
   } else if (move.effect === "heal-self") {
     const healed = Math.min(
@@ -6650,7 +6707,7 @@ export function applyDuelAction(
     actor.hp += healed;
     appendLog(
       state,
-      `${actor.displayName} recuperou ${healed} HP com ${move.name}.`,
+      "{actor} recovered {n} HP with {move}.", { actor: actor.displayName, n: healed, move: move.name },
     );
   } else if (move.effect === "teleport") {
     if (state.battleKind === "wild") {
@@ -6660,12 +6717,12 @@ export function applyDuelAction(
       state.winner = null;
       appendLog(
         state,
-        `${actor.displayName} usou ${move.name} e fugiu da batalha.`,
+        "{actor} used {move} and fled from the battle.", { actor: actor.displayName, move: move.name },
       );
     } else {
       appendLog(
         state,
-        `${actor.displayName} tentou usar ${move.name}, mas não pode fugir de uma batalha de Treinador.`,
+        "{actor} tried to use {move}, but can't flee from a Trainer battle.", { actor: actor.displayName, move: move.name },
       );
     }
   }
