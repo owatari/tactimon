@@ -1,4 +1,4 @@
-# Handoff — 2026-10-04-003-fullgame-menus-roadmap (task segue `running`)
+# Handoff — 2026-10-04-003-fullgame-menus-roadmap (arquivada; validação visual pendente)
 
 Feito (Fase A): menu Start FireRed (Esc/Tab/M): POKéMON (lista, SWITCH slots 2–6, Summary INFO/SKILLS/MOVES), BAG (ITEMS/KEY/BALLS + TMs/BERRIES reservados), TRAINER CARD (money, party, tempo, 8 badges), SAVE (flush de play time), OPTION (volume, mute, battle speed), EXIT. Pokédex aparece desabilitado ("Em breve").
 Roadmap: tasks B–E em `.claude/tasks/active/2026-10-05-00N-*` (planned; refazer plano com /new-task antes de executar).

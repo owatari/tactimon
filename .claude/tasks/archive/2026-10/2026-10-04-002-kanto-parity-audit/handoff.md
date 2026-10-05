@@ -1,4 +1,4 @@
-# Handoff — 2026-10-04-002-kanto-parity-audit (task segue `running`)
+# Handoff — 2026-10-04-002-kanto-parity-audit (arquivada; validação visual pendente)
 
 Feito: limpeza + lockfile; 46 itens/ocultos (bagItems); world.json + NPCs/placas pt-BR em todos os mapas; 42 interiores com warps gerados da ROM; +19 trainers (SS Anne, Mt. Moon, Pewter Gym) e Tentacool/Ponyta; estoque de Mart por cidade. Knowledge atualizado em `overworld-and-story.md`.
 
