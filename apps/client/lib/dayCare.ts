@@ -1,6 +1,6 @@
+import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import {
   grantExperiencePoints,
-  speciesDisplayName,
   type PokemonProgression,
 } from "@tactimon/battle-engine";
 import {

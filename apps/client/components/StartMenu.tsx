@@ -1,5 +1,7 @@
 "use client";
 
+import { localizedMoveName } from "@/lib/i18n/names";
+import { localizedSpeciesName as speciesDisplayName } from "@/lib/i18n/names";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DUEL_MOVES,
@@ -7,7 +9,6 @@ import {
   duelSpeciesTypes,
   isDuelSpeciesId,
   experienceProgress,
-  speciesDisplayName,
   type PokemonProgression,
 } from "@tactimon/battle-engine";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
@@ -718,7 +719,7 @@ export function StartMenu({
                         key={moveId}
                         className={index === bagUse.moveIndex ? "selected" : ""}
                       >
-                        {DUEL_MOVES[moveId].name} PP{" "}
+                        {localizedMoveName(moveId)} PP{" "}
                         {party[bagUse.partyIndex].movePp[moveId] ??
                           DUEL_MOVES[moveId].maxPp}
                         /{DUEL_MOVES[moveId].maxPp}
@@ -900,7 +901,7 @@ function SummaryMoves({ pokemon }: { pokemon: PokemonProgression }) {
             <span className={`start-menu-type ${move.type}`}>
               {t(move.type.toUpperCase())}
             </span>
-            <strong>{move.name.toUpperCase()}</strong>
+            <strong>{localizedMoveName(moveId).toUpperCase()}</strong>
             <em>
               PP {pp}/{move.maxPp}
             </em>

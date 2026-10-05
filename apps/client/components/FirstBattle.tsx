@@ -42,6 +42,10 @@ import {
 } from "@tactimon/battle-engine";
 import { BattleVfx } from "@/components/BattleVfx";
 import { t, useLocale } from "@/lib/i18n";
+import {
+  localizedMoveName,
+  localizedSpeciesName,
+} from "@/lib/i18n/names";
 import { PokemonBattleSprite } from "@/components/PokemonBattleSprite";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import {
@@ -606,7 +610,7 @@ export function FirstBattle({
         opponentName:
           encounter.kind === "trainer"
             ? encounter.trainerName ?? "Blue"
-            : rivals[0]?.displayName ?? "Pokémon",
+            : (rivals[0] ? localizedSpeciesName(rivals[0].species) : "Pokémon"),
         opponentCount: rivals.length,
         inventory: { ...state.items },
         playerHp: players.map((unit) => unit.hp),
@@ -1142,7 +1146,7 @@ export function FirstBattle({
       setState(result.state);
       flashNotice(
         t("{name} is absorbing light!", {
-          name: actor.displayName,
+          name: localizedSpeciesName(actor.species),
         }),
       );
       await wait(ATTACK_WINDUP_MS);
@@ -1176,7 +1180,7 @@ export function FirstBattle({
       showMoveFloaters(presentation, beforeState, result.state);
       flashNotice(
         t("{move} missed!", {
-          move: DUEL_MOVES[presentation.moveId].name,
+          move: localizedMoveName(presentation.moveId),
         }),
       );
       setUnitAnimation(actor.id, "idle");
@@ -1629,13 +1633,13 @@ export function FirstBattle({
       >
         <PokemonPortrait
           species={unit.species}
-          name={unit.displayName}
+          name={localizedSpeciesName(unit.species)}
         />
 
         <div className="combatant-hud-body">
           <div className="combatant-name-row">
             <div className="combatant-identity">
-              <strong>{unit.displayName}</strong>
+              <strong>{localizedSpeciesName(unit.species)}</strong>
               <span className="combatant-level">
                 Lv. {unit.level}
               </span>
@@ -1724,7 +1728,7 @@ export function FirstBattle({
                       count: rivalUnits.length,
                     })
                   : t("Wild {name}", {
-                      name: rival.displayName,
+                      name: localizedSpeciesName(rival.species),
                     })
                 : t("You vs. {name}", {
                     name: t(trainerName ?? ""),
@@ -1754,11 +1758,11 @@ export function FirstBattle({
                   ]
                     .filter(Boolean)
                     .join(" ")}
-                  title={`${index + 1}. ${unit.displayName}`}
+                  title={`${index + 1}. ${localizedSpeciesName(unit.species)}`}
                 >
                   <PokemonPortrait
                     species={unit.species}
-                    name={unit.displayName}
+                    name={localizedSpeciesName(unit.species)}
                     compact
                   />
                   <span>{index + 1}</span>
@@ -1774,7 +1778,7 @@ export function FirstBattle({
                 ? t("End")
                 : active
                   ? t("{name}'s turn", {
-                      name: active.displayName,
+                      name: localizedSpeciesName(active.species),
                     })
                   : t("Waiting")}
               {state.weather === "rain"
@@ -2059,7 +2063,7 @@ export function FirstBattle({
                       speed={battleSpeed}
                     />
                     <span className="duel-unit-label">
-                      {unit.displayName}
+                      {localizedSpeciesName(unit.species)}
                     </span>
                     {hoveredTargetId === unit.id &&
                       moveEffectiveness !== null && (
@@ -2323,7 +2327,7 @@ export function FirstBattle({
                             setCommand("move-target");
                           }}
                         >
-                          <strong>{move.name}</strong>
+                          <strong>{localizedMoveName(moveId)}</strong>
                           <span>
                             {move.apCost} AP ·{" "}
                             {moveId === "struggle"

@@ -1,10 +1,10 @@
+import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import {
   DUEL_MOVES,
   type DuelInventory,
   calculateDuelPokemonStats,
   evolveWithStone,
   grantRareCandy,
-  speciesDisplayName,
   type DuelMajorStatus,
   type PokemonProgression,
   type ProgressionReward,

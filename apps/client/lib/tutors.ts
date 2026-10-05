@@ -1,9 +1,9 @@
+import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import {
   DUEL_MOVES,
   duelSpeciesTypes,
   isDuelSpeciesId,
   resolveMoveLearning,
-  speciesDisplayName,
   type DuelMoveId,
   type PokemonProgression,
   type WildSpeciesId,

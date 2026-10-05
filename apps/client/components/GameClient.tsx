@@ -1,5 +1,6 @@
 "use client";
 
+import { localizedSpeciesName as speciesDisplayName } from "@/lib/i18n/names";
 import {
   useCallback,
   useEffect,
@@ -14,7 +15,6 @@ import {
   normalizeDuelMajorStatus,
   normalizeDuelMovePp,
   normalizeDuelSleepTurns,
-  speciesDisplayName,
   type DuelMajorStatus,
   type DuelMovePp,
   type DuelPokemonBuild,

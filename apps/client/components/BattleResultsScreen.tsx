@@ -1,10 +1,11 @@
 "use client";
 
+import { localizedMoveName } from "@/lib/i18n/names";
+import { localizedSpeciesName as speciesDisplayName } from "@/lib/i18n/names";
 import { useMemo, useState } from "react";
 import {
   DUEL_MOVES,
   experienceProgress,
-  speciesDisplayName,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
 import { PokemonEvolutionOverlay } from "@/components/PokemonEvolutionOverlay";
@@ -23,7 +24,7 @@ function moveNames(moveIds: readonly string[]): string {
   return moveIds
     .map(
       (moveId) =>
-        DUEL_MOVES[moveId as keyof typeof DUEL_MOVES]?.name ?? moveId,
+        localizedMoveName(moveId),
     )
     .join(", ");
 }

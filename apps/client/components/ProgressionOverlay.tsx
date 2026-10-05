@@ -1,11 +1,12 @@
 "use client";
 
+import { localizedMoveName } from "@/lib/i18n/names";
+import { localizedSpeciesName as speciesDisplayName } from "@/lib/i18n/names";
 import { useMemo, useState } from "react";
 import {
   DUEL_MOVES,
   experienceProgress,
   resolveMoveLearning,
-  speciesDisplayName,
   type PokemonProgression,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
@@ -150,7 +151,7 @@ export function ProgressionOverlay({
             <div className="learned-move-list">
               {reward.autoLearnedMoves.map((moveId) => (
                 <div key={moveId} className="learned-move-row">
-                  <strong>{DUEL_MOVES[moveId].name}</strong>
+                  <strong>{localizedMoveName(moveId)}</strong>
                   <span>
                     {t("Learned automatically because there was a free slot.")}
                   </span>
@@ -164,7 +165,7 @@ export function ProgressionOverlay({
           <div className="move-replace-panel">
             <span className="panel-label">{t("NEW MOVE")}</span>
             <h3>
-              {DUEL_MOVES[currentPending].name}
+              {localizedMoveName(currentPending)}
             </h3>
             <p>
               {t(
@@ -180,14 +181,14 @@ export function ProgressionOverlay({
                   onClick={() => resolvePending(index)}
                 >
                   <span>
-                    <strong>{DUEL_MOVES[moveId].name}</strong>
+                    <strong>{localizedMoveName(moveId)}</strong>
                     <small>
                       {DUEL_MOVES[moveId].type} ·{" "}
                       {DUEL_MOVES[moveId].category}
                     </small>
                   </span>
                   <span className="replace-arrow">
-                    → {DUEL_MOVES[currentPending].name}
+                    → {localizedMoveName(currentPending)}
                   </span>
                 </button>
               ))}
@@ -199,7 +200,7 @@ export function ProgressionOverlay({
               onClick={() => resolvePending(null)}
             >
               {t("Do not learn {move}", {
-                move: DUEL_MOVES[currentPending].name,
+                move: localizedMoveName(currentPending),
               })}
             </button>
           </div>

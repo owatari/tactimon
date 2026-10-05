@@ -1,3 +1,5 @@
+import { localizedMoveName } from "./i18n/names";
+import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import type {
   DialogueDefinition,
   DialogueInteractionResult,
@@ -36,7 +38,6 @@ import {
 import { KEY_ITEM_LABELS } from "./keyItems";
 import {
   DUEL_MOVES,
-  speciesDisplayName,
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import { getStoryParty } from "./gameMenu";
@@ -442,7 +443,7 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
                 choices: [
                   ...pokemon.activeMoves.map((moveId, index) => ({
                     id: `forget-${index}`,
-                    label: DUEL_MOVES[moveId]?.name ?? moveId,
+                    label: localizedMoveName(moveId),
                     request: {
                       kind: "script" as const,
                       id: "tutor-teach",

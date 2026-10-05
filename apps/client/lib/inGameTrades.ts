@@ -1,6 +1,6 @@
+import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import {
   createPokemonProgression,
-  speciesDisplayName,
   type WildSpeciesId,
 } from "@tactimon/battle-engine";
 import {

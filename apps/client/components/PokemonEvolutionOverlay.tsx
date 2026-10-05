@@ -1,9 +1,9 @@
 "use client";
 
+import { localizedSpeciesName as speciesDisplayName } from "@/lib/i18n/names";
 import { useEffect, useState } from "react";
 import { t, useLocale } from "@/lib/i18n";
 import {
-  speciesDisplayName,
   type DuelSpeciesId,
   type ProgressionEvolution,
 } from "@tactimon/battle-engine";
