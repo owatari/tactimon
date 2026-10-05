@@ -1,4 +1,13 @@
 import { GENERATED_WARPS } from "./generatedWarps";
+import {
+  GENERATED_MAP_DEFINITIONS,
+  GENERATED_MAP_SIZES,
+  GENERATED_TILESETS,
+} from "./generated/worldMaps";
+import {
+  WORLD_CONNECTIONS,
+  WORLD_WARPS,
+} from "./generated/worldWarps";
 export const TILE_SIZE = 16;
 export const WORLD_ZOOM = 3;
 
@@ -1539,6 +1548,25 @@ export const WORLD_MAPS: Record<string, WorldMapDefinition> = {
   },
 };
 
+for (const generated of Object.values(
+  GENERATED_MAP_DEFINITIONS,
+)) {
+  if (WORLD_MAPS[generated.id]) continue;
+  WORLD_MAPS[generated.id] = {
+    id: generated.id,
+    label: generated.label,
+    layoutUrl: generated.layoutUrl,
+    previewUrl: generated.previewUrl,
+    worldUrl: generated.worldUrl,
+    spawn: generated.spawn,
+    fallbackMusicId: generated.fallbackMusicId,
+    tilesets: {
+      primary: GENERATED_TILESETS[generated.primary],
+      secondary: GENERATED_TILESETS[generated.secondary],
+    },
+  };
+}
+
 export const PLAYER_SPRITE = {
   url: "/game-assets/overworld/red-normal.png",
   frameWidth: 16,
@@ -1558,7 +1586,56 @@ export const DIRECTION_DELTA: Record<
   east: { x: 1, y: 0 },
 };
 
+/** Border crossings generated from the ROM map connections. */
+function resolveGeneratedConnection(
+  mapId: string,
+  x: number,
+  y: number,
+  direction: Direction,
+): WorldTransition | null {
+  const size = GENERATED_MAP_SIZES[mapId];
+  if (!size) return null;
+
+  for (const connection of WORLD_CONNECTIONS[mapId] ?? []) {
+    if (connection.direction !== direction) continue;
+    const target = GENERATED_MAP_SIZES[connection.target];
+    if (!target) continue;
+
+    if (direction === "north" || direction === "south") {
+      if (y !== (direction === "north" ? 0 : size[1] - 1)) continue;
+      const tx = x - connection.offset;
+      if (tx < 0 || tx >= target[0]) continue;
+      return {
+        mapId: connection.target,
+        spawn: { x: tx, y: direction === "north" ? target[1] - 1 : 0 },
+      };
+    }
+
+    if (x !== (direction === "west" ? 0 : size[0] - 1)) continue;
+    const ty = y - connection.offset;
+    if (ty < 0 || ty >= target[1]) continue;
+    return {
+      mapId: connection.target,
+      spawn: { x: direction === "west" ? target[0] - 1 : 0, y: ty },
+    };
+  }
+
+  return null;
+}
+
 export function resolveWorldTransition(
+  mapId: string,
+  x: number,
+  y: number,
+  direction: Direction,
+): WorldTransition | null {
+  return (
+    resolveHandWrittenTransition(mapId, x, y, direction) ??
+    resolveGeneratedConnection(mapId, x, y, direction)
+  );
+}
+
+function resolveHandWrittenTransition(
   mapId: string,
   x: number,
   y: number,
@@ -2007,8 +2084,20 @@ export function resolveWarpTransitionAt(
   return (
     resolveHandWrittenWarpAt(mapId, x, y) ??
     GENERATED_WARPS[`${mapId}:${x},${y}`] ??
-    null
+    resolveWorldWarpAt(mapId, x, y)
   );
+}
+
+function resolveWorldWarpAt(
+  mapId: string,
+  x: number,
+  y: number,
+): WorldTransition | null {
+  const warp = WORLD_WARPS[`${mapId}:${x},${y}`];
+
+  return warp
+    ? { mapId: warp[0], spawn: { x: warp[1], y: warp[2] } }
+    : null;
 }
 
 function resolveHandWrittenWarpAt(

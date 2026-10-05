@@ -4,6 +4,7 @@ import {
   cp,
   mkdir,
   readdir,
+  readFile,
   rm,
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -1130,6 +1131,27 @@ for (const [source, destination] of optionalFiles) {
     );
   }
 }
+
+const generatedSync = JSON.parse(
+  await readFile(
+    resolve(here, "generated-sync.json"),
+    "utf8",
+  ),
+);
+
+for (const [source, destination] of generatedSync) {
+  const from = resolve(sourceRoot, source);
+  const to = resolve(publicRoot, destination);
+
+  try {
+    await access(from);
+    await mkdir(dirname(to), { recursive: true });
+    await copyFile(from, to);
+  } catch {
+    console.warn(`generated map asset missing: ${source}`);
+  }
+}
+console.log(`synced ${generatedSync.length} generated map assets`);
 
 const spriteCollabRoot = await findSpriteCollabRoot(repoRoot);
 

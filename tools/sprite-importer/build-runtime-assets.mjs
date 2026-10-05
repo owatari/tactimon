@@ -162,7 +162,7 @@ const SPECIES = {
   mew: "0151",
 };
 
-const ANIMATIONS = ["Idle", "Walk", "Attack", "Hurt", "Faint"];
+const ANIMATIONS = ["Idle", "Hover", "Walk", "Attack", "Hurt", "Faint"];
 
 function animationBlocks(xml) {
   return xml.match(/<Anim>[\s\S]*?<\/Anim>/g) ?? [];
@@ -296,6 +296,14 @@ export async function buildRuntimeSpriteAssets(
         groundX: metrics.groundX,
         groundY: metrics.groundY,
       };
+    }
+
+    // Flying species ship Hover instead of Idle in SpriteCollab.
+    if (!animations.idle) {
+      const fallback = animations.hover ?? animations.walk;
+      if (fallback) {
+        animations.idle = { ...fallback };
+      }
     }
 
     const portraitSource = join(
