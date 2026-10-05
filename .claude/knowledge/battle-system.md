@@ -19,3 +19,8 @@
 
 ## Testes
 `packages/battle-engine/test/` — `duel.test.ts` (grande, inclui "battle movement and deployment scale"), `spawn-placement.test.ts`, `capture.test.ts`, `progression.test.ts`, `pewter-gym.test.ts`. Status no client: `tests/*-status.test.ts`.
+
+## Balanceamento (task 008)
+- Pack selvagem (`wildEncounters.ts`): soma **por Pokémon vivo da party** a partir do range [min,max] dos slots do mapa — abaixo de min = 1; dentro do range (até max+9) = 1–2; ≥ max+10 = 2; ≥ max+20 = 2–3; teto `MAX_WILD_PACK_SIZE` (10; surf 4).
+- Líderes de ginásio (badgeId + mapId `*-gym`) sempre com 6: `fillGymLeaderParty` / `GYM_LEADER_EXTRA_PARTY` em `trainers.ts`; extras dentro do range original e antes do ás (prêmio FireRed usa o último membro). Elite Four/Champion e trainers comuns intactos.
+- IA (`duel.ts`): `scoreAiCandidate` agora desconta `aiRetaliationRisk` (dano esperado de quem alcança o tile final; golpe que dá KO remove o alvo do risco). Autobattle do client usa a mesma `resolveSimpleAiTurnDetailed`.

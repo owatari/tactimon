@@ -7373,6 +7373,61 @@ function aiCoverageBonus(
   return teammateHasAnswer ? 0 : 24;
 }
 
+/**
+ * Expected damage the actor could take next round standing at `destination`,
+ * from enemies able to reach it (their MP + move range). `ignoreId` removes a
+ * target that this very action would knock out.
+ */
+function aiRetaliationRisk(
+  state: DuelState,
+  actor: DuelUnit,
+  destination: DuelPoint,
+  ignoreId?: string,
+): number {
+  let worst = 0;
+
+  for (const enemy of state.units) {
+    if (
+      enemy.hp <= 0 ||
+      enemy.side === actor.side ||
+      enemy.id === ignoreId
+    ) {
+      continue;
+    }
+
+    const distance = manhattanDistance(
+      destination,
+      enemy.position,
+    );
+
+    for (const moveId of enemy.moves) {
+      if (!canDuelUnitUseMove(enemy, moveId)) {
+        continue;
+      }
+      const move = DUEL_MOVES[moveId];
+      if (
+        !move ||
+        move.category === "status" ||
+        distance > enemy.mp + move.maxRange
+      ) {
+        continue;
+      }
+
+      const damage =
+        expectedMoveDamage(
+          move,
+          calculateDamage(state, enemy, actor, move)
+            .damage,
+        ) *
+        expectedMoveTempoFactor(move) *
+        (getDuelMoveHitChance(enemy, actor, move) / 100);
+      worst = Math.max(worst, damage);
+    }
+  }
+
+  return worst;
+}
+
 function scoreAiCandidate(
   state: DuelState,
   actor: DuelUnit,
@@ -7589,6 +7644,20 @@ function scoreAiCandidate(
     recoilPenalty;
 
   const tempoFactor = expectedMoveTempoFactor(move);
+  // Think before acting: a finishing blow removes its target from the
+  // retaliation, otherwise weigh what the survivors can do to us where we end.
+  const destination =
+    path.length > 0 ? path[path.length - 1] : actor.position;
+  const retaliation = aiRetaliationRisk(
+    state,
+    actor,
+    destination,
+    expectedDamage >= target.hp ? target.id : undefined,
+  );
+  const survivalPenalty =
+    retaliation >= actor.hp
+      ? 55 + Math.min(1, retaliation / Math.max(1, actor.maxHp)) * 25
+      : (retaliation / Math.max(1, actor.maxHp)) * 30;
 
   return {
     damage:
@@ -7597,7 +7666,8 @@ function scoreAiCandidate(
       tempoFactor *
       areaTargetCount,
     score:
-      onHitScore * hitChance * tempoFactor +
+      onHitScore * hitChance * tempoFactor -
+      survivalPenalty +
       positioningScore +
       resourceScore +
       targetThreat +
