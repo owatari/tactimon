@@ -38,3 +38,4 @@
 - `TypeIcon` (components) usa `public/game-assets/ui/type-icons.png`, gerado da ROM por `tools/asset-extractor/make_type_icons.py` (menu_info.4bpp, 32×12 por tipo, linha = id de tipo FireRed; mapa em `lib/typeIcon.ts`, fallback colorido `TYPE_COLOR`). Só escala inteira.
 - `MoveSlots`: 4 slots 2×2 fixos; hover/foco/toque preenche o painel de detalhes (categoria, poder, precisão, AP de `DUEL_MOVES[id].apCost`, descrição `MOVE_DESCRIPTIONS`). `CaptureSummary` usa tabela STAT/IV/EV com divisórias.
 - Gerar o PNG de ícones (gitignored como todo game-assets): `python tools/asset-extractor/make_type_icons.py`.
+- Summary: uma tela (3 colunas: retrato+info, HP/tabela STAT-IV-EV/EXP, 4 slots+detalhe). Setas trocam de Pokémon, Enter escolhe golpe. sync-assets agora gera type-icons.png (dev apagava o PNG).
