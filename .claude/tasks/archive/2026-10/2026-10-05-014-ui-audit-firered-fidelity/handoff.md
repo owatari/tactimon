@@ -1,0 +1,2 @@
+# Handoff
+Pokédex FireRed (lista/entrada/área) + sprites frontais FR em Party/Summary. Teste: pnpm exec vitest run tests/pokedex-screen.test.tsx; manual: Start → POKéDEX (Z abre entrada, Z de novo área, X volta). Pendências (task 016): Bag, Trainer Card completo, Party 2 colunas, Summary FR, Options/Save/Town Map/Mart/Storage/HUD de batalha/pós-batalha; traduzir descrições da Pokédex; extrair molduras/paleta reais da ROM.

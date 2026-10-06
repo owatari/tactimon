@@ -1,10 +1,10 @@
 {
   "id": "2026-10-05-014-ui-audit-firered-fidelity",
-  "title": "Auditoria de todas as UIs vs ROM FireRed (começando pela Pokédex) e aplicar melhorias",
-  "status": "planned",
+  "title": "Auditoria de todas as UIs vs ROM FireRed (come\u00c3\u00a7ando pela Pok\u00c3\u00a9dex) e aplicar melhorias",
+  "status": "done",
   "created_at": "2026-10-05",
   "base_head": "de31c34d",
-  "current_head": "de31c34d",
+  "current_head": "15d241a0",
   "skills": [
     "pokemon-ui",
     "verification",
@@ -16,6 +16,8 @@
     "repo-cartographer"
   ],
   "files": [],
-  "commits": [],
+  "commits": [
+    "15d241a0"
+  ],
   "tests": []
 }
