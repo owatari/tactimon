@@ -14,7 +14,7 @@ import {
   type DuelItemId,
   type PokemonProgression,
   type StarterSpeciesId,
-  type WildSpeciesId,
+  type WildSpeciesId, rollPersonality,
 } from "@tactimon/battle-engine";
 import {
   findHealLocation,
@@ -256,7 +256,8 @@ export function chooseStarter(
     starter,
     rivalStarter: rivalStarterFor(starter),
     firstBattleComplete: false,
-    playerPokemon: createStarterProgression(starter),
+    // The starter rolls its own nature and IVs like any other Pokémon.
+    playerPokemon: createPokemonProgression(starter, 5, rollPersonality()),
     capturedPokemon: [],
     boxedPokemon: [],
     collectedItemIds: [],
@@ -298,6 +299,8 @@ function normalizeCapturedPokemon(
     level?: unknown;
     experience?: unknown;
     evs?: PokemonProgression["evs"];
+    ivs?: PokemonProgression["ivs"];
+    nature?: PokemonProgression["nature"];
     currentHp?: unknown;
     status?: unknown;
     sleepTurnsRemaining?: unknown;
@@ -329,6 +332,8 @@ function normalizeCapturedPokemon(
         ? candidate.experience
         : base.experience,
     evs: candidate.evs ?? base.evs,
+    ivs: candidate.ivs,
+    nature: candidate.nature,
     currentHp:
       typeof candidate.currentHp === "number"
         ? candidate.currentHp

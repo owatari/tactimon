@@ -1,0 +1,161 @@
+import type { Catalog } from "../index";
+
+/** Catalog domain: natures (Summary). */
+export const naturesCatalog: Catalog = {
+  "Hardy": {
+    pt: "Esforçada",
+    es: "Fuerte",
+    fr: "Hardi",
+    zh: "勤奋",
+  },
+  "Lonely": {
+    pt: "Solitária",
+    es: "Huraña",
+    fr: "Solo",
+    zh: "孤僻",
+  },
+  "Brave": {
+    pt: "Corajosa",
+    es: "Audaz",
+    fr: "Brave",
+    zh: "勇敢",
+  },
+  "Adamant": {
+    pt: "Rígida",
+    es: "Firme",
+    fr: "Rigide",
+    zh: "固执",
+  },
+  "Naughty": {
+    pt: "Teimosa",
+    es: "Pícara",
+    fr: "Mauvais",
+    zh: "顽皮",
+  },
+  "Bold": {
+    pt: "Audaciosa",
+    es: "Osada",
+    fr: "Assuré",
+    zh: "大胆",
+  },
+  "Docile": {
+    pt: "Dócil",
+    es: "Dócil",
+    fr: "Docile",
+    zh: "坦率",
+  },
+  "Relaxed": {
+    pt: "Descontraída",
+    es: "Plácida",
+    fr: "Relax",
+    zh: "悠闲",
+  },
+  "Impish": {
+    pt: "Brincalhona",
+    es: "Agitada",
+    fr: "Malin",
+    zh: "淘气",
+  },
+  "Lax": {
+    pt: "Relaxada",
+    es: "Floja",
+    fr: "Lâche",
+    zh: "乐天",
+  },
+  "Timid": {
+    pt: "Tímida",
+    es: "Miedosa",
+    fr: "Timide",
+    zh: "胆小",
+  },
+  "Hasty": {
+    pt: "Apressada",
+    es: "Activa",
+    fr: "Pressé",
+    zh: "急躁",
+  },
+  "Serious": {
+    pt: "Séria",
+    es: "Seria",
+    fr: "Sérieux",
+    zh: "认真",
+  },
+  "Jolly": {
+    pt: "Alegre",
+    es: "Alegre",
+    fr: "Jovial",
+    zh: "爽朗",
+  },
+  "Naive": {
+    pt: "Ingênua",
+    es: "Ingenua",
+    fr: "Naïf",
+    zh: "天真",
+  },
+  "Modest": {
+    pt: "Modesta",
+    es: "Modesta",
+    fr: "Modeste",
+    zh: "内敛",
+  },
+  "Mild": {
+    pt: "Moderada",
+    es: "Afable",
+    fr: "Doux",
+    zh: "慢吞吞",
+  },
+  "Quiet": {
+    pt: "Quieta",
+    es: "Mansa",
+    fr: "Discret",
+    zh: "冷静",
+  },
+  "Bashful": {
+    pt: "Acanhada",
+    es: "Tímida",
+    fr: "Pudique",
+    zh: "害羞",
+  },
+  "Rash": {
+    pt: "Imprudente",
+    es: "Alocada",
+    fr: "Foufou",
+    zh: "马虎",
+  },
+  "Calm": {
+    pt: "Calma",
+    es: "Serena",
+    fr: "Calme",
+    zh: "沉着",
+  },
+  "Gentle": {
+    pt: "Gentil",
+    es: "Amable",
+    fr: "Gentil",
+    zh: "温顺",
+  },
+  "Sassy": {
+    pt: "Atrevida",
+    es: "Grosera",
+    fr: "Malpoli",
+    zh: "狂妄",
+  },
+  "Careful": {
+    pt: "Cuidadosa",
+    es: "Cauta",
+    fr: "Prudent",
+    zh: "慎重",
+  },
+  "Quirky": {
+    pt: "Esquisita",
+    es: "Rara",
+    fr: "Bizarre",
+    zh: "浮躁",
+  },
+  "NATURE": {
+    pt: "NATUREZA",
+    es: "NATURALEZA",
+    fr: "NATURE",
+    zh: "性格",
+  },
+};

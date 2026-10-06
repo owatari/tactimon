@@ -38,7 +38,7 @@ import {
   type DuelSpeciesId,
   type PokemonProgression,
   type StarterSpeciesId,
-  type WildSpeciesId,
+  type WildSpeciesId, type IvSpread, type NatureId,
 } from "@tactimon/battle-engine";
 import { BattleVfx } from "@/components/BattleVfx";
 import { t, useLocale } from "@/lib/i18n";
@@ -80,6 +80,8 @@ export type BattleOutcome = {
     xpRatio: number;
     status: DuelMajorStatus;
     sleepTurnsRemaining: number;
+    ivs?: IvSpread;
+    nature?: NatureId;
   };
 };
 
@@ -449,6 +451,8 @@ export function FirstBattle({
       moves: progression.activeMoves,
       movePp: { ...progression.movePp },
       evs: progression.evs,
+      ivs: progression.ivs,
+      nature: progression.nature,
       currentHp: progression.currentHp,
       status: progression.status,
       sleepTurnsRemaining:
@@ -637,6 +641,8 @@ export function FirstBattle({
                 level: state.captureResult.level,
                 xpRatio: state.captureResult.xpRatio,
                 status: state.captureResult.status,
+                ivs: state.captureResult.ivs,
+                nature: state.captureResult.nature,
                 sleepTurnsRemaining:
                   state.captureResult.sleepTurnsRemaining,
               }

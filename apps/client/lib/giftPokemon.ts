@@ -2,7 +2,7 @@ import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import { t } from "./i18n";
 import {
   createPokemonProgression,
-  type WildSpeciesId,
+  type WildSpeciesId, rollPersonality,
 } from "@tactimon/battle-engine";
 import {
   completeStoryPlayerEvent,
@@ -39,7 +39,7 @@ export function grantGiftPokemon(
 
   const placed = placeCapturedPokemon(
     story,
-    createPokemonProgression(species, level) as CapturedPokemon,
+    createPokemonProgression(species, level, rollPersonality()) as CapturedPokemon,
   );
   if (!placed.accepted) {
     return { story, granted: false, reason: "storage-full" };

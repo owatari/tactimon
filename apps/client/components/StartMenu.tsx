@@ -9,8 +9,11 @@ import {
   duelSpeciesTypes,
   isDuelSpeciesId,
   experienceProgress,
+  natureEffect,
+  type NatureStat,
   type PokemonProgression,
 } from "@tactimon/battle-engine";
+import { natureEffectText, natureName } from "@/lib/natures";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
 import { PLAYER_SPRITE } from "@/lib/maps";
@@ -884,7 +887,7 @@ export function StartMenu({
 }
 
 /** FireRed Summary, Pokémon Info page: dex number, species, type, OT, ID No. and held item. */
-function SummaryInfo({
+export function SummaryInfo({
   pokemon,
   story,
 }: {
@@ -903,6 +906,13 @@ function SummaryInfo({
       <dd>{speciesDisplayName(pokemon.species)}</dd>
       <dt>{t("TYPE")}</dt>
       <dd>{types.map((type) => t(type.toUpperCase())).join(" / ")}</dd>
+      <dt>{t("NATURE")}</dt>
+      <dd>
+        {pokemon.nature ? natureName(pokemon.nature) : "—"}
+        {pokemon.nature && natureEffectText(pokemon.nature) ? (
+          <small className="start-menu-nature-effect"> {natureEffectText(pokemon.nature)}</small>
+        ) : null}
+      </dd>
       <dt>{t("OT")}</dt>
       <dd>{story.trainerName ?? "RED"}</dd>
       <dt>{t("IDNo.")}</dt>
@@ -914,10 +924,13 @@ function SummaryInfo({
 }
 
 /** FireRed Summary, Pokémon Skills page: HP, stats, EXP. POINTS and NEXT LV. */
-function SummaryStats({ pokemon }: { pokemon: PokemonProgression }) {
+export function SummaryStats({ pokemon }: { pokemon: PokemonProgression }) {
   useLocale();
   const stats = calculateDuelPokemonStats(pokemon);
   const progress = experienceProgress(pokemon);
+  const effect = pokemon.nature ? natureEffect(pokemon.nature) : null;
+  const tint = (stat: NatureStat) =>
+    effect?.up === stat ? "nature-up" : effect?.down === stat ? "nature-down" : undefined;
 
   return (
     <dl className="start-menu-dl">
@@ -928,16 +941,16 @@ function SummaryStats({ pokemon }: { pokemon: PokemonProgression }) {
       <dd className="start-menu-dl-wide">
         <HpBar pokemon={pokemon} />
       </dd>
-      <dt>{t("ATTACK")}</dt>
-      <dd>{stats.attack}</dd>
-      <dt>{t("DEFENSE")}</dt>
-      <dd>{stats.defense}</dd>
-      <dt>{t("SP. ATK")}</dt>
-      <dd>{stats.specialAttack}</dd>
-      <dt>{t("SP. DEF")}</dt>
-      <dd>{stats.specialDefense}</dd>
-      <dt>{t("SPEED")}</dt>
-      <dd>{stats.speed}</dd>
+      <dt className={tint("attack")}>{t("ATTACK")}</dt>
+      <dd className={tint("attack")}>{stats.attack}</dd>
+      <dt className={tint("defense")}>{t("DEFENSE")}</dt>
+      <dd className={tint("defense")}>{stats.defense}</dd>
+      <dt className={tint("specialAttack")}>{t("SP. ATK")}</dt>
+      <dd className={tint("specialAttack")}>{stats.specialAttack}</dd>
+      <dt className={tint("specialDefense")}>{t("SP. DEF")}</dt>
+      <dd className={tint("specialDefense")}>{stats.specialDefense}</dd>
+      <dt className={tint("speed")}>{t("SPEED")}</dt>
+      <dd className={tint("speed")}>{stats.speed}</dd>
       <dt>{t("EXP. POINTS")}</dt>
       <dd>{progress.total}</dd>
       <dt>{t("NEXT LV.")}</dt>

@@ -20,3 +20,8 @@ Testes: `tests/story-persistence.test.ts`, `tests/storage.test.ts`, `tests/white
 - Key items novos em `StoryKeyItemId` (tea, silph-scope, poke-flute, card-key, lift-key, secret-key, gold-teeth, coin-case, 3 varas) e HMs `strength/flash/fly` em `STORY_FIELD_TECHNIQUE_IDS`; valores desconhecidos são filtrados.
 - Eventos `reward:gift:<id>`, `reward:trade:<id>`, `story:static:<id>`, `story:visited:<mapId>`, `story:silph-door:*`, `story:cinnabar-door:*`; choices `mansion-switch`, `route-4-mega-tutor`, `boulder:*`.
 - Bag: `master-ball`, `ultra-ball` entram na batalha via `toBattleInventory`.
+
+## Personalidade (nature + IVs) — task 020
+- `packages/battle-engine/src/personality.ts`: 25 natures (±10% inteiro, 5 neutras), `IvSpread` (0–31), `rollPersonality(random)`. `PokemonProgression`/`DuelPokemonBuild`/`DuelUnit` têm `ivs?` e `nature?`.
+- Ausentes = IV 15 + nature neutra: saves antigos, parties de treinadores e testes mantêm os stats de antes (não são reescritos). Rolam personalidade: inicial (`chooseStarter`), selvagens (semeado por `seed`+índice em `createWildDuel`, e a captura leva o mesmo par), presentes e trocas in-game.
+- UI: nomes em `lib/natures.ts` + `catalog/natures.ts`; Summary mostra NATURE e tinge stats (vermelho +, azul −). IVs/EVs detalhados aparecem na tela de captura (task 021).

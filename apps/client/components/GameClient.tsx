@@ -20,7 +20,7 @@ import {
   type DuelPokemonBuild,
   type PokemonProgression,
   type ProgressionReward,
-  type StarterSpeciesId,
+  type StarterSpeciesId, rollPersonality,
 } from "@tactimon/battle-engine";
 import {
   resolveWhiteOutRespawn,
@@ -323,6 +323,8 @@ export function GameClient() {
         moves: [...pokemon.activeMoves],
         movePp: { ...pokemon.movePp },
         evs: pokemon.evs,
+        ivs: pokemon.ivs,
+        nature: pokemon.nature,
         currentHp: pokemon.currentHp,
         status: pokemon.status,
         sleepTurnsRemaining:
@@ -749,6 +751,9 @@ export function GameClient() {
       const captured = createPokemonProgression(
         outcome.capture.species,
         outcome.capture.level,
+        outcome.capture.ivs && outcome.capture.nature
+          ? { ivs: outcome.capture.ivs, nature: outcome.capture.nature }
+          : rollPersonality(),
       );
 
       return placeCapturedPokemon(

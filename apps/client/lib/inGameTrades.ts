@@ -1,7 +1,7 @@
 import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import {
   createPokemonProgression,
-  type WildSpeciesId,
+  type WildSpeciesId, rollPersonality,
 } from "@tactimon/battle-engine";
 import {
   completeStoryPlayerEvent,
@@ -93,7 +93,7 @@ export function performTrade(
   }
 
   const received = {
-    ...createPokemonProgression(trade.give, offered.level),
+    ...createPokemonProgression(trade.give, offered.level, rollPersonality()),
     species: trade.give,
   } as CapturedPokemon;
 

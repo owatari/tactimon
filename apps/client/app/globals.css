@@ -5763,6 +5763,20 @@ textarea {
   margin: 0;
 }
 
+/* FireRed Skills page: red = stat raised by the nature, blue = lowered. */
+.start-menu-dl .nature-up {
+  color: #c83828;
+}
+
+.start-menu-dl .nature-down {
+  color: #2858c8;
+}
+
+.start-menu-nature-effect {
+  font-size: 12px;
+  color: #506878;
+}
+
 .start-menu-dl-wide {
   grid-column: 1 / -1;
 }
