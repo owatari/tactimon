@@ -2899,3 +2899,41 @@ export function isSsAnneRivalTriggerAt(
     )
   );
 }
+
+export type TrainerBagTier = "champion" | "elite-four" | "gym-leader" | "rival" | "trainer";
+
+/** Which kind of opponent this is, read off its id / badge (the Pokémon League rooms are named in their ids). */
+export function trainerBagTier(input: { id?: string; badgeId?: string }): TrainerBagTier {
+  const id = input.id ?? "";
+  if (id.startsWith("league-champion")) return "champion";
+  if (/^pokemon-league-(lorelei|bruno|agatha|lance)s?-/.test(id)) return "elite-four";
+  if (input.badgeId) return "gym-leader";
+  if (id.includes("rival")) return "rival";
+  return "trainer";
+}
+
+/**
+ * Battle bag of an opponent. FireRed gives gym leaders, the Elite Four and the Champion a few
+ * healing items (they use them in the same fight), rivals a couple, ordinary trainers at most a
+ * Potion; deeper in the game the best potions and status cures appear. The AI spends AP on them
+ * like a player would, so the bag is part of how hard the fight is.
+ */
+export function trainerBag(
+  input: { id?: string; badgeId?: string },
+  party: readonly DuelPokemonBuild[],
+): Partial<Record<string, number>> {
+  const top = party.reduce((max, member) => Math.max(max, member.level), 1);
+  const potions = top >= 40 ? { "hyper-potion": 2 } : top >= 25 ? { "super-potion": 2 } : { potion: 2 };
+  switch (trainerBagTier(input)) {
+    case "champion":
+      return { "full-restore": 2, "max-potion": 1, "max-revive": 1, "full-heal": 2 };
+    case "elite-four":
+      return { "full-restore": 1, "hyper-potion": 2, revive: 1, "full-heal": 1 };
+    case "gym-leader":
+      return { ...potions, ...(top >= 30 ? { "full-heal": 1, revive: 1 } : { antidote: 1, "parlyz-heal": 1 }) };
+    case "rival":
+      return { ...potions, "full-heal": top >= 20 ? 1 : 0, revive: top >= 30 ? 1 : 0 };
+    default:
+      return top >= 15 ? { potion: 1 } : { potion: 0 };
+  }
+}

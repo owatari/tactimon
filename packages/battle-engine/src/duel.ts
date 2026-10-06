@@ -8383,69 +8383,86 @@ function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null 
   return { kind: "idle" };
 }
 
+const AI_HEAL_ITEMS = ["potion", "super-potion", "hyper-potion", "max-potion"] as const;
+const AI_STATUS_CURES: Readonly<Record<string, readonly DuelItemId[]>> = {
+  poison: ["antidote", "full-heal"],
+  paralysis: ["parlyz-heal", "full-heal"],
+  burn: ["burn-heal", "full-heal"],
+  sleep: ["awakening", "full-heal"],
+};
+
+/**
+ * The AI's whole bag: Revive / Max Revive for a fainted teammate, the Potion that fits the missing
+ * HP (small ones first, Max Potion and Full Restore kept for the big wounds), the matching status
+ * cure (or Full Heal / Full Restore), always weighed against the AP it costs and the threat the
+ * wounded Pokémon is under. Returns the single best use, or null when nothing is worth the AP.
+ */
 function chooseAiItemAction(
   state: DuelState,
   actor: DuelUnit,
   options: DuelAiTurnOptions,
 ): DuelAction | null {
-  const actorItems =
-    actor.side === "player"
-      ? state.items
-      : state.rivalItems;
+  const bag = actor.side === "player" ? state.items : state.rivalItems;
+  if (!options.useItems) return null;
+  const has = (id: DuelItemId) => (bag[id] ?? 0) > 0 && actor.ap >= itemApCost(id);
+  type Option = { itemId: DuelItemId; targetId: string; score: number };
+  const found: Option[] = [];
+  const allies = state.units.filter((unit) => unit.side === actor.side);
+  const foesAlive = state.units.some((unit) => unit.side !== actor.side && unit.hp > 0);
 
-  if (
-    !options.useItems ||
-    (actorItems.potion ?? 0) <= 0 ||
-    actor.ap < itemApCost("potion")
-  ) {
-    return null;
+  // Bring a fainted teammate back: a whole extra body for the rest of the fight.
+  if (foesAlive) {
+    const fainted = allies
+      .filter((unit) => unit.hp <= 0 && !unit.captured)
+      .sort((a, b) => b.maxHp - a.maxHp)[0];
+    if (fainted) {
+      const itemId: DuelItemId | null = has("revive") ? "revive" : has("max-revive") ? "max-revive" : null;
+      if (itemId) {
+        found.push({ itemId, targetId: fainted.id, score: 90 + fainted.level });
+      }
+    }
   }
 
-  const target = state.units
-    .filter(
-      (unit) =>
-        unit.side === actor.side &&
-        unit.hp > 0 &&
-        unit.hp < unit.maxHp,
-    )
-    .map((unit) => {
-      const hpRatio =
-        unit.hp / Math.max(1, unit.maxHp);
-      const incoming = aiBestIncomingDamage(
-        state,
-        actor,
-        unit,
-      );
-      const threatened = incoming >= unit.hp;
-      const missing = unit.maxHp - unit.hp;
-      const usefulHeal = Math.min(
-        DUEL_ITEMS.potion.heal,
-        missing,
-      );
+  for (const unit of allies) {
+    if (unit.hp <= 0) continue;
+    const missing = unit.maxHp - unit.hp;
+    const hpRatio = unit.hp / Math.max(1, unit.maxHp);
+    const threatened = aiBestIncomingDamage(state, actor, unit) >= unit.hp;
+    const status = unit.status ?? null;
+    const urgency = (1 - hpRatio) * 150 + (threatened ? 100 : 0);
 
-      return {
-        unit,
-        hpRatio,
-        threatened,
-        score:
-          (1 - hpRatio) * 150 +
-          (threatened ? 100 : 0) +
-          usefulHeal * 2,
-      };
-    })
-    .filter(
-      ({ hpRatio, threatened }) =>
-        hpRatio <= 0.4 || threatened,
-    )
-    .sort((a, b) => b.score - a.score)[0]?.unit;
-
-  return target
-    ? {
-        kind: "use-item",
-        unitId: actor.id,
-        itemId: "potion",
-        targetId: target.id,
+    if (missing > 0 && (hpRatio <= 0.45 || threatened)) {
+      // The smallest Potion that covers the wound; the biggest one when none does.
+      const fitting = AI_HEAL_ITEMS.filter((id) => has(id)).sort(
+        (a, b) => DUEL_ITEMS[a].heal - DUEL_ITEMS[b].heal,
+      );
+      const covers = fitting.find((id) => DUEL_ITEMS[id].heal >= missing);
+      const pick = covers ?? fitting[fitting.length - 1];
+      // Max Potion is wasted on a scratch: only when most of the HP is gone.
+      const wasteful = pick === "max-potion" && hpRatio > 0.35 && !threatened;
+      if (pick && !wasteful) {
+        const healed = Math.min(DUEL_ITEMS[pick].heal, missing);
+        found.push({ itemId: pick, targetId: unit.id, score: urgency + healed * 1.5 - itemApCost(pick) * 4 });
       }
+      if (status && has("full-restore") && hpRatio <= 0.5) {
+        found.push({ itemId: "full-restore", targetId: unit.id, score: urgency + 40 + missing - itemApCost("full-restore") * 4 });
+      }
+    }
+
+    if (status) {
+      const cure = (AI_STATUS_CURES[status] ?? []).find((id) => has(id));
+      // Sleep and paralysis lose whole turns; poison and burn matter once the HP is going down.
+      const worth =
+        status === "sleep" ? 120 : status === "paralysis" ? 80 : hpRatio < 0.6 ? 60 : 0;
+      if (cure && worth > 0) {
+        found.push({ itemId: cure, targetId: unit.id, score: worth + (threatened ? 20 : 0) - itemApCost(cure) * 4 });
+      }
+    }
+  }
+
+  const best = found.sort((a, b) => b.score - a.score)[0];
+  return best && best.score > 0
+    ? { kind: "use-item", unitId: actor.id, itemId: best.itemId, targetId: best.targetId }
     : null;
 }
 

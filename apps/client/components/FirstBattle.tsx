@@ -1,5 +1,6 @@
 "use client";
 
+import { trainerBag } from "@/lib/trainers";
 import { itemIconUrl } from "@/lib/items";
 import {
   useEffect,
@@ -522,6 +523,10 @@ export function FirstBattle({
         players: deployedParty,
         rivals: encounter.rivals,
         items: inventory,
+        rivalItems: trainerBag(
+          { id: encounter.trainerId, badgeId: encounter.badgeId },
+          encounter.rivals,
+        ),
         trainerName:
           encounter.trainerName ?? t("Rival Trainer"),
       });
