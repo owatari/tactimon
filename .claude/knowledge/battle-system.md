@@ -39,3 +39,4 @@
 - `MoveSlots`: 4 slots 2×2 fixos; hover/foco/toque preenche o painel de detalhes (categoria, poder, precisão, AP de `DUEL_MOVES[id].apCost`, descrição `MOVE_DESCRIPTIONS`). `CaptureSummary` usa tabela STAT/IV/EV com divisórias.
 - Gerar o PNG de ícones (gitignored como todo game-assets): `python tools/asset-extractor/make_type_icons.py`.
 - Summary: uma tela (3 colunas: retrato+info, HP/tabela STAT-IV-EV/EXP, 4 slots+detalhe). Setas trocam de Pokémon, Enter escolhe golpe. sync-assets agora gera type-icons.png (dev apagava o PNG).
+- Líderes: `GYM_LEADER_TEAMS` (lib/trainers.ts). Cards de batalha: altura automática (não fixar altura). Onix/espécies longas ocupam 1 tile lógico; footprint multi-tile não existe.
