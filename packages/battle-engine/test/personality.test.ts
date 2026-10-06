@@ -143,3 +143,39 @@ describe("nicknames", () => {
     expect(duel.units.find((u) => u.side === "player")?.nickname).toBe("Zap");
   });
 });
+
+describe("shiny", () => {
+  it("rolls 1 in 8192 by default and never for plain personalities", async () => {
+    const { SHINY_ODDS, rollShiny } = await import("../src");
+    expect(SHINY_ODDS).toBe(8192);
+    expect(rollShiny(() => 0)).toBe(true);
+    expect(rollShiny(() => 1 / 8192)).toBe(false);
+    expect(rollShiny(() => 0.5)).toBe(false);
+    expect(rollShiny(() => 0.2, 1)).toBe(true);
+    expect(rollPersonality(() => 0).shiny).toBeUndefined();
+    let shinies = 0;
+    let i = 0;
+    const random = () => ((i += 1) * 0.6180339887) % 1;
+    for (let n = 0; n < 20000; n += 1) if (rollShiny(random)) shinies += 1;
+    expect(shinies).toBeLessThan(20);
+  });
+
+  it("wild units can be shiny, the capture result carries it, progression keeps it", () => {
+    const mk = (shinyOdds: number) =>
+      createWildDuel({
+        seed: 11, width: 9, height: 7, blocked: [],
+        players: [{ species: "charmander", level: 5, moves: ["scratch"] }],
+        wildSpecies: "rattata", wildLevel: 4,
+        wilds: [{ species: "rattata", level: 4 }, { species: "pidgey", level: 4 }],
+        shinyOdds,
+      } as never);
+    expect(mk(1).units.filter((u) => u.side === "rival").every((u) => u.shiny === true)).toBe(true);
+    expect(mk(8192).units.some((u) => u.shiny)).toBe(false);
+    expect(mk(1).units.find((u) => u.side === "player")?.shiny).toBeUndefined();
+    const p = createPokemonProgression("pikachu", 8, { ...rollPersonality(() => 0.5), shiny: true });
+    expect(p.shiny).toBe(true);
+    expect(normalizePokemonProgression(JSON.parse(JSON.stringify(p))).shiny).toBe(true);
+    expect(normalizePokemonProgression({ ...p, shiny: "yes" } as never).shiny).toBeUndefined();
+    expect(createPokemonProgression("pikachu", 8).shiny).toBeUndefined();
+  });
+});

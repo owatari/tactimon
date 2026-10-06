@@ -61,6 +61,16 @@ export function normalizeIvs(input: Partial<Record<IvStat, unknown>> | undefined
 export interface Personality {
   nature: NatureId;
   ivs: IvSpread;
+  /** Alternate colouring; only wild Pokémon roll it (never starters, gifts, trades or trainers). */
+  shiny?: boolean;
+}
+
+/** One in 8192 wild Pokémon is shiny (Gen III odds). */
+export const SHINY_ODDS = 8192;
+
+export function rollShiny(random: () => number = Math.random, odds: number = SHINY_ODDS): boolean {
+  const n = Math.max(1, Math.trunc(odds));
+  return Math.min(n - 1, Math.floor(random() * n)) === 0;
 }
 
 /** Rolls a nature (uniform over 25) and six IVs (uniform 0-31) from any `[0,1)` random source. */

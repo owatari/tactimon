@@ -59,6 +59,8 @@ export interface PokemonProgression {
   ivs?: IvSpread;
   /** Absent on old saves (neutral). */
   nature?: NatureId;
+  /** Shiny colouring (cosmetic); absent = normal. */
+  shiny?: boolean;
   /** Player-given name (max 10 characters); absent → the species name is shown. */
   nickname?: string;
   /** Current persistent HP. Zero means fainted. */
@@ -874,7 +876,11 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
     experience: fireRedExperienceAtLevel(species, bounded),
     evs,
     ...(personality
-      ? { ivs: { ...personality.ivs }, nature: personality.nature }
+      ? {
+          ivs: { ...personality.ivs },
+          nature: personality.nature,
+          ...(personality.shiny ? { shiny: true } : {}),
+        }
       : {}),
     currentHp: calculateDuelPokemonMaxHp({
       species,
@@ -983,6 +989,7 @@ export function normalizePokemonProgression(
     ...(ivs ? { ivs } : {}),
     ...(nature ? { nature } : {}),
     ...(nickname ? { nickname } : {}),
+    ...(input.shiny === true ? { shiny: true } : {}),
     currentHp,
     status,
     sleepTurnsRemaining: normalizeDuelSleepTurns(

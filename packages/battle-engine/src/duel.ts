@@ -7,8 +7,10 @@ import {
 } from "./generated/kanto";
 import {
   DEFAULT_IV,
+  SHINY_ODDS,
   naturePercent,
   rollPersonality,
+  rollShiny,
   type IvSpread,
   type NatureId,
 } from "./personality";
@@ -275,6 +277,7 @@ export interface DuelPokemonBuild {
   nature?: NatureId;
   /** Player-given name shown instead of the species name. */
   nickname?: string;
+  shiny?: boolean;
   /** Persistent HP carried between battles. Omit to start at full HP. */
   currentHp?: number;
   /** Persistent major status carried between battles. */
@@ -333,7 +336,10 @@ export interface WildDuelOptions {
     level: number;
     ivs?: IvSpread;
     nature?: NatureId;
+    shiny?: boolean;
   }[];
+  /** 1-in-N shiny chance per wild (default 8192); mainly for tests. */
+  shinyOdds?: number;
 }
 
 export type DuelItem =
@@ -509,6 +515,7 @@ export interface DuelUnit {
   ivs?: IvSpread;
   nature?: NatureId;
   nickname?: string;
+  shiny?: boolean;
   attack: number;
   defense: number;
   specialAttack: number;
@@ -579,6 +586,7 @@ export interface DuelState {
     sleepTurnsRemaining: number;
     ivs?: IvSpread;
     nature?: NatureId;
+    shiny?: boolean;
   } | null;
   units: DuelUnit[];
   log: string[];
@@ -3894,6 +3902,7 @@ function makeUnit(
     ...(build.ivs ? { ivs: { ...build.ivs } } : {}),
     ...(build.nature ? { nature: build.nature } : {}),
     ...(build.nickname ? { nickname: build.nickname } : {}),
+    ...(build.shiny ? { shiny: true } : {}),
     attack: calculateOtherStat({
       base: base.attack,
       iv: build.ivs?.attack ?? DEFAULT_IV,
@@ -4177,6 +4186,7 @@ export function createWildDuel(
       // xorshift outputs of nearby seeds correlate: skip the first draws.
       for (let warmUp = 0; warmUp < 6; warmUp += 1) random();
       const rolled = rollPersonality(random);
+      const shiny = wild.shiny ?? rollShiny(random, options.shinyOdds ?? SHINY_ODDS);
 
       return {
         species: wild.species,
@@ -4187,6 +4197,7 @@ export function createWildDuel(
         moves: [...SPECIES[wild.species].moves],
         ivs: wild.ivs ?? rolled.ivs,
         nature: wild.nature ?? rolled.nature,
+        ...(shiny ? { shiny: true } : {}),
       };
     });
 
@@ -5857,6 +5868,7 @@ export function applyDuelAction(
           target.sleepTurnsRemaining,
         ivs: target.ivs ? { ...target.ivs } : undefined,
         nature: target.nature,
+        shiny: target.shiny === true ? true : undefined,
       };
       appendLog(
         state,
