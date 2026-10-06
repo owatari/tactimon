@@ -1,0 +1,24 @@
+{
+  "id": "2026-10-06-032-summary-single-screen",
+  "title": "Summary do Pokémon condensado em uma tela só",
+  "status": "done",
+  "created_at": "2026-10-06",
+  "base_head": "953a105f",
+  "current_head": "953a105f",
+  "skills": [
+    "pokemon-ui",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "ui-visual"
+  ],
+  "files": [],
+  "commits": [],
+  "tests": [
+    "pnpm test 515+281",
+    "typecheck",
+    "e2e:walkthrough 13/13 (E4 atualizado)"
+  ]
+}
