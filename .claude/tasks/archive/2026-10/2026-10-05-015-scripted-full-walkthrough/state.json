@@ -1,7 +1,7 @@
 {
   "id": "2026-10-05-015-scripted-full-walkthrough",
   "title": "Walkthrough scriptado testando o jogo inteiro (novo jogo → Liga)",
-  "status": "planned",
+  "status": "done",
   "created_at": "2026-10-05",
   "base_head": "de31c34d",
   "current_head": "de31c34d",
@@ -17,6 +17,6 @@
     "verifier"
   ],
   "files": [],
-  "commits": [],
+  "commits": ["2c0cc9e7"],
   "tests": []
 }
