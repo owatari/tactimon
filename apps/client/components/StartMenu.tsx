@@ -13,6 +13,7 @@ import {
 } from "@tactimon/battle-engine";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
+import { PLAYER_SPRITE } from "@/lib/maps";
 import { PokedexScreen, type PokedexView } from "@/components/PokedexScreen";
 import {
   getPokedex,
@@ -663,19 +664,28 @@ export function StartMenu({
 
       {screen === "bag" && (
         <section className="start-menu-screen start-menu-bag">
-          <h2>
-            {t("BAG")} · {t(pockets[pocketIndex].label)}
-          </h2>
-          <div className="start-menu-pockets">
-            {pockets.map((pocket, index) => (
-              <span
-                key={pocket.id}
-                className={index === pocketIndex ? "selected" : ""}
-              >
-                {t(pocket.label)}
-              </span>
-            ))}
-          </div>
+          <aside className="start-menu-bag-side">
+            <div className="start-menu-bag-pocket">
+              <span aria-hidden="true">◀</span>
+              <strong>{t(pockets[pocketIndex].label)}</strong>
+              <span aria-hidden="true">▶</span>
+            </div>
+            <div className="start-menu-pockets" aria-hidden="true">
+              {pockets.map((pocket, index) => (
+                <i
+                  key={pocket.id}
+                  className={index === pocketIndex ? "selected" : ""}
+                />
+              ))}
+            </div>
+            {pockets[pocketIndex].entries[bagIndex]?.iconUrl && (
+              <img
+                className="start-menu-bag-big"
+                src={pockets[pocketIndex].entries[bagIndex].iconUrl}
+                alt=""
+              />
+            )}
+          </aside>
           <ul className="start-menu-bag-list">
             {pockets[pocketIndex].entries.map((entry, index) => (
               <li
@@ -735,33 +745,36 @@ export function StartMenu({
       {screen === "card" && (
         <section className="start-menu-screen start-menu-card">
           <h2>{t("TRAINER CARD")}</h2>
-          <dl>
-            <dt>{t("STARTER")}</dt>
-            <dd>
-              {story.starter ? speciesDisplayName(story.starter) : "—"}
-            </dd>
-            <dt>{t("MONEY")}</dt>
-            <dd>₽{card.money.toLocaleString("pt-BR")}</dd>
-            <dt>{t("POKéMON")}</dt>
-            <dd>{card.partySize}</dd>
-            <dt>{t("TIME")}</dt>
-            <dd>{card.playTime}</dd>
-            <dt>{t("POKéDEX")}</dt>
-            <dd>
-              {t("{own} OWN / {seen} SEEN", {
-                own: card.pokedexCaught,
-                seen: card.pokedexSeen,
-              })}
-            </dd>
-            {card.champion && (
-              <>
-                <dt>{t("HALL OF FAME")}</dt>
-                <dd>{t("CHAMPION ★")}</dd>
-              </>
-            )}
-            <dt>{t("BADGES")}</dt>
-            <dd>{card.badgeCount}/8</dd>
-          </dl>
+          <div className="start-menu-card-body">
+            <dl>
+              <dt>{t("STARTER")}</dt>
+              <dd>
+                {story.starter ? speciesDisplayName(story.starter) : "—"}
+              </dd>
+              <dt>{t("MONEY")}</dt>
+              <dd>₽{card.money.toLocaleString("pt-BR")}</dd>
+              <dt>{t("POKéDEX")}</dt>
+              <dd>{card.pokedexCaught}</dd>
+              <dt>{t("POKéMON")}</dt>
+              <dd>{card.partySize}</dd>
+              <dt>{t("TIME")}</dt>
+              <dd>{card.playTime}</dd>
+              {card.champion && (
+                <>
+                  <dt>{t("HALL OF FAME")}</dt>
+                  <dd>{t("CHAMPION ★")}</dd>
+                </>
+              )}
+            </dl>
+            <div
+              className="start-menu-card-trainer"
+              aria-hidden="true"
+              style={{
+                backgroundImage: `url("${PLAYER_SPRITE.url}")`,
+                backgroundSize: `${PLAYER_SPRITE.sheetWidth}px ${PLAYER_SPRITE.sheetHeight}px`,
+              }}
+            />
+          </div>
           <div className="start-menu-badges">
             {card.badges.map((badge) => (
               <span
@@ -769,6 +782,7 @@ export function StartMenu({
                 className={badge.earned ? "earned" : ""}
                 title={t(badge.label)}
               >
+                <i aria-hidden="true" />
                 {t(badge.label)}
               </span>
             ))}
