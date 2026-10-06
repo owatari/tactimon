@@ -29,4 +29,4 @@
 | 2026-10-06-022-party-follower | Primeiro Pokémon da party segue o jogador fora da bola (estilo HGSS) | planned | active |
 | 2026-10-06-023-shiny-pokemon | Pokémon shiny: sprites, chance de spawn, indicador na UI | planned | active |
 | 2026-10-06-024-battle-sprite-tile-anchor | Batalha: sprites de Pokémon parecem dividir tile (padronizar âncora/escala no tile) | planned | active |
-| 2026-10-06-025-firered-ev-system | EVs estilo FireRed (yield por derrotado + vitaminas), abandona auto-EV por nível | planned | active |
+| 2026-10-06-025-firered-ev-system | EVs estilo FireRed (yield por derrotado + vitaminas), abandona auto-EV por nível | done | archive/2026-10 |
