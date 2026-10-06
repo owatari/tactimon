@@ -3,16 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import {
   MAX_NICKNAME_LENGTH,
-  calculateDuelPokemonStats,
   duelSpeciesTypes,
-  natureEffect,
-  totalEv,
-  type NatureStat,
 } from "@tactimon/battle-engine";
 import { FrontSprite } from "./StartMenu";
 import { ShinyStar } from "./ShinyStar";
 import { TypeIcon } from "./TypeIcon";
 import { MoveSlots } from "./MoveSlots";
+import { PokemonStatTable } from "./PokemonStatTable";
 import { t, useLocale } from "@/lib/i18n";
 import { localizedSpeciesName } from "@/lib/i18n/names";
 import { natureEffectText, natureName } from "@/lib/natures";
@@ -37,20 +34,10 @@ type Props = {
   onSendAllToBox: () => void;
 };
 
-type Row = {
-  label: string;
-  stat: "hp" | NatureStat;
-  value: number;
-  iv: number;
-  ev: number;
-};
 
 /** What the player sees right after a catch: portrait, stats, IVs, EVs, nature, name box, team/box. */
 export function CaptureSummary({ story, pokemon, position, total, newEntry, onResolve, onSendAllToBox }: Props) {
   useLocale();
-  const stats = calculateDuelPokemonStats(pokemon);
-  const effect = pokemon.nature ? natureEffect(pokemon.nature) : null;
-  const showEvs = totalEv(pokemon.evs) > 0;
   const roster = captureRoster(story);
   const [nickname, setNickname] = useState("");
   // 0 = name box, 1 = SEND TO TEAM, 2 = SEND TO BOX, 3 = SEND ALL TO BOX (only with several catches)
@@ -60,19 +47,6 @@ export function CaptureSummary({ story, pokemon, position, total, newEntry, onRe
   const [swapIndex, setSwapIndex] = useState(0);
   const [notice, setNotice] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const rows: Row[] = [
-    { label: "HP", stat: "hp", value: stats.hp, iv: pokemon.ivs?.hp ?? 15, ev: pokemon.evs.hp },
-    { label: t("ATTACK"), stat: "attack", value: stats.attack, iv: pokemon.ivs?.attack ?? 15, ev: pokemon.evs.attack },
-    { label: t("DEFENSE"), stat: "defense", value: stats.defense, iv: pokemon.ivs?.defense ?? 15, ev: pokemon.evs.defense },
-    { label: t("SP. ATK"), stat: "specialAttack", value: stats.specialAttack, iv: pokemon.ivs?.specialAttack ?? 15, ev: pokemon.evs.specialAttack },
-    { label: t("SP. DEF"), stat: "specialDefense", value: stats.specialDefense, iv: pokemon.ivs?.specialDefense ?? 15, ev: pokemon.evs.specialDefense },
-    { label: t("SPEED"), stat: "speed", value: stats.speed, iv: pokemon.ivs?.speed ?? 15, ev: pokemon.evs.speed },
-  ];
-  const tint = (stat: Row["stat"]) =>
-    stat === "hp" ? undefined : effect?.up === stat ? "nature-up" : effect?.down === stat ? "nature-down" : undefined;
-  const arrow = (stat: Row["stat"]) =>
-    stat === "hp" ? "" : effect?.up === stat ? " ▲" : effect?.down === stat ? " ▼" : "";
 
   useEffect(() => {
     if (focus === 0 && !swapOpen) inputRef.current?.focus();
@@ -178,34 +152,7 @@ export function CaptureSummary({ story, pokemon, position, total, newEntry, onRe
                 ) : null}
               </div>
             </div>
-            <table className="capture-stats">
-              <thead>
-                <tr>
-                  <th />
-                  <th>{t("STAT")}</th>
-                  <th>IV</th>
-                  {showEvs && <th>EV</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.stat}>
-                    <th className={tint(row.stat)}>
-                      {row.label}
-                      {arrow(row.stat)}
-                    </th>
-                    <td className={tint(row.stat)}>{row.value}</td>
-                    <td className="capture-iv-cell">
-                      <span className="capture-iv-bar" aria-hidden="true">
-                        <i style={{ width: `${(row.iv / 31) * 100}%` }} />
-                      </span>
-                      <b>{row.iv}</b>
-                    </td>
-                    {showEvs && <td>{row.ev}</td>}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <PokemonStatTable pokemon={pokemon} />
           </div>
           <MoveSlots moves={pokemon.activeMoves} movePp={pokemon.movePp} />
         </div>

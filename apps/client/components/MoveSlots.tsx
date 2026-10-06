@@ -12,11 +12,16 @@ import { MOVE_DESCRIPTIONS } from "@/lib/generated/moveDescriptions";
 export function MoveSlots({
   moves,
   movePp,
+  selected = null,
 }: {
   moves: readonly DuelMoveId[];
   movePp?: Readonly<Record<string, number>>;
+  /** Keyboard-driven selection (Summary); wins over the pointer while set. */
+  selected?: number | null;
 }) {
-  const [shown, setShown] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const shown = selected ?? hovered;
+  const setShown = setHovered;
   const slots = [0, 1, 2, 3].map((index) => moves[index] ?? null);
   const current = shown !== null ? slots[shown] : null;
   const facts = current ? moveFacts(current) : null;
@@ -50,7 +55,7 @@ export function MoveSlots({
           ),
         )}
       </div>
-      <div className="move-detail" aria-live="polite">
+      <div className="move-detail start-menu-move-info" aria-live="polite">
         {current && facts ? (
           <>
             <div className="move-detail-head">
