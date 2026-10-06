@@ -25,7 +25,7 @@
 | 2026-10-06-018-full-playthrough-e2e | Playthrough E2E real acelerado (novo jogo → Campeão → HoF) | done | archive/2026-10 |
 | 2026-10-06-019-wild-pack-balance | Balancear tamanho dos packs selvagens por nível da party (0–1 / 1 / 1–2 / 2–3) | done | archive/2026-10 |
 | 2026-10-06-020-pokemon-natures-ivs | Modelar nature, IVs, habilidade e local de captura dos Pokémon (pré-requisito da tela de captura) | done | archive/2026-10 |
-| 2026-10-06-021-capture-summary-screen | Tela de captura: retrato + status/IVs/EVs/nature, enviar ao time/box e renomear | planned | active |
+| 2026-10-06-021-capture-summary-screen | Tela de captura: retrato + status/IVs/EVs/nature, enviar ao time/box e renomear | done | archive/2026-10 |
 | 2026-10-06-022-party-follower | Primeiro Pokémon da party segue o jogador fora da bola (estilo HGSS) | planned | active |
 | 2026-10-06-023-shiny-pokemon | Pokémon shiny: sprites, chance de spawn, indicador na UI | planned | active |
 | 2026-10-06-024-battle-sprite-tile-anchor | Batalha: sprites de Pokémon parecem dividir tile (padronizar âncora/escala no tile) | planned | active |
