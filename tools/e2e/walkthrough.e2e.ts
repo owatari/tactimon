@@ -221,4 +221,36 @@ describe("walkthrough (browser)", () => {
     expect(await count(".capture-summary-shiny")).toBe(1);
     expect(await cdp.eval<string>(`document.querySelector(".capture-summary .start-menu-front img").getAttribute("src")`)).toContain("/front/shiny/");
   }, 40_000);
+
+  it("E11. battle sprites sit on their own tile: the unit layer matches the grid even when the arena is taller than the view", async () => {
+    const base = chooseStarter("charmander");
+    const members = ["pidgey", "rattata", "mankey"].map((id) => createPokemonProgression(id as never, 7));
+    const story = withPokedex({ ...base, firstBattleComplete: true, capturedPokemon: members } as never);
+    await load({ ...seedStory(story, { mapId: "viridian-forest", x: 16, y: 30 }), "tactimon.e2e.v1": "1" });
+    for (let i = 0; i < 40 && !(await cdp.eval<boolean>(`typeof window.__tactimon_e2e?.fightWild === "function"`)); i += 1) await sleep(250);
+    expect(await cdp.eval<boolean>(`window.__tactimon_e2e.fightWild([{ species: "weedle", level: 5 }, { species: "caterpie", level: 5 }, { species: "pikachu", level: 5 }])`)).toBe(true);
+    // Turbo starts in Auto at 40x: stop it and let the board settle so no unit is mid-slide.
+    await cdp.eval(`[...document.querySelectorAll("button")].find((b) => /Auto ON/.test(b.textContent))?.click()`);
+    await sleep(1500);
+    const report = await cdp.eval<string>(`(() => {
+      const cells = [...document.querySelectorAll(".duel-cell")];
+      const cols = new Set(cells.map((c) => Math.round(c.getBoundingClientRect().left))).size;
+      const rows = cells.length / cols;
+      const grid = document.querySelector(".duel-grid").getBoundingClientRect();
+      const tile = cells[0].getBoundingClientRect().width;
+      const bad = [];
+      for (const u of document.querySelectorAll(".duel-unit-position")) {
+        const x = Math.round((parseFloat(u.style.left) / 100) * cols);
+        const y = Math.round((parseFloat(u.style.top) / 100) * rows);
+        const c = cells[y * cols + x].getBoundingClientRect();
+        const r = u.getBoundingClientRect();
+        if (Math.abs(r.left - c.left) > 1.5 || Math.abs(r.top - c.top) > 1.5) bad.push(u.textContent.trim() + "@" + x + "," + y + " off by " + Math.round(r.left - c.left) + "," + Math.round(r.top - c.top));
+      }
+      return JSON.stringify({ gridHeight: Math.round(grid.height), expected: Math.round(rows * tile), units: document.querySelectorAll(".duel-unit-position").length, bad });
+    })()`);
+    const parsed = JSON.parse(report) as { gridHeight: number; expected: number; units: number; bad: string[] };
+    expect(parsed.units).toBeGreaterThanOrEqual(6);
+    expect(parsed.gridHeight, "the grid box must not be clamped shorter than its rows").toBeGreaterThanOrEqual(parsed.expected - 1);
+    expect(parsed.bad).toEqual([]);
+  }, 40_000);
 });

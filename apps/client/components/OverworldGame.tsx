@@ -1249,6 +1249,7 @@ export function OverworldGame({
         });
         return true;
       },
+      fightWild: () => false,
     };
     return () => {
       delete window.__tactimon_e2e;
@@ -1313,6 +1314,19 @@ export function OverworldGame({
     },
     [launchWildBattle],
   );
+
+  // E2E turbo hook (dev only): a real wild battle with the given pack.
+  useEffect(() => {
+    if (!isE2eMode() || !window.__tactimon_e2e) return;
+    window.__tactimon_e2e.fightWild = (members) => {
+      if (members.length === 0) return false;
+      launchWildBattle(
+        members.map((m) => ({ species: m.species as WildSpeciesId, level: m.level })),
+        members[0].level,
+      );
+      return true;
+    };
+  }, [launchWildBattle]);
 
   const fish = useCallback(() => {
     const player = playerRef.current;

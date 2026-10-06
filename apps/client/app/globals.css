@@ -7339,15 +7339,14 @@ body {
   letter-spacing: 2px;
 }
 
-/* Battle units: one neutral ground shadow inside the tile (sprites are capped to their own tile). */
-.duel-unit-position .duel-unit::after {
-  content: "";
-  position: absolute;
-  left: 16%;
-  top: 79%;
-  width: 68%;
-  height: 14%;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.28);
-  pointer-events: none;
+
+/*
+ * Battle arena geometry: the grid tracks are fixed pixels (tile × zoom), so the shell must never be
+ * clamped by the scroll container (it used to get `max-height: 100%`), otherwise the percent-positioned
+ * units drift away from their tiles; the scroll container scrolls instead.
+ */
+.battle-stage-layout .clean-arena,
+.battle-stage-layout .duel-grid-shell {
+  max-height: none !important;
+  max-width: none !important;
 }

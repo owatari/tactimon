@@ -17,3 +17,7 @@
 - **Auditoria de alcance por célula**: `tests/world-reachability.test.ts` cobre mapas inteiros + Mansion/Cinnabar/elevador; ao importar mapas/portas novos, teste também as células dos NPCs/trainers (gyms com portas/spinners podem ficar inalcançáveis).
 - Git Bash: heredoc Python grande com `'''` pode falhar no parser da tool; use Write/Edit. Arquivos TS do repo estão em CRLF: scripts de patch devem normalizar `
 `.
+
+## Arena de batalha: unidades fora do tile (corrigido, task 028)
+- O grid de batalha usa trilhas fixas em px (tile × zoom) e as unidades ficam em % da camada `.duel-units-layer`. Se algum CSS encolher o shell (`max-height: 100%` de `.clean-arena` dentro do `.battle-arena-scroll`), a camada fica menor que o grid e os sprites "derivam" para cima (o grid de movimento aparece longe do sprite). Agora crop/grid/unidades compartilham um box em px (`arenaBox` em `FirstBattle`) e `max-height: none !important` no shell; E2E E11 confere cada unidade na sua célula.
+- Sprites grandes (Onix, Gyarados, Articuno) PODEM passar de 1 tile: não limitar a escala em `spriteLayout.ts` (tentativa da task 024 revertida).

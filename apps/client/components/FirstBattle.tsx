@@ -1610,6 +1610,16 @@ export function FirstBattle({
     state.width * battleTilePixels;
   const battleArenaHeight =
     state.height * battleTilePixels;
+  // The crop, grid and unit layers share one exact pixel box so a unit's percent position always
+  // lands on its own cell (never on a box that CSS clamped shorter than the fixed-size grid tracks).
+  const arenaBox: React.CSSProperties = {
+    left: 10,
+    top: 10,
+    right: "auto",
+    bottom: "auto",
+    width: battleArenaWidth,
+    height: battleArenaHeight,
+  };
   const naturalMapWidth =
     context.mapWidth * TILE_SIZE * battleZoom;
   const naturalMapHeight =
@@ -1912,7 +1922,7 @@ export function FirstBattle({
               minHeight: `${battleArenaHeight + 20}px`,
             }}
           >
-          <div className="duel-map-crop" aria-hidden="true">
+          <div className="duel-map-crop" aria-hidden="true" style={arenaBox}>
             <div
               className="duel-map-render"
               style={{
@@ -1933,6 +1943,7 @@ export function FirstBattle({
           <div
             className="duel-grid"
             style={{
+              ...arenaBox,
               gridTemplateColumns:
                 `repeat(${state.width}, ${battleTilePixels}px)`,
               gridTemplateRows:
@@ -1987,7 +1998,7 @@ export function FirstBattle({
             })}
           </div>
 
-          <div className="duel-units-layer">
+          <div className="duel-units-layer" style={arenaBox}>
             {state.units
               .filter(
                 (unit) => !hiddenUnitIds.has(unit.id),

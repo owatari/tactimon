@@ -1,0 +1,13 @@
+{
+  "id": "2026-10-06-028-battle-grid-unit-offset",
+  "title": "Unidades de batalha fora do tile (geometria da arena)",
+  "status": "done",
+  "created_at": "2026-10-06",
+  "base_head": "7e52bfb8",
+  "current_head": "7e52bfb8",
+  "skills": ["battle-development","pokemon-ui","verification","safe-main"],
+  "agents": [],
+  "files": [],
+  "commits": [],
+  "tests": ["tools/e2e/walkthrough.e2e.ts E11"]
+}

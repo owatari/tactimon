@@ -30,6 +30,8 @@ function safeLocalStorage(): Storage | null {
 export type E2eHooks = {
   /** Starts the real trainer battle for `trainerId` in the current map (skips the challenge text). */
   fightTrainer(trainerId: string): boolean;
+  /** Starts a real wild battle with the given pack in the current map. */
+  fightWild(members: { species: string; level: number }[]): boolean;
 };
 
 declare global {
