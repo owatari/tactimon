@@ -1,0 +1,2 @@
+# Pedido original
+Revive,, full restore e max revive deve ser mais caros. Revive deve poder ser utilizado em um pokémon que chegou morto na baltaha. Ao selecionar uma ball para utilizar e dar hover em um pokemon, mostra a % de catch, a animação de catch deve rodar até o final antes de dar battle ended. IA dos rivais deve ser uma IA completa que utiliza tudo que possivel. Não entendi o que voce quis dizer com "A raridade usa só a taxa de captura: não há lista de lendários nem de evoluções finais."
