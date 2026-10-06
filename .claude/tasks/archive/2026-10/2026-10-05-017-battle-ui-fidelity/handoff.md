@@ -1,0 +1,2 @@
+# Handoff
+Pokédex ROM (cry, área, size, search) + registro de novos Pokémon; Trainer Card com nome/ID/estrelas/verso; Summary com Info/Skills/Moves + info de golpe (descrições da ROM). Teste: pnpm test (448); manual: Start → TRAINER CARD (Enter vira), POKéMON → Summary → MOVES (Enter, Enter). Pendências: natures/habilidades/IVs/local de captura; Pokédex gate pelo pacote do Oak; telas restantes em CSS.

@@ -1,3 +1,5 @@
 ## checkpoint
 - [x] pipeline + Pokédex ROM (commits 9f6a60fd, ead3e53d)
 Proximo: Start menu root (janela std), depois Party/Summary/Bag/Trainer Card...
+## fechamento
+- [x] mecânica Pokédex/Cartão/Summary (commit 16922cd8)
