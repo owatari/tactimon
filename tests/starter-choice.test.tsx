@@ -25,7 +25,7 @@ describe("starter choice (Oak's table)", () => {
     expect(r.state.stage).toBe("confirm");
     expect(r.chosen).toBeUndefined();
     const yes = stepStarterChoice(r.state, "confirm");
-    expect(yes.chosen).toBe("charmander"); // table order: Bulbasaur, Squirtle, Charmander
+    expect(yes.chosen).toBe("squirtle"); // table order: Bulbasaur, Charmander, Squirtle
   });
 
   it("NO or back returns to the ball choice; back on the table closes", () => {
@@ -39,9 +39,9 @@ describe("starter choice (Oak's table)", () => {
 
   it("hovering a real ball moves the cursor and clicking asks for confirmation", () => {
     const hover = pointStarterChoice(INITIAL_STARTER_CHOICE, "charmander", false);
-    expect(hover).toMatchObject({ index: 2, stage: "pick" });
+    expect(hover).toMatchObject({ index: 1, stage: "pick" });
     const click = pointStarterChoice(hover, "squirtle", true);
-    expect(click).toMatchObject({ index: 1, stage: "confirm", answer: 0 });
+    expect(click).toMatchObject({ index: 2, stage: "confirm", answer: 0 });
     // Pointer input is ignored while the YES/NO prompt is open.
     expect(pointStarterChoice(click, "bulbasaur", false)).toBe(click);
   });

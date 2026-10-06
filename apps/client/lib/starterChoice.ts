@@ -3,9 +3,16 @@ import type { StarterSpeciesId } from "@tactimon/battle-engine";
 /** Left to right on Oak's table (matches the ball positions in the lab). */
 export const STARTER_ORDER: readonly StarterSpeciesId[] = [
   "bulbasaur",
-  "squirtle",
   "charmander",
+  "squirtle",
 ];
+
+/** FireRed front sprites (64x64) shown in the light beam over the hovered ball. */
+export const STARTER_FRONT_SPRITE: Record<StarterSpeciesId, string> = {
+  bulbasaur: "/game-assets/firered/pokemon/front/normal/0001_bulbasaur.png",
+  charmander: "/game-assets/firered/pokemon/front/normal/0004_charmander.png",
+  squirtle: "/game-assets/firered/pokemon/front/normal/0007_squirtle.png",
+};
 
 export type StarterChoiceState = {
   /** Ball under the cursor. */

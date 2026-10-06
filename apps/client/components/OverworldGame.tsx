@@ -12,6 +12,7 @@ import type {
   WildSpeciesId,
 } from "@tactimon/battle-engine";
 import { renderForegroundLayer } from "@/lib/mapRenderer";
+import { STARTER_FRONT_SPRITE } from "@/lib/starterChoice";
 import {
   BattleSceneContext,
   DIRECTION_DELTA,
@@ -413,8 +414,8 @@ function keyToDirection(key: string): Direction | null {
   }
 }
 
-/** Oak's lab table: the three starter balls sit on tiles x 8–10, y 4. */
-const STARTER_TABLE_CENTER = { x: 9, y: 4 };
+/** Oak's lab table: the three starter balls sit on tiles x 8–10, y 4 (Bulbasaur, Charmander, Squirtle). */
+const STARTER_TABLE_CENTER = { x: 9, y: 3 };
 
 function clampCamera(
   value: number,
@@ -546,8 +547,8 @@ function labStoryObjects(story: StoryState): StaticStoryObject[] {
 
   const starters = [
     { starter: "bulbasaur" as const, x: 8 },
-    { starter: "squirtle" as const, x: 9 },
-    { starter: "charmander" as const, x: 10 },
+    { starter: "charmander" as const, x: 9 },
+    { starter: "squirtle" as const, x: 10 },
   ];
 
   for (const item of starters) {
@@ -2763,7 +2764,7 @@ export function OverworldGame({
         worldWidth,
       );
       const targetCameraY = clampCamera(
-        viewportHeight * (focusing ? 0.4 : 0.5) - focusY * zoom,
+        viewportHeight / 2 - focusY * zoom,
         viewportHeight,
         worldHeight,
       );
@@ -2918,6 +2919,32 @@ export function OverworldGame({
                 }}
               />
               ))}
+
+            {starterFocus &&
+              storyObjects
+                .filter(
+                  (object) =>
+                    object.kind === "starter" &&
+                    object.starter === starterFocus,
+                )
+                .map((object) => (
+                  <div
+                    key={`beam-${starterFocus}`}
+                    className="starter-beam"
+                    aria-hidden="true"
+                    style={{
+                      left: object.x * TILE_SIZE + TILE_SIZE / 2 - 20,
+                      top: object.y * TILE_SIZE - 40,
+                      zIndex: 100 + object.y * TILE_SIZE - 1,
+                    }}
+                  >
+                    <img
+                      className="starter-beam-sprite"
+                      src={STARTER_FRONT_SPRITE[starterFocus]}
+                      alt=""
+                    />
+                  </div>
+                ))}
 
             {starterFocus &&
               storyObjects
