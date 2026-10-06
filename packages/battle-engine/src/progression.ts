@@ -4,6 +4,7 @@ import {
   GENERATED_INITIAL_MOVES,
   GENERATED_LEARNSETS,
   GENERATED_LEVEL_EVOLUTIONS,
+  ROM_HAND_LEARNSETS,
   GENERATED_STONE_EVOLUTIONS,
   type GeneratedSpeciesId,
 } from "./generated/kanto";
@@ -512,8 +513,14 @@ const HAND_POKEMON_LEARNSETS: Record<
   ],
 };
 
+/**
+ * Level-up moves. The hand-written lists above are placeholders that stop at level 1-13 (Pidgey
+ * knew only Tackle, Charmander stopped at 11); the FireRed ROM learnsets, restricted to the moves
+ * the engine implements, take over for every species that has one.
+ */
 export const POKEMON_LEARNSETS: Record<DuelSpeciesId, LearnsetEntry[]> = {
   ...HAND_POKEMON_LEARNSETS,
+  ...(ROM_HAND_LEARNSETS as unknown as Partial<Record<DuelSpeciesId, LearnsetEntry[]>>),
   ...(GENERATED_LEARNSETS as unknown as Record<GeneratedSpeciesId, LearnsetEntry[]>),
 };
 

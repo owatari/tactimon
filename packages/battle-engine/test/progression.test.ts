@@ -11,10 +11,13 @@ import {
   experienceRewardForTrainer,
   experienceRewardForWild,
   fireRedExperienceAtLevel,
+  POKEMON_LEARNSETS,
+  grantRareCandy,
   grantTrainerBattleProgressToParty,
   grantWildBattleProgress,
   grantWildBattleProgressToParty,
   normalizePokemonProgression,
+  type PokemonProgression,
   resolveMoveLearning,
 } from "../src/progression";
 
@@ -302,9 +305,9 @@ describe("pokemon progression", () => {
   it("queues a replacement choice instead of changing four active moves", () => {
     const progression = {
       ...createStarterProgression("bulbasaur"),
-      level: 10,
+      level: 14,
       experience:
-        fireRedExperienceAtLevel("bulbasaur", 11) - 1,
+        fireRedExperienceAtLevel("bulbasaur", 15) - 1,
       activeMoves: [
         "tackle",
         "growl",
@@ -324,8 +327,8 @@ describe("pokemon progression", () => {
       },
     );
 
-    expect(reward.newLevel).toBe(11);
-    expect(reward.pendingMoves).toEqual(["seed-bomb"]);
+    expect(reward.newLevel).toBe(15);
+    expect(reward.pendingMoves).toEqual(["poison-powder", "sleep-powder"]);
     expect(reward.progression.activeMoves).toEqual([
       "tackle",
       "growl",
@@ -974,5 +977,32 @@ describe("level evolution", () => {
       { from: "charmander", to: "charmeleon", level: 35 },
       { from: "charmeleon", to: "charizard", level: 36 },
     ]);
+  });
+});
+
+describe("level-up learnsets come from the FireRed ROM", () => {
+  it("lets the early Pokémon keep learning well past level 13", () => {
+    const moves = (species: string) => (POKEMON_LEARNSETS as Record<string, { level: number; moveId: string }[]>)[species].map((entry) => `${entry.level}:${entry.moveId}`);
+    expect(moves("charmander")).toEqual(expect.arrayContaining(["7:ember", "19:smokescreen", "31:flamethrower", "37:slash"]));
+    expect(moves("pidgey")).toEqual(expect.arrayContaining(["5:sand-attack", "9:gust", "13:quick-attack", "25:wing-attack"]));
+    expect(moves("bulbasaur")).toEqual(expect.arrayContaining(["10:vine-whip", "20:razor-leaf", "46:solar-beam"]));
+  });
+
+  it("every species keeps a learnset that reaches beyond level 20 when the game's does", () => {
+    const rich = Object.entries(POKEMON_LEARNSETS).filter(([species]) => !["magikarp", "ditto", "abra"].includes(species));
+    const short = rich.filter(([, list]) => Math.max(...list.map((entry) => entry.level)) <= 13).map(([species]) => species);
+    // Pokémon whose whole FireRed learnset ends by level 13 (Caterpie line, Weedle line, Metapod...) are the only ones allowed.
+    expect(short.sort()).toEqual(expect.not.arrayContaining(["charmander", "squirtle", "bulbasaur", "pidgey", "rattata", "pikachu", "mankey", "machop", "oddish", "bellsprout"]));
+  });
+
+  it("a Pokémon rising level by level learns, or queues, every move of its list", () => {
+    let progression: PokemonProgression = createPokemonProgression("charmander", 5);
+    const learned = new Set(progression.activeMoves as string[]);
+    for (let step = 0; step < 40; step += 1) {
+      const reward = grantRareCandy(progression)!;
+      progression = reward.progression;
+      for (const move of [...reward.autoLearnedMoves, ...reward.pendingMoves]) learned.add(move);
+    }
+    expect([...learned]).toEqual(expect.arrayContaining(["ember", "metal-claw", "smokescreen", "scary-face", "flamethrower", "slash"]));
   });
 });

@@ -211,6 +211,21 @@ for sid in NEW:
     out_growth[sid] = GROWTH[s["growthRate"]]
     out_catch[sid] = s["catchRate"]
 
+# ROM level-up learnsets for the hand-written species too (starters, early wilds, trainer species):
+# their old placeholder lists stopped at level 1-13, so those Pokémon never learned anything later.
+out_hand_learn = {}
+for sid in species:
+    if sid not in HAND_SPECIES:
+        continue
+    learn, seen = [], set()
+    for e in species[sid]["learnset"]:
+        mid = get_move(e["move"])
+        if mid and (e["level"], mid) not in seen:
+            seen.add((e["level"], mid))
+            learn.append({"level": max(1, e["level"]), "moveId": mid})
+    if learn:
+        out_hand_learn[sid] = learn
+
 STONES = {93: "sun-stone", 94: "moon-stone", 95: "fire-stone", 96: "thunder-stone", 97: "water-stone", 98: "leaf-stone"}
 out_stone = {}
 for sid, s_ in species.items():
@@ -226,7 +241,7 @@ for sid, s_ in species.items():
             out_stone.setdefault(sid, {})[STONES[e["param"]]] = e["to"]
 
 new_moves = {k: v for k, v in converted.items() if v and k not in HAND_MOVES}
-used_moves = {e["moveId"] for l in out_learn.values() for e in l} | {m for v in out_init.values() for m in v}
+used_moves = {e["moveId"] for l in list(out_learn.values()) + list(out_hand_learn.values()) for e in l} | {m for v in out_init.values() for m in v}
 new_moves = {k: v for k, v in new_moves.items() if k in used_moves}
 
 lines = [
@@ -241,6 +256,7 @@ lines = [
 ]
 lines.append("export const GENERATED_SPECIES = %s;" % json.dumps(out_species, ensure_ascii=False, indent=2))
 lines.append("export const GENERATED_LEARNSETS = %s;" % json.dumps(out_learn, ensure_ascii=False))
+lines.append("export const ROM_HAND_LEARNSETS = %s;" % json.dumps(out_hand_learn, ensure_ascii=False))
 lines.append("export const GENERATED_INITIAL_MOVES = %s;" % json.dumps(out_init))
 lines.append("export const GENERATED_BASE_EXPERIENCE = %s;" % json.dumps(out_exp))
 lines.append("export const GENERATED_GROWTH_RATE = %s;" % json.dumps(out_growth))
