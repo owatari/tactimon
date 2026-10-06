@@ -45,7 +45,7 @@ type Props = {
   side: "player" | "rival";
   animation?: AnimationName;
   facing?: Facing;
-  speed?: 1 | 2;
+  speed?: number;
   onAnimationComplete?: () => void;
 };
 

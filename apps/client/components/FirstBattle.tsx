@@ -54,6 +54,7 @@ import {
   WORLD_ZOOM,
   type BattleSceneContext,
 } from "@/lib/maps";
+import { E2E_BATTLE_SPEED, isE2eMode } from "@/lib/e2eMode";
 import type { StoryBadgeId } from "@/lib/story";
 
 export type BattleOutcome = {
@@ -115,7 +116,7 @@ type Props = {
   context: BattleSceneContext;
   onComplete: (outcome: BattleOutcome) => void;
   /** Options menu default; the battle HUD can still toggle it. */
-  initialBattleSpeed?: 1 | 2;
+  initialBattleSpeed?: number;
 };
 
 type CommandMode =
@@ -535,9 +536,11 @@ export function FirstBattle({
   const [selectedMove, setSelectedMove] = useState<DuelMoveId | null>(null);
   const [selectedItem, setSelectedItem] = useState<DuelItemId | null>(null);
   const [busy, setBusy] = useState(false);
-  const [autoBattle, setAutoBattle] = useState(false);
+  const [autoBattle, setAutoBattle] = useState(() => isE2eMode());
   const [autoCatch, setAutoCatch] = useState(false);
-  const [battleSpeed, setBattleSpeed] = useState<1 | 2>(initialBattleSpeed);
+  const [battleSpeed, setBattleSpeed] = useState<number>(() =>
+    isE2eMode() ? E2E_BATTLE_SPEED : initialBattleSpeed,
+  );
   const [battleZoom, setBattleZoom] = useState<1 | 2 | 3>(
     WORLD_ZOOM as 3,
   );
@@ -568,7 +571,7 @@ export function FirstBattle({
   );
 
   const aiRunningRef = useRef(false);
-  const battleSpeedRef = useRef<1 | 2>(initialBattleSpeed);
+  const battleSpeedRef = useRef<number>(battleSpeed);
   const animationNonceRef = useRef(0);
   const vfxNonceRef = useRef(0);
   const captureThrowNonceRef = useRef(0);
@@ -893,8 +896,7 @@ export function FirstBattle({
     sleep(ms / battleSpeedRef.current);
 
   const toggleBattleSpeed = () => {
-    const next: 1 | 2 =
-      battleSpeedRef.current === 1 ? 2 : 1;
+    const next = battleSpeedRef.current === 1 ? 2 : 1;
     battleSpeedRef.current = next;
     setBattleSpeed(next);
   };

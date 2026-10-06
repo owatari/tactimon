@@ -45,7 +45,7 @@ type Props = {
   type?: string;
   category?: "physical" | "special" | "status";
   nonce: number;
-  speed?: 1 | 2;
+  speed?: number;
   onComplete?: () => void;
 };
 

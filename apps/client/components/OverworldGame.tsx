@@ -1,5 +1,6 @@
 "use client";
 
+import { isE2eMode } from "@/lib/e2eMode";
 import {
   useCallback,
   useEffect,
@@ -65,6 +66,8 @@ import {
   isRoute22EarlyRivalTriggerTile,
   route22EarlyRivalEncounter,
   isSsAnneRivalTriggerTile,
+  OVERWORLD_TRAINERS,
+  trainerPrizeMoney,
   resolvePlayerOverworldTrainers,
   ssAnneRivalEncounter,
   type OverworldTrainerInstance,
@@ -1206,6 +1209,31 @@ export function OverworldGame({
       onDialogueInteraction,
     ],
   );
+
+  // E2E turbo hook (dev only, see lib/e2eMode.ts): starts the real battle for a trainer of this map.
+  useEffect(() => {
+    if (!isE2eMode()) return;
+    window.__tactimon_e2e = {
+      fightTrainer(trainerId) {
+        const trainer = OVERWORLD_TRAINERS.find(
+          (entry) => entry.mapId === mapIdRef.current && entry.id === trainerId,
+        );
+        const context = createBattleContext();
+        if (!trainer || !context) return false;
+        onTrainerBattleTrigger(context, {
+          id: trainer.id,
+          name: trainer.name,
+          rewardMoney: trainerPrizeMoney(trainer.party, trainer.moneyMultiplier),
+          badgeId: trainer.badgeId,
+          party: trainer.party,
+        });
+        return true;
+      },
+    };
+    return () => {
+      delete window.__tactimon_e2e;
+    };
+  }, [createBattleContext, onTrainerBattleTrigger]);
 
   const launchWildBattle = useCallback(
     (
