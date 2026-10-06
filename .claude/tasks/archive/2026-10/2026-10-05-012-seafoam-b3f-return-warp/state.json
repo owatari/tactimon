@@ -1,10 +1,10 @@
 {
   "id": "2026-10-05-012-seafoam-b3f-return-warp",
   "title": "Corrigir Seafoam B3F (23,9) sem retorno",
-  "status": "planned",
+  "status": "done",
   "created_at": "2026-10-05",
   "base_head": "de31c34d",
-  "current_head": "de31c34d",
+  "current_head": "8382748d",
   "skills": [
     "overworld-development",
     "verification",
@@ -15,6 +15,8 @@
     "gameplay-systems"
   ],
   "files": [],
-  "commits": [],
+  "commits": [
+    "8382748d"
+  ],
   "tests": []
 }
