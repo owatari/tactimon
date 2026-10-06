@@ -389,68 +389,6 @@ h1 {
   line-height: 1.65;
 }
 
-.starter-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.starter-card {
-  display: grid;
-  min-height: 220px;
-  align-content: start;
-  gap: 9px;
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(7, 10, 7, 0.36);
-  color: var(--text);
-  text-align: left;
-  cursor: pointer;
-  transition:
-    transform 120ms ease,
-    border-color 120ms ease,
-    background 120ms ease;
-}
-
-.starter-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(216, 242, 121, 0.52);
-  background: rgba(216, 242, 121, 0.08);
-}
-
-.starter-card strong {
-  font-size: 17px;
-}
-
-.starter-card small {
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.starter-orb {
-  display: grid;
-  width: 58px;
-  height: 58px;
-  place-items: center;
-  margin-bottom: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
-  font-size: 22px;
-  font-weight: 900;
-}
-
-.starter-type {
-  width: fit-content;
-  padding: 4px 7px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--accent-strong);
-  font-size: 10px;
-  text-transform: uppercase;
-}
-
 .secondary-action {
   margin-top: 18px;
   padding: 9px 13px;
@@ -779,14 +717,6 @@ h1 {
 }
 
 @media (max-width: 760px) {
-  .starter-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .starter-card {
-    min-height: 0;
-  }
-
   .battle-shell {
     padding: 14px;
   }
@@ -6581,4 +6511,156 @@ body {
   width: min(960px, calc(100% - 36px));
   transform: translateX(-50%);
   box-sizing: border-box;
+}
+
+/* Oak's-table starter selection (FireRed style) */
+.starter-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 160;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  padding: 16px;
+  background: #181820;
+  color: #182838;
+  font-family: "Courier New", ui-monospace, monospace;
+  image-rendering: pixelated;
+}
+
+.fr-window {
+  border: 4px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  box-shadow:
+    inset 0 0 0 3px #a8c0d0,
+    5px 5px 0 rgba(24, 40, 56, 0.4);
+}
+
+.starter-info {
+  display: flex;
+  justify-self: start;
+  gap: 12px;
+  align-items: center;
+  max-width: min(520px, 100%);
+  padding: 10px 14px;
+}
+
+.starter-portrait {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  background: #a8c0d0;
+  border: 2px solid #203850;
+}
+
+.starter-info-copy {
+  display: grid;
+  gap: 3px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.starter-info-copy small {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.starter-table {
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  gap: clamp(24px, 8vw, 96px);
+  padding: 28px clamp(24px, 6vw, 72px) 18px;
+  border: 4px solid #583810;
+  border-top-color: #c89850;
+  background: #a87028;
+  box-shadow: 0 8px 0 #583810;
+}
+
+.starter-ball-slot {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  padding: 18px 4px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.starter-ball {
+  width: 84px;
+  height: 84px;
+  image-rendering: pixelated;
+}
+
+.starter-ball.selected {
+  animation: starter-bob 0.8s steps(2, end) infinite;
+}
+
+.starter-cursor {
+  position: absolute;
+  top: -6px;
+  color: #f8f8f8;
+  font-size: 20px;
+  text-shadow: 2px 2px 0 #202020;
+}
+
+@keyframes starter-bob {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.starter-textbox {
+  display: grid;
+  gap: 6px;
+  min-height: 84px;
+  padding: 12px 16px;
+}
+
+.starter-textbox p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.starter-textbox small {
+  color: #6878a0;
+  font-size: 11px;
+}
+
+.starter-yesno {
+  position: absolute;
+  right: 24px;
+  bottom: 128px;
+  display: grid;
+  min-width: 120px;
+  padding: 8px;
+}
+
+.starter-yesno button {
+  padding: 6px 10px 6px 24px;
+  border: 0;
+  background: transparent;
+  color: #182838;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.starter-yesno button.selected {
+  background: #f8e8a0;
+}
+
+.starter-yesno button.selected::before {
+  content: "▶";
+  margin-left: -16px;
+  margin-right: 6px;
 }

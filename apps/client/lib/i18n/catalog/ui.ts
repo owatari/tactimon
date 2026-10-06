@@ -21,6 +21,36 @@ export const uiCatalog: Catalog = {
     fr: "Défensif, stable et difficile à abattre.",
     zh: "防御出色、稳定，很难被击倒。",
   },
+  "YES": {
+    pt: "SIM",
+    es: "SÍ",
+    fr: "OUI",
+    zh: "是",
+  },
+  "NO": {
+    pt: "NÃO",
+    es: "NO",
+    fr: "NON",
+    zh: "否",
+  },
+  "PROF. OAK: Those are POKé BALLS. They contain POKéMON! Choose one!": {
+    pt: "PROF. OAK: Aquelas são POKé BALLS. Elas contêm POKéMON! Escolha uma!",
+    es: "PROF. OAK: ¡Esas son POKé BALLS! ¡Contienen POKéMON! ¡Elige una!",
+    fr: "PROF. CHEN : Ce sont des POKé BALLS. Elles contiennent des POKéMON ! Choisis-en une !",
+    zh: "大木博士：那些是精灵球，里面有宝可梦！选一个吧！",
+  },
+  "So, you want the {type}-type POKéMON, {name}?": {
+    pt: "Então, você quer o POKéMON do tipo {type}, {name}?",
+    es: "Entonces, ¿quieres el POKéMON de tipo {type}, {name}?",
+    fr: "Alors, tu veux le POKéMON de type {type}, {name} ?",
+    zh: "那么，你要选{type}属性的宝可梦{name}吗？",
+  },
+  "←/→ select · Z confirm · X back": {
+    pt: "←/→ escolher · Z confirmar · X voltar",
+    es: "←/→ elegir · Z confirmar · X volver",
+    fr: "←/→ choisir · Z valider · X retour",
+    zh: "←/→ 选择 · Z 确认 · X 返回",
+  },
   "Not yet": {
     pt: "Ainda não",
     es: "Todavía no",
