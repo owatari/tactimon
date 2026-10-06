@@ -7111,3 +7111,20 @@ body {
   white-space: pre-line;
   margin: 8px 0 0;
 }
+
+/* Summary move selection: highlighted row with the FireRed cursor */
+.start-menu-moves li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.start-menu-moves li.selected {
+  background: #f8e8a0;
+  border-color: #d84838;
+}
+
+.start-menu-moves li.selected::before {
+  content: "\25B6";
+  position: absolute;
+  left: 6px;
+}
