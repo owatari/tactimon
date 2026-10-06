@@ -1,0 +1,2 @@
+# Handoff — 018
+`pnpm e2e:playthrough` (precisa de `pnpm dev`): 8 ginásios → E4 → Campeão → HoF via batalhas reais em modo turbo (40×, só dev, `lib/e2eMode.ts` + hook `window.__tactimon_e2e.fightTrainer`), ~4,5 min. `E2E_RESUME=<etapa>`, `E2E_SCREENSHOTS=<dir>`. Armadilhas em `.claude/knowledge/testing.md`. Pendência: não cobre captura/evolução/whiteout por input (já cobertos na camada lógica 015) nem o início (starter/Parcel).

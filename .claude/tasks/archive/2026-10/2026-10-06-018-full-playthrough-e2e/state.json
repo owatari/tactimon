@@ -1,13 +1,13 @@
 {
   "id": "2026-10-06-018-full-playthrough-e2e",
   "title": "Playthrough E2E real acelerado (novo jogo → Campeão)",
-  "status": "planned",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "ef4ec7d7",
   "current_head": "ef4ec7d7",
   "skills": ["overworld-development", "battle-development", "verification", "safe-main", "task-ledger"],
   "agents": ["gameplay-systems", "battle-engine", "verifier"],
   "files": [],
-  "commits": [],
+  "commits": ["ded75946", "80a74372", "6e37c5f9"],
   "tests": []
 }

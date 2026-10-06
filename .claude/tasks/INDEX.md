@@ -22,4 +22,4 @@
 | 2026-10-05-015-scripted-full-walkthrough | Walkthrough scriptado testando o jogo inteiro (novo jogo → Liga) | done | archive/2026-10 |
 | 2026-10-05-016-ui-audit-remaining-screens | Continuação da 014: Bag, Trainer Card, Party 2 colunas, Summary, Options/Save/Town Map/Mart/Storage, HUD de batalha/pós-batalha FireRed + traduzir descrições da Pokédex | done (parcial) | archive/2026-10 |
 | 2026-10-05-017-battle-ui-fidelity | UI de batalha/pós-batalha/evolução/Game Corner no estilo FireRed; traduzir descrições da Pokédex; limpar CSS legado | done | archive/2026-10 |
-| 2026-10-06-018-full-playthrough-e2e | Playthrough E2E real acelerado (novo jogo → Campeão → HoF) | planned | active |
+| 2026-10-06-018-full-playthrough-e2e | Playthrough E2E real acelerado (novo jogo → Campeão → HoF) | done | archive/2026-10 |
