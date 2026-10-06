@@ -30,3 +30,7 @@ Testes: `tests/story-persistence.test.ts`, `tests/storage.test.ts`, `tests/white
 - Sem EVs por level-up. Cada Pokémon **derrotado** dá o EV yield da espécie (ROM, `generated/evYield.ts`, gerado por `tools/rom-data/generate-ev-yields.py`) a todos os participantes (completo, não dividido como o EXP). Captura não dá EV (`evYield: false`). Teto 252/stat e 510 total (`addEvs`).
 - Vitaminas (HP Up, Protein, Iron, Calcium, Zinc, Carbos; vendidas no Celadon): +10 EV, param em 100 por stat (`grantVitamin`, `ITEM_EFFECTS` kind `vitamin`).
 - Saves antigos mantêm os EVs que já tinham (só param de crescer pelo sistema antigo).
+
+## Captura: tela de escolha — task 021
+- Captura bem-sucedida **não** coloca o Pokémon na party: `holdCapturedPokemon` grava `story.pendingCapture` (persistido; reabre após reload). `CaptureSummary` (retrato FireRed, stats, IV/EV, nature ▲▼, golpes, apelido ≤10, SEND TO TEAM / SEND TO BOX) chama `resolvePendingCapture` (`lib/captureChoice.ts`): party cheia → escolhe quem vai pro box; box cheia → recusa.
+- Espécie nova: o aviso "NEW POKéDEX ENTRY" fica na tela e a página de registro (com cry) é pulada (`capturePageSpeciesRef` em `GameClient`). `nickname` vive em `PokemonProgression`/`DuelUnit`; exibir com `pokemonDisplayName`.

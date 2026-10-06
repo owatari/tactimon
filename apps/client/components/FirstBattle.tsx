@@ -55,6 +55,7 @@ import {
   type BattleSceneContext,
 } from "@/lib/maps";
 import { E2E_BATTLE_SPEED, isE2eMode } from "@/lib/e2eMode";
+import { pokemonDisplayName } from "@/lib/pokemonName";
 import type { StoryBadgeId } from "@/lib/story";
 
 export type BattleOutcome = {
@@ -453,6 +454,7 @@ export function FirstBattle({
       evs: progression.evs,
       ivs: progression.ivs,
       nature: progression.nature,
+      nickname: progression.nickname,
       currentHp: progression.currentHp,
       status: progression.status,
       sleepTurnsRemaining:
@@ -1652,7 +1654,7 @@ export function FirstBattle({
         <div className="combatant-hud-body">
           <div className="combatant-name-row">
             <div className="combatant-identity">
-              <strong>{localizedSpeciesName(unit.species)}</strong>
+              <strong>{pokemonDisplayName(unit)}</strong>
               <span className="combatant-level">
                 Lv. {unit.level}
               </span>
@@ -2076,7 +2078,7 @@ export function FirstBattle({
                       speed={battleSpeed}
                     />
                     <span className="duel-unit-label">
-                      {localizedSpeciesName(unit.species)}
+                      {pokemonDisplayName(unit)}
                     </span>
                     {hoveredTargetId === unit.id &&
                       moveEffectiveness !== null && (

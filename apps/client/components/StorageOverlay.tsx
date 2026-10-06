@@ -63,7 +63,7 @@ function PokemonSummary({
   return (
     <div className="mart-item-copy">
       <span>
-        {displayName(pokemon.species)} · Lv.{" "}
+        {pokemon.nickname ?? displayName(pokemon.species)} · Lv.{" "}
         {pokemon.level}
       </span>
       <strong>

@@ -80,6 +80,14 @@ function ownedSpecies(story: StoryState): string[] {
   return owned;
 }
 
+/** Whether the player owns or ever owned `species` (permanent Pokédex "caught"). */
+export function isSpeciesCaught(story: StoryState, species: string): boolean {
+  return (
+    (story.pokedex?.caught ?? []).includes(species) ||
+    ownedSpecies(story).includes(species)
+  );
+}
+
 export function getPokedex(story: StoryState): {
   entries: PokedexEntry[];
   seenCount: number;

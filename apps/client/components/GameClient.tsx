@@ -47,7 +47,7 @@ import {
   findHealLocation,
   findHealLocationByCenter,
 } from "@/lib/healLocations";
-import { markPokedexSeen, syncPokedexCaught } from "@/lib/pokedex";
+import { isSpeciesCaught, markPokedexSeen, syncPokedexCaught } from "@/lib/pokedex";
 import { hasPokedex } from "@/lib/story";
 import { PokedexRegistration } from "@/components/PokedexGba";
 import {
@@ -89,7 +89,6 @@ import {
   isStoryTrainerDefeated,
   markStoryTrainerDefeated,
   normalizeStoryState,
-  placeCapturedPokemon,
   registerStoryHealLocation,
   shouldStartStoryWhiteOut,
   storyCanCapturePokemon,
@@ -102,6 +101,8 @@ import {
   type DialogueInteractionRequest,
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
+import { CaptureSummary } from "./CaptureSummary";
+import { holdCapturedPokemon, resolvePendingCapture } from "@/lib/captureChoice";
 import {
   chooseBestStorySave,
   serializeStorySave,
@@ -325,6 +326,7 @@ export function GameClient() {
         evs: pokemon.evs,
         ivs: pokemon.ivs,
         nature: pokemon.nature,
+        nickname: pokemon.nickname,
         currentHp: pokemon.currentHp,
         status: pokemon.status,
         sleepTurnsRemaining:
@@ -434,6 +436,8 @@ export function GameClient() {
   // Pokédex "caught" is permanent (owned, gifted, traded, evolved); the first time a species is
   // registered during play FireRed shows its entry. Saves loaded from disk register silently.
   const dexSyncedRef = useRef(false);
+  // New species caught in battle are presented by the capture screen instead of the Pokédex page.
+  const capturePageSpeciesRef = useRef(new Set<string>());
   const [dexRegistrations, setDexRegistrations] = useState<string[]>([]);
   useEffect(() => {
     if (!storyHydrated) return;
@@ -446,12 +450,15 @@ export function GameClient() {
       next = { ...next, hofDebutSeconds: story.playTimeSeconds ?? 0 };
     }
     if (next !== story) setStory(next);
+    const registrable = newlyCaught.filter(
+      (species) => !capturePageSpeciesRef.current.delete(species),
+    );
     if (
       dexSyncedRef.current &&
-      newlyCaught.length > 0 &&
+      registrable.length > 0 &&
       hasPokedex(next)
     ) {
-      setDexRegistrations((queue) => [...queue, ...newlyCaught]);
+      setDexRegistrations((queue) => [...queue, ...registrable]);
     }
     dexSyncedRef.current = true;
   }, [story, storyHydrated]);
@@ -536,15 +543,8 @@ export function GameClient() {
               outcome.capture.species,
             ),
             level: outcome.capture.level,
-            destination: outcome.capture.success
-              ? placeCapturedPokemon(
-                  story,
-                  createPokemonProgression(
-                    outcome.capture.species,
-                    outcome.capture.level,
-                  ),
-                ).destination ?? null
-              : null,
+            // Team or box is chosen on the capture screen that follows.
+            destination: null,
           }
         : undefined,
     });
@@ -758,16 +758,14 @@ export function GameClient() {
           : rollPersonality(),
       );
 
-      return placeCapturedPokemon(
-        next,
-        {
-          ...captured,
-          species: outcome.capture.species,
-          status: outcome.capture.status,
-          sleepTurnsRemaining:
-            outcome.capture.sleepTurnsRemaining,
-        },
-      ).story;
+      // The catch waits in the save until the player names it and picks team or box.
+      return holdCapturedPokemon(next, {
+        ...captured,
+        species: outcome.capture.species,
+        status: outcome.capture.status,
+        sleepTurnsRemaining:
+          outcome.capture.sleepTurnsRemaining,
+      });
     });
 
     const progressionEntries =
@@ -977,6 +975,7 @@ export function GameClient() {
   const paused =
     starterChoiceOpen ||
     dexRegistrations.length > 0 ||
+    Boolean(story.pendingCapture) ||
     martOpen ||
     menuOpen ||
     storageOpen ||
@@ -1211,6 +1210,31 @@ export function GameClient() {
         !battleResult &&
         progressionQueue.length === 0 &&
         !pendingWhiteOut &&
+        story.pendingCapture && (
+          <CaptureSummary
+            key={`${story.pendingCapture.species}-${story.pendingCapture.experience}`}
+            story={story}
+            pokemon={story.pendingCapture}
+            newEntry={!isSpeciesCaught(story, story.pendingCapture.species)}
+            onResolve={(choice) => {
+              const species = story.pendingCapture?.species;
+              if (species && !isSpeciesCaught(story, species)) {
+                // The capture screen already announced the new entry: skip the Pokédex page.
+                capturePageSpeciesRef.current.add(species);
+              }
+              setStory((current) => {
+                const result = resolvePendingCapture(current, choice);
+                return result.ok ? result.story : current;
+              });
+            }}
+          />
+        )}
+
+      {!battleSession &&
+        !battleResult &&
+        progressionQueue.length === 0 &&
+        !pendingWhiteOut &&
+        !story.pendingCapture &&
         dexRegistrations[0] && (
           <PokedexRegistration
             key={dexRegistrations[0]}

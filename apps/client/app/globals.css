@@ -7142,3 +7142,174 @@ body {
   position: absolute;
   left: 6px;
 }
+
+/* Capture screen: portrait, stats/IV/EV table, nickname and team-or-box buttons (FireRed skin). */
+.capture-summary-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 170;
+}
+
+.capture-summary-overlay .capture-summary {
+  position: relative;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+  transform: none;
+  width: min(900px, calc(100% - 36px));
+  display: grid;
+  gap: 10px;
+}
+
+.capture-summary h2 {
+  margin: 0;
+}
+
+.capture-summary-new {
+  margin: 0;
+  color: #c83828;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.capture-summary-info {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.capture-stats {
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.capture-stats th,
+.capture-stats td {
+  padding: 2px 14px 2px 0;
+  text-align: left;
+  font-weight: 700;
+  color: #304858;
+}
+
+.capture-stats td {
+  font-weight: 400;
+  color: #182838;
+}
+
+.capture-stats thead th {
+  font-size: 12px;
+  color: #506878;
+}
+
+.capture-stats .nature-up {
+  color: #c83828;
+}
+
+.capture-stats .nature-down {
+  color: #2858c8;
+}
+
+.capture-iv-bar {
+  display: inline-block;
+  width: 62px;
+  height: 8px;
+  margin-right: 8px;
+  border: 2px solid #203850;
+  background: #d8e0d0;
+  vertical-align: middle;
+}
+
+.capture-iv-bar i {
+  display: block;
+  height: 100%;
+  background: #48a858;
+}
+
+.capture-moves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.capture-actions {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) 1fr 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.capture-actions label,
+.capture-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 4px 10px;
+  border: 3px solid #203850;
+  border-radius: 0;
+  background: #f8f8e8;
+  color: #182838;
+  font: 700 15px "Courier New", ui-monospace, monospace;
+  cursor: pointer;
+}
+
+.capture-actions label span {
+  color: #304858;
+}
+
+.capture-actions input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-bottom: 2px solid #203850;
+  background: transparent;
+  color: #182838;
+  font: 700 15px "Courier New", ui-monospace, monospace;
+  outline: none;
+}
+
+.capture-actions .selected {
+  background: #f8e8a0;
+  box-shadow: inset 0 0 0 2px #c8a838;
+}
+
+.capture-actions button.selected::before {
+  content: "▶";
+}
+
+.capture-summary-notice {
+  margin: 0;
+  color: #c83828;
+  font-weight: 700;
+}
+
+.capture-swap {
+  right: 22px;
+  bottom: 70px;
+  min-width: 240px;
+  gap: 2px;
+}
+
+.capture-swap strong {
+  padding: 2px 8px 6px;
+  font-size: 13px;
+}
+
+.capture-summary-overlay .capture-summary-help {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  width: min(900px, calc(100% - 36px));
+  margin: 0;
+  padding: 6px 10px;
+}

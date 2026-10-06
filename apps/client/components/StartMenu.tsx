@@ -14,6 +14,7 @@ import {
   type PokemonProgression,
 } from "@tactimon/battle-engine";
 import { natureEffectText, natureName } from "@/lib/natures";
+import { pokemonDisplayName } from "@/lib/pokemonName";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
 import { PLAYER_SPRITE } from "@/lib/maps";
@@ -593,7 +594,7 @@ export function StartMenu({
                   compact
                 />
                 <div className="start-menu-party-copy">
-                  <strong>{speciesDisplayName(pokemon.species)}</strong>
+                  <strong>{pokemonDisplayName(pokemon)}</strong>
                   <span>Lv{pokemon.level}</span>
                   {pokemon.status && (
                     <b className={`start-menu-status ${pokemon.status}`}>
@@ -628,7 +629,7 @@ export function StartMenu({
       {screen === "summary" && summaryPokemon && (
         <section className="start-menu-screen start-menu-summary">
           <h2>
-            {speciesDisplayName(summaryPokemon.species)} · Lv
+            {pokemonDisplayName(summaryPokemon)} · Lv
             {summaryPokemon.level}
           </h2>
           <div className="start-menu-summary-tabs">
@@ -725,7 +726,7 @@ export function StartMenu({
                       key={`${pokemon.species}-${index}`}
                       className={index === bagUse.partyIndex ? "selected" : ""}
                     >
-                      {speciesDisplayName(pokemon.species)} Lv{pokemon.level}{" "}
+                      {pokemonDisplayName(pokemon)} Lv{pokemon.level}{" "}
                       {pokemon.currentHp}HP
                     </div>
                   ))
@@ -903,7 +904,7 @@ export function SummaryInfo({
       <dt>{t("POKéDEX No.")}</dt>
       <dd>{dexNo > 0 ? String(dexNo).padStart(3, "0") : "—"}</dd>
       <dt>{t("NAME")}</dt>
-      <dd>{speciesDisplayName(pokemon.species)}</dd>
+      <dd>{pokemonDisplayName(pokemon)}</dd>
       <dt>{t("TYPE")}</dt>
       <dd>{types.map((type) => t(type.toUpperCase())).join(" / ")}</dd>
       <dt>{t("NATURE")}</dt>
@@ -1029,7 +1030,7 @@ function SummaryMoves({
 }
 
 /** FireRed front sprite (64x64, pixelated); falls back to the PMD portrait. */
-function FrontSprite({
+export function FrontSprite({
   species,
   name,
   compact = false,

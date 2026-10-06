@@ -186,4 +186,21 @@ describe("walkthrough (browser)", () => {
     await shot("whiteout");
     expect(cdp.errors).toEqual([]);
   }, 40_000);
+
+  it("E8. a fresh catch opens the capture screen (no Pokédex cry page); nickname + team/box are saved", async () => {
+    let story = withPokedex({ ...chooseStarter("squirtle"), firstBattleComplete: true });
+    story = { ...story, pendingCapture: createPokemonProgression("pikachu", 6) } as never;
+    await load(seedStory(story, { mapId: "pallet-town", x: 12, y: 17 }));
+    expect(await count(".capture-summary")).toBe(1);
+    expect(await count(".dex-registration")).toBe(0);
+    expect(await text(".capture-summary h2")).toContain("Pikachu");
+    await shot("capture-screen");
+    await cdp.eval(`(() => { const i = document.querySelector(".capture-actions input"); const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set; set.call(i, "Zap"); i.dispatchEvent(new Event("input", { bubbles: true })); })()`);
+    await press("ArrowDown", "Enter");
+    await sleep(500);
+    expect(await count(".capture-summary")).toBe(0);
+    const saved = JSON.parse((await cdp.eval<string>(`localStorage.getItem("tactimon.story.v1")`)) as string).story;
+    expect(saved.pendingCapture).toBeNull();
+    expect(saved.capturedPokemon.at(-1)).toMatchObject({ species: "pikachu", nickname: "Zap" });
+  }, 40_000);
 });
