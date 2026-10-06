@@ -17,9 +17,9 @@ import {
   DUEL_MOVES,
   calculateTypeEffectiveness,
   getActiveDuelUnit,
+  ITEM_AP_COST,
   POKE_BALL_AP_COST,
   getDuelCaptureEligibility,
-  isDuelAutoCatchTarget,
   getDuelMovePp,
   getDuelMoveAreaTargetIds,
   getReachableCells,
@@ -708,22 +708,19 @@ export function FirstBattle({
     encounter.kind === "trainer"
       ? encounter.trainerName ?? "Blue"
       : null;
+  // Auto Catch takes over every player turn of a wild battle while balls and wild Pokémon remain.
   const autoCatchReady =
     autoCatch &&
     state.status === "active" &&
     active?.side === "player" &&
     state.battleKind === "wild" &&
     state.captureAllowed &&
-    (state.items["poke-ball"] ?? 0) > 0 &&
-    (active?.ap ?? 0) >= POKE_BALL_AP_COST &&
+    (["poke-ball", "great-ball", "ultra-ball", "master-ball"] as const).some(
+      (ball) => (state.items[ball] ?? 0) > 0,
+    ) &&
     state.units.some(
       (unit) =>
-        unit.side === "rival" &&
-        unit.hp > 0 &&
-        isDuelAutoCatchTarget(
-          state,
-          unit.id,
-        ),
+        unit.side === "rival" && unit.hp > 0 && !unit.captured,
     );
   const isPlayerTurn =
     state.status === "active" &&
@@ -2402,8 +2399,10 @@ export function FirstBattle({
                             type="button"
                             disabled={
                               amount <= 0 ||
-                              (item.kind === "capture" &&
-                                player.ap < POKE_BALL_AP_COST)
+                              player.ap <
+                                (item.kind === "capture"
+                                  ? POKE_BALL_AP_COST
+                                  : ITEM_AP_COST)
                             }
                             onClick={() => {
                               setSelectedItem(itemId);
@@ -2421,9 +2420,9 @@ export function FirstBattle({
                             <span>
                               ×{amount} ·{" "}
                               {item.kind === "heal"
-                                ? `+${item.heal} HP`
+                                ? `+${item.heal} HP · ${ITEM_AP_COST} AP`
                                 : item.kind === "cure"
-                                  ? t("cures status")
+                                  ? `${t("cures status")} · ${ITEM_AP_COST} AP`
                                 : state.captureAllowed
                                   ? t("{ap} AP · better odds at low HP", {
                                       ap: POKE_BALL_AP_COST,

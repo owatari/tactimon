@@ -46,3 +46,20 @@ describe("Generation III catch odds", () => {
     expect(CAPTURE_EXP_BONUS).toBe(1.2);
   });
 });
+
+describe("catch rates", () => {
+  it("every Kanto species has a finite ROM catch rate (37 used to be uncatchable)", async () => {
+    const { ROM_CATCH_RATE } = await import("../src/generated/evYield");
+    const { catchRateFor } = await import("../src");
+    expect(Object.keys(ROM_CATCH_RATE)).toHaveLength(151);
+    for (const id of ["machop", "onix", "growlithe", "bellsprout", "ponyta", "slowpoke", "shellder", "rhyhorn", "gyarados", "charmander"]) {
+      const rate = catchRateFor(id);
+      expect(Number.isFinite(rate), id).toBe(true);
+      expect(rate, id).toBeGreaterThanOrEqual(3);
+      expect(fireRedCaptureChance({ catchRate: rate, ballModifier: 1, statusModifier: 1, hp: 5, maxHp: 50 }), id).toBeGreaterThan(0);
+    }
+    expect(catchRateFor("machop")).toBe(180);
+    expect(catchRateFor("not-a-species")).toBe(45);
+    expect(fireRedCaptureChance({ catchRate: Number.NaN, ballModifier: 1, statusModifier: 1, hp: 5, maxHp: 50 })).toBeGreaterThan(0);
+  });
+});

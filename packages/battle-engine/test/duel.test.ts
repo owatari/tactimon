@@ -2461,7 +2461,7 @@ describe("sequential tactical AI decisions", () => {
     expect(turn.state.status).toBe("finished");
   });
 
-  it("prepares an auto-catch with a major status before throwing the ball", () => {
+  it("prepares an auto-catch with a major status before throwing the ball (healthy target)", () => {
     let state = createWildDuel({
       seed: 1605,
       width: 7,
@@ -2499,7 +2499,6 @@ describe("sequential tactical AI decisions", () => {
           : unit.id === wild.id
             ? {
                 ...unit,
-                hp: 1,
                 position: { x: 3, y: 2 },
               }
             : unit,
@@ -2526,6 +2525,32 @@ describe("sequential tactical AI decisions", () => {
 
 
 describe("rival battle inventory", () => {
+  it("throws the ball right away when the target is already easy to catch", () => {
+    const base = createWildDuel({
+      seed: 1606,
+      width: 7,
+      height: 5,
+      items: { potion: 0, "poke-ball": 2 },
+      players: [{ species: "bulbasaur", level: 12, moves: ["tackle", "sleep-powder"] }],
+      wildSpecies: "rattata",
+      wildLevel: 3,
+    });
+    const player = base.units.find((unit) => unit.side === "player")!;
+    const wild = base.units.find((unit) => unit.side === "rival")!;
+    const state = {
+      ...base,
+      activeUnitId: player.id,
+      units: base.units.map((unit) =>
+        unit.id === player.id
+          ? { ...unit, position: { x: 2, y: 2 } }
+          : { ...unit, hp: 1, position: { x: 3, y: 2 } },
+      ),
+    };
+    const turn = resolveSimpleAiTurnDetailed(state, "player", { autoCapture: true });
+    expect(turn.steps[0]?.presentation?.kind).toBe("capture");
+    expect(wild.id).toBeDefined();
+  });
+
   it("lets rival AI heal from its own bag without consuming player items", () => {
     let state = createTrainerDuel({
       seed: 1701,

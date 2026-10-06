@@ -36,7 +36,7 @@ export function fireRedCaptureChance(input: CaptureChanceInput): number {
   if (input.ballModifier >= 255) return 1;
   const maxHp = Math.max(1, input.maxHp);
   const hp = Math.max(1, Math.min(maxHp, input.hp));
-  const rate = Math.max(1, Math.min(255, input.catchRate));
+  const rate = Math.max(1, Math.min(255, Number.isFinite(input.catchRate) ? input.catchRate : 45));
   const a = Math.floor(
     (Math.floor(((3 * maxHp - 2 * hp) * rate * input.ballModifier) / (3 * maxHp)) *
       Math.max(1, input.statusModifier) *

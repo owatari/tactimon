@@ -5,6 +5,7 @@ import {
   type GeneratedMoveId,
   type GeneratedSpeciesId,
 } from "./generated/kanto";
+import { ROM_CATCH_RATE } from "./generated/evYield";
 import {
   ITEM_AP_COST,
   POKE_BALL_AP_COST,
@@ -1679,9 +1680,17 @@ const HAND_WILD_CATCH_RATE: Record<HandWildSpeciesId, number> = {
 };
 
 const WILD_CATCH_RATE: Record<WildSpeciesId, number> = {
+  // The ROM table covers all 151 species (the older tables missed 37, which made them uncatchable).
+  ...(ROM_CATCH_RATE as Record<WildSpeciesId, number>),
   ...HAND_WILD_CATCH_RATE,
   ...GENERATED_CATCH_RATE,
 };
+
+/** Catch rate of a species (3-255); unknown ids fall back to a middling 45. */
+export function catchRateFor(species: string): number {
+  const rate = (WILD_CATCH_RATE as Record<string, number>)[species];
+  return typeof rate === "number" && Number.isFinite(rate) ? rate : 45;
+}
 
 function normalizeDuelItems(
   input: Partial<DuelInventory> | undefined,
@@ -5829,7 +5838,7 @@ export function applyDuelAction(
       }
       const species = target.species as WildSpeciesId;
       const chance = fireRedCaptureChance({
-        catchRate: WILD_CATCH_RATE[species],
+        catchRate: catchRateFor(species),
         ballModifier: item.ballModifier,
         statusModifier:
           target.status === "sleep"
@@ -7925,6 +7934,255 @@ function aiBestIncomingDamage(
   return best;
 }
 
+
+// ---------------------------------------------------------------------------------------------
+// Auto Catch AI (task 029): capture everything. Weaken without killing, inflict status, then throw
+// the ball; only an imminent knock-out of the acting Pokémon switches back to the normal (killing) AI.
+// ---------------------------------------------------------------------------------------------
+
+type AutoCatchPlan =
+  | { kind: "action"; action: DuelAction }
+  | { kind: "walk"; destination: DuelPoint }
+  /** Survival: let the regular AI act (it prefers knock-outs). */
+  | { kind: "fallback" }
+  /** Nothing sensible left this turn. */
+  | { kind: "idle" };
+
+/** Throw as soon as the odds are at least this good. */
+export const AUTO_CATCH_THROW_NOW = 0.5;
+/** Below this the ball is only thrown when nothing else can improve the odds. */
+const AUTO_CATCH_HOPELESS = 0.12;
+/** A move must raise the capture chance by at least this much to be worth its AP. */
+const AUTO_CATCH_MIN_GAIN = 0.03;
+/** A damaging move is "safe" only when even a high roll leaves the target alive. */
+const AUTO_CATCH_KILL_MARGIN = 1.2;
+
+function availableBalls(state: DuelState): Array<{ id: DuelItemId; modifier: number }> {
+  return (Object.keys(DUEL_ITEMS) as DuelItemId[])
+    .filter((id) => DUEL_ITEMS[id].kind === "capture" && (state.items[id] ?? 0) > 0)
+    .map((id) => ({
+      id,
+      modifier: (DUEL_ITEMS[id] as { ballModifier: number }).ballModifier,
+    }))
+    .sort((a, b) => a.modifier - b.modifier);
+}
+
+function captureStatusModifier(status: DuelMajorStatus): number {
+  return status === "sleep"
+    ? 2
+    : status === "poison" || status === "paralysis" || status === "burn"
+      ? 1.5
+      : 1;
+}
+
+function captureChanceAt(
+  target: DuelUnit,
+  ballModifier: number,
+  hp: number,
+  status: DuelMajorStatus,
+): number {
+  return fireRedCaptureChance({
+    catchRate: catchRateFor(target.species),
+    ballModifier,
+    statusModifier: captureStatusModifier(status),
+    hp,
+    maxHp: target.maxHp,
+  });
+}
+
+/** Cheapest ball that is already good enough, else the best regular ball; the Master Ball only for hopeless cases. */
+function bestBallFor(
+  target: DuelUnit,
+  balls: ReturnType<typeof availableBalls>,
+  hp = target.hp,
+  status: DuelMajorStatus = target.status,
+): { id: DuelItemId; chance: number } | null {
+  if (balls.length === 0) return null;
+  const regular = balls.filter((ball) => ball.modifier < 255);
+  const scored = regular.map((ball) => ({
+    id: ball.id,
+    chance: captureChanceAt(target, ball.modifier, hp, status),
+  }));
+  const enough = scored.find((entry) => entry.chance >= 0.6);
+  const best = enough ?? [...scored].sort((a, b) => b.chance - a.chance)[0];
+  const master = balls.find((ball) => ball.modifier >= 255);
+  if (master && (!best || best.chance < 0.25)) {
+    return { id: master.id, chance: 1 };
+  }
+  return best ?? null;
+}
+
+/**
+ * Damage the actor is realistically exposed to before it acts again: what its most dangerous foe
+ * could do, plus half of the runner-up (a big pack never focuses one Pokémon with every member).
+ */
+function aiExpectedIncomingDamage(state: DuelState, actor: DuelUnit): number {
+  const threats: number[] = [];
+  for (const enemy of state.units) {
+    if (enemy.hp <= 0 || enemy.side === actor.side) continue;
+    const distance = manhattanDistance(actor.position, enemy.position);
+    let worst = 0;
+    for (const moveId of enemy.moves) {
+      if (!canDuelUnitUseMove(enemy, moveId)) continue;
+      const move = DUEL_MOVES[moveId];
+      if (!move || move.category === "status") continue;
+      if (distance > Math.max(0, enemy.maxAp - move.apCost) + move.maxRange) continue;
+      const damage =
+        expectedMoveDamage(move, calculateDamage(state, enemy, actor, move).damage) *
+        (getDuelMoveHitChance(enemy, actor, move) / 100);
+      worst = Math.max(worst, damage);
+    }
+    threats.push(worst);
+  }
+  const [worst = 0, second = 0] = threats.sort((a, b) => b - a);
+  // The strongest foe counts fully, the runner-up only partly (it may well pick another target).
+  return worst + second * 0.5;
+}
+
+type AutoCatchOption = {
+  move: DuelMove;
+  target: DuelUnit;
+  newChance: number;
+  gain: number;
+};
+
+/** What a move would do to the odds of catching `target`; null when it would not help or could kill. */
+function evaluateCatchMove(
+  state: DuelState,
+  actor: DuelUnit,
+  target: DuelUnit,
+  move: DuelMove,
+  balls: ReturnType<typeof availableBalls>,
+  currentChance: number,
+): AutoCatchOption | null {
+  if (
+    move.targeting !== "single-enemy" ||
+    move.areaPattern ||
+    move.effect === "ohko" ||
+    move.effect === "future-sight" ||
+    move.effect === "solar-beam" ||
+    move.effect === "teleport"
+  ) {
+    return null;
+  }
+  const accuracy = getDuelMoveHitChance(actor, target, move) / 100;
+  if (accuracy <= 0) return null;
+
+  let hp = target.hp;
+  let status: DuelMajorStatus = target.status;
+  if (move.category === "status") {
+    if (!move.secondaryStatus || !canMoveApplyMajorStatus(target, move)) return null;
+    status = move.secondaryStatus;
+  } else {
+    if (move.power === null) return null;
+    const single = calculateDamage(state, actor, target, move).damage;
+    const maxHits = move.multiHit === "two-to-five" ? 5 : move.multiHit === "two" ? 2 : 1;
+    if (single * maxHits * AUTO_CATCH_KILL_MARGIN >= target.hp) return null;
+    hp = Math.max(1, Math.round(target.hp - expectedMoveDamage(move, single)));
+  }
+  const best = bestBallFor(target, balls, hp, status);
+  if (!best) return null;
+  const newChance = best.chance;
+  return { move, target, newChance, gain: (newChance - currentChance) * accuracy };
+}
+
+function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null {
+  if (
+    actor.side !== "player" ||
+    state.battleKind !== "wild" ||
+    !state.captureAllowed
+  ) {
+    return null;
+  }
+  const balls = availableBalls(state);
+  const wilds = state.units.filter(
+    (unit) => unit.side === "rival" && unit.hp > 0 && !unit.captured,
+  );
+  if (balls.length === 0 || wilds.length === 0) return null;
+
+  // The acting Pokémon is about to be knocked out: stop being gentle and let the normal AI fight.
+  if (aiExpectedIncomingDamage(state, actor) >= actor.hp) {
+    return { kind: "fallback" };
+  }
+
+  const ranked = wilds
+    .map((target) => ({ target, best: bestBallFor(target, balls) }))
+    .filter((entry): entry is { target: DuelUnit; best: { id: DuelItemId; chance: number } } => entry.best !== null)
+    .sort((a, b) => b.best.chance - a.best.chance || a.target.hp - b.target.hp);
+  if (ranked.length === 0) return null;
+
+  const primary = ranked[0];
+  const canThrow = actor.ap >= POKE_BALL_AP_COST;
+  const throwAt = (entry: (typeof ranked)[number]): AutoCatchPlan => ({
+    kind: "action",
+    action: {
+      kind: "use-item",
+      unitId: actor.id,
+      itemId: entry.best.id,
+      targetId: entry.target.id,
+    },
+  });
+
+  // 1. The odds are good: throw.
+  if (canThrow && primary.best.chance >= AUTO_CATCH_THROW_NOW) {
+    return throwAt(primary);
+  }
+
+  // 2. A status or a non-lethal hit that is in range right now.
+  const usableMoves = actor.moves.filter((moveId) => canDuelUnitUseMove(actor, moveId));
+  const inRange: AutoCatchOption[] = [];
+  for (const entry of ranked) {
+    for (const moveId of usableMoves) {
+      const move = DUEL_MOVES[moveId];
+      if (!move || actor.ap < move.apCost) continue;
+      const distance = manhattanDistance(actor.position, entry.target.position);
+      if (distance < move.minRange || distance > move.maxRange) continue;
+      const option = evaluateCatchMove(state, actor, entry.target, move, balls, entry.best.chance);
+      if (option && option.gain >= AUTO_CATCH_MIN_GAIN) inRange.push(option);
+    }
+  }
+  inRange.sort((a, b) => b.newChance - a.newChance || b.gain - a.gain || a.move.apCost - b.move.apCost);
+  if (inRange.length > 0) {
+    const pick = inRange[0];
+    return {
+      kind: "action",
+      action: {
+        kind: "use-move",
+        unitId: actor.id,
+        moveId: pick.move.id,
+        targetId: pick.target.id,
+      },
+    };
+  }
+
+  // 3. Nothing to improve from here: throw if the odds are not hopeless.
+  if (canThrow && primary.best.chance >= AUTO_CATCH_HOPELESS) {
+    return throwAt(primary);
+  }
+
+  // 4. Walk toward a target that a useful move could reach.
+  let bestWalk: { destination: DuelPoint; score: number } | null = null;
+  for (const entry of ranked) {
+    for (const moveId of usableMoves) {
+      const move = DUEL_MOVES[moveId];
+      if (!move) continue;
+      const option = evaluateCatchMove(state, actor, entry.target, move, balls, entry.best.chance);
+      if (!option || option.gain < AUTO_CATCH_MIN_GAIN) continue;
+      const path = shortestAiPathToRange(state, actor, entry.target, move);
+      if (!path || path.length === 0) continue;
+      const destination = aiMovementDestination(state, actor, path, move.apCost);
+      if (!destination) continue;
+      const score = option.newChance - path.length * 0.01;
+      if (!bestWalk || score > bestWalk.score) bestWalk = { destination, score };
+    }
+  }
+  if (bestWalk) return { kind: "walk", destination: bestWalk.destination };
+
+  // 5. Last resort: even a poor throw beats doing nothing.
+  if (canThrow) return throwAt(primary);
+  return { kind: "idle" };
+}
+
 function chooseAiItemAction(
   state: DuelState,
   actor: DuelUnit,
@@ -7934,90 +8192,6 @@ function chooseAiItemAction(
     actor.side === "player"
       ? state.items
       : state.rivalItems;
-
-  if (
-    actor.side === "player" &&
-    options.autoCapture &&
-    state.battleKind === "wild" &&
-    state.captureAllowed &&
-    (actorItems["poke-ball"] ?? 0) > 0
-  ) {
-    const target = state.units
-      .filter(
-        (unit) =>
-          unit.side !== actor.side &&
-          unit.hp > 0 &&
-          isDuelAutoCatchTarget(
-            state,
-            unit.id,
-          ),
-      )
-      .sort(
-        (a, b) =>
-          a.hp / Math.max(1, a.maxHp) -
-          b.hp / Math.max(1, b.maxHp),
-      )[0];
-
-    if (target) {
-      if (target.status === null) {
-        const statusPriority: Partial<
-          Record<Exclude<DuelMajorStatus, null>, number>
-        > = {
-          sleep: 4,
-          paralysis: 3,
-          poison: 2,
-          burn: 1,
-        };
-        const distance = manhattanDistance(
-          actor.position,
-          target.position,
-        );
-        const statusMove = actor.moves
-          .map((moveId) => DUEL_MOVES[moveId])
-          .filter(
-            (move) =>
-              move.category === "status" &&
-              move.targeting === "single-enemy" &&
-              Boolean(move.secondaryStatus) &&
-              canDuelUnitUseMove(actor, move.id) &&
-              actor.ap >= move.apCost &&
-              distance >= move.minRange &&
-              distance <= move.maxRange &&
-              canMoveApplyMajorStatus(
-                target,
-                move,
-              ),
-          )
-          .sort(
-            (a, b) =>
-              (statusPriority[
-                b.secondaryStatus!
-              ] ?? 0) -
-                (statusPriority[
-                  a.secondaryStatus!
-                ] ?? 0) ||
-              (b.accuracy ?? 100) -
-                (a.accuracy ?? 100),
-          )[0];
-
-        if (statusMove) {
-          return {
-            kind: "use-move",
-            unitId: actor.id,
-            moveId: statusMove.id,
-            targetId: target.id,
-          };
-        }
-      }
-
-      return {
-        kind: "use-item",
-        unitId: actor.id,
-        itemId: "poke-ball",
-        targetId: target.id,
-      };
-    }
-  }
 
   if (
     !options.useItems ||
@@ -8129,20 +8303,25 @@ export function resolveSimpleAiTurnDetailed(
     }
 
     if (options.autoCapture) {
-      const captureAction = chooseAiItemAction(
-        state,
-        actor,
-        {
-          autoCapture: true,
-          useItems: false,
-        },
-      );
-      if (captureAction) {
-        const captureResult = run(captureAction);
-        if (captureResult.accepted) {
-          return { state, steps };
-        }
+      const plan = planAutoCatch(state, actor);
+      if (plan?.kind === "action") {
+        if (run(plan.action).accepted) continue;
+        break;
       }
+      if (plan?.kind === "walk") {
+        const walked = run({
+          kind: "move",
+          unitId: actor.id,
+          to: plan.destination,
+        });
+        if (walked.accepted && movementActions < 3) {
+          movementActions += 1;
+          continue;
+        }
+        break;
+      }
+      if (plan?.kind === "idle") break;
+      // "fallback" and a missing plan: the regular AI decides below.
     }
 
     const inRange = chooseAiCandidate(
