@@ -379,9 +379,9 @@ export function resolveAreaLevelRange(
 }
 
 /**
- * Wild count contributed by ONE party member:
- * under the area range → 1; inside it (up to +9 over the ceiling) → 1–2;
- * +10 over the ceiling → 2; +20 over the ceiling → 2–3.
+ * Wild count contributed by ONE party member (balance: wilds were too hard):
+ * below the area ceiling → 0–1; at the ceiling (or up to +9 over) → 1;
+ * +10 over the ceiling → 1–2; +20 over the ceiling → 2–3.
  */
 export function wildCountForPartyLevel(
   level: number,
@@ -391,17 +391,17 @@ export function wildCountForPartyLevel(
   const variation =
     Math.abs(Math.trunc(roll)) % 2;
 
-  if (level < range.min) {
-    return 1;
-  }
   if (level >= range.max + WILD_HEAVY_OVERLEVEL_MARGIN) {
     return 2 + variation;
   }
   if (level >= range.max + WILD_OVERLEVEL_MARGIN) {
-    return 2;
+    return 1 + variation;
+  }
+  if (level >= range.max) {
+    return 1;
   }
 
-  return 1 + variation;
+  return variation;
 }
 
 export function resolveWildPackSize(

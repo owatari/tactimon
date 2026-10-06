@@ -9,6 +9,7 @@ import {
   MAX_WILD_PACK_SIZE,
   resolveScaledWildEncounter,
   resolveWildPackSize,
+  wildCountForPartyLevel,
 } from "../apps/client/lib/wildEncounters";
 
 describe("Route 2", () => {
@@ -88,23 +89,27 @@ describe("scaled wild packs", () => {
   const range = { min: 3, max: 5 };
   const rolls = [0, 0.13, 0.37, 0.5, 0.71, 0.99];
 
-  it("gives a single party member in range 1-2 wilds, never a swarm", () => {
+  it("gives a member at the area ceiling exactly 1 wild", () => {
     for (const roll of rolls) {
-      const size = resolveWildPackSize(range, [5], roll);
-      expect(size).toBeGreaterThanOrEqual(1);
-      expect(size).toBeLessThanOrEqual(2);
+      expect(resolveWildPackSize(range, [5], roll)).toBe(1);
+      expect(resolveWildPackSize(range, [9], roll)).toBe(1);
     }
   });
 
-  it("gives an under-levelled member exactly 1 wild", () => {
+  it("gives an under-levelled member 0-1 wilds (a pack is never empty)", () => {
     for (const roll of rolls) {
+      expect(wildCountForPartyLevel(2, range, Math.trunc(roll * 17 + 31))).toBeLessThanOrEqual(1);
       expect(resolveWildPackSize(range, [2], roll)).toBe(1);
     }
+    // The 0/1 split comes from the roll parity.
+    expect([0, 1].map((r) => wildCountForPartyLevel(4, range, r))).toEqual([0, 1]);
   });
 
-  it("gives an over-levelled (+10) member exactly 2 and a +20 member 2-3", () => {
+  it("gives a +10 member 1-2 wilds and a +20 member 2-3", () => {
     for (const roll of rolls) {
-      expect(resolveWildPackSize(range, [15], roll)).toBe(2);
+      const over = resolveWildPackSize(range, [15], roll);
+      expect(over).toBeGreaterThanOrEqual(1);
+      expect(over).toBeLessThanOrEqual(2);
       const heavy = resolveWildPackSize(range, [25], roll);
       expect(heavy).toBeGreaterThanOrEqual(2);
       expect(heavy).toBeLessThanOrEqual(3);
@@ -113,8 +118,9 @@ describe("scaled wild packs", () => {
 
   it("sums per party member and caps the pack", () => {
     for (const roll of rolls) {
-      const mixed = resolveWildPackSize(range, [2, 15], roll);
-      expect(mixed).toBe(3);
+      const mixed = resolveWildPackSize(range, [5, 5, 15], roll);
+      expect(mixed).toBeGreaterThanOrEqual(3);
+      expect(mixed).toBeLessThanOrEqual(4);
       expect(
         resolveWildPackSize(range, [30, 30, 30, 30, 30, 30], roll),
       ).toBe(MAX_WILD_PACK_SIZE);
