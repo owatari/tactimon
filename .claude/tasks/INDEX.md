@@ -31,3 +31,4 @@
 | 2026-10-06-024-battle-sprite-tile-anchor | Batalha: sprites de Pokémon parecem dividir tile (padronizar âncora/escala no tile) | planned | active |
 | 2026-10-06-025-firered-ev-system | EVs estilo FireRed (yield por derrotado + vitaminas), abandona auto-EV por nível | done | archive/2026-10 |
 | 2026-10-06-026-ap-rework-capture-revert | Reformular AP por turno (6 + speed/25; mover 1 AP/tile; custo de golpe por fórmula) e reverter captura | planned | active |
+| 2026-10-06-027-capture-screen-layout-types | Tela de captura: tabela com divisões, 4 slots de golpe com hover e ícones de tipo da ROM | planned | active |
