@@ -15,7 +15,7 @@
 | 2026-10-05-008-balance-audit-ai-encounters | Auditoria de balanceamento: IA, autobattle, packs selvagens por party, ginásios com 6 | done | archive/2026-10 |
 | 2026-10-05-009-completeness-audit | Auditoria de completude: conteúdo vs ROM e walk-through por saves semeados | done | archive/2026-10 |
 | 2026-10-05-010-slowpoke-staryu-sources | Dar fonte de obtenção a Slowpoke/Slowbro e Staryu/Starmie | done | archive/2026-10 |
-| 2026-10-05-011-version-exclusives-no-exclusivity | Remover exclusividade de versão: spawnar todos os Pokémon FR/LG (Growlithe, Rapidash etc.) | planned | active |
+| 2026-10-05-011-version-exclusives-no-exclusivity | Remover exclusividade de versão: spawnar todos os Pokémon FR/LG (Growlithe, Rapidash etc.) | done | archive/2026-10 |
 | 2026-10-05-012-seafoam-b3f-return-warp | Corrigir Seafoam B3F (23,9) sem retorno | planned | active |
 | 2026-10-05-013-starter-choice-ui-firered | UI de escolha do inicial no estilo FireRed (pixel art, sem cards) | planned | active |
 | 2026-10-05-014-ui-audit-firered-fidelity | Auditoria de todas as UIs vs ROM FireRed (começando pela Pokédex) e aplicar melhorias | planned | active |

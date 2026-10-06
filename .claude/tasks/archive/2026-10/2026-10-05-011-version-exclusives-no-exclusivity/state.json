@@ -1,10 +1,10 @@
 {
   "id": "2026-10-05-011-version-exclusives-no-exclusivity",
-  "title": "Remover exclusividade de versão: spawnar todos os Pokémon FR/LG (Growlithe, Rapidash etc.)",
-  "status": "planned",
+  "title": "Remover exclusividade de vers\u00c3\u00a3o: spawnar todos os Pok\u00c3\u00a9mon FR/LG (Growlithe, Rapidash etc.)",
+  "status": "done",
   "created_at": "2026-10-05",
   "base_head": "de31c34d",
-  "current_head": "de31c34d",
+  "current_head": "77ff4802",
   "skills": [
     "battle-development",
     "overworld-development",
@@ -17,6 +17,8 @@
     "battle-engine"
   ],
   "files": [],
-  "commits": [],
+  "commits": [
+    "77ff4802"
+  ],
   "tests": []
 }
