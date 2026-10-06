@@ -1,0 +1,22 @@
+{
+  "id": "2026-10-05-016-ui-audit-remaining-screens",
+  "title": "Continua\u00c3\u00a7\u00c3\u00a3o da auditoria de UI (telas restantes)",
+  "status": "done",
+  "created_at": "2026-10-05",
+  "base_head": "15d241a0",
+  "current_head": "cbfdc264",
+  "skills": [
+    "pokemon-ui",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "ui-visual"
+  ],
+  "files": [],
+  "commits": [
+    "cbfdc264"
+  ],
+  "tests": []
+}

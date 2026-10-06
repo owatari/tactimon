@@ -20,4 +20,5 @@
 | 2026-10-05-013-starter-choice-ui-firered | UI de escolha do inicial no estilo FireRed (pixel art, sem cards) | done | archive/2026-10 |
 | 2026-10-05-014-ui-audit-firered-fidelity | Auditoria de todas as UIs vs ROM FireRed (começando pela Pokédex) e aplicar melhorias | done (parcial) | archive/2026-10 |
 | 2026-10-05-015-scripted-full-walkthrough | Walkthrough scriptado testando o jogo inteiro (novo jogo → Liga) | planned | active |
-| 2026-10-05-016-ui-audit-remaining-screens | Continuação da 014: Bag, Trainer Card, Party 2 colunas, Summary, Options/Save/Town Map/Mart/Storage, HUD de batalha/pós-batalha FireRed + traduzir descrições da Pokédex | planned | active |
+| 2026-10-05-016-ui-audit-remaining-screens | Continuação da 014: Bag, Trainer Card, Party 2 colunas, Summary, Options/Save/Town Map/Mart/Storage, HUD de batalha/pós-batalha FireRed + traduzir descrições da Pokédex | done (parcial) | archive/2026-10 |
+| 2026-10-05-017-battle-ui-fidelity | UI de batalha/pós-batalha/evolução/Game Corner no estilo FireRed; traduzir descrições da Pokédex; limpar CSS legado | planned | active |
