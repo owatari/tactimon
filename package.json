@@ -8,7 +8,8 @@
     "build": "pnpm -r build",
     "test": "vitest run tests && pnpm -r test",
     "typecheck": "pnpm -r typecheck",
-    "e2e:walkthrough": "vitest run --config tools/e2e/vitest.config.ts"
+    "e2e:walkthrough": "vitest run --config tools/e2e/vitest.config.ts walkthrough",
+    "e2e:playthrough": "vitest run --config tools/e2e/vitest.config.ts playthrough"
   },
   "devDependencies": {
     "typescript": "^5.9.2",
