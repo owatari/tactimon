@@ -1,10 +1,10 @@
 {
   "id": "2026-10-05-013-starter-choice-ui-firered",
   "title": "UI de escolha do inicial no estilo FireRed (pixel art, sem cards)",
-  "status": "planned",
+  "status": "done",
   "created_at": "2026-10-05",
   "base_head": "de31c34d",
-  "current_head": "de31c34d",
+  "current_head": "e0293017",
   "skills": [
     "pokemon-ui",
     "overworld-development",
@@ -16,6 +16,8 @@
     "ui-visual"
   ],
   "files": [],
-  "commits": [],
+  "commits": [
+    "e0293017"
+  ],
   "tests": []
 }
