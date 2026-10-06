@@ -2290,7 +2290,7 @@ type GymTeam = readonly (readonly [DuelSpeciesId, number])[];
  */
 export const GYM_LEADER_TEAMS: Readonly<Record<string, GymTeam>> = {
   "pewter-brock": [["geodude", 12], ["geodude", 12], ["rhyhorn", 13], ["onix", 14]],
-  "cerulean-misty": [["staryu", 18], ["starmie", 21], ["goldeen", 19], ["seaking", 21], ["psyduck", 20]],
+  "cerulean-misty": [["staryu", 18], ["goldeen", 19], ["seaking", 20], ["psyduck", 20], ["starmie", 21]],
   "vermilion-lt-surge": [["voltorb", 21], ["electrode", 24], ["magnemite", 19], ["magneton", 23], ["pikachu", 18], ["raichu", 24]],
   "celadon-city-gym-erika": [["tangela", 24], ["vileplume", 29], ["victreebel", 29], ["ivysaur", 27], ["exeggutor", 29]],
   "fuchsia-city-gym-koga": [["koffing", 37], ["koffing", 37], ["weezing", 43], ["muk", 39], ["arbok", 41], ["tentacruel", 40]],

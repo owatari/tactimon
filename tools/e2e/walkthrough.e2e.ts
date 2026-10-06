@@ -314,4 +314,20 @@ describe("walkthrough (browser)", () => {
     expect(seen).toContain("phase-shake");
     if (resultsAt >= 0) expect(seen.at(-1)).toBe("phase-caught");
   }, 60_000);
+
+  it("E14. battle cards keep their whole content inside the card", async () => {
+    const base = chooseStarter("charmander");
+    const story = withPokedex({
+      ...base,
+      firstBattleComplete: true,
+      playerPokemon: createPokemonProgression("charmander", 20),
+      capturedPokemon: [createPokemonProgression("pidgey", 12), createPokemonProgression("rattata", 15), createPokemonProgression("mankey", 12)],
+    } as never);
+    await load({ ...seedStory(story, { mapId: "viridian-forest", x: 16, y: 30 }), "tactimon.e2e.v1": "1" });
+    for (let i = 0; i < 40 && !(await cdp.eval<boolean>(`typeof window.__tactimon_e2e?.fightWild === "function"`)); i += 1) await sleep(250);
+    await cdp.eval(`window.__tactimon_e2e.fightWild([{ species: "onix", level: 12 }, { species: "rattata", level: 4 }, { species: "pidgey", level: 5 }])`);
+    await sleep(1500);
+    const bad = await cdp.eval<string>(`JSON.stringify([...document.querySelectorAll(".combatant-hud")].map((card) => { const r = card.getBoundingClientRect(); return [...card.querySelectorAll(".combatant-hud-body, .battle-portrait-frame, .combatant-meta-row, .resource-chip")].filter((k) => { const b = k.getBoundingClientRect(); return b.left < r.left - 1 || b.right > r.right + 1 || b.top < r.top - 1 || b.bottom > r.bottom + 1; }).map((k) => k.className); }).filter((list) => list.length > 0))`);
+    expect(JSON.parse(bad)).toEqual([]);
+  }, 40_000);
 });

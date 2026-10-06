@@ -16,7 +16,7 @@ describe("gym leader parties", () => {
   it("fields exactly the requested team of each leader, in order", () => {
     const expected: Record<string, string[]> = {
       "pewter-brock": ["geodude", "geodude", "rhyhorn", "onix"],
-      "cerulean-misty": ["staryu", "starmie", "goldeen", "seaking", "psyduck"],
+      "cerulean-misty": ["staryu", "goldeen", "seaking", "psyduck", "starmie"],
       "vermilion-lt-surge": ["voltorb", "electrode", "magnemite", "magneton", "pikachu", "raichu"],
       "celadon-city-gym-erika": ["tangela", "vileplume", "victreebel", "ivysaur", "exeggutor"],
       "fuchsia-city-gym-koga": ["koffing", "koffing", "weezing", "muk", "arbok", "tentacruel"],

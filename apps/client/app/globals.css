@@ -7572,3 +7572,34 @@ body {
 .move-detail dl dt, .move-detail dl dd { display: inline; margin: 0; }
 .move-detail dl dt::after { content: ":"; }
 .summary-col, .move-slots { min-width: 0; max-width: 100%; }
+
+/* Task 033: every card sizes to its content and keeps portrait + text centred inside it. */
+.battle-combatant-sidebar .combatant-hud:not(.has-status),
+.battle-combatant-sidebar.rival .combatant-hud:not(.has-status),
+.battle-combatant-sidebar .combatant-hud.has-status,
+.battle-combatant-sidebar.rival .combatant-hud.has-status {
+  box-sizing: border-box;
+  height: auto;
+  min-height: 70px;
+  max-height: none !important;
+  overflow: hidden;
+  align-items: center;
+  align-content: center;
+}
+.battle-combatant-sidebar .combatant-hud .battle-portrait-frame {
+  align-self: center;
+  justify-self: center;
+}
+.battle-combatant-sidebar .combatant-hud .combatant-hud-body {
+  align-self: center;
+  min-width: 0;
+}
+.battle-combatant-sidebar .combatant-hud:not(.has-status) .combatant-hud-body {
+  gap: 3px;
+}
+.battle-combatant-sidebar .combatant-identity strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}

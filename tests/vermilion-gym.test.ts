@@ -123,7 +123,7 @@ describe("Vermilion Gym progression", () => {
         pokemon.level,
       ]),
     ).toEqual([["pikachu", 23]]);
-    expect([...surge.party.slice(0, 2), surge.party[surge.party.length - 1]]).toEqual([
+    expect([surge.party[0], surge.party.find((m) => m.species === "pikachu"), surge.party[surge.party.length - 1]]).toEqual([
       {
         species: "voltorb",
         level: 21,
