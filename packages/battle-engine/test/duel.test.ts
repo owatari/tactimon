@@ -267,7 +267,7 @@ describe("starter duel", () => {
   });
 
 
-  it("uses an item on an ally and consumes the turn", () => {
+  it("uses an item on an ally for 3 AP without ending the turn", () => {
     let state = createStarterDuel("bulbasaur", {
       seed: 42,
       width: 7,
@@ -295,7 +295,18 @@ describe("starter duel", () => {
 
     expect(result.accepted).toBe(true);
     expect(result.state.items.potion).toBe(0);
-    expect(getActiveDuelUnit(result.state)?.id).toBe(rival.id);
+    // The potion is paid in AP (ITEM_AP_COST) and the same Pokémon may still act.
+    const after = result.state.units.find((unit) => unit.id === player.id)!;
+    expect(after.ap).toBe(player.ap - 3);
+    expect(getActiveDuelUnit(result.state)?.id).toBe(player.id);
+    expect(rival.id).not.toBe(player.id);
+
+    const broke = applyDuelAction(
+      { ...state, units: state.units.map((unit) => (unit.id === player.id ? { ...unit, ap: 2 } : unit)) },
+      { kind: "use-item", unitId: player.id, itemId: "potion", targetId: player.id },
+    );
+    expect(broke.accepted).toBe(false);
+    expect(broke.reason).toBe("not-enough-ap");
   });
 
   it("does not allow fleeing from the starter trainer battle", () => {

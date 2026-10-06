@@ -11,6 +11,15 @@ export const BASE_ACTION_POINTS = 6;
 export const SPEED_PER_ACTION_POINT = 25;
 /** Throwing a Poké Ball. */
 export const POKE_BALL_AP_COST = 4;
+/** Using a Potion or a status cure on an ally (it no longer ends the turn by itself). */
+export const ITEM_AP_COST = 3;
+/**
+ * Fine tuning (task 029): up to this much raw cost (60 power) a move costs exactly 10% of its power;
+ * above it every extra point of raw cost counts half, so 100-150 power moves stay usable for the
+ * 7-9 AP most Pokémon have instead of being locked behind 10 AP.
+ */
+export const COST_KNEE = 6;
+export const COST_ABOVE_KNEE_FACTOR = 0.5;
 /** No single action may ask for more than this (an expensive move still has to be usable). */
 export const MAX_DAMAGE_MOVE_AP = 10;
 export const MAX_STATUS_MOVE_AP = 6;
@@ -97,5 +106,9 @@ export function apCostForMove(move: MoveCostInput): number {
     averageHits(move.multiHit) *
     areaCostFactor(move.areaPattern) *
     DAMAGE_AP_PER_POWER;
-  return Math.max(1, Math.min(MAX_DAMAGE_MOVE_AP, Math.round(raw)));
+  const tuned =
+    raw > COST_KNEE
+      ? COST_KNEE + (raw - COST_KNEE) * COST_ABOVE_KNEE_FACTOR
+      : raw;
+  return Math.max(1, Math.min(MAX_DAMAGE_MOVE_AP, Math.round(tuned)));
 }

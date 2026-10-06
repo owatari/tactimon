@@ -6,6 +6,7 @@ import {
   type GeneratedSpeciesId,
 } from "./generated/kanto";
 import {
+  ITEM_AP_COST,
   POKE_BALL_AP_COST,
   apCostForMove,
   maxActionPointsForSpeed,
@@ -3878,7 +3879,15 @@ function makeUnit(
     nature: naturePercent(build.nature, "speed") / 100,
   });
   // 6 AP, +1 per 25 Speed: walking (1 AP per tile), moves and Poké Balls all spend from this pool.
-  const actionPoints = maxActionPointsForSpeed(speedStat);
+  const cheapestMoveAp = build.moves.reduce((lowest, moveId) => {
+    const cost = DUEL_MOVES[moveId]?.apCost;
+    return cost === undefined ? lowest : Math.min(lowest, cost);
+  }, Number.POSITIVE_INFINITY);
+  // A slow Pokémon can always afford at least its cheapest move.
+  const actionPoints = Math.max(
+    maxActionPointsForSpeed(speedStat),
+    Number.isFinite(cheapestMoveAp) ? cheapestMoveAp : 0,
+  );
   const maxHp = calculateDuelPokemonMaxHp(build);
   const currentHp =
     typeof build.currentHp === "number" &&
@@ -5890,6 +5899,9 @@ export function applyDuelAction(
     if (target.side !== actor.side) {
       return { state: input, accepted: false, reason: "invalid-item-target" };
     }
+    if (actor.ap < ITEM_AP_COST) {
+      return { state: input, accepted: false, reason: "not-enough-ap" };
+    }
     if (item.kind === "cure") {
       if (!target.status || !(item.cures as readonly string[]).includes(target.status)) {
         return { state: input, accepted: false, reason: "target-no-status" };
@@ -5897,8 +5909,8 @@ export function applyDuelAction(
       target.status = null;
       target.sleepTurnsRemaining = 0;
       actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
+      actor.ap -= ITEM_AP_COST;
       appendLog(state, "{target} was healed with {item}.", { target: target.displayName, item: item.name });
-      resolveTurnEnd(state, actor);
       return {
         state,
         accepted: true,
@@ -5917,8 +5929,8 @@ export function applyDuelAction(
     const healed = Math.min(item.heal, target.maxHp - target.hp);
     target.hp += healed;
     actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
+    actor.ap -= ITEM_AP_COST;
     appendLog(state, "{target} recovered {n} HP with {item}.", { target: target.displayName, n: healed, item: item.name });
-    resolveTurnEnd(state, actor);
     return {
       state,
       accepted: true,
@@ -8009,7 +8021,8 @@ function chooseAiItemAction(
 
   if (
     !options.useItems ||
-    (actorItems.potion ?? 0) <= 0
+    (actorItems.potion ?? 0) <= 0 ||
+    actor.ap < ITEM_AP_COST
   ) {
     return null;
   }

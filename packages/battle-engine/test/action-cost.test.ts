@@ -25,7 +25,10 @@ describe("move AP costs", () => {
 
   it("damage moves cost about 10% of their power, at least 1", () => {
     expect(damage(40)).toBe(4);
-    expect(damage(90)).toBe(9);
+    expect(damage(60)).toBe(6);
+    // Above 60 power the cost grows at half rate (soft knee, task 029).
+    expect(damage(90)).toBe(8);
+    expect(damage(100)).toBe(8);
     expect(damage(10)).toBe(1);
     expect(damage(5)).toBe(1);
   });
@@ -46,7 +49,7 @@ describe("move AP costs", () => {
   it("never exceeds the ceiling, even for 150-power moves", () => {
     expect(damage(150)).toBe(MAX_DAMAGE_MOVE_AP);
     expect(damage(150, { areaPattern: "large-area" })).toBe(MAX_DAMAGE_MOVE_AP);
-    expect(apCostForMove({ category: "physical", power: 1, effect: "ohko" })).toBe(10);
+    expect(apCostForMove({ category: "physical", power: 1, effect: "ohko" })).toBe(8);
   });
 
   it("status moves average 3 AP and grow with extra effects, area and allies", () => {
