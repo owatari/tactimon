@@ -7,7 +7,8 @@
     "music": "pnpm --filter @tactimon/client prepare:music",
     "build": "pnpm -r build",
     "test": "vitest run tests && pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "e2e:walkthrough": "vitest run --config tools/e2e/vitest.config.ts"
   },
   "devDependencies": {
     "typescript": "^5.9.2",
