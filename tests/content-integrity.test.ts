@@ -129,16 +129,18 @@ describe.skipIf(!hasAssets)("content integrity", () => {
     }
     const missing = Object.keys(SPECIES).filter((s) => !got.has(s));
     console.log("UNOBTAINABLE", missing.join(","));
-    // Agreed/ROM-faithful exceptions (task 009 audit):
-    //  - raid-only legendaries/mythicals;
-    //  - LeafGreen-exclusive lines (this is the FireRed ROM);
-    //  - Ponyta/Rapidash only spawn on the Sevii Islands (out of scope);
-    const agreed = new Set([
-      "articuno", "zapdos", "moltres", "mewtwo", "mew",
-      "sandshrew", "sandslash", "vulpix", "ninetales",
-      "bellsprout", "weepinbell", "victreebel", "magmar", "pinsir",
-      "ponyta", "rapidash",
-    ]);
+    // No version exclusivity: only raid-only legendaries/mythicals stay unobtainable.
+    const agreed = new Set(["articuno", "zapdos", "moltres", "mewtwo", "mew"]);
     expect(missing.filter((s) => !agreed.has(s))).toEqual([]);
+  });
+
+  it("both FireRed and LeafGreen wild species spawn (no version exclusivity)", () => {
+    const wild = new Set<string>();
+    for (const tb of Object.values(LAND_ENCOUNTERS)) tb.slots.forEach((s) => wild.add(s.species));
+    for (const sp of [
+      "growlithe", "vulpix", "ekans", "sandshrew", "oddish", "bellsprout",
+      "scyther", "pinsir", "electabuzz", "magmar", "ponyta", "rapidash",
+    ])
+      expect(wild.has(sp), sp).toBe(true);
   });
 });

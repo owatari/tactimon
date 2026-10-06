@@ -15,6 +15,63 @@ export const LAND_SLOT_SWAPS: Readonly<Record<string, readonly SlotSwap[]>> = {
   "seafoam-islands-b-2f": [{ slot: 4, species: "slowpoke", level: 30 }],
   "seafoam-islands-b-3f": [{ slot: 2, species: "slowpoke", level: 30 }],
   "seafoam-islands-b-4f": [{ slot: 2, species: "slowpoke", level: 32 }],
+
+  // LeafGreen twins of FireRed-only lines: every second slot of the FR species
+  // becomes its LG counterpart (Ekans->Sandshrew, Oddish->Bellsprout, ...).
+  "route-7": [
+    { slot: 5, species: "bellsprout", level: 22 },
+    { slot: 7, species: "vulpix", level: 20 },
+  ],
+  "route-8": [
+    { slot: 6, species: "vulpix", level: 17 },
+    { slot: 7, species: "sandshrew", level: 19 },
+    { slot: 10, species: "sandshrew", level: 17 },
+    { slot: 11, species: "vulpix", level: 18 },
+  ],
+  "route-9": [
+    { slot: 3, species: "sandshrew", level: 15 },
+    { slot: 11, species: "sandshrew", level: 17 },
+  ],
+  "route-10": [
+    { slot: 3, species: "sandshrew", level: 15 },
+    { slot: 11, species: "sandshrew", level: 17 },
+  ],
+  "route-11": [
+    { slot: 2, species: "sandshrew", level: 12 },
+    { slot: 8, species: "sandshrew", level: 12 },
+  ],
+  "route-12": [
+    { slot: 2, species: "bellsprout", level: 22 },
+    { slot: 9, species: "weepinbell", level: 28 },
+  ],
+  "route-13": [
+    { slot: 2, species: "bellsprout", level: 22 },
+    { slot: 9, species: "weepinbell", level: 28 },
+  ],
+  "route-15": [
+    { slot: 2, species: "bellsprout", level: 22 },
+    { slot: 9, species: "weepinbell", level: 28 },
+  ],
+  "route-23": [
+    { slot: 5, species: "sandshrew", level: 34 },
+    { slot: 7, species: "sandslash", level: 44 },
+  ],
+  "victory-road-1f": [{ slot: 6, species: "sandslash", level: 44 }],
+  "victory-road-3f": [{ slot: 6, species: "sandslash", level: 44 }],
+  // Pinsir: LeafGreen's Scyther counterpart in the Safari Zone.
+  "safari-zone-center": [{ slot: 8, species: "pinsir", level: 23 }],
+  "safari-zone-east": [{ slot: 9, species: "pinsir", level: 28 }],
+  // Pokemon Mansion fire theme: Ponyta/Rapidash (Sevii-only in FRLG) and Magmar.
+  "pokemon-mansion-1f": [
+    { slot: 8, species: "ponyta", level: 32 },
+    { slot: 10, species: "rapidash", level: 36 },
+  ],
+  "pokemon-mansion-2f": [{ slot: 8, species: "ponyta", level: 32 }],
+  "pokemon-mansion-3f": [{ slot: 8, species: "magmar", level: 34 }],
+  "pokemon-mansion-b-1f": [
+    { slot: 8, species: "magmar", level: 34 },
+    { slot: 10, species: "rapidash", level: 36 },
+  ],
 };
 
 export const FISHING_SLOT_SWAPS: Readonly<
