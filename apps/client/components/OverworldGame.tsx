@@ -2,6 +2,16 @@
 
 import { isE2eMode } from "@/lib/e2eMode";
 import {
+  createFollower,
+  followerOnPlayerStep,
+  followerPose,
+  followerSpecies,
+  followerVisible,
+  type FollowerFacing,
+  type FollowerState,
+} from "@/lib/follower";
+import { PokemonBattleSprite } from "./PokemonBattleSprite";
+import {
   useCallback,
   useEffect,
   useRef,
@@ -751,6 +761,15 @@ export function OverworldGame({
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
   const playerElementRef = useRef<HTMLDivElement>(null);
+  // Party follower (lead Pokémon trailing the player by one tile), moved imperatively like the player.
+  const followerElementRef = useRef<HTMLDivElement>(null);
+  const followerRef = useRef<FollowerState | null>(null);
+  const followerOwnerRef = useRef<object | null>(null);
+  const [followerView, setFollowerView] = useState<{
+    species: NonNullable<ReturnType<typeof followerSpecies>>;
+    facing: FollowerFacing;
+    walking: boolean;
+  } | null>(null);
   const foregroundRef = useRef<HTMLCanvasElement>(null);
 
   const layoutRef = useRef<MapLayout | null>(null);
@@ -2763,6 +2782,70 @@ export function OverworldGame({
       playerElement.style.zIndex = String(
         100 + Math.round(player.visualY),
       );
+
+      // Party follower: one tile behind, same step timing; hidden while surfing.
+      const followerSpeciesNow = followerSpecies(storyRef.current);
+      const followerShown = followerVisible({
+        species: followerSpeciesNow,
+        surfing: surfingRef.current,
+        transitioning: transitioningRef.current,
+        starterScene: starterFocusRef.current !== null,
+      });
+      if (followerOwnerRef.current !== player || !followerRef.current) {
+        // New map or first frame: wait on the tile behind the player when it is free.
+        const back = DIRECTION_DELTA[player.facing];
+        const bx = player.tileX - back.x;
+        const by = player.tileY - back.y;
+        const usable =
+          canWalk(activeLayout, bx, by) &&
+          !isOccupied(bx, by) &&
+          !resolveWarpTransitionAt(mapIdRef.current, bx, by);
+        followerRef.current = createFollower(
+          (usable ? bx : player.tileX) * TILE_SIZE,
+          (usable ? by : player.tileY) * TILE_SIZE,
+          player.facing === "north"
+            ? "up"
+            : player.facing === "west"
+              ? "left"
+              : player.facing === "east"
+                ? "right"
+                : "down",
+        );
+        followerOwnerRef.current = player;
+      }
+      if (player.moving) {
+        followerRef.current = followerOnPlayerStep(followerRef.current, {
+          fromX: player.fromX,
+          fromY: player.fromY,
+          startedAt: player.stepStartedAt,
+          duration: player.stepDuration,
+        });
+      }
+      const posed = followerPose(followerRef.current, now);
+      followerRef.current = posed.state;
+      if (followerShown && followerSpeciesNow) {
+        setFollowerView((current) =>
+          current &&
+          current.species === followerSpeciesNow &&
+          current.facing === posed.pose.facing &&
+          current.walking === posed.pose.moving
+            ? current
+            : {
+                species: followerSpeciesNow,
+                facing: posed.pose.facing,
+                walking: posed.pose.moving,
+              },
+        );
+      }
+      const followerElement = followerElementRef.current;
+      if (followerElement) {
+        followerElement.style.display = followerShown ? "block" : "none";
+        followerElement.style.left = `${posed.pose.x}px`;
+        followerElement.style.top = `${posed.pose.y}px`;
+        // Same depth rule as the player; on the same row the player (later in the DOM) stays on top.
+        followerElement.style.zIndex = String(100 + Math.round(posed.pose.y));
+      }
+
       const darkness = darknessRef.current;
       if (darkness) {
         // 80px circle of light centred on the player's tile.
@@ -3022,6 +3105,21 @@ export function OverworldGame({
                   />
                 ))}
 
+            {followerView && (
+              <div
+                ref={followerElementRef}
+                className="party-follower"
+                aria-hidden="true"
+                style={{ width: TILE_SIZE, height: TILE_SIZE, display: "none" }}
+              >
+                <PokemonBattleSprite
+                  species={followerView.species}
+                  side="player"
+                  facing={followerView.facing}
+                  animation={followerView.walking ? "walk" : "idle"}
+                />
+              </div>
+            )}
             <div
               ref={playerElementRef}
               className="player"

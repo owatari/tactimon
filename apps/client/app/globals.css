@@ -7313,3 +7313,11 @@ body {
   margin: 0;
   padding: 6px 10px;
 }
+
+/* Overworld party follower: a tile-sized box so the battle sprite layout (container units) fits one tile. */
+.party-follower {
+  position: absolute;
+  container-type: size;
+  overflow: visible;
+  pointer-events: none;
+}

@@ -49,3 +49,6 @@ Docs longos: `docs/WORLD_STATE.md`, `docs/DIALOGUE_SYSTEM.md`, `docs/PROGRESSION
 - Lendários/míticos (`staticEncounters.raid`): sem batalha, só aviso de raid futura.
 - `normalizeCapturedPokemon` agora aceita qualquer espécie da engine (antes só 21 → perdia Eevee/evoluídos no load); `partyProgress.ts` mantém a espécie evoluída.
 - Reset: Options → ERASE SAVE ou `/?reset=1` (`saveReset.ts`).
+
+## Follower da party — task 022
+- O primeiro Pokémon vivo da party (`followerSpecies`) anda 1 tile atrás do jogador (estilo HGSS) usando a sprite de batalha (`PokemonBattleSprite` dentro de `.party-follower`, caixa de 1 tile com `container-type: size`). Lógica pura em `lib/follower.ts`: a cada passo do jogador o follower desliza para o tile que o jogador está deixando (mesma duração; ao voltar, trocam de lugar). Movido por ref no `renderScene` de `OverworldGame`; reset (tile livre atrás do jogador) a cada mapa; oculto ao surfar/transição/cena do inicial. Não bloqueia colisão/NPCs.

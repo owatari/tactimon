@@ -37,6 +37,10 @@ export class Cdp {
       this.ws.send(JSON.stringify({ id, method, params }));
     });
   }
+  /** Brings the tab to the front: a hidden tab does not run requestAnimationFrame. */
+  bringToFront(): Promise<unknown> {
+    return this.send("Page.bringToFront");
+  }
   async eval<T = unknown>(expression: string): Promise<T> {
     const res = await this.send<{ result?: { value?: T }; exceptionDetails?: { text: string } }>("Runtime.evaluate", {
       expression,
@@ -83,5 +87,8 @@ export async function launchBrowser(): Promise<{ cdp: Cdp; proc: ChildProcess }>
   const cdp = new Cdp(ws);
   await cdp.send("Page.enable");
   await cdp.send("Runtime.enable");
+  // Headless pages can turn "hidden" after a few navigations, which stops requestAnimationFrame (the
+  // overworld loop): keep the tab focused and visible.
+  await cdp.send("Emulation.setFocusEmulationEnabled", { enabled: true });
   return { cdp, proc };
 }

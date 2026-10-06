@@ -43,6 +43,7 @@ async function load(seed: Record<string, unknown>, path = "/"): Promise<void> {
   await sleep(300);
   await cdp.eval(`(() => { localStorage.clear(); for (const [k, v] of Object.entries(${JSON.stringify({ "tactimon.lang.v1": "en", ...seed })})) localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); })()`);
   await cdp.send("Page.navigate", { url: URL_BASE + path });
+  await cdp.bringToFront();
   // Next dev compiles on first visit: wait for the game shell instead of a fixed delay.
   for (let i = 0; i < 80; i += 1) {
     await sleep(250);
@@ -202,5 +203,14 @@ describe("walkthrough (browser)", () => {
     const saved = JSON.parse((await cdp.eval<string>(`localStorage.getItem("tactimon.story.v1")`)) as string).story;
     expect(saved.pendingCapture).toBeNull();
     expect(saved.capturedPokemon.at(-1)).toMatchObject({ species: "pikachu", nickname: "Zap" });
+  }, 40_000);
+
+  it("E9. the lead Pokémon follows the player in the overworld", async () => {
+    const story = withPokedex({ ...chooseStarter("charmander"), firstBattleComplete: true });
+    await load(seedStory(story, { mapId: "pallet-town", x: 12, y: 17 }));
+    for (let i = 0; i < 40 && (await count(".party-follower")) === 0; i += 1) await sleep(250);
+    expect(await count(".party-follower")).toBe(1);
+    expect(await cdp.eval<string>(`document.querySelector(".party-follower").style.display`)).toBe("block");
+    await shot("follower");
   }, 40_000);
 });
