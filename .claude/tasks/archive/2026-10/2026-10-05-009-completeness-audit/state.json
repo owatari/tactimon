@@ -1,0 +1,13 @@
+{
+  "id": "2026-10-05-009-completeness-audit",
+  "title": "Auditoria de completude do jogo (conteúdo vs ROM + walk-through por saves semeados)",
+  "status": "done",
+  "created_at": "2026-10-05",
+  "base_head": "c8054449",
+  "current_head": "c8054449",
+  "skills": ["safe-main", "overworld-development", "battle-development", "verification", "task-ledger"],
+  "agents": ["gameplay-systems", "repo-cartographer", "verifier"],
+  "files": [],
+  "commits": ["d1ebb04c"],
+  "tests": []
+}

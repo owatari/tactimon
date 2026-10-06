@@ -1,0 +1,1 @@
+Quero (criar a task de auditoria de completude: comparar o conteúdo Kanto com a ROM e percorrer a história com script, com saves em estágios diferentes, para confirmar se o jogo está 100% implementado salvo as exceções estabelecidas).

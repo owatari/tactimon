@@ -13,3 +13,4 @@
 | 2026-10-05-004-phase-e-mmo-prep | Fase E: preparacao MMO (estado por player, contas, sync) | planned | active |
 | 2026-10-05-007-fix-interior-walk-in | Corrigir regressão: interiores inacessíveis por walk-in | done | archive/2026-10 |
 | 2026-10-05-008-balance-audit-ai-encounters | Auditoria de balanceamento: IA, autobattle, packs selvagens por party, ginásios com 6 | done | archive/2026-10 |
+| 2026-10-05-009-completeness-audit | Auditoria de completude: conteúdo vs ROM e walk-through por saves semeados | done | archive/2026-10 |
