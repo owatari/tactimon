@@ -1,0 +1,2 @@
+# Pedido original
+Faça o balanceamento fino do sistema que acabamos de implementar e também melhore a IA quando utilizando autocatch, para que usem moves que facilitem o catch. A IA quando marcado auto catch priorizara o catch acima de tudo, então seus moves serao pensados nisso, escolhera o move que causa status, ou o move que causa dano mas nao o suficiente para matar, prioriza o catch a seu proprio bem estar, mas claro, se for morrer, prioriza matar. Isso vale para todos e tentará capturar todos os pokémons do combate.
