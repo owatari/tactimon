@@ -1,0 +1,2 @@
+# Handoff — 029
+Balanceamento: joelho de custo (poder>60 conta metade), piso de AP no golpe mais barato, poção/cura 3 AP sem encerrar turno. Auto Catch agora captura todos (status/dano que não mata/bola, sobrevivência mata). Bug achado: 37 espécies sem taxa de captura (NaN) — corrigido com tabela da ROM. Pendências: chance de captura não aparece na UI; Auto Catch usa 'o pior inimigo + metade do 2º' para decidir sobreviver (afinar com dados reais); sem fila de prioridade por raridade/shiny; rival AI ainda gasta poção sem planejar AP.

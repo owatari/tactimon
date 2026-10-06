@@ -33,4 +33,4 @@
 | 2026-10-06-026-ap-rework-capture-revert | Reformular AP por turno (6 + speed/25; mover 1 AP/tile; custo de golpe por fórmula) e reverter captura | done | archive/2026-10 |
 | 2026-10-06-027-capture-screen-layout-types | Tela de captura: tabela com divisões, 4 slots de golpe com hover e ícones de tipo da ROM | planned | active |
 | 2026-10-06-028-battle-grid-unit-offset | Corrigir offset das unidades fora do tile na arena (reverte limite de escala da 024) | done | archive/2026-10 |
-| 2026-10-06-029-ap-balance-autocatch-ai | Balanceamento fino de AP + IA de Auto Catch (enfraquece sem matar, status, bola; prioriza capturar todos) | planned | active |
+| 2026-10-06-029-ap-balance-autocatch-ai | Balanceamento fino de AP + IA de Auto Catch (enfraquece sem matar, status, bola; prioriza capturar todos) | done | archive/2026-10 |
