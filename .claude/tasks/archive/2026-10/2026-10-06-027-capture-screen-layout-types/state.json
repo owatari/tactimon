@@ -1,13 +1,25 @@
 {
   "id": "2026-10-06-027-capture-screen-layout-types",
   "title": "Tela de captura: tabela com divisões, 4 slots de golpe com hover e ícones de tipo da ROM",
-  "status": "planned",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "c017ed9d",
   "current_head": "c017ed9d",
-  "skills": ["pokemon-ui","verification","safe-main","task-ledger"],
-  "agents": ["ui-visual","asset-pipeline"],
+  "skills": [
+    "pokemon-ui",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "ui-visual",
+    "asset-pipeline"
+  ],
   "files": [],
   "commits": [],
-  "tests": []
+  "tests": [
+    "pnpm test 515+281",
+    "typecheck",
+    "e2e:walkthrough 13/13"
+  ]
 }
