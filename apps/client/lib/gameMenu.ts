@@ -11,7 +11,7 @@ import {
   type OverworldItemId,
 } from "./items";
 import { isFieldUsableItem } from "./itemUse";
-import { getPokedex } from "./pokedex";
+import { getPokedex, hasAllKantoMons } from "./pokedex";
 import { tx } from "./i18n";
 import {
   KEY_ITEM_DESCRIPTIONS,
@@ -264,7 +264,23 @@ export type TrainerCardData = {
   pokedexCaught: number;
   /** True after beating the Champion (Hall of Fame). */
   champion: boolean;
+  name: string;
+  /** "IDNo." printed with five digits. */
+  idNo: string;
+  /** FireRed stars: Hall of Fame + every Kanto Pokémon caught (Mew excluded); Battle Tower/paintings do not exist here. */
+  stars: number;
+  /** Hall of Fame debut time "hhh:mm:ss" (card back), or null before the Champion is beaten. */
+  hofDebut: string | null;
+  pokemonTrades: number;
 };
+
+export function formatHofDebut(seconds: number): string {
+  const total = Math.max(0, Math.trunc(seconds));
+  const h = Math.min(999, Math.floor(total / 3600));
+  const m = Math.floor((total % 3600) / 60);
+  const sec = total % 60;
+  return `${String(h).padStart(3, " ")}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+}
 
 export function formatPlayTime(seconds: number): string {
   const total = Math.max(0, Math.trunc(seconds));
@@ -279,6 +295,9 @@ export function buildTrainerCard(
 ): TrainerCardData {
   const earned = new Set(story.badgeIds);
   const dex = getPokedex(story);
+  const champion = story.defeatedTrainerIds.some((id) =>
+    id.startsWith("league-champion-blue-"),
+  );
 
   return {
     money: story.money,
@@ -293,8 +312,14 @@ export function buildTrainerCard(
     playTime: formatPlayTime(story.playTimeSeconds ?? 0),
     pokedexSeen: dex.seenCount,
     pokedexCaught: dex.caughtCount,
-    champion: story.defeatedTrainerIds.some((id) =>
-      id.startsWith("league-champion-blue-"),
-    ),
+    champion,
+    name: story.trainerName ?? "RED",
+    idNo: String(story.trainerId ?? 0).padStart(5, "0"),
+    stars: (champion ? 1 : 0) + (hasAllKantoMons(story) ? 1 : 0),
+    hofDebut:
+      champion && story.hofDebutSeconds !== undefined
+        ? formatHofDebut(story.hofDebutSeconds)
+        : null,
+    pokemonTrades: story.pokemonTrades ?? 0,
   };
 }

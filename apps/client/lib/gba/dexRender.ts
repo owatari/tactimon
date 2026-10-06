@@ -308,8 +308,7 @@ function monCategoryText(id: string, caught: boolean): string {
   return raw.split(" ")[0].slice(0, 11);
 }
 
-async function drawPage(a: DexAssets, page: PageState, ctx: DexContext, env: DexEnv, withArea = false): Promise<GbaScreen> {
-  void withArea;
+async function drawPage(a: DexAssets, page: PageState, ctx: DexContext, env: DexEnv, justRegistered = false): Promise<GbaScreen> {
   const screen = newBase(a);
   screen.bgs[3].fill(0x00e, 0, 0, 30, 20, 0);
   const { header, footer } = addBars(screen);
@@ -322,8 +321,13 @@ async function drawPage(a: DexAssets, page: PageState, ctx: DexContext, env: Dex
   const entry = POKEDEX_ENTRIES[id];
 
   printHeader(screen, header, romLabel("POKéMON LIST"));
-  screen.print(footer, "small", romLabel("{START_BUTTON}CRY"), 8, 2, COLORS[4], 0);
-  printControls(screen, footer, romLabel("{A_BUTTON}NEXT DATA {B_BUTTON}CANCEL"));
+  if (justRegistered) {
+    // DexScreen_DrawMonDexPage(justRegistered): only "{A_BUTTON}NEXT" is offered.
+    printControls(screen, footer, romLabel("{A_BUTTON}NEXT"));
+  } else {
+    screen.print(footer, "small", romLabel("{START_BUTTON}CRY"), 8, 2, COLORS[4], 0);
+    printControls(screen, footer, romLabel("{A_BUTTON}NEXT DATA {B_BUTTON}CANCEL"));
+  }
 
   // Mon pic: ROM front sprite drawn over the (transparent) window.
   const url = env.frontSpriteUrl(dex);
@@ -673,4 +677,11 @@ export async function buildDexScreen(
     default:
       return drawTop(assets, { screen: "top", list: { cursorPos: 0, itemsAbove: 1 } }, ctx, env);
   }
+}
+
+/** The page shown right after a species is newly registered (capture, evolution, gift, trade). */
+export async function buildDexRegistrationScreen(dex: number, ctx: DexContext, env: DexEnv): Promise<GbaScreen> {
+  const assets = await loadAssets(env.load);
+  const from: OrderState = { screen: "order", order: "numerical", list: { cursorPos: 0, itemsAbove: 0 } };
+  return drawPage(assets, { screen: "page", from, species: dex }, ctx, env, true);
 }

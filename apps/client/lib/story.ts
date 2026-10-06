@@ -156,6 +156,14 @@ export type StoryState = {
   dayCare?: DayCareState | null;
   /** Seconds played, shown on the Trainer Card. */
   playTimeSeconds?: number;
+  /** Player name printed on the Trainer Card (FireRed default: RED). */
+  trainerName?: string;
+  /** 16-bit Trainer ID, rolled once when the adventure starts (Trainer Card "IDNo."). */
+  trainerId?: number;
+  /** Play time (seconds) when the player first entered the Hall of Fame; Trainer Card back + 1st star. */
+  hofDebutSeconds?: number;
+  /** Completed in-game trades (Trainer Card back). */
+  pokemonTrades?: number;
   /** Remaining Repel steps (FireRed: 100 per item). */
   repelSteps?: number;
   /** Pokémon seen/caught (owned Pokémon always count as caught). */
@@ -264,6 +272,8 @@ export function chooseStarter(
     },
     bagItems: {},
     playTimeSeconds: 0,
+    trainerName: "RED",
+    trainerId: Math.floor(Math.random() * 65536),
     keyItemIds: [],
     fieldTechniqueIds: [],
     clearedObstacleIds: [],
@@ -587,6 +597,26 @@ export function normalizeStoryState(
               Math.trunc(input.playTimeSeconds),
             ),
           )
+        : 0,
+    trainerName:
+      typeof input?.trainerName === "string" &&
+      input.trainerName.trim()
+        ? input.trainerName.trim().slice(0, 7)
+        : "RED",
+    trainerId:
+      typeof input?.trainerId === "number" &&
+      Number.isFinite(input.trainerId)
+        ? Math.max(0, Math.min(65535, Math.trunc(input.trainerId)))
+        : undefined,
+    hofDebutSeconds:
+      typeof input?.hofDebutSeconds === "number" &&
+      Number.isFinite(input.hofDebutSeconds)
+        ? Math.max(0, Math.trunc(input.hofDebutSeconds))
+        : undefined,
+    pokemonTrades:
+      typeof input?.pokemonTrades === "number" &&
+      Number.isFinite(input.pokemonTrades)
+        ? Math.max(0, Math.min(65535, Math.trunc(input.pokemonTrades)))
         : 0,
     keyItemIds: normalizeKeyItemIds(input?.keyItemIds),
     fieldTechniqueIds: normalizeFieldTechniqueIds(

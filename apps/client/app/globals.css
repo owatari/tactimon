@@ -7079,3 +7079,35 @@ body {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+
+.dex-registration {
+  position: absolute;
+  inset: 0;
+  z-index: 170;
+  display: grid;
+  background: #000;
+}
+
+.start-menu-card-stars {
+  float: right;
+  color: #f8c830;
+  text-shadow: 1px 1px 0 #203850;
+  letter-spacing: 0.1em;
+}
+
+.start-menu-card.stars-2 {
+  background: #c8885a;
+}
+
+.start-menu-card.stars-3 {
+  background: #b8c0c8;
+}
+
+.start-menu-card.stars-4 {
+  background: #e8c848;
+}
+
+.start-menu-move-text {
+  white-space: pre-line;
+  margin: 8px 0 0;
+}

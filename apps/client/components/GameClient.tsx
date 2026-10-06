@@ -47,7 +47,8 @@ import {
   findHealLocation,
   findHealLocationByCenter,
 } from "@/lib/healLocations";
-import { markPokedexSeen } from "@/lib/pokedex";
+import { markPokedexSeen, syncPokedexCaught } from "@/lib/pokedex";
+import { PokedexRegistration } from "@/components/PokedexGba";
 import {
   DEFAULT_GAME_OPTIONS,
   effectiveMusicVolume,
@@ -426,6 +427,27 @@ export function GameClient() {
     },
     [],
   );
+
+  // Pokédex "caught" is permanent (owned, gifted, traded, evolved); the first time a species is
+  // registered during play FireRed shows its entry. Saves loaded from disk register silently.
+  const dexSyncedRef = useRef(false);
+  const [dexRegistrations, setDexRegistrations] = useState<string[]>([]);
+  useEffect(() => {
+    if (!storyHydrated) return;
+    const { story: synced, newlyCaught } = syncPokedexCaught(story);
+    let next = synced;
+    const champion = story.defeatedTrainerIds.some((id) =>
+      id.startsWith("league-champion-blue-"),
+    );
+    if (champion && story.hofDebutSeconds === undefined) {
+      next = { ...next, hofDebutSeconds: story.playTimeSeconds ?? 0 };
+    }
+    if (next !== story) setStory(next);
+    if (dexSyncedRef.current && newlyCaught.length > 0) {
+      setDexRegistrations((queue) => [...queue, ...newlyCaught]);
+    }
+    dexSyncedRef.current = true;
+  }, [story, storyHydrated]);
 
   useEffect(() => {
     if (!battleSession) return;
@@ -942,6 +964,7 @@ export function GameClient() {
 
   const paused =
     starterChoiceOpen ||
+    dexRegistrations.length > 0 ||
     martOpen ||
     menuOpen ||
     storageOpen ||
@@ -1169,6 +1192,20 @@ export function GameClient() {
               "Pallet Town"
             }
             onContinue={continueAfterWhiteOut}
+          />
+        )}
+
+      {!battleSession &&
+        !battleResult &&
+        progressionQueue.length === 0 &&
+        !pendingWhiteOut &&
+        dexRegistrations[0] && (
+          <PokedexRegistration
+            key={dexRegistrations[0]}
+            story={story}
+            species={dexRegistrations[0]}
+            musicVolume={options.musicMuted ? 0 : options.musicVolume}
+            onDone={() => setDexRegistrations((queue) => queue.slice(1))}
           />
         )}
 

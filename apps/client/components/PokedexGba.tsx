@@ -11,7 +11,12 @@ import {
   type DexKey,
   type DexState,
 } from "@/lib/gba/dex";
-import { buildDexScreen, type DexEnv, type RgbaImage } from "@/lib/gba/dexRender";
+import {
+  buildDexRegistrationScreen,
+  buildDexScreen,
+  type DexEnv,
+  type RgbaImage,
+} from "@/lib/gba/dexRender";
 import type { GbaScreen } from "@/lib/gba/engine";
 import { speciesDexAreas } from "@/lib/gba/dexAreas";
 import { localizedSpeciesName } from "@/lib/i18n/names";
@@ -116,26 +121,8 @@ export function playPokemonCry(dex: number, volume = 0.7): void {
   }
 }
 
-/** The Kanto Pokédex rendered from FireRed ROM graphics (tiles, palettes, fonts, footprints) with ROM cries. */
-export function PokedexGba({ story, musicVolume = 70, onClose }: Props) {
-  const locale = useLocale();
-  const [state, setState] = useState<DexState>(() => initialDexState());
-  const [screen, setScreen] = useState<GbaScreen | null>(null);
-  const [tick, setTick] = useState(0);
-  const [missing, setMissing] = useState(false);
-  const stateRef = useRef(state);
-  stateRef.current = state;
-
-  const ctx = useMemo<DexContext>(() => {
-    const dex = getPokedex(story);
-    return {
-      flags: dex.entries.map((e) => ({ seen: e.status !== "unseen", caught: e.status === "caught" })),
-    };
-  }, [story]);
-  const ctxRef = useRef(ctx);
-  ctxRef.current = ctx;
-
-  const env = useMemo<DexEnv>(
+function useDexEnv(): DexEnv {
+  return useMemo<DexEnv>(
     () => ({
       load: browserLoader,
       loadImage,
@@ -154,7 +141,32 @@ export function PokedexGba({ story, musicVolume = 70, onClose }: Props) {
     }),
     [],
   );
+}
 
+function useDexContext(story: StoryState): DexContext {
+  return useMemo<DexContext>(() => {
+    const dex = getPokedex(story);
+    return {
+      flags: dex.entries.map((e) => ({ seen: e.status !== "unseen", caught: e.status === "caught" })),
+    };
+  }, [story]);
+}
+
+/** The Kanto Pokédex rendered from FireRed ROM graphics (tiles, palettes, fonts, footprints) with ROM cries. */
+export function PokedexGba({ story, musicVolume = 70, onClose }: Props) {
+  const locale = useLocale();
+  const [state, setState] = useState<DexState>(() => initialDexState());
+  const [screen, setScreen] = useState<GbaScreen | null>(null);
+  const [tick, setTick] = useState(0);
+  const [missing, setMissing] = useState(false);
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
+  const ctx = useDexContext(story);
+  const ctxRef = useRef(ctx);
+  ctxRef.current = ctx;
+
+  const env = useDexEnv();
   useEffect(() => {
     let cancelled = false;
     buildDexScreen(state, ctx, env, tick)
@@ -206,4 +218,56 @@ export function PokedexGba({ story, musicVolume = 70, onClose }: Props) {
   }
 
   return <GbaCanvas screen={screen} className="pokedex-gba" />;
+}
+
+/** FireRed page shown for a newly registered species: the entry is shown with its cry, A (or B) continues. */
+export function PokedexRegistration({
+  story,
+  species,
+  musicVolume = 70,
+  onDone,
+}: {
+  story: StoryState;
+  species: string;
+  musicVolume?: number;
+  onDone: () => void;
+}) {
+  const locale = useLocale();
+  const ctx = useDexContext(story);
+  const env = useDexEnv();
+  const [screen, setScreen] = useState<GbaScreen | null>(null);
+  const dex = POKEDEX_SPECIES.indexOf(species) + 1;
+
+  useEffect(() => {
+    let cancelled = false;
+    buildDexRegistrationScreen(dex, ctx, env)
+      .then((built) => {
+        if (!cancelled) setScreen(built);
+      })
+      .catch(() => onDone());
+    return () => {
+      cancelled = true;
+    };
+  }, [dex, ctx, env, locale, onDone]);
+
+  useEffect(() => {
+    playPokemonCry(dex, musicVolume / 100);
+  }, [dex, musicVolume]);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!["Enter", " ", "z", "Z", "x", "X", "Escape"].includes(event.key)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (!event.repeat) onDone();
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [onDone]);
+
+  return (
+    <div className="dex-registration" role="dialog" aria-modal="true">
+      <GbaCanvas screen={screen} className="pokedex-gba" />
+    </div>
+  );
 }

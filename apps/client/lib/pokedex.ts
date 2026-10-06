@@ -140,3 +140,35 @@ export function pokedexFrontSpriteUrl(id: string): string | null {
   const file = POKEDEX_ENTRIES[id]?.sprite;
   return file ? `/game-assets/firered/pokemon/front/normal/${file}` : null;
 }
+
+/** FireRed HasAllKantoMons: every Kanto species caught except Mew (the 151st). */
+export function hasAllKantoMons(story: StoryState): boolean {
+  const dex = getPokedex(story);
+  return dex.entries.slice(0, 150).every((entry) => entry.status === "caught");
+}
+
+/**
+ * Makes "caught" permanent like the real Pokédex flags: species the player owns (party, box, gifts,
+ * trades, evolutions) are stored in `pokedex.caught` (and `seen`), so releasing or trading a Pokémon
+ * away never un-registers it. Returns the species that were newly registered.
+ */
+export function syncPokedexCaught(story: StoryState): {
+  story: StoryState;
+  newlyCaught: string[];
+} {
+  const dex = story.pokedex ?? { seen: [], caught: [] };
+  const fresh = Array.from(new Set(ownedSpecies(story))).filter(
+    (id) => KNOWN.has(id) && !dex.caught.includes(id),
+  );
+  if (fresh.length === 0) return { story, newlyCaught: [] };
+  return {
+    story: {
+      ...story,
+      pokedex: {
+        seen: Array.from(new Set([...dex.seen, ...fresh])),
+        caught: [...dex.caught, ...fresh],
+      },
+    },
+    newlyCaught: fresh,
+  };
+}

@@ -14,6 +14,8 @@ import {
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
 import { PLAYER_SPRITE } from "@/lib/maps";
+import { MOVE_DESCRIPTIONS } from "@/lib/generated/moveDescriptions";
+import { POKEDEX_SPECIES } from "@/lib/pokedex";
 import { PokedexGba } from "@/components/PokedexGba";
 import {
   getPokedex,
@@ -153,6 +155,10 @@ export function StartMenu({
   const [bagIndex, setBagIndex] = useState(0);
   const [optionIndex, setOptionIndex] = useState(0);
   const [townIndex, setTownIndex] = useState(0);
+  const [cardBack, setCardBack] = useState(false);
+  // FireRed Summary: A on the moves page enters move selection, A again opens the move info page.
+  const [summaryMove, setSummaryMove] = useState<number | null>(null);
+  const [summaryMoveInfo, setSummaryMoveInfo] = useState(false);
   const [bagUse, setBagUse] = useState<BagUse | null>(null);
   const [notice, setNotice] = useState("");
   const eraseArmedRef = useRef(false);
@@ -172,6 +178,8 @@ export function StartMenu({
     switchFrom,
     summaryIndex,
     summaryPage,
+    summaryMove,
+    summaryMoveInfo,
     pocketIndex,
     bagIndex,
     optionIndex,
@@ -191,6 +199,8 @@ export function StartMenu({
     switchFrom,
     summaryIndex,
     summaryPage,
+    summaryMove,
+    summaryMoveInfo,
     pocketIndex,
     bagIndex,
     optionIndex,
@@ -347,11 +357,27 @@ export function StartMenu({
 
       if (s.screen === "summary") {
         const pageIndex = SUMMARY_PAGES.indexOf(s.summaryPage);
+        if (s.summaryMove !== null) {
+          const moveCount = s.party[s.summaryIndex]?.activeMoves.length ?? 0;
+          if (s.summaryMoveInfo) {
+            if (back || confirm) setSummaryMoveInfo(false);
+          } else if (up) setSummaryMove(wrap(s.summaryMove - 1, moveCount));
+          else if (down) setSummaryMove(wrap(s.summaryMove + 1, moveCount));
+          else if (confirm) setSummaryMoveInfo(true);
+          else if (back) setSummaryMove(null);
+          return;
+        }
+        if (confirm && s.summaryPage === "moves") {
+          setSummaryMove(0);
+          return;
+        }
         if (up) setSummaryIndex(wrap(s.summaryIndex - 1, s.party.length));
         else if (down) setSummaryIndex(wrap(s.summaryIndex + 1, s.party.length));
         else if (left) setSummaryPage(SUMMARY_PAGES[wrap(pageIndex - 1, SUMMARY_PAGES.length)]);
         else if (right || confirm) setSummaryPage(SUMMARY_PAGES[wrap(pageIndex + 1, SUMMARY_PAGES.length)]);
         else if (back) {
+          setSummaryMove(null);
+          setSummaryMoveInfo(false);
           setPartyIndex(s.summaryIndex);
           setScreen("party");
         }
@@ -430,7 +456,12 @@ export function StartMenu({
       }
 
       if (s.screen === "card") {
-        if (back || confirm) setScreen("root");
+        // FireRed: A flips the card, B closes it.
+        if (confirm) setCardBack((flipped) => !flipped);
+        else if (back) {
+          setCardBack(false);
+          setScreen("root");
+        }
         return;
       }
 
@@ -616,13 +647,17 @@ export function StartMenu({
               name={speciesDisplayName(summaryPokemon.species)}
             />
             {summaryPage === "info" && (
-              <SummaryInfo pokemon={summaryPokemon} />
+              <SummaryInfo pokemon={summaryPokemon} story={story} />
             )}
             {summaryPage === "stats" && (
               <SummaryStats pokemon={summaryPokemon} />
             )}
             {summaryPage === "moves" && (
-              <SummaryMoves pokemon={summaryPokemon} />
+              <SummaryMoves
+                pokemon={summaryPokemon}
+                selected={summaryMove}
+                info={summaryMoveInfo}
+              />
             )}
           </div>
         </section>
@@ -709,50 +744,69 @@ export function StartMenu({
       )}
 
       {screen === "card" && (
-        <section className="start-menu-screen start-menu-card">
-          <h2>{t("TRAINER CARD")}</h2>
-          <div className="start-menu-card-body">
-            <dl>
-              <dt>{t("STARTER")}</dt>
-              <dd>
-                {story.starter ? speciesDisplayName(story.starter) : "—"}
-              </dd>
-              <dt>{t("MONEY")}</dt>
-              <dd>₽{card.money.toLocaleString("pt-BR")}</dd>
-              <dt>{t("POKéDEX")}</dt>
-              <dd>{card.pokedexCaught}</dd>
-              <dt>{t("POKéMON")}</dt>
-              <dd>{card.partySize}</dd>
-              <dt>{t("TIME")}</dt>
-              <dd>{card.playTime}</dd>
-              {card.champion && (
-                <>
-                  <dt>{t("HALL OF FAME")}</dt>
-                  <dd>{t("CHAMPION ★")}</dd>
-                </>
-              )}
-            </dl>
-            <div
-              className="start-menu-card-trainer"
-              aria-hidden="true"
-              style={{
-                backgroundImage: `url("${PLAYER_SPRITE.url}")`,
-                backgroundSize: `${PLAYER_SPRITE.sheetWidth}px ${PLAYER_SPRITE.sheetHeight}px`,
-              }}
-            />
-          </div>
-          <div className="start-menu-badges">
-            {card.badges.map((badge) => (
-              <span
-                key={badge.id}
-                className={badge.earned ? "earned" : ""}
-                title={t(badge.label)}
-              >
-                <i aria-hidden="true" />
-                {t(badge.label)}
-              </span>
-            ))}
-          </div>
+        <section
+          className={`start-menu-screen start-menu-card stars-${card.stars}`}
+        >
+          <h2>
+            {cardBack
+              ? t("{name}'s TRAINER CARD", { name: card.name })
+              : t("TRAINER CARD")}
+            <span className="start-menu-card-stars" aria-label={t("Stars")}>
+              {"★".repeat(card.stars)}
+              {"☆".repeat(4 - card.stars)}
+            </span>
+          </h2>
+          {!cardBack ? (
+            <>
+              <div className="start-menu-card-body">
+                <dl>
+                  <dt>{t("NAME")}</dt>
+                  <dd>{card.name}</dd>
+                  <dt>{t("IDNo.")}</dt>
+                  <dd>{card.idNo}</dd>
+                  <dt>{t("MONEY")}</dt>
+                  <dd>₽{card.money.toLocaleString("pt-BR")}</dd>
+                  <dt>{t("POKéDEX")}</dt>
+                  <dd>{card.pokedexCaught}</dd>
+                  <dt>{t("TIME")}</dt>
+                  <dd>{card.playTime}</dd>
+                </dl>
+                <div
+                  className="start-menu-card-trainer"
+                  aria-hidden="true"
+                  style={{
+                    backgroundImage: `url("${PLAYER_SPRITE.url}")`,
+                    backgroundSize: `${PLAYER_SPRITE.sheetWidth}px ${PLAYER_SPRITE.sheetHeight}px`,
+                  }}
+                />
+              </div>
+              <div className="start-menu-badges">
+                {card.badges.map((badge) => (
+                  <span
+                    key={badge.id}
+                    className={badge.earned ? "earned" : ""}
+                    title={t(badge.label)}
+                  >
+                    <i aria-hidden="true" />
+                    {t(badge.label)}
+                  </span>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="start-menu-card-body">
+              <dl>
+                <dt>{t("HALL OF FAME DEBUT")}</dt>
+                <dd>{card.hofDebut ?? "—"}</dd>
+                <dt>{t("POKéMON TRADES")}</dt>
+                <dd>{card.pokemonTrades}</dd>
+                <dt>{t("POKéDEX SEEN")}</dt>
+                <dd>{card.pokedexSeen}</dd>
+                <dt>{t("POKéMON IN PARTY")}</dt>
+                <dd>{card.partySize}</dd>
+              </dl>
+            </div>
+          )}
         </section>
       )}
 
@@ -811,6 +865,7 @@ export function StartMenu({
         {screen === "summary" || screen === "bag"
           ? ` · ${t("←→ change page")}`
           : ""}
+        {screen === "card" ? ` · ${t("Enter flip card")}` : ""}
         {screen === "townmap"
           ? ` · ${t("Enter fly (HM Fly + Thunder Badge) · ● visited")}`
           : ""}
@@ -819,41 +874,50 @@ export function StartMenu({
   );
 }
 
-function SummaryInfo({ pokemon }: { pokemon: PokemonProgression }) {
+/** FireRed Summary, Pokémon Info page: dex number, species, type, OT, ID No. and held item. */
+function SummaryInfo({
+  pokemon,
+  story,
+}: {
+  pokemon: PokemonProgression;
+  story: StoryState;
+}) {
   useLocale();
-  const progress = experienceProgress(pokemon);
   const types = duelSpeciesTypes(pokemon.species);
+  const dexNo = POKEDEX_SPECIES.indexOf(pokemon.species) + 1;
 
   return (
     <dl className="start-menu-dl">
+      <dt>{t("POKéDEX No.")}</dt>
+      <dd>{dexNo > 0 ? String(dexNo).padStart(3, "0") : "—"}</dd>
+      <dt>{t("NAME")}</dt>
+      <dd>{speciesDisplayName(pokemon.species)}</dd>
       <dt>{t("TYPE")}</dt>
       <dd>{types.map((type) => t(type.toUpperCase())).join(" / ")}</dd>
-      <dt>{t("EXP. POINTS")}</dt>
-      <dd>{progress.total}</dd>
-      <dt>{t("NEXT LV.")}</dt>
-      <dd>{Math.max(0, progress.nextLevelTotal - progress.total)}</dd>
-      <dt>{t("STATUS")}</dt>
-      <dd>
-        {pokemon.currentHp <= 0
-          ? "FNT"
-          : (pokemon.status ?? "OK").toUpperCase()}
-      </dd>
-      <dd className="start-menu-dl-wide">
-        <HpBar pokemon={pokemon} />
-      </dd>
+      <dt>{t("OT")}</dt>
+      <dd>{story.trainerName ?? "RED"}</dd>
+      <dt>{t("IDNo.")}</dt>
+      <dd>{String(story.trainerId ?? 0).padStart(5, "0")}</dd>
+      <dt>{t("ITEM")}</dt>
+      <dd>{t("NONE")}</dd>
     </dl>
   );
 }
 
+/** FireRed Summary, Pokémon Skills page: HP, stats, EXP. POINTS and NEXT LV. */
 function SummaryStats({ pokemon }: { pokemon: PokemonProgression }) {
   useLocale();
   const stats = calculateDuelPokemonStats(pokemon);
+  const progress = experienceProgress(pokemon);
 
   return (
     <dl className="start-menu-dl">
       <dt>HP</dt>
       <dd>
         {pokemon.currentHp}/{stats.hp}
+      </dd>
+      <dd className="start-menu-dl-wide">
+        <HpBar pokemon={pokemon} />
       </dd>
       <dt>{t("ATTACK")}</dt>
       <dd>{stats.attack}</dd>
@@ -865,20 +929,69 @@ function SummaryStats({ pokemon }: { pokemon: PokemonProgression }) {
       <dd>{stats.specialDefense}</dd>
       <dt>{t("SPEED")}</dt>
       <dd>{stats.speed}</dd>
+      <dt>{t("EXP. POINTS")}</dt>
+      <dd>{progress.total}</dd>
+      <dt>{t("NEXT LV.")}</dt>
+      <dd>{Math.max(0, progress.nextLevelTotal - progress.total)}</dd>
+      <dt>{t("STATUS")}</dt>
+      <dd>
+        {pokemon.currentHp <= 0
+          ? "FNT"
+          : (pokemon.status ?? "OK").toUpperCase()}
+      </dd>
     </dl>
   );
 }
 
-function SummaryMoves({ pokemon }: { pokemon: PokemonProgression }) {
+/** Move list; A selects a move and the info page shows POWER, ACCURACY, PP and the ROM description. */
+function SummaryMoves({
+  pokemon,
+  selected,
+  info,
+}: {
+  pokemon: PokemonProgression;
+  selected: number | null;
+  info: boolean;
+}) {
   useLocale();
+  const detailId =
+    selected !== null ? pokemon.activeMoves[selected] : undefined;
+  if (info && detailId) {
+    const move = DUEL_MOVES[detailId];
+    const pp = pokemon.movePp[detailId] ?? move.maxPp;
+    const description =
+      MOVE_DESCRIPTIONS[detailId.replace(/[^a-z]/g, "")] ?? "";
+    return (
+      <div className="start-menu-move-info">
+        <h3>{localizedMoveName(detailId).toUpperCase()}</h3>
+        <dl className="start-menu-dl">
+          <dt>{t("TYPE")}</dt>
+          <dd>{t(move.type.toUpperCase())}</dd>
+          <dt>{t("POWER")}</dt>
+          <dd>{move.power ?? "---"}</dd>
+          <dt>{t("ACCURACY")}</dt>
+          <dd>{move.alwaysHits ? "---" : (move.accuracy ?? 100)}</dd>
+          <dt>PP</dt>
+          <dd>
+            {pp}/{move.maxPp}
+          </dd>
+        </dl>
+        <p className="start-menu-move-text">{description}</p>
+      </div>
+    );
+  }
+
   return (
     <ul className="start-menu-moves">
-      {pokemon.activeMoves.map((moveId) => {
+      {pokemon.activeMoves.map((moveId, index) => {
         const move = DUEL_MOVES[moveId];
         const pp = pokemon.movePp[moveId] ?? move.maxPp;
 
         return (
-          <li key={moveId}>
+          <li
+            key={moveId}
+            className={index === selected ? "selected" : ""}
+          >
             <span className={`start-menu-type ${move.type}`}>
               {t(move.type.toUpperCase())}
             </span>
@@ -886,56 +999,10 @@ function SummaryMoves({ pokemon }: { pokemon: PokemonProgression }) {
             <em>
               PP {pp}/{move.maxPp}
             </em>
-            <small>
-              {move.power
-                ? t("PWR {power}", { power: move.power })
-                : "—"}
-            </small>
           </li>
         );
       })}
     </ul>
-  );
-}
-
-function DexDetail({
-  entry,
-}: {
-  entry: { number: number; id: string; status: string } | undefined;
-}) {
-  useLocale();
-  if (!entry || entry.status === "unseen") {
-    return (
-      <div className="start-menu-dex-detail">
-        <p>{t("No data recorded.")}</p>
-      </div>
-    );
-  }
-
-  const implemented = isDuelSpeciesId(entry.id);
-
-  return (
-    <div className="start-menu-dex-detail">
-      {implemented && (
-        <PokemonPortrait
-          species={entry.id as never}
-          name={pokedexDisplayName(entry.id)}
-        />
-      )}
-      <h3>
-        No. {String(entry.number).padStart(3, "0")}{" "}
-        {pokedexDisplayName(entry.id)}
-      </h3>
-      {implemented && (
-        <p>
-          {t("TYPE:")}{" "}
-          {duelSpeciesTypes(entry.id as never)
-            .map((type) => t(type.toUpperCase()))
-            .join(" / ")}
-        </p>
-      )}
-      <p>{entry.status === "caught" ? t("Caught.") : t("Seen.")}</p>
-    </div>
   );
 }
 

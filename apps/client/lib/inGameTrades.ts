@@ -107,7 +107,11 @@ export function performTrade(
     received: speciesDisplayName(trade.give),
     level: offered.level,
     story: completeStoryPlayerEvent(
-      { ...story, capturedPokemon },
+      {
+        ...story,
+        capturedPokemon,
+        pokemonTrades: (story.pokemonTrades ?? 0) + 1,
+      },
       "reward",
       tradeEventId(tradeId),
     ),
