@@ -13,13 +13,24 @@ describe("gym leader parties", () => {
     expect(new Set(leaders.map((l) => l.badgeId)).size).toBe(8);
   });
 
-  it("always fields six Pokémon", () => {
+  it("fields exactly the requested team of each leader, in order", () => {
+    const expected: Record<string, string[]> = {
+      "pewter-brock": ["geodude", "geodude", "rhyhorn", "onix"],
+      "cerulean-misty": ["staryu", "starmie", "goldeen", "seaking", "psyduck"],
+      "vermilion-lt-surge": ["voltorb", "electrode", "magnemite", "magneton", "pikachu", "raichu"],
+      "celadon-city-gym-erika": ["tangela", "vileplume", "victreebel", "ivysaur", "exeggutor"],
+      "fuchsia-city-gym-koga": ["koffing", "koffing", "weezing", "muk", "arbok", "tentacruel"],
+      "saffron-city-gym-sabrina": ["kadabra", "alakazam", "mr-mime", "golduck", "venomoth", "jynx"],
+      "cinnabar-island-gym-blaine": ["growlithe", "ponyta", "rapidash", "arcanine", "magmar", "flareon"],
+      "viridian-city-gym-giovanni": ["rhyhorn", "dugtrio", "nidoqueen", "nidoking", "rhyhorn", "rhydon"],
+    };
     for (const leader of leaders) {
-      expect(leader.party, leader.id).toHaveLength(GYM_LEADER_PARTY_SIZE);
+      expect(leader.party.map((m) => m.species), leader.id).toEqual(expected[leader.id]);
+      expect(leader.party.length).toBeLessThanOrEqual(GYM_LEADER_PARTY_SIZE);
     }
   });
 
-  it("keeps added members inside the original level range", () => {
+  it("keeps every member inside the leader's original level range and with moves", () => {
     const original: Record<string, [number, number]> = {
       "pewter-brock": [12, 14],
       "cerulean-misty": [18, 21],
@@ -35,7 +46,7 @@ describe("gym leader parties", () => {
       for (const member of leader.party) {
         expect(member.level, leader.id).toBeGreaterThanOrEqual(min);
         expect(member.level, leader.id).toBeLessThanOrEqual(max);
-        expect(member.moves.length).toBeGreaterThan(0);
+        expect(member.moves.length, `${leader.id} ${member.species}`).toBeGreaterThan(0);
       }
     }
   });

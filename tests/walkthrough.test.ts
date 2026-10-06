@@ -214,10 +214,13 @@ describe("walkthrough: towns, services and economy", () => {
 });
 
 describe("walkthrough: gyms, badges and gates", () => {
-  it("13. all eight gym leaders field six Pokémon and award distinct badges", () => {
+  it("13. all eight gym leaders field a team of 4-6 Pokémon and award distinct badges", () => {
     const leaders = OVERWORLD_TRAINERS.filter((t) => t.badgeId && t.mapId.endsWith("-gym"));
     expect(new Set(leaders.map((l) => l.badgeId))).toEqual(new Set(BADGES));
-    for (const leader of leaders) expect(leader.party, leader.id).toHaveLength(GYM_LEADER_PARTY_SIZE);
+    for (const leader of leaders) {
+      expect(leader.party.length, leader.id).toBeGreaterThanOrEqual(4);
+      expect(leader.party.length, leader.id).toBeLessThanOrEqual(GYM_LEADER_PARTY_SIZE);
+    }
   });
 
   it("14. Viridian Gym stays locked until the six required badges, then opens", () => {

@@ -1,0 +1,23 @@
+{
+  "id": "2026-10-06-033-gym-teams-onix-footprint-hud-card",
+  "title": "Times dos ginásios, Onix 1x2 e conteúdo centralizado nos cards de batalha",
+  "status": "running",
+  "created_at": "2026-10-06",
+  "base_head": "2d0ea722",
+  "current_head": "2d0ea722",
+  "skills": [
+    "battle-development",
+    "pokemon-ui",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "battle-engine",
+    "ui-visual",
+    "asset-pipeline"
+  ],
+  "files": [],
+  "commits": [],
+  "tests": []
+}
