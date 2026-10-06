@@ -56,6 +56,7 @@ import {
 } from "@/lib/maps";
 import { E2E_BATTLE_SPEED, isE2eMode } from "@/lib/e2eMode";
 import { pokemonDisplayName } from "@/lib/pokemonName";
+import { ShinyStar } from "./ShinyStar";
 import type { StoryBadgeId } from "@/lib/story";
 
 export type BattleOutcome = {
@@ -83,6 +84,7 @@ export type BattleOutcome = {
     sleepTurnsRemaining: number;
     ivs?: IvSpread;
     nature?: NatureId;
+    shiny?: boolean;
   };
 };
 
@@ -455,6 +457,7 @@ export function FirstBattle({
       ivs: progression.ivs,
       nature: progression.nature,
       nickname: progression.nickname,
+      shiny: progression.shiny,
       currentHp: progression.currentHp,
       status: progression.status,
       sleepTurnsRemaining:
@@ -645,6 +648,7 @@ export function FirstBattle({
                 status: state.captureResult.status,
                 ivs: state.captureResult.ivs,
                 nature: state.captureResult.nature,
+                shiny: state.captureResult.shiny,
                 sleepTurnsRemaining:
                   state.captureResult.sleepTurnsRemaining,
               }
@@ -1654,7 +1658,10 @@ export function FirstBattle({
         <div className="combatant-hud-body">
           <div className="combatant-name-row">
             <div className="combatant-identity">
-              <strong>{pokemonDisplayName(unit)}</strong>
+              <strong>
+                {pokemonDisplayName(unit)}
+                {unit.shiny && <ShinyStar />}
+              </strong>
               <span className="combatant-level">
                 Lv. {unit.level}
               </span>
@@ -2076,6 +2083,7 @@ export function FirstBattle({
                       animation={animation.name}
                       facing={animation.facing}
                       speed={battleSpeed}
+                      shiny={unit.shiny}
                     />
                     <span className="duel-unit-label">
                       {pokemonDisplayName(unit)}

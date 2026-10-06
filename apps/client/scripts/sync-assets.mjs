@@ -1110,6 +1110,15 @@ await cp(
   ),
   { recursive: true },
 );
+// Shiny palettes (Summary / capture screens draw the ROM front sprite with them).
+await cp(
+  resolve(sourceRoot, "pokemon/front/shiny"),
+  resolve(
+    fireRedPublicRoot,
+    "pokemon/front/shiny",
+  ),
+  { recursive: true },
+);
 await cp(
   resolve(sourceRoot, "ui/items"),
   resolve(fireRedPublicRoot, "ui/items"),

@@ -72,3 +72,24 @@ describe("personality in the client", () => {
     expect(skills).toMatch(/class="nature-down"[^>]*>ATTACK/);
   });
 });
+
+describe("shiny in the client", () => {
+  it("survives story normalization, saves and the held capture", () => {
+    const base = chooseStarter("squirtle");
+    const shiny = { ...createPokemonProgression("pidgey", 6, { ...rollPersonality(() => 0.5), shiny: true }), species: "pidgey" } as never;
+    const story = normalizeStoryState({ ...base, capturedPokemon: [shiny], pendingCapture: shiny } as never);
+    expect(story.capturedPokemon[0].shiny).toBe(true);
+    expect(story.pendingCapture?.shiny).toBe(true);
+    const loaded = parseStorySave(serializeStorySave(story))!;
+    expect(loaded.capturedPokemon[0].shiny).toBe(true);
+    expect(loaded.pendingCapture?.shiny).toBe(true);
+    const plain = normalizeStoryState({ ...base, capturedPokemon: [createPokemonProgression("pidgey", 6)] } as never);
+    expect(plain.capturedPokemon[0].shiny).toBeUndefined();
+  });
+
+  it("the Summary and the front sprite use the shiny palette", async () => {
+    const { pokedexFrontSpriteUrl } = await import("../apps/client/lib/pokedex");
+    expect(pokedexFrontSpriteUrl("pikachu")).toContain("/front/normal/");
+    expect(pokedexFrontSpriteUrl("pikachu", true)).toContain("/front/shiny/");
+  });
+});

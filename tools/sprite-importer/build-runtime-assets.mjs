@@ -288,9 +288,19 @@ export async function buildRuntimeSpriteAssets(
         metadata,
       );
 
+      // SpriteCollab keeps the shiny recolour of the base form in `<id>/0000/0001` (same frames).
+      const shinySource = join(sourceDir, "0000", "0001", filename);
+      let shinyFile = null;
+      if (await exists(shinySource)) {
+        await mkdir(join(speciesOutput, "shiny"), { recursive: true });
+        await copyFile(shinySource, join(speciesOutput, "shiny", filename));
+        shinyFile = `${species}/shiny/${filename}`;
+      }
+
       animations[animationName.toLowerCase()] = {
         ...metadata,
         file: `${species}/${filename}`,
+        ...(shinyFile ? { shinyFile } : {}),
         directionRows: 8,
         bounds: metrics.bounds,
         groundX: metrics.groundX,

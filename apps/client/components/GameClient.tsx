@@ -327,6 +327,7 @@ export function GameClient() {
         ivs: pokemon.ivs,
         nature: pokemon.nature,
         nickname: pokemon.nickname,
+        shiny: pokemon.shiny,
         currentHp: pokemon.currentHp,
         status: pokemon.status,
         sleepTurnsRemaining:
@@ -754,7 +755,11 @@ export function GameClient() {
         outcome.capture.species,
         outcome.capture.level,
         outcome.capture.ivs && outcome.capture.nature
-          ? { ivs: outcome.capture.ivs, nature: outcome.capture.nature }
+          ? {
+              ivs: outcome.capture.ivs,
+              nature: outcome.capture.nature,
+              shiny: outcome.capture.shiny,
+            }
           : rollPersonality(),
       );
 

@@ -88,6 +88,18 @@ export function followerSpecies(story: Pick<StoryState, "playerPokemon" | "captu
   return null;
 }
 
+/** Same pick as `followerSpecies`, with the shiny flag so the overworld sprite matches. */
+export function followerLead(
+  story: Pick<StoryState, "playerPokemon" | "capturedPokemon">,
+): { species: DuelSpeciesId; shiny: boolean } | null {
+  for (const pokemon of [story.playerPokemon, ...story.capturedPokemon]) {
+    if (pokemon && pokemon.currentHp > 0) {
+      return { species: pokemon.species, shiny: pokemon.shiny === true };
+    }
+  }
+  return null;
+}
+
 /** Hidden while surfing, in the starter scene and when nobody in the party can walk. */
 export function followerVisible(input: {
   species: DuelSpeciesId | null;

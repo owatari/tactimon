@@ -15,6 +15,7 @@ import {
 } from "@tactimon/battle-engine";
 import { natureEffectText, natureName } from "@/lib/natures";
 import { pokemonDisplayName } from "@/lib/pokemonName";
+import { ShinyStar } from "./ShinyStar";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
 import { PLAYER_SPRITE } from "@/lib/maps";
@@ -592,9 +593,13 @@ export function StartMenu({
                   species={pokemon.species}
                   name={speciesDisplayName(pokemon.species)}
                   compact
+                  shiny={pokemon.shiny}
                 />
                 <div className="start-menu-party-copy">
-                  <strong>{pokemonDisplayName(pokemon)}</strong>
+                  <strong>
+                    {pokemonDisplayName(pokemon)}
+                    {pokemon.shiny && <ShinyStar />}
+                  </strong>
                   <span>Lv{pokemon.level}</span>
                   {pokemon.status && (
                     <b className={`start-menu-status ${pokemon.status}`}>
@@ -629,7 +634,8 @@ export function StartMenu({
       {screen === "summary" && summaryPokemon && (
         <section className="start-menu-screen start-menu-summary">
           <h2>
-            {pokemonDisplayName(summaryPokemon)} · Lv
+            {pokemonDisplayName(summaryPokemon)}
+            {summaryPokemon.shiny && <ShinyStar />} · Lv
             {summaryPokemon.level}
           </h2>
           <div className="start-menu-summary-tabs">
@@ -650,6 +656,7 @@ export function StartMenu({
             <FrontSprite
               species={summaryPokemon.species}
               name={speciesDisplayName(summaryPokemon.species)}
+              shiny={summaryPokemon.shiny}
             />
             {summaryPage === "info" && (
               <SummaryInfo pokemon={summaryPokemon} story={story} />
@@ -1034,12 +1041,14 @@ export function FrontSprite({
   species,
   name,
   compact = false,
+  shiny = false,
 }: {
   species: string;
   name: string;
   compact?: boolean;
+  shiny?: boolean;
 }) {
-  const url = pokedexFrontSpriteUrl(species);
+  const url = pokedexFrontSpriteUrl(species, shiny);
   if (!url) {
     return (
       <PokemonPortrait species={species as never} name={name} compact={compact} />

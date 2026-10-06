@@ -34,3 +34,7 @@ Testes: `tests/story-persistence.test.ts`, `tests/storage.test.ts`, `tests/white
 ## Captura: tela de escolha — task 021
 - Captura bem-sucedida **não** coloca o Pokémon na party: `holdCapturedPokemon` grava `story.pendingCapture` (persistido; reabre após reload). `CaptureSummary` (retrato FireRed, stats, IV/EV, nature ▲▼, golpes, apelido ≤10, SEND TO TEAM / SEND TO BOX) chama `resolvePendingCapture` (`lib/captureChoice.ts`): party cheia → escolhe quem vai pro box; box cheia → recusa.
 - Espécie nova: o aviso "NEW POKéDEX ENTRY" fica na tela e a página de registro (com cry) é pulada (`capturePageSpeciesRef` em `GameClient`). `nickname` vive em `PokemonProgression`/`DuelUnit`; exibir com `pokemonDisplayName`.
+
+## Shiny — task 023
+- Só selvagens rolam shiny: `rollShiny` 1/8192 (`SHINY_ODDS`, `personality.ts`), sorteio semeado em `createWildDuel` (opção `shinyOdds` para testes); a captura carrega `shiny` (`captureResult`) → `PokemonProgression.shiny`. Inicial, presentes, trocas e treinadores nunca são shiny.
+- Sprites: batalha/overworld usam `animations[x].shinyFile` (SpriteCollab `<id>/0000/0001`, copiado por `tools/sprite-importer` para `pokemon-sprites/<espécie>/shiny/`); Summary/captura usam o front sprite da ROM com paleta shiny (`pokemon/front/shiny`, sincronizado por `sync-assets.mjs`). Indicador: `ShinyStar` ★ dourada (party, Summary, HUD de batalha, storage) e banner "SHINY!" na tela de captura.

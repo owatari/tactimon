@@ -13,7 +13,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { Cdp, launchBrowser, sleep } from "./cdp";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { createPokemonProgression } from "../../packages/battle-engine/src";
+import { createPokemonProgression, rollPersonality } from "../../packages/battle-engine/src";
 import { WORLD_MAPS } from "../../apps/client/lib/maps";
 import { STORY_STORAGE_KEY, serializeStorySave } from "../../apps/client/lib/storyPersistence";
 import {
@@ -212,5 +212,13 @@ describe("walkthrough (browser)", () => {
     expect(await count(".party-follower")).toBe(1);
     expect(await cdp.eval<string>(`document.querySelector(".party-follower").style.display`)).toBe("block");
     await shot("follower");
+  }, 40_000);
+
+  it("E10. a shiny catch is announced and uses the shiny sprite palette", async () => {
+    let story = withPokedex({ ...chooseStarter("squirtle"), firstBattleComplete: true });
+    story = { ...story, pendingCapture: createPokemonProgression("pikachu", 6, { ...rollPersonality(() => 0.4), shiny: true }) } as never;
+    await load(seedStory(story, { mapId: "pallet-town", x: 12, y: 17 }));
+    expect(await count(".capture-summary-shiny")).toBe(1);
+    expect(await cdp.eval<string>(`document.querySelector(".capture-summary .start-menu-front img").getAttribute("src")`)).toContain("/front/shiny/");
   }, 40_000);
 });

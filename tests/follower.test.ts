@@ -74,3 +74,14 @@ describe("party follower", () => {
     expect(followerVisible({ ...ok, species: null })).toBe(false);
   });
 });
+
+describe("follower shiny", () => {
+  it("carries the lead's shiny flag", async () => {
+    const { followerLead } = await import("../apps/client/lib/follower");
+    const base = chooseStarter("charmander");
+    expect(followerLead(base)).toEqual({ species: "charmander", shiny: false });
+    const shinyLead = normalizeStoryState({ ...base, playerPokemon: { ...base.playerPokemon!, shiny: true } } as never);
+    expect(followerLead(shinyLead)).toEqual({ species: "charmander", shiny: true });
+    expect(followerLead({ playerPokemon: null, capturedPokemon: [] })).toBeNull();
+  });
+});

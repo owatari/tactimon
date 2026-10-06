@@ -305,6 +305,7 @@ function normalizeCapturedPokemon(
     ivs?: PokemonProgression["ivs"];
     nature?: PokemonProgression["nature"];
     nickname?: PokemonProgression["nickname"];
+    shiny?: PokemonProgression["shiny"];
     currentHp?: unknown;
     status?: unknown;
     sleepTurnsRemaining?: unknown;
@@ -339,6 +340,7 @@ function normalizeCapturedPokemon(
     ivs: candidate.ivs,
     nature: candidate.nature,
     nickname: candidate.nickname,
+    shiny: candidate.shiny,
     currentHp:
       typeof candidate.currentHp === "number"
         ? candidate.currentHp

@@ -20,6 +20,8 @@ type RuntimeAnimation = {
   frames: number;
   durations: number[];
   file: string;
+  /** Shiny recolour of the same frames (SpriteCollab `0000/0001`). */
+  shinyFile?: string;
   directionRows: number;
   bounds?: SpriteBounds | null;
   groundX?: number;
@@ -46,6 +48,7 @@ type Props = {
   animation?: AnimationName;
   facing?: Facing;
   speed?: number;
+  shiny?: boolean;
   onAnimationComplete?: () => void;
 };
 
@@ -74,6 +77,7 @@ export function PokemonBattleSprite({
   animation = "idle",
   facing,
   speed = 1,
+  shiny = false,
   onAnimationComplete,
 }: Props) {
   const [manifest, setManifest] =
@@ -225,7 +229,7 @@ export function PokemonBattleSprite({
           bottom: "auto",
           transform: "none",
           backgroundImage:
-            `url("/game-assets/pokemon-sprites/${data.file}")`,
+            `url("/game-assets/pokemon-sprites/${shiny && data.shinyFile ? data.shinyFile : data.file}")`,
           backgroundSize:
             `${data.frames * 100}% ${data.directionRows * 100}%`,
           backgroundPosition:

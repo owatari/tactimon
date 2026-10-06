@@ -62,4 +62,16 @@ export const captureCatalog: Catalog = {
     fr: "↑↓ déplacer · Entrée confirmer · saisis un surnom (facultatif)",
     zh: "↑↓ 移动 · Enter 确认 · 可输入昵称（可选）",
   },
+  "SHINY!": {
+    pt: "BRILHANTE!",
+    es: "¡SHINY!",
+    fr: "CHROMATIQUE !",
+    zh: "闪光！",
+  },
+  "Shiny": {
+    pt: "Brilhante",
+    es: "Shiny",
+    fr: "Chromatique",
+    zh: "闪光",
+  },
 };

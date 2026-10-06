@@ -10,6 +10,7 @@ import {
   type NatureStat,
 } from "@tactimon/battle-engine";
 import { FrontSprite } from "./StartMenu";
+import { ShinyStar } from "./ShinyStar";
 import { t, useLocale } from "@/lib/i18n";
 import { localizedMoveName, localizedSpeciesName } from "@/lib/i18n/names";
 import { natureEffectText, natureName } from "@/lib/natures";
@@ -130,10 +131,12 @@ export function CaptureSummary({ story, pokemon, newEntry, onResolve }: Props) {
       <section className="start-menu-screen start-menu-summary capture-summary" aria-live="polite">
         <h2>
           {t("Gotcha! {name} was caught!", { name })} · Lv{pokemon.level}
+          {pokemon.shiny && <ShinyStar />}
         </h2>
+        {pokemon.shiny && <p className="capture-summary-shiny">{t("SHINY!")}</p>}
         {newEntry && <p className="capture-summary-new">{t("NEW POKéDEX ENTRY")}</p>}
         <div className="start-menu-summary-body">
-          <FrontSprite species={pokemon.species} name={name} />
+          <FrontSprite species={pokemon.species} name={name} shiny={pokemon.shiny} />
           <div className="capture-summary-info">
             <dl className="start-menu-dl">
               <dt>{t("TYPE")}</dt>

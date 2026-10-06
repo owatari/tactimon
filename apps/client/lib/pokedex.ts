@@ -144,9 +144,9 @@ export function pokedexWeight(hectograms: number): string {
 }
 
 /** FireRed front sprite URL for a Kanto species, or null when there is none. */
-export function pokedexFrontSpriteUrl(id: string): string | null {
+export function pokedexFrontSpriteUrl(id: string, shiny = false): string | null {
   const file = POKEDEX_ENTRIES[id]?.sprite;
-  return file ? `/game-assets/firered/pokemon/front/normal/${file}` : null;
+  return file ? `/game-assets/firered/pokemon/front/${shiny ? "shiny" : "normal"}/${file}` : null;
 }
 
 /** FireRed HasAllKantoMons: every Kanto species caught except Mew (the 151st). */

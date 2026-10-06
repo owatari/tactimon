@@ -5,7 +5,7 @@ import {
   createFollower,
   followerOnPlayerStep,
   followerPose,
-  followerSpecies,
+  followerLead,
   followerVisible,
   type FollowerFacing,
   type FollowerState,
@@ -766,7 +766,8 @@ export function OverworldGame({
   const followerRef = useRef<FollowerState | null>(null);
   const followerOwnerRef = useRef<object | null>(null);
   const [followerView, setFollowerView] = useState<{
-    species: NonNullable<ReturnType<typeof followerSpecies>>;
+    species: NonNullable<ReturnType<typeof followerLead>>["species"];
+    shiny: boolean;
     facing: FollowerFacing;
     walking: boolean;
   } | null>(null);
@@ -2784,7 +2785,8 @@ export function OverworldGame({
       );
 
       // Party follower: one tile behind, same step timing; hidden while surfing.
-      const followerSpeciesNow = followerSpecies(storyRef.current);
+      const followerLeadNow = followerLead(storyRef.current);
+      const followerSpeciesNow = followerLeadNow?.species ?? null;
       const followerShown = followerVisible({
         species: followerSpeciesNow,
         surfing: surfingRef.current,
@@ -2827,11 +2829,13 @@ export function OverworldGame({
         setFollowerView((current) =>
           current &&
           current.species === followerSpeciesNow &&
+          current.shiny === followerLeadNow?.shiny &&
           current.facing === posed.pose.facing &&
           current.walking === posed.pose.moving
             ? current
             : {
                 species: followerSpeciesNow,
+                shiny: followerLeadNow?.shiny === true,
                 facing: posed.pose.facing,
                 walking: posed.pose.moving,
               },
@@ -3116,6 +3120,7 @@ export function OverworldGame({
                   species={followerView.species}
                   side="player"
                   facing={followerView.facing}
+                  shiny={followerView.shiny}
                   animation={followerView.walking ? "walk" : "idle"}
                 />
               </div>

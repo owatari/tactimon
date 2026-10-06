@@ -7321,3 +7321,20 @@ body {
   overflow: visible;
   pointer-events: none;
 }
+
+/* Shiny marker: a gold star next to the name, and a banner on the capture screen. */
+.shiny-star {
+  display: inline-block;
+  margin-left: 4px;
+  color: #e8b800;
+  text-shadow: 1px 1px 0 #805800;
+  font-size: 0.95em;
+  line-height: 1;
+}
+
+.capture-summary-shiny {
+  margin: 0;
+  color: #b88800;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
