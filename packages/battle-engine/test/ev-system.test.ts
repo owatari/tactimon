@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  type PokemonProgression,
   VITAMIN_EV_CAP,
   addEvs,
   calculateDuelPokemonMaxHp,
@@ -68,7 +69,7 @@ describe("FireRed EV system", () => {
   });
 
   it("vitamins give +10 up to 100 EVs, raise HP Up's max HP, and then refuse", () => {
-    let p = createPokemonProgression("squirtle", 20);
+    let p: PokemonProgression = createPokemonProgression("squirtle", 20);
     const maxBefore = calculateDuelPokemonMaxHp(p);
     for (let i = 0; i < 10; i += 1) {
       const next = grantVitamin(p, "hp");

@@ -714,6 +714,8 @@ export function GameClient() {
               species: outcome.capture.species,
               level: outcome.capture.level,
               xpRatio: outcome.capture.xpRatio,
+              // Nothing fainted when a Pokémon is caught: no EVs.
+              evYield: false,
             },
           ]
         : []),

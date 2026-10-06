@@ -812,4 +812,58 @@ export const itemsCatalog: Catalog = {
     fr: "Est passé au niveau {level} !",
     zh: "升到了{level}级！",
   },
+  "Raises the base HP of one Pokémon.": {
+    pt: "Aumenta o HP base de um Pokémon.",
+    es: "Aumenta los PS base de un Pokémon.",
+    fr: "Augmente les PV de base d'un Pokémon.",
+    zh: "提升一只宝可梦的基础HP。",
+  },
+  "Raises the base Attack stat of one Pokémon.": {
+    pt: "Aumenta o Ataque base de um Pokémon.",
+    es: "Aumenta el Ataque base de un Pokémon.",
+    fr: "Augmente l'Attaque de base d'un Pokémon.",
+    zh: "提升一只宝可梦的基础攻击。",
+  },
+  "Raises the base Defense stat of one Pokémon.": {
+    pt: "Aumenta a Defesa base de um Pokémon.",
+    es: "Aumenta la Defensa base de un Pokémon.",
+    fr: "Augmente la Défense de base d'un Pokémon.",
+    zh: "提升一只宝可梦的基础防御。",
+  },
+  "Raises the base Sp. Atk stat of one Pokémon.": {
+    pt: "Aumenta o Atq. Esp. base de um Pokémon.",
+    es: "Aumenta el Ataq. Esp. base de un Pokémon.",
+    fr: "Augmente l'Atq. Spé. de base d'un Pokémon.",
+    zh: "提升一只宝可梦的基础特攻。",
+  },
+  "Raises the base Sp. Def stat of one Pokémon.": {
+    pt: "Aumenta a Def. Esp. base de um Pokémon.",
+    es: "Aumenta la Def. Esp. base de un Pokémon.",
+    fr: "Augmente la Déf. Spé. de base d'un Pokémon.",
+    zh: "提升一只宝可梦的基础特防。",
+  },
+  "Raises the base Speed stat of one Pokémon.": {
+    pt: "Aumenta a Velocidade base de um Pokémon.",
+    es: "Aumenta la Velocidad base de un Pokémon.",
+    fr: "Augmente la Vitesse de base d'un Pokémon.",
+    zh: "提升一只宝可梦的基础速度。",
+  },
+  "{pokemon}'s {stat} rose!": {
+    pt: "{stat} de {pokemon} aumentou!",
+    es: "¡{stat} de {pokemon} ha subido!",
+    fr: "{stat} de {pokemon} a augmenté !",
+    zh: "{pokemon}的{stat}提升了！",
+  },
+  "It had no effect: this stat cannot be raised any further.": {
+    pt: "Não teve efeito: este atributo não pode aumentar mais.",
+    es: "No tuvo efecto: esta estadística no puede subir más.",
+    fr: "Aucun effet : cette statistique ne peut plus augmenter.",
+    zh: "没有效果：该能力无法再提升了。",
+  },
+  "HP": {
+    pt: "HP",
+    es: "PS",
+    fr: "PV",
+    zh: "HP",
+  },
 };

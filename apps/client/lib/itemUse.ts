@@ -5,11 +5,13 @@ import {
   calculateDuelPokemonStats,
   evolveWithStone,
   grantRareCandy,
+  grantVitamin,
   type DuelMajorStatus,
+  type EvStat,
   type PokemonProgression,
   type ProgressionReward,
 } from "@tactimon/battle-engine";
-import { t } from "./i18n";
+import { t, tx } from "./i18n";
 import {
   isBagItemId,
   itemDisplayName,
@@ -22,6 +24,15 @@ import type {
 
 export const REPEL_STEPS = 100;
 
+const VITAMIN_STAT_LABEL: Record<EvStat, string> = {
+  hp: tx("HP"),
+  attack: tx("ATTACK"),
+  defense: tx("DEFENSE"),
+  specialAttack: tx("SP. ATK"),
+  specialDefense: tx("SP. DEF"),
+  speed: tx("SPEED"),
+};
+
 type HealEffect = { kind: "heal"; amount: number };
 type CureEffect = {
   kind: "cure";
@@ -33,6 +44,7 @@ type ItemEffect =
   | { kind: "revive" }
   | { kind: "pp"; amount: number | "max"; allMoves: boolean }
   | { kind: "rare-candy" }
+  | { kind: "vitamin"; stat: EvStat }
   | { kind: "stone" }
   | { kind: "repel" };
 
@@ -55,6 +67,12 @@ export const ITEM_EFFECTS: Partial<
   "max-ether": { kind: "pp", amount: "max", allMoves: false },
   elixir: { kind: "pp", amount: 10, allMoves: true },
   "rare-candy": { kind: "rare-candy" },
+  "hp-up": { kind: "vitamin", stat: "hp" },
+  protein: { kind: "vitamin", stat: "attack" },
+  iron: { kind: "vitamin", stat: "defense" },
+  calcium: { kind: "vitamin", stat: "specialAttack" },
+  zinc: { kind: "vitamin", stat: "specialDefense" },
+  carbos: { kind: "vitamin", stat: "speed" },
   "fire-stone": { kind: "stone" },
   "thunder-stone": { kind: "stone" },
   "water-stone": { kind: "stone" },
@@ -292,6 +310,29 @@ export function useBagItem(
         from: speciesDisplayName(target.species),
         to: speciesDisplayName(evolved.species),
       }),
+    };
+  }
+
+  if (effect.kind === "vitamin") {
+    const boosted = grantVitamin(target, effect.stat);
+    if (!boosted) {
+      return refuse(
+        story,
+        t("It had no effect: this stat cannot be raised any further."),
+      );
+    }
+    return {
+      accepted: true,
+      story: withPartyMember(
+        consume(story, itemId),
+        partyIndex,
+        () => boosted,
+      ),
+      message: t("{pokemon}'s {stat} rose!", {
+        pokemon: speciesDisplayName(target.species),
+        stat: t(VITAMIN_STAT_LABEL[effect.stat]),
+      }),
+      partyIndex,
     };
   }
 

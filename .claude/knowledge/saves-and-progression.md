@@ -25,3 +25,8 @@ Testes: `tests/story-persistence.test.ts`, `tests/storage.test.ts`, `tests/white
 - `packages/battle-engine/src/personality.ts`: 25 natures (±10% inteiro, 5 neutras), `IvSpread` (0–31), `rollPersonality(random)`. `PokemonProgression`/`DuelPokemonBuild`/`DuelUnit` têm `ivs?` e `nature?`.
 - Ausentes = IV 15 + nature neutra: saves antigos, parties de treinadores e testes mantêm os stats de antes (não são reescritos). Rolam personalidade: inicial (`chooseStarter`), selvagens (semeado por `seed`+índice em `createWildDuel`, e a captura leva o mesmo par), presentes e trocas in-game.
 - UI: nomes em `lib/natures.ts` + `catalog/natures.ts`; Summary mostra NATURE e tinge stats (vermelho +, azul −). IVs/EVs detalhados aparecem na tela de captura (task 021).
+
+## EVs estilo FireRed — task 025
+- Sem EVs por level-up. Cada Pokémon **derrotado** dá o EV yield da espécie (ROM, `generated/evYield.ts`, gerado por `tools/rom-data/generate-ev-yields.py`) a todos os participantes (completo, não dividido como o EXP). Captura não dá EV (`evYield: false`). Teto 252/stat e 510 total (`addEvs`).
+- Vitaminas (HP Up, Protein, Iron, Calcium, Zinc, Carbos; vendidas no Celadon): +10 EV, param em 100 por stat (`grantVitamin`, `ITEM_EFFECTS` kind `vitamin`).
+- Saves antigos mantêm os EVs que já tinham (só param de crescer pelo sistema antigo).
