@@ -29,8 +29,9 @@ describe("StartMenu", () => {
       }),
     );
 
+    // No Pokédex until Prof. Oak hands it over (Oak's Parcel quest).
+    expect(html).not.toContain("POKéDEX");
     for (const label of [
-      "POKéDEX",
       "POKéMON",
       "BAG",
       "TRAINER CARD",

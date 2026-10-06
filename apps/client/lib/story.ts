@@ -68,6 +68,7 @@ export type MtMoonFossilId = "dome" | "helix";
 export type StoryValuableId = "nugget";
 export type StoryValuables = Record<StoryValuableId, number>;
 export type StoryKeyItemId =
+  | "oaks-parcel"
   | "ss-ticket"
   | "town-map"
   | "old-amber"
@@ -85,6 +86,7 @@ export type StoryKeyItemId =
   | "good-rod"
   | "super-rod";
 export const STORY_KEY_ITEM_IDS: readonly StoryKeyItemId[] = [
+  "oaks-parcel",
   "ss-ticket",
   "town-map",
   "old-amber",
@@ -1738,4 +1740,38 @@ export function grantStoryFieldTechniqueOnce(
       ],
     },
   };
+}
+
+/**
+ * FireRed FLAG_SYS_POKEDEX_GET: Prof. Oak hands the Pokédex over once OAK'S PARCEL (from the Viridian
+ * Poké Mart clerk) is delivered. Saves that already progressed past that point keep their Pokédex.
+ */
+export function hasPokedex(story: StoryState): boolean {
+  return (
+    hasStoryPlayerEvent(story, "story", "pokedex-received") ||
+    story.badgeIds.length > 0 ||
+    story.capturedPokemon.length > 0 ||
+    story.boxedPokemon.length > 0
+  );
+}
+
+/** Viridian Mart clerk: gives OAK'S PARCEL once, before the Pokédex exists. */
+export function receiveOaksParcel(story: StoryState): {
+  story: StoryState;
+  granted: boolean;
+} {
+  if (hasPokedex(story) || hasStoryKeyItem(story, "oaks-parcel")) {
+    return { story, granted: false };
+  }
+  const result = grantStoryKeyItemOnce(story, "oaks-parcel");
+  return { story: result.story, granted: result.granted };
+}
+
+/** Prof. Oak takes the parcel and gives the Pokédex. */
+export function deliverOaksParcel(story: StoryState): StoryState {
+  return completeStoryPlayerEvent(
+    removeStoryKeyItem(story, "oaks-parcel"),
+    "story",
+    "pokedex-received",
+  );
 }

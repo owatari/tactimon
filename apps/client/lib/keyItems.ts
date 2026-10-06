@@ -1,6 +1,7 @@
 import { tx } from "./i18n";
 /** Display names and descriptions for story key items (Bag → KEY ITEMS). */
 export const KEY_ITEM_LABELS: Record<string, string> = {
+  "oaks-parcel": "Oak's Parcel",
   "ss-ticket": "S.S. Ticket",
   "town-map": "Town Map",
   "old-amber": "Old Amber",
@@ -20,6 +21,7 @@ export const KEY_ITEM_LABELS: Record<string, string> = {
 };
 
 export const KEY_ITEM_DESCRIPTIONS: Record<string, string> = {
+  "oaks-parcel": tx("A parcel for Prof. Oak, from the Viridian City Poké Mart."),
   "ss-ticket": tx("A ticket to board the S.S. Anne in Vermilion City."),
   "town-map": tx("A map of Kanto given by Daisy."),
   "old-amber": tx("Ancient amber containing the DNA of a prehistoric Pokémon."),

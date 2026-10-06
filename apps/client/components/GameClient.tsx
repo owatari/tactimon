@@ -48,6 +48,7 @@ import {
   findHealLocationByCenter,
 } from "@/lib/healLocations";
 import { markPokedexSeen, syncPokedexCaught } from "@/lib/pokedex";
+import { hasPokedex } from "@/lib/story";
 import { PokedexRegistration } from "@/components/PokedexGba";
 import {
   DEFAULT_GAME_OPTIONS,
@@ -443,7 +444,11 @@ export function GameClient() {
       next = { ...next, hofDebutSeconds: story.playTimeSeconds ?? 0 };
     }
     if (next !== story) setStory(next);
-    if (dexSyncedRef.current && newlyCaught.length > 0) {
+    if (
+      dexSyncedRef.current &&
+      newlyCaught.length > 0 &&
+      hasPokedex(next)
+    ) {
       setDexRegistrations((queue) => [...queue, ...newlyCaught]);
     }
     dexSyncedRef.current = true;

@@ -12,6 +12,7 @@ import {
 } from "./items";
 import { isFieldUsableItem } from "./itemUse";
 import { getPokedex, hasAllKantoMons } from "./pokedex";
+import { hasPokedex } from "./story";
 import { tx } from "./i18n";
 import {
   KEY_ITEM_DESCRIPTIONS,
@@ -57,6 +58,13 @@ export const MENU_ENTRIES: readonly MenuEntry[] = [
   { id: "options", label: tx("OPTION"), enabled: true },
   { id: "exit", label: tx("EXIT"), enabled: true },
 ];
+
+/** FireRed shows POKéDEX in the Start menu only after Prof. Oak gave it (FLAG_SYS_POKEDEX_GET). */
+export function menuEntriesFor(story: StoryState): readonly MenuEntry[] {
+  return MENU_ENTRIES.filter(
+    (entry) => entry.id !== "pokedex" || hasPokedex(story),
+  );
+}
 
 export const MAX_PARTY_SIZE = 6;
 
@@ -272,6 +280,8 @@ export type TrainerCardData = {
   /** Hall of Fame debut time "hhh:mm:ss" (card back), or null before the Champion is beaten. */
   hofDebut: string | null;
   pokemonTrades: number;
+  /** The Pokédex line is only printed once the Pokédex was received. */
+  hasPokedex: boolean;
 };
 
 export function formatHofDebut(seconds: number): string {
@@ -321,5 +331,6 @@ export function buildTrainerCard(
         ? formatHofDebut(story.hofDebutSeconds)
         : null,
     pokemonTrades: story.pokemonTrades ?? 0,
+    hasPokedex: hasPokedex(story),
   };
 }

@@ -22,7 +22,7 @@ import {
   pokedexDisplayName,
 } from "@/lib/pokedex";
 import {
-  MENU_ENTRIES,
+  menuEntriesFor,
   buildBagPockets,
   buildTrainerCard,
   getStoryParty,
@@ -140,7 +140,7 @@ export function StartMenu({
     t("CLOSE"),
   ];
   const [screen, setScreen] = useState<MenuScreen>("root");
-  const [rootIndex, setRootIndex] = useState(1);
+  const [rootIndex, setRootIndex] = useState(0);
   const [partyIndex, setPartyIndex] = useState(0);
   const [partyAction, setPartyAction] = useState<number | null>(
     null,
@@ -166,6 +166,7 @@ export function StartMenu({
   const party = useMemo(() => getStoryParty(story), [story]);
   const pockets = useMemo(() => buildBagPockets(story), [story]);
   const card = useMemo(() => buildTrainerCard(story), [story]);
+  const menuEntries = useMemo(() => menuEntriesFor(story), [story]);
   const dex = useMemo(() => getPokedex(story), [story]);
   const townRows = useMemo(() => townMapRows(story), [story]);
 
@@ -268,11 +269,11 @@ export function StartMenu({
       }
 
       if (s.screen === "root") {
-        if (up) setRootIndex(wrap(s.rootIndex - 1, MENU_ENTRIES.length));
-        else if (down) setRootIndex(wrap(s.rootIndex + 1, MENU_ENTRIES.length));
+        if (up) setRootIndex(wrap(s.rootIndex - 1, menuEntries.length));
+        else if (down) setRootIndex(wrap(s.rootIndex + 1, menuEntries.length));
         else if (back) onClose();
         else if (confirm) {
-          const entry = MENU_ENTRIES[s.rootIndex];
+          const entry = menuEntries[s.rootIndex];
           if (!entry.enabled) {
             setNotice(
               t("{label}: {hint}.", {
@@ -520,7 +521,7 @@ export function StartMenu({
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose, onFly, onOptionsChange, onSave, onStoryChange]);
+  }, [menuEntries, onClose, onFly, onOptionsChange, onSave, onStoryChange]);
 
   const summaryPokemon = party[summaryIndex] ?? null;
 
@@ -532,7 +533,7 @@ export function StartMenu({
     >
       {screen === "root" && (
         <nav className="start-menu-root">
-          {MENU_ENTRIES.map((entry, index) => (
+          {menuEntries.map((entry, index) => (
             <button
               key={entry.id}
               type="button"
@@ -766,8 +767,12 @@ export function StartMenu({
                   <dd>{card.idNo}</dd>
                   <dt>{t("MONEY")}</dt>
                   <dd>₽{card.money.toLocaleString("pt-BR")}</dd>
-                  <dt>{t("POKéDEX")}</dt>
-                  <dd>{card.pokedexCaught}</dd>
+                  {card.hasPokedex && (
+                    <>
+                      <dt>{t("POKéDEX")}</dt>
+                      <dd>{card.pokedexCaught}</dd>
+                    </>
+                  )}
                   <dt>{t("TIME")}</dt>
                   <dd>{card.playTime}</dd>
                 </dl>
@@ -800,8 +805,12 @@ export function StartMenu({
                 <dd>{card.hofDebut ?? "—"}</dd>
                 <dt>{t("POKéMON TRADES")}</dt>
                 <dd>{card.pokemonTrades}</dd>
-                <dt>{t("POKéDEX SEEN")}</dt>
-                <dd>{card.pokedexSeen}</dd>
+                {card.hasPokedex && (
+                  <>
+                    <dt>{t("POKéDEX SEEN")}</dt>
+                    <dd>{card.pokedexSeen}</dd>
+                  </>
+                )}
                 <dt>{t("POKéMON IN PARTY")}</dt>
                 <dd>{card.partySize}</dd>
               </dl>

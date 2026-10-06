@@ -43,6 +43,7 @@ import {
   grantRunningShoes,
   shouldGrantRunningShoes,
   hasStoryKeyItem,
+  hasPokedex,
   isStoryTrainerDefeated,
   storyHasHealthyPokemon,
   storyIsKnockedOut,
@@ -1473,6 +1474,22 @@ export function OverworldGame({
       }
 
       if (storyObject.kind === "mart-clerk") {
+        // FireRed: the Viridian clerk hands over OAK'S PARCEL before the shop opens for the first time.
+        const current = storyRef.current;
+        if (
+          storyObject.martId === "viridian-mart" &&
+          !hasPokedex(current) &&
+          !hasStoryKeyItem(current, "oaks-parcel")
+        ) {
+          showDialogue(
+            onDialogueInteraction({
+              kind: "script",
+              id: "viridian-mart-parcel",
+            }),
+            () => onMartOpen(storyObject.martId),
+          );
+          return;
+        }
         onMartOpen(storyObject.martId);
         return;
       }

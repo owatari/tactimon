@@ -1,4 +1,5 @@
 import { localizedMoveName } from "./i18n/names";
+import { deliverOaksParcel, receiveOaksParcel } from "./story";
 import { localizedSpeciesName as speciesDisplayName } from "./i18n/names";
 import type {
   DialogueDefinition,
@@ -399,6 +400,57 @@ function tutorScript(tutor: MoveTutor): DialogueDefinition {
 }
 
 export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
+  "viridian-mart-parcel": {
+    id: "viridian-mart-parcel",
+    interact: (story) => {
+      const result = receiveOaksParcel(story);
+      return {
+        story: result.story,
+        presentation: {
+          id: "viridian-mart-parcel",
+          pages: [
+            {
+              id: "ask",
+              text: t(
+                "Hey, you! You came from Pallet Town, right? You know Prof. Oak, don't you? His order came in. Can you take it to him for me?",
+              ),
+              speaker: "Clerk",
+            },
+            {
+              id: "given",
+              text: t("You received OAK'S PARCEL!"),
+              speaker: "Clerk",
+            },
+          ],
+        },
+      };
+    },
+  },
+  "lab-oak-parcel": {
+    id: "lab-oak-parcel",
+    interact: (story) => ({
+      story: deliverOaksParcel(story),
+      presentation: {
+        id: "lab-oak-parcel",
+        pages: [
+          {
+            id: "thanks",
+            text: t(
+              "Oh, that's the parcel I was waiting for! Thank you for bringing it all the way here.",
+            ),
+            speaker: "Prof. Oak",
+          },
+          {
+            id: "dex",
+            text: t(
+              "Now, I have something for you in return: the POKéDEX! It records every Pokémon you see or catch. You received the POKéDEX!",
+            ),
+            speaker: "Prof. Oak",
+          },
+        ],
+      },
+    }),
+  },
   ...Object.fromEntries(
     MOVE_TUTORS.map((tutor) => [`tutor-${tutor.id}`, tutorScript(tutor)]),
   ),

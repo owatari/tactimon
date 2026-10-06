@@ -212,6 +212,23 @@ const DIALOGUE_DEFINITIONS: Record<
   ...QUEST_DIALOGUES,
   "lab-oak": {
     id: "lab-oak",
+    interact: (story, context) => {
+      if ((story.keyItemIds ?? []).includes("oaks-parcel")) {
+        return DIALOGUE_DEFINITIONS["lab-oak-parcel"].interact!(
+          story,
+          context,
+        );
+      }
+      return {
+        story,
+        presentation: dialoguePresentationFromText(
+          "lab-oak",
+          storyStarterSummary(story) ??
+            "Cuide bem do seu primeiro Pokémon.",
+          "Prof. Oak",
+        ),
+      };
+    },
     variants: [
       {
         pages: (story) => [
