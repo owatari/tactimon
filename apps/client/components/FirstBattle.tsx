@@ -17,8 +17,7 @@ import {
   DUEL_MOVES,
   calculateTypeEffectiveness,
   getActiveDuelUnit,
-  ITEM_AP_COST,
-  POKE_BALL_AP_COST,
+  itemApCost,
   getDuelCaptureEligibility,
   getDuelMovePp,
   getDuelMoveAreaTargetIds,
@@ -130,7 +129,9 @@ type CommandMode =
   | "moves"
   | "move-target"
   | "items"
-  | "item-target";
+  | "item-target"
+  /** Revive / Max Revive: pick a fainted ally from a list (fainted units leave the board). */
+  | "revive-target";
 
 const FIRE_RED_ITEM_ICON = {
   get: itemIconUrl,
@@ -730,6 +731,30 @@ export function FirstBattle({
     !autoBattle &&
     !autoCatchReady;
 
+  // Fainted units leave the board, so Revive picks them from a list instead.
+  const faintedAllies = state.units.filter(
+    (unit) =>
+      unit.side === player.side && unit.hp <= 0 && !unit.captured,
+  );
+  const itemEffectLabel = (item: (typeof DUEL_ITEMS)[DuelItemId]) =>
+    item.kind === "heal"
+      ? item.heal >= 9999
+        ? t("full HP")
+        : `+${item.heal} HP`
+      : item.kind === "cure"
+        ? item.cures.length >= 4
+          ? t("cures all status")
+          : t("cures status")
+        : item.kind === "full-restore"
+          ? t("full HP and status")
+          : item.kind === "revive"
+            ? item.restore >= 1
+              ? t("revives with full HP")
+              : t("revives with half HP")
+            : state.captureAllowed
+              ? t("better odds at low HP")
+              : t("capture unavailable");
+
   const blockedKeys = useMemo(
     () => new Set(state.blocked.map(pointKey)),
     [state.blocked],
@@ -829,6 +854,18 @@ export function FirstBattle({
         return new Set(
           state.units
             .filter((unit) => getDuelCaptureEligibility(state, unit.id).allowed)
+            .map((unit) => unit.id),
+        );
+      }
+      if (item.kind === "full-restore") {
+        return new Set(
+          state.units
+            .filter(
+              (unit) =>
+                unit.hp > 0 &&
+                unit.side === player.side &&
+                (unit.hp < unit.maxHp || unit.status !== null),
+            )
             .map((unit) => unit.id),
         );
       }
@@ -1387,7 +1424,11 @@ export function FirstBattle({
           ? t("That Pokémon already has full HP.")
           : result.reason === "target-no-status"
             ? t("That Pokémon does not have that status condition.")
-            : t("That item cannot be used right now."),
+            : result.reason === "no-room-to-revive"
+              ? t("There is no room to bring it back.")
+              : result.reason === "not-enough-ap"
+                ? t("Not enough AP for that item.")
+                : t("That item cannot be used right now."),
       );
       return;
     }
@@ -2302,7 +2343,8 @@ export function FirstBattle({
         {isPlayerTurn &&
           state.status === "active" &&
           (command === "moves" ||
-            command === "items") && (
+            command === "items" ||
+            command === "revive-target") && (
             <div className="battle-selection-dock">
               {command === "moves" && (
                 <>
@@ -2399,14 +2441,15 @@ export function FirstBattle({
                             type="button"
                             disabled={
                               amount <= 0 ||
-                              player.ap <
-                                (item.kind === "capture"
-                                  ? POKE_BALL_AP_COST
-                                  : ITEM_AP_COST)
+                              player.ap < itemApCost(itemId)
                             }
                             onClick={() => {
                               setSelectedItem(itemId);
-                              setCommand("item-target");
+                              setCommand(
+                                item.kind === "revive"
+                                  ? "revive-target"
+                                  : "item-target",
+                              );
                             }}
                           >
                             <span className="battle-item-choice-name">
@@ -2419,19 +2462,46 @@ export function FirstBattle({
                             </span>
                             <span>
                               ×{amount} ·{" "}
-                              {item.kind === "heal"
-                                ? `+${item.heal} HP · ${ITEM_AP_COST} AP`
-                                : item.kind === "cure"
-                                  ? `${t("cures status")} · ${ITEM_AP_COST} AP`
-                                : state.captureAllowed
-                                  ? t("{ap} AP · better odds at low HP", {
-                                      ap: POKE_BALL_AP_COST,
-                                    })
-                                  : t("capture unavailable")}
+                              {itemEffectLabel(item)} ·{" "}
+                              {itemApCost(itemId)} AP
                             </span>
                           </button>
                         );
                       })}
+                  </div>
+                </>
+              )}
+
+              {command === "revive-target" && selectedItem && (
+                <>
+                  <div className="battle-selection-dock-title">
+                    <strong>{t("Choose a fainted Pokémon")}</strong>
+                    <span>{t(DUEL_ITEMS[selectedItem].name)}</span>
+                  </div>
+                  <div className="battle-selection-dock-grid">
+                    {faintedAllies.length === 0 ? (
+                      <span>{t("No Pokémon has fainted.")}</span>
+                    ) : (
+                      faintedAllies.map((unit) => (
+                        <button
+                          key={unit.id}
+                          type="button"
+                          onClick={() =>
+                            void performItem(selectedItem, unit.id)
+                          }
+                        >
+                          <span className="battle-item-choice-name">
+                            <PokemonPortrait
+                              species={unit.species}
+                              name={localizedSpeciesName(unit.species)}
+                              compact
+                            />
+                            <strong>{pokemonDisplayName(unit)}</strong>
+                          </span>
+                          <span>Lv. {unit.level}</span>
+                        </button>
+                      ))
+                    )}
                   </div>
                 </>
               )}

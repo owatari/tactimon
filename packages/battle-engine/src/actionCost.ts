@@ -9,10 +9,39 @@
 
 export const BASE_ACTION_POINTS = 6;
 export const SPEED_PER_ACTION_POINT = 25;
-/** Throwing a Poké Ball. */
-export const POKE_BALL_AP_COST = 4;
-/** Using a Potion or a status cure on an ally (it no longer ends the turn by itself). */
-export const ITEM_AP_COST = 3;
+/**
+ * AP cost of every battle item (task 030). The cheapest items (Potion, the status cures and the
+ * regular balls) cost 4; costs grow with strength and usefulness up to Full Restore / Max Revive
+ * (7). The average over the whole list is about 4.75 AP.
+ */
+export const ITEM_AP_COSTS = {
+  potion: 4,
+  "super-potion": 4,
+  "hyper-potion": 5,
+  "max-potion": 6,
+  "full-restore": 7,
+  antidote: 4,
+  "parlyz-heal": 4,
+  awakening: 4,
+  "burn-heal": 4,
+  "full-heal": 5,
+  revive: 5,
+  "max-revive": 7,
+  "poke-ball": 4,
+  "great-ball": 4,
+  "ultra-ball": 4,
+  "master-ball": 5,
+} as const;
+
+export type PricedItemId = keyof typeof ITEM_AP_COSTS;
+
+/** AP needed to use `itemId` in battle (unknown items cost the baseline 4). */
+export function itemApCost(itemId: string): number {
+  return (ITEM_AP_COSTS as Record<string, number>)[itemId] ?? 4;
+}
+
+/** Throwing a regular Poké Ball (kept for callers that do not know the ball). */
+export const POKE_BALL_AP_COST = ITEM_AP_COSTS["poke-ball"];
 /**
  * Fine tuning (task 029): up to this much raw cost (60 power) a move costs exactly 10% of its power;
  * above it every extra point of raw cost counts half, so 100-150 power moves stay usable for the

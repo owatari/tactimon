@@ -156,7 +156,9 @@ describe("battle bag", () => {
     const battle = toBattleInventory(base);
     expect(battle["super-potion"]).toBe(1);
     expect(battle.antidote).toBe(1);
-    expect(battle.revive).toBeUndefined();
+    // Revive is a battle item now (task 030); items the engine cannot use (TMs, stones…) stay out.
+    expect(battle.revive).toBe(1);
+    expect((battle as Record<string, number>)["rare-candy"]).toBeUndefined();
 
     const after = applyBattleInventory(base, {
       ...battle,

@@ -7,9 +7,8 @@ import {
 } from "./generated/kanto";
 import { ROM_CATCH_RATE } from "./generated/evYield";
 import {
-  ITEM_AP_COST,
-  POKE_BALL_AP_COST,
   apCostForMove,
+  itemApCost,
   maxActionPointsForSpeed,
 } from "./actionCost";
 import {
@@ -141,7 +140,12 @@ export type DuelItemId =
   | "burn-heal"
   | "great-ball"
   | "ultra-ball"
-  | "master-ball";
+  | "master-ball"
+  | "max-potion"
+  | "full-restore"
+  | "full-heal"
+  | "revive"
+  | "max-revive";
 const DUEL_EXTRA_ITEM_IDS = [
   "super-potion",
   "hyper-potion",
@@ -152,6 +156,11 @@ const DUEL_EXTRA_ITEM_IDS = [
   "great-ball",
   "ultra-ball",
   "master-ball",
+  "max-potion",
+  "full-restore",
+  "full-heal",
+  "revive",
+  "max-revive",
 ] as const;
 export type DuelExtraItemId = (typeof DUEL_EXTRA_ITEM_IDS)[number];
 /** Potion and Poké Ball are always tracked; other items are optional. */
@@ -358,7 +367,11 @@ export type DuelItem =
       target: "ally";
       cures: readonly Exclude<DuelMajorStatus, null>[];
     }
-  | { id: DuelItemId; name: string; kind: "capture"; target: "wild-enemy"; ballModifier: number };
+  | { id: DuelItemId; name: string; kind: "capture"; target: "wild-enemy"; ballModifier: number }
+  /** Full HP and every status condition. */
+  | { id: DuelItemId; name: string; kind: "full-restore"; target: "ally" }
+  /** Brings a fainted ally back with `restore` of its max HP (it acts again on its next turn). */
+  | { id: DuelItemId; name: string; kind: "revive"; target: "fainted-ally"; restore: number };
 
 export function normalizeDuelMajorStatus(
   value: unknown,
@@ -1652,6 +1665,40 @@ export const DUEL_ITEMS = {
     kind: "cure",
     target: "ally",
     cures: ["burn"],
+  },
+  "max-potion": {
+    id: "max-potion",
+    name: "Max Potion",
+    kind: "heal",
+    target: "ally",
+    heal: 9999,
+  },
+  "full-restore": {
+    id: "full-restore",
+    name: "Full Restore",
+    kind: "full-restore",
+    target: "ally",
+  },
+  "full-heal": {
+    id: "full-heal",
+    name: "Full Heal",
+    kind: "cure",
+    target: "ally",
+    cures: ["poison", "paralysis", "burn", "sleep"],
+  },
+  revive: {
+    id: "revive",
+    name: "Revive",
+    kind: "revive",
+    target: "fainted-ally",
+    restore: 0.5,
+  },
+  "max-revive": {
+    id: "max-revive",
+    name: "Max Revive",
+    kind: "revive",
+    target: "fainted-ally",
+    restore: 1,
   },
 } satisfies Record<DuelItemId, DuelItem>;
 
@@ -4600,6 +4647,27 @@ export function getReachableCells(
   ).cells;
 }
 
+/** Nearest free cell (up to 4 tiles away) where a revived Pokémon can stand; its own last cell first. */
+function findReviveTile(state: DuelState, target: DuelUnit): DuelPoint | null {
+  const blocked = new Set(state.blocked.map(pointKey));
+  const occupied = new Set(
+    state.units
+      .filter((unit) => unit.hp > 0 && unit.id !== target.id)
+      .map((unit) => pointKey(unit.position)),
+  );
+  let best: { point: DuelPoint; distance: number } | null = null;
+  for (let y = 0; y < state.height; y += 1) {
+    for (let x = 0; x < state.width; x += 1) {
+      const key = pointKey({ x, y });
+      if (blocked.has(key) || occupied.has(key)) continue;
+      const distance = manhattanDistance(target.position, { x, y });
+      if (distance > 4) continue;
+      if (!best || distance < best.distance) best = { point: { x, y }, distance };
+    }
+  }
+  return best?.point ?? null;
+}
+
 function sideHasLivingUnit(
   state: DuelState,
   side: DuelSide,
@@ -5817,7 +5885,7 @@ export function applyDuelAction(
       actor.side === "player"
         ? state.items
         : state.rivalItems;
-    if (!item || !target || target.hp <= 0) {
+    if (!item || !target || (item.kind !== "revive" && target.hp <= 0)) {
       return { state: input, accepted: false, reason: "invalid-item-target" };
     }
     if ((actorItems[item.id] ?? 0) <= 0) {
@@ -5833,7 +5901,8 @@ export function applyDuelAction(
           reason: eligibility.reason ?? "capture-not-allowed",
         };
       }
-      if (actor.ap < POKE_BALL_AP_COST) {
+      const ballCost = itemApCost(item.id);
+      if (actor.ap < ballCost) {
         return { state: input, accepted: false, reason: "not-enough-ap" };
       }
       const species = target.species as WildSpeciesId;
@@ -5861,7 +5930,7 @@ export function applyDuelAction(
       random();
       const resolution = resolveCaptureRoll(random(), chance);
       target.captureAttempted = true;
-      actor.ap -= POKE_BALL_AP_COST;
+      actor.ap -= ballCost;
       actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
       if (resolution.success) {
         state.captures.push({
@@ -5908,39 +5977,11 @@ export function applyDuelAction(
     if (target.side !== actor.side) {
       return { state: input, accepted: false, reason: "invalid-item-target" };
     }
-    if (actor.ap < ITEM_AP_COST) {
+    const itemCost = itemApCost(item.id);
+    if (actor.ap < itemCost) {
       return { state: input, accepted: false, reason: "not-enough-ap" };
     }
-    if (item.kind === "cure") {
-      if (!target.status || !(item.cures as readonly string[]).includes(target.status)) {
-        return { state: input, accepted: false, reason: "target-no-status" };
-      }
-      target.status = null;
-      target.sleepTurnsRemaining = 0;
-      actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
-      actor.ap -= ITEM_AP_COST;
-      appendLog(state, "{target} was healed with {item}.", { target: target.displayName, item: item.name });
-      return {
-        state,
-        accepted: true,
-        presentation: {
-          kind: "item",
-          actorId: actor.id,
-          itemId: item.id,
-          targetIds: [target.id],
-          healed: 0,
-        },
-      };
-    }
-    if (target.hp >= target.maxHp) {
-      return { state: input, accepted: false, reason: "target-full-hp" };
-    }
-    const healed = Math.min(item.heal, target.maxHp - target.hp);
-    target.hp += healed;
-    actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
-    actor.ap -= ITEM_AP_COST;
-    appendLog(state, "{target} recovered {n} HP with {item}.", { target: target.displayName, n: healed, item: item.name });
-    return {
+    const itemResult = (healed: number): DuelActionResult => ({
       state,
       accepted: true,
       presentation: {
@@ -5950,7 +5991,64 @@ export function applyDuelAction(
         targetIds: [target.id],
         healed,
       },
-    };
+    });
+
+    if (item.kind === "revive") {
+      if (target.hp > 0 || target.captured) {
+        return { state: input, accepted: false, reason: "target-not-fainted" };
+      }
+      const spot = findReviveTile(state, target);
+      if (!spot) {
+        return { state: input, accepted: false, reason: "no-room-to-revive" };
+      }
+      const restored = Math.max(1, Math.ceil(target.maxHp * item.restore));
+      target.hp = restored;
+      target.status = null;
+      target.sleepTurnsRemaining = 0;
+      target.position = spot;
+      // It rejoins the turn order and acts with a fresh AP pool on its own turn.
+      target.ap = 0;
+      actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
+      actor.ap -= itemCost;
+      appendLog(state, "{target} was revived with {item}!", { target: target.displayName, item: item.name });
+      return itemResult(restored);
+    }
+    if (item.kind === "full-restore") {
+      if (target.hp >= target.maxHp && !target.status) {
+        return { state: input, accepted: false, reason: "target-full-hp" };
+      }
+      const healed = target.maxHp - target.hp;
+      target.hp = target.maxHp;
+      target.status = null;
+      target.sleepTurnsRemaining = 0;
+      actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
+      actor.ap -= itemCost;
+      appendLog(state, "{target} was fully restored with {item}.", { target: target.displayName, item: item.name });
+      return itemResult(healed);
+    }
+    if (item.kind === "cure") {
+      if (!target.status || !(item.cures as readonly string[]).includes(target.status)) {
+        return { state: input, accepted: false, reason: "target-no-status" };
+      }
+      target.status = null;
+      target.sleepTurnsRemaining = 0;
+      actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
+      actor.ap -= itemCost;
+      appendLog(state, "{target} was healed with {item}.", { target: target.displayName, item: item.name });
+      return itemResult(0);
+    }
+    if (item.kind !== "heal") {
+      return { state: input, accepted: false, reason: "invalid-item-target" };
+    }
+    if (target.hp >= target.maxHp) {
+      return { state: input, accepted: false, reason: "target-full-hp" };
+    }
+    const healed = Math.min(item.heal, target.maxHp - target.hp);
+    target.hp += healed;
+    actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
+    actor.ap -= itemCost;
+    appendLog(state, "{target} recovered {n} HP with {item}.", { target: target.displayName, n: healed, item: item.name });
+    return itemResult(healed);
   }
 
   if (action.kind === "move") {
@@ -8112,7 +8210,7 @@ function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null 
   if (ranked.length === 0) return null;
 
   const primary = ranked[0];
-  const canThrow = actor.ap >= POKE_BALL_AP_COST;
+  const canThrow = actor.ap >= Math.min(...balls.map((ball) => itemApCost(ball.id)));
   const throwAt = (entry: (typeof ranked)[number]): AutoCatchPlan => ({
     kind: "action",
     action: {
@@ -8196,7 +8294,7 @@ function chooseAiItemAction(
   if (
     !options.useItems ||
     (actorItems.potion ?? 0) <= 0 ||
-    actor.ap < ITEM_AP_COST
+    actor.ap < itemApCost("potion")
   ) {
     return null;
   }

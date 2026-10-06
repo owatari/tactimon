@@ -384,6 +384,11 @@ const BATTLE_BAG_ITEM_IDS = [
   "great-ball",
   "ultra-ball",
   "master-ball",
+  "max-potion",
+  "full-restore",
+  "full-heal",
+  "revive",
+  "max-revive",
 ] as const;
 
 /** Battle bag = engine inventory + usable Bag items. */

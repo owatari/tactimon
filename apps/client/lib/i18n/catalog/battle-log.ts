@@ -464,4 +464,16 @@ export const battleLogCatalog: Catalog = {
     fr: "{n} Pokémon sauvages encerclent votre équipe !",
     zh: "{n}只野生宝可梦包围了你的队伍！",
   },
+  "{target} was revived with {item}!": {
+    pt: "{target} foi revivido com {item}!",
+    es: "¡{target} ha revivido con {item}!",
+    fr: "{target} a été ranimé avec {item} !",
+    zh: "{target}用{item}复活了！",
+  },
+  "{target} was fully restored with {item}.": {
+    pt: "{target} foi totalmente restaurado com {item}.",
+    es: "{target} se ha restaurado por completo con {item}.",
+    fr: "{target} a été complètement soigné avec {item}.",
+    zh: "{target}用{item}完全恢复了。",
+  },
 };
