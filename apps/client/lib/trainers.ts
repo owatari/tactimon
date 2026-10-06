@@ -59,36 +59,6 @@ export type OverworldTrainerInstance =
 
 const HAND_OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
   {
-    id: "viridian-youngster",
-    mapId: "viridian-city",
-    name: "Youngster",
-    preferredPosition: { x: 23, y: 34 },
-    facing: "south",
-    sightRange: 5,
-    spriteUrl: "/game-assets/overworld/018_youngster.png",
-    frameWidth: 16,
-    frameHeight: 32,
-    sheetWidth: 96,
-    sheetHeight: 64,
-    challengeText:
-      "Youngster: Ei! Vamos ver como o seu time luta!",
-    defeatedText:
-      "Youngster: Seu time é forte. Vou treinar mais.",
-    moneyMultiplier: 4,
-    party: [
-      {
-        species: "pidgey",
-        level: 4,
-        moves: ["tackle", "growl"],
-      },
-      {
-        species: "rattata",
-        level: 4,
-        moves: ["tackle", "tail-whip"],
-      },
-    ],
-  },
-  {
     id: "pewter-brock",
     mapId: "pewter-gym",
     name: "Brock",
