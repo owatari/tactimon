@@ -174,7 +174,6 @@ def get_move(move_id):
 
 evolves_to = {e["to"] for s in species.values() for e in s["evolutions"]}
 GROWTH = {"medium-fast": "medium-fast", "medium-slow": "medium-slow", "fast": "fast", "slow": "slow", "erratic": "medium-fast", "fluctuating": "slow"}
-STATS = ["hp", "attack", "defense", "speed", "specialAttack", "specialDefense"]
 
 
 def display_name(sid):
@@ -182,7 +181,7 @@ def display_name(sid):
     return special.get(sid, "-".join(p.capitalize() for p in sid.split("-")).replace("-", " "))
 
 
-out_species, out_learn, out_ev, out_init, out_exp, out_growth, out_catch, out_evo = {}, {}, {}, {}, {}, {}, {}, {}
+out_species, out_learn, out_init, out_exp, out_growth, out_catch, out_evo = {}, {}, {}, {}, {}, {}, {}
 for sid in NEW:
     s = species[sid]
     learn = []
@@ -207,13 +206,6 @@ for sid in NEW:
         "moves": initial,
     }
     out_learn[sid] = learn
-    cycle = []
-    for stat in STATS:
-        cycle += [stat] * s["evYield"][stat]
-    cycle = (cycle or ["hp"])
-    while len(cycle) < 6:
-        cycle = cycle + cycle
-    out_ev[sid] = cycle[:6]
     out_init[sid] = initial
     out_exp[sid] = s["baseExp"]
     out_growth[sid] = GROWTH[s["growthRate"]]
@@ -249,7 +241,6 @@ lines = [
 ]
 lines.append("export const GENERATED_SPECIES = %s;" % json.dumps(out_species, ensure_ascii=False, indent=2))
 lines.append("export const GENERATED_LEARNSETS = %s;" % json.dumps(out_learn, ensure_ascii=False))
-lines.append("export const GENERATED_AUTO_EV_CYCLES = %s;" % json.dumps(out_ev))
 lines.append("export const GENERATED_INITIAL_MOVES = %s;" % json.dumps(out_init))
 lines.append("export const GENERATED_BASE_EXPERIENCE = %s;" % json.dumps(out_exp))
 lines.append("export const GENERATED_GROWTH_RATE = %s;" % json.dumps(out_growth))

@@ -1,5 +1,4 @@
 import {
-  GENERATED_AUTO_EV_CYCLES,
   GENERATED_BASE_EXPERIENCE,
   GENERATED_GROWTH_RATE,
   GENERATED_INITIAL_MOVES,
@@ -22,6 +21,7 @@ import {
   type StarterSpeciesId,
   type WildSpeciesId,
 } from "./duel";
+import { GENERATED_EV_YIELD } from "./generated/evYield";
 import {
   isNatureId,
   normalizeIvs,
@@ -530,387 +530,6 @@ const ZERO_EVS: EvSpread = {
   speed: 0,
 };
 
-const HAND_AUTO_EV_CYCLES: Record<Exclude<DuelSpeciesId, GeneratedSpeciesId>, EvStat[]> = {
-  bulbasaur: [
-    "hp",
-    "specialAttack",
-    "hp",
-    "specialAttack",
-    "defense",
-    "speed",
-  ],
-  charmander: [
-    "speed",
-    "specialAttack",
-    "attack",
-    "speed",
-    "specialAttack",
-    "attack",
-  ],
-  squirtle: [
-    "defense",
-    "hp",
-    "specialDefense",
-    "defense",
-    "hp",
-    "specialDefense",
-  ],
-  pidgey: [
-    "speed",
-    "attack",
-    "speed",
-    "specialDefense",
-    "speed",
-    "attack",
-  ],
-  pidgeotto: [
-    "speed",
-    "speed",
-    "attack",
-    "speed",
-    "specialDefense",
-    "speed",
-  ],
-  abra: [
-    "specialAttack",
-    "speed",
-    "specialAttack",
-    "speed",
-    "specialDefense",
-    "specialAttack",
-  ],
-  meowth: [
-    "speed",
-    "attack",
-    "speed",
-    "specialDefense",
-    "speed",
-    "attack",
-  ],
-  oddish: [
-    "specialAttack",
-    "specialDefense",
-    "specialAttack",
-    "hp",
-    "specialAttack",
-    "defense",
-  ],
-  bellsprout: [
-    "attack",
-    "specialAttack",
-    "attack",
-    "speed",
-    "attack",
-    "specialAttack",
-  ],
-  rattata: [
-    "speed",
-    "attack",
-    "speed",
-    "attack",
-    "speed",
-    "defense",
-  ],
-  caterpie: [
-    "hp",
-    "hp",
-    "defense",
-    "hp",
-    "specialDefense",
-    "hp",
-  ],
-  weedle: [
-    "speed",
-    "speed",
-    "attack",
-    "speed",
-    "defense",
-    "speed",
-  ],
-  spearow: [
-    "speed",
-    "attack",
-    "speed",
-    "attack",
-    "speed",
-    "specialDefense",
-  ],
-  mankey: [
-    "attack",
-    "speed",
-    "attack",
-    "defense",
-    "attack",
-    "speed",
-  ],
-  machop: [
-    "attack",
-    "hp",
-    "attack",
-    "defense",
-    "attack",
-    "hp",
-  ],
-  slowpoke: [
-    "hp",
-    "defense",
-    "hp",
-    "specialAttack",
-    "hp",
-    "specialDefense",
-  ],
-  drowzee: [
-    "specialDefense",
-    "hp",
-    "specialDefense",
-    "specialAttack",
-    "specialDefense",
-    "speed",
-  ],
-  butterfree: [
-    "specialAttack",
-    "specialDefense",
-    "specialAttack",
-    "speed",
-    "specialAttack",
-    "specialDefense",
-  ],
-  raticate: [
-    "speed",
-    "speed",
-    "attack",
-    "speed",
-    "attack",
-    "speed",
-  ],
-  wartortle: [
-    "defense",
-    "specialDefense",
-    "defense",
-    "hp",
-    "specialDefense",
-    "defense",
-  ],
-  ivysaur: [
-    "specialAttack",
-    "specialDefense",
-    "specialAttack",
-    "defense",
-    "specialDefense",
-    "specialAttack",
-  ],
-  charmeleon: [
-    "speed",
-    "specialAttack",
-    "speed",
-    "attack",
-    "specialAttack",
-    "speed",
-  ],
-  kadabra: [
-    "specialAttack",
-    "specialAttack",
-    "speed",
-    "specialAttack",
-    "specialDefense",
-    "specialAttack",
-  ],
-  metapod: [
-    "defense",
-    "defense",
-    "hp",
-    "defense",
-    "specialDefense",
-    "defense",
-  ],
-  kakuna: [
-    "defense",
-    "defense",
-    "hp",
-    "defense",
-    "specialDefense",
-    "defense",
-  ],
-  pikachu: [
-    "speed",
-    "speed",
-    "specialAttack",
-    "speed",
-    "attack",
-    "speed",
-  ],
-  raichu: [
-    "speed",
-    "speed",
-    "specialAttack",
-    "speed",
-    "attack",
-    "speed",
-  ],
-  ekans: [
-    "attack",
-    "speed",
-    "attack",
-    "specialDefense",
-    "attack",
-    "speed",
-  ],
-  "nidoran-f": [
-    "hp",
-    "defense",
-    "hp",
-    "defense",
-    "specialDefense",
-    "hp",
-  ],
-  "nidoran-m": [
-    "attack",
-    "speed",
-    "attack",
-    "speed",
-    "defense",
-    "attack",
-  ],
-  jigglypuff: [
-    "hp",
-    "hp",
-    "hp",
-    "specialAttack",
-    "hp",
-    "specialDefense",
-  ],
-  zubat: ["speed", "speed", "attack", "speed", "specialDefense", "speed"],
-  paras: ["attack", "defense", "attack", "specialDefense", "attack", "hp"],
-  parasect: ["attack", "defense", "attack", "specialDefense", "attack", "defense"],
-  clefairy: ["hp", "specialDefense", "hp", "specialAttack", "hp", "defense"],
-  sandshrew: [
-    "defense",
-    "attack",
-    "defense",
-    "attack",
-    "defense",
-    "hp",
-  ],
-  grimer: [
-    "hp",
-    "attack",
-    "hp",
-    "defense",
-    "attack",
-    "hp",
-  ],
-  voltorb: [
-    "speed",
-    "specialAttack",
-    "speed",
-    "specialDefense",
-    "speed",
-    "defense",
-  ],
-  magnemite: [
-    "specialAttack",
-    "defense",
-    "specialAttack",
-    "specialDefense",
-    "specialAttack",
-    "defense",
-  ],
-  koffing: [
-    "defense",
-    "specialAttack",
-    "defense",
-    "attack",
-    "defense",
-    "hp",
-  ],
-  geodude: [
-    "defense",
-    "attack",
-    "defense",
-    "hp",
-    "defense",
-    "attack",
-  ],
-  onix: [
-    "defense",
-    "speed",
-    "defense",
-    "hp",
-    "defense",
-    "speed",
-  ],
-  horsea: [
-    "specialAttack",
-    "specialAttack",
-    "speed",
-    "specialAttack",
-    "defense",
-    "specialAttack",
-  ],
-  tentacool: [
-    "specialDefense",
-    "specialDefense",
-    "speed",
-    "specialAttack",
-    "specialDefense",
-    "hp",
-  ],
-  ponyta: [
-    "attack",
-    "speed",
-    "attack",
-    "speed",
-    "specialAttack",
-    "attack",
-  ],
-  shellder: [
-    "defense",
-    "defense",
-    "attack",
-    "defense",
-    "hp",
-    "defense",
-  ],
-  goldeen: [
-    "attack",
-    "speed",
-    "attack",
-    "specialDefense",
-    "attack",
-    "speed",
-  ],
-  staryu: [
-    "speed",
-    "specialAttack",
-    "speed",
-    "specialAttack",
-    "defense",
-    "speed",
-  ],
-  starmie: [
-    "speed",
-    "speed",
-    "specialAttack",
-    "speed",
-    "specialAttack",
-    "speed",
-  ],
-  pidgeot: ["speed", "attack", "speed", "attack", "speed", "specialAttack"],
-  rhyhorn: ["defense", "attack", "hp", "defense", "attack", "defense"],
-  growlithe: ["speed", "attack", "specialAttack", "speed", "attack", "specialAttack"],
-  exeggcute: ["defense", "specialAttack", "hp", "defense", "specialAttack", "defense"],
-  gyarados: ["attack", "specialDefense", "attack", "speed", "attack", "specialDefense"],
-  alakazam: ["specialAttack", "speed", "specialAttack", "speed", "specialDefense", "specialAttack"],
-  blastoise: ["defense", "specialDefense", "hp", "defense", "specialDefense", "defense"],
-  venusaur: ["specialAttack", "specialDefense", "hp", "specialAttack", "specialDefense", "defense"],
-  charizard: ["specialAttack", "speed", "specialAttack", "speed", "attack", "specialAttack"],
-};
-
-const AUTO_EV_CYCLES: Record<DuelSpeciesId, EvStat[]> = {
-  ...HAND_AUTO_EV_CYCLES,
-  ...(GENERATED_AUTO_EV_CYCLES as Record<GeneratedSpeciesId, EvStat[]>),
-};
-
 const HAND_INITIAL_MOVES: Record<Exclude<DuelSpeciesId, GeneratedSpeciesId>, DuelMoveId[]> = {
   bulbasaur: ["tackle", "growl"],
   charmander: ["scratch", "growl"],
@@ -1131,7 +750,9 @@ export const STARTER_GROWTH_RATE: Record<
 
 const MAX_EV_PER_STAT = 252;
 const MAX_TOTAL_EV = 510;
-const EV_PER_LEVEL = 6;
+const VITAMIN_EV_AMOUNT = 10;
+/** Vitamins stop working once a stat has this many EVs (Gen III). */
+export const VITAMIN_EV_CAP = 100;
 
 function boundedLevel(level: number): number {
   return Math.max(1, Math.min(100, Math.trunc(level)));
@@ -1410,42 +1031,32 @@ function emptyEvDelta(): EvSpread {
   return { ...ZERO_EVS };
 }
 
-function grantAutoEv(
-  progression: PokemonProgression,
-  points: number,
-): {
-  evs: EvSpread;
-  gained: EvSpread;
-} {
-  const evs = { ...progression.evs };
+/** Gen III EV yield of a defeated species (what every participant receives). */
+export function evYieldFor(species: DuelSpeciesId): Partial<EvSpread> {
+  return GENERATED_EV_YIELD[species] ?? {};
+}
+
+/**
+ * Adds EVs the way the cartridge does: each stat is capped at 252 and the whole spread at 510.
+ * `statCap` lowers the per-stat cap (vitamins stop at 100).
+ */
+export function addEvs(
+  current: EvSpread,
+  gain: Partial<EvSpread>,
+  statCap = MAX_EV_PER_STAT,
+): { evs: EvSpread; gained: EvSpread } {
+  const evs = { ...current };
   const gained = emptyEvDelta();
-  const cycle = AUTO_EV_CYCLES[progression.species];
-  let cursor = totalEv(evs);
 
-  for (let awarded = 0; awarded < points; awarded += 1) {
-    if (totalEv(evs) >= MAX_TOTAL_EV) {
-      break;
-    }
-
-    let assigned = false;
-
-    for (let attempt = 0; attempt < cycle.length; attempt += 1) {
-      const stat = cycle[(cursor + attempt) % cycle.length];
-
-      if (evs[stat] >= MAX_EV_PER_STAT) {
-        continue;
-      }
-
-      evs[stat] += 1;
-      gained[stat] += 1;
-      cursor += attempt + 1;
-      assigned = true;
-      break;
-    }
-
-    if (!assigned) {
-      break;
-    }
+  for (const stat of Object.keys(evs) as EvStat[]) {
+    const wanted = Math.max(0, Math.trunc(gain[stat] ?? 0));
+    const room = Math.min(
+      statCap - evs[stat],
+      MAX_TOTAL_EV - totalEv(evs),
+    );
+    const added = Math.max(0, Math.min(wanted, room));
+    evs[stat] += added;
+    gained[stat] += added;
   }
 
   return { evs, gained };
@@ -1463,6 +1074,7 @@ function movesLearnedAtLevel(
 function grantExperience(
   input: PokemonProgression,
   requestedXp: number,
+  evYield: Partial<EvSpread> = {},
 ): ProgressionReward {
   const progression = normalizePokemonProgression(input);
   const oldMaxHp = calculateDuelPokemonMaxHp(progression);
@@ -1490,7 +1102,10 @@ function grantExperience(
 
   const xpGained =
     progression.experience - experienceBefore;
-  const evGained = emptyEvDelta();
+  // FireRed: EVs are applied when the foe faints, before any level-up recalculates the stats.
+  const evAllocation = addEvs(progression.evs, evYield);
+  progression.evs = evAllocation.evs;
+  const evGained = evAllocation.gained;
   const autoLearnedMoves: DuelMoveId[] = [];
   const pendingMoves: DuelMoveId[] = [];
 
@@ -1507,16 +1122,6 @@ function grantExperience(
       progression,
       evolutions,
     );
-
-    const allocation = grantAutoEv(
-      progression,
-      EV_PER_LEVEL,
-    );
-    progression.evs = allocation.evs;
-
-    for (const stat of Object.keys(evGained) as EvStat[]) {
-      evGained[stat] += allocation.gained[stat];
-    }
 
     for (const moveId of movesLearnedAtLevel(
       progression.species,
@@ -1623,6 +1228,8 @@ export function grantWildBattleProgress(
   enemy: {
     species: WildSpeciesId;
     level: number;
+    /** false for a captured Pokémon: nothing fainted, so no EVs. */
+    evYield?: boolean;
   },
   xpRatio = 1,
 ): ProgressionReward {
@@ -1636,6 +1243,7 @@ export function grantWildBattleProgress(
   return grantExperience(
     input,
     requestedXp,
+    enemy.evYield === false ? {} : evYieldFor(enemy.species),
   );
 }
 
@@ -1644,6 +1252,7 @@ export function grantWildBattleProgressToParty(
   enemy: {
     species: WildSpeciesId;
     level: number;
+    evYield?: boolean;
   },
   xpRatio = 1,
 ): ProgressionReward[] {
@@ -1669,6 +1278,8 @@ export function grantWildBattlesProgressToParty(
     species: WildSpeciesId;
     level: number;
     xpRatio?: number;
+    /** false for a captured Pokémon: nothing fainted, so no EVs. */
+    evYield?: boolean;
   }[],
   defaultXpRatio = 1,
 ): ProgressionReward[] {
@@ -1708,10 +1319,17 @@ export function grantWildBattlesProgressToParty(
     totalXp / party.length,
   );
 
+  const evYield = sumEvYield(
+    enemies
+      .filter((enemy) => enemy.evYield !== false)
+      .map((enemy) => enemy.species),
+  );
+
   return party.map((progression) =>
     grantExperience(
       progression,
       xpPerParticipant,
+      evYield,
     ),
   );
 }
@@ -1738,14 +1356,60 @@ export function grantTrainerBattleProgressToParty(
     0,
   );
 
+  const evYield = sumEvYield(enemies.map((enemy) => enemy.species));
+
   return party.map((progression) =>
     grantExperience(
       progression,
       xpPerParticipant,
+      evYield,
     ),
   );
 }
 
+/** Every participant receives the full yield of each defeated foe (not split like EXP). */
+function sumEvYield(species: readonly DuelSpeciesId[]): EvSpread {
+  const total = emptyEvDelta();
+  for (const id of species) {
+    const yields = evYieldFor(id);
+    for (const stat of Object.keys(total) as EvStat[]) {
+      total[stat] += yields[stat] ?? 0;
+    }
+  }
+  return total;
+}
+
+/**
+ * Vitamins (HP Up, Protein, Iron, Calcium, Zinc, Carbos): +10 EVs, but no effect once the stat has 100
+ * EVs or the 510 total is reached. HP Up raises max HP, and current HP rises with it.
+ */
+export function grantVitamin(
+  input: PokemonProgression,
+  stat: EvStat,
+): PokemonProgression | null {
+  const progression = normalizePokemonProgression(input);
+  const allocation = addEvs(
+    progression.evs,
+    { [stat]: VITAMIN_EV_AMOUNT },
+    VITAMIN_EV_CAP,
+  );
+  if (allocation.gained[stat] <= 0) {
+    return null;
+  }
+
+  const oldMaxHp = calculateDuelPokemonMaxHp(progression);
+  progression.evs = allocation.evs;
+  const newMaxHp = calculateDuelPokemonMaxHp(progression);
+  progression.currentHp =
+    progression.currentHp <= 0
+      ? 0
+      : Math.min(
+          newMaxHp,
+          progression.currentHp + Math.max(0, newMaxHp - oldMaxHp),
+        );
+
+  return progression;
+}
 
 export function resolveMoveLearning(
   input: PokemonProgression,

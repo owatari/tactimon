@@ -188,7 +188,7 @@ describe("pokemon progression", () => {
     expect(xp.required).toBe(44);
   });
 
-  it("gains levels and EV from repeated Route 1 wild victories", () => {
+  it("gains levels, and the defeated species' EV yield, from repeated Route 1 wild victories", () => {
     let progression = createStarterProgression("charmander");
 
     const first = grantWildBattleProgress(progression, {
@@ -208,12 +208,9 @@ describe("pokemon progression", () => {
 
     expect(second.xpGained).toBe(32);
     expect(second.newLevel).toBe(6);
-    expect(
-      Object.values(second.evGained).reduce(
-        (sum, value) => sum + value,
-        0,
-      ),
-    ).toBe(6);
+    // FireRed: Rattata yields 1 Speed EV; levelling up no longer hands out EVs.
+    expect(second.evGained).toMatchObject({ speed: 1, hp: 0, attack: 0 });
+    expect(first.evGained).toMatchObject({ speed: 1 });
 
     const third = grantWildBattleProgress(progression, {
       species: "pidgey",
