@@ -37,3 +37,4 @@
 | 2026-10-06-030-autocatch-rarity-item-ap | Auto Catch prioriza shiny/raros (captura acima da vida) + custo de AP por item (média 4; potion 4 … full restore máx.) | done | archive/2026-10 |
 | 2026-10-06-031-battle-polish-items-catch-ui-rival-ai | Itens mais caros, Revive em caídos, % de captura no hover, animação de captura completa, IA completa dos rivais, tabela de raridade | done | archive/2026-10 |
 | 2026-10-06-032-summary-single-screen | Summary do Pokémon condensado em uma tela só (info, stats/IV/EV, golpes) | done | archive/2026-10 |
+| 2026-10-06-033-gym-teams-onix-footprint-hud-card | Novos times dos líderes de ginásio, Onix 1x2 (validar footprint) e conteúdo centralizado nos cards de batalha | done | archive/2026-10 |
