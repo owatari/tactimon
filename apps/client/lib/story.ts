@@ -142,6 +142,8 @@ export type StoryState = {
   playerPokemon: PokemonProgression | null;
   capturedPokemon: CapturedPokemon[];
   boxedPokemon: CapturedPokemon[];
+  /** A freshly caught Pokémon waiting for the player to name it and pick team or box. */
+  pendingCapture?: CapturedPokemon | null;
   collectedItemIds: string[];
   defeatedTrainerIds: string[];
   badgeIds: StoryBadgeId[];
@@ -194,6 +196,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   playerPokemon: null,
   capturedPokemon: [],
   boxedPokemon: [],
+  pendingCapture: null,
   collectedItemIds: [],
   defeatedTrainerIds: [],
   badgeIds: [],
@@ -301,6 +304,7 @@ function normalizeCapturedPokemon(
     evs?: PokemonProgression["evs"];
     ivs?: PokemonProgression["ivs"];
     nature?: PokemonProgression["nature"];
+    nickname?: PokemonProgression["nickname"];
     currentHp?: unknown;
     status?: unknown;
     sleepTurnsRemaining?: unknown;
@@ -334,6 +338,7 @@ function normalizeCapturedPokemon(
     evs: candidate.evs ?? base.evs,
     ivs: candidate.ivs,
     nature: candidate.nature,
+    nickname: candidate.nickname,
     currentHp:
       typeof candidate.currentHp === "number"
         ? candidate.currentHp
@@ -531,6 +536,10 @@ export function normalizeStoryState(
           pokemon !== null,
       )
       .slice(0, POKEMON_STORAGE_CAPACITY),
+    pendingCapture: normalizeCapturedPokemon(
+      (input as { pendingCapture?: unknown } | null | undefined)
+        ?.pendingCapture,
+    ),
     collectedItemIds: Array.isArray(
       input?.collectedItemIds,
     )

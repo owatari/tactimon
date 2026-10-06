@@ -119,3 +119,27 @@ describe("stats with personality", () => {
     expect(new Set(allSame).size).toBeGreaterThan(1);
   });
 });
+
+describe("nicknames", () => {
+  it("normalizes to at most 10 visible characters and drops empty/control input", async () => {
+    const { normalizeNickname, MAX_NICKNAME_LENGTH } = await import("../src");
+    expect(MAX_NICKNAME_LENGTH).toBe(10);
+    expect(normalizeNickname("  Sparky  ")).toBe("Sparky");
+    expect(normalizeNickname("ABCDEFGHIJKLMNOP")).toBe("ABCDEFGHIJ");
+    expect(normalizeNickname("a\u0000b\nc")).toBe("abc");
+    expect(normalizeNickname("   ")).toBeUndefined();
+    expect(normalizeNickname(42)).toBeUndefined();
+  });
+
+  it("is kept by progression normalization and shown on battle units", () => {
+    const p = { ...createPokemonProgression("pikachu", 10), nickname: "Zap" };
+    expect(normalizePokemonProgression(p).nickname).toBe("Zap");
+    expect(normalizePokemonProgression({ ...p, nickname: "" }).nickname).toBeUndefined();
+    const duel = createWildDuel({
+      seed: 3, width: 9, height: 7, blocked: [],
+      players: [{ species: "pikachu", level: 10, moves: ["thunder-shock"], nickname: "Zap" }],
+      wildSpecies: "rattata", wildLevel: 4,
+    } as never);
+    expect(duel.units.find((u) => u.side === "player")?.nickname).toBe("Zap");
+  });
+});

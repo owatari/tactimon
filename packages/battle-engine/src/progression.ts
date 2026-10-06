@@ -59,6 +59,8 @@ export interface PokemonProgression {
   ivs?: IvSpread;
   /** Absent on old saves (neutral). */
   nature?: NatureId;
+  /** Player-given name (max 10 characters); absent → the species name is shown. */
+  nickname?: string;
   /** Current persistent HP. Zero means fainted. */
   currentHp: number;
   /** Persistent non-volatile status. */
@@ -897,6 +899,18 @@ export function createStarterProgression(
  * Migrates the previous Tactimon prototype save format where experience
  * stored only progress within the current level.
  */
+export const MAX_NICKNAME_LENGTH = 10;
+
+/** Trims, drops control characters, caps at 10; empty → undefined. */
+export function normalizeNickname(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const cleaned = Array.from(value.replace(/[ -]/g, "").trim())
+    .slice(0, MAX_NICKNAME_LENGTH)
+    .join("")
+    .trim();
+  return cleaned.length > 0 ? cleaned : undefined;
+}
+
 export function normalizePokemonProgression(
   input: Partial<PokemonProgression> &
     Pick<PokemonProgression, "species" | "level">,
@@ -935,6 +949,7 @@ export function normalizePokemonProgression(
   };
   const ivs = normalizeIvs(input.ivs);
   const nature = isNatureId(input.nature) ? input.nature : undefined;
+  const nickname = normalizeNickname(input.nickname);
   const maxHp = calculateDuelPokemonMaxHp({
     species: input.species,
     level,
@@ -967,6 +982,7 @@ export function normalizePokemonProgression(
     evs,
     ...(ivs ? { ivs } : {}),
     ...(nature ? { nature } : {}),
+    ...(nickname ? { nickname } : {}),
     currentHp,
     status,
     sleepTurnsRemaining: normalizeDuelSleepTurns(

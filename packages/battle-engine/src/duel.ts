@@ -273,6 +273,8 @@ export interface DuelPokemonBuild {
   ivs?: IvSpread;
   /** Omitted → neutral nature. */
   nature?: NatureId;
+  /** Player-given name shown instead of the species name. */
+  nickname?: string;
   /** Persistent HP carried between battles. Omit to start at full HP. */
   currentHp?: number;
   /** Persistent major status carried between battles. */
@@ -506,6 +508,7 @@ export interface DuelUnit {
   sleepTurnsRemaining: number;
   ivs?: IvSpread;
   nature?: NatureId;
+  nickname?: string;
   attack: number;
   defense: number;
   specialAttack: number;
@@ -3890,6 +3893,7 @@ function makeUnit(
     ),
     ...(build.ivs ? { ivs: { ...build.ivs } } : {}),
     ...(build.nature ? { nature: build.nature } : {}),
+    ...(build.nickname ? { nickname: build.nickname } : {}),
     attack: calculateOtherStat({
       base: base.attack,
       iv: build.ivs?.attack ?? DEFAULT_IV,
