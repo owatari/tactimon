@@ -1,0 +1,2 @@
+# Pedido original
+Precisamos balancear uma coisa antes de seguir para a implementação das caracteristicas mmo. O encontros wilds tão muito dificeis. Precisamos melhorar aquele range, para cada pokémon em minha equipe, se ele está no level range ou inferior do encontro selvagem da rota, spawna 0 a 1. Se ele esta no level mais alto selvagem spawnavel ou mais alto, spawna 1. Se ele está 10 niveis acima, spawna 1 a 2, se ele está 20 niveis acima, spawna 2 a 3.

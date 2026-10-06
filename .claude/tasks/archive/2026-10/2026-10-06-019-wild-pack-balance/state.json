@@ -1,0 +1,13 @@
+{
+  "id": "2026-10-06-019-wild-pack-balance",
+  "title": "Balancear tamanho dos packs selvagens por nivel da party",
+  "status": "done",
+  "created_at": "2026-10-06",
+  "base_head": "5e3e6c22",
+  "current_head": "5e3e6c22",
+  "skills": ["overworld-development", "verification", "safe-main", "task-ledger"],
+  "agents": [],
+  "files": ["apps/client/lib/wildEncounters.ts", "tests/route2.test.ts"],
+  "commits": ["3b8cce0a"],
+  "tests": ["tests/route2.test.ts"]
+}
