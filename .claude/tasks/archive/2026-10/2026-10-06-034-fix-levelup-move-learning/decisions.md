@@ -1,0 +1,3 @@
+# Decisions — 2026-10-06-034-fix-levelup-move-learning
+- CAUSA RAIZ (nao era a task 031): as listas de golpes por nivel das especies escritas a mao eram placeholders que paravam no nivel 1-13 (Pidgey so Tackle, Charmander ate o 11 com golpes de outra geracao como flame-burst). Os learnsets da ROM so existiam para as 93 especies geradas. Correcao: o gerador (tools/rom-data/generate-engine-species.py) agora emite ROM_HAND_LEARNSETS (ROM filtrada pelos golpes implementados; 30 golpes novos convertidos) e progression.ts usa esses learnsets. Cobertura: 77% das entradas de learnset da ROM ja existiam; as demais (116 golpes como Rest, Reflect, Protect, Thunder...) seguem fora da engine.
+- Saves antigos: nao ha retroativo; Pokemon aprendem os golpes nos proximos niveis.
