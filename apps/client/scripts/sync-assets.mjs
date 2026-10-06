@@ -1186,6 +1186,26 @@ try {
   );
 }
 
+await mkdir(resolve(fireRedPublicRoot, "trainers/front"), { recursive: true });
+await copyFile(
+  resolve(sourceRoot, "trainers/front/135_red.png"),
+  resolve(fireRedPublicRoot, "trainers/front/red.png"),
+);
+
+const gbaUiSource = resolve(sourceRoot, "gba-ui");
+
+try {
+  await access(resolve(gbaUiSource, "index.json"));
+  await cp(gbaUiSource, resolve(publicRoot, "gba-ui"), {
+    recursive: true,
+  });
+  console.log("synced FireRed GBA UI assets (tiles, tilemaps, palettes, fonts)");
+} catch {
+  console.warn(
+    "optional GBA UI assets missing: run tools/asset-extractor/convert_ui.py",
+  );
+}
+
 const fireRedMusicRuntime = resolve(
   repoRoot,
   "local-assets/extracted/firered/music/runtime",

@@ -8,6 +8,11 @@ export type PokedexRomEntry = {
   pages: readonly (readonly string[])[];
   /** file under /game-assets/firered/pokemon/front/normal/ */
   sprite: string | null;
+  /** Size-comparison affine scale (256 = 1.0) and vertical offset for the Pokemon and the trainer silhouette. */
+  monScale: number;
+  monOffset: number;
+  trainerScale: number;
+  trainerOffset: number;
 };
 export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
  "bulbasaur": {
@@ -21,7 +26,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "The seed slowly grows larger."
    ]
   ],
-  "sprite": "0001_bulbasaur.png"
+  "sprite": "0001_bulbasaur.png",
+  "monScale": 356,
+  "monOffset": 16,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "ivysaur": {
   "category": "SEED",
@@ -34,7 +43,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "to blossom into a large flower."
    ]
   ],
-  "sprite": "0002_ivysaur.png"
+  "sprite": "0002_ivysaur.png",
+  "monScale": 332,
+  "monOffset": 11,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "venusaur": {
   "category": "SEED",
@@ -47,7 +60,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "a battle."
    ]
   ],
-  "sprite": "0003_venusaur.png"
+  "sprite": "0003_venusaur.png",
+  "monScale": 256,
+  "monOffset": 1,
+  "trainerScale": 375,
+  "trainerOffset": 6
  },
  "charmander": {
   "category": "LIZARD",
@@ -60,7 +77,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "if the flame were to go out."
    ]
   ],
-  "sprite": "0004_charmander.png"
+  "sprite": "0004_charmander.png",
+  "monScale": 410,
+  "monOffset": 16,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "charmeleon": {
   "category": "FLAME",
@@ -73,7 +94,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "opponent with sharp claws."
    ]
   ],
-  "sprite": "0005_charmeleon.png"
+  "sprite": "0005_charmeleon.png",
+  "monScale": 294,
+  "monOffset": 8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "charizard": {
   "category": "FLAME",
@@ -86,7 +111,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "fire at very high temperatures."
    ]
   ],
-  "sprite": "0006_charizard.png"
+  "sprite": "0006_charizard.png",
+  "monScale": 271,
+  "monOffset": 0,
+  "trainerScale": 317,
+  "trainerOffset": 3
  },
  "squirtle": {
   "category": "TINY TURTLE",
@@ -99,7 +128,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "force."
    ]
   ],
-  "sprite": "0007_squirtle.png"
+  "sprite": "0007_squirtle.png",
+  "monScale": 412,
+  "monOffset": 16,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "wartortle": {
   "category": "TURTLE",
@@ -112,7 +145,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "longevity."
    ]
   ],
-  "sprite": "0008_wartortle.png"
+  "sprite": "0008_wartortle.png",
+  "monScale": 334,
+  "monOffset": 9,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "blastoise": {
   "category": "SHELLFISH",
@@ -125,7 +162,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "withdraw inside its shell."
    ]
   ],
-  "sprite": "0009_blastoise.png"
+  "sprite": "0009_blastoise.png",
+  "monScale": 256,
+  "monOffset": 1,
+  "trainerScale": 329,
+  "trainerOffset": 3
  },
  "caterpie": {
   "category": "WORM",
@@ -138,7 +179,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "with silk, and becomes a cocoon."
    ]
   ],
-  "sprite": "0010_caterpie.png"
+  "sprite": "0010_caterpie.png",
+  "monScale": 549,
+  "monOffset": 20,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "metapod": {
   "category": "COCOON",
@@ -151,7 +196,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "It can't withstand a harsh attack."
    ]
   ],
-  "sprite": "0011_metapod.png"
+  "sprite": "0011_metapod.png",
+  "monScale": 350,
+  "monOffset": 18,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "butterfree": {
   "category": "BUTTERFLY",
@@ -164,7 +213,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "about even in rain."
    ]
   ],
-  "sprite": "0012_butterfree.png"
+  "sprite": "0012_butterfree.png",
+  "monScale": 312,
+  "monOffset": 2,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "weedle": {
   "category": "HAIRY BUG",
@@ -177,7 +230,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "inches on top of its head."
    ]
   ],
-  "sprite": "0013_weedle.png"
+  "sprite": "0013_weedle.png",
+  "monScale": 455,
+  "monOffset": 19,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "kakuna": {
   "category": "COCOON",
@@ -190,7 +247,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "completely unable to move on its own."
    ]
   ],
-  "sprite": "0014_kakuna.png"
+  "sprite": "0014_kakuna.png",
+  "monScale": 424,
+  "monOffset": 14,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "beedrill": {
   "category": "POISON BEE",
@@ -203,7 +264,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "toxic stinger on its rear."
    ]
   ],
-  "sprite": "0015_beedrill.png"
+  "sprite": "0015_beedrill.png",
+  "monScale": 366,
+  "monOffset": 2,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "pidgey": {
   "category": "TINY BIRD",
@@ -216,7 +281,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "such as small bugs."
    ]
   ],
-  "sprite": "0016_pidgey.png"
+  "sprite": "0016_pidgey.png",
+  "monScale": 492,
+  "monOffset": 18,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "pidgeotto": {
   "category": "BIRD",
@@ -229,7 +298,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "to its nest over 60 miles away."
    ]
   ],
-  "sprite": "0017_pidgeotto.png"
+  "sprite": "0017_pidgeotto.png",
+  "monScale": 334,
+  "monOffset": 11,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "pidgeot": {
   "category": "BIRD",
@@ -242,7 +315,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "skies at Mach-2 speed."
    ]
   ],
-  "sprite": "0018_pidgeot.png"
+  "sprite": "0018_pidgeot.png",
+  "monScale": 269,
+  "monOffset": -2,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "rattata": {
   "category": "MOUSE",
@@ -255,7 +332,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "hard things to whittle them down."
    ]
   ],
-  "sprite": "0019_rattata.png"
+  "sprite": "0019_rattata.png",
+  "monScale": 481,
+  "monOffset": 18,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "raticate": {
   "category": "MOUSE",
@@ -268,7 +349,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "across rivers."
    ]
   ],
-  "sprite": "0020_raticate.png"
+  "sprite": "0020_raticate.png",
+  "monScale": 401,
+  "monOffset": 14,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "spearow": {
   "category": "TINY BIRD",
@@ -281,7 +366,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "foe that uses MIRROR MOVE."
    ]
   ],
-  "sprite": "0021_spearow.png"
+  "sprite": "0021_spearow.png",
+  "monScale": 571,
+  "monOffset": 19,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "fearow": {
   "category": "BEAK",
@@ -294,7 +383,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "whole day without landing."
    ]
   ],
-  "sprite": "0022_fearow.png"
+  "sprite": "0022_fearow.png",
+  "monScale": 282,
+  "monOffset": -1,
+  "trainerScale": 272,
+  "trainerOffset": -2
  },
  "ekans": {
   "category": "SNAKE",
@@ -307,7 +400,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "danger in its surroundings."
    ]
   ],
-  "sprite": "0023_ekans.png"
+  "sprite": "0023_ekans.png",
+  "monScale": 298,
+  "monOffset": 13,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "arbok": {
   "category": "COBRA",
@@ -320,7 +417,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "at the sight of the pattern."
    ]
   ],
-  "sprite": "0024_arbok.png"
+  "sprite": "0024_arbok.png",
+  "monScale": 256,
+  "monOffset": 0,
+  "trainerScale": 296,
+  "trainerOffset": 1
  },
  "pikachu": {
   "category": "MOUSE",
@@ -333,7 +434,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "charges from the sacs."
    ]
   ],
-  "sprite": "0025_pikachu.png"
+  "sprite": "0025_pikachu.png",
+  "monScale": 479,
+  "monOffset": 16,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "raichu": {
   "category": "MOUSE",
@@ -346,7 +451,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "even an Indian elephant to faint."
    ]
   ],
-  "sprite": "0026_raichu.png"
+  "sprite": "0026_raichu.png",
+  "monScale": 426,
+  "monOffset": 10,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "sandshrew": {
   "category": "MOUSE",
@@ -359,7 +468,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "ball for protection."
    ]
   ],
-  "sprite": "0027_sandshrew.png"
+  "sprite": "0027_sandshrew.png",
+  "monScale": 370,
+  "monOffset": 15,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "sandslash": {
   "category": "MOUSE",
@@ -372,7 +485,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "quickly scurrying about."
    ]
   ],
-  "sprite": "0028_sandslash.png"
+  "sprite": "0028_sandslash.png",
+  "monScale": 341,
+  "monOffset": 10,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "nidoran-f": {
   "category": "POISON PIN",
@@ -385,7 +502,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "barbs. The female has smaller horns."
    ]
   ],
-  "sprite": "0029_nidoran_f.png"
+  "sprite": "0029_nidoran_f.png",
+  "monScale": 488,
+  "monOffset": 19,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "nidorina": {
   "category": "POISON PIN",
@@ -398,7 +519,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "power to befuddle foes."
    ]
   ],
-  "sprite": "0030_nidorina.png"
+  "sprite": "0030_nidorina.png",
+  "monScale": 381,
+  "monOffset": 13,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "nidoqueen": {
   "category": "DRILL",
@@ -411,7 +536,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "the needles bristle outwards."
    ]
   ],
-  "sprite": "0031_nidoqueen.png"
+  "sprite": "0031_nidoqueen.png",
+  "monScale": 283,
+  "monOffset": 2,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "nidoran-m": {
   "category": "POISON PIN",
@@ -424,7 +553,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "It extends toxic barbs when angered."
    ]
   ],
-  "sprite": "0032_nidoran_m.png"
+  "sprite": "0032_nidoran_m.png",
+  "monScale": 480,
+  "monOffset": 17,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "nidorino": {
   "category": "POISON PIN",
@@ -437,7 +570,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "through diamond."
    ]
   ],
-  "sprite": "0033_nidorino.png"
+  "sprite": "0033_nidorino.png",
+  "monScale": 408,
+  "monOffset": 13,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "nidoking": {
   "category": "DRILL",
@@ -450,7 +587,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "the horn as it contains venom."
    ]
   ],
-  "sprite": "0034_nidoking.png"
+  "sprite": "0034_nidoking.png",
+  "monScale": 304,
+  "monOffset": 3,
+  "trainerScale": 323,
+  "trainerOffset": 2
  },
  "clefairy": {
   "category": "FAIRY",
@@ -463,7 +604,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "difficult to find."
    ]
   ],
-  "sprite": "0035_clefairy.png"
+  "sprite": "0035_clefairy.png",
+  "monScale": 425,
+  "monOffset": 18,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "clefable": {
   "category": "FAIRY",
@@ -476,7 +621,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "1,100 yards away."
    ]
   ],
-  "sprite": "0036_clefable.png"
+  "sprite": "0036_clefable.png",
+  "monScale": 256,
+  "monOffset": 3,
+  "trainerScale": 272,
+  "trainerOffset": -1
  },
  "vulpix": {
   "category": "FOX",
@@ -489,7 +638,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "sprouted."
    ]
   ],
-  "sprite": "0037_vulpix.png"
+  "sprite": "0037_vulpix.png",
+  "monScale": 497,
+  "monOffset": 18,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "ninetales": {
   "category": "FOX",
@@ -502,7 +655,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "1,000 years."
    ]
   ],
-  "sprite": "0038_ninetales.png"
+  "sprite": "0038_ninetales.png",
+  "monScale": 339,
+  "monOffset": 6,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "jigglypuff": {
   "category": "BALLOON",
@@ -515,7 +672,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "a soothing melody."
    ]
   ],
-  "sprite": "0039_jigglypuff.png"
+  "sprite": "0039_jigglypuff.png",
+  "monScale": 419,
+  "monOffset": 19,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "wigglytuff": {
   "category": "BALLOON",
@@ -528,7 +689,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "conveys an image of luxury."
    ]
   ],
-  "sprite": "0040_wigglytuff.png"
+  "sprite": "0040_wigglytuff.png",
+  "monScale": 328,
+  "monOffset": 9,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "zubat": {
   "category": "BAT",
@@ -541,7 +706,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "flit about in darkness."
    ]
   ],
-  "sprite": "0041_zubat.png"
+  "sprite": "0041_zubat.png",
+  "monScale": 355,
+  "monOffset": -4,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "golbat": {
   "category": "BAT",
@@ -554,7 +723,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "blood in one gulp."
    ]
   ],
-  "sprite": "0042_golbat.png"
+  "sprite": "0042_golbat.png",
+  "monScale": 291,
+  "monOffset": 0,
+  "trainerScale": 296,
+  "trainerOffset": 2
  },
  "oddish": {
   "category": "WEED",
@@ -567,7 +740,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "feet on its two roots."
    ]
   ],
-  "sprite": "0043_oddish.png"
+  "sprite": "0043_oddish.png",
+  "monScale": 423,
+  "monOffset": 15,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "gloom": {
   "category": "WEED",
@@ -580,7 +757,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "distance of 1.25 miles."
    ]
   ],
-  "sprite": "0044_gloom.png"
+  "sprite": "0044_gloom.png",
+  "monScale": 329,
+  "monOffset": 10,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "vileplume": {
   "category": "FLOWER",
@@ -593,7 +774,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "pollen from its petals."
    ]
   ],
-  "sprite": "0045_vileplume.png"
+  "sprite": "0045_vileplume.png",
+  "monScale": 256,
+  "monOffset": 4,
+  "trainerScale": 272,
+  "trainerOffset": -2
  },
  "paras": {
   "category": "MUSHROOM",
@@ -606,7 +791,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "grow with the bug host."
    ]
   ],
-  "sprite": "0046_paras.png"
+  "sprite": "0046_paras.png",
+  "monScale": 546,
+  "monOffset": 21,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "parasect": {
   "category": "MUSHROOM",
@@ -619,7 +808,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "used as herbal medicine."
    ]
   ],
-  "sprite": "0047_parasect.png"
+  "sprite": "0047_parasect.png",
+  "monScale": 307,
+  "monOffset": 8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "venonat": {
   "category": "INSECT",
@@ -632,7 +825,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "shoot powerful beams."
    ]
   ],
-  "sprite": "0048_venonat.png"
+  "sprite": "0048_venonat.png",
+  "monScale": 360,
+  "monOffset": 14,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "venomoth": {
   "category": "POISON MOTH",
@@ -645,7 +842,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "looses highly toxic dust."
    ]
   ],
-  "sprite": "0049_venomoth.png"
+  "sprite": "0049_venomoth.png",
+  "monScale": 256,
+  "monOffset": 3,
+  "trainerScale": 293,
+  "trainerOffset": 1
  },
  "diglett": {
   "category": "MOLE",
@@ -658,7 +859,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "its wake, making it easy to spot."
    ]
   ],
-  "sprite": "0050_diglett.png"
+  "sprite": "0050_diglett.png",
+  "monScale": 706,
+  "monOffset": 22,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "dugtrio": {
   "category": "MOLE",
@@ -671,7 +876,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "unexpected direction."
    ]
   ],
-  "sprite": "0051_dugtrio.png"
+  "sprite": "0051_dugtrio.png",
+  "monScale": 384,
+  "monOffset": 14,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "meowth": {
   "category": "SCRATCH CAT",
@@ -684,7 +893,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "eyes aglow."
    ]
   ],
-  "sprite": "0052_meowth.png"
+  "sprite": "0052_meowth.png",
+  "monScale": 480,
+  "monOffset": 17,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "persian": {
   "category": "CLASSY CAT",
@@ -697,7 +910,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "that it is about to pounce and bite."
    ]
   ],
-  "sprite": "0053_persian.png"
+  "sprite": "0053_persian.png",
+  "monScale": 320,
+  "monOffset": 10,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "psyduck": {
   "category": "DUCK",
@@ -710,7 +927,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "using mysterious powers."
    ]
   ],
-  "sprite": "0054_psyduck.png"
+  "sprite": "0054_psyduck.png",
+  "monScale": 347,
+  "monOffset": 11,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "golduck": {
   "category": "DUCK",
@@ -723,7 +944,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "swimming elegantly in lakes, etc."
    ]
   ],
-  "sprite": "0055_golduck.png"
+  "sprite": "0055_golduck.png",
+  "monScale": 272,
+  "monOffset": 4,
+  "trainerScale": 287,
+  "trainerOffset": 1
  },
  "mankey": {
   "category": "PIG MONKEY",
@@ -736,7 +961,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "an uncontrollable frenzy."
    ]
   ],
-  "sprite": "0056_mankey.png"
+  "sprite": "0056_mankey.png",
+  "monScale": 388,
+  "monOffset": 16,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "primeape": {
   "category": "PIG MONKEY",
@@ -749,7 +978,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "target no matter how far."
    ]
   ],
-  "sprite": "0057_primeape.png"
+  "sprite": "0057_primeape.png",
+  "monScale": 326,
+  "monOffset": 8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "growlithe": {
   "category": "PUPPY",
@@ -762,7 +995,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "and biting."
    ]
   ],
-  "sprite": "0058_growlithe.png"
+  "sprite": "0058_growlithe.png",
+  "monScale": 346,
+  "monOffset": 14,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "arcanine": {
   "category": "LEGENDARY",
@@ -775,7 +1012,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "unbelievable speed."
    ]
   ],
-  "sprite": "0059_arcanine.png"
+  "sprite": "0059_arcanine.png",
+  "monScale": 256,
+  "monOffset": -1,
+  "trainerScale": 312,
+  "trainerOffset": 2
  },
  "poliwag": {
   "category": "TADPOLE",
@@ -788,7 +1029,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "through the skin as a spiral pattern."
    ]
   ],
-  "sprite": "0060_poliwag.png"
+  "sprite": "0060_poliwag.png",
+  "monScale": 353,
+  "monOffset": 17,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "poliwhirl": {
   "category": "TADPOLE",
@@ -801,7 +1046,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "it prefers living in water."
    ]
   ],
-  "sprite": "0061_poliwhirl.png"
+  "sprite": "0061_poliwhirl.png",
+  "monScale": 288,
+  "monOffset": 10,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "poliwrath": {
   "category": "TADPOLE",
@@ -814,7 +1063,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "than the best human swimmers."
    ]
   ],
-  "sprite": "0062_poliwrath.png"
+  "sprite": "0062_poliwrath.png",
+  "monScale": 256,
+  "monOffset": 5,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "abra": {
   "category": "PSI",
@@ -827,7 +1080,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "while asleep."
    ]
   ],
-  "sprite": "0063_abra.png"
+  "sprite": "0063_abra.png",
+  "monScale": 374,
+  "monOffset": 14,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "kadabra": {
   "category": "PSI",
@@ -840,7 +1097,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "transformed into KADABRA."
    ]
   ],
-  "sprite": "0064_kadabra.png"
+  "sprite": "0064_kadabra.png",
+  "monScale": 272,
+  "monOffset": 2,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "alakazam": {
   "category": "PSI",
@@ -853,7 +1114,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "sensory powers to defeat foes."
    ]
   ],
-  "sprite": "0065_alakazam.png"
+  "sprite": "0065_alakazam.png",
+  "monScale": 272,
+  "monOffset": -1,
+  "trainerScale": 271,
+  "trainerOffset": -1
  },
  "machop": {
   "category": "SUPERPOWER",
@@ -866,7 +1131,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "child, it can hurl 100 grown-ups."
    ]
   ],
-  "sprite": "0066_machop.png"
+  "sprite": "0066_machop.png",
+  "monScale": 320,
+  "monOffset": 12,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "machoke": {
   "category": "SUPERPOWER",
@@ -879,7 +1148,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "the moving of heavy goods."
    ]
   ],
-  "sprite": "0067_machoke.png"
+  "sprite": "0067_machoke.png",
+  "monScale": 304,
+  "monOffset": 6,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "machamp": {
   "category": "SUPERPOWER",
@@ -892,7 +1165,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "two seconds."
    ]
   ],
-  "sprite": "0068_machamp.png"
+  "sprite": "0068_machamp.png",
+  "monScale": 278,
+  "monOffset": 2,
+  "trainerScale": 283,
+  "trainerOffset": 0
  },
  "bellsprout": {
   "category": "FLOWER",
@@ -905,7 +1182,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "legendary mandrake plant."
    ]
   ],
-  "sprite": "0069_bellsprout.png"
+  "sprite": "0069_bellsprout.png",
+  "monScale": 354,
+  "monOffset": 16,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "weepinbell": {
   "category": "FLYCATCHER",
@@ -918,7 +1199,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "dissolves everything."
    ]
   ],
-  "sprite": "0070_weepinbell.png"
+  "sprite": "0070_weepinbell.png",
+  "monScale": 256,
+  "monOffset": -1,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "victreebel": {
   "category": "FLYCATCHER",
@@ -931,7 +1216,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "a dissolving fluid."
    ]
   ],
-  "sprite": "0071_victreebel.png"
+  "sprite": "0071_victreebel.png",
+  "monScale": 256,
+  "monOffset": 2,
+  "trainerScale": 302,
+  "trainerOffset": 2
  },
  "tentacool": {
   "category": "JELLYFISH",
@@ -944,7 +1233,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "beams of light."
    ]
   ],
-  "sprite": "0072_tentacool.png"
+  "sprite": "0072_tentacool.png",
+  "monScale": 256,
+  "monOffset": 0,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "tentacruel": {
   "category": "JELLYFISH",
@@ -957,7 +1250,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "and sharp, stabbing pain."
    ]
   ],
-  "sprite": "0073_tentacruel.png"
+  "sprite": "0073_tentacruel.png",
+  "monScale": 272,
+  "monOffset": -1,
+  "trainerScale": 312,
+  "trainerOffset": 0
  },
  "geodude": {
   "category": "ROCK",
@@ -970,7 +1267,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "at each other in a snowball fight."
    ]
   ],
-  "sprite": "0074_geodude.png"
+  "sprite": "0074_geodude.png",
+  "monScale": 330,
+  "monOffset": 17,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "graveler": {
   "category": "ROCK",
@@ -983,7 +1284,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "without slowing."
    ]
   ],
-  "sprite": "0075_graveler.png"
+  "sprite": "0075_graveler.png",
+  "monScale": 272,
+  "monOffset": 8,
+  "trainerScale": 305,
+  "trainerOffset": 1
  },
  "golem": {
   "category": "MEGATON",
@@ -996,7 +1301,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "once a year to grow larger."
    ]
   ],
-  "sprite": "0076_golem.png"
+  "sprite": "0076_golem.png",
+  "monScale": 266,
+  "monOffset": 3,
+  "trainerScale": 298,
+  "trainerOffset": 1
  },
  "ponyta": {
   "category": "FIRE HORSE",
@@ -1009,7 +1318,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "Ayers Rock in one leap."
    ]
   ],
-  "sprite": "0077_ponyta.png"
+  "sprite": "0077_ponyta.png",
+  "monScale": 288,
+  "monOffset": 7,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "rapidash": {
   "category": "FIRE HORSE",
@@ -1022,7 +1335,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "bullet train while ablaze."
    ]
   ],
-  "sprite": "0078_rapidash.png"
+  "sprite": "0078_rapidash.png",
+  "monScale": 282,
+  "monOffset": -1,
+  "trainerScale": 312,
+  "trainerOffset": 1
  },
  "slowpoke": {
   "category": "DOPEY",
@@ -1035,7 +1352,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "It is good at fishing with its tail."
    ]
   ],
-  "sprite": "0079_slowpoke.png"
+  "sprite": "0079_slowpoke.png",
+  "monScale": 271,
+  "monOffset": 10,
+  "trainerScale": 272,
+  "trainerOffset": -2
  },
  "slowbro": {
   "category": "HERMIT CRAB",
@@ -1048,7 +1369,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "made it evolve into SLOWBRO."
    ]
   ],
-  "sprite": "0080_slowbro.png"
+  "sprite": "0080_slowbro.png",
+  "monScale": 257,
+  "monOffset": -2,
+  "trainerScale": 312,
+  "trainerOffset": 0
  },
  "magnemite": {
   "category": "MAGNET",
@@ -1061,7 +1386,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "from the units at its sides."
    ]
   ],
-  "sprite": "0081_magnemite.png"
+  "sprite": "0081_magnemite.png",
+  "monScale": 294,
+  "monOffset": -8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "magneton": {
   "category": "MAGNET",
@@ -1074,7 +1403,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "magnetic waves at high voltage."
    ]
   ],
-  "sprite": "0082_magneton.png"
+  "sprite": "0082_magneton.png",
+  "monScale": 293,
+  "monOffset": -4,
+  "trainerScale": 273,
+  "trainerOffset": -2
  },
  "farfetchd": {
   "category": "WILD DUCK",
@@ -1087,7 +1420,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "building its nest."
    ]
   ],
-  "sprite": "0083_farfetchd.png"
+  "sprite": "0083_farfetchd.png",
+  "monScale": 317,
+  "monOffset": -2,
+  "trainerScale": 256,
+  "trainerOffset": -3
  },
  "doduo": {
   "category": "TWIN BIRD",
@@ -1100,7 +1437,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "of over 60 miles per hour."
    ]
   ],
-  "sprite": "0084_doduo.png"
+  "sprite": "0084_doduo.png",
+  "monScale": 256,
+  "monOffset": 3,
+  "trainerScale": 287,
+  "trainerOffset": 0
  },
  "dodrio": {
   "category": "TRIPLE BIRD",
@@ -1113,7 +1454,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "joy, sadness, and anger."
    ]
   ],
-  "sprite": "0085_dodrio.png"
+  "sprite": "0085_dodrio.png",
+  "monScale": 272,
+  "monOffset": -2,
+  "trainerScale": 296,
+  "trainerOffset": 1
  },
  "seel": {
   "category": "SEA LION",
@@ -1126,7 +1471,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "cold of minus 40 degrees Fahrenheit."
    ]
   ],
-  "sprite": "0086_seel.png"
+  "sprite": "0086_seel.png",
+  "monScale": 298,
+  "monOffset": 8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "dewgong": {
   "category": "SEA LION",
@@ -1139,7 +1488,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "active it becomes."
    ]
   ],
-  "sprite": "0087_dewgong.png"
+  "sprite": "0087_dewgong.png",
+  "monScale": 288,
+  "monOffset": 1,
+  "trainerScale": 306,
+  "trainerOffset": -1
  },
  "grimer": {
   "category": "SLUDGE",
@@ -1152,7 +1505,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "on filthy things."
    ]
   ],
-  "sprite": "0088_grimer.png"
+  "sprite": "0088_grimer.png",
+  "monScale": 258,
+  "monOffset": 8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "muk": {
   "category": "SLUDGE",
@@ -1165,7 +1522,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "cause terrible poisoning."
    ]
   ],
-  "sprite": "0089_muk.png"
+  "sprite": "0089_muk.png",
+  "monScale": 288,
+  "monOffset": 7,
+  "trainerScale": 288,
+  "trainerOffset": -1
  },
  "shellder": {
   "category": "BIVALVE",
@@ -1178,7 +1539,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "surprisingly tender."
    ]
   ],
-  "sprite": "0090_shellder.png"
+  "sprite": "0090_shellder.png",
+  "monScale": 643,
+  "monOffset": 21,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "cloyster": {
   "category": "BIVALVE",
@@ -1191,7 +1556,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "opens only when it is attacking."
    ]
   ],
-  "sprite": "0091_cloyster.png"
+  "sprite": "0091_cloyster.png",
+  "monScale": 264,
+  "monOffset": 0,
+  "trainerScale": 288,
+  "trainerOffset": -1
  },
  "gastly": {
   "category": "GAS",
@@ -1204,7 +1573,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "the prey in two seconds."
    ]
   ],
-  "sprite": "0092_gastly.png"
+  "sprite": "0092_gastly.png",
+  "monScale": 256,
+  "monOffset": 0,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "haunter": {
   "category": "GAS",
@@ -1217,7 +1590,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "HAUNTER is there."
    ]
   ],
-  "sprite": "0093_haunter.png"
+  "sprite": "0093_haunter.png",
+  "monScale": 269,
+  "monOffset": 2,
+  "trainerScale": 308,
+  "trainerOffset": 1
  },
  "gengar": {
   "category": "SHADOW",
@@ -1230,7 +1607,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "in mountains."
    ]
   ],
-  "sprite": "0094_gengar.png"
+  "sprite": "0094_gengar.png",
+  "monScale": 256,
+  "monOffset": 4,
+  "trainerScale": 317,
+  "trainerOffset": 1
  },
  "onix": {
   "category": "ROCK SNAKE",
@@ -1243,7 +1624,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "ground at 50 miles per hour."
    ]
   ],
-  "sprite": "0095_onix.png"
+  "sprite": "0095_onix.png",
+  "monScale": 257,
+  "monOffset": 0,
+  "trainerScale": 515,
+  "trainerOffset": 12
  },
  "drowzee": {
   "category": "HYPNOSIS",
@@ -1256,7 +1641,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "skilled at hypnotism."
    ]
   ],
-  "sprite": "0096_drowzee.png"
+  "sprite": "0096_drowzee.png",
+  "monScale": 274,
+  "monOffset": 7,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "hypno": {
   "category": "HYPNOSIS",
@@ -1269,7 +1658,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "away a child it hypnotized."
    ]
   ],
-  "sprite": "0097_hypno.png"
+  "sprite": "0097_hypno.png",
+  "monScale": 298,
+  "monOffset": 3,
+  "trainerScale": 310,
+  "trainerOffset": 2
  },
  "krabby": {
   "category": "RIVER CRAB",
@@ -1282,7 +1675,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "their sockets."
    ]
   ],
-  "sprite": "0098_krabby.png"
+  "sprite": "0098_krabby.png",
+  "monScale": 469,
+  "monOffset": 18,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "kingler": {
   "category": "PINCER",
@@ -1295,7 +1692,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "big, it is unwieldy to move."
    ]
   ],
-  "sprite": "0099_kingler.png"
+  "sprite": "0099_kingler.png",
+  "monScale": 287,
+  "monOffset": 3,
+  "trainerScale": 308,
+  "trainerOffset": 1
  },
  "voltorb": {
   "category": "BALL",
@@ -1308,7 +1709,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "SELFDESTRUCT."
    ]
   ],
-  "sprite": "0100_voltorb.png"
+  "sprite": "0100_voltorb.png",
+  "monScale": 364,
+  "monOffset": -8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "electrode": {
   "category": "BALL",
@@ -1321,7 +1726,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "of “The Bomb Ball.”"
    ]
   ],
-  "sprite": "0101_electrode.png"
+  "sprite": "0101_electrode.png",
+  "monScale": 256,
+  "monOffset": 0,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "exeggcute": {
   "category": "EGG",
@@ -1334,7 +1743,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "form more like plant seeds."
    ]
   ],
-  "sprite": "0102_exeggcute.png"
+  "sprite": "0102_exeggcute.png",
+  "monScale": 495,
+  "monOffset": -4,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "exeggutor": {
   "category": "COCONUT",
@@ -1347,7 +1760,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "a face and a will of its own."
    ]
   ],
-  "sprite": "0103_exeggutor.png"
+  "sprite": "0103_exeggutor.png",
+  "monScale": 283,
+  "monOffset": 0,
+  "trainerScale": 376,
+  "trainerOffset": 7
  },
  "cubone": {
   "category": "LONELY",
@@ -1360,7 +1777,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "said to cry loudly."
    ]
   ],
-  "sprite": "0104_cubone.png"
+  "sprite": "0104_cubone.png",
+  "monScale": 545,
+  "monOffset": 19,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "marowak": {
   "category": "BONE KEEPER",
@@ -1373,7 +1794,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "began using bones."
    ]
   ],
-  "sprite": "0105_marowak.png"
+  "sprite": "0105_marowak.png",
+  "monScale": 293,
+  "monOffset": 12,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "hitmonlee": {
   "category": "KICKING",
@@ -1386,7 +1811,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "distant foe with a rising kick."
    ]
   ],
-  "sprite": "0106_hitmonlee.png"
+  "sprite": "0106_hitmonlee.png",
+  "monScale": 256,
+  "monOffset": 0,
+  "trainerScale": 273,
+  "trainerOffset": -2
  },
  "hitmonchan": {
   "category": "PUNCHING",
@@ -1399,7 +1828,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "faster than a bullet train."
    ]
   ],
-  "sprite": "0107_hitmonchan.png"
+  "sprite": "0107_hitmonchan.png",
+  "monScale": 256,
+  "monOffset": 1,
+  "trainerScale": 264,
+  "trainerOffset": -2
  },
  "lickitung": {
   "category": "LICKING",
@@ -1412,7 +1845,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "grabbing food and attacking."
    ]
   ],
-  "sprite": "0108_lickitung.png"
+  "sprite": "0108_lickitung.png",
+  "monScale": 272,
+  "monOffset": 3,
+  "trainerScale": 272,
+  "trainerOffset": -3
  },
  "koffing": {
   "category": "POISON GAS",
@@ -1425,7 +1862,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "nearby."
    ]
   ],
-  "sprite": "0109_koffing.png"
+  "sprite": "0109_koffing.png",
+  "monScale": 369,
+  "monOffset": -1,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "weezing": {
   "category": "POISON GAS",
@@ -1438,7 +1879,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "conjoined as a WEEZING."
    ]
   ],
-  "sprite": "0110_weezing.png"
+  "sprite": "0110_weezing.png",
+  "monScale": 321,
+  "monOffset": -1,
+  "trainerScale": 276,
+  "trainerOffset": -1
  },
  "rhyhorn": {
   "category": "SPIKES",
@@ -1451,7 +1896,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "charging TACKLES."
    ]
   ],
-  "sprite": "0111_rhyhorn.png"
+  "sprite": "0111_rhyhorn.png",
+  "monScale": 291,
+  "monOffset": 7,
+  "trainerScale": 276,
+  "trainerOffset": -2
  },
  "rhydon": {
   "category": "DRILL",
@@ -1464,7 +1913,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "boulders with its horn."
    ]
   ],
-  "sprite": "0112_rhydon.png"
+  "sprite": "0112_rhydon.png",
+  "monScale": 272,
+  "monOffset": -1,
+  "trainerScale": 344,
+  "trainerOffset": 3
  },
  "chansey": {
   "category": "EGG",
@@ -1477,7 +1930,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "delicious."
    ]
   ],
-  "sprite": "0113_chansey.png"
+  "sprite": "0113_chansey.png",
+  "monScale": 257,
+  "monOffset": 6,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "tangela": {
   "category": "VINE",
@@ -1490,7 +1947,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "anything that gets close."
    ]
   ],
-  "sprite": "0114_tangela.png"
+  "sprite": "0114_tangela.png",
+  "monScale": 320,
+  "monOffset": 9,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "kangaskhan": {
   "category": "PARENT",
@@ -1503,7 +1964,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "using COMET PUNCH."
    ]
   ],
-  "sprite": "0115_kangaskhan.png"
+  "sprite": "0115_kangaskhan.png",
+  "monScale": 257,
+  "monOffset": -3,
+  "trainerScale": 349,
+  "trainerOffset": 5
  },
  "horsea": {
   "category": "DRAGON",
@@ -1516,7 +1981,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "from its mouth."
    ]
   ],
-  "sprite": "0116_horsea.png"
+  "sprite": "0116_horsea.png",
+  "monScale": 399,
+  "monOffset": -1,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "seadra": {
   "category": "DRAGON",
@@ -1529,7 +1998,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "fainting from the spikes."
    ]
   ],
-  "sprite": "0117_seadra.png"
+  "sprite": "0117_seadra.png",
+  "monScale": 296,
+  "monOffset": 3,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "goldeen": {
   "category": "GOLDFISH",
@@ -1542,7 +2015,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "speed of five knots."
    ]
   ],
-  "sprite": "0118_goldeen.png"
+  "sprite": "0118_goldeen.png",
+  "monScale": 379,
+  "monOffset": 4,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "seaking": {
   "category": "GOLDFISH",
@@ -1555,7 +2032,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "make its nest."
    ]
   ],
-  "sprite": "0119_seaking.png"
+  "sprite": "0119_seaking.png",
+  "monScale": 304,
+  "monOffset": 1,
+  "trainerScale": 288,
+  "trainerOffset": -2
  },
  "staryu": {
   "category": "STAR SHAPE",
@@ -1568,7 +2049,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "red light."
    ]
   ],
-  "sprite": "0120_staryu.png"
+  "sprite": "0120_staryu.png",
+  "monScale": 326,
+  "monOffset": 1,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "starmie": {
   "category": "MYSTERIOUS",
@@ -1581,7 +2066,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "that it is an alien creature."
    ]
   ],
-  "sprite": "0121_starmie.png"
+  "sprite": "0121_starmie.png",
+  "monScale": 301,
+  "monOffset": 3,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "mr-mime": {
   "category": "BARRIER",
@@ -1594,7 +2083,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "air by miming."
    ]
   ],
-  "sprite": "0122_mr_mime.png"
+  "sprite": "0122_mr_mime.png",
+  "monScale": 258,
+  "monOffset": 4,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "scyther": {
   "category": "MANTIS",
@@ -1607,7 +2100,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "wings to fly."
    ]
   ],
-  "sprite": "0123_scyther.png"
+  "sprite": "0123_scyther.png",
+  "monScale": 272,
+  "monOffset": 0,
+  "trainerScale": 293,
+  "trainerOffset": 1
  },
  "jynx": {
   "category": "HUMAN SHAPE",
@@ -1620,7 +2117,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "what is being said."
    ]
   ],
-  "sprite": "0124_jynx.png"
+  "sprite": "0124_jynx.png",
+  "monScale": 256,
+  "monOffset": 3,
+  "trainerScale": 300,
+  "trainerOffset": 1
  },
  "electabuzz": {
   "category": "ELECTRIC",
@@ -1633,7 +2134,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "power plants and so on."
    ]
   ],
-  "sprite": "0125_electabuzz.png"
+  "sprite": "0125_electabuzz.png",
+  "monScale": 330,
+  "monOffset": 7,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "magmar": {
   "category": "SPITFIRE",
@@ -1646,7 +2151,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "nearly 2,200 degrees Fahrenheit."
    ]
   ],
-  "sprite": "0126_magmar.png"
+  "sprite": "0126_magmar.png",
+  "monScale": 293,
+  "monOffset": 4,
+  "trainerScale": 272,
+  "trainerOffset": -2
  },
  "pinsir": {
   "category": "STAG BEETLE",
@@ -1659,7 +2168,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "release until the foe is torn."
    ]
   ],
-  "sprite": "0127_pinsir.png"
+  "sprite": "0127_pinsir.png",
+  "monScale": 256,
+  "monOffset": 1,
+  "trainerScale": 257,
+  "trainerOffset": -2
  },
  "tauros": {
   "category": "WILD BULL",
@@ -1672,7 +2185,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "long tails."
    ]
   ],
-  "sprite": "0128_tauros.png"
+  "sprite": "0128_tauros.png",
+  "monScale": 256,
+  "monOffset": 2,
+  "trainerScale": 312,
+  "trainerOffset": 3
  },
  "magikarp": {
   "category": "FISH",
@@ -1685,7 +2202,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "pathetic POKéMON in the world."
    ]
   ],
-  "sprite": "0129_magikarp.png"
+  "sprite": "0129_magikarp.png",
+  "monScale": 317,
+  "monOffset": 4,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "gyarados": {
   "category": "ATROCIOUS",
@@ -1698,7 +2219,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "totally incinerates all targets."
    ]
   ],
-  "sprite": "0130_gyarados.png"
+  "sprite": "0130_gyarados.png",
+  "monScale": 288,
+  "monOffset": -1,
+  "trainerScale": 512,
+  "trainerOffset": 11
  },
  "lapras": {
   "category": "TRANSPORT",
@@ -1711,7 +2236,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "people on its back."
    ]
   ],
-  "sprite": "0131_lapras.png"
+  "sprite": "0131_lapras.png",
+  "monScale": 256,
+  "monOffset": 0,
+  "trainerScale": 425,
+  "trainerOffset": 8
  },
  "ditto": {
   "category": "TRANSFORM",
@@ -1724,7 +2253,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "forms."
    ]
   ],
-  "sprite": "0132_ditto.png"
+  "sprite": "0132_ditto.png",
+  "monScale": 602,
+  "monOffset": 21,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "eevee": {
   "category": "EVOLUTION",
@@ -1737,7 +2270,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "depending on stimuli."
    ]
   ],
-  "sprite": "0133_eevee.png"
+  "sprite": "0133_eevee.png",
+  "monScale": 476,
+  "monOffset": 17,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "vaporeon": {
   "category": "BUBBLE JET",
@@ -1750,7 +2287,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "It can melt invisibly in water."
    ]
   ],
-  "sprite": "0134_vaporeon.png"
+  "sprite": "0134_vaporeon.png",
+  "monScale": 316,
+  "monOffset": 7,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "jolteon": {
   "category": "LIGHTNING",
@@ -1763,7 +2304,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "that pierce foes."
    ]
   ],
-  "sprite": "0135_jolteon.png"
+  "sprite": "0135_jolteon.png",
+  "monScale": 283,
+  "monOffset": 8,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "flareon": {
   "category": "FLAME",
@@ -1776,7 +2321,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "nearly 3,100 degrees Fahrenheit."
    ]
   ],
-  "sprite": "0136_flareon.png"
+  "sprite": "0136_flareon.png",
+  "monScale": 302,
+  "monOffset": 11,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "porygon": {
   "category": "VIRTUAL",
@@ -1789,7 +2338,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "first artificial POKéMON."
    ]
   ],
-  "sprite": "0137_porygon.png"
+  "sprite": "0137_porygon.png",
+  "monScale": 328,
+  "monOffset": 7,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "omanyte": {
   "category": "SPIRAL",
@@ -1802,7 +2355,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "10 tentacles about."
    ]
   ],
-  "sprite": "0138_omanyte.png"
+  "sprite": "0138_omanyte.png",
+  "monScale": 521,
+  "monOffset": 20,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "omastar": {
   "category": "SPIRAL",
@@ -1815,7 +2372,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "ensnares prey, it bites."
    ]
   ],
-  "sprite": "0139_omastar.png"
+  "sprite": "0139_omastar.png",
+  "monScale": 307,
+  "monOffset": 5,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "kabuto": {
   "category": "SHELLFISH",
@@ -1828,7 +2389,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "itself with a hard shell."
    ]
   ],
-  "sprite": "0140_kabuto.png"
+  "sprite": "0140_kabuto.png",
+  "monScale": 438,
+  "monOffset": 21,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "kabutops": {
   "category": "SHELLFISH",
@@ -1841,7 +2406,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "the victim's fluids."
    ]
   ],
-  "sprite": "0141_kabutops.png"
+  "sprite": "0141_kabutops.png",
+  "monScale": 271,
+  "monOffset": 1,
+  "trainerScale": 256,
+  "trainerOffset": -2
  },
  "aerodactyl": {
   "category": "FOSSIL",
@@ -1854,7 +2423,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "It flies with high-pitched cries."
    ]
   ],
-  "sprite": "0142_aerodactyl.png"
+  "sprite": "0142_aerodactyl.png",
+  "monScale": 275,
+  "monOffset": -1,
+  "trainerScale": 317,
+  "trainerOffset": 2
  },
  "snorlax": {
   "category": "SLEEPING",
@@ -1867,7 +2440,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "eating, it goes promptly to sleep."
    ]
   ],
-  "sprite": "0143_snorlax.png"
+  "sprite": "0143_snorlax.png",
+  "monScale": 275,
+  "monOffset": 1,
+  "trainerScale": 408,
+  "trainerOffset": 7
  },
  "articuno": {
   "category": "FREEZE",
@@ -1880,7 +2457,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "flying form is magnificent."
    ]
   ],
-  "sprite": "0144_articuno.png"
+  "sprite": "0144_articuno.png",
+  "monScale": 278,
+  "monOffset": 0,
+  "trainerScale": 308,
+  "trainerOffset": 1
  },
  "zapdos": {
   "category": "ELECTRIC",
@@ -1893,7 +2474,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "snapping sounds."
    ]
   ],
-  "sprite": "0145_zapdos.png"
+  "sprite": "0145_zapdos.png",
+  "monScale": 275,
+  "monOffset": 1,
+  "trainerScale": 330,
+  "trainerOffset": 3
  },
  "moltres": {
   "category": "FLAME",
@@ -1906,7 +2491,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "orange wings that seem to be on fire."
    ]
   ],
-  "sprite": "0146_moltres.png"
+  "sprite": "0146_moltres.png",
+  "monScale": 270,
+  "monOffset": 1,
+  "trainerScale": 379,
+  "trainerOffset": 6
  },
  "dratini": {
   "category": "DRAGON",
@@ -1919,7 +2508,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "shedding skin."
    ]
   ],
-  "sprite": "0147_dratini.png"
+  "sprite": "0147_dratini.png",
+  "monScale": 256,
+  "monOffset": 8,
+  "trainerScale": 386,
+  "trainerOffset": 6
  },
  "dragonair": {
   "category": "DRAGON",
@@ -1932,7 +2525,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "seen flying occasionally."
    ]
   ],
-  "sprite": "0148_dragonair.png"
+  "sprite": "0148_dragonair.png",
+  "monScale": 274,
+  "monOffset": 0,
+  "trainerScale": 423,
+  "trainerOffset": 6
  },
  "dragonite": {
   "category": "DRAGON",
@@ -1945,7 +2542,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "16 hours."
    ]
   ],
-  "sprite": "0149_dragonite.png"
+  "sprite": "0149_dragonite.png",
+  "monScale": 283,
+  "monOffset": -1,
+  "trainerScale": 342,
+  "trainerOffset": 4
  },
  "mewtwo": {
   "category": "GENETIC",
@@ -1958,7 +2559,11 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "It turned vicious as a result."
    ]
   ],
-  "sprite": "0150_mewtwo.png"
+  "sprite": "0150_mewtwo.png",
+  "monScale": 276,
+  "monOffset": -1,
+  "trainerScale": 342,
+  "trainerOffset": 5
  },
  "mew": {
   "category": "NEW SPECIES",
@@ -1971,6 +2576,10 @@ export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = {
     "intelligent and learns any move."
    ]
   ],
-  "sprite": "0151_mew.png"
+  "sprite": "0151_mew.png",
+  "monScale": 460,
+  "monOffset": -2,
+  "trainerScale": 256,
+  "trainerOffset": -2
  }
 };

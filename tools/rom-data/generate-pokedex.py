@@ -51,6 +51,7 @@ for n in range(1, 152):
     category = decode_text(o, 12).strip()
     height, weight = struct.unpack("<HH", ROM[o + 12:o + 16])
     p1, p2 = struct.unpack("<II", ROM[o + 16:o + 24])
+    unused, mon_scale, mon_offset, trainer_scale, trainer_offset = struct.unpack("<HHhHh", ROM[o + 24:o + 34])
     pages = [pg for pg in (description_page(ptr(p)) for p in (p1, p2) if ptr(p)) if pg]
     out[DEX[n]] = {
         "category": category,
@@ -58,6 +59,10 @@ for n in range(1, 152):
         "weight": weight,  # hectograms
         "pages": pages,
         "sprite": front_files.get(n),
+        "monScale": mon_scale,
+        "monOffset": mon_offset,
+        "trainerScale": trainer_scale,
+        "trainerOffset": trainer_offset,
     }
 
 body = json.dumps(out, indent=1, ensure_ascii=False)
@@ -70,6 +75,8 @@ body = json.dumps(out, indent=1, ensure_ascii=False)
     "  pages: readonly (readonly string[])[];\n"
     "  /** file under /game-assets/firered/pokemon/front/normal/ */\n"
     "  sprite: string | null;\n"
+    "  /** Size-comparison affine scale (256 = 1.0) and vertical offset for the Pokemon and the trainer silhouette. */\n"
+    "  monScale: number;\n  monOffset: number;\n  trainerScale: number;\n  trainerOffset: number;\n"
     "};\n"
     "export const POKEDEX_ENTRIES: Readonly<Record<string, PokedexRomEntry>> = "
     + body + ";\n",

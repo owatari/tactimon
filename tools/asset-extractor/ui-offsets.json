@@ -1,0 +1,5527 @@
+{
+ "fontwidths/normal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2076928,
+  "size": 512
+ },
+ "fontwidths/small": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2027264,
+  "size": 512
+ },
+ "footprint/001": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13829516,
+  "size": 32
+ },
+ "footprint/002": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13832332,
+  "size": 32
+ },
+ "footprint/003": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13836036,
+  "size": 32
+ },
+ "footprint/004": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13838488,
+  "size": 32
+ },
+ "footprint/005": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13841320,
+  "size": 32
+ },
+ "footprint/006": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13844768,
+  "size": 32
+ },
+ "footprint/007": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13847220,
+  "size": 32
+ },
+ "footprint/008": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13850136,
+  "size": 32
+ },
+ "footprint/009": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13853600,
+  "size": 32
+ },
+ "footprint/010": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13855984,
+  "size": 32
+ },
+ "footprint/011": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/012": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13861236,
+  "size": 32
+ },
+ "footprint/013": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13855984,
+  "size": 32
+ },
+ "footprint/014": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/015": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13868984,
+  "size": 32
+ },
+ "footprint/016": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13871604,
+  "size": 32
+ },
+ "footprint/017": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13874504,
+  "size": 32
+ },
+ "footprint/018": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13877900,
+  "size": 32
+ },
+ "footprint/019": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13880332,
+  "size": 32
+ },
+ "footprint/020": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13883164,
+  "size": 32
+ },
+ "footprint/021": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13871604,
+  "size": 32
+ },
+ "footprint/022": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13888844,
+  "size": 32
+ },
+ "footprint/023": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/024": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/025": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13896952,
+  "size": 32
+ },
+ "footprint/026": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13899904,
+  "size": 32
+ },
+ "footprint/027": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13902580,
+  "size": 32
+ },
+ "footprint/028": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13905816,
+  "size": 32
+ },
+ "footprint/029": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13908300,
+  "size": 32
+ },
+ "footprint/030": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13911152,
+  "size": 32
+ },
+ "footprint/031": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13914320,
+  "size": 32
+ },
+ "footprint/032": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13916928,
+  "size": 32
+ },
+ "footprint/033": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13919920,
+  "size": 32
+ },
+ "footprint/034": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13923480,
+  "size": 32
+ },
+ "footprint/035": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13926004,
+  "size": 32
+ },
+ "footprint/036": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13928796,
+  "size": 32
+ },
+ "footprint/037": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13931516,
+  "size": 32
+ },
+ "footprint/038": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13934760,
+  "size": 32
+ },
+ "footprint/039": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13937144,
+  "size": 32
+ },
+ "footprint/040": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13939828,
+  "size": 32
+ },
+ "footprint/041": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/042": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13945128,
+  "size": 32
+ },
+ "footprint/043": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13947548,
+  "size": 32
+ },
+ "footprint/044": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13950452,
+  "size": 32
+ },
+ "footprint/045": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13953540,
+  "size": 32
+ },
+ "footprint/046": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13955968,
+  "size": 32
+ },
+ "footprint/047": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13958780,
+  "size": 32
+ },
+ "footprint/048": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13961532,
+  "size": 32
+ },
+ "footprint/049": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13964628,
+  "size": 32
+ },
+ "footprint/050": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/051": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/052": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13972072,
+  "size": 32
+ },
+ "footprint/053": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13974928,
+  "size": 32
+ },
+ "footprint/054": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13977472,
+  "size": 32
+ },
+ "footprint/055": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13980372,
+  "size": 32
+ },
+ "footprint/056": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13983140,
+  "size": 32
+ },
+ "footprint/057": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13986064,
+  "size": 32
+ },
+ "footprint/058": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13988836,
+  "size": 32
+ },
+ "footprint/059": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13992240,
+  "size": 32
+ },
+ "footprint/060": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13994656,
+  "size": 32
+ },
+ "footprint/061": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13997324,
+  "size": 32
+ },
+ "footprint/062": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14000180,
+  "size": 32
+ },
+ "footprint/063": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14002756,
+  "size": 32
+ },
+ "footprint/064": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14006056,
+  "size": 32
+ },
+ "footprint/065": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14009264,
+  "size": 32
+ },
+ "footprint/066": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14011788,
+  "size": 32
+ },
+ "footprint/067": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14014744,
+  "size": 32
+ },
+ "footprint/068": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14018256,
+  "size": 32
+ },
+ "footprint/069": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14020712,
+  "size": 32
+ },
+ "footprint/070": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/071": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/072": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/073": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/074": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/075": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14037616,
+  "size": 32
+ },
+ "footprint/076": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14040528,
+  "size": 32
+ },
+ "footprint/077": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14043404,
+  "size": 32
+ },
+ "footprint/078": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14046740,
+  "size": 32
+ },
+ "footprint/079": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14049212,
+  "size": 32
+ },
+ "footprint/080": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14052456,
+  "size": 32
+ },
+ "footprint/081": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14054548,
+  "size": 32
+ },
+ "footprint/082": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14057408,
+  "size": 32
+ },
+ "footprint/083": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14060272,
+  "size": 32
+ },
+ "footprint/084": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14062940,
+  "size": 32
+ },
+ "footprint/085": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14066288,
+  "size": 32
+ },
+ "footprint/086": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/087": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/088": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/089": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/090": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/091": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/092": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/093": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/094": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14091560,
+  "size": 32
+ },
+ "footprint/095": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/096": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14097328,
+  "size": 32
+ },
+ "footprint/097": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14100352,
+  "size": 32
+ },
+ "footprint/098": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14103200,
+  "size": 32
+ },
+ "footprint/099": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14106388,
+  "size": 32
+ },
+ "footprint/100": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/101": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/102": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/103": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14117064,
+  "size": 32
+ },
+ "footprint/104": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14119732,
+  "size": 32
+ },
+ "footprint/105": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14122552,
+  "size": 32
+ },
+ "footprint/106": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14125248,
+  "size": 32
+ },
+ "footprint/107": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14128052,
+  "size": 32
+ },
+ "footprint/108": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14130848,
+  "size": 32
+ },
+ "footprint/109": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/110": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/111": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14139748,
+  "size": 32
+ },
+ "footprint/112": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14143256,
+  "size": 32
+ },
+ "footprint/113": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14145804,
+  "size": 32
+ },
+ "footprint/114": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14148852,
+  "size": 32
+ },
+ "footprint/115": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14152252,
+  "size": 32
+ },
+ "footprint/116": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/117": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/118": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/119": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/120": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13855984,
+  "size": 32
+ },
+ "footprint/121": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13855984,
+  "size": 32
+ },
+ "footprint/122": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14171816,
+  "size": 32
+ },
+ "footprint/123": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14175064,
+  "size": 32
+ },
+ "footprint/124": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/125": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14180952,
+  "size": 32
+ },
+ "footprint/126": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14183984,
+  "size": 32
+ },
+ "footprint/127": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14187036,
+  "size": 32
+ },
+ "footprint/128": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14189984,
+  "size": 32
+ },
+ "footprint/129": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/130": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/131": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/132": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/133": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14204348,
+  "size": 32
+ },
+ "footprint/134": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14207112,
+  "size": 32
+ },
+ "footprint/135": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14210036,
+  "size": 32
+ },
+ "footprint/136": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14212984,
+  "size": 32
+ },
+ "footprint/137": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14215504,
+  "size": 32
+ },
+ "footprint/138": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14218140,
+  "size": 32
+ },
+ "footprint/139": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14221068,
+  "size": 32
+ },
+ "footprint/140": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13964628,
+  "size": 32
+ },
+ "footprint/141": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14226520,
+  "size": 32
+ },
+ "footprint/142": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14229532,
+  "size": 32
+ },
+ "footprint/143": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14232188,
+  "size": 32
+ },
+ "footprint/144": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14235200,
+  "size": 32
+ },
+ "footprint/145": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14238268,
+  "size": 32
+ },
+ "footprint/146": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14241460,
+  "size": 32
+ },
+ "footprint/147": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/148": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "footprint/149": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14250040,
+  "size": 32
+ },
+ "footprint/150": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14253224,
+  "size": 32
+ },
+ "footprint/151": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14255904,
+  "size": 32
+ },
+ "graphics/battle_interface/enemy_mon_shadow.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 32
+ },
+ "graphics/battle_interface/enemy_mon_shadow.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 15186644,
+  "size": 128,
+  "w": 32
+ },
+ "graphics/battle_interface/healthbar.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13704100,
+  "size": 32
+ },
+ "graphics/battle_interface/healthbox.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 32
+ },
+ "graphics/battle_interface/healthbox_doubles_opponent.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 18
+ },
+ "graphics/battle_interface/healthbox_doubles_opponent.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 13760808,
+  "size": 2048,
+  "w": 128
+ },
+ "graphics/battle_interface/healthbox_doubles_player.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 18
+ },
+ "graphics/battle_interface/healthbox_doubles_player.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 13760404,
+  "size": 2048,
+  "w": 128
+ },
+ "graphics/battle_interface/healthbox_elements.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 13704132,
+  "size": 3840,
+  "w": 320
+ },
+ "graphics/battle_interface/healthbox_safari.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 32
+ },
+ "graphics/battle_interface/healthbox_safari.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "lz",
+  "offset": 13761212,
+  "size": 4096,
+  "w": 64
+ },
+ "graphics/battle_interface/healthbox_singles_opponent.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 18
+ },
+ "graphics/battle_interface/healthbox_singles_opponent.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 13760004,
+  "size": 2048,
+  "w": 128
+ },
+ "graphics/battle_interface/healthbox_singles_player.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 20
+ },
+ "graphics/battle_interface/healthbox_singles_player.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 13759296,
+  "size": 4096,
+  "w": 128
+ },
+ "graphics/battle_interface/level_up_banner.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 2426576,
+  "size": 32
+ },
+ "graphics/battle_interface/level_up_banner.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 40,
+  "kind": "lz",
+  "offset": 2426608,
+  "size": 1152,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/battle_interface/party_summary_bar.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 13704068,
+  "size": 32
+ },
+ "graphics/battle_interface/party_summary_bar.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 15186692,
+  "size": 512,
+  "w": 128
+ },
+ "graphics/battle_interface/textbox.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 13632796,
+  "size": 4096
+ },
+ "graphics/battle_interface/textbox.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "lz",
+  "offset": 13631488,
+  "size": 8192,
+  "w": 128
+ },
+ "graphics/battle_interface/unused.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "raw",
+  "offset": 2491404,
+  "size": 96,
+  "w": 24
+ },
+ "graphics/battle_interface/unused_window.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 256,
+  "kind": "lz",
+  "offset": 13668084,
+  "size": 8192,
+  "w": 64
+ },
+ "graphics/battle_interface/unused_window2.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "lz",
+  "offset": 13670928,
+  "size": 4096,
+  "w": 64
+ },
+ "graphics/battle_interface/unused_window2bar.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 13671596,
+  "size": 160,
+  "w": 40
+ },
+ "graphics/battle_interface/unused_window3.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13707972,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/battle_interface/unused_window4.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "lz",
+  "offset": 13708288,
+  "size": 4096,
+  "w": 64
+ },
+ "graphics/evolution_scene/bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4158376,
+  "size": 2048
+ },
+ "graphics/evolution_scene/bg.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4162560,
+  "size": 32
+ },
+ "graphics/evolution_scene/bg.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 224,
+  "kind": "lz",
+  "offset": 4156592,
+  "size": 7168,
+  "w": 64
+ },
+ "graphics/evolution_scene/bg2.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4159628,
+  "size": 2048
+ },
+ "graphics/evolution_scene/gray_transition_intro.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2007881,
+  "size": 32
+ },
+ "graphics/evolution_scene/sparkle.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4320900,
+  "size": 32
+ },
+ "graphics/evolution_scene/sparkle.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 4320932,
+  "size": 32,
+  "w": 8
+ },
+ "graphics/evolution_scene/transition.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4162560,
+  "size": 64
+ },
+ "graphics/evolution_scene/unused.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4156560,
+  "size": 32
+ },
+ "graphics/evolution_scene/unused_tilemap.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4160896,
+  "size": 1664
+ },
+ "graphics/fonts/down_arrow_3.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "raw",
+  "offset": 2008396,
+  "size": 128,
+  "w": 16
+ },
+ "graphics/fonts/down_arrow_4.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "raw",
+  "offset": 2008524,
+  "size": 128,
+  "w": 16
+ },
+ "graphics/fonts/down_arrows.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "raw",
+  "offset": 2007372,
+  "size": 1024,
+  "w": 128
+ },
+ "graphics/fonts/keypad_icons.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "raw",
+  "offset": 2008832,
+  "size": 2048,
+  "w": 128
+ },
+ "graphics/fonts/latin_female.png": {
+  "copies": 1,
+  "font": true,
+  "kind": "raw",
+  "offset": 2044160,
+  "size": 32768
+ },
+ "graphics/fonts/latin_male.png": {
+  "copies": 1,
+  "font": true,
+  "kind": "raw",
+  "offset": 2044160,
+  "size": 32768
+ },
+ "graphics/fonts/latin_normal.png": {
+  "copies": 1,
+  "font": true,
+  "kind": "raw",
+  "offset": 2044160,
+  "size": 32768
+ },
+ "graphics/fonts/latin_small.png": {
+  "copies": 1,
+  "font": true,
+  "kind": "raw",
+  "offset": 2010880,
+  "size": 16384
+ },
+ "graphics/interface/bag.pal": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15222112,
+  "size": 32
+ },
+ "graphics/interface/bag_female.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 256,
+  "kind": "lz",
+  "offset": 15220156,
+  "size": 8192,
+  "w": 64
+ },
+ "graphics/interface/bag_male.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 256,
+  "kind": "lz",
+  "offset": 15218220,
+  "size": 8192,
+  "w": 64
+ },
+ "graphics/interface/bag_swap.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 15222152,
+  "size": 256,
+  "w": 16
+ },
+ "graphics/interface/ball/dive.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13638752,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/great.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13637632,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/luxury.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13639812,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/master.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13638300,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/nest.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13639068,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/net.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13638528,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/poke.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 2498652,
+  "size": 32
+ },
+ "graphics/interface/ball/poke.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13637412,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/premier.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 2498652,
+  "size": 32
+ },
+ "graphics/interface/ball/premier.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13640152,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/repeat.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13639300,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/safari.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13637856,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/timer.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13639528,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball/ultra.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 13638088,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/interface/ball_open.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 2498652,
+  "size": 32
+ },
+ "graphics/interface/ball_open.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 13640424,
+  "size": 128,
+  "w": 16
+ },
+ "graphics/interface/blank.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 13640548,
+  "size": 2048,
+  "w": 64
+ },
+ "graphics/interface/dex_caught_pokeball.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15293852,
+  "size": 32
+ },
+ "graphics/interface/hpbar_unused.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 13664792,
+  "size": 384,
+  "w": 96
+ },
+ "graphics/interface/learn_move.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15302340,
+  "size": 2048
+ },
+ "graphics/interface/learn_move.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15302108,
+  "size": 32
+ },
+ "graphics/interface/learn_move.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 15302140,
+  "size": 1024,
+  "w": 128
+ },
+ "graphics/interface/menu_info.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15293852,
+  "size": 64
+ },
+ "graphics/interface/menu_info.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "raw",
+  "offset": 15293916,
+  "size": 8192,
+  "w": 128
+ },
+ "graphics/interface/mystery_gift_textbox_border.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4615440,
+  "size": 32
+ },
+ "graphics/interface/mystery_gift_textbox_border.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 4615472,
+  "size": 256,
+  "w": 32
+ },
+ "graphics/interface/pokemon_types.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15293884,
+  "size": 32
+ },
+ "graphics/interface/red_arrow.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4600584,
+  "size": 32
+ },
+ "graphics/interface/red_arrow.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 4600792,
+  "size": 128,
+  "w": 16
+ },
+ "graphics/interface/red_arrow_other.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600584,
+  "size": 32
+ },
+ "graphics/interface/red_arrow_other.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4600616,
+  "size": 256,
+  "w": 16
+ },
+ "graphics/interface/save_failed_screen.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4320836,
+  "size": 32
+ },
+ "graphics/interface/select_button.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "raw",
+  "offset": 4534140,
+  "size": 192,
+  "w": 24
+ },
+ "graphics/interface/selector_outline.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600584,
+  "size": 32
+ },
+ "graphics/interface/selector_outline.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "lz",
+  "offset": 4600728,
+  "size": 256,
+  "trimmed": true,
+  "w": 24
+ },
+ "graphics/interface/status_icons.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15318824,
+  "size": 32
+ },
+ "graphics/interface/status_icons.png": {
+  "bpp": 4,
+  "copies": 2,
+  "h": 8,
+  "kind": "lz",
+  "offset": 15216288,
+  "size": 1024,
+  "w": 256
+ },
+ "graphics/interface/std_menu.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3982052,
+  "size": 32
+ },
+ "graphics/interface/text_pp.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4601602,
+  "size": 32
+ },
+ "graphics/item_menu/bag_window_pal.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4534424,
+  "size": 32
+ },
+ "graphics/item_menu/bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15217344,
+  "size": 2048
+ },
+ "graphics/item_menu/bg.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 40,
+  "kind": "lz",
+  "offset": 15216844,
+  "size": 1760,
+  "trimmed": true,
+  "w": 96
+ },
+ "graphics/item_menu/bg_female.pal": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15218180,
+  "size": 32
+ },
+ "graphics/item_menu/bg_item_pc.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15217732,
+  "size": 2048
+ },
+ "graphics/item_menu/list.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4533512,
+  "size": 432
+ },
+ "graphics/learn_move/interface_sprites.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4192216,
+  "size": 32
+ },
+ "graphics/learn_move/interface_sprites.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 96,
+  "kind": "raw",
+  "offset": 4192248,
+  "size": 384,
+  "w": 8
+ },
+ "graphics/main_menu/bg.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2311752,
+  "size": 32
+ },
+ "graphics/main_menu/textbox.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 2311784,
+  "size": 32
+ },
+ "graphics/misc/confetti.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 136,
+  "kind": "lz",
+  "offset": 13817340,
+  "size": 544,
+  "w": 8
+ },
+ "graphics/misc/egg_hatch.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 2488386,
+  "size": 32
+ },
+ "graphics/misc/egg_hatch.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "raw",
+  "offset": 2488418,
+  "size": 2048,
+  "w": 32
+ },
+ "graphics/misc/egg_shard.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 2488386,
+  "size": 32
+ },
+ "graphics/misc/egg_shard.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "raw",
+  "offset": 2490466,
+  "size": 128,
+  "w": 32
+ },
+ "graphics/misc/emoticons.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3520872,
+  "size": 32
+ },
+ "graphics/misc/markings2.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15322012,
+  "size": 32
+ },
+ "graphics/misc/minigame_countdown.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4632552,
+  "size": 32
+ },
+ "graphics/misc/minigame_countdown.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 112,
+  "kind": "lz",
+  "offset": 4694856,
+  "size": 3584,
+  "w": 64
+ },
+ "graphics/misc/minigame_digits.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4691560,
+  "size": 32
+ },
+ "graphics/misc/minigame_digits.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 88,
+  "kind": "lz",
+  "offset": 4691592,
+  "size": 352,
+  "w": 8
+ },
+ "graphics/misc/minigame_digits_unused.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4691560,
+  "size": 32
+ },
+ "graphics/misc/minigame_digits_unused.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 176,
+  "kind": "lz",
+  "offset": 4691784,
+  "size": 704,
+  "w": 8
+ },
+ "graphics/misc/mon_markings.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4120584,
+  "size": 32
+ },
+ "graphics/misc/mon_markings.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "raw",
+  "offset": 4120616,
+  "size": 2048,
+  "w": 32
+ },
+ "graphics/misc/option_menu.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3982052,
+  "size": 32
+ },
+ "graphics/oak_speech/bg_tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4588904,
+  "size": 128
+ },
+ "graphics/oak_speech/bg_tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 80,
+  "kind": "lz",
+  "offset": 4589032,
+  "size": 5120,
+  "w": 128
+ },
+ "graphics/oak_speech/controls_guide_page_2.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4590996,
+  "size": 160
+ },
+ "graphics/oak_speech/controls_guide_page_3.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4591156,
+  "size": 160
+ },
+ "graphics/oak_speech/leaf/pal.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4591316,
+  "size": 64
+ },
+ "graphics/oak_speech/leaf/pic.png": {
+  "bpp": 8,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 4591380,
+  "size": 6144,
+  "w": 64
+ },
+ "graphics/oak_speech/oak/pal.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4594900,
+  "size": 64
+ },
+ "graphics/oak_speech/oak/pic.png": {
+  "bpp": 8,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 4594964,
+  "size": 6144,
+  "w": 64
+ },
+ "graphics/oak_speech/oak_speech_bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4590824,
+  "size": 1280
+ },
+ "graphics/oak_speech/oak_speech_bg.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4588904,
+  "size": 32
+ },
+ "graphics/oak_speech/oak_speech_bg.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 40,
+  "kind": "lz",
+  "offset": 4590756,
+  "size": 320,
+  "w": 16
+ },
+ "graphics/oak_speech/pikachu_intro/body.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4598256,
+  "size": 32
+ },
+ "graphics/oak_speech/pikachu_intro/body.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4598644,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/oak_speech/pikachu_intro/ears.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4598256,
+  "size": 32
+ },
+ "graphics/oak_speech/pikachu_intro/ears.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4599092,
+  "size": 512,
+  "w": 32
+ },
+ "graphics/oak_speech/pikachu_intro/eyes.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4598256,
+  "size": 32
+ },
+ "graphics/oak_speech/pikachu_intro/eyes.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 4599320,
+  "size": 128,
+  "w": 32
+ },
+ "graphics/oak_speech/pikachu_intro/pikachu.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4598256,
+  "size": 32
+ },
+ "graphics/oak_speech/pikachu_intro/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4590504,
+  "size": 1080
+ },
+ "graphics/oak_speech/platform.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4598224,
+  "size": 32
+ },
+ "graphics/oak_speech/platform.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 4598288,
+  "size": 1536,
+  "w": 32
+ },
+ "graphics/oak_speech/red/pal.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4593148,
+  "size": 64
+ },
+ "graphics/oak_speech/red/pic.png": {
+  "bpp": 8,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 4593212,
+  "size": 6144,
+  "w": 64
+ },
+ "graphics/oak_speech/rival/pal.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4596652,
+  "size": 64
+ },
+ "graphics/oak_speech/rival/pic.png": {
+  "bpp": 8,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 4596716,
+  "size": 6144,
+  "w": 64
+ },
+ "graphics/party_menu/bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15215280,
+  "size": 2048
+ },
+ "graphics/party_menu/bg.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 15214336,
+  "size": 1984,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/party_menu/cancel_button.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4562912,
+  "size": 28
+ },
+ "graphics/party_menu/confirm_button.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4562884,
+  "size": 28
+ },
+ "graphics/party_menu/hold_icons.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4563948,
+  "size": 32
+ },
+ "graphics/party_menu/hold_icons.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "raw",
+  "offset": 4563884,
+  "size": 64,
+  "w": 8
+ },
+ "graphics/party_menu/pokeball.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 15215592,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/party_menu/pokeball_small.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 15215976,
+  "size": 768,
+  "w": 16
+ },
+ "graphics/party_menu/slot_main.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4563328,
+  "size": 70
+ },
+ "graphics/party_menu/slot_main_no_hp.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4563398,
+  "size": 70
+ },
+ "graphics/party_menu/slot_wide.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4563468,
+  "size": 54
+ },
+ "graphics/party_menu/slot_wide_empty.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4563576,
+  "size": 54
+ },
+ "graphics/party_menu/slot_wide_no_hp.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4563522,
+  "size": 54
+ },
+ "graphics/pokedex/area_markers/marker.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/area_markers/marker.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 296,
+  "kind": "lz",
+  "offset": 4600892,
+  "size": 1184,
+  "w": 8
+ },
+ "graphics/pokedex/area_markers/marker_0.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/area_markers/marker_1.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/area_markers/marker_2.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/area_markers/marker_3.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/area_markers/marker_4.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/area_markers/marker_5.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/area_markers/marker_6.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4600860,
+  "size": 32
+ },
+ "graphics/pokedex/blit_wide_ellipse.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "raw",
+  "offset": 4472064,
+  "size": 704,
+  "w": 88
+ },
+ "graphics/pokedex/cat_icon_abc.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15319372,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_abc.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 15319404,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_cancel.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4469856,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_cancel.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4460272,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_cave.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4469792,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_cave.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4458720,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_forest.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4469888,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_forest.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4460844,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_grassland.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4469920,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_grassland.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4461756,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_lightest.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470208,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_lightest.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4468472,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_mountain.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4469984,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_mountain.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4463168,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_numerical.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470080,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_numerical.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4465212,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_qmark.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4469952,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_qmark.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4462600,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_rare.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470016,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_rare.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4463956,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_rough_terrain.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470112,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_rough_terrain.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4465892,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_sea.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470048,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_sea.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4464644,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_smallest.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470240,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_smallest.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4469132,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_type.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470176,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_type.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4467648,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_urban.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4469824,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_urban.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4459480,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/cat_icon_waters_edge.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4470144,
+  "size": 32
+ },
+ "graphics/pokedex/cat_icon_waters_edge.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 4466744,
+  "size": 1536,
+  "w": 64
+ },
+ "graphics/pokedex/caught_marker.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/caught_marker.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "raw",
+  "offset": 4470272,
+  "size": 32,
+  "w": 8
+ },
+ "graphics/pokedex/kanto_dex_bgpals.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 512
+ },
+ "graphics/pokedex/kanto_dex_bgtiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/kanto_dex_bgtiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 256,
+  "kind": "lz",
+  "offset": 4457076,
+  "size": 1024,
+  "w": 8
+ },
+ "graphics/pokedex/map_five_island.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_five_island.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4471544,
+  "size": 512,
+  "w": 32
+ },
+ "graphics/pokedex/map_four_island.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_four_island.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4471416,
+  "size": 512,
+  "w": 32
+ },
+ "graphics/pokedex/map_kanto.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_kanto.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 72,
+  "kind": "lz",
+  "offset": 4470304,
+  "size": 3456,
+  "w": 96
+ },
+ "graphics/pokedex/map_one_island.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_one_island.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "lz",
+  "offset": 4471056,
+  "size": 384,
+  "w": 32
+ },
+ "graphics/pokedex/map_seven_island.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_seven_island.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4471892,
+  "size": 512,
+  "w": 32
+ },
+ "graphics/pokedex/map_six_island.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_six_island.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4471728,
+  "size": 512,
+  "w": 32
+ },
+ "graphics/pokedex/map_three_island.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_three_island.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "lz",
+  "offset": 4471292,
+  "size": 384,
+  "w": 32
+ },
+ "graphics/pokedex/map_two_island.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/map_two_island.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "lz",
+  "offset": 4471176,
+  "size": 384,
+  "w": 32
+ },
+ "graphics/pokedex/mini_page.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/mini_page.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 40,
+  "kind": "lz",
+  "offset": 4456740,
+  "size": 1280,
+  "w": 64
+ },
+ "graphics/pokedex/national_dex_bgpals.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4458208,
+  "size": 512
+ },
+ "graphics/pokedex/national_dex_bgtiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4457672,
+  "size": 32
+ },
+ "graphics/pokedex/national_dex_bgtiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 256,
+  "kind": "lz",
+  "offset": 4457388,
+  "size": 1024,
+  "w": 8
+ },
+ "graphics/pokedex/page_icon_tilemap.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4530828,
+  "size": 128
+ },
+ "graphics/pokedex/silhouette_sprite_pal.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4531048,
+  "size": 32
+ },
+ "graphics/pokemon_storage/box_scroll_arrow.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3991536,
+  "size": 32
+ },
+ "graphics/pokemon_storage/box_scroll_arrow.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "raw",
+  "offset": 4008656,
+  "size": 128,
+  "w": 8
+ },
+ "graphics/pokemon_storage/choose_box_menu_center.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4008908,
+  "size": 16
+ },
+ "graphics/pokemon_storage/choose_box_menu_center.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "raw",
+  "offset": 3988152,
+  "size": 2048,
+  "w": 64
+ },
+ "graphics/pokemon_storage/choose_box_menu_corners.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4008908,
+  "size": 16
+ },
+ "graphics/pokemon_storage/choose_box_menu_corners.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "raw",
+  "offset": 3990200,
+  "size": 384,
+  "w": 16
+ },
+ "graphics/pokemon_storage/close_box_button.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3991416,
+  "size": 72
+ },
+ "graphics/pokemon_storage/cursor.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3991536,
+  "size": 26
+ },
+ "graphics/pokemon_storage/cursor.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 128,
+  "kind": "raw",
+  "offset": 4008940,
+  "size": 2048,
+  "w": 32
+ },
+ "graphics/pokemon_storage/cursor_shadow.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3991536,
+  "size": 32
+ },
+ "graphics/pokemon_storage/cursor_shadow.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "raw",
+  "offset": 4010988,
+  "size": 128,
+  "w": 16
+ },
+ "graphics/pokemon_storage/interface.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15320056,
+  "size": 32
+ },
+ "graphics/pokemon_storage/interface_no_display_mon.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15320088,
+  "size": 32
+ },
+ "graphics/pokemon_storage/item_info_frame.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3992080,
+  "size": 32
+ },
+ "graphics/pokemon_storage/item_info_frame.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "raw",
+  "offset": 4011484,
+  "size": 128,
+  "w": 32
+ },
+ "graphics/pokemon_storage/menu.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3991036,
+  "size": 1280
+ },
+ "graphics/pokemon_storage/menu.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3991004,
+  "size": 32
+ },
+ "graphics/pokemon_storage/menu.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 72,
+  "kind": "lz",
+  "offset": 15320120,
+  "size": 4608,
+  "w": 128
+ },
+ "graphics/pokemon_storage/misc1.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4008908,
+  "size": 32
+ },
+ "graphics/pokemon_storage/misc2.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3991536,
+  "size": 32
+ },
+ "graphics/pokemon_storage/party_menu.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15321836,
+  "size": 528
+ },
+ "graphics/pokemon_storage/party_menu.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15320024,
+  "size": 32
+ },
+ "graphics/pokemon_storage/party_slot_empty.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3991512,
+  "size": 24
+ },
+ "graphics/pokemon_storage/party_slot_filled.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3991488,
+  "size": 24
+ },
+ "graphics/pokemon_storage/pkmn_data.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3991288,
+  "size": 64
+ },
+ "graphics/pokemon_storage/scrolling_bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3990736,
+  "size": 2048
+ },
+ "graphics/pokemon_storage/scrolling_bg.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3991352,
+  "size": 32
+ },
+ "graphics/pokemon_storage/scrolling_bg.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 3990584,
+  "size": 256,
+  "w": 32
+ },
+ "graphics/pokemon_storage/scrolling_bg_move_items.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3991384,
+  "size": 32
+ },
+ "graphics/pokemon_storage/unused.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3992016,
+  "size": 64
+ },
+ "graphics/pokemon_storage/unused_choose_box_menu.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3988120,
+  "size": 32
+ },
+ "graphics/pokemon_storage/wallpapers/beach/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4001788,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/beach/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4000824,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/beach/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4000888,
+  "size": 1920,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/cave/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4000604,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/cave/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3999704,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/cave/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 3999768,
+  "size": 1952,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/city/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3994484,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/city/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3993900,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/city/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 40,
+  "kind": "lz",
+  "offset": 3993964,
+  "size": 1280,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/crag/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3997424,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/crag/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3996512,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/crag/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 56,
+  "kind": "lz",
+  "offset": 3996576,
+  "size": 1728,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/desert/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3995472,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/desert/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3994660,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/desert/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 56,
+  "kind": "lz",
+  "offset": 3994724,
+  "size": 1664,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/forest/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3993680,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/forest/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3992640,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/forest/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 56,
+  "kind": "lz",
+  "offset": 3992704,
+  "size": 1696,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/pokecenter/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4006584,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/pokecenter/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4005780,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/pokecenter/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4005844,
+  "size": 1824,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/river/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4003720,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/river/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4002996,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/river/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4003060,
+  "size": 2016,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/savanna/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3996308,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/savanna/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3995700,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/savanna/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 48,
+  "kind": "lz",
+  "offset": 3995764,
+  "size": 1440,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/seafloor/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4002776,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/seafloor/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4002020,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/seafloor/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 56,
+  "kind": "lz",
+  "offset": 4002084,
+  "size": 1696,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/simple/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4007804,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/simple/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4007444,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/simple/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4007508,
+  "size": 800,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/sky/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4004684,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/sky/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4003956,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/sky/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 56,
+  "kind": "lz",
+  "offset": 4004020,
+  "size": 1664,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/snow/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3999500,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/snow/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3998740,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/snow/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 56,
+  "kind": "lz",
+  "offset": 3998804,
+  "size": 1632,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/stars/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4005572,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/stars/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4004908,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/stars/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 40,
+  "kind": "lz",
+  "offset": 4005004,
+  "size": 1184,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/tiles/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4007276,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/tiles/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4006812,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/tiles/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4006876,
+  "size": 992,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/wallpapers/unused.bin": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4007968,
+  "size": 432
+ },
+ "graphics/pokemon_storage/wallpapers/volcano/tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3998524,
+  "size": 720
+ },
+ "graphics/pokemon_storage/wallpapers/volcano/tiles.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3997640,
+  "size": 64
+ },
+ "graphics/pokemon_storage/wallpapers/volcano/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 3997704,
+  "size": 1824,
+  "trimmed": true,
+  "w": 64
+ },
+ "graphics/pokemon_storage/waveform.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3991536,
+  "size": 18
+ },
+ "graphics/pokemon_storage/waveform.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 56,
+  "kind": "raw",
+  "offset": 3991568,
+  "size": 448,
+  "w": 16
+ },
+ "graphics/region_map/background.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4135328,
+  "size": 1200
+ },
+ "graphics/region_map/background.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125532,
+  "size": 32
+ },
+ "graphics/region_map/background.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 4135288,
+  "size": 160,
+  "w": 40
+ },
+ "graphics/region_map/cursor.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4125276,
+  "size": 32
+ },
+ "graphics/region_map/cursor.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4125920,
+  "size": 256,
+  "w": 16
+ },
+ "graphics/region_map/dungeon_icon.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125372,
+  "size": 32
+ },
+ "graphics/region_map/dungeon_icon.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 4135128,
+  "size": 64,
+  "w": 8
+ },
+ "graphics/region_map/fly_icon.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125372,
+  "size": 32
+ },
+ "graphics/region_map/fly_icon.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4135176,
+  "size": 256,
+  "w": 16
+ },
+ "graphics/region_map/kanto.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4130972,
+  "size": 1200
+ },
+ "graphics/region_map/map_edge.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4132364,
+  "size": 1200
+ },
+ "graphics/region_map/map_edge.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125468,
+  "size": 32
+ },
+ "graphics/region_map/map_edge.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 4129584,
+  "size": 2048,
+  "w": 128
+ },
+ "graphics/region_map/map_edge_bottom_left.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125468,
+  "size": 32
+ },
+ "graphics/region_map/map_edge_bottom_left.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4134712,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/map_edge_bottom_right.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125468,
+  "size": 32
+ },
+ "graphics/region_map/map_edge_bottom_right.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4134916,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/map_edge_mid_left.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125468,
+  "size": 32
+ },
+ "graphics/region_map/map_edge_mid_left.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4134224,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/map_edge_mid_right.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125468,
+  "size": 32
+ },
+ "graphics/region_map/map_edge_mid_right.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4134464,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/map_edge_top_left.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125468,
+  "size": 32
+ },
+ "graphics/region_map/map_edge_top_left.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4133580,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/map_edge_top_right.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125468,
+  "size": 32
+ },
+ "graphics/region_map/map_edge_top_right.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4133868,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/misc_icon.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4125372,
+  "size": 32
+ },
+ "graphics/region_map/player_icon_leaf.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3520904,
+  "size": 32
+ },
+ "graphics/region_map/player_icon_leaf.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 4126108,
+  "size": 128,
+  "w": 16
+ },
+ "graphics/region_map/player_icon_red.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3520904,
+  "size": 32
+ },
+ "graphics/region_map/player_icon_red.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 4125988,
+  "size": 128,
+  "w": 16
+ },
+ "graphics/region_map/region_map.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4125404,
+  "size": 160
+ },
+ "graphics/region_map/region_map.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 160,
+  "kind": "lz",
+  "offset": 4126236,
+  "size": 10240,
+  "w": 128
+ },
+ "graphics/region_map/sevii_123.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4131580,
+  "size": 1200
+ },
+ "graphics/region_map/sevii_45.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4131852,
+  "size": 1200
+ },
+ "graphics/region_map/sevii_67.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4132080,
+  "size": 1200
+ },
+ "graphics/region_map/switch_map_cursor.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4125572,
+  "size": 32
+ },
+ "graphics/region_map/switch_map_cursor_left.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125572,
+  "size": 32
+ },
+ "graphics/region_map/switch_map_cursor_left.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4125636,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/switch_map_cursor_right.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125572,
+  "size": 32
+ },
+ "graphics/region_map/switch_map_cursor_right.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4125776,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/region_map/switch_map_kanto_sevii_123.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4132996,
+  "size": 1200
+ },
+ "graphics/region_map/switch_map_kanto_sevii_all.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4132636,
+  "size": 1200
+ },
+ "graphics/region_map/switch_map_kanto_sevii_all2.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4133264,
+  "size": 1200
+ },
+ "graphics/region_map/switch_map_menu.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4125500,
+  "size": 32
+ },
+ "graphics/region_map/switch_map_menu.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4130176,
+  "size": 4096,
+  "w": 128
+ },
+ "graphics/region_map/top_bar.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4125244,
+  "size": 32
+ },
+ "graphics/shop_menu/shop_menu.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 72,
+  "kind": "lz",
+  "offset": 15228360,
+  "size": 1152,
+  "w": 32
+ },
+ "graphics/shop_menu/shop_tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15228668,
+  "size": 2048
+ },
+ "graphics/shop_menu/shop_tm_hm_tilemap.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15228984,
+  "size": 2048
+ },
+ "graphics/summary_screen/bg.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15315728,
+  "size": 224
+ },
+ "graphics/summary_screen/bg.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 256,
+  "kind": "lz",
+  "offset": 15311968,
+  "size": 16384,
+  "w": 128
+ },
+ "graphics/summary_screen/exp_bar.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15316344,
+  "size": 32
+ },
+ "graphics/summary_screen/exp_bar.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 15315952,
+  "size": 384,
+  "w": 96
+ },
+ "graphics/summary_screen/hp_bar.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15316344,
+  "size": 32
+ },
+ "graphics/summary_screen/hp_bar.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 15316152,
+  "size": 384,
+  "w": 96
+ },
+ "graphics/summary_screen/hp_bar_red.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4602572,
+  "size": 32
+ },
+ "graphics/summary_screen/hp_bar_yellow.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4602540,
+  "size": 32
+ },
+ "graphics/summary_screen/marking.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4601568,
+  "size": 32
+ },
+ "graphics/summary_screen/move_selection_cursor.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4601632,
+  "size": 32
+ },
+ "graphics/summary_screen/move_selection_cursor_left.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4601632,
+  "size": 32
+ },
+ "graphics/summary_screen/move_selection_cursor_left.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4601664,
+  "size": 2048,
+  "w": 64
+ },
+ "graphics/summary_screen/move_selection_cursor_right.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4601632,
+  "size": 32
+ },
+ "graphics/summary_screen/move_selection_cursor_right.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 4601964,
+  "size": 2048,
+  "w": 64
+ },
+ "graphics/summary_screen/moves_info_page.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4602760,
+  "size": 1280
+ },
+ "graphics/summary_screen/moves_page.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 4603008,
+  "size": 2048
+ },
+ "graphics/summary_screen/page_egg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15317964,
+  "size": 1280
+ },
+ "graphics/summary_screen/page_info.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15316376,
+  "size": 1280
+ },
+ "graphics/summary_screen/page_moves.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15317328,
+  "size": 2048
+ },
+ "graphics/summary_screen/page_moves_info.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15317660,
+  "size": 1280
+ },
+ "graphics/summary_screen/page_skills.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15316816,
+  "size": 1280
+ },
+ "graphics/summary_screen/pokerus_cured.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4602624,
+  "size": 32
+ },
+ "graphics/summary_screen/pokerus_cured.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 8,
+  "kind": "lz",
+  "offset": 4602656,
+  "size": 32,
+  "w": 8
+ },
+ "graphics/summary_screen/shiny_star.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4602692,
+  "size": 32
+ },
+ "graphics/summary_screen/shiny_star.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 4602724,
+  "size": 64,
+  "w": 8
+ },
+ "graphics/summary_screen/status_ailment_icons.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15318824,
+  "size": 32
+ },
+ "graphics/summary_screen/status_ailment_icons.png": {
+  "bpp": 4,
+  "copies": 2,
+  "h": 64,
+  "kind": "lz",
+  "offset": 15216288,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/summary_screen/text_header.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4601536,
+  "size": 32
+ },
+ "graphics/summary_screen/text_moves.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4601600,
+  "size": 32
+ },
+ "graphics/text_window/menu_message.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4660716,
+  "size": 32
+ },
+ "graphics/text_window/menu_message.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4321736,
+  "size": 576,
+  "w": 48
+ },
+ "graphics/text_window/quest_log.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "raw",
+  "offset": 4660076,
+  "size": 640,
+  "w": 40
+ },
+ "graphics/text_window/signpost.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4660748,
+  "size": 32
+ },
+ "graphics/text_window/std.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4660812,
+  "size": 32
+ },
+ "graphics/text_window/std.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4659788,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/stdpal_0.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4660716,
+  "size": 32
+ },
+ "graphics/text_window/stdpal_1.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4660748,
+  "size": 32
+ },
+ "graphics/text_window/stdpal_2.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4660780,
+  "size": 32
+ },
+ "graphics/text_window/stdpal_3.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4660812,
+  "size": 32
+ },
+ "graphics/text_window/stdpal_4.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4660844,
+  "size": 32
+ },
+ "graphics/text_window/type1.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659468,
+  "size": 32
+ },
+ "graphics/text_window/type1.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4656492,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type10.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659756,
+  "size": 32
+ },
+ "graphics/text_window/type10.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4659148,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type2.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659500,
+  "size": 32
+ },
+ "graphics/text_window/type2.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4656780,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type3.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659532,
+  "size": 32
+ },
+ "graphics/text_window/type3.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4656492,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type4.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659564,
+  "size": 32
+ },
+ "graphics/text_window/type4.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4656492,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type5.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659596,
+  "size": 32
+ },
+ "graphics/text_window/type5.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4656492,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type6.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659628,
+  "size": 32
+ },
+ "graphics/text_window/type6.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4657964,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type7.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659660,
+  "size": 32
+ },
+ "graphics/text_window/type7.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4657964,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type8.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659692,
+  "size": 32
+ },
+ "graphics/text_window/type8.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4658540,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/type9.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 4659724,
+  "size": 32
+ },
+ "graphics/text_window/type9.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 24,
+  "kind": "raw",
+  "offset": 4658860,
+  "size": 288,
+  "w": 24
+ },
+ "graphics/text_window/unused.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "raw",
+  "offset": 4321096,
+  "size": 640,
+  "w": 40
+ },
+ "graphics/title_screen/blank_sprite.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 15393960,
+  "size": 1024,
+  "w": 32
+ },
+ "graphics/title_screen/border_bg.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 3929484,
+  "size": 128,
+  "w": 8
+ },
+ "graphics/title_screen/copyright_press_start.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15393652,
+  "size": 1280
+ },
+ "graphics/title_screen/copyright_press_start.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 15392916,
+  "size": 32
+ },
+ "graphics/title_screen/copyright_press_start.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 32,
+  "kind": "lz",
+  "offset": 15392948,
+  "size": 2048,
+  "w": 128
+ },
+ "graphics/title_screen/firered/background.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15392916,
+  "size": 32
+ },
+ "graphics/title_screen/firered/blank_flames.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3929980,
+  "size": 32
+ },
+ "graphics/title_screen/firered/blank_flames.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 160,
+  "kind": "lz",
+  "offset": 3930644,
+  "size": 1280,
+  "w": 16
+ },
+ "graphics/title_screen/firered/border_bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3929512,
+  "size": 1280
+ },
+ "graphics/title_screen/firered/box_art_mon.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15392484,
+  "size": 1280
+ },
+ "graphics/title_screen/firered/box_art_mon.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15390184,
+  "size": 32
+ },
+ "graphics/title_screen/firered/box_art_mon.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 15390216,
+  "size": 4320,
+  "trimmed": true,
+  "w": 96
+ },
+ "graphics/title_screen/firered/flames.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3929980,
+  "size": 32
+ },
+ "graphics/title_screen/firered/flames.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 160,
+  "kind": "lz",
+  "offset": 3930012,
+  "size": 1280,
+  "w": 16
+ },
+ "graphics/title_screen/firered/game_title_logo.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 15389584,
+  "size": 1280
+ },
+ "graphics/title_screen/firered/game_title_logo.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15382212,
+  "size": 512
+ },
+ "graphics/title_screen/firered/game_title_logo.png": {
+  "bpp": 8,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 15382724,
+  "size": 16384,
+  "w": 256
+ },
+ "graphics/title_screen/firered/slash.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15393928,
+  "size": 32
+ },
+ "graphics/title_screen/slash.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 3929676,
+  "size": 2048,
+  "w": 64
+ },
+ "graphics/title_screen/unused1.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3931108,
+  "size": 8192
+ },
+ "graphics/title_screen/unused2.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3933192,
+  "size": 8192
+ },
+ "graphics/title_screen/unused3.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3935232,
+  "size": 8192
+ },
+ "graphics/title_screen/unused4.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3937180,
+  "size": 8192
+ },
+ "graphics/title_screen/unused5.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3939256,
+  "size": 8192
+ },
+ "graphics/title_screen/unused6.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3941248,
+  "size": 8192
+ },
+ "graphics/trainer_card/back.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3983748,
+  "size": 1200
+ },
+ "graphics/trainer_card/badges.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3986112,
+  "size": 32
+ },
+ "graphics/trainer_card/badges.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 3986920,
+  "size": 1024,
+  "w": 128
+ },
+ "graphics/trainer_card/bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3985096,
+  "size": 1200
+ },
+ "graphics/trainer_card/blue.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15307160,
+  "size": 96
+ },
+ "graphics/trainer_card/bronze.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985568,
+  "size": 96
+ },
+ "graphics/trainer_card/female_bg.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3986080,
+  "size": 32
+ },
+ "graphics/trainer_card/front.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3983088,
+  "size": 1200
+ },
+ "graphics/trainer_card/front_link.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3984548,
+  "size": 1200
+ },
+ "graphics/trainer_card/gold.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985952,
+  "size": 96
+ },
+ "graphics/trainer_card/green.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985376,
+  "size": 96
+ },
+ "graphics/trainer_card/rse/back.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3983528,
+  "size": 1200
+ },
+ "graphics/trainer_card/rse/badges.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3986112,
+  "size": 32
+ },
+ "graphics/trainer_card/rse/badges.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 16,
+  "kind": "lz",
+  "offset": 3986336,
+  "size": 1024,
+  "w": 128
+ },
+ "graphics/trainer_card/rse/bg.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3984944,
+  "size": 1200
+ },
+ "graphics/trainer_card/rse/bronze.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985280,
+  "size": 96
+ },
+ "graphics/trainer_card/rse/copper.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985472,
+  "size": 96
+ },
+ "graphics/trainer_card/rse/female_bg.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3986048,
+  "size": 32
+ },
+ "graphics/trainer_card/rse/front.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3982556,
+  "size": 1200
+ },
+ "graphics/trainer_card/rse/front_link.bin": {
+  "copies": 1,
+  "kind": "lz",
+  "offset": 3984048,
+  "size": 1200
+ },
+ "graphics/trainer_card/rse/gold.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985856,
+  "size": 96
+ },
+ "graphics/trainer_card/rse/green.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 15308908,
+  "size": 96
+ },
+ "graphics/trainer_card/rse/silver.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985664,
+  "size": 96
+ },
+ "graphics/trainer_card/rse/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 80,
+  "kind": "lz",
+  "offset": 15309004,
+  "size": 5120,
+  "w": 128
+ },
+ "graphics/trainer_card/silver.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3985760,
+  "size": 96
+ },
+ "graphics/trainer_card/star.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3986176,
+  "size": 32
+ },
+ "graphics/trainer_card/stickers.pal": {
+  "copies": 1,
+  "from_png": true,
+  "kind": "raw",
+  "offset": 3986208,
+  "size": 32
+ },
+ "graphics/trainer_card/stickers.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 64,
+  "kind": "lz",
+  "offset": 3982184,
+  "size": 512,
+  "w": 16
+ },
+ "graphics/trainer_card/stickers1.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3986208,
+  "size": 32
+ },
+ "graphics/trainer_card/stickers2.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3986240,
+  "size": 32
+ },
+ "graphics/trainer_card/stickers3.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3986272,
+  "size": 32
+ },
+ "graphics/trainer_card/stickers4.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3986304,
+  "size": 32
+ },
+ "graphics/trainer_card/tiles.png": {
+  "bpp": 4,
+  "copies": 1,
+  "h": 96,
+  "kind": "lz",
+  "offset": 15307256,
+  "size": 6144,
+  "w": 128
+ },
+ "graphics/trainer_card/unused.pal": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 3982052,
+  "size": 32
+ },
+ "icon/001": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13828492,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/002": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13831308,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/003": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13835012,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/004": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13837464,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/005": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13840296,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/006": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13843744,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/007": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13846196,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/008": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13849112,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/009": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13852576,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/010": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13854960,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/011": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13857160,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/012": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13860212,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/013": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13862536,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/014": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13864884,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/015": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13867960,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/016": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13870580,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/017": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13873480,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/018": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13876876,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/019": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13879308,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/020": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13882140,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/021": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13884712,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/022": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13887820,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/023": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13890420,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/024": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13893344,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/025": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13895928,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/026": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13898880,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/027": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13901556,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/028": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13904792,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/029": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13907276,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/030": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13910128,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/031": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13913296,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/032": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13915904,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/033": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13918896,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/034": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13922456,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/035": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13924980,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/036": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13927772,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/037": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13930492,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/038": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13933736,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/039": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13936120,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/040": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13938804,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/041": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13941340,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/042": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13944104,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/043": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13946524,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/044": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13949428,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/045": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13952516,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/046": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13954944,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/047": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13957756,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/048": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13960508,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/049": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13963604,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/050": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13965792,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/051": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13968424,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/052": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13971048,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/053": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13973904,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/054": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13976448,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/055": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13979348,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/056": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13982116,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/057": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13985040,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/058": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13987812,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/059": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13991216,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/060": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13993632,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/061": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13996300,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/062": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 13999156,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/063": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14001732,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/064": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14005032,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/065": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14008240,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/066": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14010764,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/067": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14013720,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/068": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14017232,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/069": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14019688,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/070": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14022392,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/071": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14025516,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/072": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14028048,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/073": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14031376,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/074": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14033808,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/075": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14036592,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/076": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14039504,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/077": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14042380,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/078": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14045716,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/079": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14048188,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/080": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14051432,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/081": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14053524,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/082": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14056384,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/083": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14059248,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/084": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14061916,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/085": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14065264,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/086": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14067952,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/087": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14070716,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/088": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14073360,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/089": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14076160,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/090": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14078704,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/091": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14081952,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/092": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14084844,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/093": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14087712,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/094": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14090536,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/095": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14093772,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/096": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14096304,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/097": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14099328,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/098": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14102176,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/099": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14105364,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/100": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14107640,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/101": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14110012,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/102": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14112828,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/103": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14116040,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/104": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14118708,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/105": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14121528,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/106": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14124224,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/107": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14127028,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/108": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14129824,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/109": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14132496,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/110": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14135744,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/111": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14138724,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/112": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14142232,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/113": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14144780,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/114": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14147828,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/115": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14151228,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/116": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14153720,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/117": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14156688,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/118": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14159576,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/119": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14162700,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/120": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14165140,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/121": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14167880,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/122": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14170792,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/123": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14174040,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/124": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14176896,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/125": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14179928,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/126": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14182960,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/127": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14186012,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/128": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14188960,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/129": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14191752,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/130": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14195540,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/131": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14198504,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/132": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14200632,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/133": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14203324,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/134": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14206088,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/135": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14209012,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/136": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14211960,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/137": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14214480,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/138": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14217116,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/139": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14220044,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/140": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14222396,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/141": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14225496,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/142": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14228508,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/143": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14231164,
+  "pal": 0,
+  "size": 1024
+ },
+ "icon/144": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14234176,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/145": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14237244,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/146": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14240436,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/147": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14242920,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/148": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14245760,
+  "pal": 1,
+  "size": 1024
+ },
+ "icon/149": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14249016,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/150": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14252200,
+  "pal": 2,
+  "size": 1024
+ },
+ "icon/151": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 14254880,
+  "pal": 1,
+  "size": 1024
+ },
+ "iconpal/0": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4011872,
+  "size": 32
+ },
+ "iconpal/1": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4011840,
+  "size": 32
+ },
+ "iconpal/2": {
+  "copies": 1,
+  "kind": "raw",
+  "offset": 4011904,
+  "size": 32
+ }
+}

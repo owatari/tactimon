@@ -140,3 +140,25 @@ local-assets/extracted/<game>/assets/maps/world/
 ```
 
 This is the data layer the MMO client/server should consume for world topology and initial NPC placement. Script bytecode is not interpreted yet; script pointers are preserved as ROM offsets for the later quest/dialogue importer.
+
+## 4. FireRed UI graphics, fonts, footprints, icons and cries (GBA UI)
+
+The game renders FireRed UI screens (Pokédex first) from the ROM itself with a small GBA-style renderer
+(`apps/client/lib/gba/`). The ROM has no symbol table, so graphics are located **by content**: the open
+pret/pokefirered repository is only a lookup key (its indexed PNGs are converted to GBA tile data and the
+identical LZ77 stream / raw bytes are searched in the local ROM); everything exported is read from the ROM.
+
+```bash
+# 1. clone/download pret's tree.json + needed files into a scratch dir (see locate_ui.py docstring), then:
+python tools/asset-extractor/locate_ui.py <cache_dir>      # writes tools/asset-extractor/ui-offsets.json (offsets only)
+# 2. export (git-ignored): local-assets/extracted/firered/assets/gba-ui/
+python tools/asset-extractor/convert_ui.py
+# 3. sync into the client (also done by `pnpm dev`)
+node apps/client/scripts/sync-assets.mjs
+```
+
+Outputs under `gba-ui/`: decompressed tiles (`.4bpp`), tilemaps (`.bin`), palettes (`.gbapal`), the Latin fonts
+(`fonts/normal|small.bin/json`, 512 glyphs + widths), Pokédex footprints (`pokedex/footprints/NNN.bin`),
+party icons (`pokedex/icons`), and the 151 Kanto cries decoded from the m4a compressed waves (`cries/NNN.wav`).
+Pokédex data tables come from `tools/rom-data/generate-pokedex.py` (ROM `gPokedexEntries`),
+`generate-dex-orders.py` and `generate-dex-areas.py` (decomp tables used as reference).
