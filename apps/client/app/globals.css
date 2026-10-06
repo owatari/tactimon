@@ -7338,3 +7338,16 @@ body {
   font-weight: 700;
   letter-spacing: 2px;
 }
+
+/* Battle units: one neutral ground shadow inside the tile (sprites are capped to their own tile). */
+.duel-unit-position .duel-unit::after {
+  content: "";
+  position: absolute;
+  left: 16%;
+  top: 79%;
+  width: 68%;
+  height: 14%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}

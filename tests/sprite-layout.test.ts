@@ -3,6 +3,8 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   SPRITE_GROUND_Y,
+  SPRITE_MAX_HEIGHT_TILES,
+  SPRITE_MAX_WIDTH_TILES,
   spriteFrameLayout,
   spriteTileSpan,
   type SpriteAnimationMetrics,
@@ -60,9 +62,23 @@ describe("battle sprite layout", () => {
     }
   });
 
-  it("keeps Onix large", () => {
-    expect(spriteTileSpan(onixIdle)).toBeGreaterThan(1.9);
-    expect(spriteTileSpan(onixIdle)).toBeLessThan(2.6);
+  it("keeps even Onix inside its own tile (one tile wide, at most 1.4 tall)", () => {
+    const body = visibleBodyTiles(onixIdle, onixIdle);
+    expect(body.width).toBeLessThanOrEqual(SPRITE_MAX_WIDTH_TILES + 1e-9);
+    expect(body.height).toBeLessThanOrEqual(SPRITE_MAX_HEIGHT_TILES + 1e-9);
+    expect(spriteTileSpan(onixIdle)).toBeCloseTo(1, 6);
+  });
+
+  it("limits tall bodies by height and centres the body horizontally on the tile", () => {
+    const tall: SpriteAnimationMetrics = {
+      frameWidth: 40, frameHeight: 72,
+      bounds: { left: 12, top: 4, right: 28, bottom: 52 },
+      groundX: 20, groundY: 50,
+    };
+    const body = visibleBodyTiles(tall, tall);
+    expect(body.height).toBeCloseTo(SPRITE_MAX_HEIGHT_TILES, 6);
+    expect(body.width).toBeLessThan(SPRITE_MAX_WIDTH_TILES);
+    expect(Math.abs(body.centerX - 0.5)).toBeLessThan(0.05);
   });
 
   it("anchors the ground point on the tile, not the canvas bottom", () => {
@@ -111,6 +127,9 @@ describe.skipIf(!existsSync(manifestPath))(
         expect(idle?.bounds, species).toBeTruthy();
         const body = visibleBodyTiles(idle, idle);
         expect(Math.max(body.width, body.height), species).toBeGreaterThanOrEqual(0.99);
+        // Footprint invariant: no species spills sideways into the neighbouring tile.
+        expect(body.width, `${species} width`).toBeLessThanOrEqual(SPRITE_MAX_WIDTH_TILES + 1e-6);
+        expect(body.height, `${species} height`).toBeLessThanOrEqual(SPRITE_MAX_HEIGHT_TILES + 1e-6);
         for (const [name, animation] of Object.entries(entry.animations)) {
           expect(animation.bounds, `${species}/${name}`).toBeTruthy();
           const dy = animation.groundY! - animation.frameHeight / 2;
