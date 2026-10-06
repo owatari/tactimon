@@ -40,3 +40,4 @@
 - Gerar o PNG de ícones (gitignored como todo game-assets): `python tools/asset-extractor/make_type_icons.py`.
 - Summary: uma tela (3 colunas: retrato+info, HP/tabela STAT-IV-EV/EXP, 4 slots+detalhe). Setas trocam de Pokémon, Enter escolhe golpe. sync-assets agora gera type-icons.png (dev apagava o PNG).
 - Líderes: `GYM_LEADER_TEAMS` (lib/trainers.ts). Cards de batalha: altura automática (não fixar altura). Onix/espécies longas ocupam 1 tile lógico; footprint multi-tile não existe.
+- Level-up: `POKEMON_LEARNSETS` = hand (placeholders) < `ROM_HAND_LEARNSETS` < generated; rode `python tools/rom-data/generate-engine-species.py` apos mexer em golpes. Golpes da ROM sem equivalente na engine ficam fora do learnset.
