@@ -17,7 +17,7 @@ import { speciesDexAreas } from "@/lib/gba/dexAreas";
 import { localizedSpeciesName } from "@/lib/i18n/names";
 import { getPokedex, pokedexDisplayName, pokedexFrontSpriteUrl, POKEDEX_SPECIES } from "@/lib/pokedex";
 import { romName } from "@/lib/gba/romText";
-import { useLocale } from "@/lib/i18n";
+import { t, useLocale } from "@/lib/i18n";
 import type { StoryState } from "@/lib/story";
 
 type Props = {
@@ -122,6 +122,7 @@ export function PokedexGba({ story, musicVolume = 70, onClose }: Props) {
   const [state, setState] = useState<DexState>(() => initialDexState());
   const [screen, setScreen] = useState<GbaScreen | null>(null);
   const [tick, setTick] = useState(0);
+  const [missing, setMissing] = useState(false);
   const stateRef = useRef(state);
   stateRef.current = state;
 
@@ -156,9 +157,13 @@ export function PokedexGba({ story, musicVolume = 70, onClose }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    void buildDexScreen(state, ctx, env, tick).then((built) => {
-      if (!cancelled) setScreen(built);
-    });
+    buildDexScreen(state, ctx, env, tick)
+      .then((built) => {
+        if (!cancelled) setScreen(built);
+      })
+      .catch(() => {
+        if (!cancelled) setMissing(true);
+      });
     return () => {
       cancelled = true;
     };
@@ -191,6 +196,14 @@ export function PokedexGba({ story, musicVolume = 70, onClose }: Props) {
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
   }, [musicVolume, onClose]);
+
+  if (missing) {
+    return (
+      <p className="start-menu-notice">
+        {t("ROM UI assets are missing. Run tools/asset-extractor/convert_ui.py and restart the dev server.")}
+      </p>
+    );
+  }
 
   return <GbaCanvas screen={screen} className="pokedex-gba" />;
 }

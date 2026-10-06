@@ -128,5 +128,11 @@ export const pokedexCatalog: Catalog = {
   SIZE: { pt: "TAMANHO", es: "TAMAÑO", fr: "TAILLE", zh: "大小" },
   AREA: { pt: "ÁREA", es: "ÁREA", fr: "ZONE", zh: "分布" },
   " POKéMON": { pt: " POKéMON", es: " POKéMON", fr: " POKéMON", zh: " 宝可梦" },
+  "ROM UI assets are missing. Run tools/asset-extractor/convert_ui.py and restart the dev server.": {
+    pt: "Os assets de UI da ROM não foram encontrados. Rode tools/asset-extractor/convert_ui.py e reinicie o servidor.",
+    es: "Faltan los assets de UI de la ROM. Ejecuta tools/asset-extractor/convert_ui.py y reinicia el servidor.",
+    fr: "Les assets d'UI de la ROM sont absents. Lancez tools/asset-extractor/convert_ui.py et redémarrez le serveur.",
+    zh: "缺少 ROM 界面素材。请运行 tools/asset-extractor/convert_ui.py 并重启开发服务器。",
+  },
   "lbs.": { pt: "lbs.", es: "lbs.", fr: "lbs.", zh: "磅" },
 };
