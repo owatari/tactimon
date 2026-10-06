@@ -176,4 +176,34 @@ export const captureCatalog: Catalog = {
     fr: "Capture {percent}%",
     zh: "捕获 {percent}%",
   },
+  "CATEGORY": {
+    pt: "CATEGORIA",
+    es: "CATEGORÍA",
+    fr: "CATÉGORIE",
+    zh: "分类",
+  },
+  "PHYSICAL": {
+    pt: "FÍSICO",
+    es: "FÍSICO",
+    fr: "PHYSIQUE",
+    zh: "物理",
+  },
+  "SPECIAL": {
+    pt: "ESPECIAL",
+    es: "ESPECIAL",
+    fr: "SPÉCIAL",
+    zh: "特殊",
+  },
+  "AP": {
+    pt: "PA",
+    es: "PA",
+    fr: "PA",
+    zh: "行动点",
+  },
+  "Point at a move to see its details.": {
+    pt: "Aponte para um golpe para ver os detalhes.",
+    es: "Señala un movimiento para ver los detalles.",
+    fr: "Pointez une attaque pour voir les détails.",
+    zh: "指向招式即可查看详情。",
+  },
 };

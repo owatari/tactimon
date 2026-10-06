@@ -11,8 +11,10 @@ import {
 } from "@tactimon/battle-engine";
 import { FrontSprite } from "./StartMenu";
 import { ShinyStar } from "./ShinyStar";
+import { TypeIcon } from "./TypeIcon";
+import { MoveSlots } from "./MoveSlots";
 import { t, useLocale } from "@/lib/i18n";
-import { localizedMoveName, localizedSpeciesName } from "@/lib/i18n/names";
+import { localizedSpeciesName } from "@/lib/i18n/names";
 import { natureEffectText, natureName } from "@/lib/natures";
 import { pokemonDisplayName } from "@/lib/pokemonName";
 import { captureRoster, type CaptureDestination } from "@/lib/captureChoice";
@@ -159,17 +161,23 @@ export function CaptureSummary({ story, pokemon, position, total, newEntry, onRe
         <div className="start-menu-summary-body">
           <FrontSprite species={pokemon.species} name={name} shiny={pokemon.shiny} />
           <div className="capture-summary-info">
-            <dl className="start-menu-dl">
-              <dt>{t("TYPE")}</dt>
-              <dd>{types.map((type) => t(type.toUpperCase())).join(" / ")}</dd>
-              <dt>{t("NATURE")}</dt>
-              <dd>
-                {pokemon.nature ? natureName(pokemon.nature) : "—"}
+            <div className="capture-identity">
+              <div className="capture-cell">
+                <span>{t("TYPE")}</span>
+                <div className="capture-types">
+                  {types.map((type) => (
+                    <TypeIcon key={type} type={type} scale={2} />
+                  ))}
+                </div>
+              </div>
+              <div className="capture-cell nature">
+                <span>{t("NATURE")}</span>
+                <strong>{pokemon.nature ? natureName(pokemon.nature) : "—"}</strong>
                 {pokemon.nature && natureEffectText(pokemon.nature) ? (
-                  <small className="start-menu-nature-effect"> {natureEffectText(pokemon.nature)}</small>
+                  <small>{natureEffectText(pokemon.nature)}</small>
                 ) : null}
-              </dd>
-            </dl>
+              </div>
+            </div>
             <table className="capture-stats">
               <thead>
                 <tr>
@@ -187,23 +195,19 @@ export function CaptureSummary({ story, pokemon, position, total, newEntry, onRe
                       {arrow(row.stat)}
                     </th>
                     <td className={tint(row.stat)}>{row.value}</td>
-                    <td>
+                    <td className="capture-iv-cell">
                       <span className="capture-iv-bar" aria-hidden="true">
                         <i style={{ width: `${(row.iv / 31) * 100}%` }} />
                       </span>
-                      {row.iv}
+                      <b>{row.iv}</b>
                     </td>
                     {showEvs && <td>{row.ev}</td>}
                   </tr>
                 ))}
               </tbody>
             </table>
-            <ul className="capture-moves">
-              {pokemon.activeMoves.map((moveId) => (
-                <li key={moveId}>{localizedMoveName(moveId)}</li>
-              ))}
-            </ul>
           </div>
+          <MoveSlots moves={pokemon.activeMoves} movePp={pokemon.movePp} />
         </div>
 
         <div className="capture-actions">

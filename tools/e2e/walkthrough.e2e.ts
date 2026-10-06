@@ -195,6 +195,12 @@ describe("walkthrough (browser)", () => {
     expect(await count(".capture-summary")).toBe(1);
     expect(await count(".dex-registration")).toBe(0);
     expect(await text(".capture-summary h2")).toContain("Pikachu");
+    expect(await count(".capture-types .type-icon")).toBeGreaterThan(0);
+    expect(await count(".move-slot")).toBe(4);
+    await cdp.eval(`document.querySelector(".move-slot:not(.empty)").dispatchEvent(new MouseEvent("mouseover", { bubbles: true })); document.querySelector(".move-slot:not(.empty)").dispatchEvent(new MouseEvent("mouseenter"))`);
+    await cdp.eval(`document.querySelector(".move-slot:not(.empty)").focus()`);
+    await sleep(200);
+    expect(await text(".move-detail")).toMatch(/AP/);
     await shot("capture-screen");
     await cdp.eval(`(() => { const i = document.querySelector(".capture-actions input"); const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set; set.call(i, "Zap"); i.dispatchEvent(new Event("input", { bubbles: true })); })()`);
     await press("ArrowDown", "Enter");
