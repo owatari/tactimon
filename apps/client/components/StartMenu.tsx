@@ -12,6 +12,8 @@ import {
   type PokemonProgression,
 } from "@tactimon/battle-engine";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
+import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
+import { PokedexScreen, type PokedexView } from "@/components/PokedexScreen";
 import {
   getPokedex,
   pokedexDisplayName,
@@ -137,6 +139,7 @@ export function StartMenu({
   const [screen, setScreen] = useState<MenuScreen>("root");
   const [rootIndex, setRootIndex] = useState(1);
   const [dexIndex, setDexIndex] = useState(0);
+  const [dexView, setDexView] = useState<PokedexView>("list");
   const [partyIndex, setPartyIndex] = useState(0);
   const [partyAction, setPartyAction] = useState<number | null>(
     null,
@@ -166,6 +169,8 @@ export function StartMenu({
     screen,
     rootIndex,
     dexIndex,
+    dexView,
+    dexStatus: dex.entries[dexIndex]?.status ?? "unseen",
     dexCount: dex.entries.length,
     partyIndex,
     partyAction,
@@ -187,6 +192,8 @@ export function StartMenu({
     screen,
     rootIndex,
     dexIndex,
+    dexView,
+    dexStatus: dex.entries[dexIndex]?.status ?? "unseen",
     dexCount: dex.entries.length,
     partyIndex,
     partyAction,
@@ -294,11 +301,25 @@ export function StartMenu({
       }
 
       if (s.screen === "pokedex") {
+        const view = s.dexView;
+        if (view === "area") {
+          if (back || confirm) setDexView("entry");
+          return;
+        }
         if (up) setDexIndex(wrap(s.dexIndex - 1, s.dexCount));
         else if (down) setDexIndex(wrap(s.dexIndex + 1, s.dexCount));
-        else if (left) setDexIndex(Math.max(0, s.dexIndex - 10));
-        else if (right) setDexIndex(Math.min(s.dexCount - 1, s.dexIndex + 10));
-        else if (back || confirm) setScreen("root");
+        else if (view === "list" && left)
+          setDexIndex(Math.max(0, s.dexIndex - 10));
+        else if (view === "list" && right)
+          setDexIndex(Math.min(s.dexCount - 1, s.dexIndex + 10));
+        else if (back) {
+          if (view === "entry") setDexView("list");
+          else setScreen("root");
+        } else if (confirm) {
+          if (view === "list") {
+            if (s.dexStatus !== "unseen") setDexView("entry");
+          } else if (view === "entry") setDexView("area");
+        }
         return;
       }
 
@@ -534,38 +555,18 @@ export function StartMenu({
       )}
 
       {screen === "pokedex" && (
-        <section className="start-menu-screen start-menu-pokedex">
-          <h2>
-            {t("POKéDEX · SEEN {seen} · OWN {own}", {
-              seen: dex.seenCount,
-              own: dex.caughtCount,
-            })}
-          </h2>
-          <div className="start-menu-dex-body">
-            <ul className="start-menu-dex-list">
-              {dex.entries
-                .slice(
-                  Math.max(0, Math.min(dex.entries.length - 9, dexIndex - 4)),
-                  Math.max(0, Math.min(dex.entries.length - 9, dexIndex - 4)) + 9,
-                )
-                .map((entry) => (
-                  <li
-                    key={entry.id}
-                    className={entry.number - 1 === dexIndex ? "selected" : ""}
-                  >
-                    <span>{String(entry.number).padStart(3, "0")}</span>
-                    <strong>
-                      {entry.status === "unseen"
-                        ? "----------"
-                        : pokedexDisplayName(entry.id)}
-                    </strong>
-                    {entry.status === "caught" && <em>●</em>}
-                  </li>
-                ))}
-            </ul>
-            <DexDetail entry={dex.entries[dexIndex]} />
-          </div>
-        </section>
+        <PokedexScreen
+          entries={dex.entries}
+          index={dexIndex}
+          view={dexView}
+          seen={dex.seenCount}
+          caught={dex.caughtCount}
+          onSelect={setDexIndex}
+          onOpen={(i) => {
+            setDexIndex(i);
+            if (dex.entries[i].status !== "unseen") setDexView("entry");
+          }}
+        />
       )}
 
       {screen === "party" && (
@@ -584,7 +585,7 @@ export function StartMenu({
                   .filter(Boolean)
                   .join(" ")}
               >
-                <PokemonPortrait
+                <FrontSprite
                   species={pokemon.species}
                   name={speciesDisplayName(pokemon.species)}
                   compact
@@ -643,7 +644,7 @@ export function StartMenu({
             ))}
           </div>
           <div className="start-menu-summary-body">
-            <PokemonPortrait
+            <FrontSprite
               species={summaryPokemon.species}
               name={speciesDisplayName(summaryPokemon.species)}
             />
@@ -954,6 +955,29 @@ function DexDetail({
         </p>
       )}
       <p>{entry.status === "caught" ? t("Caught.") : t("Seen.")}</p>
+    </div>
+  );
+}
+
+/** FireRed front sprite (64x64, pixelated); falls back to the PMD portrait. */
+function FrontSprite({
+  species,
+  name,
+  compact = false,
+}: {
+  species: string;
+  name: string;
+  compact?: boolean;
+}) {
+  const url = pokedexFrontSpriteUrl(species);
+  if (!url) {
+    return (
+      <PokemonPortrait species={species as never} name={name} compact={compact} />
+    );
+  }
+  return (
+    <div className={`start-menu-front${compact ? " compact" : ""}`}>
+      <img src={url} alt="" draggable={false} />
     </div>
   );
 }

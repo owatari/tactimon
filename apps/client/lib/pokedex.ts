@@ -1,4 +1,5 @@
 import type { StoryState } from "./story";
+import { POKEDEX_ENTRIES } from "./generated/pokedexEntries";
 
 /** Kanto Pokédex (national numbers 1–151) as kebab-case species ids. */
 export const POKEDEX_SPECIES: readonly string[] = (
@@ -121,4 +122,21 @@ export function pokedexDisplayName(id: string): string {
     )
     .join(id.startsWith("nidoran") ? "" : " ")
     .toUpperCase();
+}
+
+/** FireRed Pokedex height: decimetres -> F'II". */
+export function pokedexHeight(decimetres: number): string {
+  const inches = Math.round(decimetres * 3.937);
+  return `${Math.floor(inches / 12)}'${String(inches % 12).padStart(2, "0")}"`;
+}
+
+/** FireRed Pokedex weight: hectograms -> NNN.N lbs. */
+export function pokedexWeight(hectograms: number): string {
+  return `${(hectograms * 0.22046).toFixed(1)} lbs.`;
+}
+
+/** FireRed front sprite URL for a Kanto species, or null when there is none. */
+export function pokedexFrontSpriteUrl(id: string): string | null {
+  const file = POKEDEX_ENTRIES[id]?.sprite;
+  return file ? `/game-assets/firered/pokemon/front/normal/${file}` : null;
 }
