@@ -148,7 +148,10 @@ describe("walkthrough (browser)", () => {
     expect(await text(".start-menu-card")).toContain("1:02:05");
     await shot("trainer-card-back");
     await press("Escape");
-    await press("ArrowUp", "ArrowUp", "Enter", "Enter", "Enter", "ArrowRight", "ArrowRight", "Enter", "Enter");
+    await press("ArrowUp", "ArrowUp", "Enter", "Enter", "Enter", "Enter");
+    expect(await count(".start-menu-summary-single")).toBe(1);
+    expect(await count(".move-slot")).toBe(4);
+    expect(await count(".capture-stats")).toBe(1);
     expect(await text(".start-menu-move-info")).toMatch(/POWER|PODER/);
     await shot("summary-move-info");
   }, 40_000);

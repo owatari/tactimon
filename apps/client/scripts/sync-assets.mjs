@@ -7,6 +7,7 @@ import {
   readFile,
   rm,
 } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -1229,6 +1230,16 @@ await cp(fireRedMusicRuntime, fireRedMusicDestination, {
   recursive: true,
 });
 console.log("synced FireRed runtime music assets");
+
+// Type badges (32x12) cut from the ROM's menu_info sheet (see tools/asset-extractor/make_type_icons.py).
+const typeIcons = spawnSync(
+  process.platform === "win32" ? "python" : "python3",
+  [resolve(repoRoot, "tools/asset-extractor/make_type_icons.py")],
+  { stdio: "inherit" },
+);
+if (typeIcons.status !== 0) {
+  console.warn("type icons not generated (needs Python + Pillow); the UI falls back to text badges.");
+}
 
 console.log(
   "Tactimon FireRed + SpriteCollab + optional PMD VFX/music assets synced.",

@@ -28,5 +28,6 @@ for t, off in OFFSET.items():
         for x in range(32):
             tile = off + (y // 8) * 16 + x // 8
             out.putpixel((x, t * 12 + y), colors[pixel(tile, x % 8, y % 8)])
+(ROOT / "ui").mkdir(parents=True, exist_ok=True)
 out.save(ROOT / "ui/type-icons.png")
 print("ok", out.size)

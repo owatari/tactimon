@@ -206,4 +206,10 @@ export const captureCatalog: Catalog = {
     fr: "Pointez une attaque pour voir les détails.",
     zh: "指向招式即可查看详情。",
   },
+  "←→ switch Pokémon · Enter moves": {
+    pt: "←→ trocar Pokémon · Enter escolher golpe",
+    es: "←→ cambiar Pokémon · Enter elegir movimiento",
+    fr: "←→ changer de Pokémon · Entrée choisir une attaque",
+    zh: "←→ 切换宝可梦 · Enter 选择招式",
+  },
 };

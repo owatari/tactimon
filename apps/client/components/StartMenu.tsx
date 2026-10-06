@@ -16,6 +16,9 @@ import {
 import { natureEffectText, natureName } from "@/lib/natures";
 import { pokemonDisplayName } from "@/lib/pokemonName";
 import { ShinyStar } from "./ShinyStar";
+import { TypeIcon } from "./TypeIcon";
+import { MoveSlots } from "./MoveSlots";
+import { PokemonStatTable } from "./PokemonStatTable";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
 import { PLAYER_SPRITE } from "@/lib/maps";
@@ -80,12 +83,6 @@ type BagUse = {
   moveIndex: number;
 };
 
-type SummaryPage = "info" | "stats" | "moves";
-const SUMMARY_PAGES: readonly SummaryPage[] = [
-  "info",
-  "stats",
-  "moves",
-];
 const PARTY_ACTIONS = ["SUMMARY", "SWITCH", "CANCEL"] as const;
 const OPTION_ROWS = [
   "MUSIC VOLUME",
@@ -154,8 +151,6 @@ export function StartMenu({
     null,
   );
   const [summaryIndex, setSummaryIndex] = useState(0);
-  const [summaryPage, setSummaryPage] =
-    useState<SummaryPage>("info");
   const [pocketIndex, setPocketIndex] = useState(0);
   const [bagIndex, setBagIndex] = useState(0);
   const [optionIndex, setOptionIndex] = useState(0);
@@ -163,7 +158,6 @@ export function StartMenu({
   const [cardBack, setCardBack] = useState(false);
   // FireRed Summary: A on the moves page enters move selection, A again opens the move info page.
   const [summaryMove, setSummaryMove] = useState<number | null>(null);
-  const [summaryMoveInfo, setSummaryMoveInfo] = useState(false);
   const [bagUse, setBagUse] = useState<BagUse | null>(null);
   const [notice, setNotice] = useState("");
   const eraseArmedRef = useRef(false);
@@ -183,9 +177,7 @@ export function StartMenu({
     partyAction,
     switchFrom,
     summaryIndex,
-    summaryPage,
     summaryMove,
-    summaryMoveInfo,
     pocketIndex,
     bagIndex,
     optionIndex,
@@ -204,9 +196,7 @@ export function StartMenu({
     partyAction,
     switchFrom,
     summaryIndex,
-    summaryPage,
     summaryMove,
-    summaryMoveInfo,
     pocketIndex,
     bagIndex,
     optionIndex,
@@ -322,7 +312,6 @@ export function StartMenu({
             setPartyAction(null);
             if (action === "SUMMARY") {
               setSummaryIndex(s.partyIndex);
-              setSummaryPage("info");
               setScreen("summary");
             } else if (action === "SWITCH") {
               if (s.partyIndex === 0) {
@@ -362,28 +351,22 @@ export function StartMenu({
       }
 
       if (s.screen === "summary") {
-        const pageIndex = SUMMARY_PAGES.indexOf(s.summaryPage);
+        // One screen with everything: arrows flip between Pokémon, A selects a move, B backs out.
         if (s.summaryMove !== null) {
           const moveCount = s.party[s.summaryIndex]?.activeMoves.length ?? 0;
-          if (s.summaryMoveInfo) {
-            if (back || confirm) setSummaryMoveInfo(false);
-          } else if (up) setSummaryMove(wrap(s.summaryMove - 1, moveCount));
+          if (up) setSummaryMove(wrap(s.summaryMove - 1, moveCount));
           else if (down) setSummaryMove(wrap(s.summaryMove + 1, moveCount));
-          else if (confirm) setSummaryMoveInfo(true);
-          else if (back) setSummaryMove(null);
+          else if (back || confirm) setSummaryMove(null);
           return;
         }
-        if (confirm && s.summaryPage === "moves") {
-          setSummaryMove(0);
+        if (confirm) {
+          if ((s.party[s.summaryIndex]?.activeMoves.length ?? 0) > 0) setSummaryMove(0);
           return;
         }
-        if (up) setSummaryIndex(wrap(s.summaryIndex - 1, s.party.length));
-        else if (down) setSummaryIndex(wrap(s.summaryIndex + 1, s.party.length));
-        else if (left) setSummaryPage(SUMMARY_PAGES[wrap(pageIndex - 1, SUMMARY_PAGES.length)]);
-        else if (right || confirm) setSummaryPage(SUMMARY_PAGES[wrap(pageIndex + 1, SUMMARY_PAGES.length)]);
+        if (up || left) setSummaryIndex(wrap(s.summaryIndex - 1, s.party.length));
+        else if (down || right) setSummaryIndex(wrap(s.summaryIndex + 1, s.party.length));
         else if (back) {
           setSummaryMove(null);
-          setSummaryMoveInfo(false);
           setPartyIndex(s.summaryIndex);
           setScreen("party");
         }
@@ -632,45 +615,35 @@ export function StartMenu({
       )}
 
       {screen === "summary" && summaryPokemon && (
-        <section className="start-menu-screen start-menu-summary">
+        <section className="start-menu-screen start-menu-summary start-menu-summary-single">
           <h2>
             {pokemonDisplayName(summaryPokemon)}
             {summaryPokemon.shiny && <ShinyStar />} · Lv
             {summaryPokemon.level}
+            <span className="capture-summary-count">
+              {" "}
+              {summaryIndex + 1}/{party.length}
+            </span>
           </h2>
-          <div className="start-menu-summary-tabs">
-            {SUMMARY_PAGES.map((page) => (
-              <span
-                key={page}
-                className={page === summaryPage ? "selected" : ""}
-              >
-                {page === "info"
-                  ? t("INFO")
-                  : page === "stats"
-                    ? t("SKILLS")
-                    : t("MOVES")}
-              </span>
-            ))}
-          </div>
           <div className="start-menu-summary-body">
-            <FrontSprite
-              species={summaryPokemon.species}
-              name={speciesDisplayName(summaryPokemon.species)}
-              shiny={summaryPokemon.shiny}
-            />
-            {summaryPage === "info" && (
-              <SummaryInfo pokemon={summaryPokemon} story={story} />
-            )}
-            {summaryPage === "stats" && (
-              <SummaryStats pokemon={summaryPokemon} />
-            )}
-            {summaryPage === "moves" && (
-              <SummaryMoves
-                pokemon={summaryPokemon}
-                selected={summaryMove}
-                info={summaryMoveInfo}
+            <div className="summary-col summary-col-id">
+              <FrontSprite
+                species={summaryPokemon.species}
+                name={speciesDisplayName(summaryPokemon.species)}
+                shiny={summaryPokemon.shiny}
               />
-            )}
+              <SummaryInfo pokemon={summaryPokemon} story={story} />
+            </div>
+            <div className="summary-col">
+              <SummaryStats pokemon={summaryPokemon} />
+            </div>
+            <div className="summary-col">
+              <MoveSlots
+                moves={summaryPokemon.activeMoves}
+                movePp={summaryPokemon.movePp}
+                selected={summaryMove}
+              />
+            </div>
           </div>
         </section>
       )}
@@ -882,9 +855,8 @@ export function StartMenu({
       {notice && <p className="start-menu-notice">{notice}</p>}
       <p className="start-menu-help">
         {t("↑↓ move · Enter confirm · Esc back")}
-        {screen === "summary" || screen === "bag"
-          ? ` · ${t("←→ change page")}`
-          : ""}
+        {screen === "bag" ? ` · ${t("←→ change page")}` : ""}
+        {screen === "summary" ? " · " + t("←→ switch Pokémon · Enter moves") : ""}
         {screen === "card" ? ` · ${t("Enter flip card")}` : ""}
         {screen === "townmap"
           ? ` · ${t("Enter fly (HM Fly + Thunder Badge) · ● visited")}`
@@ -913,7 +885,11 @@ export function SummaryInfo({
       <dt>{t("NAME")}</dt>
       <dd>{pokemonDisplayName(pokemon)}</dd>
       <dt>{t("TYPE")}</dt>
-      <dd>{types.map((type) => t(type.toUpperCase())).join(" / ")}</dd>
+      <dd className="summary-types">
+        {types.map((type) => (
+          <TypeIcon key={type} type={type} scale={1} />
+        ))}
+      </dd>
       <dt>{t("NATURE")}</dt>
       <dd>
         {pokemon.nature ? natureName(pokemon.nature) : "—"}
@@ -931,108 +907,28 @@ export function SummaryInfo({
   );
 }
 
-/** FireRed Summary, Pokémon Skills page: HP, stats, EXP. POINTS and NEXT LV. */
+/** HP + bar, the STAT / IV / EV table, EXP, NEXT LV. and STATUS (the old Skills page). */
 export function SummaryStats({ pokemon }: { pokemon: PokemonProgression }) {
   useLocale();
-  const stats = calculateDuelPokemonStats(pokemon);
   const progress = experienceProgress(pokemon);
-  const effect = pokemon.nature ? natureEffect(pokemon.nature) : null;
-  const tint = (stat: NatureStat) =>
-    effect?.up === stat ? "nature-up" : effect?.down === stat ? "nature-down" : undefined;
 
   return (
-    <dl className="start-menu-dl">
-      <dt>HP</dt>
-      <dd>
-        {pokemon.currentHp}/{stats.hp}
-      </dd>
-      <dd className="start-menu-dl-wide">
-        <HpBar pokemon={pokemon} />
-      </dd>
-      <dt className={tint("attack")}>{t("ATTACK")}</dt>
-      <dd className={tint("attack")}>{stats.attack}</dd>
-      <dt className={tint("defense")}>{t("DEFENSE")}</dt>
-      <dd className={tint("defense")}>{stats.defense}</dd>
-      <dt className={tint("specialAttack")}>{t("SP. ATK")}</dt>
-      <dd className={tint("specialAttack")}>{stats.specialAttack}</dd>
-      <dt className={tint("specialDefense")}>{t("SP. DEF")}</dt>
-      <dd className={tint("specialDefense")}>{stats.specialDefense}</dd>
-      <dt className={tint("speed")}>{t("SPEED")}</dt>
-      <dd className={tint("speed")}>{stats.speed}</dd>
-      <dt>{t("EXP. POINTS")}</dt>
-      <dd>{progress.total}</dd>
-      <dt>{t("NEXT LV.")}</dt>
-      <dd>{Math.max(0, progress.nextLevelTotal - progress.total)}</dd>
-      <dt>{t("STATUS")}</dt>
-      <dd>
-        {pokemon.currentHp <= 0
-          ? "FNT"
-          : (pokemon.status ?? "OK").toUpperCase()}
-      </dd>
-    </dl>
-  );
-}
-
-/** Move list; A selects a move and the info page shows POWER, ACCURACY, PP and the ROM description. */
-function SummaryMoves({
-  pokemon,
-  selected,
-  info,
-}: {
-  pokemon: PokemonProgression;
-  selected: number | null;
-  info: boolean;
-}) {
-  useLocale();
-  const detailId =
-    selected !== null ? pokemon.activeMoves[selected] : undefined;
-  if (info && detailId) {
-    const move = DUEL_MOVES[detailId];
-    const pp = pokemon.movePp[detailId] ?? move.maxPp;
-    const description =
-      MOVE_DESCRIPTIONS[detailId.replace(/[^a-z]/g, "")] ?? "";
-    return (
-      <div className="start-menu-move-info">
-        <h3>{localizedMoveName(detailId).toUpperCase()}</h3>
-        <dl className="start-menu-dl">
-          <dt>{t("TYPE")}</dt>
-          <dd>{t(move.type.toUpperCase())}</dd>
-          <dt>{t("POWER")}</dt>
-          <dd>{move.power ?? "---"}</dd>
-          <dt>{t("ACCURACY")}</dt>
-          <dd>{move.alwaysHits ? "---" : (move.accuracy ?? 100)}</dd>
-          <dt>PP</dt>
-          <dd>
-            {pp}/{move.maxPp}
-          </dd>
-        </dl>
-        <p className="start-menu-move-text">{description}</p>
-      </div>
-    );
-  }
-
-  return (
-    <ul className="start-menu-moves">
-      {pokemon.activeMoves.map((moveId, index) => {
-        const move = DUEL_MOVES[moveId];
-        const pp = pokemon.movePp[moveId] ?? move.maxPp;
-
-        return (
-          <li
-            key={moveId}
-            className={index === selected ? "selected" : ""}
-          >
-            <span className={`start-menu-type ${move.type}`}>
-              {t(move.type.toUpperCase())}
-            </span>
-            <strong>{localizedMoveName(moveId).toUpperCase()}</strong>
-            <em>
-              PP {pp}/{move.maxPp}
-            </em>
-          </li>
-        );
-      })}
-    </ul>
+    <div className="summary-stats">
+      <HpBar pokemon={pokemon} />
+      <PokemonStatTable pokemon={pokemon} />
+      <dl className="start-menu-dl">
+        <dt>{t("EXP. POINTS")}</dt>
+        <dd>{progress.total}</dd>
+        <dt>{t("NEXT LV.")}</dt>
+        <dd>{Math.max(0, progress.nextLevelTotal - progress.total)}</dd>
+        <dt>{t("STATUS")}</dt>
+        <dd>
+          {pokemon.currentHp <= 0
+            ? "FNT"
+            : (pokemon.status ?? "OK").toUpperCase()}
+        </dd>
+      </dl>
+    </div>
   );
 }
 
