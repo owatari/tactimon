@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createPokemonProgression } from "../packages/battle-engine/src";
-import { WATER_ENCOUNTERS } from "../apps/client/lib/generated/worldWaterEncounters";
 import {
+  WATER_ENCOUNTERS,
   bestOwnedRod,
   hasFishingTable,
   resolveFishing,
@@ -69,5 +69,30 @@ describe("surf encounters", () => {
     expect(encounter!.members.length).toBeGreaterThan(0);
     expect(encounter!.members.length).toBeLessThanOrEqual(4);
     expect(resolveScaledSurfEncounter("pewter-city", 1, [10])).toBeNull();
+  });
+});
+
+describe("version-neutral wild sources", () => {
+  it("Staryu bites on the Super Rod at Pallet, Vermilion and Cinnabar", async () => {
+    for (const map of ["pallet-town", "vermilion-city", "cinnabar-island"]) {
+      const sup = WATER_ENCOUNTERS[map].fishing!.super;
+      expect(sup.some((s) => s.species === "staryu")).toBe(true);
+      expect(sup.reduce((n, s) => n + s.weight, 0)).toBe(100);
+    }
+  });
+
+  it("Slowpoke lives in every Seafoam cave floor without changing table totals", async () => {
+    const { LAND_ENCOUNTERS } = await import("../apps/client/lib/wildEncounters");
+    for (const map of [
+      "seafoam-islands-1f",
+      "seafoam-islands-b-1f",
+      "seafoam-islands-b-2f",
+      "seafoam-islands-b-3f",
+      "seafoam-islands-b-4f",
+    ]) {
+      const t = LAND_ENCOUNTERS[map];
+      expect(t.slots.some((s) => s.species === "slowpoke")).toBe(true);
+      expect(t.slots.reduce((n, s) => n + s.weight, 0)).toBe(100);
+    }
   });
 });

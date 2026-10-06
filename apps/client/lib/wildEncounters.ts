@@ -1,4 +1,5 @@
 import { GENERATED_LAND_ENCOUNTERS } from "./generated/worldEncounters";
+import { applyLandOverrides } from "./encounterOverrides";
 import type {
   WildSpeciesId,
 } from "@tactimon/battle-engine";
@@ -261,10 +262,10 @@ const HAND_LAND_ENCOUNTERS: Readonly<
 
 export const LAND_ENCOUNTERS: Readonly<
   Record<string, LandEncounterTable>
-> = {
+> = applyLandOverrides({
   ...GENERATED_LAND_ENCOUNTERS,
   ...HAND_LAND_ENCOUNTERS,
-};
+});
 
 export function resolveLandEncounter(
   mapId: string,

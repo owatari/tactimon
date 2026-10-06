@@ -6,7 +6,7 @@ import {
 } from "../apps/client/lib/maps";
 import { OVERWORLD_TRAINERS } from "../apps/client/lib/trainers";
 import { LAND_ENCOUNTERS } from "../apps/client/lib/wildEncounters";
-import { WATER_ENCOUNTERS } from "../apps/client/lib/generated/worldWaterEncounters";
+import { WATER_ENCOUNTERS } from "../apps/client/lib/waterEncounters";
 import { STATIC_WORLD_ENCOUNTERS } from "../apps/client/lib/staticEncounters";
 import { IN_GAME_TRADES } from "../apps/client/lib/inGameTrades";
 import { COIN_PRIZES } from "../apps/client/lib/gameCorner";
@@ -133,13 +133,11 @@ describe.skipIf(!hasAssets)("content integrity", () => {
     //  - raid-only legendaries/mythicals;
     //  - LeafGreen-exclusive lines (this is the FireRed ROM);
     //  - Ponyta/Rapidash only spawn on the Sevii Islands (out of scope);
-    //  - Slowpoke/Staryu lines have no wild table in the FireRed ROM at all.
     const agreed = new Set([
       "articuno", "zapdos", "moltres", "mewtwo", "mew",
       "sandshrew", "sandslash", "vulpix", "ninetales",
       "bellsprout", "weepinbell", "victreebel", "magmar", "pinsir",
       "ponyta", "rapidash",
-      "slowpoke", "slowbro", "staryu", "starmie",
     ]);
     expect(missing.filter((s) => !agreed.has(s))).toEqual([]);
   });

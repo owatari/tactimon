@@ -1,8 +1,9 @@
 import type { WildSpeciesId } from "@tactimon/battle-engine";
 import {
-  WATER_ENCOUNTERS,
+  WATER_ENCOUNTERS as GENERATED_WATER_ENCOUNTERS,
   type WaterSlot,
 } from "./generated/worldWaterEncounters";
+import { applyWaterOverrides } from "./encounterOverrides";
 import type { StoryKeyItemId, StoryState } from "./story";
 import { hasStoryKeyItem } from "./story";
 import {
@@ -12,6 +13,8 @@ import {
   type ScaledWildEncounter,
   type WildEncounter,
 } from "./wildEncounters";
+
+export const WATER_ENCOUNTERS = applyWaterOverrides(GENERATED_WATER_ENCOUNTERS);
 
 export type RodId = "old-rod" | "good-rod" | "super-rod";
 
