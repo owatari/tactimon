@@ -1,0 +1,33 @@
+{
+  "id": "2026-10-06-031-battle-polish-items-catch-ui-rival-ai",
+  "title": "Itens mais caros, Revive em caídos, % de captura no hover, animação completa e IA completa dos rivais",
+  "status": "done",
+  "created_at": "2026-10-06",
+  "base_head": "ffbd50e9",
+  "current_head": "7d881a55",
+  "skills": [
+    "battle-development",
+    "pokemon-ui",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "battle-engine",
+    "ui-visual",
+    "verifier"
+  ],
+  "files": [],
+  "commits": [
+    "b10935a9",
+    "8ea2454d",
+    "413bf5e3",
+    "7d881a55"
+  ],
+  "tests": [
+    "pnpm test 512 + engine 281",
+    "typecheck engine/client",
+    "e2e:walkthrough 13/13",
+    "e2e:playthrough 14/14"
+  ]
+}
