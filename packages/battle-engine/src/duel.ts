@@ -6,6 +6,13 @@ import {
   type GeneratedSpeciesId,
 } from "./generated/kanto";
 import {
+  DEFAULT_IV,
+  naturePercent,
+  rollPersonality,
+  type IvSpread,
+  type NatureId,
+} from "./personality";
+import {
   calculateHpStat,
   calculateOtherStat,
 } from "./stats";
@@ -262,6 +269,10 @@ export interface DuelPokemonBuild {
   /** Persistent current PP keyed by learned move. Missing entries start full. */
   movePp?: DuelMovePp;
   evs?: Partial<DuelEvSpread>;
+  /** Individual values (0-31). Omitted → every IV is 15 (old saves, trainer parties). */
+  ivs?: IvSpread;
+  /** Omitted → neutral nature. */
+  nature?: NatureId;
   /** Persistent HP carried between battles. Omit to start at full HP. */
   currentHp?: number;
   /** Persistent major status carried between battles. */
@@ -318,6 +329,8 @@ export interface WildDuelOptions {
   wilds?: readonly {
     species: WildSpeciesId;
     level: number;
+    ivs?: IvSpread;
+    nature?: NatureId;
   }[];
 }
 
@@ -491,6 +504,8 @@ export interface DuelUnit {
   maxHp: number;
   status: DuelMajorStatus;
   sleepTurnsRemaining: number;
+  ivs?: IvSpread;
+  nature?: NatureId;
   attack: number;
   defense: number;
   specialAttack: number;
@@ -559,6 +574,8 @@ export interface DuelState {
     chance: number;
     status: DuelMajorStatus;
     sleepTurnsRemaining: number;
+    ivs?: IvSpread;
+    nature?: NatureId;
   } | null;
   units: DuelUnit[];
   log: string[];
@@ -653,7 +670,6 @@ export interface DuelAiTurnOptions {
 }
 
 const LEVEL = 5;
-const FIXED_IV = 15;
 const MAX_STAGE = 6;
 
 type SpeciesData = {
@@ -3747,7 +3763,7 @@ export function movementPointsForDuelPokemon(
 export function calculateDuelPokemonMaxHp(
   build: Pick<
     DuelPokemonBuild,
-    "species" | "level" | "evs"
+    "species" | "level" | "evs" | "ivs"
   >,
 ): number {
   const base = SPECIES[build.species];
@@ -3758,7 +3774,7 @@ export function calculateDuelPokemonMaxHp(
 
   return calculateHpStat({
     base: base.hp,
-    iv: FIXED_IV,
+    iv: build.ivs?.hp ?? DEFAULT_IV,
     ev: build.evs?.hp ?? 0,
     level,
   });
@@ -3777,7 +3793,7 @@ export type DuelPokemonStatSheet = {
 export function calculateDuelPokemonStats(
   build: Pick<
     DuelPokemonBuild,
-    "species" | "level" | "evs"
+    "species" | "level" | "evs" | "ivs" | "nature"
   >,
 ): DuelPokemonStatSheet {
   const base = SPECIES[build.species];
@@ -3795,9 +3811,10 @@ export function calculateDuelPokemonStats(
   ) =>
     calculateOtherStat({
       base: base[stat],
-      iv: FIXED_IV,
+      iv: build.ivs?.[stat] ?? DEFAULT_IV,
       ev: build.evs?.[stat] ?? 0,
       level,
+      nature: naturePercent(build.nature, stat) / 100,
     });
 
   return {
@@ -3871,35 +3888,42 @@ function makeUnit(
       status,
       build.sleepTurnsRemaining,
     ),
+    ...(build.ivs ? { ivs: { ...build.ivs } } : {}),
+    ...(build.nature ? { nature: build.nature } : {}),
     attack: calculateOtherStat({
       base: base.attack,
-      iv: FIXED_IV,
+      iv: build.ivs?.attack ?? DEFAULT_IV,
       ev: evs.attack,
       level,
+      nature: naturePercent(build.nature, "attack") / 100,
     }),
     defense: calculateOtherStat({
       base: base.defense,
-      iv: FIXED_IV,
+      iv: build.ivs?.defense ?? DEFAULT_IV,
       ev: evs.defense,
       level,
+      nature: naturePercent(build.nature, "defense") / 100,
     }),
     specialAttack: calculateOtherStat({
       base: base.specialAttack,
-      iv: FIXED_IV,
+      iv: build.ivs?.specialAttack ?? DEFAULT_IV,
       ev: evs.specialAttack,
       level,
+      nature: naturePercent(build.nature, "specialAttack") / 100,
     }),
     specialDefense: calculateOtherStat({
       base: base.specialDefense,
-      iv: FIXED_IV,
+      iv: build.ivs?.specialDefense ?? DEFAULT_IV,
       ev: evs.specialDefense,
       level,
+      nature: naturePercent(build.nature, "specialDefense") / 100,
     }),
     speed: calculateOtherStat({
       base: base.speed,
-      iv: FIXED_IV,
+      iv: build.ivs?.speed ?? DEFAULT_IV,
       ev: evs.speed,
       level,
+      nature: naturePercent(build.nature, "speed") / 100,
     }),
     attackStage: 0,
     defenseStage: 0,
@@ -4140,14 +4164,27 @@ export function createWildDuel(
         ];
   const wildBuilds = requestedWilds
     .slice(0, 10)
-    .map((wild) => ({
-      species: wild.species,
-      level: Math.max(
-        1,
-        Math.min(100, Math.trunc(wild.level)),
-      ),
-      moves: [...SPECIES[wild.species].moves],
-    }));
+    .map((wild, index) => {
+      // Every wild rolls its own nature and IVs, seeded so a replayed encounter is identical.
+      const random = createSeededRandom(
+        Math.imul(seed + 1, 0x9e3779b1) ^
+          Math.imul(index + 1, 0x85ebca6b),
+      );
+      // xorshift outputs of nearby seeds correlate: skip the first draws.
+      for (let warmUp = 0; warmUp < 6; warmUp += 1) random();
+      const rolled = rollPersonality(random);
+
+      return {
+        species: wild.species,
+        level: Math.max(
+          1,
+          Math.min(100, Math.trunc(wild.level)),
+        ),
+        moves: [...SPECIES[wild.species].moves],
+        ivs: wild.ivs ?? rolled.ivs,
+        nature: wild.nature ?? rolled.nature,
+      };
+    });
 
   const positions = pickTeamSpawnPositions(
     width,
@@ -5814,6 +5851,8 @@ export function applyDuelAction(
         status: target.status,
         sleepTurnsRemaining:
           target.sleepTurnsRemaining,
+        ivs: target.ivs ? { ...target.ivs } : undefined,
+        nature: target.nature,
       };
       appendLog(
         state,

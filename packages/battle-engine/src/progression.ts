@@ -22,6 +22,13 @@ import {
   type StarterSpeciesId,
   type WildSpeciesId,
 } from "./duel";
+import {
+  isNatureId,
+  normalizeIvs,
+  type IvSpread,
+  type NatureId,
+  type Personality,
+} from "./personality";
 
 export type EvStat =
   | "hp"
@@ -48,6 +55,10 @@ export interface PokemonProgression {
    */
   experience: number;
   evs: EvSpread;
+  /** Individual values; absent on old saves (treated as 15 everywhere). */
+  ivs?: IvSpread;
+  /** Absent on old saves (neutral). */
+  nature?: NatureId;
   /** Current persistent HP. Zero means fainted. */
   currentHp: number;
   /** Persistent non-volatile status. */
@@ -1221,6 +1232,7 @@ export function experienceProgress(
 export function createPokemonProgression<T extends DuelSpeciesId>(
   species: T,
   level: number,
+  personality?: Personality,
 ): PokemonProgression & { species: T } {
   const bounded = boundedLevel(level);
 
@@ -1238,10 +1250,14 @@ export function createPokemonProgression<T extends DuelSpeciesId>(
     level: bounded,
     experience: fireRedExperienceAtLevel(species, bounded),
     evs,
+    ...(personality
+      ? { ivs: { ...personality.ivs }, nature: personality.nature }
+      : {}),
     currentHp: calculateDuelPokemonMaxHp({
       species,
       level: bounded,
       evs,
+      ivs: personality?.ivs,
     }),
     status: null,
     sleepTurnsRemaining: 0,
@@ -1296,10 +1312,13 @@ export function normalizePokemonProgression(
     ...ZERO_EVS,
     ...input.evs,
   };
+  const ivs = normalizeIvs(input.ivs);
+  const nature = isNatureId(input.nature) ? input.nature : undefined;
   const maxHp = calculateDuelPokemonMaxHp({
     species: input.species,
     level,
     evs,
+    ivs,
   });
   const currentHp =
     typeof input.currentHp === "number" &&
@@ -1325,6 +1344,8 @@ export function normalizePokemonProgression(
     level,
     experience: migratedExperience,
     evs,
+    ...(ivs ? { ivs } : {}),
+    ...(nature ? { nature } : {}),
     currentHp,
     status,
     sleepTurnsRemaining: normalizeDuelSleepTurns(

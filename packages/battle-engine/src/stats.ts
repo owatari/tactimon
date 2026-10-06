@@ -9,5 +9,6 @@ export function calculateHpStat(input: StatInput): number {
 
 export function calculateOtherStat(input: StatInput): number {
   const beforeNature = Math.floor(((2 * input.base + iv(input.iv) + Math.floor(ev(input.ev) / 4)) * input.level) / 100) + 5;
-  return Math.floor(beforeNature * (input.nature ?? 1));
+  // Integer percent like the cartridge (110 / 100 / 90) so e.g. 70 * 1.1 never lands on 76.99999.
+  return Math.floor((beforeNature * Math.round((input.nature ?? 1) * 100)) / 100);
 }
