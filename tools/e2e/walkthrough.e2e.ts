@@ -269,4 +269,40 @@ describe("walkthrough (browser)", () => {
     expect(saved.pendingCaptures).toEqual([]);
     expect(saved.boxedPokemon.map((p: { species: string }) => p.species)).toEqual(["pikachu", "rattata", "pidgey"]);
   }, 40_000);
+
+  it("E13. a Poké Ball shows its odds on hover and the capture animation plays out before the results", async () => {
+    const base = chooseStarter("charmander");
+    const story = withPokedex({ ...base, firstBattleComplete: true, inventory: { potion: 1, "poke-ball": 20 } } as never);
+    await load({ ...seedStory(story, { mapId: "viridian-forest", x: 16, y: 30 }), "tactimon.e2e.v1": "1" });
+    for (let i = 0; i < 40 && !(await cdp.eval<boolean>(`typeof window.__tactimon_e2e?.fightWild === "function"`)); i += 1) await sleep(250);
+    await cdp.eval(`window.__tactimon_e2e.fightWild([{ species: "pidgey", level: 3 }])`);
+    await sleep(500);
+    const click = (sel: string, re: string) =>
+      cdp.eval(`[...document.querySelectorAll(${JSON.stringify(sel)})].find((b) => new RegExp(${JSON.stringify(re)}).test(b.textContent.trim()) && !b.disabled)?.click()`);
+    await click("button", "Auto ON");
+    await sleep(1200);
+    await click(".battle-action-list button", "^Item");
+    await sleep(400);
+    await click(".battle-selection-dock-grid button", "Poké Ball");
+    await sleep(300);
+    await cdp.eval(`(() => { const t = document.querySelector(".duel-unit-position.rival"); t?.dispatchEvent(new MouseEvent("mouseover", { bubbles: true })); t?.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false })); })()`);
+    await sleep(300);
+    expect(await text(".capture-chance-preview")).toMatch(/^Catch \d+%$/);
+    // Real speed: the turbo 40x would hide the phases.
+    await click("button", "Speed");
+    await cdp.eval(`document.querySelector(".duel-unit-position.rival")?.click()`);
+    const seen: string[] = [];
+    let resultsAt = -1;
+    for (let i = 0; i < 90 && resultsAt < 0; i += 1) {
+      const state = await cdp.eval<string>(`(() => { const b = document.querySelector(".capture-throw-position"); const ph = b ? [...b.classList].find((c) => c.startsWith("phase-")) : ""; return (ph || "-") + "|" + (document.querySelector(".battle-results-overlay") ? "RESULTS" : "battle"); })()`);
+      const [phase, screen] = state.split("|");
+      if (phase !== "-" && seen.at(-1) !== phase) seen.push(phase);
+      if (screen === "RESULTS") resultsAt = i;
+      await sleep(100);
+    }
+    // A catch (or a failed throw, which keeps the battle going) never skips the sequence.
+    expect(seen[0]).toBe("phase-throw");
+    expect(seen).toContain("phase-shake");
+    if (resultsAt >= 0) expect(seen.at(-1)).toBe("phase-caught");
+  }, 60_000);
 });

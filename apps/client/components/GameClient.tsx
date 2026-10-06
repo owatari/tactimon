@@ -311,15 +311,19 @@ export function GameClient() {
     ].slice(0, 6);
   }, [story.capturedPokemon, story.playerPokemon]);
 
+  // Every party member goes to battle, fainted ones included: they wait off the board and a Revive
+  // can bring them back (task 031). `leadMember` is the first one that can actually fight.
   const deployedParty = useMemo(
     () =>
-      partyProgressions
-        .map((pokemon, partyIndex) => ({
-          pokemon,
-          partyIndex,
-        }))
-        .filter(({ pokemon }) => pokemon.currentHp > 0),
+      partyProgressions.map((pokemon, partyIndex) => ({
+        pokemon,
+        partyIndex,
+      })),
     [partyProgressions],
+  );
+  const leadMember = useMemo(
+    () => deployedParty.find(({ pokemon }) => pokemon.currentHp > 0),
+    [deployedParty],
   );
 
   const battleParty = useMemo<DuelPokemonBuild[]>(
@@ -591,10 +595,18 @@ export function GameClient() {
           ...story.capturedPokemon,
         ].slice(0, 6)
       : [];
+    // Pokémon that started fainted and never got back up take no part in the rewards.
+    const rewardPartyIndices = session.partyIndices.filter(
+      (partyIndex, outcomeIndex) =>
+        !(
+          (fullPartySnapshot[partyIndex]?.currentHp ?? 1) <= 0 &&
+          !((outcome.playerHp[outcomeIndex] ?? 0) > 0)
+        ),
+    );
     const partySnapshot = session.partyIndices
       .map<PokemonProgression | null>((partyIndex, outcomeIndex) => {
         const pokemon = fullPartySnapshot[partyIndex];
-        if (!pokemon) {
+        if (!pokemon || !rewardPartyIndices.includes(partyIndex)) {
           return null;
         }
 
@@ -648,7 +660,7 @@ export function GameClient() {
         let next = applyPartyProgressionRewards(
           current,
           rewards,
-          session.partyIndices,
+          rewardPartyIndices,
         );
 
         if (trainerId) {
@@ -685,7 +697,7 @@ export function GameClient() {
       const progressionEntries =
         progressionQueueFor(
           rewards,
-          session.partyIndices,
+          rewardPartyIndices,
         );
       showResult(progressionEntries);
       setProgressionQueue(
@@ -739,7 +751,7 @@ export function GameClient() {
       const next = applyPartyProgressionRewards(
         current,
         rewards,
-        session.partyIndices,
+        rewardPartyIndices,
       );
 
       if (outcome.captures.length === 0) {
@@ -769,7 +781,7 @@ export function GameClient() {
     const progressionEntries =
       progressionQueueFor(
         rewards,
-        session.partyIndices,
+        rewardPartyIndices,
       );
     showResult(progressionEntries);
     setProgressionQueue(
@@ -1020,7 +1032,7 @@ export function GameClient() {
             story.starter &&
             story.playerPokemon &&
             !story.firstBattleComplete &&
-            battleParty.length > 0
+            leadMember
           ) {
             setBattleSession({
               context,
@@ -1040,7 +1052,7 @@ export function GameClient() {
             story.starter &&
             story.playerPokemon &&
             story.firstBattleComplete &&
-            battleParty.length > 0
+            leadMember
           ) {
             setBattleSession({
               context,
@@ -1066,7 +1078,7 @@ export function GameClient() {
             story.playerPokemon &&
             story.firstBattleComplete &&
             !isStoryTrainerDefeated(story, trainer.id) &&
-            battleParty.length > 0
+            leadMember
           ) {
             if (
               trainer.id ===
@@ -1177,10 +1189,10 @@ export function GameClient() {
       {battleSession &&
         story.starter &&
         story.playerPokemon &&
-        deployedParty[0] && (
+        leadMember && (
           <FirstBattle
             starter={story.starter}
-            progression={deployedParty[0].pokemon}
+            progression={leadMember.pokemon}
             party={battleParty}
             captureAllowed={storyCanCapturePokemon(story)}
             inventory={toBattleInventory(story)}

@@ -7361,3 +7361,66 @@ body {
   grid-column: 1 / -1;
   justify-content: center;
 }
+
+/* Odds of the selected Poké Ball over the wild Pokémon under the cursor. */
+.capture-chance-preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 7px);
+  z-index: 26;
+  transform: translateX(-50%);
+  padding: 3px 6px;
+  border: 2px solid #203850;
+  background: #f8f8e8;
+  color: #182838;
+  font: 700 11px "Courier New", ui-monospace, monospace;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Capture sequence: after the flight the ball wobbles, then clicks shut (caught) or pops open. */
+.capture-throw-position.phase-shake,
+.capture-throw-position.phase-caught,
+.capture-throw-position.phase-broke {
+  animation: none;
+  transform: none;
+}
+
+.capture-throw-position.phase-shake img {
+  animation: capture-ball-wobble 520ms steps(6, end) 1;
+}
+
+.capture-throw-position.phase-caught img {
+  animation: capture-ball-caught 720ms steps(8, end) 1 forwards;
+}
+
+.capture-throw-position.phase-broke img {
+  animation: capture-ball-broke 420ms steps(6, end) 1 forwards;
+}
+
+@keyframes capture-ball-wobble {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  20% { transform: translate(-50%, -50%) rotate(-24deg); }
+  45% { transform: translate(-50%, -50%) rotate(22deg); }
+  70% { transform: translate(-50%, -50%) rotate(-12deg); }
+}
+
+@keyframes capture-ball-caught {
+  0% { transform: translate(-50%, -50%) scale(1); filter: brightness(1); }
+  40% { transform: translate(-50%, -50%) scale(1.35); filter: brightness(1.8); }
+  100% { transform: translate(-50%, -50%) scale(1); filter: brightness(1); }
+}
+
+@keyframes capture-ball-broke {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  60% { transform: translate(-50%, -50%) scale(1.6); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+
+/* Revive list: small portraits instead of the full-size sprite box. */
+.battle-selection-dock-grid .battle-item-choice-name .pokemon-portrait,
+.battle-selection-dock-grid .battle-item-choice-name > div {
+  width: 44px;
+  height: 44px;
+  flex: none;
+}

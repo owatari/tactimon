@@ -10,23 +10,23 @@
 export const BASE_ACTION_POINTS = 6;
 export const SPEED_PER_ACTION_POINT = 25;
 /**
- * AP cost of every battle item (task 030). The cheapest items (Potion, the status cures and the
- * regular balls) cost 4; costs grow with strength and usefulness up to Full Restore / Max Revive
- * (7). The average over the whole list is about 4.75 AP.
+ * AP cost of every battle item (tasks 030/031). The cheapest items (Potion, the status cures and the
+ * regular balls) cost 4; costs grow with strength and usefulness. Revive (7), Full Restore (8) and
+ * Max Revive (9) are the priciest: only quick Pokémon can pay for them. The average is about 5.
  */
 export const ITEM_AP_COSTS = {
   potion: 4,
   "super-potion": 4,
   "hyper-potion": 5,
   "max-potion": 6,
-  "full-restore": 7,
+  "full-restore": 8,
   antidote: 4,
   "parlyz-heal": 4,
   awakening: 4,
   "burn-heal": 4,
   "full-heal": 5,
-  revive: 5,
-  "max-revive": 7,
+  revive: 7,
+  "max-revive": 9,
   "poke-ball": 4,
   "great-ball": 4,
   "ultra-ball": 4,

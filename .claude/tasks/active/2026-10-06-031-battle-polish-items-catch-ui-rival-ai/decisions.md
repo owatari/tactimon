@@ -1,1 +1,2 @@
 # Decisions
+- 2026-10-06 (usuario, durante a execucao): raridade do Auto Catch = RARIDADE DE APARICAO na area (tabela de encontros do mapa), nao a taxa de captura. Ex. Viridian Forest: Pikachu (mais raro), depois Metapod/Kakuna, depois Weedle/Caterpie. Implementacao: cliente passa `appearanceRate` (prob. da especie no mapa) por selvagem ao engine; tier: shiny 3; <=5% = 2; <=15% = 1; resto 0; sem dado de area cai na taxa de captura (+ overrides curados para lendarios etc.).

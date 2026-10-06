@@ -5624,6 +5624,35 @@ export function getDuelCaptureEligibility(
   );
 }
 
+/**
+ * Odds (0-1) that `ballId` catches `targetId` right now (current HP and status), the very number a
+ * throw rolls against; null when the target cannot be caught at all.
+ */
+export function captureChanceFor(
+  state: DuelState,
+  targetId: string,
+  ballId: DuelItemId,
+): number | null {
+  const item = DUEL_ITEMS[ballId];
+  const target = state.units.find((unit) => unit.id === targetId);
+  if (!item || item.kind !== "capture" || !target) return null;
+  if (!getDuelCaptureEligibility(state, targetId).allowed) return null;
+  return fireRedCaptureChance({
+    catchRate: catchRateFor(target.species),
+    ballModifier: item.ballModifier,
+    statusModifier:
+      target.status === "sleep"
+        ? 2
+        : target.status === "poison" ||
+            target.status === "paralysis" ||
+            target.status === "burn"
+          ? 1.5
+          : 1,
+    hp: target.hp,
+    maxHp: target.maxHp,
+  });
+}
+
 export const AUTO_CATCH_HP_RATIO = 0.3;
 
 export function isDuelAutoCatchTarget(
@@ -5906,20 +5935,7 @@ export function applyDuelAction(
         return { state: input, accepted: false, reason: "not-enough-ap" };
       }
       const species = target.species as WildSpeciesId;
-      const chance = fireRedCaptureChance({
-        catchRate: catchRateFor(species),
-        ballModifier: item.ballModifier,
-        statusModifier:
-          target.status === "sleep"
-            ? 2
-            : target.status === "poison" ||
-                target.status === "paralysis" ||
-                target.status === "burn"
-              ? 1.5
-              : 1,
-        hp: target.hp,
-        maxHp: target.maxHp,
-      });
+      const chance = captureChanceFor(state, target.id, item.id) ?? 0;
       const random = createSeededRandom(
         (state.seed ^
           Math.imul(state.round, 0x9e3779b9) ^

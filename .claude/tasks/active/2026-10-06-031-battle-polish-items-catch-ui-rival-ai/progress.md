@@ -1,1 +1,2 @@
 # Progress — 2026-10-06-031-battle-polish-items-catch-ui-rival-ai
+- Feito: custos (revive 7, full-restore 8, max-revive 9), Pokemon caido entra na luta (deployedParty inclui todos; XP so p/ quem lutou), revive reexibe unidade, captureChanceFor + tooltip 'Catch NN%', animacao de captura completa (throw/shake/caught|broke) e fim de batalha so quando !busy; E2E E13. Falta: IA completa rival, raridade por aparicao (pedido do usuario), docs.

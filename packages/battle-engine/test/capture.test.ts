@@ -63,3 +63,36 @@ describe("catch rates", () => {
     expect(fireRedCaptureChance({ catchRate: Number.NaN, ballModifier: 1, statusModifier: 1, hp: 5, maxHp: 50 })).toBeGreaterThan(0);
   });
 });
+
+describe("captureChanceFor (the hover odds)", () => {
+  it("equals the chance a throw rolls against, and is null for targets that cannot be caught", async () => {
+    const { createWildDuel, captureChanceFor, applyDuelAction, createTrainerDuel } = await import("../src");
+    let checked = 0;
+    for (let seed = 1; seed <= 60; seed += 1) {
+      const state = createWildDuel({
+        seed, width: 9, height: 7, blocked: [], captureAllowed: true,
+        items: { potion: 0, "poke-ball": 3, "great-ball": 2, "ultra-ball": 1 },
+        players: [{ species: "bulbasaur", level: 20, moves: ["tackle"] }],
+        wildSpecies: ["rattata", "snorlax", "machop", "pidgey"][seed % 4] as never, wildLevel: 3 + (seed % 7),
+      } as never);
+      const player = state.units.find((u) => u.side === "player")!;
+      const wild = state.units.find((u) => u.side === "rival")!;
+      const hurt = { ...state, activeUnitId: player.id, units: state.units.map((u) => u.id === wild.id ? { ...u, hp: Math.max(1, Math.floor(u.maxHp * ((seed % 9) + 1) / 10)), status: seed % 3 === 0 ? "sleep" as const : null } : { ...u, ap: 12, maxAp: 12 }) };
+      for (const ball of ["poke-ball", "great-ball", "ultra-ball"] as const) {
+        const chance = captureChanceFor(hurt, wild.id, ball)!;
+        expect(chance).toBeGreaterThan(0);
+        expect(chance).toBeLessThanOrEqual(1);
+        const result = applyDuelAction(hurt, { kind: "use-item", unitId: player.id, itemId: ball, targetId: wild.id });
+        expect(result.accepted).toBe(true);
+        expect(result.presentation?.kind === "capture" ? result.presentation.chance : -1).toBeCloseTo(chance, 10);
+        checked += 1;
+      }
+    }
+    expect(checked).toBe(180);
+    const trainer = createTrainerDuel({ seed: 1, players: [{ species: "bulbasaur", level: 5, moves: ["tackle"] }], rivals: [{ species: "rattata", level: 5, moves: ["tackle"] }] } as never);
+    const foe = trainer.units.find((u) => u.side === "rival")!;
+    expect(captureChanceFor(trainer, foe.id, "poke-ball")).toBeNull();
+    expect(captureChanceFor(trainer, "nobody", "poke-ball")).toBeNull();
+    expect(captureChanceFor(trainer, foe.id, "potion")).toBeNull();
+  });
+});

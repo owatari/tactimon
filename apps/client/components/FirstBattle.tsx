@@ -18,6 +18,7 @@ import {
   calculateTypeEffectiveness,
   getActiveDuelUnit,
   itemApCost,
+  captureChanceFor,
   getDuelCaptureEligibility,
   getDuelMovePp,
   getDuelMoveAreaTargetIds,
@@ -223,6 +224,8 @@ type CaptureThrowEvent = {
   from: DuelPoint;
   to: DuelPoint;
   nonce: number;
+  /** flight → the ball wobbles on the ground → it clicks shut (caught) or pops open (broke free). */
+  phase: "throw" | "shake" | "caught" | "broke";
 };
 
 const STEP_ANIMATION_MS = 145;
@@ -560,6 +563,8 @@ export function FirstBattle({
   const [vfx, setVfx] = useState<VfxEvent | null>(null);
   const [captureThrow, setCaptureThrow] =
     useState<CaptureThrowEvent | null>(null);
+  /** The Pokémon inside the ball while it wobbles. */
+  const [captureHiddenId, setCaptureHiddenId] = useState<string | null>(null);
   const [animations, setAnimations] = useState<
     Record<string, UnitAnimationState>
   >({});
@@ -601,7 +606,8 @@ export function FirstBattle({
   // Hand the outcome to the single post-battle results screen (GameClient)
   // shortly after the last action; there is no in-battle result panel.
   useEffect(() => {
-    if (state.status !== "finished" || completedRef.current) {
+    // Never end the battle while an animation (a capture, an attack…) is still playing.
+    if (state.status !== "finished" || completedRef.current || busy) {
       return;
     }
 
@@ -654,7 +660,7 @@ export function FirstBattle({
     }, BATTLE_END_BEAT_MS / battleSpeedRef.current);
 
     return () => clearTimeout(timer);
-  }, [encounter, state]);
+  }, [busy, encounter, state]);
 
   // A fainted unit is already gone for the engine (no tile, turn or
   // targeting). Visually it only plays a short vanish instead of the full
@@ -684,6 +690,29 @@ export function FirstBattle({
       );
     }
   }, [hiddenUnitIds, state.units]);
+
+  // A revived Pokémon comes back on its new tile: show it again and drop its stale vanish timer.
+  useEffect(() => {
+    const revived = state.units.filter(
+      (unit) => unit.hp > 0 && hiddenUnitIds.has(unit.id),
+    );
+    if (revived.length === 0) return;
+    for (const unit of revived) {
+      const timer = faintTimersRef.current.get(unit.id);
+      if (timer) {
+        clearTimeout(timer);
+        faintTimersRef.current.delete(unit.id);
+      }
+      setVisualPosition(unit.id, unit.position);
+      setUnitAnimation(unit.id, "idle");
+    }
+    setHiddenUnitIds((current) => {
+      const next = new Set(current);
+      for (const unit of revived) next.delete(unit.id);
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.units, hiddenUnitIds]);
 
   useEffect(() => {
     const timers = faintTimersRef.current;
@@ -1293,16 +1322,37 @@ export function FirstBattle({
       );
 
       if (actorBefore && targetBefore) {
+        const from = visualPositions[actorBefore.id] ?? actorBefore.position;
+        const to = visualPositions[targetBefore.id] ?? targetBefore.position;
         setCaptureThrow({
-          from:
-            visualPositions[actorBefore.id] ??
-            actorBefore.position,
-          to:
-            visualPositions[targetBefore.id] ??
-            targetBefore.position,
+          from,
+          to,
           nonce: ++captureThrowNonceRef.current,
+          phase: "throw",
         });
         await wait(360);
+        // The Pokémon is pulled into the ball, which wobbles once to three times before it settles.
+        setCaptureHiddenId(targetId);
+        const wobbles = presentation.success
+          ? 3
+          : 1 + ((beforeState.round + targetBefore.hp) % 2);
+        for (let wobble = 0; wobble < wobbles; wobble += 1) {
+          setCaptureThrow({
+            from: to,
+            to,
+            nonce: ++captureThrowNonceRef.current,
+            phase: "shake",
+          });
+          await wait(520);
+        }
+        setCaptureThrow({
+          from: to,
+          to,
+          nonce: ++captureThrowNonceRef.current,
+          phase: presentation.success ? "caught" : "broke",
+        });
+        await wait(presentation.success ? 720 : 420);
+        setCaptureHiddenId(null);
         setCaptureThrow(null);
       }
 
@@ -1311,9 +1361,8 @@ export function FirstBattle({
           ? t("Capture successful!")
           : t("It broke free from the Poké Ball!"),
       );
-      if (presentation.success) {
-        setUnitAnimation(targetId, "faint");
-      }
+      // Only now does the engine's new state (possibly "finished") reach the screen, so the battle
+      // can never end before the capture animation has played to the end.
       setState(result.state);
       await wait(360);
       return;
@@ -2033,7 +2082,9 @@ export function FirstBattle({
           <div className="duel-units-layer" style={arenaBox}>
             {state.units
               .filter(
-                (unit) => !hiddenUnitIds.has(unit.id),
+                (unit) =>
+                  !hiddenUnitIds.has(unit.id) &&
+                  unit.id !== captureHiddenId,
               )
               .map((unit) => {
               const position =
@@ -2132,6 +2183,32 @@ export function FirstBattle({
                       {pokemonDisplayName(unit)}
                     </span>
                     {hoveredTargetId === unit.id &&
+                      command === "item-target" &&
+                      selectedItem &&
+                      DUEL_ITEMS[selectedItem].kind === "capture" &&
+                      (() => {
+                        const chance = captureChanceFor(
+                          state,
+                          unit.id,
+                          selectedItem,
+                        );
+                        return (
+                          <span className="capture-chance-preview">
+                            {chance === null
+                              ? "—"
+                              : t("Catch {percent}%", {
+                                  percent: Math.max(
+                                    1,
+                                    Math.min(
+                                      100,
+                                      Math.round(chance * 100),
+                                    ),
+                                  ),
+                                })}
+                          </span>
+                        );
+                      })()}
+                    {hoveredTargetId === unit.id &&
                       moveEffectiveness !== null && (
                         <span
                           className={[
@@ -2225,7 +2302,7 @@ export function FirstBattle({
             {captureThrow && (
               <div
                 key={captureThrow.nonce}
-                className="capture-throw-position"
+                className={`capture-throw-position phase-${captureThrow.phase}`}
                 style={{
                   left: `${(captureThrow.from.x / state.width) * 100}%`,
                   top: `${(captureThrow.from.y / state.height) * 100}%`,

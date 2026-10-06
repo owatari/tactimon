@@ -170,4 +170,10 @@ export const captureCatalog: Catalog = {
     fr: "Pas assez d'AP pour cet objet.",
     zh: "AP不足，无法使用该道具。",
   },
+  "Catch {percent}%": {
+    pt: "Captura {percent}%",
+    es: "Captura {percent}%",
+    fr: "Capture {percent}%",
+    zh: "捕获 {percent}%",
+  },
 };

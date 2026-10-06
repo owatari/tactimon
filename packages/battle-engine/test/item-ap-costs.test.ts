@@ -5,6 +5,7 @@ import {
   applyDuelAction,
   createTrainerDuel,
   createWildDuel,
+  getActiveDuelUnit,
   itemApCost,
   type DuelItemId,
   type DuelState,
@@ -21,20 +22,23 @@ describe("AP cost of items", () => {
     expect(Math.min(...values)).toBe(4);
     expect(itemApCost("potion")).toBe(4);
     const max = Math.max(...values);
-    expect(itemApCost("full-restore")).toBe(max);
     expect(itemApCost("max-revive")).toBe(max);
-    expect(max).toBeGreaterThan(itemApCost("hyper-potion"));
+    // Revive, Full Restore and Max Revive are the priciest items, above Max Potion and everything else.
+    for (const id of ["revive", "full-restore", "max-revive"]) {
+      expect(itemApCost(id), id).toBeGreaterThan(itemApCost("max-potion"));
+    }
+    expect(itemApCost("revive")).toBeLessThan(itemApCost("full-restore"));
+    expect(itemApCost("full-restore")).toBeLessThan(itemApCost("max-revive"));
   });
 
   it("averages about 4-5 AP and grows with strength inside each family", () => {
     const average = costs.reduce((sum, [, cost]) => sum + cost, 0) / costs.length;
     expect(average).toBeGreaterThanOrEqual(4);
-    expect(average).toBeLessThan(5.2);
+    expect(average).toBeLessThan(5.6);
     expect(itemApCost("potion")).toBeLessThanOrEqual(itemApCost("super-potion"));
     expect(itemApCost("super-potion")).toBeLessThanOrEqual(itemApCost("hyper-potion"));
     expect(itemApCost("hyper-potion")).toBeLessThan(itemApCost("max-potion"));
     expect(itemApCost("max-potion")).toBeLessThan(itemApCost("full-restore"));
-    expect(itemApCost("revive")).toBeLessThan(itemApCost("max-revive"));
     expect(itemApCost("poke-ball")).toBeLessThanOrEqual(itemApCost("master-ball"));
     expect(itemApCost("unknown-item")).toBe(4);
   });
@@ -78,16 +82,16 @@ describe("new battle items", () => {
     expect(result.state.items["max-potion"]).toBe(0);
   });
 
-  it("Full Restore heals and cures for 7 AP, and refuses a healthy Pokémon", () => {
+  it("Full Restore heals and cures for 8 AP, and refuses a healthy Pokémon", () => {
     const { actor, withUnit } = duel({ potion: 0, "poke-ball": 0, "full-restore": 2 });
-    const sick = withUnit(actor.id, { hp: 5, status: "poison", ap: 9, maxAp: 9 });
+    const sick = withUnit(actor.id, { hp: 5, status: "poison", ap: 10, maxAp: 10 });
     const result = use(sick, "full-restore", actor.id, actor.id);
     expect(result.accepted).toBe(true);
     const after = result.state.units.find((u) => u.id === actor.id)!;
     expect(after.hp).toBe(after.maxHp);
     expect(after.status).toBeNull();
-    expect(after.ap).toBe(9 - 7);
-    const healthy = withUnit(actor.id, { ap: 9, maxAp: 9 });
+    expect(after.ap).toBe(10 - 8);
+    const healthy = withUnit(actor.id, { ap: 10, maxAp: 10 });
     expect(use(healthy, "full-restore", actor.id, actor.id).reason).toBe("target-full-hp");
   });
 
@@ -112,23 +116,23 @@ describe("new battle items", () => {
     expect(back.ap).toBe(0);
     const spots = result.state.units.filter((u) => u.hp > 0).map((u) => `${u.position.x},${u.position.y}`);
     expect(new Set(spots).size).toBe(spots.length);
-    expect(result.state.units.find((u) => u.id === actor.id)!.ap).toBe(9 - 5);
+    expect(result.state.units.find((u) => u.id === actor.id)!.ap).toBe(9 - 7);
   });
 
   it("Max Revive restores full HP; a healthy target, a foe or too little AP are refused", () => {
     const { state: base, actor, ally, withUnit } = duel({ potion: 0, "poke-ball": 0, "max-revive": 1, revive: 1 });
     let state = withUnit(ally.id, { hp: 0 });
-    state = withUnit(actor.id, { ap: 9, maxAp: 9 }, state);
+    state = withUnit(actor.id, { ap: 10, maxAp: 10 }, state);
     const full = use(state, "max-revive", actor.id, ally.id);
     expect(full.accepted).toBe(true);
     const back = full.state.units.find((u) => u.id === ally.id)!;
     expect(back.hp).toBe(back.maxHp);
-    expect(full.state.units.find((u) => u.id === actor.id)!.ap).toBe(9 - 7);
+    expect(full.state.units.find((u) => u.id === actor.id)!.ap).toBe(10 - 9);
 
     expect(use(withUnit(actor.id, { ap: 9, maxAp: 9 }, base), "revive", actor.id, ally.id).reason).toBe("target-not-fainted");
     const foe = base.units.find((u) => u.side === "rival")!;
     expect(use(withUnit(actor.id, { ap: 9, maxAp: 9 }, base), "revive", actor.id, foe.id).accepted).toBe(false);
-    const poor = withUnit(actor.id, { ap: 6, maxAp: 6 }, withUnit(ally.id, { hp: 0 }));
+    const poor = withUnit(actor.id, { ap: 8, maxAp: 8 }, withUnit(ally.id, { hp: 0 }));
     expect(use(poor, "max-revive", actor.id, ally.id).reason).toBe("not-enough-ap");
   });
 
@@ -146,5 +150,48 @@ describe("new battle items", () => {
     expect(poke.state.units.find((u) => u.id === player.id)!.ap).toBe(12 - itemApCost("poke-ball"));
     const master = use(ready, "master-ball", player.id, wild.id);
     expect(master.state.units.find((u) => u.id === player.id)!.ap).toBe(12 - itemApCost("master-ball"));
+  });
+});
+
+describe("Pokémon that arrive fainted", () => {
+  it("start off the board, never get a turn, and a Revive brings them back into the fight", () => {
+    const state = createWildDuel({
+      seed: 91, width: 9, height: 7, blocked: [], captureAllowed: false,
+      items: { potion: 0, "poke-ball": 0, revive: 1 },
+      players: [
+        { species: "bulbasaur", level: 20, moves: ["tackle"], currentHp: 0 },
+        { species: "squirtle", level: 20, moves: ["tackle"] },
+      ],
+      wildSpecies: "rattata", wildLevel: 3,
+    } as never);
+    const dead = state.units.find((u) => u.species === "bulbasaur")!;
+    const alive = state.units.find((u) => u.species === "squirtle")!;
+    expect(dead.hp).toBe(0);
+    // The first turn belongs to a living unit; the fainted one is skipped for good.
+    expect(getActiveDuelUnit(state)!.hp).toBeGreaterThan(0);
+    expect(state.status).toBe("active");
+
+    const ready = { ...state, activeUnitId: alive.id, units: state.units.map((u) => (u.id === alive.id ? { ...u, ap: 10, maxAp: 10 } : u)) };
+    const revived = applyDuelAction(ready, { kind: "use-item", unitId: alive.id, itemId: "revive", targetId: dead.id });
+    expect(revived.accepted).toBe(true);
+    const back = revived.state.units.find((u) => u.id === dead.id)!;
+    expect(back.hp).toBeGreaterThan(0);
+    // It is part of the turn order again for the next round.
+    expect(revived.state.turnOrder).toContain(dead.id);
+  });
+
+  it("a team that is entirely fainted but for one unit still loses only when that unit falls", () => {
+    const state = createWildDuel({
+      seed: 92, width: 9, height: 7, blocked: [], captureAllowed: false,
+      players: [
+        { species: "bulbasaur", level: 20, moves: ["tackle"], currentHp: 0 },
+        { species: "squirtle", level: 20, moves: ["tackle"], currentHp: 0 },
+        { species: "charmander", level: 20, moves: ["scratch"] },
+      ],
+      wildSpecies: "rattata", wildLevel: 3,
+    } as never);
+    expect(state.status).toBe("active");
+    expect(state.units.filter((u) => u.side === "player" && u.hp > 0)).toHaveLength(1);
+    expect(getActiveDuelUnit(state)!.species === "charmander" || getActiveDuelUnit(state)!.side === "rival").toBe(true);
   });
 });
