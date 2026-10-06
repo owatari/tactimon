@@ -6,6 +6,11 @@ import {
   type GeneratedSpeciesId,
 } from "./generated/kanto";
 import {
+  POKE_BALL_AP_COST,
+  apCostForMove,
+  maxActionPointsForSpeed,
+} from "./actionCost";
+import {
   DEFAULT_IV,
   SHINY_ODDS,
   naturePercent,
@@ -19,7 +24,7 @@ import {
   calculateOtherStat,
 } from "./stats";
 import {
-  experimentalCaptureChance,
+  fireRedCaptureChance,
   getCaptureEligibility,
   resolveCaptureRoll,
   type CaptureEligibility,
@@ -495,8 +500,6 @@ export type DuelPresentationEvent =
       targetIds: string[];
       success: boolean;
       chance: number;
-      xpRatio: number;
-      targetFlees: boolean;
     };
 
 export interface DuelUnit {
@@ -530,8 +533,6 @@ export interface DuelUnit {
   speedStage: number;
   ap: number;
   maxAp: number;
-  mp: number;
-  maxMp: number;
   position: DuelPoint;
   moves: DuelMoveId[];
   movePp: DuelMovePp;
@@ -553,6 +554,8 @@ export interface DuelUnit {
   disabledMove: DuelMoveId | null;
   disableTurnsRemaining: number;
   captureAttempted: boolean;
+  /** Caught by a Poké Ball: removed from the field but not defeated (no knock-out rewards). */
+  captured?: boolean;
 }
 
 export interface DuelState {
@@ -576,21 +579,23 @@ export interface DuelState {
   activeUnitId: string;
   status: DuelStatus;
   winner: DuelSide | null;
-  captureResult: {
-    success: boolean;
-    species: WildSpeciesId;
-    level: number;
-    xpRatio: number;
-    chance: number;
-    status: DuelMajorStatus;
-    sleepTurnsRemaining: number;
-    ivs?: IvSpread;
-    nature?: NatureId;
-    shiny?: boolean;
-  } | null;
+  /** Every Pokémon caught so far (the battle goes on until no wild Pokémon is left). */
+  captures: DuelCaptureRecord[];
   units: DuelUnit[];
   log: string[];
   logData: DuelLogEntry[];
+}
+
+export interface DuelCaptureRecord {
+  species: WildSpeciesId;
+  level: number;
+  chance: number;
+  status: DuelMajorStatus;
+  sleepTurnsRemaining: number;
+  ivs?: IvSpread;
+  nature?: NatureId;
+  shiny?: boolean;
+  nickname?: string;
 }
 
 export type DuelLogEntry = {
@@ -3079,13 +3084,22 @@ const HAND_DUEL_MOVES: Record<HandDuelMoveId, DuelMove> = {
 
 };
 
-export const DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
+const RAW_DUEL_MOVES: Record<DuelMoveId, DuelMove> = {
   ...HAND_DUEL_MOVES,
   ...(GENERATED_MOVES as unknown as Record<
     GeneratedMoveId,
     DuelMove
   >),
 };
+
+/** Every move's AP cost comes from one formula (power, hits, footprint, effects): see actionCost.ts. */
+export const DUEL_MOVES: Record<DuelMoveId, DuelMove> =
+  Object.fromEntries(
+    Object.entries(RAW_DUEL_MOVES).map(([id, move]) => [
+      id,
+      { ...move, apCost: apCostForMove(move) },
+    ]),
+  ) as Record<DuelMoveId, DuelMove>;
 
 export function normalizeDuelMovePp(
   moveIds: readonly DuelMoveId[],
@@ -3760,17 +3774,6 @@ export function getDuelMoveHitChance(
   );
 }
 
-export function movementPointsForDuelPokemon(
-  species: DuelSpeciesId,
-): number {
-  const speed = SPECIES[species].speed;
-
-  if (speed < 40) return 2;
-  if (speed < 75) return 3;
-  if (speed < 105) return 4;
-  return 5;
-}
-
 export function calculateDuelPokemonMaxHp(
   build: Pick<
     DuelPokemonBuild,
@@ -3867,6 +3870,15 @@ function makeUnit(
   };
   const level = Math.max(1, Math.min(100, Math.trunc(build.level)));
 
+  const speedStat = calculateOtherStat({
+    base: base.speed,
+    iv: build.ivs?.speed ?? DEFAULT_IV,
+    ev: evs.speed,
+    level,
+    nature: naturePercent(build.nature, "speed") / 100,
+  });
+  // 6 AP, +1 per 25 Speed: walking (1 AP per tile), moves and Poké Balls all spend from this pool.
+  const actionPoints = maxActionPointsForSpeed(speedStat);
   const maxHp = calculateDuelPokemonMaxHp(build);
   const currentHp =
     typeof build.currentHp === "number" &&
@@ -3931,13 +3943,7 @@ function makeUnit(
       level,
       nature: naturePercent(build.nature, "specialDefense") / 100,
     }),
-    speed: calculateOtherStat({
-      base: base.speed,
-      iv: build.ivs?.speed ?? DEFAULT_IV,
-      ev: evs.speed,
-      level,
-      nature: naturePercent(build.nature, "speed") / 100,
-    }),
+    speed: speedStat,
     attackStage: 0,
     defenseStage: 0,
     specialAttackStage: 0,
@@ -3945,10 +3951,8 @@ function makeUnit(
     accuracyStage: 0,
     evasionStage: 0,
     speedStage: 0,
-    ap: 6,
-    maxAp: 6,
-    mp: movementPointsForDuelPokemon(build.species),
-    maxMp: movementPointsForDuelPokemon(build.species),
+    ap: actionPoints,
+    maxAp: actionPoints,
     position,
     moves: [...build.moves].slice(0, 4),
     movePp: normalizeDuelMovePp(
@@ -4077,7 +4081,7 @@ export function createTrainerDuel(
     activeUnitId: active.id,
     status: "active",
     winner: null,
-    captureResult: null,
+    captures: [],
     units,
     ...buildLog([
       L("{trainer} challenges you!", { trainer: trainerName }),
@@ -4270,7 +4274,7 @@ export function createWildDuel(
     activeUnitId: active.id,
     status: "active",
     winner: null,
-    captureResult: null,
+    captures: [],
     units,
     ...buildLog([
       wilds.length === 1
@@ -4431,7 +4435,7 @@ function cloneState(state: DuelState): DuelState {
     turnOrder: [...state.turnOrder],
     items: { ...state.items },
     rivalItems: { ...state.rivalItems },
-    captureResult: state.captureResult ? { ...state.captureResult } : null,
+    captures: state.captures.map((record) => ({ ...record })),
     units: state.units.map((unit) => ({
       ...unit,
       position: { ...unit.position },
@@ -4501,7 +4505,7 @@ function reachableCellsWithCosts(
   const unit = state.units.find(
     (candidate) => candidate.id === unitId,
   );
-  if (!unit || unit.hp <= 0 || unit.mp <= 0) {
+  if (!unit || unit.hp <= 0 || unit.ap <= 0) {
     return {
       cells: [],
       costs: new Map(),
@@ -4543,7 +4547,7 @@ function reachableCellsWithCosts(
       const key = pointKey(next);
 
       if (
-        cost > unit.mp ||
+        cost > unit.ap ||
         !inBounds(state, next) ||
         occupied.has(key) ||
         blocked.has(key)
@@ -5060,7 +5064,6 @@ function activateNextTurnUnit(
       if (!next) continue;
 
       next.ap = next.maxAp;
-      next.mp = next.maxMp;
 
       if (next.status === "sleep") {
         const remaining = normalizeDuelSleepTurns(
@@ -5078,7 +5081,6 @@ function activateNextTurnUnit(
         } else {
           next.sleepTurnsRemaining = remaining - 1;
           next.ap = 0;
-          next.mp = 0;
           appendLog(
             state,
             "{actor} is fast asleep.", { actor: next.displayName },
@@ -5091,7 +5093,7 @@ function activateNextTurnUnit(
       state.turnIndex = nextIndex;
       appendLog(
         state,
-        "{actor}'s turn. AP {ap}, MP {mp}.", { actor: next.displayName, ap: next.ap, mp: next.mp },
+        "{actor}'s turn. AP {ap}.", { actor: next.displayName, ap: next.ap },
       );
       return true;
     }
@@ -5372,7 +5374,6 @@ function releaseChargedMove(
     target.hp <= 0
   ) {
     actor.ap = 0;
-    actor.mp = 0;
     appendLog(
       state,
       "{actor} lost the target of the charged attack.", { actor: actor.displayName },
@@ -5394,7 +5395,6 @@ function releaseChargedMove(
     distance > move.maxRange
   ) {
     actor.ap = 0;
-    actor.mp = 0;
     appendLog(
       state,
       "{actor} released {move}, but {target} moved out of range.", { actor: actor.displayName, move: move.name, target: target.displayName },
@@ -5413,7 +5413,6 @@ function releaseChargedMove(
 
   if (paralysisBlocksMove(state, actor)) {
     actor.ap = 0;
-    actor.mp = 0;
     appendLog(
       state,
       "{actor} is paralyzed and couldn't release {move}.", { actor: actor.displayName, move: move.name },
@@ -5427,7 +5426,6 @@ function releaseChargedMove(
   }
 
   actor.ap = 0;
-  actor.mp = 0;
 
   if (!moveAccuracySucceeds(state, actor, target, move)) {
     appendLog(
@@ -5518,21 +5516,6 @@ export function getDuelCaptureEligibility(
   const target = state.units.find((unit) => unit.id === targetId);
   if (!target) return { allowed: false, reason: "target-not-wild" };
 
-  if (
-    state.battleKind === "wild" &&
-    target.side === "rival" &&
-    state.units.filter(
-      (unit) =>
-        unit.side === "rival" &&
-        unit.hp > 0,
-    ).length > 1
-  ) {
-    return {
-      allowed: false,
-      reason: "multiple-wilds",
-    };
-  }
-
   return getCaptureEligibility(
     {
       id: target.id,
@@ -5550,7 +5533,7 @@ export function getDuelCaptureEligibility(
         state.battleKind === "wild" && state.captureAllowed
           ? "allowed"
           : "forbidden",
-      captureHpThresholdRatio: 0.5,
+      captureHpThresholdRatio: 1,
     },
   );
 }
@@ -5829,13 +5812,14 @@ export function applyDuelAction(
         return {
           state: input,
           accepted: false,
-          reason: eligibility.reason === "hp-too-high"
-            ? "capture-hp-too-high"
-            : eligibility.reason ?? "capture-not-allowed",
+          reason: eligibility.reason ?? "capture-not-allowed",
         };
       }
+      if (actor.ap < POKE_BALL_AP_COST) {
+        return { state: input, accepted: false, reason: "not-enough-ap" };
+      }
       const species = target.species as WildSpeciesId;
-      const chance = experimentalCaptureChance({
+      const chance = fireRedCaptureChance({
         catchRate: WILD_CATCH_RATE[species],
         ballModifier: item.ballModifier,
         statusModifier:
@@ -5846,36 +5830,49 @@ export function applyDuelAction(
                 target.status === "burn"
               ? 1.5
               : 1,
-        hpRatio: target.hp / target.maxHp,
-        thresholdRatio: 0.5,
+        hp: target.hp,
+        maxHp: target.maxHp,
       });
       const random = createSeededRandom(
-        (state.seed ^ Math.imul(state.round, 0x9e3779b9) ^ target.hp) >>> 0,
+        (state.seed ^
+          Math.imul(state.round, 0x9e3779b9) ^
+          Math.imul(target.hp + 1, 0x85ebca6b) ^
+          Math.imul(actor.ap + 1, 0xc2b2ae35) ^
+          (state.captures.length * 0x27d4eb2f)) >>> 0,
       );
-      const resolution = resolveCaptureRoll(random(), chance, target.hp, target.maxHp);
+      random();
+      const resolution = resolveCaptureRoll(random(), chance);
       target.captureAttempted = true;
+      actor.ap -= POKE_BALL_AP_COST;
       actorItems[item.id] = (actorItems[item.id] ?? 0) - 1;
-      state.status = "finished";
-      state.winner = resolution.success ? "player" : null;
-      state.captureResult = {
-        success: resolution.success,
-        species,
-        level: target.level,
-        xpRatio: resolution.xpRatio,
-        chance,
-        status: target.status,
-        sleepTurnsRemaining:
-          target.sleepTurnsRemaining,
-        ivs: target.ivs ? { ...target.ivs } : undefined,
-        nature: target.nature,
-        shiny: target.shiny === true ? true : undefined,
-      };
-      appendLog(
-        state,
-        resolution.success
-          ? L("{target} was caught!", { target: target.displayName })
-          : L("{target} broke free from the Poké Ball and fled.", { target: target.displayName }),
-      );
+      if (resolution.success) {
+        state.captures.push({
+          species,
+          level: target.level,
+          chance,
+          status: target.status,
+          sleepTurnsRemaining: target.sleepTurnsRemaining,
+          ...(target.ivs ? { ivs: { ...target.ivs } } : {}),
+          ...(target.nature ? { nature: target.nature } : {}),
+          ...(target.shiny === true ? { shiny: true } : {}),
+        });
+        target.hp = 0;
+        target.captured = true;
+        appendLog(
+          state,
+          L("{target} was caught!", { target: target.displayName }),
+        );
+        // The fight continues until no wild Pokémon is left standing.
+        if (!sideHasLivingUnit(state, "rival")) {
+          state.status = "finished";
+          state.winner = "player";
+        }
+      } else {
+        appendLog(
+          state,
+          L("{target} broke free from the Poké Ball!", { target: target.displayName }),
+        );
+      }
       return {
         state,
         accepted: true,
@@ -5886,8 +5883,6 @@ export function applyDuelAction(
           targetIds: [target.id],
           success: resolution.success,
           chance,
-          xpRatio: resolution.xpRatio,
-          targetFlees: resolution.targetFlees,
         },
       };
     }
@@ -5967,7 +5962,7 @@ export function applyDuelAction(
     }
 
     actor.position = { ...action.to };
-    actor.mp -= cost;
+    actor.ap -= cost;
 
     appendLog(
       state,
@@ -6146,7 +6141,6 @@ export function applyDuelAction(
       targetId: target.id,
     };
     actor.ap = 0;
-    actor.mp = 0;
     appendLog(
       state,
       "{actor} absorbed light for {move}!", { actor: actor.displayName, move: move.name },
@@ -7463,7 +7457,7 @@ function aiRetaliationRisk(
       if (
         !move ||
         move.category === "status" ||
-        distance > enemy.mp + move.maxRange
+        distance > Math.max(0, enemy.maxAp - move.apCost) + move.maxRange
       ) {
         continue;
       }
@@ -7499,8 +7493,9 @@ function scoreAiCandidate(
       unit.hp > 0 && unit.side !== actor.side,
   ).length;
   const pathCost = path.length;
+  // Walking and attacking share one AP pool: what does not fit this turn is a future-turn cost.
   const futureTurnPenalty =
-    Math.max(0, pathCost - actor.mp) * 8;
+    Math.max(0, pathCost + move.apCost - actor.ap) * 8;
   const positioningScore =
     pathCost === 0
       ? 14
@@ -7842,18 +7837,21 @@ function aiMovementDestination(
   state: DuelState,
   actor: DuelUnit,
   path: readonly DuelPoint[],
+  reserveAp = 0,
 ): DuelPoint | null {
-  if (actor.mp <= 0 || path.length === 0) {
+  if (actor.ap <= 0 || path.length === 0) {
     return null;
   }
 
   const reachable = new Set(
     getReachableCells(state, actor.id).map(pointKey),
   );
-  const maxIndex = Math.min(
-    path.length,
-    actor.mp,
-  ) - 1;
+  // Keep enough AP for the attack when the approach fits this turn; otherwise spend it all closing in.
+  const budget =
+    path.length + reserveAp <= actor.ap
+      ? path.length
+      : actor.ap;
+  const maxIndex = Math.min(path.length, budget) - 1;
 
   for (
     let index = maxIndex;
@@ -8154,7 +8152,7 @@ export function resolveSimpleAiTurnDetailed(
     );
 
     const canMoveForStrategic =
-      actor.mp > 0 &&
+      actor.ap > 0 &&
       strategic !== null &&
       strategic.path.length > 0;
     const immediateKnockout =
@@ -8240,10 +8238,10 @@ export function resolveSimpleAiTurnDetailed(
       continue;
     }
 
-    // AP may already have been spent on an attack. MP is independent, so use
-    // remaining movement to set up the next attack instead of wasting it.
+    // AP may already have been spent on an attack: use what is left to set up the next one
+    // instead of wasting it.
     if (
-      actor.mp > 0 &&
+      actor.ap > 0 &&
       movementActions < 2
     ) {
       const futurePlan = chooseAiCandidate(

@@ -1,3 +1,4 @@
+import { maxActionPointsForSpeed } from "../src/actionCost";
 import { describe, expect, it } from "vitest";
 import {
   applyDuelAction,
@@ -14,7 +15,6 @@ import {
   getReachableCells,
   isDuelAutoCatchTarget,
   manhattanDistance,
-  movementPointsForDuelPokemon,
   resolveSimpleAiTurn,
   resolveSimpleAiTurnDetailed,
   rivalStarterFor,
@@ -182,7 +182,7 @@ describe("starter duel", () => {
     expect(
       reachable.every(
         (cell) =>
-          manhattanDistance(player.position, cell) <= player.mp,
+          manhattanDistance(player.position, cell) <= player.ap,
       ),
     ).toBe(true);
     expect(
@@ -389,62 +389,98 @@ describe("starter duel", () => {
 
 
 describe("wild capture integration", () => {
-  it("uses a Poké Ball on a weakened wild Pokémon", () => {
-    let state = createWildDuel({
-      seed: 1,
+  const wildDuel = (seed: number, wildSpecies: "pidgey" | "snorlax" | "rattata", wilds?: { species: "pidgey" | "rattata"; level: number }[]) => {
+    const state = createWildDuel({
+      seed,
       player: { species: "bulbasaur", level: 5, moves: ["tackle", "growl"] },
-      wildSpecies: "pidgey",
+      wildSpecies,
       wildLevel: 3,
+      ...(wilds ? { wilds } : {}),
     });
     const player = state.units.find((unit) => unit.side === "player")!;
-    const wild = state.units.find((unit) => unit.side === "rival")!;
-    state = {
-      ...state,
-      activeUnitId: player.id,
-      units: state.units.map((unit) =>
-        unit.id === wild.id ? { ...unit, hp: 1 } : unit,
-      ),
-    };
-    const result = applyDuelAction(state, {
-      kind: "use-item",
-      unitId: player.id,
-      itemId: "poke-ball",
-      targetId: wild.id,
-    });
+    return { state: { ...state, activeUnitId: player.id }, player, wilds: state.units.filter((unit) => unit.side === "rival") };
+  };
+  const throwBall = (state: ReturnType<typeof wildDuel>["state"], playerId: string, targetId: string) =>
+    applyDuelAction(state, { kind: "use-item", unitId: playerId, itemId: "poke-ball", targetId });
+
+  it("catches a weakened wild Pokémon: the ball costs 4 AP and the wild leaves the field", () => {
+    const { state, player, wilds } = wildDuel(1, "pidgey");
+    const weak = { ...state, units: state.units.map((u) => (u.id === wilds[0].id ? { ...u, hp: 1 } : u)) };
+    const apBefore = weak.units.find((u) => u.id === player.id)!.ap;
+    const result = throwBall(weak, player.id, wilds[0].id);
     expect(result.accepted).toBe(true);
     expect(result.state.items["poke-ball"]).toBe(2);
-    expect(result.state.captureResult).not.toBeNull();
+    expect(result.state.captures).toHaveLength(1);
+    expect(result.state.captures[0]).toMatchObject({ species: "pidgey", level: 3 });
+    expect(result.state.units.find((u) => u.id === player.id)!.ap).toBe(apBefore - 4);
+    expect(result.state.units.find((u) => u.id === wilds[0].id)).toMatchObject({ hp: 0, captured: true });
     expect(result.state.status).toBe("finished");
+    expect(result.state.winner).toBe("player");
     expect(result.presentation?.kind).toBe("capture");
   });
 
-  it("requires 50% HP or less before capture", () => {
-    let state = createWildDuel({
-      seed: 4,
-      player: { species: "squirtle", level: 5, moves: ["tackle", "tail-whip"] },
+  it("can be thrown at full HP; a failed throw keeps the wild Pokémon and the battle going", () => {
+    let tried = 0;
+    let failure: ReturnType<typeof throwBall> | null = null;
+    for (let seed = 1; seed <= 40 && !failure; seed += 1) {
+      const { state, player, wilds } = wildDuel(seed, "snorlax");
+      const result = throwBall(state, player.id, wilds[0].id);
+      expect(result.accepted, `seed ${seed}`).toBe(true);
+      expect(result.state.items["poke-ball"]).toBe(2);
+      tried += 1;
+      if (result.state.captures.length === 0) failure = result;
+    }
+    expect(tried).toBeGreaterThan(0);
+    expect(failure).not.toBeNull();
+    expect(failure!.state.status).toBe("active");
+    expect(failure!.state.units.find((u) => u.side === "rival")!.hp).toBeGreaterThan(0);
+    expect(failure!.state.units.find((u) => u.side === "rival")!.captured).toBeUndefined();
+  });
+
+  it("needs 4 AP to throw", () => {
+    const { state, player, wilds } = wildDuel(4, "rattata");
+    const short = { ...state, units: state.units.map((u) => (u.id === player.id ? { ...u, ap: 3 } : u)) };
+    const result = throwBall(short, player.id, wilds[0].id);
+    expect(result.accepted).toBe(false);
+    expect(result.reason).toBe("not-enough-ap");
+    expect(result.state.items["poke-ball"]).toBe(3);
+  });
+});
+
+describe("multi-wild capture flow", () => {
+  it("every wild Pokémon can be caught; the battle ends only when none is left", () => {
+    const state = createWildDuel({
+      seed: 1902,
+      width: 9,
+      height: 7,
+      items: { potion: 0, "poke-ball": 5 },
+      players: [{ species: "bulbasaur", level: 30, moves: ["tackle"] }],
       wildSpecies: "rattata",
-      wildLevel: 3,
+      wildLevel: 5,
+      wilds: [
+        { species: "rattata", level: 5 },
+        { species: "pidgey", level: 5 },
+      ],
     });
-    const player = state.units.find((unit) => unit.side === "player")!;
-    const wild = state.units.find((unit) => unit.side === "rival")!;
-    state = {
+    const rivals = state.units.filter((unit) => unit.side === "rival");
+    expect(getDuelCaptureEligibility(state, rivals[0].id)).toEqual({ allowed: true });
+    expect(getDuelCaptureEligibility(state, rivals[1].id)).toEqual({ allowed: true });
+
+    const player = state.units.find((u) => u.side === "player")!;
+    const weakened = {
       ...state,
       activeUnitId: player.id,
-      units: state.units.map((unit) =>
-        unit.id === wild.id
-          ? { ...unit, hp: Math.floor(unit.maxHp * 0.51) + 1 }
-          : unit,
-      ),
+      units: state.units.map((u) => (u.side === "rival" ? { ...u, hp: 1 } : { ...u, ap: 12, maxAp: 12 })),
     };
-    const result = applyDuelAction(state, {
-      kind: "use-item",
-      unitId: player.id,
-      itemId: "poke-ball",
-      targetId: wild.id,
-    });
-    expect(result.accepted).toBe(false);
-    expect(result.reason).toBe("capture-hp-too-high");
-    expect(result.state.items["poke-ball"]).toBe(3);
+    const first = applyDuelAction(weakened, { kind: "use-item", unitId: player.id, itemId: "poke-ball", targetId: rivals[0].id });
+    expect(first.accepted).toBe(true);
+    expect(first.state.captures).toHaveLength(1);
+    expect(first.state.status).toBe("active");
+    const second = applyDuelAction(first.state, { kind: "use-item", unitId: player.id, itemId: "poke-ball", targetId: rivals[1].id });
+    expect(second.accepted).toBe(true);
+    expect(second.state.captures.map((c) => c.species)).toEqual(["rattata", "pidgey"]);
+    expect(second.state.status).toBe("finished");
+    expect(second.state.winner).toBe("player");
   });
 });
 
@@ -1160,8 +1196,8 @@ describe("tactical AI and move ranges", () => {
           ? {
               ...unit,
               position: { x: 0, y: 2 },
-              ap: 6,
-              mp: 3,
+              ap: 9,
+              maxAp: 9,
             }
           : unit.id === pidgey.id
             ? {
@@ -1376,7 +1412,8 @@ describe("defeated unit cleanup rules", () => {
           ? {
               ...unit,
               position: { x: 0, y: 1 },
-              mp: 3,
+              ap: 9,
+              maxAp: 9,
             }
           : unit.id === fainted.id
             ? {
@@ -1447,8 +1484,8 @@ describe("AI utility planning", () => {
           ? {
               ...unit,
               position: { x: 0, y: 1 },
-              mp: 3,
-              ap: 6,
+              ap: 9,
+              maxAp: 9,
             }
           : {
               ...unit,
@@ -1612,7 +1649,7 @@ describe("tactical area moves", () => {
       activeUnitId: actor.id,
       units: state.units.map((unit) =>
         unit.id === actor.id
-          ? { ...unit, position: { x: 1, y: 3 } }
+          ? { ...unit, position: { x: 1, y: 3 }, ap: 12, maxAp: 12 }
           : unit.id === ally.id
             ? { ...unit, position: { x: 4, y: 2 } }
             : unit.id === primary.id
@@ -2209,8 +2246,8 @@ describe("sequential tactical AI decisions", () => {
           ? {
               ...unit,
               position: { x: 2, y: 2 },
-              ap: 6,
-              mp: 4,
+              ap: 10,
+              maxAp: 10,
             }
           : unit.id === pidgey.id
             ? {
@@ -2288,8 +2325,8 @@ describe("sequential tactical AI decisions", () => {
           ? {
               ...unit,
               position: { x: 1, y: 2 },
-              ap: 6,
-              mp: 4,
+              ap: 10,
+              maxAp: 10,
             }
           : unit.id === target.id
             ? {
@@ -2705,7 +2742,7 @@ describe("late rival stage moves", () => {
       units: state.units.map((unit) =>
         unit.id === player.id
           ? {
-              ...unit,
+              ...unit, ap: 12, maxAp: 12,
               position: { x: 2, y: 2 },
             }
           : {
@@ -3162,7 +3199,7 @@ describe("recoil moves", () => {
       units: state.units.map((unit) =>
         unit.id === player.id
           ? {
-              ...unit,
+              ...unit, ap: 12, maxAp: 12,
               position: { x: 2, y: 2 },
             }
           : {
@@ -3237,7 +3274,7 @@ describe("recoil moves", () => {
       units: state.units.map((unit) =>
         unit.id === player.id
           ? {
-              ...unit,
+              ...unit, ap: 12, maxAp: 12,
               position: { x: 2, y: 2 },
             }
           : {
@@ -3423,7 +3460,7 @@ describe("FireRed multi-hit moves", () => {
       activeUnitId: player.id,
       units: state.units.map((unit) =>
         unit.id === player.id
-          ? { ...unit, position: { x: 2, y: 2 } }
+          ? { ...unit, ap: 12, maxAp: 12, position: { x: 2, y: 2 } }
           : { ...unit, position: { x: 4, y: 2 } },
       ),
     };
@@ -3562,7 +3599,7 @@ describe("Horn Drill OHKO", () => {
       activeUnitId: player.id,
       units: state.units.map((unit) =>
         unit.id === player.id
-          ? { ...unit, position: { x: 2, y: 2 } }
+          ? { ...unit, ap: 12, maxAp: 12, position: { x: 2, y: 2 } }
           : { ...unit, position: { x: 3, y: 2 } },
       ),
     };
@@ -3587,7 +3624,7 @@ describe("Horn Drill OHKO", () => {
       (unit) => unit.id === rival.id,
     )!;
     expect(updatedPlayer.ap).toBe(
-      player.maxAp - DUEL_MOVES["horn-drill"].apCost,
+      12 - DUEL_MOVES["horn-drill"].apCost,
     );
     expect(updatedPlayer.movePp["horn-drill"]).toBe(
       DUEL_MOVES["horn-drill"].maxPp - 1,
@@ -3626,7 +3663,7 @@ describe("Horn Drill OHKO", () => {
       activeUnitId: player.id,
       units: state.units.map((unit) =>
         unit.id === player.id
-          ? { ...unit, position: { x: 2, y: 2 } }
+          ? { ...unit, ap: 12, maxAp: 12, position: { x: 2, y: 2 } }
           : { ...unit, position: { x: 3, y: 2 } },
       ),
     };
@@ -4234,8 +4271,8 @@ describe("FireRed Future Sight", () => {
         unit.id === actor.id
           ? {
               ...unit,
-              ap: 12,
-              maxAp: 12,
+              ap: 20,
+              maxAp: 20,
               position: { x: 2, y: 2 },
             }
           : {
@@ -4390,7 +4427,7 @@ describe("Solar Beam charge turns", () => {
       turnIndex: state.turnOrder.indexOf(actor.id),
       units: state.units.map((unit) =>
         unit.id === actor.id
-          ? { ...unit, position: { x: 2, y: 2 } }
+          ? { ...unit, ap: 12, maxAp: 12, position: { x: 2, y: 2 } }
           : { ...unit, position: { x: 4, y: 2 } },
       ),
     };
@@ -4750,7 +4787,7 @@ describe("move accuracy and evasion", () => {
       activeUnitId: player.id,
       units: state.units.map((unit) =>
         unit.id === player.id
-          ? { ...unit, position: { x: 2, y: 2 } }
+          ? { ...unit, ap: 12, maxAp: 12, position: { x: 2, y: 2 } }
           : { ...unit, position: { x: 4, y: 2 } },
       ),
     };
@@ -4784,7 +4821,7 @@ describe("move accuracy and evasion", () => {
         (unit) => unit.id === rival.id,
       )!;
       expect(updatedPlayer.ap).toBe(
-        player.maxAp - DUEL_MOVES["hydro-pump"].apCost,
+        12 - DUEL_MOVES["hydro-pump"].apCost,
       );
       expect(updatedPlayer.movePp["hydro-pump"]).toBe(
         DUEL_MOVES["hydro-pump"].maxPp - 1,
@@ -5298,7 +5335,6 @@ describe("persistent FireRed Sleep", () => {
     expect(awakened.sleepTurnsRemaining).toBe(0);
     expect(result.state.activeUnitId).toBe(rival.id);
     expect(awakened.ap).toBe(awakened.maxAp);
-    expect(awakened.mp).toBe(awakened.maxMp);
     expect(result.state.round).toBe(1);
   });
   it("skips the fastest sleeping combatant when a battle starts", () => {
@@ -5676,22 +5712,28 @@ describe("Rain Dance weather", () => {
 
 
 describe("battle movement and deployment scale", () => {
-  it("derives MP from species Speed instead of giving every Pokémon 3", () => {
-    expect(
-      movementPointsForDuelPokemon("slowpoke"),
-    ).toBe(2);
-    expect(
-      movementPointsForDuelPokemon("bulbasaur"),
-    ).toBe(3);
-    expect(
-      movementPointsForDuelPokemon("pikachu"),
-    ).toBe(4);
-    expect(
-      movementPointsForDuelPokemon("kadabra"),
-    ).toBe(5);
+  it("gives every Pokémon 6 AP plus 1 per 25 Speed (walking, moves and balls share the pool)", () => {
+    const state = createWildDuel({
+      seed: 9,
+      width: 9,
+      height: 7,
+      players: [
+        { species: "slowpoke", level: 5, moves: ["tackle"] },
+        { species: "kadabra", level: 60, moves: ["confusion"] },
+      ],
+      wildSpecies: "rattata",
+      wildLevel: 5,
+    });
+    for (const unit of state.units) {
+      expect(unit.maxAp, unit.id).toBe(maxActionPointsForSpeed(unit.speed));
+      expect(unit.ap, unit.id).toBe(unit.maxAp);
+    }
+    const kadabra = state.units.find((u) => u.species === "kadabra")!;
+    const slowpoke = state.units.find((u) => u.species === "slowpoke")!;
+    expect(kadabra.maxAp).toBeGreaterThan(slowpoke.maxAp);
   });
 
-  it("charges MP by the real path length around obstacles", () => {
+  it("charges 1 AP per tile of the real path length around obstacles", () => {
     let state = createWildDuel({
       seed: 1904,
       width: 5,
@@ -5722,8 +5764,8 @@ describe("battle movement and deployment scale", () => {
           ? {
               ...unit,
               position: { x: 0, y: 2 },
-              mp: 4,
-              maxMp: 4,
+              ap: 4,
+              maxAp: 4,
             }
           : unit.id === wild.id
             ? {
@@ -5752,7 +5794,7 @@ describe("battle movement and deployment scale", () => {
     expect(
       moved.state.units.find(
         (unit) => unit.id === player.id,
-      )?.mp,
+      )?.ap,
     ).toBe(0);
   });
 
@@ -5872,7 +5914,8 @@ describe("crowded tactical AI", () => {
           return {
             ...unit,
             position: { x: 6, y: 1 },
-            mp: 3,
+            ap: 9,
+            maxAp: 9,
           };
         }
 
@@ -5978,75 +6021,3 @@ describe("crowded tactical AI", () => {
 });
 
 
-describe("multi-wild capture flow", () => {
-  it("keeps capture locked until only one wild Pokémon is still standing", () => {
-    let state = createWildDuel({
-      seed: 1902,
-      width: 9,
-      height: 7,
-      items: {
-        potion: 0,
-        "poke-ball": 3,
-      },
-      players: [
-        {
-          species: "bulbasaur",
-          level: 8,
-          moves: ["tackle"],
-        },
-      ],
-      wildSpecies: "rattata",
-      wildLevel: 5,
-      wilds: [
-        {
-          species: "rattata",
-          level: 5,
-        },
-        {
-          species: "pidgey",
-          level: 5,
-        },
-      ],
-    });
-
-    const rivals = state.units.filter(
-      (unit) => unit.side === "rival",
-    );
-    expect(
-      getDuelCaptureEligibility(
-        state,
-        rivals[0].id,
-      ),
-    ).toEqual({
-      allowed: false,
-      reason: "multiple-wilds",
-    });
-
-    state = {
-      ...state,
-      units: state.units.map((unit) =>
-        unit.id === rivals[0].id
-          ? {
-              ...unit,
-              hp: Math.max(
-                1,
-                Math.floor(unit.maxHp * 0.2),
-              ),
-            }
-          : unit.id === rivals[1].id
-            ? {
-                ...unit,
-                hp: 0,
-              }
-            : unit,
-      ),
-    };
-
-    expect(
-      getDuelCaptureEligibility(
-        state,
-        rivals[0].id,
-      ).allowed,
-    ).toBe(true);
-  });
-});

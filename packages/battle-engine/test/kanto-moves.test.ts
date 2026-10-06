@@ -18,6 +18,8 @@ function duelWith(moveId: DuelMoveId, playerLevel = 30, rivalSpecies: "onix" | "
   const rival = state.units.find((unit) => unit.side === "rival")!;
   player.position = { x: 2, y: 2 };
   rival.position = { x: 3, y: 2 };
+  // Expensive moves (Explosion, Hyper Beam…) need a bigger AP pool than the default 6.
+  player.ap = player.maxAp = 12;
   state = { ...state, activeUnitId: player.id };
   return { state, player, rival };
 }
@@ -103,12 +105,12 @@ describe("generated Kanto moves with special effects", () => {
 
 describe("Ultra Ball and Master Ball", () => {
   it("a Master Ball never fails and an Ultra Ball beats a Great Ball", async () => {
-    const { experimentalCaptureChance } = await import("../src/capture");
-    const base = { catchRate: 3, statusModifier: 1, hpRatio: 0.4, thresholdRatio: 0.5 };
-    expect(experimentalCaptureChance({ ...base, ballModifier: 255 })).toBe(1);
+    const { fireRedCaptureChance } = await import("../src/capture");
+    const base = { catchRate: 3, statusModifier: 1, hp: 40, maxHp: 100 };
+    expect(fireRedCaptureChance({ ...base, ballModifier: 255 })).toBe(1);
     expect(DUEL_ITEMS["ultra-ball"].kind).toBe("capture");
     expect(
-      experimentalCaptureChance({ ...base, ballModifier: 2 }),
-    ).toBeGreaterThan(experimentalCaptureChance({ ...base, ballModifier: 1.5 }));
+      fireRedCaptureChance({ ...base, ballModifier: 2 }),
+    ).toBeGreaterThan(fireRedCaptureChance({ ...base, ballModifier: 1.5 }));
   });
 });

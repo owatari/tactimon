@@ -21,6 +21,7 @@ import {
   type StarterSpeciesId,
   type WildSpeciesId,
 } from "./duel";
+import { CAPTURE_EXP_BONUS } from "./capture";
 import { GENERATED_EV_YIELD } from "./generated/evYield";
 import {
   isNatureId,
@@ -910,7 +911,7 @@ export const MAX_NICKNAME_LENGTH = 10;
 /** Trims, drops control characters, caps at 10; empty → undefined. */
 export function normalizeNickname(value: unknown): string | undefined {
   if (typeof value !== "string") return undefined;
-  const cleaned = Array.from(value.replace(/[ -]/g, "").trim())
+  const cleaned = Array.from(value.replace(/[\u0000-\u001f\u007f]/g, "").trim())
     .slice(0, MAX_NICKNAME_LENGTH)
     .join("")
     .trim();
@@ -1260,7 +1261,7 @@ export function grantWildBattleProgress(
     experienceRewardForWild(
       enemy.species,
       enemy.level,
-    ) * Math.max(0, Math.min(1, xpRatio)),
+    ) * Math.max(0, Math.min(CAPTURE_EXP_BONUS, xpRatio)),
   );
 
   return grantExperience(
@@ -1284,7 +1285,7 @@ export function grantWildBattleProgressToParty(
   }
 
   const participantRatio =
-    Math.max(0, Math.min(1, xpRatio)) / party.length;
+    Math.max(0, Math.min(CAPTURE_EXP_BONUS, xpRatio)) / party.length;
 
   return party.map((progression) =>
     grantWildBattleProgress(
@@ -1315,14 +1316,14 @@ export function grantWildBattlesProgressToParty(
 
   const defaultRatio = Math.max(
     0,
-    Math.min(1, defaultXpRatio),
+    Math.min(CAPTURE_EXP_BONUS, defaultXpRatio),
   );
   const totalXp = enemies.reduce(
     (total, enemy) => {
       const ratio = Math.max(
         0,
         Math.min(
-          1,
+          CAPTURE_EXP_BONUS,
           enemy.xpRatio ?? defaultRatio,
         ),
       );

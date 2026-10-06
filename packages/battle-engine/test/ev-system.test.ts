@@ -90,3 +90,16 @@ describe("FireRed EV system", () => {
     expect(reward.progression.evs).toMatchObject({ hp: 30, attack: 12, specialAttack: 40, speed: 25 });
   });
 });
+
+describe("capture rewards", () => {
+  it("a capture earns the knock-out EXP plus 20% and no EVs", async () => {
+    const { CAPTURE_EXP_BONUS } = await import("../src");
+    const party = [createPokemonProgression("charmander", 10)];
+    const kill = grantWildBattlesProgressToParty(party, [{ species: "geodude", level: 12 }])[0];
+    const caught = grantWildBattlesProgressToParty(party, [{ species: "geodude", level: 12, xpRatio: CAPTURE_EXP_BONUS, evYield: false }])[0];
+    expect(caught.xpGained).toBe(Math.floor(kill.xpGained * 1.2));
+    expect(caught.xpGained).toBeGreaterThan(kill.xpGained);
+    expect(totalEv(caught.evGained)).toBe(0);
+    expect(totalEv(kill.evGained)).toBeGreaterThan(0);
+  });
+});

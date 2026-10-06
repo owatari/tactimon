@@ -3,6 +3,7 @@ export * from "./capture";
 export * from "./initiative";
 export * from "./stats";
 export * from "./personality";
+export * from "./actionCost";
 export * from "./equipment";
 export * from "./duel";
 export * from "./progression";
