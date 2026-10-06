@@ -7350,3 +7350,14 @@ body {
   max-height: none !important;
   max-width: none !important;
 }
+
+/* Several catches in a row: counter next to the title and a full-width SEND ALL TO BOX button. */
+.capture-summary-count {
+  color: #506878;
+  font-size: 0.85em;
+}
+
+.capture-actions .capture-send-all {
+  grid-column: 1 / -1;
+  justify-content: center;
+}

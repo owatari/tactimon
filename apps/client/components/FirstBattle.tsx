@@ -17,6 +17,7 @@ import {
   DUEL_MOVES,
   calculateTypeEffectiveness,
   getActiveDuelUnit,
+  POKE_BALL_AP_COST,
   getDuelCaptureEligibility,
   isDuelAutoCatchTarget,
   getDuelMovePp,
@@ -75,17 +76,16 @@ export type BattleOutcome = {
     species: DuelSpeciesId;
     level: number;
   }>;
-  capture?: {
-    success: boolean;
+  /** Every Pokémon caught during the battle, in order (they never also count as defeated). */
+  captures: Array<{
     species: WildSpeciesId;
     level: number;
-    xpRatio: number;
     status: DuelMajorStatus;
     sleepTurnsRemaining: number;
     ivs?: IvSpread;
     nature?: NatureId;
     shiny?: boolean;
-  };
+  }>;
 };
 
 export type BattleEncounter =
@@ -633,26 +633,22 @@ export function FirstBattle({
         ),
         playerMovePp: players.map((unit) => ({ ...unit.movePp })),
         defeatedEnemies: rivals
-          .filter((unit) => unit.hp <= 0)
+          .filter((unit) => unit.hp <= 0 && !unit.captured)
           .map((unit) => ({
             species: unit.species,
             level: unit.level,
           })),
-        capture:
-          !state.escaped && state.captureResult
-            ? {
-                success: state.captureResult.success,
-                species: state.captureResult.species,
-                level: state.captureResult.level,
-                xpRatio: state.captureResult.xpRatio,
-                status: state.captureResult.status,
-                ivs: state.captureResult.ivs,
-                nature: state.captureResult.nature,
-                shiny: state.captureResult.shiny,
-                sleepTurnsRemaining:
-                  state.captureResult.sleepTurnsRemaining,
-              }
-            : undefined,
+        captures: state.escaped
+          ? []
+          : state.captures.map((record) => ({
+              species: record.species,
+              level: record.level,
+              status: record.status,
+              sleepTurnsRemaining: record.sleepTurnsRemaining,
+              ivs: record.ivs,
+              nature: record.nature,
+              shiny: record.shiny,
+            })),
       });
     }, BATTLE_END_BEAT_MS / battleSpeedRef.current);
 
@@ -719,6 +715,7 @@ export function FirstBattle({
     state.battleKind === "wild" &&
     state.captureAllowed &&
     (state.items["poke-ball"] ?? 0) > 0 &&
+    (active?.ap ?? 0) >= POKE_BALL_AP_COST &&
     state.units.some(
       (unit) =>
         unit.side === "rival" &&
@@ -1278,7 +1275,7 @@ export function FirstBattle({
       flashNotice(
         presentation.success
           ? t("Capture successful!")
-          : t("The capture failed. The Pokémon ran away!"),
+          : t("It broke free from the Poké Ball!"),
       );
       if (presentation.success) {
         setUnitAnimation(targetId, "faint");
@@ -1715,9 +1712,6 @@ export function FirstBattle({
             <span className="resource-chip">
               AP {unit.ap}/{unit.maxAp}
             </span>
-            <span className="resource-chip">
-              MP {unit.mp}/{unit.maxMp}
-            </span>
             {statusToken ? (
               <span
                 className={`status-chip major ${statusToken.className}`}
@@ -2141,11 +2135,11 @@ export function FirstBattle({
                   <div className="battle-action-list">
                     <button
                       type="button"
-                      disabled={player.mp <= 0}
+                      disabled={player.ap <= 0}
                       onClick={() => setCommand("walk")}
                     >
                       <strong>{t("Move")}</strong>
-                      <span>{player.mp} MP</span>
+                      <span>{t("{ap} AP · 1 per tile", { ap: player.ap })}</span>
                     </button>
                     <button
                       type="button"
@@ -2406,7 +2400,11 @@ export function FirstBattle({
                           <button
                             key={itemId}
                             type="button"
-                            disabled={amount <= 0}
+                            disabled={
+                              amount <= 0 ||
+                              (item.kind === "capture" &&
+                                player.ap < POKE_BALL_AP_COST)
+                            }
                             onClick={() => {
                               setSelectedItem(itemId);
                               setCommand("item-target");
@@ -2427,7 +2425,9 @@ export function FirstBattle({
                                 : item.kind === "cure"
                                   ? t("cures status")
                                 : state.captureAllowed
-                                  ? t("captures at HP ≤50%")
+                                  ? t("{ap} AP · better odds at low HP", {
+                                      ap: POKE_BALL_AP_COST,
+                                    })
                                   : t("capture unavailable")}
                             </span>
                           </button>

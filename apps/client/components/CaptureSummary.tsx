@@ -21,6 +21,9 @@ import type { CapturedPokemon, StoryState } from "@/lib/story";
 type Props = {
   story: StoryState;
   pokemon: CapturedPokemon;
+  /** 1-based place of this catch in the queue and the queue length ("2/5"). */
+  position: number;
+  total: number;
   /** First time this species is owned: FireRed would register it in the Pokédex. */
   newEntry: boolean;
   onResolve: (choice: {
@@ -28,6 +31,8 @@ type Props = {
     nickname: string;
     swapIndex?: number;
   }) => void;
+  /** SEND ALL TO BOX: every pending catch goes to the box, no nicknames. */
+  onSendAllToBox: () => void;
 };
 
 type Row = {
@@ -39,15 +44,16 @@ type Row = {
 };
 
 /** What the player sees right after a catch: portrait, stats, IVs, EVs, nature, name box, team/box. */
-export function CaptureSummary({ story, pokemon, newEntry, onResolve }: Props) {
+export function CaptureSummary({ story, pokemon, position, total, newEntry, onResolve, onSendAllToBox }: Props) {
   useLocale();
   const stats = calculateDuelPokemonStats(pokemon);
   const effect = pokemon.nature ? natureEffect(pokemon.nature) : null;
   const showEvs = totalEv(pokemon.evs) > 0;
   const roster = captureRoster(story);
   const [nickname, setNickname] = useState("");
-  // 0 = name box, 1 = SEND TO TEAM, 2 = SEND TO BOX
+  // 0 = name box, 1 = SEND TO TEAM, 2 = SEND TO BOX, 3 = SEND ALL TO BOX (only with several catches)
   const [focus, setFocus] = useState(0);
+  const lastFocus = total > 1 ? 3 : 2;
   const [swapOpen, setSwapOpen] = useState(false);
   const [swapIndex, setSwapIndex] = useState(0);
   const [notice, setNotice] = useState("");
@@ -73,6 +79,14 @@ export function CaptureSummary({ story, pokemon, newEntry, onResolve }: Props) {
 
   const confirm = (destination: CaptureDestination, swap?: number) => {
     onResolve({ destination, nickname, swapIndex: swap });
+  };
+
+  const sendAll = () => {
+    if (!roster.boxHasRoom) {
+      setNotice(t("The box is full."));
+      return;
+    }
+    onSendAllToBox();
   };
 
   const choose = (destination: CaptureDestination) => {
@@ -112,9 +126,10 @@ export function CaptureSummary({ story, pokemon, newEntry, onResolve }: Props) {
       if (key === "ArrowDown" || key === "ArrowUp" || key === "Enter") {
         event.preventDefault();
         event.stopPropagation();
-        if (key === "ArrowDown") setFocus((f) => Math.min(2, f + 1));
+        if (key === "ArrowDown") setFocus((f) => Math.min(lastFocus, f + 1));
         else if (key === "ArrowUp") setFocus((f) => Math.max(0, f - 1));
         else if (focus === 0) setFocus(1);
+        else if (focus === 3) sendAll();
         else choose(focus === 1 ? "team" : "box");
       }
       // Any other key is typing for the name box: the game is paused, so nothing else reacts to it.
@@ -131,6 +146,12 @@ export function CaptureSummary({ story, pokemon, newEntry, onResolve }: Props) {
       <section className="start-menu-screen start-menu-summary capture-summary" aria-live="polite">
         <h2>
           {t("Gotcha! {name} was caught!", { name })} · Lv{pokemon.level}
+          {total > 1 && (
+            <span className="capture-summary-count">
+              {" "}
+              {position}/{total}
+            </span>
+          )}
           {pokemon.shiny && <ShinyStar />}
         </h2>
         {pokemon.shiny && <p className="capture-summary-shiny">{t("SHINY!")}</p>}
@@ -216,6 +237,16 @@ export function CaptureSummary({ story, pokemon, newEntry, onResolve }: Props) {
           >
             {t("SEND TO BOX")}
           </button>
+          {total > 1 && (
+            <button
+              type="button"
+              className={`capture-send-all${focus === 3 ? " selected" : ""}`}
+              onMouseEnter={() => setFocus(3)}
+              onClick={sendAll}
+            >
+              {t("SEND ALL TO BOX ({count})", { count: total })}
+            </button>
+          )}
         </div>
         {notice && <p className="capture-summary-notice">{notice}</p>}
 

@@ -5,13 +5,14 @@
 - Spawn: `pickSpawnPositions` (anchors) → `pickTeamSpawnPositions` → `clusterSpawnPositions`. Helpers `connectedOpenCells`, `largestOpenRegion`, `openNeighborCount`. Regras: maior componente conectado, sem bloqueados, preferir áreas abertas/interior, times em lados opostos, anchors ~4–7 tiles.
 - Ações: `applyDuelAction(state, action)` → `{accepted, state, presentation}`; AI: `resolveSimpleAiTurnDetailed`. Alcance: `getReachableCells`. Área: `getDuelMoveAreaTargetIds`.
 - Turnos: iniciativa por Speed (`initiative.ts`, `orderByInitiative`). Unidades com `hp <= 0` são ignoradas para turno/alvo/ocupação.
-- Captura: `getDuelCaptureEligibility`, `isDuelAutoCatchTarget` (`AUTO_CATCH_HP_RATIO`), `capture.ts`.
+- **Action points (task 026)**: um pool só por Pokémon, `maxAp = 6 + floor(Speed/25)` (`actionCost.ts`, Speed = stat calculado). **Não existe MP**: andar custa 1 AP/tile, golpe custa `apCost` (derivado por fórmula em `apCostForMove`: dano ≈ 10% do poder × hits médios × fator de área, teto 10; status ≈ 3 + efeitos extras/área, teto 6) e a Poké Ball custa 4 AP (`POKE_BALL_AP_COST`). Poder efetivo de OHKO/dano fixo/Future Sight/Solar Beam em `EFFECTIVE_POWER_BY_EFFECT`. A IA reserva AP para atacar depois de andar quando cabe no turno.
+- **Captura (task 026)**: `getDuelCaptureEligibility`/`capture.ts` — qualquer selvagem vivo, qualquer HP, várias tentativas; chance Gen III (`fireRedCaptureChance`); sucesso tira o alvo (`captured`, hp 0) e registra em `state.captures[]`, a batalha só acaba quando não restam selvagens; falha mantém o selvagem. Auto Catch (`AUTO_CATCH_HP_RATIO`) continua com seu limiar. EXP da captura = EXP de derrotar × 1,2 (`CAPTURE_EXP_BONUS`), sem EVs. No client: `BattleOutcome.captures[]` → `story.pendingCaptures` (fila) → `CaptureSummary` um por vez + SEND ALL TO BOX.
 - Determinismo: `createSeededRandom(seed)`.
 
 ## Apresentação — `apps/client/components/FirstBattle.tsx`
 - Estado `DuelState` local; anima resultados (`animateResolvedMove`, `animateResolvedItem`), `setUnitAnimation(id, "faint" | ...)`.
 - Sprites: `PokemonBattleSprite.tsx` (manifest SpriteCollab runtime). VFX: `BattleVfx.tsx`. Portraits: `PokemonPortrait.tsx`.
-- Fim: `onComplete(BattleOutcome)` com HP/status/PP por índice de party, `defeatedEnemies`, `capture`, `won`, `inventory`.
+- Fim: `onComplete(BattleOutcome)` com HP/status/PP por índice de party, `defeatedEnemies`, `captures`, `won`, `inventory`.
 - Fim de batalha: `FirstBattle` chama `onComplete` sozinho ~650 ms após `status: finished` (sem painel interno).
 - Pós-batalha (tela única): `GameClient.battleResult` → `BattleResultsScreen` (cabeçalho de `lib/battleResult.ts` `describeBattleResult` + prêmio + EXP/level/golpes por Pokémon) → `PokemonEvolutionOverlay` → `ProgressionOverlay` (golpes pendentes) → whiteout se aplicável.
 - Faint: unidade HP 0 some em 260 ms (classe `.fainting` + timer em `FirstBattle`); a engine já a ignora para tile/turno/alvo.

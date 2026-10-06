@@ -23,22 +23,32 @@ describe("post-battle results headline", () => {
     ).toBe("8 wild Pokémon were defeated!");
   });
 
-  it("describes captures with their destination", () => {
-    const result = describeBattleResult({
+  it("describes one capture by name and several by count", () => {
+    const one = describeBattleResult({
       won: true,
       escaped: false,
       encounterKind: "wild",
       opponentName: "Zubat",
       opponentCount: 1,
-      capture: {
-        success: true,
-        speciesName: "Zubat",
-        level: 6,
-        destination: "storage",
-      },
+      captures: [{ speciesName: "Zubat", level: 6 }],
     });
-    expect(result.kind).toBe("capture");
-    expect(result.note).toContain("PC");
+    expect(one.kind).toBe("capture");
+    expect(one.message).toContain("Zubat Lv. 6");
+    expect(one.note).toContain("where each one goes");
+    const many = describeBattleResult({
+      won: true,
+      escaped: false,
+      encounterKind: "wild",
+      opponentName: "Zubat",
+      opponentCount: 3,
+      captures: [
+        { speciesName: "Zubat", level: 6 },
+        { speciesName: "Rattata", level: 4 },
+        { speciesName: "Pidgey", level: 5 },
+      ],
+    });
+    expect(many.kind).toBe("capture");
+    expect(many.message).toContain("3 Pokémon");
   });
 
   it("keeps the tutorial defeat friendly instead of a whiteout message", () => {

@@ -142,8 +142,8 @@ export type StoryState = {
   playerPokemon: PokemonProgression | null;
   capturedPokemon: CapturedPokemon[];
   boxedPokemon: CapturedPokemon[];
-  /** A freshly caught Pokémon waiting for the player to name it and pick team or box. */
-  pendingCapture?: CapturedPokemon | null;
+  /** Freshly caught Pokémon waiting, in order, for the player to name them and pick team or box. */
+  pendingCaptures?: CapturedPokemon[];
   collectedItemIds: string[];
   defeatedTrainerIds: string[];
   badgeIds: StoryBadgeId[];
@@ -196,7 +196,7 @@ export const DEFAULT_STORY_STATE: StoryState = {
   playerPokemon: null,
   capturedPokemon: [],
   boxedPokemon: [],
-  pendingCapture: null,
+  pendingCaptures: [],
   collectedItemIds: [],
   defeatedTrainerIds: [],
   badgeIds: [],
@@ -474,6 +474,27 @@ function normalizeInventory(
   };
 }
 
+/** Reads the capture queue, migrating the old single `pendingCapture` field. */
+function normalizePendingCaptures(input: unknown): CapturedPokemon[] {
+  const source = input as
+    | { pendingCaptures?: unknown; pendingCapture?: unknown }
+    | null
+    | undefined;
+  const queue = Array.isArray(source?.pendingCaptures)
+    ? source.pendingCaptures
+    : [];
+  const raw =
+    queue.length > 0
+      ? queue
+      : source?.pendingCapture
+        ? [source.pendingCapture]
+        : [];
+  return raw
+    .map(normalizeCapturedPokemon)
+    .filter((pokemon): pokemon is CapturedPokemon => pokemon !== null)
+    .slice(0, 60);
+}
+
 export function normalizeStoryState(
   input: Partial<StoryState> | null | undefined,
 ): StoryState {
@@ -538,10 +559,7 @@ export function normalizeStoryState(
           pokemon !== null,
       )
       .slice(0, POKEMON_STORAGE_CAPACITY),
-    pendingCapture: normalizeCapturedPokemon(
-      (input as { pendingCapture?: unknown } | null | undefined)
-        ?.pendingCapture,
-    ),
+    pendingCaptures: normalizePendingCaptures(input),
     collectedItemIds: Array.isArray(
       input?.collectedItemIds,
     )

@@ -62,11 +62,17 @@ export const battleLogCatalog: Catalog = {
     fr: "{actor} dort profondément.",
     zh: "{actor}正在熟睡。",
   },
-  "{actor}'s turn. AP {ap}, MP {mp}.": {
-    pt: "Turno de {actor}. AP {ap}, MP {mp}.",
-    es: "Turno de {actor}. AP {ap}, MP {mp}.",
-    fr: "Tour de {actor}. AP {ap}, MP {mp}.",
-    zh: "{actor}的回合。AP {ap}，MP {mp}。",
+  "{actor}'s turn. AP {ap}.": {
+    pt: "Turno de {actor}. AP {ap}.",
+    es: "Turno de {actor}. AP {ap}.",
+    fr: "Tour de {actor}. AP {ap}.",
+    zh: "{actor}的回合。AP {ap}。",
+  },
+  "{target} broke free from the Poké Ball!": {
+    pt: "{target} escapou da Poké Ball!",
+    es: "¡{target} se ha escapado de la Poké Ball!",
+    fr: "{target} s'est libéré de la Poké Ball !",
+    zh: "{target}从精灵球里挣脱出来了！",
   },
   "{actor} lost the target of the charged attack.": {
     pt: "{actor} perdeu o alvo do golpe carregado.",

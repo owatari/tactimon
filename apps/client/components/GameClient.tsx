@@ -21,6 +21,7 @@ import {
   type PokemonProgression,
   type ProgressionReward,
   type StarterSpeciesId, rollPersonality,
+  CAPTURE_EXP_BONUS,
 } from "@tactimon/battle-engine";
 import {
   resolveWhiteOutRespawn,
@@ -102,7 +103,12 @@ import {
   type DialoguePresentation,
 } from "@/lib/dialogueSystem";
 import { CaptureSummary } from "./CaptureSummary";
-import { holdCapturedPokemon, resolvePendingCapture } from "@/lib/captureChoice";
+import {
+  holdCapturedPokemon,
+  pendingCaptures,
+  resolvePendingCapture,
+  sendAllPendingToBox,
+} from "@/lib/captureChoice";
 import {
   chooseBestStorySave,
   serializeStorySave,
@@ -537,17 +543,10 @@ export function GameClient() {
       opponentCount: outcome.opponentCount,
       tutorial: isTutorial,
       prizeMoney: resultPrizeMoney,
-      capture: outcome.capture
-        ? {
-            success: outcome.capture.success,
-            speciesName: speciesDisplayName(
-              outcome.capture.species,
-            ),
-            level: outcome.capture.level,
-            // Team or box is chosen on the capture screen that follows.
-            destination: null,
-          }
-        : undefined,
+      captures: outcome.captures.map((caught) => ({
+        speciesName: speciesDisplayName(caught.species),
+        level: caught.level,
+      })),
     });
     const showResult = (
       rewards: ProgressionQueueEntry[],
@@ -576,7 +575,7 @@ export function GameClient() {
       session.encounter.kind === "wild"
         ? session.encounter.staticId
         : undefined;
-    if (staticId && (outcome.won || outcome.capture?.success)) {
+    if (staticId && (outcome.won || outcome.captures.length > 0)) {
       setStory((current) =>
         completeStoryPlayerEvent(
           current,
@@ -709,17 +708,13 @@ export function GameClient() {
       }));
     const rewardEnemies = [
       ...defeatedWilds,
-      ...(outcome.capture
-        ? [
-            {
-              species: outcome.capture.species,
-              level: outcome.capture.level,
-              xpRatio: outcome.capture.xpRatio,
-              // Nothing fainted when a Pokémon is caught: no EVs.
-              evYield: false,
-            },
-          ]
-        : []),
+      // Catching is worth more than defeating: the knock-out EXP plus 20% (and no EVs, nothing fainted).
+      ...outcome.captures.map((caught) => ({
+        species: caught.species,
+        level: caught.level,
+        xpRatio: CAPTURE_EXP_BONUS,
+        evYield: false,
+      })),
     ];
     if (rewardEnemies.length === 0 && outcome.won) {
       rewardEnemies.push({
@@ -747,30 +742,28 @@ export function GameClient() {
         session.partyIndices,
       );
 
-      if (!outcome.capture?.success) {
+      if (outcome.captures.length === 0) {
         return next;
       }
 
-      const captured = createPokemonProgression(
-        outcome.capture.species,
-        outcome.capture.level,
-        outcome.capture.ivs && outcome.capture.nature
-          ? {
-              ivs: outcome.capture.ivs,
-              nature: outcome.capture.nature,
-              shiny: outcome.capture.shiny,
-            }
-          : rollPersonality(),
-      );
-
-      // The catch waits in the save until the player names it and picks team or box.
-      return holdCapturedPokemon(next, {
-        ...captured,
-        species: outcome.capture.species,
-        status: outcome.capture.status,
-        sleepTurnsRemaining:
-          outcome.capture.sleepTurnsRemaining,
-      });
+      // The catches wait in the save until the player names each one and picks team or box.
+      return outcome.captures.reduce((held, caught) => {
+        const personality =
+          caught.ivs && caught.nature
+            ? { ivs: caught.ivs, nature: caught.nature, shiny: caught.shiny }
+            : rollPersonality();
+        const pokemon = createPokemonProgression(
+          caught.species,
+          caught.level,
+          personality,
+        );
+        return holdCapturedPokemon(held, {
+          ...pokemon,
+          species: caught.species,
+          status: caught.status,
+          sleepTurnsRemaining: caught.sleepTurnsRemaining,
+        });
+      }, next);
     });
 
     const progressionEntries =
@@ -980,7 +973,7 @@ export function GameClient() {
   const paused =
     starterChoiceOpen ||
     dexRegistrations.length > 0 ||
-    Boolean(story.pendingCapture) ||
+    pendingCaptures(story).length > 0 ||
     martOpen ||
     menuOpen ||
     storageOpen ||
@@ -1215,14 +1208,16 @@ export function GameClient() {
         !battleResult &&
         progressionQueue.length === 0 &&
         !pendingWhiteOut &&
-        story.pendingCapture && (
+        pendingCaptures(story)[0] && (
           <CaptureSummary
-            key={`${story.pendingCapture.species}-${story.pendingCapture.experience}`}
+            key={`${pendingCaptures(story)[0].species}-${pendingCaptures(story)[0].experience}-${pendingCaptures(story).length}`}
             story={story}
-            pokemon={story.pendingCapture}
-            newEntry={!isSpeciesCaught(story, story.pendingCapture.species)}
+            pokemon={pendingCaptures(story)[0]}
+            position={1}
+            total={pendingCaptures(story).length}
+            newEntry={!isSpeciesCaught(story, pendingCaptures(story)[0].species)}
             onResolve={(choice) => {
-              const species = story.pendingCapture?.species;
+              const species = pendingCaptures(story)[0]?.species;
               if (species && !isSpeciesCaught(story, species)) {
                 // The capture screen already announced the new entry: skip the Pokédex page.
                 capturePageSpeciesRef.current.add(species);
@@ -1232,6 +1227,14 @@ export function GameClient() {
                 return result.ok ? result.story : current;
               });
             }}
+            onSendAllToBox={() => {
+              for (const pending of pendingCaptures(story)) {
+                if (!isSpeciesCaught(story, pending.species)) {
+                  capturePageSpeciesRef.current.add(pending.species);
+                }
+              }
+              setStory((current) => sendAllPendingToBox(current).story);
+            }}
           />
         )}
 
@@ -1239,7 +1242,7 @@ export function GameClient() {
         !battleResult &&
         progressionQueue.length === 0 &&
         !pendingWhiteOut &&
-        !story.pendingCapture &&
+        pendingCaptures(story).length === 0 &&
         dexRegistrations[0] && (
           <PokedexRegistration
             key={dexRegistrations[0]}

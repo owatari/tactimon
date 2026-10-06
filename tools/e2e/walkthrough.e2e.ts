@@ -190,7 +190,7 @@ describe("walkthrough (browser)", () => {
 
   it("E8. a fresh catch opens the capture screen (no Pokédex cry page); nickname + team/box are saved", async () => {
     let story = withPokedex({ ...chooseStarter("squirtle"), firstBattleComplete: true });
-    story = { ...story, pendingCapture: createPokemonProgression("pikachu", 6) } as never;
+    story = { ...story, pendingCaptures: [createPokemonProgression("pikachu", 6)] } as never;
     await load(seedStory(story, { mapId: "pallet-town", x: 12, y: 17 }));
     expect(await count(".capture-summary")).toBe(1);
     expect(await count(".dex-registration")).toBe(0);
@@ -201,7 +201,7 @@ describe("walkthrough (browser)", () => {
     await sleep(500);
     expect(await count(".capture-summary")).toBe(0);
     const saved = JSON.parse((await cdp.eval<string>(`localStorage.getItem("tactimon.story.v1")`)) as string).story;
-    expect(saved.pendingCapture).toBeNull();
+    expect(saved.pendingCaptures).toEqual([]);
     expect(saved.capturedPokemon.at(-1)).toMatchObject({ species: "pikachu", nickname: "Zap" });
   }, 40_000);
 
@@ -216,7 +216,7 @@ describe("walkthrough (browser)", () => {
 
   it("E10. a shiny catch is announced and uses the shiny sprite palette", async () => {
     let story = withPokedex({ ...chooseStarter("squirtle"), firstBattleComplete: true });
-    story = { ...story, pendingCapture: createPokemonProgression("pikachu", 6, { ...rollPersonality(() => 0.4), shiny: true }) } as never;
+    story = { ...story, pendingCaptures: [createPokemonProgression("pikachu", 6, { ...rollPersonality(() => 0.4), shiny: true })] } as never;
     await load(seedStory(story, { mapId: "pallet-town", x: 12, y: 17 }));
     expect(await count(".capture-summary-shiny")).toBe(1);
     expect(await cdp.eval<string>(`document.querySelector(".capture-summary .start-menu-front img").getAttribute("src")`)).toContain("/front/shiny/");
@@ -252,5 +252,21 @@ describe("walkthrough (browser)", () => {
     expect(parsed.units).toBeGreaterThanOrEqual(6);
     expect(parsed.gridHeight, "the grid box must not be clamped shorter than its rows").toBeGreaterThanOrEqual(parsed.expected - 1);
     expect(parsed.bad).toEqual([]);
+  }, 40_000);
+
+  it("E12. several catches show one at a time and SEND ALL TO BOX stores them without nicknames", async () => {
+    const story = withPokedex({ ...chooseStarter("squirtle"), firstBattleComplete: true });
+    const queue = ["pikachu", "rattata", "pidgey"].map((id) => createPokemonProgression(id as never, 5));
+    await load(seedStory({ ...story, pendingCaptures: queue } as never, { mapId: "pallet-town", x: 12, y: 17 }));
+    expect(await count(".capture-summary")).toBe(1);
+    expect((await text(".capture-summary-count")).trim()).toBe("1/3");
+    expect(await count(".capture-send-all")).toBe(1);
+    await shot("capture-queue");
+    await cdp.eval(`document.querySelector(".capture-send-all").click()`);
+    await sleep(600);
+    expect(await count(".capture-summary")).toBe(0);
+    const saved = JSON.parse((await cdp.eval<string>(`localStorage.getItem("tactimon.story.v1")`)) as string).story;
+    expect(saved.pendingCaptures).toEqual([]);
+    expect(saved.boxedPokemon.map((p: { species: string }) => p.species)).toEqual(["pikachu", "rattata", "pidgey"]);
   }, 40_000);
 });

@@ -74,4 +74,40 @@ export const captureCatalog: Catalog = {
     fr: "Chromatique",
     zh: "闪光",
   },
+  "{ap} AP · 1 per tile": {
+    pt: "{ap} AP · 1 por tile",
+    es: "{ap} AP · 1 por casilla",
+    fr: "{ap} AP · 1 par case",
+    zh: "{ap} AP · 每格1点",
+  },
+  "{ap} AP · better odds at low HP": {
+    pt: "{ap} AP · mais chance com HP baixo",
+    es: "{ap} AP · más probabilidad con PS bajos",
+    fr: "{ap} AP · meilleures chances à PV bas",
+    zh: "{ap} AP · 体力越低越容易",
+  },
+  "It broke free from the Poké Ball!": {
+    pt: "Ele escapou da Poké Ball!",
+    es: "¡Se ha escapado de la Poké Ball!",
+    fr: "Il s'est libéré de la Poké Ball !",
+    zh: "它从精灵球里挣脱出来了！",
+  },
+  "{count} Pokémon were captured!": {
+    pt: "{count} Pokémon foram capturados!",
+    es: "¡Se han capturado {count} Pokémon!",
+    fr: "{count} Pokémon ont été capturés !",
+    zh: "捕获了{count}只宝可梦！",
+  },
+  "Choose where each one goes next.": {
+    pt: "Escolha para onde cada um vai.",
+    es: "Elige adónde va cada uno.",
+    fr: "Choisis où va chacun d'eux.",
+    zh: "请选择每只的去向。",
+  },
+  "SEND ALL TO BOX ({count})": {
+    pt: "ENVIAR TODOS PARA A BOX ({count})",
+    es: "ENVIAR TODOS A LA CAJA ({count})",
+    fr: "TOUT ENVOYER AU PC ({count})",
+    zh: "全部送入箱子（{count}）",
+  },
 };

@@ -23,12 +23,8 @@ export type BattleResultInput = {
   opponentCount: number;
   tutorial?: boolean;
   prizeMoney?: number;
-  capture?: {
-    success: boolean;
-    speciesName: string;
-    level: number;
-    destination?: "party" | "storage" | null;
-  };
+  /** Pokémon caught during the battle (none for trainer battles). */
+  captures?: { speciesName: string; level: number }[];
 };
 
 export type BattleResultHeadline = {
@@ -41,33 +37,21 @@ export type BattleResultHeadline = {
 export function describeBattleResult(
   input: BattleResultInput,
 ): BattleResultHeadline {
-  if (input.capture) {
-    const { speciesName, level, success, destination } =
-      input.capture;
-    if (success) {
-      return {
-        kind: "capture",
-        title: t("CAPTURED!"),
-        message: t("{species} Lv. {level} was captured!", {
-          species: speciesName,
-          level,
-        }),
-        note:
-          destination === "storage"
-            ? t("Party full: sent to the PC.")
-            : destination === "party"
-              ? t("Added to your party.")
-              : null,
-      };
-    }
-
+  if (input.captures && input.captures.length > 0) {
+    const [first] = input.captures;
     return {
-      kind: "capture-failed",
-      title: t("ESCAPED"),
-      message: t("{species} broke free from the Poké Ball.", {
-        species: speciesName,
-      }),
-      note: null,
+      kind: "capture",
+      title: t("CAPTURED!"),
+      message:
+        input.captures.length === 1
+          ? t("{species} Lv. {level} was captured!", {
+              species: first.speciesName,
+              level: first.level,
+            })
+          : t("{count} Pokémon were captured!", {
+              count: input.captures.length,
+            }),
+      note: t("Choose where each one goes next."),
     };
   }
 
