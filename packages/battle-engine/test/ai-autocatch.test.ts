@@ -186,7 +186,7 @@ describe("Auto Catch priority: shiny on top, then the rare ones", () => {
     const rarer = { species: "gyarados" } as never;
     const uncommon = { species: "kadabra" } as never;
     const common = { species: "pidgey" } as never;
-    expect([shinyCommon, rare, uncommon, common].map((u) => autoCatchTier(u))).toEqual([3, 2, 1, 0]);
+    expect([shinyCommon, rare, uncommon, common].map((u) => autoCatchTier(u))).toEqual([4, 3, 1, 0]);
     expect(autoCatchPriority(shinyCommon)).toBeGreaterThan(autoCatchPriority(rare));
     expect(autoCatchPriority(rare)).toBeGreaterThan(autoCatchPriority(uncommon));
     expect(autoCatchPriority(uncommon)).toBeGreaterThan(autoCatchPriority(common));
@@ -274,5 +274,54 @@ describe("Auto Catch priority: shiny on top, then the rare ones", () => {
     expect(shinyCaught / battles).toBeGreaterThanOrEqual(0.95);
     expect(shinyEarly / Math.max(1, shinyCaught)).toBeGreaterThan(0.6);
     expect(caught / wilds).toBeGreaterThan(0.8);
+  });
+});
+
+describe("Auto Catch rarity follows how rarely a Pokémon appears in the area", () => {
+  // Viridian Forest (FireRed): Caterpie 40%, Weedle 40%, Kakuna 10%, Metapod 5%, Pikachu 5%.
+  const forest = (species: string, appearanceRate: number) => ({ species, appearanceRate }) as never;
+
+  it("Viridian Forest: Pikachu first, then Metapod, then Kakuna, then Weedle and Caterpie", async () => {
+    const { autoCatchPriority: priority, autoCatchTier: tier } = await import("../src");
+    const pack = [forest("caterpie", 0.4), forest("weedle", 0.4), forest("kakuna", 0.1), forest("metapod", 0.05), forest("pikachu", 0.05)];
+    const order = [...pack].sort((a, b) => priority(b) - priority(a)).map((u: { species: string }) => u.species);
+    expect(order.slice(0, 3)).toEqual(["pikachu", "metapod", "kakuna"]);
+    expect(order.slice(3).sort()).toEqual(["caterpie", "weedle"]);
+    expect(tier(forest("pikachu", 0.05))).toBeGreaterThan(tier(forest("metapod", 0.05)));
+    expect(tier(forest("metapod", 0.05))).toBeGreaterThan(tier(forest("kakuna", 0.1)));
+    expect(tier(forest("kakuna", 0.1))).toBeGreaterThan(tier(forest("weedle", 0.4)));
+  });
+
+  it("the same species is rarer where it appears less, and legendaries/shinies stay on top", async () => {
+    const { autoCatchTier: tier } = await import("../src");
+    expect(tier(forest("rattata", 0.03))).toBeGreaterThan(tier(forest("rattata", 0.5)));
+    expect(tier({ species: "mewtwo" } as never)).toBe(3);
+    expect(tier({ species: "rattata", shiny: true } as never)).toBe(4);
+  });
+
+  it("the AI works the rarest of the pack first, using the area data it was given", () => {
+    const state = createWildDuel({
+      seed: 41, width: 12, height: 9, blocked: [], captureAllowed: true,
+      players: [{ species: "bulbasaur", level: 20, moves: ["sleep-powder", "tackle"] }].map(build),
+      items: { potion: 0, "poke-ball": 20, "great-ball": 5 },
+      wildSpecies: "caterpie", wildLevel: 4,
+      wilds: [
+        { species: "caterpie", level: 4, appearanceRate: 0.4 },
+        { species: "weedle", level: 4, appearanceRate: 0.4 },
+        { species: "pikachu", level: 3, appearanceRate: 0.05 },
+      ],
+    } as never);
+    const player = state.units.find((u) => u.side === "player")!;
+    const pika = state.units.find((u) => u.species === "pikachu")!;
+    const ready = {
+      ...state,
+      activeUnitId: player.id,
+      units: state.units.map((u) =>
+        u.id === player.id ? { ...u, position: { x: 5, y: 4 }, ap: 10, maxAp: 10 }
+        : u.id === pika.id ? { ...u, position: { x: 6, y: 4 } }
+        : u.side === "rival" ? { ...u, position: { x: 6, y: u.species === "weedle" ? 5 : 3 } } : u),
+    };
+    const step = resolveSimpleAiTurnDetailed(ready, "player", { autoCapture: true }).steps[0];
+    expect(step.presentation && "targetIds" in step.presentation ? step.presentation.targetIds[0] : null).toBe(pika.id);
   });
 });

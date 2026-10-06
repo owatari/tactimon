@@ -7,7 +7,22 @@ import type {
 export type WildEncounter = {
   species: WildSpeciesId;
   level: number;
+  /** Share (0-1) of the area's encounters this species makes up; Auto Catch catches rarer ones first. */
+  appearanceRate?: number;
 };
+
+/** Total weight of `species` over the area's slots divided by the table's total weight. */
+export function appearanceRateOf(
+  slots: readonly { species: string; weight: number }[],
+  species: string,
+): number {
+  const total = slots.reduce((sum, slot) => sum + slot.weight, 0);
+  if (total <= 0) return 1;
+  const own = slots
+    .filter((slot) => slot.species === species)
+    .reduce((sum, slot) => sum + slot.weight, 0);
+  return own / total;
+}
 
 export type LandEncounterSlot =
   WildEncounter & {
@@ -461,7 +476,13 @@ export function resolveScaledWildEncounter(
         index * index * 3,
     );
     if (encounter) {
-      members.push(encounter);
+      members.push({
+        ...encounter,
+        appearanceRate: appearanceRateOf(
+          LAND_ENCOUNTERS[mapId]?.slots ?? [],
+          encounter.species,
+        ),
+      });
     }
   }
 

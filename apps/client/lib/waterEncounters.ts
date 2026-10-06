@@ -7,6 +7,7 @@ import { applyWaterOverrides } from "./encounterOverrides";
 import type { StoryKeyItemId, StoryState } from "./story";
 import { hasStoryKeyItem } from "./story";
 import {
+  appearanceRateOf,
   equivalentWildPartyStrength,
   resolveAreaLevelRange,
   resolveWildPackSize,
@@ -52,9 +53,10 @@ function pickSlot(
   return slots[slots.length - 1];
 }
 
-const toWild = (slot: WaterSlot): WildEncounter => ({
+const toWild = (slot: WaterSlot, slots: readonly WaterSlot[]): WildEncounter => ({
   species: slot.species as WildSpeciesId,
   level: slot.level,
+  appearanceRate: appearanceRateOf(slots, slot.species),
 });
 
 export function hasFishingTable(mapId: string): boolean {
@@ -92,7 +94,7 @@ export function resolveFishing(
 
   return {
     outcome: "bite",
-    encounter: toWild(pickSlot(table[rod.table], slotRoll)),
+    encounter: toWild(pickSlot(table[rod.table], slotRoll), table[rod.table]),
   };
 }
 
@@ -130,7 +132,7 @@ export function resolveScaledSurfEncounter(
   const members: WildEncounter[] = [];
   for (let index = 0; index < size; index += 1) {
     members.push(
-      toWild(pickSlot(table.slots, roll + index * 37 + size * 11)),
+      toWild(pickSlot(table.slots, roll + index * 37 + size * 11), table.slots),
     );
   }
 

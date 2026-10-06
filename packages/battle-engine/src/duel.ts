@@ -6,6 +6,7 @@ import {
   type GeneratedSpeciesId,
 } from "./generated/kanto";
 import { ROM_CATCH_RATE } from "./generated/evYield";
+import { appearanceTier, catchRateTier, rarityBonus } from "./rarity";
 import {
   apCostForMove,
   itemApCost,
@@ -294,6 +295,8 @@ export interface DuelPokemonBuild {
   /** Player-given name shown instead of the species name. */
   nickname?: string;
   shiny?: boolean;
+  /** Share (0-1) of the area's encounters this species makes up; drives Auto Catch priority. */
+  appearanceRate?: number;
   /** Persistent HP carried between battles. Omit to start at full HP. */
   currentHp?: number;
   /** Persistent major status carried between battles. */
@@ -353,6 +356,7 @@ export interface WildDuelOptions {
     ivs?: IvSpread;
     nature?: NatureId;
     shiny?: boolean;
+    appearanceRate?: number;
   }[];
   /** 1-in-N shiny chance per wild (default 8192); mainly for tests. */
   shinyOdds?: number;
@@ -534,6 +538,7 @@ export interface DuelUnit {
   nature?: NatureId;
   nickname?: string;
   shiny?: boolean;
+  appearanceRate?: number;
   attack: number;
   defense: number;
   specialAttack: number;
@@ -3980,6 +3985,7 @@ function makeUnit(
     ...(build.nature ? { nature: build.nature } : {}),
     ...(build.nickname ? { nickname: build.nickname } : {}),
     ...(build.shiny ? { shiny: true } : {}),
+    ...(typeof build.appearanceRate === "number" ? { appearanceRate: build.appearanceRate } : {}),
     attack: calculateOtherStat({
       base: base.attack,
       iv: build.ivs?.attack ?? DEFAULT_IV,
@@ -4267,6 +4273,7 @@ export function createWildDuel(
         ivs: wild.ivs ?? rolled.ivs,
         nature: wild.nature ?? rolled.nature,
         ...(shiny ? { shiny: true } : {}),
+        ...(typeof wild.appearanceRate === "number" ? { appearanceRate: wild.appearanceRate } : {}),
       };
     });
 
@@ -8104,23 +8111,37 @@ function captureChanceAt(
   });
 }
 
-/** Rarity tiers for Auto Catch: shiny 3, rare 2 (catch rate <= 45), uncommon 1 (<= 120), common 0. */
-export type AutoCatchTier = 0 | 1 | 2 | 3;
+/** Rarity tiers for Auto Catch: shiny 4, then 3 (rarest) down to 0 (common). */
+export type AutoCatchTier = 0 | 1 | 2 | 3 | 4;
 
-export function autoCatchTier(unit: Pick<DuelUnit, "species" | "shiny">): AutoCatchTier {
-  if (unit.shiny === true) return 3;
-  const rate = catchRateFor(unit.species);
-  if (rate <= 45) return 2;
-  if (rate <= 120) return 1;
-  return 0;
+/**
+ * Base tier from how rarely the species appears in the area (its catch rate when the area is
+ * unknown), lifted by the curated list of valuable species, capped at 3; a shiny is always on top.
+ */
+export function autoCatchTier(
+  unit: Pick<DuelUnit, "species" | "shiny"> & { appearanceRate?: number },
+): AutoCatchTier {
+  if (unit.shiny === true) return 4;
+  const base =
+    typeof unit.appearanceRate === "number"
+      ? appearanceTier(unit.appearanceRate)
+      : catchRateTier(catchRateFor(unit.species));
+  return Math.min(3, base + rarityBonus(unit.species)) as AutoCatchTier;
 }
 
 /**
- * Sort key of a wild Pokémon for Auto Catch (higher = caught first): shiny on top, then by
- * rarity (lower catch rate first). Ties are broken by the odds of the moment, not here.
+ * Sort key of a wild Pokémon for Auto Catch (higher = caught first): tier, then the rarer
+ * appearance (or the lower catch rate), then the valuable ones. Ties fall back to the odds of the
+ * moment, not here.
  */
-export function autoCatchPriority(unit: Pick<DuelUnit, "species" | "shiny">): number {
-  return autoCatchTier(unit) * 1000 + (255 - catchRateFor(unit.species));
+export function autoCatchPriority(
+  unit: Pick<DuelUnit, "species" | "shiny"> & { appearanceRate?: number },
+): number {
+  const rarity =
+    typeof unit.appearanceRate === "number"
+      ? Math.round((1 - Math.min(1, Math.max(0, unit.appearanceRate))) * 200)
+      : Math.round((255 - catchRateFor(unit.species)) * 0.7);
+  return autoCatchTier(unit) * 1000 + rarityBonus(unit.species) * 250 + rarity;
 }
 
 /**
@@ -8141,10 +8162,10 @@ function bestBallFor(
     id: ball.id,
     chance: captureChanceAt(target, ball.modifier, hp, status),
   }));
-  const enough = tier >= 2 ? undefined : scored.find((entry) => entry.chance >= 0.6);
+  const enough = tier >= 3 ? undefined : scored.find((entry) => entry.chance >= 0.6);
   const best = enough ?? [...scored].sort((a, b) => b.chance - a.chance)[0];
   const master = balls.find((ball) => ball.modifier >= 255);
-  const masterBelow = tier === 3 ? 0.5 : tier === 2 ? 0.35 : 0.25;
+  const masterBelow = tier === 4 ? 0.5 : tier >= 2 ? 0.35 : 0.25;
   if (master && (!best || best.chance < masterBelow)) {
     return { id: master.id, chance: 1 };
   }
@@ -8241,7 +8262,7 @@ function planAgainstGroup(
 ): AutoCatchPlan | null {
   const primary = group[0];
   const canThrow = actor.ap >= throwCost;
-  const hopeless = tier >= 2 ? 0.03 : AUTO_CATCH_HOPELESS;
+  const hopeless = tier >= 3 ? 0.03 : AUTO_CATCH_HOPELESS;
   const throwAt = (entry: RankedWild): AutoCatchPlan => ({
     kind: "action",
     action: {
@@ -8334,7 +8355,7 @@ function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null 
 
   const topTier = Math.max(...wilds.map((unit) => autoCatchTier(unit))) as AutoCatchTier;
   // Knock-out danger: the more valuable the best target, the more the Pokémon is willing to risk.
-  const tolerance = topTier === 3 ? Number.POSITIVE_INFINITY : topTier === 2 ? 1.5 : 1;
+  const tolerance = topTier === 4 ? Number.POSITIVE_INFINITY : topTier === 3 ? 1.5 : 1;
   if (aiExpectedIncomingDamage(state, actor) >= actor.hp * tolerance) {
     return { kind: "fallback" };
   }
@@ -8345,7 +8366,7 @@ function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null 
   if (ranked.length === 0) return null;
 
   const throwCost = Math.min(...balls.map((ball) => itemApCost(ball.id)));
-  const tiers = [3, 2, 1, 0] as const;
+  const tiers = [4, 3, 2, 1, 0] as const;
   for (const tier of tiers) {
     const group = ranked
       .filter((entry) => autoCatchTier(entry.target) === tier)

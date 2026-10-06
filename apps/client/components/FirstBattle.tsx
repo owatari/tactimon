@@ -104,6 +104,7 @@ export type BattleEncounter =
       wilds?: readonly {
         species: WildSpeciesId;
         level: number;
+        appearanceRate?: number;
       }[];
       areaLevel?: number;
       equivalentPartyStrength?: number;
