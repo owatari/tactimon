@@ -1,0 +1,21 @@
+{
+  "id": "2026-10-06-036-npc-events-and-behaviors",
+  "title": "NPCs e eventos como no FireRed: treinador te vê, vira, anda até você e fala no fim; rival anda até você; comportamentos de NPC",
+  "status": "planned",
+  "created_at": "2026-10-06",
+  "base_head": "d2ec5a1f",
+  "current_head": "d2ec5a1f",
+  "skills": [
+    "gameplay-systems",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "gameplay-systems",
+    "repo-cartographer"
+  ],
+  "files": [],
+  "commits": [],
+  "tests": []
+}
