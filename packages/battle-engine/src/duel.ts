@@ -8088,7 +8088,30 @@ function captureChanceAt(
   });
 }
 
-/** Cheapest ball that is already good enough, else the best regular ball; the Master Ball only for hopeless cases. */
+/** Rarity tiers for Auto Catch: shiny 3, rare 2 (catch rate <= 45), uncommon 1 (<= 120), common 0. */
+export type AutoCatchTier = 0 | 1 | 2 | 3;
+
+export function autoCatchTier(unit: Pick<DuelUnit, "species" | "shiny">): AutoCatchTier {
+  if (unit.shiny === true) return 3;
+  const rate = catchRateFor(unit.species);
+  if (rate <= 45) return 2;
+  if (rate <= 120) return 1;
+  return 0;
+}
+
+/**
+ * Sort key of a wild Pokémon for Auto Catch (higher = caught first): shiny on top, then by
+ * rarity (lower catch rate first). Ties are broken by the odds of the moment, not here.
+ */
+export function autoCatchPriority(unit: Pick<DuelUnit, "species" | "shiny">): number {
+  return autoCatchTier(unit) * 1000 + (255 - catchRateFor(unit.species));
+}
+
+/**
+ * Cheapest ball that is already good enough, else the best regular ball; the Master Ball only for
+ * hopeless cases. Rare and shiny targets always get the best regular ball, and a shiny falls back
+ * to the Master Ball as soon as the odds are worse than a coin flip.
+ */
 function bestBallFor(
   target: DuelUnit,
   balls: ReturnType<typeof availableBalls>,
@@ -8096,15 +8119,17 @@ function bestBallFor(
   status: DuelMajorStatus = target.status,
 ): { id: DuelItemId; chance: number } | null {
   if (balls.length === 0) return null;
+  const tier = autoCatchTier(target);
   const regular = balls.filter((ball) => ball.modifier < 255);
   const scored = regular.map((ball) => ({
     id: ball.id,
     chance: captureChanceAt(target, ball.modifier, hp, status),
   }));
-  const enough = scored.find((entry) => entry.chance >= 0.6);
+  const enough = tier >= 2 ? undefined : scored.find((entry) => entry.chance >= 0.6);
   const best = enough ?? [...scored].sort((a, b) => b.chance - a.chance)[0];
   const master = balls.find((ball) => ball.modifier >= 255);
-  if (master && (!best || best.chance < 0.25)) {
+  const masterBelow = tier === 3 ? 0.5 : tier === 2 ? 0.35 : 0.25;
+  if (master && (!best || best.chance < masterBelow)) {
     return { id: master.id, chance: 1 };
   }
   return best ?? null;
@@ -8184,34 +8209,24 @@ function evaluateCatchMove(
   return { move, target, newChance, gain: (newChance - currentChance) * accuracy };
 }
 
-function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null {
-  if (
-    actor.side !== "player" ||
-    state.battleKind !== "wild" ||
-    !state.captureAllowed
-  ) {
-    return null;
-  }
-  const balls = availableBalls(state);
-  const wilds = state.units.filter(
-    (unit) => unit.side === "rival" && unit.hp > 0 && !unit.captured,
-  );
-  if (balls.length === 0 || wilds.length === 0) return null;
+type RankedWild = {
+  target: DuelUnit;
+  best: { id: DuelItemId; chance: number };
+};
 
-  // The acting Pokémon is about to be knocked out: stop being gentle and let the normal AI fight.
-  if (aiExpectedIncomingDamage(state, actor) >= actor.hp) {
-    return { kind: "fallback" };
-  }
-
-  const ranked = wilds
-    .map((target) => ({ target, best: bestBallFor(target, balls) }))
-    .filter((entry): entry is { target: DuelUnit; best: { id: DuelItemId; chance: number } } => entry.best !== null)
-    .sort((a, b) => b.best.chance - a.best.chance || a.target.hp - b.target.hp);
-  if (ranked.length === 0) return null;
-
-  const primary = ranked[0];
-  const canThrow = actor.ap >= Math.min(...balls.map((ball) => itemApCost(ball.id)));
-  const throwAt = (entry: (typeof ranked)[number]): AutoCatchPlan => ({
+/** One pass of the Auto Catch plan against a group of wild Pokémon of the same rarity tier. */
+function planAgainstGroup(
+  state: DuelState,
+  actor: DuelUnit,
+  group: RankedWild[],
+  balls: ReturnType<typeof availableBalls>,
+  tier: AutoCatchTier,
+  throwCost: number,
+): AutoCatchPlan | null {
+  const primary = group[0];
+  const canThrow = actor.ap >= throwCost;
+  const hopeless = tier >= 2 ? 0.03 : AUTO_CATCH_HOPELESS;
+  const throwAt = (entry: RankedWild): AutoCatchPlan => ({
     kind: "action",
     action: {
       kind: "use-item",
@@ -8229,7 +8244,7 @@ function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null 
   // 2. A status or a non-lethal hit that is in range right now.
   const usableMoves = actor.moves.filter((moveId) => canDuelUnitUseMove(actor, moveId));
   const inRange: AutoCatchOption[] = [];
-  for (const entry of ranked) {
+  for (const entry of group) {
     for (const moveId of usableMoves) {
       const move = DUEL_MOVES[moveId];
       if (!move || actor.ap < move.apCost) continue;
@@ -8254,13 +8269,13 @@ function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null 
   }
 
   // 3. Nothing to improve from here: throw if the odds are not hopeless.
-  if (canThrow && primary.best.chance >= AUTO_CATCH_HOPELESS) {
+  if (canThrow && primary.best.chance >= hopeless) {
     return throwAt(primary);
   }
 
   // 4. Walk toward a target that a useful move could reach.
   let bestWalk: { destination: DuelPoint; score: number } | null = null;
-  for (const entry of ranked) {
+  for (const entry of group) {
     for (const moveId of usableMoves) {
       const move = DUEL_MOVES[moveId];
       if (!move) continue;
@@ -8278,6 +8293,56 @@ function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null 
 
   // 5. Last resort: even a poor throw beats doing nothing.
   if (canThrow) return throwAt(primary);
+  return null;
+}
+
+/**
+ * Auto Catch turn plan. Wild Pokémon are worked in rarity order (shiny first, then rare, uncommon,
+ * common); the whole party concentrates on the top group, and only an actor that has nothing useful
+ * to do there moves on to the next one. The Pokémon's own life comes second: with a shiny on the
+ * field it never falls back to the killing AI, with a rare one it tolerates 1.5x its HP in risk.
+ */
+function planAutoCatch(state: DuelState, actor: DuelUnit): AutoCatchPlan | null {
+  if (
+    actor.side !== "player" ||
+    state.battleKind !== "wild" ||
+    !state.captureAllowed
+  ) {
+    return null;
+  }
+  const balls = availableBalls(state);
+  const wilds = state.units.filter(
+    (unit) => unit.side === "rival" && unit.hp > 0 && !unit.captured,
+  );
+  if (balls.length === 0 || wilds.length === 0) return null;
+
+  const topTier = Math.max(...wilds.map((unit) => autoCatchTier(unit))) as AutoCatchTier;
+  // Knock-out danger: the more valuable the best target, the more the Pokémon is willing to risk.
+  const tolerance = topTier === 3 ? Number.POSITIVE_INFINITY : topTier === 2 ? 1.5 : 1;
+  if (aiExpectedIncomingDamage(state, actor) >= actor.hp * tolerance) {
+    return { kind: "fallback" };
+  }
+
+  const ranked: RankedWild[] = wilds
+    .map((target) => ({ target, best: bestBallFor(target, balls) }))
+    .filter((entry): entry is RankedWild => entry.best !== null);
+  if (ranked.length === 0) return null;
+
+  const throwCost = Math.min(...balls.map((ball) => itemApCost(ball.id)));
+  const tiers = [3, 2, 1, 0] as const;
+  for (const tier of tiers) {
+    const group = ranked
+      .filter((entry) => autoCatchTier(entry.target) === tier)
+      .sort(
+        (a, b) =>
+          autoCatchPriority(b.target) - autoCatchPriority(a.target) ||
+          b.best.chance - a.best.chance ||
+          a.target.hp - b.target.hp,
+      );
+    if (group.length === 0) continue;
+    const plan = planAgainstGroup(state, actor, group, balls, tier, throwCost);
+    if (plan) return plan;
+  }
   return { kind: "idle" };
 }
 

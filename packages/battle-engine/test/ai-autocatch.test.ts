@@ -176,3 +176,103 @@ describe("capture odds helper stays consistent with the AI's choices", () => {
     expect(applyDuelAction).toBeTypeOf("function");
   });
 });
+
+import { autoCatchPriority, autoCatchTier } from "../src";
+
+describe("Auto Catch priority: shiny on top, then the rare ones", () => {
+  it("ranks shiny > rare > uncommon > common, deterministically", () => {
+    const shinyCommon = { species: "rattata", shiny: true } as never;
+    const rare = { species: "snorlax" } as never;
+    const rarer = { species: "gyarados" } as never;
+    const uncommon = { species: "kadabra" } as never;
+    const common = { species: "pidgey" } as never;
+    expect([shinyCommon, rare, uncommon, common].map((u) => autoCatchTier(u))).toEqual([3, 2, 1, 0]);
+    expect(autoCatchPriority(shinyCommon)).toBeGreaterThan(autoCatchPriority(rare));
+    expect(autoCatchPriority(rare)).toBeGreaterThan(autoCatchPriority(uncommon));
+    expect(autoCatchPriority(uncommon)).toBeGreaterThan(autoCatchPriority(common));
+    // Inside a tier the lower catch rate (rarer) comes first.
+    expect(autoCatchPriority(rare)).toBeGreaterThan(autoCatchPriority(rarer));
+    expect(autoCatchPriority(rare)).toBe(autoCatchPriority(rare));
+  });
+
+  /** A pack where the shiny and the rare one are NOT the easiest to catch. */
+  function mixedPack(seed: number, party: Member[]) {
+    const state = createWildDuel({
+      seed, width: 12, height: 9, blocked: [], players: party.map(build), captureAllowed: true,
+      items: { potion: 0, "poke-ball": 30, "great-ball": 10, "ultra-ball": 4, "master-ball": 1 },
+      wildSpecies: "rattata", wildLevel: 5,
+      wilds: [
+        { species: "rattata", level: 5 },
+        { species: "pidgey", level: 5, shiny: true },
+        { species: "snorlax", level: 5 },
+        { species: "weedle", level: 5 },
+      ],
+    } as never);
+    const first = state.units.find((u) => u.side === "player")!;
+    return { ...state, activeUnitId: first.id, turnIndex: state.turnOrder.indexOf(first.id) };
+  }
+  const targetOf = (step: { presentation?: { kind: string; targetIds?: string[] } } | undefined) =>
+    step?.presentation && "targetIds" in step.presentation ? step.presentation.targetIds?.[0] : undefined;
+
+  it("goes for the shiny first, even though the commons would be easier", () => {
+    const base = mixedPack(21, [{ species: "bulbasaur", level: 20, moves: ["sleep-powder", "tackle"] }]);
+    const shiny = base.units.find((u) => u.shiny)!;
+    const actor = base.units.find((u) => u.side === "player")!;
+    // Everything in reach: the shiny sits right next to the actor.
+    const state = {
+      ...base,
+      units: base.units.map((u) =>
+        u.id === actor.id ? { ...u, position: { x: 5, y: 4 }, ap: 10, maxAp: 10 }
+        : u.id === shiny.id ? { ...u, position: { x: 6, y: 4 } }
+        : u.side === "rival" ? { ...u, position: { x: 6, y: u.id.endsWith("rattata") ? 5 : 3 } } : u),
+    };
+    const step = firstStep(state);
+    expect(targetOf(step)).toBe(shiny.id);
+  });
+
+  it("never lets a shiny be knocked out, even when the acting Pokémon is about to faint", () => {
+    const wilds = [{ species: "rattata", level: 12, shiny: true }];
+    const state = adjacent(
+      wildDuel(31, [{ species: "pidgey", level: 8, moves: ["sleep-powder", "tackle"] }], wilds as never),
+      (u) => (u.side === "player" ? { hp: 1 } : { hp: 2 }),
+    );
+    // Without a shiny the same position makes the normal AI finish the wild (see the survival test).
+    const step = firstStep(state);
+    const shiny = step.state.units.find((u) => u.shiny)!;
+    // A caught Pokémon leaves the field with 0 HP but is not dead: the shiny is never defeated.
+    expect(shiny.hp > 0 || shiny.captured === true).toBe(true);
+    expect(used(step)).toMatch(/^ball:/);
+  });
+
+  it("over many battles: the shiny is caught (>= 95%), never killed and usually among the first caught", () => {
+    const party: Member[] = [
+      { species: "bulbasaur", level: 16, moves: ["sleep-powder", "vine-whip", "tackle"] },
+      { species: "pikachu", level: 16, moves: ["thunder-wave", "thunder-shock", "quick-attack"] },
+      { species: "charmander", level: 15, moves: ["ember", "scratch", "growl"] },
+    ];
+    let shinyCaught = 0, shinyKilled = 0, shinyEarly = 0, battles = 0, caught = 0, wilds = 0;
+    for (let seed = 1; seed <= 100; seed += 1) {
+      let state = mixedPack(seed, party);
+      for (let step = 0; step < 2500 && state.status === "active"; step += 1) {
+        const actor = getActiveDuelUnit(state);
+        if (!actor) break;
+        const turn = resolveSimpleAiTurnDetailed(state, actor.side, { useItems: false, autoCapture: actor.side === "player" });
+        if (turn.steps.length === 0) break;
+        state = turn.state;
+      }
+      battles += 1;
+      wilds += 4;
+      caught += state.captures.length;
+      const shiny = state.units.find((u) => u.shiny)!;
+      if (shiny.captured) {
+        shinyCaught += 1;
+        if (state.captures.findIndex((c) => c.shiny) <= 1) shinyEarly += 1;
+      }
+      if (shiny.hp <= 0 && !shiny.captured) shinyKilled += 1;
+    }
+    expect(shinyKilled).toBe(0);
+    expect(shinyCaught / battles).toBeGreaterThanOrEqual(0.95);
+    expect(shinyEarly / Math.max(1, shinyCaught)).toBeGreaterThan(0.6);
+    expect(caught / wilds).toBeGreaterThan(0.8);
+  });
+});
