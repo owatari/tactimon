@@ -1,2 +1,5 @@
 # Pedido original
 Reverter o sistema de captura e reformular o sistema de ações por turno. Cada pokémon começa com 6 action points, ganha + 1 a cada 25 pontos de speed. Mover gasta 1 action point por tile, podendo gastar todos só para se realocar. Moves gastam em média, 10% do move power como action, mas deve-se levar em considerações moves multi-hit, moves que foram transformados em area, moves de grande área. Move de status gastam 3 actions em média, mas deve-se considerar moves que aplica mais de um status, moves que aplicam status em grande área, moves que buffam todos os aliados, tudo isso deve ser levado em consideração neste calculo.
+
+## Adendo do usuário (2026-10-06)
+Poké Ball gasta 4 AP. Capturar dá a mesma EXP de matar + 20%. Na pós-batalha com múltiplas capturas, mostrar uma de cada vez com opção "Send all to box" (todas para a box, sem nickname).
