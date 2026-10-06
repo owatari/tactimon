@@ -6747,223 +6747,6 @@ body {
   }
 }
 
-/* FireRed-style Pokedex (list / entry / area) */
-.dex-screen {
-  position: absolute;
-  inset: 18px 18px 74px;
-  display: grid;
-  gap: 10px;
-  padding: 12px;
-  border: 4px solid #203850;
-  background: #d84838;
-  box-shadow: inset 0 0 0 3px #f8a090;
-  color: #182838;
-  font-family: "Courier New", ui-monospace, monospace;
-  image-rendering: pixelated;
-}
-
-.dex-list-view {
-  grid-template-columns: minmax(200px, 280px) 1fr;
-  grid-template-rows: 1fr auto;
-}
-
-.dex-side {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 10px;
-}
-
-.dex-sprite-frame,
-.dex-window,
-.dex-list,
-.dex-counts {
-  border: 4px solid #203850;
-  background: #f8f8e8;
-  box-shadow: inset 0 0 0 3px #a8c0d0;
-}
-
-.dex-sprite-frame {
-  display: grid;
-  place-items: center;
-  min-height: 200px;
-}
-
-.dex-sprite {
-  width: 192px;
-  height: 192px;
-  image-rendering: pixelated;
-  object-fit: contain;
-}
-
-.dex-sprite-large .dex-sprite {
-  width: 256px;
-  height: 256px;
-}
-
-.dex-sprite-unknown {
-  display: grid;
-  place-items: center;
-  color: #8898a8;
-  font-size: 96px;
-  font-weight: 700;
-}
-
-.dex-counts {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2px 12px;
-  padding: 8px 14px;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.dex-counts strong {
-  text-align: right;
-}
-
-.dex-list {
-  display: grid;
-  grid-auto-rows: 1fr;
-  margin: 0;
-  padding: 8px 10px;
-  list-style: none;
-}
-
-.dex-list li {
-  display: grid;
-  grid-template-columns: 48px 22px 1fr;
-  align-items: center;
-  gap: 8px;
-  padding: 0 8px 0 22px;
-  border-bottom: 2px dotted #a8c0d0;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-}
-
-.dex-list li.selected {
-  background: #f8e8a0;
-}
-
-.dex-list li.selected::before {
-  content: "\25B6";
-  margin-left: -18px;
-  margin-right: -4px;
-  position: absolute;
-}
-
-.dex-list li {
-  position: relative;
-}
-
-.dex-list li.selected::before {
-  left: 8px;
-}
-
-.dex-ball {
-  width: 14px;
-  height: 14px;
-  border: 2px solid #203850;
-  border-radius: 50%;
-  background: transparent;
-}
-
-.dex-ball.caught {
-  background: linear-gradient(#e83828 50%, #f8f8f8 50%);
-}
-
-.dex-help {
-  grid-column: 1 / -1;
-  padding: 4px 10px;
-  border: 4px solid #203850;
-  background: #f8f8e8;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.dex-entry-view {
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr auto auto;
-}
-
-.dex-entry-head {
-  display: grid;
-  align-content: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 4px solid #203850;
-  background: #f8f8e8;
-  box-shadow: inset 0 0 0 3px #a8c0d0;
-  font-size: 18px;
-}
-
-.dex-entry-head strong {
-  font-size: 26px;
-  letter-spacing: 0.06em;
-}
-
-.dex-category {
-  font-weight: 700;
-}
-
-.dex-size {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 2px 14px;
-  margin: 0;
-  font-weight: 700;
-}
-
-.dex-size dd {
-  margin: 0;
-}
-
-.dex-window {
-  padding: 12px 18px;
-}
-
-.dex-description {
-  grid-column: 1 / -1;
-  min-height: 96px;
-  font-size: 17px;
-  line-height: 1.5;
-}
-
-.dex-description p,
-.dex-area-list p {
-  margin: 0;
-}
-
-.dex-area-view {
-  grid-template-rows: auto 1fr auto;
-}
-
-.dex-title {
-  padding: 6px 14px;
-  border: 4px solid #203850;
-  background: #f8f8e8;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-
-.dex-area-list ul {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 4px 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.dex-area-list {
-  overflow: auto;
-}
-
 /* FireRed front sprites in Party / Summary */
 .start-menu-front {
   display: grid;
@@ -7272,4 +7055,27 @@ body {
 
 .mart-header .eyebrow {
   color: #6878a0;
+}
+
+/* ROM-rendered GBA screens (Pokédex) */
+.start-menu-gba {
+  position: absolute;
+  inset: 18px 18px 74px;
+  display: grid;
+  background: #101820;
+  border: 4px solid #203850;
+}
+
+.gba-canvas-wrap {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #000;
+}
+
+.gba-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }

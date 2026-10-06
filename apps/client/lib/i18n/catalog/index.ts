@@ -6,6 +6,7 @@ import { fieldCatalog } from "./field";
 import { itemsCatalog } from "./items";
 import { namesCatalog } from "./names";
 import { optionsCatalog } from "./options";
+import { pokedexCatalog } from "./pokedex";
 import { questsCatalog } from "./quests";
 import { trainersHandCatalog } from "./trainers-hand";
 import { trainersKantoCatalog } from "./trainers-kanto";
@@ -19,6 +20,7 @@ export const CATALOG: Catalog = {
   ...optionsCatalog,
   ...fieldCatalog,
   ...uiCatalog,
+  ...pokedexCatalog,
   ...battleCatalog,
   ...battleLogCatalog,
   ...dialoguesCatalog,

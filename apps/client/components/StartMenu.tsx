@@ -14,7 +14,7 @@ import {
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
 import { PLAYER_SPRITE } from "@/lib/maps";
-import { PokedexScreen, type PokedexView } from "@/components/PokedexScreen";
+import { PokedexGba } from "@/components/PokedexGba";
 import {
   getPokedex,
   pokedexDisplayName,
@@ -139,8 +139,6 @@ export function StartMenu({
   ];
   const [screen, setScreen] = useState<MenuScreen>("root");
   const [rootIndex, setRootIndex] = useState(1);
-  const [dexIndex, setDexIndex] = useState(0);
-  const [dexView, setDexView] = useState<PokedexView>("list");
   const [partyIndex, setPartyIndex] = useState(0);
   const [partyAction, setPartyAction] = useState<number | null>(
     null,
@@ -169,10 +167,6 @@ export function StartMenu({
   const latest = useRef({
     screen,
     rootIndex,
-    dexIndex,
-    dexView,
-    dexStatus: dex.entries[dexIndex]?.status ?? "unseen",
-    dexCount: dex.entries.length,
     partyIndex,
     partyAction,
     switchFrom,
@@ -192,10 +186,6 @@ export function StartMenu({
   latest.current = {
     screen,
     rootIndex,
-    dexIndex,
-    dexView,
-    dexStatus: dex.entries[dexIndex]?.status ?? "unseen",
-    dexCount: dex.entries.length,
     partyIndex,
     partyAction,
     switchFrom,
@@ -302,25 +292,6 @@ export function StartMenu({
       }
 
       if (s.screen === "pokedex") {
-        const view = s.dexView;
-        if (view === "area") {
-          if (back || confirm) setDexView("entry");
-          return;
-        }
-        if (up) setDexIndex(wrap(s.dexIndex - 1, s.dexCount));
-        else if (down) setDexIndex(wrap(s.dexIndex + 1, s.dexCount));
-        else if (view === "list" && left)
-          setDexIndex(Math.max(0, s.dexIndex - 10));
-        else if (view === "list" && right)
-          setDexIndex(Math.min(s.dexCount - 1, s.dexIndex + 10));
-        else if (back) {
-          if (view === "entry") setDexView("list");
-          else setScreen("root");
-        } else if (confirm) {
-          if (view === "list") {
-            if (s.dexStatus !== "unseen") setDexView("entry");
-          } else if (view === "entry") setDexView("area");
-        }
         return;
       }
 
@@ -556,18 +527,13 @@ export function StartMenu({
       )}
 
       {screen === "pokedex" && (
-        <PokedexScreen
-          entries={dex.entries}
-          index={dexIndex}
-          view={dexView}
-          seen={dex.seenCount}
-          caught={dex.caughtCount}
-          onSelect={setDexIndex}
-          onOpen={(i) => {
-            setDexIndex(i);
-            if (dex.entries[i].status !== "unseen") setDexView("entry");
-          }}
-        />
+        <section className="start-menu-gba">
+          <PokedexGba
+            story={story}
+            musicVolume={options.musicMuted ? 0 : options.musicVolume}
+            onClose={() => setScreen("root")}
+          />
+        </section>
       )}
 
       {screen === "party" && (

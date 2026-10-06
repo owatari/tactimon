@@ -1,0 +1,132 @@
+import type { Catalog } from "../index";
+
+/**
+ * Catalog domain: pokedex (FireRed ROM Pokédex screens).
+ * The ROM font only covers Latin characters (no ã/õ and no CJK): pt/es/fr text is drawn with the ROM
+ * font, zh keeps the English ROM text on screen (the translation is still catalogued).
+ */
+export const pokedexCatalog: Catalog = {
+  "POKéDEX   TABLE OF CONTENTS": {
+    pt: "POKéDEX   ÍNDICE",
+    es: "POKéDEX   ÍNDICE",
+    fr: "POKéDEX   SOMMAIRE",
+    zh: "图鉴 目录",
+  },
+  "POKéMON LIST": {
+    pt: "LISTA DE POKéMON",
+    es: "LISTA DE POKéMON",
+    fr: "LISTE DES POKéMON",
+    zh: "宝可梦列表",
+  },
+  "NUMERICAL MODE": {
+    pt: "MODO NUMÉRICO",
+    es: "MODO NUMÉRICO",
+    fr: "MODE NUMÉRIQUE",
+    zh: "编号模式",
+  },
+  "POKéMON HABITATS": { pt: "HABITATS", es: "HÁBITATS", fr: "HABITATS", zh: "栖息地" },
+  "Grassland POKéMON": {
+    pt: "POKéMON de Campo",
+    es: "POKéMON de Pradera",
+    fr: "POKéMON des Prairies",
+    zh: "草原宝可梦",
+  },
+  "Forest POKéMON": {
+    pt: "POKéMON de Floresta",
+    es: "POKéMON de Bosque",
+    fr: "POKéMON des Forêts",
+    zh: "森林宝可梦",
+  },
+  "Water's-edge POKéMON": {
+    pt: "POKéMON de Margem",
+    es: "POKéMON de Orilla",
+    fr: "POKéMON des Rivages",
+    zh: "水边宝可梦",
+  },
+  "Sea POKéMON": { pt: "POKéMON Marinho", es: "POKéMON Marinos", fr: "POKéMON des Mers", zh: "海洋宝可梦" },
+  "Cave POKéMON": {
+    pt: "POKéMON de Caverna",
+    es: "POKéMON de Cueva",
+    fr: "POKéMON des Grottes",
+    zh: "洞窟宝可梦",
+  },
+  "Mountain POKéMON": {
+    pt: "POKéMON de Montanha",
+    es: "POKéMON de Montaña",
+    fr: "POKéMON des Montagnes",
+    zh: "山地宝可梦",
+  },
+  "Rough-terrain POKéMON": {
+    pt: "POKéMON de Terreno Duro",
+    es: "POKéMON de Terreno Duro",
+    fr: "POKéMON des Terrains Rudes",
+    zh: "荒地宝可梦",
+  },
+  "Urban POKéMON": { pt: "POKéMON Urbano", es: "POKéMON Urbanos", fr: "POKéMON des Villes", zh: "城市宝可梦" },
+  "Rare POKéMON": { pt: "POKéMON Raro", es: "POKéMON Raros", fr: "POKéMON Rares", zh: "稀有宝可梦" },
+  SEARCH: { pt: "BUSCAR", es: "BUSCAR", fr: "RECHERCHE", zh: "搜索" },
+  "A TO Z MODE": { pt: "MODO A-Z", es: "MODO A-Z", fr: "MODE A-Z", zh: "A-Z 模式" },
+  "TYPE MODE": { pt: "MODO POR TIPO", es: "MODO POR TIPO", fr: "MODE PAR TYPE", zh: "属性模式" },
+  "LIGHTEST MODE": {
+    pt: "MODO MAIS LEVE",
+    es: "MODO MÁS LIGERO",
+    fr: "MODE PLUS LÉGER",
+    zh: "最轻模式",
+  },
+  "SMALLEST MODE": {
+    pt: "MODO MENOR",
+    es: "MODO MÁS PEQUEÑO",
+    fr: "MODE PLUS PETIT",
+    zh: "最小模式",
+  },
+  OTHER: { pt: "OUTROS", es: "OTROS", fr: "AUTRE", zh: "其他" },
+  "CLOSE POKéDEX": {
+    pt: "FECHAR POKéDEX",
+    es: "CERRAR POKéDEX",
+    fr: "FERMER POKéDEX",
+    zh: "关闭图鉴",
+  },
+  "Seen:": { pt: "Vistos:", es: "Vistos:", fr: "Vus :", zh: "见过:" },
+  "Owned:": { pt: "Obtidos:", es: "Capturados:", fr: "Capturés :", zh: "捕获:" },
+  "{DPAD_UPDOWN}PICK {A_BUTTON}OK": {
+    pt: "{DPAD_UPDOWN}ESCOLHER {A_BUTTON}OK",
+    es: "{DPAD_UPDOWN}ELEGIR {A_BUTTON}OK",
+    fr: "{DPAD_UPDOWN}CHOISIR {A_BUTTON}OK",
+    zh: "{DPAD_UPDOWN}选择 {A_BUTTON}确定",
+  },
+  "{DPAD_UPDOWN}PICK {A_BUTTON}OK {B_BUTTON}CANCEL": {
+    pt: "{DPAD_UPDOWN}ESCOLHER {A_BUTTON}OK {B_BUTTON}VOLTAR",
+    es: "{DPAD_UPDOWN}ELEGIR {A_BUTTON}OK {B_BUTTON}VOLVER",
+    fr: "{DPAD_UPDOWN}CHOISIR {A_BUTTON}OK {B_BUTTON}RETOUR",
+    zh: "{DPAD_UPDOWN}选择 {A_BUTTON}确定 {B_BUTTON}取消",
+  },
+  "{START_BUTTON}CRY": {
+    pt: "{START_BUTTON}GRITO",
+    es: "{START_BUTTON}GRITO",
+    fr: "{START_BUTTON}CRI",
+    zh: "{START_BUTTON}叫声",
+  },
+  "{A_BUTTON}NEXT DATA {B_BUTTON}CANCEL": {
+    pt: "{A_BUTTON}PRÓXIMO {B_BUTTON}VOLTAR",
+    es: "{A_BUTTON}SIGUIENTE {B_BUTTON}VOLVER",
+    fr: "{A_BUTTON}SUITE {B_BUTTON}RETOUR",
+    zh: "{A_BUTTON}下一页 {B_BUTTON}取消",
+  },
+  "{A_BUTTON}CANCEL {B_BUTTON}PREVIOUS DATA": {
+    pt: "{A_BUTTON}VOLTAR {B_BUTTON}DADOS ANTERIORES",
+    es: "{A_BUTTON}VOLVER {B_BUTTON}DATOS ANTERIORES",
+    fr: "{A_BUTTON}RETOUR {B_BUTTON}DONNÉES PRÉCÉDENTES",
+    zh: "{A_BUTTON}取消 {B_BUTTON}上一页",
+  },
+  "{DPAD_LEFTRIGHT}PICK{PLUS}FLIP PAGE {A_BUTTON}CHECK {B_BUTTON}CANCEL": {
+    pt: "{DPAD_LEFTRIGHT}ESCOLHER{PLUS}VIRAR {A_BUTTON}VER {B_BUTTON}VOLTAR",
+    es: "{DPAD_LEFTRIGHT}ELEGIR{PLUS}PASAR PÁGINA {A_BUTTON}VER {B_BUTTON}VOLVER",
+    fr: "{DPAD_LEFTRIGHT}CHOISIR{PLUS}TOURNER {A_BUTTON}VOIR {B_BUTTON}RETOUR",
+    zh: "{DPAD_LEFTRIGHT}选择{PLUS}翻页 {A_BUTTON}查看 {B_BUTTON}取消",
+  },
+  PAGE: { pt: "PÁG.", es: "PÁG.", fr: "PAGE", zh: "页" },
+  SIZE: { pt: "TAMANHO", es: "TAMAÑO", fr: "TAILLE", zh: "大小" },
+  AREA: { pt: "ÁREA", es: "ÁREA", fr: "ZONE", zh: "分布" },
+  " POKéMON": { pt: " POKéMON", es: " POKéMON", fr: " POKéMON", zh: " 宝可梦" },
+  "lbs.": { pt: "lbs.", es: "lbs.", fr: "lbs.", zh: "磅" },
+};
