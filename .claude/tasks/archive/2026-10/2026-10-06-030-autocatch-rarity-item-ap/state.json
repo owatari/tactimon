@@ -1,13 +1,13 @@
 {
   "id": "2026-10-06-030-autocatch-rarity-item-ap",
   "title": "Auto Catch prioriza shiny e raros primeiro (captura acima da vida) + custo de AP por item (média 4)",
-  "status": "running",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "a5225644",
   "current_head": "a5225644",
   "skills": ["battle-development","pokemon-ui","verification","safe-main","task-ledger"],
   "agents": ["battle-engine","verifier"],
   "files": [],
-  "commits": [],
+  "commits": ["1bb41529", "a85f8ebf"],
   "tests": []
 }

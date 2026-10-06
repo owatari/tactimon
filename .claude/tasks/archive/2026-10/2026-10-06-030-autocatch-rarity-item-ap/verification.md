@@ -1,0 +1,5 @@
+# Verification — 030
+- Engine 271/271: `item-ap-costs.test.ts` (tabela: potion = 4 mínimo, full-restore e max-revive = máximo 7, média < 5,2, ordem por força, itens novos max-potion/full-restore/full-heal/revive/max-revive com AP, fila de bolas por custo), `ai-autocatch.test.ts` (prioridade shiny > raro > incomum > comum; vai no shiny primeiro com comuns mais fáceis; nunca mata o shiny mesmo quase morrendo; simulação 100 seeds: **shiny capturado 100/100, 0 mortos, sempre entre os 2 primeiros capturados; taxa geral 100% nos packs mistos** e baseline 029 mantida ~90%).
+- Client: typecheck 0; `pnpm test` 93 arquivos/508 testes (item-use atualizado: revive é item de batalha); i18n ok.
+- E2E: `pnpm e2e:playthrough` 14/14 em 3m36; `pnpm e2e:walkthrough` verde.
+- UI (CDP, 1365×768): menu de itens com custo por item (Potion 4, Super 4, Hyper 5, Max Potion 6, Full Restore 7, Revive 5, Max Revive 7…), itens que não cabem no AP ficam desativados; seletor de Revive ("Choose a fainted Pokémon"). Screenshot em 1792×851 não capturou o menu (a luta terminou antes).

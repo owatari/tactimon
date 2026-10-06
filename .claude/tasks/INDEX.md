@@ -34,4 +34,4 @@
 | 2026-10-06-027-capture-screen-layout-types | Tela de captura: tabela com divisões, 4 slots de golpe com hover e ícones de tipo da ROM | planned | active |
 | 2026-10-06-028-battle-grid-unit-offset | Corrigir offset das unidades fora do tile na arena (reverte limite de escala da 024) | done | archive/2026-10 |
 | 2026-10-06-029-ap-balance-autocatch-ai | Balanceamento fino de AP + IA de Auto Catch (enfraquece sem matar, status, bola; prioriza capturar todos) | done | archive/2026-10 |
-| 2026-10-06-030-autocatch-rarity-item-ap | Auto Catch prioriza shiny/raros (captura acima da vida) + custo de AP por item (média 4; potion 4 … full restore máx.) | planned | active |
+| 2026-10-06-030-autocatch-rarity-item-ap | Auto Catch prioriza shiny/raros (captura acima da vida) + custo de AP por item (média 4; potion 4 … full restore máx.) | done | archive/2026-10 |

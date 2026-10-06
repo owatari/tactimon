@@ -1,0 +1,2 @@
+# Handoff — 030
+Auto Catch por raridade (shiny no topo, depois raros), captura acima da vida (com shiny em campo nunca cai no modo que mata) e custo de AP por item (4–7, potion mínimo, full restore/max revive máximo) com itens novos de batalha. Pendências: revive só alcança aliados que desmaiam na própria batalha (os já desmaiados não são destacados); a IA de rival não usa os itens novos; chance de captura ainda invisível na UI; tiers de raridade por catch rate (sem lista de lendários/evoluções finais).
