@@ -1,0 +1,2 @@
+# Handoff — 026
+AP único (6+Speed/25), custo de golpe por fórmula, sem MP, captura Gen III sem gate de HP que não encerra a batalha (4 AP), EXP captura ×1,2, fila de capturas + SEND ALL TO BOX. Pendências: balanceamento fino (AP de espécies lentas vs golpes caros, teto 10 AP), Auto Catch ainda usa limiar de 30% HP, sem limite de bolas/turno, custo de poções/itens ainda sem AP, e a captura não mostra a chance na UI.
