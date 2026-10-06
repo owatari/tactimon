@@ -253,6 +253,13 @@ export function GameClient() {
     useState(false);
   const [starterChoiceOpen, setStarterChoiceOpen] =
     useState(false);
+  const [starterFocus, setStarterFocus] =
+    useState<StarterSpeciesId | null>(null);
+  const [starterPointer, setStarterPointer] = useState<{
+    kind: "hover" | "click";
+    starter: StarterSpeciesId;
+    nonce: number;
+  } | null>(null);
   const [martId, setMartId] = useState<string | null>(null);
   const martOpen = martId !== null;
   const [menuOpen, setMenuOpen] = useState(false);
@@ -965,6 +972,16 @@ export function GameClient() {
         }}
         respawnRequest={respawnRequest}
         onRequestStarterChoice={() => setStarterChoiceOpen(true)}
+        starterFocus={
+          starterChoiceOpen && !story.starter ? starterFocus : null
+        }
+        onStarterPointer={(kind, starter) =>
+          setStarterPointer((prev) => ({
+            kind,
+            starter,
+            nonce: (prev?.nonce ?? 0) + 1,
+          }))
+        }
         onMapAudioContextChange={handleMapAudioContextChange}
         onFirstBattleTrigger={(context) => {
           if (
@@ -1067,6 +1084,8 @@ export function GameClient() {
       {starterChoiceOpen && !story.starter && (
         <StarterChoice
           onChoose={handleChooseStarter}
+          onFocusChange={setStarterFocus}
+          pointer={starterPointer}
           onClose={() => setStarterChoiceOpen(false)}
         />
       )}

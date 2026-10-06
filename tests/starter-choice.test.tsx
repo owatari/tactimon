@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { StarterChoice } from "../apps/client/components/StarterChoice";
 import {
   INITIAL_STARTER_CHOICE,
+  pointStarterChoice,
   stepStarterChoice,
 } from "../apps/client/lib/starterChoice";
 
@@ -24,7 +25,7 @@ describe("starter choice (Oak's table)", () => {
     expect(r.state.stage).toBe("confirm");
     expect(r.chosen).toBeUndefined();
     const yes = stepStarterChoice(r.state, "confirm");
-    expect(yes.chosen).toBe("squirtle");
+    expect(yes.chosen).toBe("charmander"); // table order: Bulbasaur, Squirtle, Charmander
   });
 
   it("NO or back returns to the ball choice; back on the table closes", () => {
@@ -36,11 +37,20 @@ describe("starter choice (Oak's table)", () => {
     expect(stepStarterChoice(INITIAL_STARTER_CHOICE, "back").close).toBe(true);
   });
 
-  it("renders three Poké Balls, the info window and a FireRed text box (no cards)", () => {
+  it("hovering a real ball moves the cursor and clicking asks for confirmation", () => {
+    const hover = pointStarterChoice(INITIAL_STARTER_CHOICE, "charmander", false);
+    expect(hover).toMatchObject({ index: 2, stage: "pick" });
+    const click = pointStarterChoice(hover, "squirtle", true);
+    expect(click).toMatchObject({ index: 1, stage: "confirm", answer: 0 });
+    // Pointer input is ignored while the YES/NO prompt is open.
+    expect(pointStarterChoice(click, "bulbasaur", false)).toBe(click);
+  });
+
+  it("renders the info window, pager and FireRed text box over the real lab (no table/cards)", () => {
     const html = renderToStaticMarkup(
       React.createElement(StarterChoice, { onChoose: () => {}, onClose: () => {} }),
     );
-    expect(html.match(/starter-ball-slot/g)?.length).toBe(3);
+    expect(html).not.toContain("starter-table");
     expect(html).toContain("BULBASAUR");
     expect(html).toContain("starter-textbox");
     expect(html).not.toContain("starter-card");

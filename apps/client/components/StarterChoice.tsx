@@ -6,6 +6,7 @@ import { STARTER_META } from "@/lib/story";
 import {
   INITIAL_STARTER_CHOICE,
   STARTER_ORDER,
+  pointStarterChoice,
   stepStarterChoice,
   type StarterChoiceKey,
   type StarterChoiceState,
@@ -14,6 +15,14 @@ import { t, useLocale } from "@/lib/i18n";
 
 type Props = {
   onChoose: (starter: StarterSpeciesId) => void;
+  /** Tells the overworld which real ball on Oak's table to zoom to / highlight. */
+  onFocusChange?: (starter: StarterSpeciesId | null) => void;
+  /** Hover/click on a real ball in the lab (nonce makes repeats distinct). */
+  pointer?: {
+    kind: "hover" | "click";
+    starter: StarterSpeciesId;
+    nonce: number;
+  } | null;
   onClose: () => void;
 };
 
@@ -39,57 +48,12 @@ const KEYS: Record<string, StarterChoiceKey> = {
   X: "back",
 };
 
-const BALL_COLORS = {
-  o: "#202020",
-  r: "#e83828",
-  d: "#a01810",
-  w: "#f8f8f8",
-  g: "#b8b8b8",
-};
-
-// 12x12 FireRed-style Poké Ball, drawn pixel by pixel.
-const BALL_PIXELS = [
-  "....oooo....",
-  "..oorrrroo..",
-  ".orrrrrrrro.",
-  ".orrwrrrrdo.",
-  "orrwrrrrrrdo",
-  "oooooooooooo",
-  "owwwwooowwwo",
-  "owwwwowowwgo",
-  ".owwwooowgo.",
-  ".owwwwwwggo.",
-  "..oogggggoo.",
-  "....oooo....",
-];
-
-function PokeBall({ selected }: { selected: boolean }) {
-  return (
-    <svg
-      className={`starter-ball${selected ? " selected" : ""}`}
-      viewBox="0 0 12 12"
-      shapeRendering="crispEdges"
-      aria-hidden="true"
-    >
-      {BALL_PIXELS.flatMap((row, y) =>
-        [...row].map((ch, x) =>
-          ch in BALL_COLORS ? (
-            <rect
-              key={`${x}-${y}`}
-              x={x}
-              y={y}
-              width="1"
-              height="1"
-              fill={BALL_COLORS[ch as keyof typeof BALL_COLORS]}
-            />
-          ) : null,
-        ),
-      )}
-    </svg>
-  );
-}
-
-export function StarterChoice({ onChoose, onClose }: Props) {
+export function StarterChoice({
+  onChoose,
+  onFocusChange,
+  pointer,
+  onClose,
+}: Props) {
   useLocale();
   const [state, setState] = useState<StarterChoiceState>(
     INITIAL_STARTER_CHOICE,
@@ -119,7 +83,24 @@ export function StarterChoice({ onChoose, onClose }: Props) {
     return () => window.removeEventListener("keydown", onKey, true);
   }, []);
 
+  useEffect(() => {
+    if (!pointer) return;
+    const next = pointStarterChoice(
+      stateRef.current,
+      pointer.starter,
+      pointer.kind === "click",
+    );
+    stateRef.current = next;
+    setState(next);
+  }, [pointer]);
+
   const species = STARTER_ORDER[state.index];
+  const focusRef = useRef(onFocusChange);
+  focusRef.current = onFocusChange;
+  useEffect(() => {
+    focusRef.current?.(species);
+  }, [species]);
+  useEffect(() => () => focusRef.current?.(null), []);
   const meta = STARTER_META[species];
   const typeName = t(meta.type.toUpperCase());
 
@@ -128,6 +109,7 @@ export function StarterChoice({ onChoose, onClose }: Props) {
       <div className="starter-info fr-window">
         <img
           className="starter-portrait"
+          key={species}
           src={`/game-assets/pokemon-sprites/${species}/portrait.png`}
           alt=""
         />
@@ -138,31 +120,33 @@ export function StarterChoice({ onChoose, onClose }: Props) {
         </div>
       </div>
 
-      <div className="starter-table" aria-label={t("PROF. OAK")}>
-        {STARTER_ORDER.map((id, index) => (
-          <button
-            key={id}
-            type="button"
-            className="starter-ball-slot"
-            aria-label={STARTER_META[id].name}
-            onClick={() => {
-              if (stateRef.current.stage !== "pick") return;
-              stateRef.current = { ...stateRef.current, index };
-              setState(stateRef.current);
-              press("confirm");
-            }}
-            onMouseEnter={() =>
-              state.stage === "pick" && setState((s) => ({ ...s, index }))
-            }
-          >
-            {state.index === index && (
-              <span className="starter-cursor" aria-hidden="true">
-                ▼
-              </span>
-            )}
-            <PokeBall selected={state.index === index} />
-          </button>
-        ))}
+      <div className="starter-pager" aria-hidden="false">
+        <button
+          type="button"
+          className="fr-window"
+          aria-label={t("Previous")}
+          onClick={() => press("left")}
+          disabled={state.stage !== "pick"}
+        >
+          ◀
+        </button>
+        <button
+          type="button"
+          className="fr-window"
+          aria-label={t("Next")}
+          onClick={() => press("right")}
+          disabled={state.stage !== "pick"}
+        >
+          ▶
+        </button>
+        <button
+          type="button"
+          className="fr-window starter-pick"
+          onClick={() => press("confirm")}
+          disabled={state.stage !== "pick"}
+        >
+          {meta.name.toUpperCase()}
+        </button>
       </div>
 
       {state.stage === "confirm" && (

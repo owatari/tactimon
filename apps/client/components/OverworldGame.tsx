@@ -8,6 +8,7 @@ import {
 } from "react";
 import type {
   DuelPokemonBuild,
+  StarterSpeciesId,
   WildSpeciesId,
 } from "@tactimon/battle-engine";
 import { renderForegroundLayer } from "@/lib/mapRenderer";
@@ -177,6 +178,13 @@ type Props = {
     spawn: { x: number; y: number };
   } | null;
   onRequestStarterChoice: () => void;
+  /** While set, the camera zooms onto Oak's table and highlights this ball. */
+  starterFocus?: StarterSpeciesId | null;
+  /** Mouse hover / click on a real ball while the starter choice is open. */
+  onStarterPointer?: (
+    kind: "hover" | "click",
+    starter: StarterSpeciesId,
+  ) => void;
   onMapAudioContextChange: (context: {
     mapId: string;
     musicId: number | null;
@@ -404,6 +412,9 @@ function keyToDirection(key: string): Direction | null {
       return null;
   }
 }
+
+/** Oak's lab table: the three starter balls sit on tiles x 8–10, y 4. */
+const STARTER_TABLE_CENTER = { x: 9, y: 4 };
 
 function clampCamera(
   value: number,
@@ -718,6 +729,8 @@ export function OverworldGame({
   paused,
   respawnRequest,
   onRequestStarterChoice,
+  starterFocus = null,
+  onStarterPointer,
   onMapAudioContextChange,
   onFirstBattleTrigger,
   onWildBattleTrigger,
@@ -744,6 +757,10 @@ export function OverworldGame({
   const mapIdRef = useRef("pallet-town");
   const storyRef = useRef(story);
   const onStoryUpdateRef = useRef(onStoryUpdate);
+  const worldRef = useRef<HTMLDivElement>(null);
+  const zoomRef = useRef(WORLD_ZOOM);
+  const starterFocusRef = useRef(starterFocus);
+  starterFocusRef.current = starterFocus;
   const pausedRef = useRef(paused);
   const pendingWarpRef = useRef<WorldTransition | null>(null);
   const battleTriggerRef = useRef(false);
@@ -2709,20 +2726,44 @@ export function OverworldGame({
 
       const viewportWidth = viewport.clientWidth;
       const viewportHeight = viewport.clientHeight;
+      // Oak's-table close-up: zoom in (whole pixels, wide enough to cover the
+      // viewport) and frame the three balls above the text box.
+      const focusing = starterFocusRef.current !== null;
+      const targetZoom = focusing
+        ? Math.max(
+            WORLD_ZOOM * 2,
+            Math.ceil(viewportWidth / (activeLayout.width * TILE_SIZE)),
+          )
+        : WORLD_ZOOM;
+      const zoomResponse =
+        1 - Math.exp(-deltaTime / (CAMERA_RESPONSE_MS * 2));
+      zoomRef.current +=
+        (targetZoom - zoomRef.current) * zoomResponse;
+      if (Math.abs(targetZoom - zoomRef.current) < 0.005) {
+        zoomRef.current = targetZoom;
+      }
+      const zoom = zoomRef.current;
+      if (worldRef.current) {
+        worldRef.current.style.transform = `scale(${zoom})`;
+      }
+      const focusX = focusing
+        ? (STARTER_TABLE_CENTER.x + 0.5) * TILE_SIZE
+        : player.visualX + TILE_SIZE / 2;
+      const focusY = focusing
+        ? (STARTER_TABLE_CENTER.y + 0.5) * TILE_SIZE
+        : player.visualY + TILE_SIZE / 2;
       const worldWidth =
-        activeLayout.width * TILE_SIZE * WORLD_ZOOM;
+        activeLayout.width * TILE_SIZE * zoom;
       const worldHeight =
-        activeLayout.height * TILE_SIZE * WORLD_ZOOM;
+        activeLayout.height * TILE_SIZE * zoom;
 
       const targetCameraX = clampCamera(
-        viewportWidth / 2 -
-          (player.visualX + TILE_SIZE / 2) * WORLD_ZOOM,
+        viewportWidth / 2 - focusX * zoom,
         viewportWidth,
         worldWidth,
       );
       const targetCameraY = clampCamera(
-        viewportHeight / 2 -
-          (player.visualY + TILE_SIZE / 2) * WORLD_ZOOM,
+        viewportHeight * (focusing ? 0.4 : 0.5) - focusY * zoom,
         viewportHeight,
         worldHeight,
       );
@@ -2798,6 +2839,7 @@ export function OverworldGame({
       {layout && (
         <div ref={cameraRef} className="camera-layer">
           <div
+            ref={worldRef}
             className="world"
             style={{
               width: layout.width * TILE_SIZE,
@@ -2848,7 +2890,16 @@ export function OverworldGame({
               .map((object) => (
               <div
                 key={object.id}
-                className="world-object story-object"
+                className={[
+                  "world-object story-object",
+                  object.kind === "starter" && starterFocus
+                    ? object.starter === starterFocus
+                      ? "starter-ball-selected"
+                      : "starter-ball-dim"
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 title={object.label}
                 style={{
                   left:
@@ -2867,6 +2918,37 @@ export function OverworldGame({
                 }}
               />
               ))}
+
+            {starterFocus &&
+              storyObjects
+                .filter(
+                  (object) =>
+                    object.kind === "starter" && object.starter,
+                )
+                .map((object) => (
+                  <button
+                    key={`pick-${object.id}`}
+                    type="button"
+                    className="starter-ball-hit"
+                    aria-label={object.label}
+                    style={{
+                      left: object.x * TILE_SIZE,
+                      top: object.y * TILE_SIZE,
+                      width: TILE_SIZE,
+                      height: TILE_SIZE,
+                    }}
+                    onMouseEnter={() =>
+                      object.kind === "starter" &&
+                      object.starter &&
+                      onStarterPointer?.("hover", object.starter)
+                    }
+                    onClick={() =>
+                      object.kind === "starter" &&
+                      object.starter &&
+                      onStarterPointer?.("click", object.starter)
+                    }
+                  />
+                ))}
 
             <div
               ref={playerElementRef}

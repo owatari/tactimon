@@ -6522,10 +6522,15 @@ body {
   grid-template-rows: auto 1fr auto;
   gap: 12px;
   padding: 16px;
-  background: #181820;
+  background: transparent;
   color: #182838;
   font-family: "Courier New", ui-monospace, monospace;
   image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.starter-scene > * {
+  pointer-events: auto;
 }
 
 .fr-window {
@@ -6569,49 +6574,52 @@ body {
   letter-spacing: 0;
 }
 
-.starter-table {
-  align-self: center;
+.starter-pager {
+  align-self: end;
   justify-self: center;
   display: flex;
-  gap: clamp(24px, 8vw, 96px);
-  padding: 28px clamp(24px, 6vw, 72px) 18px;
-  border: 4px solid #583810;
-  border-top-color: #c89850;
-  background: #a87028;
-  box-shadow: 0 8px 0 #583810;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
-.starter-ball-slot {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  padding: 18px 4px 0;
-  border: 0;
-  background: transparent;
+.starter-pager button {
+  padding: 6px 14px;
+  color: #182838;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.starter-ball {
-  width: 84px;
-  height: 84px;
-  image-rendering: pixelated;
+.starter-pager button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
-.starter-ball.selected {
-  animation: starter-bob 0.8s steps(2, end) infinite;
+/* The real Poké Ball sprites on Oak's table (overworld story objects). */
+.story-object.starter-ball-selected {
+  animation: starter-ball-bob 0.7s steps(2, end) infinite;
+  filter: drop-shadow(0 0 1px #f8f8f8) brightness(1.15);
 }
 
-.starter-cursor {
+.story-object.starter-ball-selected::after {
+  content: "";
   position: absolute;
-  top: -6px;
-  color: #f8f8f8;
-  font-size: 20px;
-  text-shadow: 2px 2px 0 #202020;
+  left: 50%;
+  top: -2px;
+  margin-left: -3px;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid #f8f8f8;
 }
 
-@keyframes starter-bob {
+.story-object.starter-ball-dim {
+  filter: brightness(0.7) saturate(0.8);
+}
+
+@keyframes starter-ball-bob {
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-1.5px);
   }
 }
 
@@ -6663,4 +6671,23 @@ body {
   content: "▶";
   margin-left: -16px;
   margin-right: 6px;
+}
+
+.starter-ball-hit {
+  position: absolute;
+  z-index: 9999;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.starter-portrait {
+  animation: starter-portrait-bob 0.8s steps(2, end) infinite;
+}
+
+@keyframes starter-portrait-bob {
+  50% {
+    transform: translateY(-2px);
+  }
 }

@@ -21,6 +21,12 @@ export const uiCatalog: Catalog = {
     fr: "Défensif, stable et difficile à abattre.",
     zh: "防御出色、稳定，很难被击倒。",
   },
+  "Previous": {
+    pt: "Anterior",
+    es: "Anterior",
+    fr: "Précédent",
+    zh: "上一个",
+  },
   "YES": {
     pt: "SIM",
     es: "SÍ",

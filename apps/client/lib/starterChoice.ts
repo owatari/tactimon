@@ -1,9 +1,10 @@
 import type { StarterSpeciesId } from "@tactimon/battle-engine";
 
+/** Left to right on Oak's table (matches the ball positions in the lab). */
 export const STARTER_ORDER: readonly StarterSpeciesId[] = [
   "bulbasaur",
-  "charmander",
   "squirtle",
+  "charmander",
 ];
 
 export type StarterChoiceState = {
@@ -56,4 +57,18 @@ export function stepStarterChoice(
       : { state: { ...state, stage: "pick" } };
   }
   return { state };
+}
+
+/** Pointer input on a real ball: hover moves the cursor, click asks for confirmation. */
+export function pointStarterChoice(
+  state: StarterChoiceState,
+  species: StarterSpeciesId,
+  click: boolean,
+): StarterChoiceState {
+  if (state.stage !== "pick") return state;
+  const index = STARTER_ORDER.indexOf(species);
+  if (index < 0) return state;
+  return click
+    ? { index, stage: "confirm", answer: 0 }
+    : { ...state, index };
 }
