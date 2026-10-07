@@ -563,6 +563,9 @@ export function FirstBattle({
   const [battleZoom, setBattleZoom] = useState<1 | 2 | 3>(
     WORLD_ZOOM as 3,
   );
+  // Room the arena may use (the scroll box); the arena zooms out and centres itself to always fit.
+  const arenaViewportRef = useRef<HTMLDivElement | null>(null);
+  const [arenaRoom, setArenaRoom] = useState<{ width: number; height: number } | null>(null);
   const [hoveredTargetId, setHoveredTargetId] =
     useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -696,6 +699,22 @@ export function FirstBattle({
       );
     }
   }, [hiddenUnitIds, state.units]);
+
+  useEffect(() => {
+    const element = arenaViewportRef.current;
+    if (!element) return;
+    const measure = () => {
+      const width = element.clientWidth;
+      const height = element.clientHeight;
+      setArenaRoom((current) =>
+        current && current.width === width && current.height === height ? current : { width, height },
+      );
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   // A revived Pokémon comes back on its new tile: show it again and drop its stale vanish timer.
   useEffect(() => {
@@ -1694,8 +1713,26 @@ export function FirstBattle({
       state.log[state.log.length - 1] ?? "",
     );
 
+  // Biggest zoom (up to the player's choice) whose arena fits the room; below 1x the arena is scaled
+  // down smoothly instead of leaving a piece outside.
+  const ARENA_PAD = 20;
+  const fitsAt = (zoom: number) =>
+    !arenaRoom ||
+    (state.width * TILE_SIZE * zoom + ARENA_PAD <= arenaRoom.width &&
+      state.height * TILE_SIZE * zoom + ARENA_PAD <= arenaRoom.height);
+  const effectiveZoom = ([3, 2, 1] as const).find((zoom) => zoom <= battleZoom && fitsAt(zoom)) ?? 1;
+  const arenaScale =
+    arenaRoom && !fitsAt(1)
+      ? Math.max(
+          0.2,
+          Math.min(
+            arenaRoom.width / (state.width * TILE_SIZE + ARENA_PAD),
+            arenaRoom.height / (state.height * TILE_SIZE + ARENA_PAD),
+          ),
+        )
+      : 1;
   const battleTilePixels =
-    TILE_SIZE * battleZoom;
+    TILE_SIZE * effectiveZoom;
   const battleArenaWidth =
     state.width * battleTilePixels;
   const battleArenaHeight =
@@ -1711,9 +1748,9 @@ export function FirstBattle({
     height: battleArenaHeight,
   };
   const naturalMapWidth =
-    context.mapWidth * TILE_SIZE * battleZoom;
+    context.mapWidth * TILE_SIZE * effectiveZoom;
   const naturalMapHeight =
-    context.mapHeight * TILE_SIZE * battleZoom;
+    context.mapHeight * TILE_SIZE * effectiveZoom;
   const orderedTurnIds = [
     ...state.turnOrder.slice(state.turnIndex),
     ...state.turnOrder.slice(0, state.turnIndex),
@@ -2000,7 +2037,14 @@ export function FirstBattle({
             {playerUnits.map(renderCombatantHud)}
           </aside>
 
-          <div className="battle-arena-scroll">
+          <div className="battle-arena-scroll" ref={arenaViewportRef}>
+          <div
+            className="battle-arena-fit"
+            style={{
+              width: `${(battleArenaWidth + ARENA_PAD) * arenaScale}px`,
+              height: `${(battleArenaHeight + ARENA_PAD) * arenaScale}px`,
+            }}
+          >
           <div
             className="duel-grid-shell clean-arena"
             style={{
@@ -2008,6 +2052,8 @@ export function FirstBattle({
               height: `${battleArenaHeight + 20}px`,
               minWidth: `${battleArenaWidth + 20}px`,
               minHeight: `${battleArenaHeight + 20}px`,
+              transform: arenaScale === 1 ? undefined : `scale(${arenaScale})`,
+              transformOrigin: "top left",
             }}
           >
           <div className="duel-map-crop" aria-hidden="true" style={arenaBox}>
@@ -2393,6 +2439,7 @@ export function FirstBattle({
                 />
               </div>
             )}
+          </div>
           </div>
 
           {busy && (

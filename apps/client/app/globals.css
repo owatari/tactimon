@@ -7614,3 +7614,16 @@ body {
   outline-offset: 1px;
   background-color: #f8e8a0;
 }
+
+/* Task: the arena always fits its box: it zooms out (whole steps, then smoothly) and stays centred. */
+.battle-stage-layout .battle-arena-scroll {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+.battle-arena-fit {
+  position: relative;
+  flex: none;
+  margin: auto;
+}
