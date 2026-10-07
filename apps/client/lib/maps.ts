@@ -61,6 +61,12 @@ export type WorldObject = {
   frame_width: number | null;
   frame_height: number | null;
   frame_count: number;
+  /** ROM wander / patrol range (tiles around the home tile). */
+  movement_range_x?: number;
+  movement_range_y?: number;
+  /** Set on the overworld's working copy: the ROM tile, since the NPC itself may have walked away. */
+  homeX?: number;
+  homeY?: number;
 };
 
 export type WorldMapData = {
