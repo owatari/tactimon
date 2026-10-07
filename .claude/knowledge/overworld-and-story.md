@@ -67,3 +67,7 @@ Docs longos: `docs/WORLD_STATE.md`, `docs/DIALOGUE_SYSTEM.md`, `docs/PROGRESSION
 - Treinador que te vê (`spotsPlayer`): "!" (750 ms) → vira para você → anda até ficar adjacente (190 ms/tile) → diálogo de desafio → batalha → **fala final** (`defeatedText`) quando você vence (`afterBattleRef`, disparada quando `paused` volta a false). Rivais (Route 22, Cerulean, SS Anne): `startRivalApproach` cria um ator (sprite `072_blue`) a ~5 tiles (`pickApproachStart`), anda por `pathToAdjacent` e fala; ator some ao iniciar a batalha. Durante a caminhada `cutsceneRef` bloqueia andar, menu e interação.
 - E2E: E16 (treinador da Route 3) e E17 (rival da Route 22).
 - Mundo: conta nova em NEW_GAME_START (quarto 2F); NPCs com posicao de gameplay em lib/npcOverrides.ts (velhinho do Viridian Gym); parcel dispara ao entrar no Mart; campeao com sightRange 4.
+
+## Event NPCs e cenas (task 042)
+- Objetos da ROM com `flag_id` só renderizam se `EVENT_NPC_FLAG_VISIBLE[flag](story)` e existir fala em `EVENT_NPC_TEXT` (`renderableObjects(data, mapId, story)`); ao mudar a história o `worldObjectsRef` é reconstruído (`worldObjectsForMap`) e o `NpcEngine` realoca quem teve a posição trocada (`placedX/placedY`).
+- Cenas com ator temporário: `startRivalApproach({ key, spriteUrl, from, trainerId?, afterText? }, onArrive(leave))` (rivais, Oak, auxiliar); NPC do mapa que anda: `startStoryNpcApproach(key, onArrive)`. Gatilhos novos: Oak em Pallet, guia de Pewter, quiz do Cinnabar (`CINNABAR_FIGHT_CHOICE`). E2E: E23–E26, hook `window.__tactimon_e2e.warp(mapId, x, y)`.

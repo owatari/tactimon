@@ -8,13 +8,13 @@ Ferramentas: `tools/rom-data/fr_script.py` (percorre os scripts de evento a part
 - **Posição mantida depois do passo (`copyobjectxytoperm`)**: Mt. Moon B2F (cientista pega o outro fóssil — **corrigido**: `npcOverrides.ts`), Pallet (mulher que vagueia), Route 24.
 - **Objetos com `flag_id`**: a ROM os usa como "flag de ocultar": o NPC aparece quando a flag está limpa. São 104 NPCs de evento (guardas Rocket de Saffron/Celadon/Silph/Hideout/Tower, civis de Saffron, Mr. Fuji, Blue/Oak das cenas, Bill, Snorlax/aves...). **Nenhum tem texto/script curado** no jogo, então não são renderizados (regra "NPC da ROM só aparece com texto"); o comportamento deles vive em camadas autorais (treinadores, `questGates`, `scriptedWorldObjects`, cenas de rival do `OverworldGame`).
 
-## Correções feitas por causa desta auditoria
-- Velhinho do Viridian Gym na frente da porta enquanto faltarem as 6 insígnias (a ROM o deixa em (34,11); `NPC_POSITION_OVERRIDES`).
-- Cientista do Mt. Moon B2F vai para o fóssil que sobrou (helix → (14,8), dome → (13,8)).
-- Rival do laboratório anda até o jogador; Campeão nota o jogador (sightRange 4) — task 041.
-- Comportamentos de movimento (olhar, vaguear, patrulha) — task 036 (`npcBehavior.ts`).
+## Como cada grupo foi resolvido (task 042 — nenhuma pendência de NPC)
+- **NPCs de evento (hide flag)**: `lib/eventNpcs.ts` liga cada flag da ROM à condição de história (`EVENT_NPC_FLAG_VISIBLE`) e guarda as falas (`EVENT_NPC_TEXT`, inglês + catálogo `event-npcs.ts`). Saffron: Rockets (62) até libertar a Silph, cidadãos e recepcionista (63) depois; Celadon (95) até limpar o Hideout; guarda da Cerulean Cave (92) até virar Campeão; auxiliar do Oak em Vermilion (161); homem do museu e guia de Pewter (80/46) até a Boulder Badge; fofocas pós-jogo (157) depois do Campeão; membros do Fan Club (108–111). Treinadores da Silph somem depois do Giovanni (`trainerHiddenByStory`).
+- **Posições que mudam**: `lib/npcOverrides.ts` — velhinho do Viridian Gym, cientista do Mt. Moon (fóssil), Fan Club sentado após o discurso (voucher).
+- **Cenas com NPC andando** (`OverworldGame`): treinador que te vê (!/anda/desafia/fala final), rivais (Route 22, Cerulean, SS Anne), rival do laboratório, **Oak intercepta em Pallet** (tiles (12,1)/(13,1) sem Pokémon, leva ao lab), **guia de Pewter** (tiles (42..43,21..23): alcança, fala e anda até o ginásio), **auxiliar do Oak** entrega os Running Shoes andando até o jogador, **Oak entra na sala do Campeão** depois da vitória e parabeniza, **quiz do Cinnabar Gym**: resposta errada manda o treinador atrás da porta andar até você e lutar (a porta abre também ao vencê-lo).
+- **Tipos de movimento**: todos os 28 tipos presentes na ROM estão cobertos: comportamento (olhar, girar, vaguear, patrulhar, lentos 52/80) ou parados de propósito (`STATIC_MOVEMENT_TYPES`: patrulhas só usadas por treinadores, que seguram o posto e vigiam uma direção, e os atendentes de link).
+- **Fora do jogo (não são pendência)**: atendentes do Cable Club/Union Room (`RED_NORMAL`, flags 157–160/174), balsa Seagallop/Bill de partida/PC (flags 98, 107, 162) e a cena do Indigo Plateau (163/164) pertencem às Ilhas Sevii/modo link, que não existem aqui; Bill do Sea Cottage e Mr. Fuji são objetos autorais; Snorlax e aves são batalhas estáticas.
 
-## Pendências conhecidas
-- Saffron Fan Club: a ROM reorganiza os fãs após falar com o presidente (posições em `scan-npc-moves.py`); hoje ficam parados.
-- Sea Cottage (Bill/Clefairy), Pewter (guia do ginásio, museu), Route 24 (homem da ponte), quiz do Cinnabar Gym, Silph/Hideout/Tower (Rockets visíveis até limpar): precisam de textos curados + regras de visibilidade por evento antes de renderizar.
-- Tipos de movimento sem implementação em `UNIMPLEMENTED_MOVEMENT_TYPES`.
+## Correções anteriores
+- Velhinho do Viridian Gym na frente da porta (6 insígnias), rival do laboratório e Campeão (task 041).
+- Comportamentos de movimento (task 036).
