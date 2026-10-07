@@ -52,3 +52,10 @@ Docs longos: `docs/WORLD_STATE.md`, `docs/DIALOGUE_SYSTEM.md`, `docs/PROGRESSION
 
 ## Follower da party — task 022
 - O primeiro Pokémon vivo da party (`followerSpecies`) anda 1 tile atrás do jogador (estilo HGSS) usando a sprite de batalha (`PokemonBattleSprite` dentro de `.party-follower`, caixa de 1 tile com `container-type: size`). Lógica pura em `lib/follower.ts`: a cada passo do jogador o follower desliza para o tile que o jogador está deixando (mesma duração; ao voltar, trocam de lugar). Movido por ref no `renderScene` de `OverworldGame`; reset (tile livre atrás do jogador) a cada mapa; oculto ao surfar/transição/cena do inicial. Não bloqueia colisão/NPCs.
+
+## Input: teclado, mouse e controle (task 035)
+- `lib/input/` + `components/InputBridge.tsx` (montado no `GameClient`): todo menu entende as teclas (setas/WASD, Enter/Space/Z/E = confirmar, Esc/X/Backspace/Tab/M = voltar). Mouse e gamepad são **traduzidos para essas mesmas teclas** (`emitAction`), então um menu novo só precisa tratar teclado.
+- Mouse: botão esquerdo em área não clicável de menu (`KEY_SCOPE_SELECTOR`: Start Menu, tela de captura, diálogo) = Enter; botão direito = voltar (`[data-input-back]` primeiro, senão Escape); roda = cima/baixo; `contextmenu` do navegador sempre cancelado; hover seleciona linha em listas com `data-nav="vertical|horizontal"` (a seleção anda com setas sintéticas). O botão direito é lido em `pointerdown` (a página cancela pointer events, o que esconde o `mousedown`).
+- Overlays de botões (`BUTTON_SCOPE_SELECTOR`: batalha, resultados, progressão, loja, evolução): setas movem o foco espacialmente (`pickSpatialTarget`; sub menus `.battle-selection-dock`/`.battle-action-popover` têm prioridade), Enter clica o botão focado, voltar clica `[data-input-back]`. Marque botões de voltar com `data-input-back`.
+- Gamepad (Gamepad API, padrão standard): D-pad/analógico esquerdo = setas (com repetição), A = confirmar, B/Start = voltar. Lógica pura em `lib/input/gamepad.ts` (`GamepadTracker`).
+- E2E: `E15` usa `Input.dispatchMouseEvent` do CDP (hover, clique esquerdo/direito) e setas + Enter na batalha.
