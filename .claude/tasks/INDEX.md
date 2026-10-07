@@ -45,4 +45,4 @@
 | 2026-10-06-038-player-hud-and-windows | HUD permanente + janelas Pokémon, Bag, PC Box (5 boxes pagas) e Market (comprar/vender, estoque total, Premier Ball) com drag and drop | planned | active |
 | 2026-10-06-039-pokedex-bulbapedia | Pokédex própria com locais, learnset, TMs e melhor nature (estilo Bulbapedia) | planned | active |
 | 2026-10-06-040-first-mover-disadvantage | Equilibrar a desvantagem de quem começa a batalha (medir e escolher a solução) | planned | active |
-| 2026-10-06-041-world-event-fixes | Corrigir rival do lab, Campeão, velhinho do Viridian Gym, Oak's Parcel, spawn da conta nova e varrer erros semelhantes | planned | active |
+| 2026-10-06-041-world-event-fixes | Corrigir rival do lab, Campeão, velhinho do Viridian Gym, Oak's Parcel, spawn da conta nova e varrer erros semelhantes | done | archive/2026-10 |
