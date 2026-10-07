@@ -13,5 +13,6 @@ Leia **somente** o arquivo do assunto. Docs de design originais (mais longos) fi
 | ROM/SpriteCollab/PMD, scripts de import, manifest de sprites | `asset-pipeline.md` |
 | Comandos de teste, onde ficam os testes, padrões | `testing.md` |
 | Armadilhas já descobertas (ler antes de mexer em área sensível) | `known-hazards.md` |
+| NPCs que mudam de posição na ROM (auditoria, ferramenta de scan de scripts) | `npc-position-audit.md` |
 
 Atualize o arquivo do assunto quando uma task descobrir conhecimento **estável** (não específico da task).
