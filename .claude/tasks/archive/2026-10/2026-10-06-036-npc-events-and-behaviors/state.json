@@ -1,7 +1,7 @@
 {
   "id": "2026-10-06-036-npc-events-and-behaviors",
   "title": "NPCs e eventos como no FireRed: treinador te vê, vira, anda até você e fala no fim; rival anda até você; comportamentos de NPC",
-  "status": "planned",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "d2ec5a1f",
   "current_head": "d2ec5a1f",
@@ -17,5 +17,10 @@
   ],
   "files": [],
   "commits": [],
-  "tests": []
+  "tests": [
+    "pnpm test 543+284",
+    "typecheck",
+    "walkthrough 17/17 (E16, E17)",
+    "playthrough 14/14"
+  ]
 }

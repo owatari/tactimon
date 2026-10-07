@@ -40,5 +40,5 @@
 | 2026-10-06-033-gym-teams-onix-footprint-hud-card | Novos times dos líderes de ginásio, Onix 1x2 (validar footprint) e conteúdo centralizado nos cards de batalha | done | archive/2026-10 |
 | 2026-10-06-034-fix-levelup-move-learning | URGENTE: Pokémon pararam de aprender golpes novos ao subir de nível (reproduzir, corrigir e blindar com testes) | done | archive/2026-10 |
 | 2026-10-06-035-menus-mouse-and-input-layer | Menus navegáveis por mouse (LMB confirma, RMB volta) sobre uma camada de input para teclado, mouse e controle | done | archive/2026-10 |
-| 2026-10-06-036-npc-events-and-behaviors | NPCs e eventos como no FireRed: treinador te vê, vira, anda até você e fala no fim; rival anda até você; comportamentos de NPC | planned | active |
+| 2026-10-06-036-npc-events-and-behaviors | NPCs e eventos como no FireRed: treinador te vê, vira, anda até você e fala no fim; rival anda até você; comportamentos de NPC | done | archive/2026-10 |
 | 2026-10-06-037-team-level-autobattle-ai | IA do Auto Battle pensa o time como conjunto: efetividade e escolha de alvo pela cobertura da equipe | planned | active |
