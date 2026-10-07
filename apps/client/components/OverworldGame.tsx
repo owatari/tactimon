@@ -12,6 +12,18 @@ import {
 } from "@/lib/follower";
 import { PokemonBattleSprite } from "./PokemonBattleSprite";
 import {
+  NpcEngine,
+  OPPOSITE as NPC_OPPOSITE,
+  facingBetween,
+  initialFacing,
+  npcFrame,
+  pathToAdjacent,
+  pickApproachStart,
+  spotsPlayer,
+  type NpcPose,
+  type NpcSeed,
+} from "@/lib/npcBehavior";
+import {
   useCallback,
   useEffect,
   useRef,
@@ -183,6 +195,19 @@ const WALK_FRAME: Record<Direction, [number, number]> = {
   west: [7, 8],
   east: [7, 8],
 };
+
+const NPC_TRAINER_WALK_MS = 190;
+const NPC_EMOTE_MS = 750;
+const RIVAL_SPRITE_URL = "/game-assets/overworld/072_blue.png";
+
+/** Places an NPC element on its frame of the 16x32 sheet (east is the west frame mirrored). */
+function applyNpcFrame(element: HTMLElement, frame: number, facing: Direction): void {
+  const width = Number(element.dataset.fw ?? 16);
+  const height = Number(element.dataset.fh ?? 32);
+  const columns = Number(element.dataset.cols ?? 6);
+  element.style.backgroundPosition = `${-(frame % columns) * width}px ${-Math.floor(frame / columns) * height}px`;
+  element.style.transform = facing === "east" ? "scaleX(-1)" : "";
+}
 
 type Props = {
   story: StoryState;
@@ -792,6 +817,18 @@ export function OverworldGame({
   const wildBattleLockRef = useRef(false);
   const trainerBattleLockRef = useRef(false);
   const wildEncounterCooldownRef = useRef(4);
+  const npcEngineRef = useRef<NpcEngine | null>(null);
+  const npcElementsRef = useRef(new Map<string, HTMLElement>());
+  const npcPosesRef = useRef(new Map<string, NpcPose>());
+  const npcFreeRef = useRef<(x: number, y: number) => boolean>(() => false);
+  /** True while a trainer / rival walks up to the player: no walking, menu or interaction. */
+  const cutsceneRef = useRef(false);
+  const afterBattleRef = useRef<{
+    trainerId: string;
+    speaker: string;
+    text: string;
+  } | null>(null);
+  const wasPausedRef = useRef(false);
 
   const playerRef = useRef(
     createPlayer(
@@ -814,6 +851,19 @@ export function OverworldGame({
   const [darkCave, setDarkCave] = useState(false);
   const darknessRef = useRef<HTMLDivElement>(null);
   const [running, setRunning] = useState(false);
+  /** The "!" over a trainer that has just spotted the player. */
+  const [emote, setEmote] = useState<{
+    x: number;
+    y: number;
+    frameHeight: number;
+  } | null>(null);
+  /** A rival that walks in from off-screen for an encounter (not a map object). */
+  const [cutsceneActor, setCutsceneActor] = useState<{
+    key: string;
+    x: number;
+    y: number;
+    spriteUrl: string;
+  } | null>(null);
   const [dialogue, setDialogue] =
     useState<DialoguePresentation | null>(null);
   const [dialoguePageIndex, setDialoguePageIndex] =
@@ -997,6 +1047,30 @@ export function OverworldGame({
   useEffect(() => {
     showInteractionRef.current = showInteraction;
   }, [showInteraction]);
+
+  /** Ref callback for an NPC element: remembers it and shows the engine's current pose at once. */
+  const registerNpc =
+    (
+      key: string,
+      size: { width: number; height: number; columns: number },
+      fallback: Direction,
+    ) =>
+    (element: HTMLDivElement | null) => {
+      if (!element) {
+        npcElementsRef.current.delete(key);
+        return;
+      }
+      element.dataset.fw = String(size.width);
+      element.dataset.fh = String(size.height);
+      element.dataset.cols = String(size.columns);
+      npcElementsRef.current.set(key, element);
+      const pose = npcPosesRef.current.get(key);
+      applyNpcFrame(
+        element,
+        pose ? pose.frame : npcFrame(fallback, false, 0),
+        pose ? pose.facing : fallback,
+      );
+    };
 
   const advanceDialogue = useCallback((): boolean => {
     const active = dialogueRef.current;
@@ -1210,6 +1284,12 @@ export function OverworldGame({
           ),
         }),
         () => {
+          // After a win the trainer has something to say (the "defeated" line), once the battle is over.
+          afterBattleRef.current = {
+            trainerId: trainer.trainerId,
+            speaker: trainer.trainerName,
+            text: trainer.defeatedText.replace(/^[^:]+:\s*/, ""),
+          };
           onTrainerBattleTrigger(context, {
             id: trainer.trainerId,
             name: trainer.trainerName,
@@ -1404,8 +1484,152 @@ export function OverworldGame({
     showInteraction,
   ]);
 
+  /** The spotted trainer shows "!", walks up to the player and only then challenges (FireRed order). */
+  const startTrainerApproach = useCallback(
+    (trainer: TrainerStoryObject, distance: number) => {
+      const engine = npcEngineRef.current;
+      const key = `story-${trainer.id}`;
+      const player = playerRef.current;
+      if (
+        !engine ||
+        !engine.has(key) ||
+        cutsceneRef.current ||
+        !storyHasHealthyPokemon(storyRef.current)
+      ) {
+        triggerTrainerBattle(trainer);
+        return;
+      }
+
+      cutsceneRef.current = true;
+      trainerBattleLockRef.current = true;
+      resetInput();
+      const here = engine.tile(key) ?? { x: trainer.x, y: trainer.y };
+      const toward = facingBetween(here, {
+        x: player.tileX,
+        y: player.tileY,
+      });
+      engine.freeze(key, toward);
+      player.facing = NPC_OPPOSITE[toward];
+      setEmote({ x: here.x, y: here.y, frameHeight: trainer.frameHeight });
+
+      window.setTimeout(() => {
+        setEmote(null);
+        const delta = DIRECTION_DELTA[toward];
+        const path: { x: number; y: number }[] = [];
+        for (let step = 1; step < distance; step += 1) {
+          path.push({ x: here.x + delta.x * step, y: here.y + delta.y * step });
+        }
+        const arrive = () => {
+          cutsceneRef.current = false;
+          trainerBattleLockRef.current = false;
+          triggerTrainerBattle(trainer);
+        };
+        if (path.length === 0) {
+          arrive();
+          return;
+        }
+        engine.scriptWalk(
+          key,
+          path,
+          NPC_TRAINER_WALK_MS,
+          performance.now(),
+          arrive,
+        );
+      }, NPC_EMOTE_MS);
+    },
+    [resetInput, triggerTrainerBattle],
+  );
+  const startTrainerApproachRef = useRef(startTrainerApproach);
+  startTrainerApproachRef.current = startTrainerApproach;
+
+  /** A rival event: Blue comes into view and walks up to the player before talking (FireRed order). */
+  const startRivalApproach = useCallback(
+    (
+      spec: { trainerId: string; afterText: string },
+      onArrive: () => void,
+    ) => {
+      const engine = npcEngineRef.current;
+      const player = playerRef.current;
+      const here = { x: player.tileX, y: player.tileY };
+      const free = (x: number, y: number) => npcFreeRef.current(x, y);
+      const start = engine
+        ? pickApproachStart({ player: here, isFree: free })
+        : null;
+      const route =
+        engine && start
+          ? pathToAdjacent({ from: start, target: here, isFree: free })
+          : null;
+      afterBattleRef.current = {
+        trainerId: spec.trainerId,
+        speaker: "Blue",
+        text: spec.afterText,
+      };
+      if (!engine || !start || !route || route.length === 0) {
+        onArrive();
+        return;
+      }
+
+      const key = "cutscene-rival";
+      cutsceneRef.current = true;
+      resetInput();
+      engine.addActor(
+        {
+          key,
+          x: start.x,
+          y: start.y,
+          movementType: 0,
+          facing: facingBetween(start, route[0]),
+        },
+        performance.now(),
+      );
+      setCutsceneActor({
+        key,
+        x: start.x,
+        y: start.y,
+        spriteUrl: RIVAL_SPRITE_URL,
+      });
+      engine.scriptWalk(key, route, NPC_TRAINER_WALK_MS, performance.now(), () => {
+        const at = engine.tile(key) ?? start;
+        engine.turn(key, facingBetween(at, here));
+        player.facing = facingBetween(here, at);
+        cutsceneRef.current = false;
+        onArrive();
+      });
+    },
+    [resetInput],
+  );
+  const startRivalApproachRef = useRef(startRivalApproach);
+  startRivalApproachRef.current = startRivalApproach;
+
+  /** Called when the rival's battle starts: the walked-in actor leaves the map. */
+  const finishRivalScene = useCallback(() => {
+    npcEngineRef.current?.removeActor("cutscene-rival");
+    setCutsceneActor(null);
+  }, []);
+  const finishRivalSceneRef = useRef(finishRivalScene);
+  finishRivalSceneRef.current = finishRivalScene;
+
+  // After the battle the trainer (or rival) says the closing line, once, when the player has won.
+  useEffect(() => {
+    const wasPaused = wasPausedRef.current;
+    wasPausedRef.current = paused;
+    if (paused || !wasPaused) return;
+    const after = afterBattleRef.current;
+    if (!after) return;
+    afterBattleRef.current = null;
+    const timer = window.setTimeout(() => {
+      if (!isStoryTrainerDefeated(storyRef.current, after.trainerId)) return;
+      showInteractionRef.current(
+        after.text,
+        `trainer:${after.trainerId}:after`,
+        after.speaker,
+      );
+    }, 80);
+    return () => window.clearTimeout(timer);
+  }, [paused]);
+
   const interact = useCallback(() => {
-    if (pausedRef.current) {
+    if (pausedRef.current || cutsceneRef.current) {
       return;
     }
 
@@ -1614,12 +1838,18 @@ export function OverworldGame({
     }
 
     if (object) {
+      // Like in FireRed, whoever you talk to turns to face you.
+      const playerFacing = playerRef.current.facing;
+      npcEngineRef.current?.turn(
+        `world-${object.local_id}`,
+        NPC_OPPOSITE[playerFacing],
+      );
       showDialogue(
         onDialogueInteraction(
           resolveWorldObjectDialogueRequest(
             mapIdRef.current,
-            object.x,
-            object.y,
+            object.homeX ?? object.x,
+            object.homeY ?? object.y,
             displayObjectName(object),
           ),
         ),
@@ -1705,8 +1935,17 @@ export function OverworldGame({
 
         mapIdRef.current = nextMapId;
         layoutRef.current = nextLayout;
-        worldObjectsRef.current =
-          renderableObjects(nextWorldData, nextMapId);
+        // The ref copies move with their NPC (collision, sight lines); the originals keep the ROM tile
+        // (`homeX/homeY`) that text lookups are keyed by.
+        worldObjectsRef.current = renderableObjects(
+          nextWorldData,
+          nextMapId,
+        ).map((object) => ({
+          ...object,
+          homeX: object.x,
+          homeY: object.y,
+        }));
+        npcEngineRef.current?.reset();
         worldDataRef.current = nextWorldData;
         const boulderIds = resolveScriptedWorldObjects(nextMapId)
           .filter((object) => object.pushable)
@@ -1910,7 +2149,11 @@ export function OverworldGame({
         !event.altKey
       ) {
         event.preventDefault();
-        if (!event.repeat && !dialogueRef.current) {
+        if (
+          !event.repeat &&
+          !dialogueRef.current &&
+          !cutsceneRef.current
+        ) {
           resetInput();
           onMenuOpen();
         }
@@ -2307,22 +2550,30 @@ export function OverworldGame({
 
       trainerBattleLockRef.current = true;
       resetInput();
-      showDialogue(
-        onDialogueInteraction({
-          kind: "text",
-          id: "trainer:route22-rival-early:challenge",
-          speaker: "Blue",
-          text: ROUTE22_EARLY_RIVAL_CHALLENGE_TEXT.replace(
-            /^Blue:\s*/,
-            "",
-          ),
-        }),
-        () => {
-          onTrainerBattleTrigger(
-            context,
-            encounter,
-          );
+      startRivalApproachRef.current(
+        {
+          trainerId: ROUTE22_EARLY_RIVAL_TRAINER_ID,
+          afterText: t("What? Unbelievable! I picked the wrong POKéMON!"),
         },
+        () =>
+          showDialogue(
+            onDialogueInteraction({
+              kind: "text",
+              id: "trainer:route22-rival-early:challenge",
+              speaker: "Blue",
+              text: ROUTE22_EARLY_RIVAL_CHALLENGE_TEXT.replace(
+                /^Blue:\s*/,
+                "",
+              ),
+            }),
+            () => {
+              finishRivalSceneRef.current();
+              onTrainerBattleTrigger(
+                context,
+                encounter,
+              );
+            },
+          ),
       );
     };
 
@@ -2362,10 +2613,28 @@ export function OverworldGame({
 
       trainerBattleLockRef.current = true;
       resetInput();
-      showInteraction(
-        CERULEAN_RIVAL_CHALLENGE_TEXT,
+      startRivalApproachRef.current(
+        {
+          trainerId: CERULEAN_RIVAL_TRAINER_ID,
+          afterText: t("Hmm... You're not bad. I'll just have to get stronger!"),
+        },
+        () =>
+          showDialogue(
+            onDialogueInteraction({
+              kind: "text",
+              id: "trainer:cerulean-rival:challenge",
+              speaker: "Blue",
+              text: CERULEAN_RIVAL_CHALLENGE_TEXT.replace(
+                /^Blue:\s*/,
+                "",
+              ),
+            }),
+            () => {
+              finishRivalSceneRef.current();
+              onTrainerBattleTrigger(context, encounter);
+            },
+          ),
       );
-      onTrainerBattleTrigger(context, encounter);
     };
 
     const maybeTriggerSsAnneRivalBattle = () => {
@@ -2404,10 +2673,30 @@ export function OverworldGame({
 
       trainerBattleLockRef.current = true;
       resetInput();
-      showInteraction(
-        SS_ANNE_RIVAL_CHALLENGE_TEXT,
+      startRivalApproachRef.current(
+        {
+          trainerId: SS_ANNE_RIVAL_TRAINER_ID,
+          afterText: t(
+            "Humph! At least you're raising your POKéMON with some care.",
+          ),
+        },
+        () =>
+          showDialogue(
+            onDialogueInteraction({
+              kind: "text",
+              id: "trainer:ss-anne-rival:challenge",
+              speaker: "Blue",
+              text: SS_ANNE_RIVAL_CHALLENGE_TEXT.replace(
+                /^Blue:\s*/,
+                "",
+              ),
+            }),
+            () => {
+              finishRivalSceneRef.current();
+              onTrainerBattleTrigger(context, encounter);
+            },
+          ),
       );
-      onTrainerBattleTrigger(context, encounter);
     };
 
     const maybeTriggerCeruleanRocketBattle = () => {
@@ -2587,65 +2876,146 @@ export function OverworldGame({
           continue;
         }
 
-        const delta =
-          DIRECTION_DELTA[object.facing];
+        const facing =
+          npcEngineRef.current?.facing(`story-${object.id}`) ??
+          object.facing;
+        const distance = spotsPlayer({
+          trainer: { x: object.x, y: object.y },
+          facing,
+          range: object.sightRange,
+          player: { x: player.tileX, y: player.tileY },
+          blocksSight: (x, y) => {
+            if (
+              x < 0 ||
+              y < 0 ||
+              x >= activeLayout.width ||
+              y >= activeLayout.height
+            ) {
+              return true;
+            }
+            const cell =
+              activeLayout.cells[y * activeLayout.width + x];
+            return (
+              !cell ||
+              (cell.collision !== 0 &&
+                !isVermilionGymBeamWalkable(
+                  storyRef.current,
+                  mapIdRef.current,
+                  x,
+                  y,
+                )) ||
+              worldObjectsRef.current.some(
+                (worldObject) =>
+                  worldObject.x === x && worldObject.y === y,
+              ) ||
+              storyObjectsRef.current.some(
+                (storyObject) =>
+                  storyObject.id !== object.id &&
+                  storyObjectBlocksMovement(storyObject) &&
+                  storyObject.x === x &&
+                  storyObject.y === y,
+              )
+            );
+          },
+        });
 
-        for (
-          let distance = 1;
-          distance <= object.sightRange;
-          distance += 1
-        ) {
-          const x =
-            object.x + delta.x * distance;
-          const y =
-            object.y + delta.y * distance;
+        if (distance !== null) {
+          startTrainerApproachRef.current(object, distance);
+          return;
+        }
+      }
+    };
 
-          if (
-            x < 0 ||
-            y < 0 ||
-            x >= activeLayout.width ||
-            y >= activeLayout.height
-          ) {
-            break;
-          }
+    // NPCs may step on any walkable tile nobody stands on (and never on or in front of the player).
+    npcFreeRef.current = (x: number, y: number) => {
+      const activeLayout = layoutRef.current;
+      if (!activeLayout || !canWalk(activeLayout, x, y)) return false;
+      if (isOccupied(x, y)) return false;
+      const player = playerRef.current;
+      if (
+        (player.tileX === x && player.tileY === y) ||
+        (player.targetTileX === x && player.targetTileY === y)
+      ) {
+        return false;
+      }
+      return !resolveWarpTransitionAt(mapIdRef.current, x, y);
+    };
 
-          if (
-            player.tileX === x &&
-            player.tileY === y
-          ) {
-            triggerTrainerBattle(object);
-            return;
-          }
+    let npcOwner: {
+      mapId: string;
+      world: unknown;
+      story: unknown;
+    } | null = null;
+    let npcTracked: { key: string; object: { x: number; y: number } }[] = [];
+    const syncNpcs = (now: number) => {
+      let engine = npcEngineRef.current;
+      if (!engine) {
+        engine = new NpcEngine({
+          isFree: (x, y) => npcFreeRef.current(x, y),
+        });
+        npcEngineRef.current = engine;
+      }
 
-          const cell =
-            activeLayout.cells[
-              y * activeLayout.width + x
-            ];
+      const world = worldObjectsRef.current;
+      const storyList = storyObjectsRef.current;
+      if (
+        !npcOwner ||
+        npcOwner.mapId !== mapIdRef.current ||
+        npcOwner.world !== world ||
+        npcOwner.story !== storyList
+      ) {
+        npcOwner = { mapId: mapIdRef.current, world, story: storyList };
+        const seeds: NpcSeed[] = [];
+        npcTracked = [];
+        for (const object of world) {
+          const key = `world-${object.local_id}`;
+          seeds.push({
+            key,
+            x: object.x,
+            y: object.y,
+            movementType: object.movement_type,
+            rangeX: object.movement_range_x,
+            rangeY: object.movement_range_y,
+          });
+          npcTracked.push({ key, object });
+        }
+        for (const object of storyList) {
+          if (object.kind !== "trainer") continue;
+          const key = `story-${object.id}`;
+          seeds.push({
+            key,
+            x: object.x,
+            y: object.y,
+            movementType: 0,
+            facing: object.facing,
+          });
+          npcTracked.push({ key, object });
+        }
+        engine.setNpcs(seeds, now);
+      }
 
-          if (
-            !cell ||
-            (cell.collision !== 0 &&
-              !isVermilionGymBeamWalkable(
-                storyRef.current,
-                mapIdRef.current,
-                x,
-                y,
-              )) ||
-            worldObjectsRef.current.some(
-              (worldObject) =>
-                worldObject.x === x &&
-                worldObject.y === y,
-            ) ||
-            storyObjectsRef.current.some(
-              (storyObject) =>
-                storyObject.id !== object.id &&
-                storyObjectBlocksMovement(storyObject) &&
-                storyObject.x === x &&
-                storyObject.y === y,
-            )
-          ) {
-            break;
-          }
+      if (!dialogueRef.current && !pausedRef.current) {
+        engine.update(now);
+      }
+      const poses = engine.poses(now);
+      for (const pose of poses) {
+        npcPosesRef.current.set(pose.key, pose);
+        const element = npcElementsRef.current.get(pose.key);
+        if (!element) continue;
+        const width = Number(element.dataset.fw ?? 16);
+        const height = Number(element.dataset.fh ?? 32);
+        const centered = pose.key.startsWith("world-") ? 0 : (width - TILE_SIZE) / 2;
+        element.style.left = `${pose.x * TILE_SIZE - centered}px`;
+        element.style.top = `${pose.y * TILE_SIZE + TILE_SIZE - height}px`;
+        element.style.zIndex = String(100 + Math.round(pose.y * TILE_SIZE));
+        applyNpcFrame(element, pose.frame, pose.facing);
+      }
+      // Collision and sight lines read the object positions: keep them on the NPC's current tile.
+      for (const tracked of npcTracked) {
+        const pose = npcPosesRef.current.get(tracked.key);
+        if (pose) {
+          tracked.object.x = pose.tileX;
+          tracked.object.y = pose.tileY;
         }
       }
     };
@@ -2663,6 +3033,8 @@ export function OverworldGame({
       if (!activeLayout || !viewport || !camera || !playerElement) {
         return;
       }
+
+      syncNpcs(now);
 
       let frame = IDLE_FRAME[player.facing];
       let jumpLift = 0;
@@ -2777,7 +3149,7 @@ export function OverworldGame({
         const intent =
           pressedRef.current[pressedRef.current.length - 1];
 
-        if (intent && !player.moving) {
+        if (intent && !player.moving && !cutsceneRef.current) {
           startStep(intent, now);
         }
       }
@@ -3011,6 +3383,11 @@ export function OverworldGame({
               return (
                 <div
                   key={`world-${object.local_id}`}
+                  ref={registerNpc(
+                    `world-${object.local_id}`,
+                    { width: frameWidth, height: frameHeight, columns },
+                    initialFacing(object.movement_type),
+                  )}
                   className="world-object"
                   title={displayObjectName(object)}
                   style={{
@@ -3037,6 +3414,22 @@ export function OverworldGame({
               .map((object) => (
               <div
                 key={object.id}
+                ref={
+                  object.kind === "trainer"
+                    ? registerNpc(
+                        `story-${object.id}`,
+                        {
+                          width: object.frameWidth,
+                          height: object.frameHeight,
+                          columns: Math.max(
+                            1,
+                            Math.round(object.sheetWidth / object.frameWidth),
+                          ),
+                        },
+                        object.facing,
+                      )
+                    : undefined
+                }
                 className={[
                   "world-object story-object",
                   object.kind === "starter" && starterFocus
@@ -3065,6 +3458,41 @@ export function OverworldGame({
                 }}
               />
               ))}
+
+            {cutsceneActor && (
+              <div
+                key={cutsceneActor.key}
+                ref={registerNpc(
+                  cutsceneActor.key,
+                  { width: 16, height: 32, columns: 6 },
+                  "south",
+                )}
+                className="world-object story-object"
+                style={{
+                  left: cutsceneActor.x * TILE_SIZE,
+                  top: cutsceneActor.y * TILE_SIZE + TILE_SIZE - 32,
+                  width: 16,
+                  height: 32,
+                  zIndex: 100 + cutsceneActor.y * TILE_SIZE,
+                  backgroundImage: `url("${cutsceneActor.spriteUrl}")`,
+                  backgroundSize: "96px 64px",
+                }}
+              />
+            )}
+
+            {emote && (
+              <div
+                className="npc-emote"
+                aria-hidden="true"
+                style={{
+                  left: emote.x * TILE_SIZE + TILE_SIZE / 2 - 5,
+                  top: emote.y * TILE_SIZE + TILE_SIZE - emote.frameHeight - 12,
+                  zIndex: 600,
+                }}
+              >
+                !
+              </div>
+            )}
 
             {starterFocus &&
               storyObjects

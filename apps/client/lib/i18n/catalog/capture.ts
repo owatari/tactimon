@@ -212,4 +212,22 @@ export const captureCatalog: Catalog = {
     fr: "←→ changer de Pokémon · Entrée choisir une attaque",
     zh: "←→ 切换宝可梦 · Enter 选择招式",
   },
+  "What? Unbelievable! I picked the wrong POKéMON!": {
+    pt: "O quê? Inacreditável! Escolhi o POKéMON errado!",
+    es: "¿Qué? ¡Increíble! ¡Elegí al POKéMON equivocado!",
+    fr: "Quoi ? Incroyable ! J'ai choisi le mauvais POKéMON !",
+    zh: "什么？不可能！我选错宝可梦了！",
+  },
+  "Hmm... You're not bad. I'll just have to get stronger!": {
+    pt: "Hmm... Você não é ruim. Só preciso ficar mais forte!",
+    es: "Hmm... No eres malo. ¡Solo tengo que hacerme más fuerte!",
+    fr: "Hmm... Tu n'es pas mauvais. Je dois juste devenir plus fort !",
+    zh: "嗯……你还不错。我只要变得更强就行了！",
+  },
+  "Humph! At least you're raising your POKéMON with some care.": {
+    pt: "Humf! Pelo menos você cria seus POKéMON com algum cuidado.",
+    es: "¡Bah! Al menos crías a tus POKéMON con cierto cuidado.",
+    fr: "Pff ! Au moins, tu élèves tes POKéMON avec un certain soin.",
+    zh: "哼！至少你对宝可梦还算用心。",
+  },
 };

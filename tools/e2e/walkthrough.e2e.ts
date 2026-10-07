@@ -408,4 +408,63 @@ describe("walkthrough (browser)", () => {
     await sleep(300);
     expect(cdp.errors).toEqual([]);
   }, 90_000);
+
+  it("E16. a trainer that spots the player shows !, walks up to them, then challenges; NPCs turn and move", async () => {
+    const base = chooseStarter("charmander");
+    const story = withPokedex({
+      ...base,
+      firstBattleComplete: true,
+      playerPokemon: createPokemonProgression("charmander", 20),
+    } as never);
+    // Calvin (Route 3) faces west with 5 tiles of sight from (29, 10): stepping to x = 24 puts the player in view.
+    await load(seedStory(story, { mapId: "route-3", x: 23, y: 10 }));
+    const trainerLeft = () =>
+      cdp.eval<number>(`(() => { const e = [...document.querySelectorAll(".story-object")].find((x) => /Calvin/i.test(x.title)); return e ? parseFloat(e.style.left) : -1; })()`);
+    const before = await trainerLeft();
+    expect(before).toBeGreaterThan(0);
+    await press("ArrowRight");
+    let sawEmote = false;
+    let sawDialogue = false;
+    for (let i = 0; i < 60 && !sawDialogue; i += 1) {
+      await sleep(100);
+      sawEmote = sawEmote || (await count(".npc-emote")) > 0;
+      sawDialogue = (await count(".dialogue-panel")) > 0;
+    }
+    expect(sawEmote).toBe(true);
+    expect(sawDialogue).toBe(true);
+    // He walked toward the player (the sprite moved left, several tiles) before talking.
+    const after = await trainerLeft();
+    expect(before - after).toBeGreaterThanOrEqual(3 * 16);
+    await shot("trainer-approach");
+    expect(cdp.errors).toEqual([]);
+  }, 60_000);
+
+  it("E17. the Route 22 rival walks in from off-screen and stops next to the player before the challenge", async () => {
+    const base = chooseStarter("charmander");
+    const story = withPokedex({
+      ...base,
+      firstBattleComplete: true,
+      rivalStarter: "squirtle",
+      playerPokemon: createPokemonProgression("charmander", 10),
+    } as never);
+    await load(seedStory(story, { mapId: "route-22", x: 32, y: 5 }));
+    await press("ArrowRight");
+    const rival = () =>
+      cdp.eval<string>(`(() => { const e = [...document.querySelectorAll(".story-object")].find((x) => x.style.backgroundImage.includes("072_blue")); return e ? JSON.stringify([parseFloat(e.style.left), parseFloat(e.style.top)]) : ""; })()`);
+    let first = "";
+    let sawDialogue = false;
+    for (let i = 0; i < 80 && !sawDialogue; i += 1) {
+      await sleep(100);
+      if (!first) first = await rival();
+      sawDialogue = (await count(".dialogue-panel")) > 0;
+    }
+    expect(first).not.toBe("");
+    expect(sawDialogue).toBe(true);
+    const last = JSON.parse(await rival()) as number[];
+    const start = JSON.parse(first) as number[];
+    // He came from some tiles away and now stands right next to the player (one tile from x = 33, y = 5).
+    const distanceMoved = Math.abs(last[0] - start[0]) + Math.abs(last[1] - start[1]);
+    expect(distanceMoved).toBeGreaterThanOrEqual(2 * 16);
+    expect(cdp.errors).toEqual([]);
+  }, 60_000);
 });
