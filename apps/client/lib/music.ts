@@ -1,5 +1,10 @@
 "use client";
 
+/** HTMLMediaElement.volume throws outside [0, 1]; float noise in the fades can dip just below 0. */
+function clampVolume(value: number): number {
+  return Math.max(0, Math.min(1, Number.isFinite(value) ? value : 0));
+}
+
 export type BattleMusicKind =
   | "wild"
   | "trainer"
@@ -152,8 +157,9 @@ class MusicManager {
       Math.min(1, Number.isFinite(value) ? value : 1),
     );
     if (this.current) {
-      this.current.audio.volume =
-        this.current.track.volume * this.master;
+      this.current.audio.volume = clampVolume(
+        this.current.track.volume * this.master,
+      );
     }
   }
 
@@ -204,8 +210,9 @@ class MusicManager {
 
     this.stopFadingOut();
     if (this.current) {
-      this.current.audio.volume =
-        this.current.track.volume * this.master;
+      this.current.audio.volume = clampVolume(
+        this.current.track.volume * this.master,
+      );
     }
 
     const incoming: AudioSlot = {
@@ -255,12 +262,14 @@ class MusicManager {
         1,
         (now - startedAt) / this.fadeMs,
       );
-      incoming.audio.volume =
-        track.volume * this.master * progress;
+      incoming.audio.volume = clampVolume(
+        track.volume * this.master * progress,
+      );
 
       if (outgoing) {
-        outgoing.audio.volume =
-          outgoing.track.volume * this.master * (1 - progress);
+        outgoing.audio.volume = clampVolume(
+          outgoing.track.volume * this.master * (1 - progress),
+        );
       }
 
       if (progress < 1) {

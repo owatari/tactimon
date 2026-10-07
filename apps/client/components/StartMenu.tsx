@@ -559,7 +559,7 @@ export function StartMenu({
       {screen === "party" && (
         <section className="start-menu-screen start-menu-party">
           <h2>{t("POKéMON")}</h2>
-          <ul>
+          <ul data-nav="vertical">
             {party.map((pokemon, index) => (
               <li
                 key={`${pokemon.species}-${index}`}
@@ -672,7 +672,7 @@ export function StartMenu({
               />
             )}
           </aside>
-          <ul className="start-menu-bag-list">
+          <ul className="start-menu-bag-list" data-nav="vertical">
             {pockets[pocketIndex].entries.map((entry, index) => (
               <li
                 key={entry.id}
@@ -806,7 +806,7 @@ export function StartMenu({
       {screen === "townmap" && (
         <section className="start-menu-screen start-menu-options start-menu-townmap">
           <h2>{t("TOWN MAP")}</h2>
-          <ul>
+          <ul data-nav="vertical">
             {townRows.map((row, index) => (
               <li
                 key={row.id}
@@ -826,7 +826,7 @@ export function StartMenu({
       {screen === "options" && (
         <section className="start-menu-screen start-menu-options">
           <h2>{t("OPTION")}</h2>
-          <ul>
+          <ul data-nav="vertical">
             {OPTION_ROWS.map((row, index) => (
               <li
                 key={row}

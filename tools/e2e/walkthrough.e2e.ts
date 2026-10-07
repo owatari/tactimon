@@ -330,4 +330,82 @@ describe("walkthrough (browser)", () => {
     const bad = await cdp.eval<string>(`JSON.stringify([...document.querySelectorAll(".combatant-hud")].map((card) => { const r = card.getBoundingClientRect(); return [...card.querySelectorAll(".combatant-hud-body, .battle-portrait-frame, .combatant-meta-row, .resource-chip")].filter((k) => { const b = k.getBoundingClientRect(); return b.left < r.left - 1 || b.right > r.right + 1 || b.top < r.top - 1 || b.bottom > r.bottom + 1; }).map((k) => k.className); }).filter((list) => list.length > 0))`);
     expect(JSON.parse(bad)).toEqual([]);
   }, 40_000);
+
+  it("E15. menus work with the mouse alone (hover selects, left click confirms, right click goes back) and battles with arrows + Enter", async () => {
+    const base = chooseStarter("charmander");
+    const story = withPokedex({
+      ...base,
+      firstBattleComplete: true,
+      inventory: { potion: 2, "poke-ball": 5 },
+      playerPokemon: createPokemonProgression("charmander", 20),
+      capturedPokemon: [createPokemonProgression("pidgey", 12), createPokemonProgression("rattata", 15)],
+    } as never);
+    await load({ ...seedStory(story, { mapId: "viridian-forest", x: 16, y: 30 }), "tactimon.e2e.v1": "1" });
+    const pointAt = async (selector: string, index = 0) => {
+      const box = await cdp.eval<string>(`(() => { const e = document.querySelectorAll(${JSON.stringify(selector)})[${index}]; if (!e) return ""; const r = e.getBoundingClientRect(); return JSON.stringify([r.left + r.width / 2, r.top + r.height / 2]); })()`);
+      expect(box, selector).not.toBe("");
+      return JSON.parse(box) as [number, number];
+    };
+    const mouse = async (type: "mouseMoved" | "mousePressed" | "mouseReleased", x: number, y: number, button: "none" | "left" | "right" = "none") =>
+      cdp.send("Input.dispatchMouseEvent", { type, x, y, button, buttons: button === "left" ? 1 : button === "right" ? 2 : 0, clickCount: button === "none" ? 0 : 1 });
+    const click = async (x: number, y: number, button: "left" | "right") => {
+      await mouse("mouseMoved", x, y);
+      await mouse("mousePressed", x, y, button);
+      await mouse("mouseReleased", x, y, button);
+      await sleep(350);
+    };
+
+    await press("Escape");
+    expect(await count(".start-menu-root")).toBe(1);
+    // Hover selects the entry; the left click opens it.
+    const entries = await cdp.eval<string[]>(`[...document.querySelectorAll(".start-menu-entry")].map((e) => e.textContent)`);
+    const partyAt = entries.findIndex((label) => /POK[eé]MON/.test(label));
+    const [px, py] = await pointAt(".start-menu-entry", partyAt);
+    await mouse("mouseMoved", px, py);
+    await sleep(250);
+    expect(await text(".start-menu-entry.selected")).toMatch(/POK[eé]MON/);
+    await click(px, py, "left");
+    expect(await count(".start-menu-party")).toBe(1);
+    // Hovering the third row of the party list moves the cursor there.
+    const [rx, ry] = await pointAt(".start-menu-party ul li", 2);
+    await mouse("mouseMoved", rx, ry);
+    await sleep(500);
+    expect(await cdp.eval<number>(`[...document.querySelectorAll(".start-menu-party ul li")].findIndex((e) => e.classList.contains("selected"))`)).toBe(2);
+    // Right click backs out one level, then closes the menu.
+    await click(rx, ry + 80, "right");
+    expect(await count(".start-menu-party")).toBe(0);
+    expect(await count(".start-menu-root")).toBe(1);
+    await click(rx, ry + 80, "right");
+    expect(await count(".start-menu-overlay")).toBe(0);
+    // The browser context menu never gets a chance: the event is cancelled.
+    const prevented = await cdp.eval<boolean>(`(() => { const e = new MouseEvent("contextmenu", { bubbles: true, cancelable: true }); document.body.dispatchEvent(e); return e.defaultPrevented; })()`);
+    expect(prevented).toBe(true);
+
+    // Battle: the mouse opens a sub menu and the right click closes it; arrows + Enter do the same.
+    for (let i = 0; i < 40 && !(await cdp.eval<boolean>(`typeof window.__tactimon_e2e?.fightWild === "function"`)); i += 1) await sleep(250);
+    await cdp.eval(`window.__tactimon_e2e.fightWild([{ species: "rattata", level: 3 }])`);
+    // Turn Auto off the moment the battle opens (at 40x speed the AI would otherwise win it first).
+    for (let i = 0; i < 100; i += 1) {
+      const clicked = await cdp.eval<boolean>(`(() => { const b = [...document.querySelectorAll("button")].find((x) => /Auto ON/.test(x.textContent)); if (!b) return false; b.click(); return true; })()`);
+      if (clicked) break;
+      await sleep(30);
+    }
+    await sleep(800);
+    for (let i = 0; i < 20 && (await count(".battle-action-list button")) < 3; i += 1) {
+      await cdp.eval(`[...document.querySelectorAll("button")].find((b) => /End turn/.test(b.textContent) && !b.disabled)?.click()`);
+      await sleep(1200);
+    }
+    const [ix, iy] = await pointAt(".battle-action-list button", 2);
+    await click(ix, iy, "left");
+    expect(await count(".battle-selection-dock-back")).toBe(1);
+    await click(ix, iy, "right");
+    expect(await count(".battle-selection-dock-back")).toBe(0);
+    // Keyboard / gamepad: arrows move the focus between the buttons, Enter presses the focused one.
+    await press("ArrowDown", "ArrowDown");
+    const focused = await cdp.eval<boolean>(`Boolean(document.activeElement && document.activeElement.closest(".battle-shell") && document.activeElement.tagName === "BUTTON")`);
+    expect(focused).toBe(true);
+    await press("Enter");
+    await sleep(300);
+    expect(cdp.errors).toEqual([]);
+  }, 90_000);
 });

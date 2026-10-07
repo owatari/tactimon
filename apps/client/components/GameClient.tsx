@@ -1,5 +1,6 @@
 "use client";
 
+import { InputBridge } from "./InputBridge";
 import { localizedSpeciesName as speciesDisplayName } from "@/lib/i18n/names";
 import {
   useCallback,
@@ -1001,6 +1002,7 @@ export function GameClient() {
 
   return (
     <div className="game-client">
+      <InputBridge />
       <GameMusic
         mapId={mapAudioContext.mapId}
         mapMusicId={mapAudioContext.musicId}

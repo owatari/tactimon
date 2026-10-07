@@ -1979,6 +1979,7 @@ export function FirstBattle({
                   <button
                     type="button"
                     className="end-turn-compact"
+                    data-input-back
                     onClick={resetCommand}
                   >
                     {t("Cancel action")}
@@ -2592,6 +2593,7 @@ export function FirstBattle({
               <button
                 type="button"
                 className="battle-selection-dock-back"
+                data-input-back
                 onClick={resetCommand}
               >
                 {t("← Back")}
