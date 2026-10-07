@@ -57,6 +57,7 @@ import {
   hasReceivedGift,
 } from "./giftPokemon";
 import {
+  CINNABAR_FIGHT_CHOICE,
   CINNABAR_QUIZ_QUESTIONS,
   cinnabarDoorEventId,
 } from "./cinnabarQuiz";
@@ -1335,10 +1336,12 @@ export const QUEST_DIALOGUES: Record<string, DialogueDefinition> = {
       const quiz = CINNABAR_QUIZ_QUESTIONS[quizId];
       if (!quiz) return reply(story, "cinnabar-quiz-answer", "...");
       if (context.answer !== quiz.answer) {
+        // Wrong: the trainer behind the door comes for you (the overworld starts his walk and fight).
+        const attempt = Number((getStoryPlayerChoice(story, CINNABAR_FIGHT_CHOICE) ?? "0:0").split(":")[1] ?? 0) + 1;
         return reply(
-          story,
+          setStoryPlayerChoice(story, CINNABAR_FIGHT_CHOICE, `${quizId}:${attempt}`),
           "cinnabar-quiz-answer",
-          "Errado! A porta continua fechada. Pense bem e tente de novo.",
+          t("Wrong! The trainer behind the door comes to battle you!"),
           "Quiz POKéMON",
         );
       }

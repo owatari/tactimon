@@ -12,6 +12,13 @@ import {
 } from "@/lib/follower";
 import { PokemonBattleSprite } from "./PokemonBattleSprite";
 import { resolveNpcPositionOverride } from "@/lib/npcOverrides";
+import { CINNABAR_FIGHT_CHOICE, cinnabarQuizTrainerId } from "@/lib/cinnabarQuiz";
+import {
+  eventNpcPages,
+  eventNpcSignature,
+  isEventNpcVisible,
+  trainerHiddenByStory,
+} from "@/lib/eventNpcs";
 import {
   NpcEngine,
   OPPOSITE as NPC_OPPOSITE,
@@ -67,6 +74,8 @@ import {
   hasStoryFieldTechnique,
   grantRunningShoes,
   shouldGrantRunningShoes,
+  getStoryPlayerChoice,
+  hasStoryBadge,
   hasStoryKeyItem,
   hasPokedex,
   isStoryTrainerDefeated,
@@ -201,6 +210,8 @@ const WALK_FRAME: Record<Direction, [number, number]> = {
 const NPC_TRAINER_WALK_MS = 190;
 const NPC_EMOTE_MS = 750;
 const RIVAL_SPRITE_URL = "/game-assets/overworld/072_blue.png";
+const OAK_SPRITE_URL = "/game-assets/overworld/071_prof_oak.png";
+const AIDE_SPRITE_URL = "/game-assets/overworld/055_scientist.png";
 
 /** Places an NPC element on its frame of the 16x32 sheet (east is the west frame mirrored). */
 function applyNpcFrame(element: HTMLElement, frame: number, facing: Direction): void {
@@ -507,28 +518,55 @@ function reservedObjectTiles(mapId: string): Set<string> {
 function renderableObjects(
   data: WorldMapData | null,
   mapId: string,
+  story?: StoryState,
 ): WorldObject[] {
   if (!data) return [];
 
   const reserved = reservedObjectTiles(mapId);
   const fullMap = FULL_WORLD_OBJECT_MAPS.has(mapId);
 
-  return data.objects.filter(
-    (object) =>
-      object.flag_id === 0 &&
-      Boolean(object.sprite_file) &&
-      Boolean(object.frame_width) &&
-      Boolean(object.frame_height) &&
-      !reserved.has(`${object.x},${object.y}`) &&
-      (fullMap ||
-        resolveWorldObjectDialogueId(
-          mapId,
-          object.x,
-          object.y,
-        ) !== null ||
-        resolveWorldNpcPages(mapId, object.x, object.y) !==
-          null),
-  );
+  return data.objects.filter((object) => {
+    if (
+      !object.sprite_file ||
+      !object.frame_width ||
+      !object.frame_height ||
+      reserved.has(`${object.x},${object.y}`)
+    ) {
+      return false;
+    }
+    // Objects with a hide flag are event NPCs: shown while their story condition holds.
+    if (object.flag_id !== 0) {
+      return (
+        story !== undefined &&
+        isEventNpcVisible(object.flag_id, story) &&
+        eventNpcPages(mapId, object.x, object.y) !== null
+      );
+    }
+    return (
+      fullMap ||
+      resolveWorldObjectDialogueId(mapId, object.x, object.y) !== null ||
+      resolveWorldNpcPages(mapId, object.x, object.y) !== null
+    );
+  });
+}
+
+/** The overworld's working copies of a map's NPCs (they walk, and carry the ROM tile as `homeX/homeY`). */
+function worldObjectsForMap(
+  data: WorldMapData | null,
+  mapId: string,
+  story: StoryState,
+): WorldObject[] {
+  return renderableObjects(data, mapId, story).map((object) => {
+    const moved = resolveNpcPositionOverride(mapId, object.local_id, story);
+    return {
+      ...object,
+      ...(moved ?? {}),
+      homeX: object.x,
+      homeY: object.y,
+      placedX: moved ? moved.x : object.x,
+      placedY: moved ? moved.y : object.y,
+    };
+  });
 }
 
 function worldSignAt(
@@ -745,6 +783,10 @@ function mapStoryObjects(
     worldObjects,
     story,
   )) {
+    // FireRed hides Silph Co.'s whole Rocket crew once Giovanni has fallen.
+    if (trainerHiddenByStory(mapId, story)) {
+      continue;
+    }
 
     if (
       playerTrainer.id ===
@@ -833,6 +875,10 @@ export function OverworldGame({
     until?: (story: StoryState) => boolean;
   } | null>(null);
   const wasPausedRef = useRef(false);
+  const oakInterceptRef = useRef(false);
+  const warpRef = useRef<(mapId: string, x: number, y: number) => boolean>(() => false);
+  const pewterGuideRef = useRef(false);
+  const cinnabarFightSeenRef = useRef<string | null>(null);
 
   const playerRef = useRef(
     createPlayer(
@@ -880,7 +926,7 @@ export function OverworldGame({
     useRef<(() => void) | null>(null);
 
   const mapDefinition = WORLD_MAPS[mapId];
-  const visibleObjects = renderableObjects(worldData, mapId);
+  const visibleObjects = renderableObjects(worldData, mapId, story);
   const storyObjects = mapStoryObjects(
     mapId,
     story,
@@ -892,8 +938,43 @@ export function OverworldGame({
     onStoryUpdateRef.current = onStoryUpdate;
   }, [onStoryUpdate]);
 
+  // Cinnabar Gym quiz: a wrong answer makes the trainer behind the door walk up to you and fight.
+  const cinnabarFightRef = useRef<(quizId: number) => void>(() => undefined);
+  useEffect(() => {
+    const value = getStoryPlayerChoice(story, CINNABAR_FIGHT_CHOICE);
+    if (!value || value === cinnabarFightSeenRef.current) return;
+    if (cinnabarFightSeenRef.current === null) {
+      // First look at this save: remember it, never replay an old fight on load.
+      cinnabarFightSeenRef.current = value;
+      return;
+    }
+    cinnabarFightSeenRef.current = value;
+    const quizId = Number(value.split(":")[0]);
+    const wait = window.setInterval(() => {
+      if (dialogueRef.current || cutsceneRef.current) return;
+      window.clearInterval(wait);
+      cinnabarFightRef.current(quizId);
+    }, 200);
+    return () => window.clearInterval(wait);
+  }, [story]);
+
+  const worldSignatureRef = useRef("");
   useEffect(() => {
     storyRef.current = story;
+    // Event NPCs appear / disappear / take new places with the story: rebuild the map's NPC copies.
+    const data = worldDataRef.current;
+    if (data) {
+      const flags = data.objects.map((object) => object.flag_id).filter((flag) => flag !== 0);
+      const positions = data.objects
+        .map((object) => resolveNpcPositionOverride(mapIdRef.current, object.local_id, story))
+        .map((moved) => (moved ? `${moved.x},${moved.y}` : "-"))
+        .join(";");
+      const signature = `${mapIdRef.current}|${eventNpcSignature(flags, story)}|${positions}`;
+      if (worldSignatureRef.current && worldSignatureRef.current !== signature) {
+        worldObjectsRef.current = worldObjectsForMap(data, mapIdRef.current, story);
+      }
+      worldSignatureRef.current = signature;
+    }
     storyObjectsRef.current = mapStoryObjects(
       mapIdRef.current,
       story,
@@ -1002,23 +1083,31 @@ export function OverworldGame({
     runningShoesGrantRef.current = true;
     storyRef.current = grantRunningShoes(story);
     onStoryUpdate(grantRunningShoes);
-    showDialogue({
-      id: "running-shoes-delivery",
-      pages: [
-        {
-          id: "running-shoes-delivery-1",
-          speaker: t("Prof. Oak's Aide"),
-          text: t(
-            "Ah, there you are! Prof. Oak asked me to give you this. You received the RUNNING SHOES!",
-          ),
-        },
-        {
-          id: "running-shoes-delivery-2",
-          speaker: t("Prof. Oak's Aide"),
-          text: t("Press R to switch between walking (WALK) and running (RUN)."),
-        },
-      ],
-    });
+    // The aide catches up with the player (FireRed: he is waiting at Pewter's east exit).
+    startRivalApproachRef.current(
+      { key: "cutscene-aide", spriteUrl: AIDE_SPRITE_URL },
+      (leave) =>
+        showDialogue(
+          {
+            id: "running-shoes-delivery",
+            pages: [
+              {
+                id: "running-shoes-delivery-1",
+                speaker: t("Prof. Oak's Aide"),
+                text: t(
+                  "Ah, there you are! Prof. Oak asked me to give you this. You received the RUNNING SHOES!",
+                ),
+              },
+              {
+                id: "running-shoes-delivery-2",
+                speaker: t("Prof. Oak's Aide"),
+                text: t("Press R to switch between walking (WALK) and running (RUN)."),
+              },
+            ],
+          },
+          leave,
+        ),
+    );
   }, [
     isTransitioning,
     mapId,
@@ -1033,6 +1122,7 @@ export function OverworldGame({
       message: string,
       id = "system-message",
       speaker?: string,
+      onComplete?: () => void,
     ) => {
       showDialogue(
         onDialogueInteraction({
@@ -1041,6 +1131,7 @@ export function OverworldGame({
           text: message,
           speaker,
         }),
+        onComplete,
       );
     },
     [onDialogueInteraction, showDialogue],
@@ -1358,6 +1449,7 @@ export function OverworldGame({
         return true;
       },
       fightWild: () => false,
+      warp: (targetMapId, x, y) => warpRef.current(targetMapId, x, y),
     };
     return () => {
       delete window.__tactimon_e2e;
@@ -1573,33 +1665,48 @@ export function OverworldGame({
   startTrainerApproachRef.current = startTrainerApproach;
 
   /** A rival event: Blue comes into view and walks up to the player before talking (FireRed order). */
+  const actorKeyRef = useRef("cutscene-rival");
   const startRivalApproach = useCallback(
     (
-      spec: { trainerId: string; afterText: string },
-      onArrive: () => void,
+      spec: {
+        trainerId?: string;
+        afterText?: string;
+        /** Sprite of the actor (Blue by default). */
+        spriteUrl?: string;
+        /** Where the actor appears (default: a free tile about five steps from the player). */
+        from?: { x: number; y: number };
+        key?: string;
+      },
+      /** `leave` walks the actor back the way it came and takes it off the map. */
+      onArrive: (leave: () => void) => void,
     ) => {
       const engine = npcEngineRef.current;
       const player = playerRef.current;
       const here = { x: player.tileX, y: player.tileY };
       const free = (x: number, y: number) => npcFreeRef.current(x, y);
       const start = engine
-        ? pickApproachStart({ player: here, isFree: free })
+        ? spec.from && free(spec.from.x, spec.from.y)
+          ? spec.from
+          : pickApproachStart({ player: here, isFree: free })
         : null;
       const route =
         engine && start
           ? pathToAdjacent({ from: start, target: here, isFree: free })
           : null;
-      afterBattleRef.current = {
-        trainerId: spec.trainerId,
-        speaker: "Blue",
-        text: spec.afterText,
-      };
+      if (spec.trainerId && spec.afterText) {
+        afterBattleRef.current = {
+          trainerId: spec.trainerId,
+          speaker: "Blue",
+          text: spec.afterText,
+        };
+      }
       if (!engine || !start || !route || route.length === 0) {
-        onArrive();
+        onArrive(() => undefined);
         return;
       }
 
-      const key = "cutscene-rival";
+      const key = spec.key ?? "cutscene-rival";
+      actorKeyRef.current = key;
       cutsceneRef.current = true;
       resetInput();
       engine.addActor(
@@ -1616,20 +1723,36 @@ export function OverworldGame({
         key,
         x: start.x,
         y: start.y,
-        spriteUrl: RIVAL_SPRITE_URL,
+        spriteUrl: spec.spriteUrl ?? RIVAL_SPRITE_URL,
       });
       engine.scriptWalk(key, route, NPC_TRAINER_WALK_MS, performance.now(), () => {
         const at = engine.tile(key) ?? start;
         engine.turn(key, facingBetween(at, here));
         player.facing = facingBetween(here, at);
         cutsceneRef.current = false;
-        onArrive();
+        const leave = () => {
+          const back = [at, ...[...route].reverse().slice(1), start];
+          engine.scriptWalk(key, back.slice(1), NPC_TRAINER_WALK_MS, performance.now(), () => {
+            engine.removeActor(key);
+            setCutsceneActor((current) => (current?.key === key ? null : current));
+          });
+        };
+        onArrive(leave);
       });
     },
     [resetInput],
   );
   const startRivalApproachRef = useRef(startRivalApproach);
   startRivalApproachRef.current = startRivalApproach;
+  cinnabarFightRef.current = (quizId: number) => {
+    const trainerId = cinnabarQuizTrainerId(quizId);
+    const trainer = storyObjectsRef.current.find(
+      (object): object is TrainerStoryObject =>
+        object.kind === "trainer" && object.trainerId === trainerId,
+    );
+    if (!trainer || trainer.defeated) return;
+    startStoryNpcApproachRef.current(`story-${trainer.id}`, () => triggerTrainerBattle(trainer));
+  };
 
   /** A story NPC already on the map (the lab rival) walks up to the player, then `onArrive` runs. */
   const startStoryNpcApproach = useCallback(
@@ -1671,7 +1794,7 @@ export function OverworldGame({
 
   /** Called when the rival's battle starts: the walked-in actor leaves the map. */
   const finishRivalScene = useCallback(() => {
-    npcEngineRef.current?.removeActor("cutscene-rival");
+    npcEngineRef.current?.removeActor(actorKeyRef.current);
     setCutsceneActor(null);
   }, []);
   const finishRivalSceneRef = useRef(finishRivalScene);
@@ -1694,6 +1817,31 @@ export function OverworldGame({
         after.text,
         `trainer:${after.trainerId}:after`,
         after.speaker,
+        after.trainerId.startsWith("league-champion")
+          ? () =>
+              startRivalApproachRef.current(
+                { key: "cutscene-oak", spriteUrl: OAK_SPRITE_URL, from: { x: 6, y: 16 } },
+                (leave) =>
+                  showInteractionRef.current(
+                    t("So, you've beaten BLUE! You're the new POKéMON LEAGUE CHAMPION!"),
+                    "scene:champion-oak:1",
+                    "OAK",
+                    () =>
+                      showInteractionRef.current(
+                        t("I'm so proud of you… you've become a true TRAINER!"),
+                        "scene:champion-oak:2",
+                        "OAK",
+                        () =>
+                          showInteractionRef.current(
+                            t("Come, let's go to the HALL OF FAME!"),
+                            "scene:champion-oak:3",
+                            "OAK",
+                            leave,
+                          ),
+                      ),
+                  ),
+              )
+          : undefined,
       );
     }, 80);
     return () => window.clearTimeout(timer);
@@ -2008,22 +2156,11 @@ export function OverworldGame({
         layoutRef.current = nextLayout;
         // The ref copies move with their NPC (collision, sight lines); the originals keep the ROM tile
         // (`homeX/homeY`) that text lookups are keyed by.
-        worldObjectsRef.current = renderableObjects(
+        worldObjectsRef.current = worldObjectsForMap(
           nextWorldData,
           nextMapId,
-        ).map((object) => {
-          const moved = resolveNpcPositionOverride(
-            nextMapId,
-            object.local_id,
-            storyRef.current,
-          );
-          return {
-            ...object,
-            ...(moved ?? {}),
-            homeX: object.x,
-            homeY: object.y,
-          };
-        });
+          storyRef.current,
+        );
         npcEngineRef.current?.reset();
         worldDataRef.current = nextWorldData;
         const boulderIds = resolveScriptedWorldObjects(nextMapId)
@@ -2170,6 +2307,14 @@ export function OverworldGame({
         ? saved.facing
         : "south",
     );
+  }, [loadMap]);
+
+  // E2E hook (dev only): jump to a map tile without playing the way there.
+  useEffect(() => {
+    warpRef.current = (targetMapId, x, y) => {
+      void loadMap(targetMapId, { x, y }, "south");
+      return true;
+    };
   }, [loadMap]);
 
   useEffect(() => {
@@ -2570,6 +2715,101 @@ export function OverworldGame({
       pendingWarpRef.current = warp;
 
       return true;
+    };
+
+    // FireRed: walking north out of Pallet Town without a POKéMON makes Oak run out of his lab, warn you
+    // about the tall grass and take you to the lab.
+    const maybeTriggerOakIntercept = () => {
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+      if (
+        mapIdRef.current !== "pallet-town" ||
+        currentStory.starter ||
+        oakInterceptRef.current ||
+        cutsceneRef.current ||
+        player.tileY > 1 ||
+        player.tileX < 12 ||
+        player.tileX > 13
+      ) {
+        return;
+      }
+      oakInterceptRef.current = true;
+      resetInput();
+      startRivalApproachRef.current(
+        { key: "cutscene-oak", spriteUrl: OAK_SPRITE_URL, from: { x: 16, y: 14 } },
+        () =>
+          showDialogue(
+            onDialogueInteraction({
+              kind: "pages",
+              id: "scene:oak-intercept",
+              speaker: "OAK",
+              pages: [
+                t("Hey! Wait! Don't go out!"),
+                t("It's unsafe! Wild POKéMON live in tall grass!"),
+                t("You need your own POKéMON for your protection."),
+                t("I know! Here, come with me!"),
+              ],
+            }),
+            () => {
+              finishRivalSceneRef.current();
+              oakInterceptRef.current = false;
+              void loadMap(
+                "oak-lab",
+                WORLD_MAPS["oak-lab"].spawn,
+                "north",
+              );
+            },
+          ),
+      );
+    };
+
+    // Pewter City: the guide boy catches the player at the west exit and walks to Brock's Gym.
+    const PEWTER_GUIDE_TILES = ["42,21", "42,22", "42,23", "43,23"];
+    const maybeTriggerPewterGuide = () => {
+      const player = playerRef.current;
+      const currentStory = storyRef.current;
+      if (
+        mapIdRef.current !== "pewter-city" ||
+        !currentStory.firstBattleComplete ||
+        hasStoryBadge(currentStory, "boulder") ||
+        pewterGuideRef.current ||
+        cutsceneRef.current ||
+        !PEWTER_GUIDE_TILES.includes(`${player.tileX},${player.tileY}`)
+      ) {
+        return;
+      }
+      const boy = worldObjectsRef.current.find((object) => object.local_id === 5);
+      if (!boy) return;
+      pewterGuideRef.current = true;
+      startStoryNpcApproachRef.current("world-5", () =>
+        showDialogue(
+          onDialogueInteraction(
+            resolveWorldObjectDialogueRequest(
+              "pewter-city",
+              boy.homeX ?? boy.x,
+              boy.homeY ?? boy.y,
+              "Boy",
+            ),
+          ),
+          () => {
+            const engine = npcEngineRef.current;
+            const from = engine?.tile("world-5");
+            const gym = worldDataRef.current?.warps.find((warp) => warp.target_map === "PewterCity_Gym");
+            if (!engine || !from || !gym) return;
+            const route = pathToAdjacent({
+              from,
+              target: { x: gym.x, y: gym.y },
+              isFree: (x, y) => npcFreeRef.current(x, y),
+              limit: 150,
+            });
+            if (route && route.length > 0) {
+              engine.scriptWalk("world-5", route, NPC_TRAINER_WALK_MS, performance.now(), () => {
+                engine.turn("world-5", "north");
+              });
+            }
+          },
+        ),
+      );
     };
 
     const maybeTriggerLabBattle = () => {
@@ -3069,8 +3309,8 @@ export function OverworldGame({
           const key = `world-${object.local_id}`;
           seeds.push({
             key,
-            x: object.x,
-            y: object.y,
+            x: object.placedX ?? object.x,
+            y: object.placedY ?? object.y,
             movementType: object.movement_type,
             rangeX: object.movement_range_x,
             rangeY: object.movement_range_y,
@@ -3220,6 +3460,8 @@ export function OverworldGame({
             return;
           }
 
+          maybeTriggerOakIntercept();
+          maybeTriggerPewterGuide();
           maybeTriggerLabBattle();
           maybeTriggerRoute22RivalBattle();
           maybeTriggerCeruleanRivalBattle();

@@ -1,5 +1,5 @@
 import { tx } from "./i18n";
-import { cinnabarDoorEventId } from "./cinnabarQuiz";
+import { cinnabarDoorEventId, cinnabarQuizTrainerId } from "./cinnabarQuiz";
 import {
   CINNABAR_QUIZ,
   MANSION_BARRIERS,
@@ -258,9 +258,23 @@ const CINNABAR_QUIZ_GATES: readonly PlayerWorldTileGate[] =
       x,
       y,
       allowWhen: {
-        kind: "event" as const,
-        namespace: "story" as const,
-        id: cinnabarDoorEventId(quiz.id),
+        kind: "any" as const,
+        conditions: [
+          {
+            kind: "event" as const,
+            namespace: "story" as const,
+            id: cinnabarDoorEventId(quiz.id),
+          },
+          ...(cinnabarQuizTrainerId(quiz.id)
+            ? [
+                {
+                  kind: "event" as const,
+                  namespace: "trainer" as const,
+                  id: cinnabarQuizTrainerId(quiz.id) as string,
+                },
+              ]
+            : []),
+        ],
       },
       blockedRequest: {
         kind: "text" as const,

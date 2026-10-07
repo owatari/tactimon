@@ -32,6 +32,8 @@ export type E2eHooks = {
   fightTrainer(trainerId: string): boolean;
   /** Starts a real wild battle with the given pack in the current map. */
   fightWild(members: { species: string; level: number }[]): boolean;
+  /** Loads `mapId` and puts the player on tile (x, y). */
+  warp?(mapId: string, x: number, y: number): boolean;
 };
 
 declare global {

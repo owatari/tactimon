@@ -21,6 +21,7 @@ import {
   completeStoryPlayerEvent,
   grantStoryBadge,
   markStoryTrainerDefeated,
+  normalizeStoryState,
   placeCapturedPokemon,
   type StoryBadgeId,
   type StoryState,
@@ -531,5 +532,73 @@ describe("walkthrough (browser)", () => {
     }
     expect(sawDialogue).toBe(true);
     expect(await blueAt()).toBe(before);
+  }, 60_000);
+
+  it("E23. Saffron shows Team Rocket's guards until Silph Co. is freed, then its citizens", async () => {
+    const base = withPokedex({ ...chooseStarter("charmander"), firstBattleComplete: true } as never);
+    const titles = (re: string) =>
+      cdp.eval<number>(`[...document.querySelectorAll(".world-object")].filter((e) => /${re}/i.test(e.title)).length`);
+    await load(seedStory(base, { mapId: "saffron-city", x: 33, y: 20 }));
+    const rocketsBefore = await titles("rocket");
+    const citizensBefore = await titles("worker m|youngster|lass|pidgeot");
+    expect(rocketsBefore).toBeGreaterThanOrEqual(6);
+    expect(citizensBefore).toBe(0);
+    const freed = markStoryTrainerDefeated(base, "silph-co-11f-giovanni");
+    await load(seedStory(freed, { mapId: "saffron-city", x: 33, y: 20 }));
+    expect(await titles("rocket")).toBe(0);
+    expect(await titles("worker m|youngster|lass|pidgeot")).toBeGreaterThanOrEqual(4);
+  }, 80_000);
+
+  it("E24. leaving Pallet Town without a POKéMON: Oak runs out, warns the player and takes them to the lab", async () => {
+    await load({ ...seedStory(normalizeStoryState({}) as never), "tactimon.e2e.v1": "1" });
+    for (let i = 0; i < 40 && !(await cdp.eval<boolean>(`typeof window.__tactimon_e2e?.warp === "function"`)); i += 1) await sleep(250);
+    await cdp.eval(`window.__tactimon_e2e.warp("pallet-town", 12, 2)`);
+    await sleep(1500);
+    await press("ArrowUp");
+    const oak = () =>
+      cdp.eval<boolean>(`[...document.querySelectorAll(".story-object")].some((x) => x.style.backgroundImage.includes("071_prof_oak"))`);
+    let sawOak = false;
+    let sawDialogue = false;
+    for (let i = 0; i < 100 && !sawDialogue; i += 1) {
+      await sleep(100);
+      sawOak = sawOak || (await oak());
+      sawDialogue = (await count(".dialogue-panel")) > 0;
+    }
+    expect(sawOak).toBe(true);
+    expect(sawDialogue).toBe(true);
+    for (let i = 0; i < 8; i += 1) await press("Enter");
+    await sleep(800);
+    expect(await text(".location-chip")).toMatch(/Oak/i);
+  }, 80_000);
+
+  it("E25. Pewter's guide boy catches the player, talks and walks toward Brock's Gym", async () => {
+    const story = withPokedex({ ...chooseStarter("charmander"), firstBattleComplete: true } as never);
+    await load(seedStory(story, { mapId: "pewter-city", x: 41, y: 22 }));
+    // The guide is the BOY that starts at tile (42, 20); follow that very element.
+    await cdp.eval(`(() => { const e = [...document.querySelectorAll(".world-object")].find((x) => /boy/i.test(x.title) && Math.round(parseFloat(x.style.left) / 16) === 42); if (e) e.dataset.guide = "1"; })()`);
+    const boyLeft = () =>
+      cdp.eval<number>(`(() => { const e = document.querySelector("[data-guide]"); return e ? parseFloat(e.style.left) : -1; })()`);
+    const before = await boyLeft();
+    expect(before).toBeGreaterThan(0);
+    await press("ArrowRight");
+    let sawDialogue = false;
+    for (let i = 0; i < 80 && !sawDialogue; i += 1) {
+      await sleep(100);
+      sawDialogue = (await count(".dialogue-panel")) > 0;
+    }
+    expect(sawDialogue).toBe(true);
+    for (let i = 0; i < 4; i += 1) await press("Enter");
+    await sleep(2500);
+    expect(Math.abs((await boyLeft()) - before)).toBeGreaterThanOrEqual(16);
+  }, 80_000);
+
+  it("E26. after the Fan Club chairman's talk the room fills with its members", async () => {
+    const base = withPokedex({ ...chooseStarter("charmander"), firstBattleComplete: true } as never);
+    const members = () => cdp.eval<number>(`document.querySelectorAll(".world-object").length`);
+    await load(seedStory(base, { mapId: "saffron-city-pokemon-trainer-fan-club", x: 6, y: 12 }));
+    const before = await members();
+    const seated = { ...base, keyItemIds: ["bike-voucher"] } as never;
+    await load(seedStory(seated, { mapId: "saffron-city-pokemon-trainer-fan-club", x: 6, y: 12 }));
+    expect(await members()).toBeGreaterThanOrEqual(before + 4);
   }, 60_000);
 });
