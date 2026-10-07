@@ -24,6 +24,23 @@ export const NPC_POSITION_OVERRIDES: readonly NpcPositionOverride[] = [
     y: 11,
     when: (story) => !VIRIDIAN_GYM_BADGES.every((badge) => story.badgeIds.includes(badge as never)),
   },
+  {
+    // Mt. Moon B2F (ROM script 0x160756): after you take the Helix Fossil the scientist walks to the
+    // Dome Fossil (14, 7) and stays on the tile below it...
+    mapId: "mt-moon-b2f",
+    localId: 3,
+    x: 14,
+    y: 8,
+    when: (story) => story.mtMoonFossil === "helix",
+  },
+  {
+    // ...and when you take the Dome Fossil he takes the Helix Fossil (13, 7) (script 0x1607ba).
+    mapId: "mt-moon-b2f",
+    localId: 3,
+    x: 13,
+    y: 8,
+    when: (story) => story.mtMoonFossil === "dome",
+  },
 ];
 
 export function resolveNpcPositionOverride(
