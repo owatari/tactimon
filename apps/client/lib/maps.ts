@@ -67,6 +67,9 @@ export type WorldObject = {
   /** Set on the overworld's working copy: the ROM tile, since the NPC itself may have walked away. */
   homeX?: number;
   homeY?: number;
+  /** Where the working copy was placed when the map (or the story) last changed. */
+  placedX?: number;
+  placedY?: number;
 };
 
 export type WorldMapData = {

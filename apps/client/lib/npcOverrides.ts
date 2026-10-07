@@ -1,3 +1,4 @@
+import { fanClubSeated } from "./eventNpcs";
 import type { StoryState } from "./story";
 
 /**
@@ -40,6 +41,64 @@ export const NPC_POSITION_OVERRIDES: readonly NpcPositionOverride[] = [
     x: 13,
     y: 8,
     when: (story) => story.mtMoonFossil === "dome",
+  },
+  // Saffron Fan Club (ROM `setobjectxyperm`, script 0x16f207-0x16f25b): after the chairman's talk
+  // the members take their seats around the room.
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 1,
+    x: 5,
+    y: 2,
+    when: fanClubSeated,
+  },
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 2,
+    x: 3,
+    y: 4,
+    when: fanClubSeated,
+  },
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 3,
+    x: 7,
+    y: 4,
+    when: fanClubSeated,
+  },
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 4,
+    x: 2,
+    y: 2,
+    when: fanClubSeated,
+  },
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 5,
+    x: 10,
+    y: 3,
+    when: fanClubSeated,
+  },
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 6,
+    x: 4,
+    y: 6,
+    when: fanClubSeated,
+  },
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 7,
+    x: 7,
+    y: 5,
+    when: fanClubSeated,
+  },
+  {
+    mapId: "saffron-city-pokemon-trainer-fan-club",
+    localId: 8,
+    x: 9,
+    y: 6,
+    when: fanClubSeated,
   },
 ];
 

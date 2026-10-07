@@ -45,7 +45,7 @@ export type BehaviorKind =
   | { kind: "static"; facing: Direction | null }
   | { kind: "look"; facings: readonly Direction[]; intervalMs: readonly [number, number] }
   | { kind: "rotate"; clockwise: boolean; intervalMs: readonly [number, number] }
-  | { kind: "wander"; axis: "both" | "vertical" | "horizontal" }
+  | { kind: "wander"; axis: "both" | "vertical" | "horizontal"; slow?: boolean }
   | { kind: "patrol"; axis: "vertical" | "horizontal"; first: Direction };
 
 const ALL: readonly Direction[] = ["north", "south", "west", "east"];
@@ -85,6 +85,9 @@ const BEHAVIORS: Readonly<Record<number, BehaviorKind>> = {
   26: { kind: "patrol", axis: "vertical", first: "south" },
   27: { kind: "patrol", axis: "horizontal", first: "west" },
   28: { kind: "patrol", axis: "horizontal", first: "east" },
+  // FireRed's slow strollers (little girls, the Slowpoke of Fuchsia): wander with long pauses.
+  52: { kind: "wander", axis: "both", slow: true },
+  80: { kind: "wander", axis: "horizontal", slow: true },
 };
 
 export function behaviorFor(movementType: number): BehaviorKind {
@@ -92,10 +95,13 @@ export function behaviorFor(movementType: number): BehaviorKind {
 }
 
 /**
- * Movement types that appear on Kanto maps but stand still for now (walk sequences, copy-player,
- * tree disguises...). Listed so a new extraction that adds an unknown type fails the coverage test.
+ * Movement types that appear on Kanto maps and deliberately stand still: the patrol / walk-sequence
+ * types (37, 40, 41, 45, 47, 50, 51) are only used by trainers (bikers, swimmers, nerds), which here
+ * hold their post and watch in one direction (their sight line is what matters), and 76 is the
+ * link-cable attendant (not in the game). The test fails when an extraction brings a type that is
+ * neither implemented nor listed here.
  */
-export const UNIMPLEMENTED_MOVEMENT_TYPES: readonly number[] = [37, 40, 41, 45, 47, 50, 51, 52, 76, 80];
+export const STATIC_MOVEMENT_TYPES: readonly number[] = [37, 40, 41, 45, 47, 50, 51, 76];
 
 export function implementedMovementTypes(): number[] {
   return Object.keys(BEHAVIORS).map(Number);
@@ -169,6 +175,7 @@ export type NpcEngineOptions = {
 
 const WANDER_STEP_MS = 280;
 const WANDER_PAUSE_MS: readonly [number, number] = [900, 2600];
+const SLOW_WANDER_PAUSE_MS: readonly [number, number] = [2600, 6000];
 const ROTATION: readonly Direction[] = ["north", "east", "south", "west"];
 
 export class NpcEngine {
@@ -223,7 +230,16 @@ export class NpcEngine {
     for (const seed of seeds) {
       const known = this.npcs.get(seed.key);
       if (known) {
+        const moved = known.seed.x !== seed.x || known.seed.y !== seed.y;
         known.seed = seed;
+        if (moved && !known.script) {
+          // The place the NPC is meant to stand changed (a story event): put it there.
+          known.x = seed.x;
+          known.y = seed.y;
+          known.homeX = seed.x;
+          known.homeY = seed.y;
+          known.step = null;
+        }
         next.set(seed.key, known);
         continue;
       }
@@ -394,7 +410,7 @@ export class NpcEngine {
         const inside = Math.abs(toX - npc.homeX) <= rangeX && Math.abs(toY - npc.homeY) <= rangeY;
         if (inside) this.tryStep(npc, direction, now, WANDER_STEP_MS);
         else npc.facing = direction;
-        npc.nextAt = now + this.between(...WANDER_PAUSE_MS);
+        npc.nextAt = now + this.between(...(behavior.slow ? SLOW_WANDER_PAUSE_MS : WANDER_PAUSE_MS));
         break;
       }
       case "patrol": {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   NpcEngine,
-  UNIMPLEMENTED_MOVEMENT_TYPES,
+  STATIC_MOVEMENT_TYPES,
   behaviorFor,
   facingBetween,
   implementedMovementTypes,
@@ -22,7 +22,7 @@ function seeded(values: number[]) {
 
 describe("movement types", () => {
   it("every type used on Kanto maps is either implemented or knowingly static", () => {
-    const known = new Set([...implementedMovementTypes(), ...UNIMPLEMENTED_MOVEMENT_TYPES]);
+    const known = new Set([...implementedMovementTypes(), ...STATIC_MOVEMENT_TYPES]);
     for (const type of ROM_MOVEMENT_TYPES) expect(known.has(type), `type ${type}`).toBe(true);
   });
 
@@ -172,5 +172,29 @@ describe("NPC engine", () => {
     engine.update(500);
     engine.setNpcs([{ key: "t", x: 2, y: 5, movementType: 1 }], 600);
     expect(engine.tile("t")).toEqual({ x: 3, y: 5 });
+  });
+
+  it("slow strollers (types 52 and 80) wander with long pauses and stay in range", () => {
+    const fast = new NpcEngine({ isFree: () => true, random: seeded([0.3, 0.6, 0.1, 0.8]) });
+    const slow = new NpcEngine({ isFree: () => true, random: seeded([0.3, 0.6, 0.1, 0.8]) });
+    fast.setNpcs([{ key: "a", x: 5, y: 5, movementType: 2, rangeX: 3, rangeY: 3 }], 0);
+    slow.setNpcs([{ key: "a", x: 5, y: 5, movementType: 52, rangeX: 3, rangeY: 3 }], 0);
+    let fastSteps = 0;
+    let slowSteps = 0;
+    let lastFast = fast.tile("a")!;
+    let lastSlow = slow.tile("a")!;
+    for (let t = 0; t < 120000; t += 50) {
+      fast.update(t);
+      slow.update(t);
+      const f = fast.tile("a")!;
+      const w = slow.tile("a")!;
+      if (f.x !== lastFast.x || f.y !== lastFast.y) fastSteps += 1;
+      if (w.x !== lastSlow.x || w.y !== lastSlow.y) slowSteps += 1;
+      lastFast = f;
+      lastSlow = w;
+      expect(Math.abs(w.x - 5)).toBeLessThanOrEqual(3);
+    }
+    expect(slowSteps).toBeGreaterThan(0);
+    expect(slowSteps).toBeLessThan(fastSteps);
   });
 });

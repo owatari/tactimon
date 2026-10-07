@@ -1,4 +1,5 @@
 import { t } from "./i18n";
+import { eventNpcPages } from "./eventNpcs";
 import type {
   OverworldItemId,
 } from "./items";
@@ -1003,7 +1004,7 @@ export function resolveWorldObjectDialogueRequest(
     };
   }
 
-  const pages = resolveWorldNpcPages(mapId, x, y);
+  const pages = resolveWorldNpcPages(mapId, x, y) ?? eventNpcPages(mapId, x, y);
   if (pages) {
     return {
       kind: "pages",

@@ -2,6 +2,7 @@ import type { Catalog } from "../index";
 import { battleCatalog } from "./battle";
 import { battleLogCatalog } from "./battle-log";
 import { dialoguesCatalog } from "./dialogues";
+import { eventNpcsCatalog } from "./event-npcs";
 import { fieldCatalog } from "./field";
 import { itemsCatalog } from "./items";
 import { namesCatalog } from "./names";
@@ -29,6 +30,7 @@ export const CATALOG: Catalog = {
   ...battleLogCatalog,
   ...dialoguesCatalog,
   ...questsCatalog,
+  ...eventNpcsCatalog,
   ...itemsCatalog,
   ...namesCatalog,
   ...worldNpcKantoCatalog,
