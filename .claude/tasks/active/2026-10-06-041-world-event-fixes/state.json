@@ -1,0 +1,21 @@
+{
+  "id": "2026-10-06-041-world-event-fixes",
+  "title": "Corrigir rival do lab, Campeão, velhinho do Viridian Gym, Oak's Parcel, spawn da conta nova e varrer erros semelhantes",
+  "status": "planned",
+  "created_at": "2026-10-06",
+  "base_head": "9f2121c7",
+  "current_head": "9f2121c7",
+  "skills": [
+    "gameplay-systems",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "gameplay-systems",
+    "repo-cartographer"
+  ],
+  "files": [],
+  "commits": [],
+  "tests": []
+}
