@@ -20,6 +20,7 @@ describe("input actions", () => {
     expect(actionForKey(" ")).toBe("confirm");
     expect(actionForKey("Escape")).toBe("back");
     expect(actionForKey("Backspace")).toBe("back");
+    expect(actionForKey("r")).toBe("cycle");
     expect(actionForKey("F5")).toBeNull();
   });
 
@@ -48,6 +49,8 @@ describe("gamepad tracker", () => {
   it("maps D-pad, A, B, Start and the left stick", () => {
     expect([...heldActions(pad([0]))]).toEqual(["confirm"]);
     expect([...heldActions(pad([1, 9]))]).toEqual(["back"]);
+    // R1 / RB cycles walk and run (and the bike later), like the R key.
+    expect([...heldActions(pad([5]))]).toEqual(["cycle"]);
     expect([...heldActions(pad([12, 15]))].sort()).toEqual(["right", "up"]);
     expect([...heldActions(pad([], [-0.9, 0]))]).toEqual(["left"]);
     expect([...heldActions(pad([], [0.2, 0.3]))]).toEqual([]);
@@ -62,10 +65,10 @@ describe("gamepad tracker", () => {
     expect(tracker.update([pad()], 1000)).toEqual([{ action: "down", phase: "up" }]);
   });
 
-  it("confirm and back never auto-repeat", () => {
+  it("confirm, back and cycle never auto-repeat", () => {
     const tracker = new GamepadTracker();
-    tracker.update([pad([0])], 0);
-    expect(tracker.update([pad([0])], 2000)).toEqual([]);
+    tracker.update([pad([0, 5])], 0);
+    expect(tracker.update([pad([0, 5])], 2000)).toEqual([]);
   });
 });
 

@@ -5,7 +5,7 @@
  * translated into those same keys by the input bridge, so a menu only has to be written once and
  * behaves identically with any device. This module is pure (no DOM) so it can be unit tested.
  */
-export type InputAction = "up" | "down" | "left" | "right" | "confirm" | "back";
+export type InputAction = "up" | "down" | "left" | "right" | "confirm" | "back" | "cycle";
 
 /** The canonical key each action is sent as. */
 export const KEY_FOR_ACTION: Readonly<Record<InputAction, string>> = {
@@ -15,6 +15,8 @@ export const KEY_FOR_ACTION: Readonly<Record<InputAction, string>> = {
   right: "ArrowRight",
   confirm: "Enter",
   back: "Escape",
+  /** Cycles the way of getting around: walk / run (and the bike later). Same key as the keyboard shortcut. */
+  cycle: "r",
 };
 
 /** Same sets the menus use (see StartMenu): WASD / arrows move, Enter Space Z E confirm, Esc X Backspace Tab M go back. */
@@ -37,6 +39,8 @@ export function actionForKey(key: string): InputAction | null {
     case "z":
     case "e":
       return "confirm";
+    case "r":
+      return "cycle";
     case "escape":
     case "x":
     case "backspace":
@@ -62,10 +66,11 @@ export function actionForWheel(deltaY: number): InputAction | null {
   return null;
 }
 
-/** Standard-mapping Gamepad buttons: D-pad 12-15, A = 0 confirm, B = 1 back, Start = 9 back (opens the menu). */
+/** Standard-mapping Gamepad buttons: D-pad 12-15, A = 0 confirm, B = 1 back, Start = 9 back (opens the menu), R1 / RB = 5 cycles walk / run. */
 export const GAMEPAD_BUTTON_ACTION: Readonly<Record<number, InputAction>> = {
   0: "confirm",
   1: "back",
+  5: "cycle",
   9: "back",
   12: "up",
   13: "down",
