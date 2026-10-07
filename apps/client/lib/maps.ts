@@ -1589,6 +1589,13 @@ export const PLAYER_SPRITE = {
   sheetHeight: 128,
 };
 
+/** Where a new game begins: the player's bedroom (FireRed's new-game warp, 2F of the house in Pallet Town). */
+export const NEW_GAME_START = {
+  mapId: "pallet-players-house-2f",
+  x: 6,
+  y: 6,
+} as const;
+
 export const DIRECTION_DELTA: Record<
   Direction,
   { x: number; y: number }

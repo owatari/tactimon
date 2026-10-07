@@ -230,4 +230,16 @@ export const captureCatalog: Catalog = {
     fr: "Pff ! Au moins, tu élèves tes POKéMON avec un certain soin.",
     zh: "哼！至少你对宝可梦还算用心。",
   },
+  "I'm going to be the greatest POKéMON trainer! Smell ya later!": {
+    pt: "Vou ser o maior treinador de POKéMON! Até mais, perdedor!",
+    es: "¡Voy a ser el mejor entrenador POKéMON! ¡Hasta luego!",
+    fr: "Je serai le plus grand dresseur POKéMON ! À plus !",
+    zh: "我要成为最强的宝可梦训练家！回头见！",
+  },
+  "Wait! Let's check out our POKéMON! Come on, I'll take you on!": {
+    pt: "Espere! Vamos ver nossos POKéMON! Vamos, eu enfrento você!",
+    es: "¡Espera! ¡Veamos nuestros POKéMON! ¡Vamos, te desafío!",
+    fr: "Attends ! Voyons nos POKéMON ! Allez, je te défie !",
+    zh: "等一下！来看看我们的宝可梦吧！来，我跟你对战！",
+  },
 };

@@ -467,4 +467,69 @@ describe("walkthrough (browser)", () => {
     expect(distanceMoved).toBeGreaterThanOrEqual(2 * 16);
     expect(cdp.errors).toEqual([]);
   }, 60_000);
+
+  it("E18. a new account wakes up in the player's bedroom", async () => {
+    await load({});
+    expect(await text(".location-chip")).toMatch(/Player.s House 2F/i);
+  }, 40_000);
+
+  it("E19. walking into the Viridian Mart hands over OAK'S PARCEL by itself", async () => {
+    const story = { ...chooseStarter("charmander"), firstBattleComplete: true } as never;
+    await load(seedStory(story, { mapId: "viridian-mart", x: 3, y: 7 }));
+    let panel = 0;
+    for (let i = 0; i < 40 && !panel; i += 1) {
+      await sleep(150);
+      panel = await count(".dialogue-panel");
+    }
+    expect(panel).toBe(1);
+    expect(await text(".dialogue-panel")).toMatch(/PARCEL|Pallet|OAK/i);
+  }, 40_000);
+
+  it("E20. the man outside the Viridian Gym stands in front of its door until six badges are earned", async () => {
+    const closed = { ...chooseStarter("charmander"), firstBattleComplete: true } as never;
+    await load(seedStory(withPokedex(closed), { mapId: "viridian-city", x: 36, y: 14 }));
+    const manAt = () =>
+      cdp.eval<string>(`(() => { const e = [...document.querySelectorAll(".world-object")].find((x) => /old man/i.test(x.title)); return e ? JSON.stringify([parseFloat(e.style.left) / 16, (parseFloat(e.style.top) + 32) / 16 - 1]) : ""; })()`);
+    expect(JSON.parse(await manAt())).toEqual([36, 11]);
+    const open = withPokedex(withBadges({ ...chooseStarter("charmander"), firstBattleComplete: true } as never, 8));
+    await load(seedStory(open, { mapId: "viridian-city", x: 36, y: 14 }));
+    expect(JSON.parse(await manAt())).toEqual([34, 11]);
+  }, 60_000);
+
+  it("E21. the lab rival walks up to the player before the first battle", async () => {
+    const base = chooseStarter("charmander");
+    await load(seedStory(base as never, { mapId: "oak-lab", x: 6, y: 9 }));
+    const rivalAt = () =>
+      cdp.eval<string>(`(() => { const e = [...document.querySelectorAll(".story-object")].find((x) => x.style.backgroundImage.includes("072_blue")); return e ? JSON.stringify([parseFloat(e.style.left), parseFloat(e.style.top)]) : ""; })()`);
+    const before = await rivalAt();
+    expect(before).not.toBe("");
+    await press("ArrowUp");
+    let sawDialogue = false;
+    for (let i = 0; i < 80 && !sawDialogue; i += 1) {
+      await sleep(100);
+      sawDialogue = (await count(".dialogue-panel")) > 0;
+    }
+    expect(sawDialogue).toBe(true);
+    const a = JSON.parse(before) as number[];
+    const b = JSON.parse(await rivalAt()) as number[];
+    expect(Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1])).toBeGreaterThanOrEqual(2 * 16);
+    expect(cdp.errors).toEqual([]);
+  }, 60_000);
+
+  it("E22. the Champion notices the player coming up his room, turns and challenges without leaving his place", async () => {
+    const story = withPokedex(withBadges({ ...chooseStarter("charmander"), rivalStarter: "squirtle", firstBattleComplete: true, playerPokemon: createPokemonProgression("charmander", 60) } as never, 8));
+    await load(seedStory(story, { mapId: "pokemon-league-champions-room", x: 6, y: 13 }));
+    const blueAt = () =>
+      cdp.eval<string>(`(() => { const e = [...document.querySelectorAll(".story-object")].find((x) => /Blue/i.test(x.title)); return e ? JSON.stringify([parseFloat(e.style.left), parseFloat(e.style.top)]) : ""; })()`);
+    const before = await blueAt();
+    expect(before).not.toBe("");
+    await press("ArrowUp");
+    let sawDialogue = false;
+    for (let i = 0; i < 60 && !sawDialogue; i += 1) {
+      await sleep(100);
+      sawDialogue = (await count(".dialogue-panel")) > 0;
+    }
+    expect(sawDialogue).toBe(true);
+    expect(await blueAt()).toBe(before);
+  }, 60_000);
 });

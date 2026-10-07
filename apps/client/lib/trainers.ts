@@ -2325,7 +2325,8 @@ export function fillGymLeaderParty(
 
 export const OVERWORLD_TRAINERS: readonly OverworldTrainerDefinition[] = [
   ...HAND_OVERWORLD_TRAINERS,
-  ...CHAMPION_TRAINERS,
+  // The Champion's data has no sight range (he never noticed anyone): he sees four tiles down his room.
+  ...CHAMPION_TRAINERS.map((trainer) => ({ ...trainer, sightRange: 4 })),
   ...GENERATED_TRAINERS.map((trainer) => ({
     ...trainer,
     ...KANTO_TRAINER_TEXT_PT[trainer.id],

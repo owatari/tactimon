@@ -11,6 +11,7 @@ import {
   type FollowerState,
 } from "@/lib/follower";
 import { PokemonBattleSprite } from "./PokemonBattleSprite";
+import { resolveNpcPositionOverride } from "@/lib/npcOverrides";
 import {
   NpcEngine,
   OPPOSITE as NPC_OPPOSITE,
@@ -39,6 +40,7 @@ import { STARTER_FRONT_SPRITE } from "@/lib/starterChoice";
 import {
   BattleSceneContext,
   DIRECTION_DELTA,
+  NEW_GAME_START,
   Direction,
   MapLayout,
   PLAYER_SPRITE,
@@ -827,6 +829,8 @@ export function OverworldGame({
     trainerId: string;
     speaker: string;
     text: string;
+    /** Overrides the "trainer defeated" check (the tutorial battle has no trainer id). */
+    until?: (story: StoryState) => boolean;
   } | null>(null);
   const wasPausedRef = useRef(false);
 
@@ -1023,6 +1027,7 @@ export function OverworldGame({
     story,
   ]);
 
+  const parcelPromptedRef = useRef(false);
   const showInteraction = useCallback(
     (
       message: string,
@@ -1040,6 +1045,29 @@ export function OverworldGame({
     },
     [onDialogueInteraction, showDialogue],
   );
+
+  // FireRed: walking into the Viridian Mart the first time makes the clerk call out and hand over
+  // OAK'S PARCEL (no need to talk to him first).
+  useEffect(() => {
+    if (
+      isTransitioning ||
+      mapId !== "viridian-mart" ||
+      parcelPromptedRef.current ||
+      !story.starter ||
+      !story.firstBattleComplete ||
+      hasPokedex(story) ||
+      hasStoryKeyItem(story, "oaks-parcel")
+    ) {
+      return;
+    }
+    parcelPromptedRef.current = true;
+    showDialogue(
+      onDialogueInteraction({
+        kind: "script",
+        id: "viridian-mart-parcel",
+      }),
+    );
+  }, [isTransitioning, mapId, onDialogueInteraction, showDialogue, story]);
 
   // loadMap must stay referentially stable (the mount effect re-runs with it),
   // so it reads the latest showInteraction through a ref.
@@ -1503,6 +1531,8 @@ export function OverworldGame({
       cutsceneRef.current = true;
       trainerBattleLockRef.current = true;
       resetInput();
+      // The Champion waits in his place (FireRed): he turns and speaks, he does not walk up to you.
+      const stands = trainer.trainerId.startsWith("league-champion");
       const here = engine.tile(key) ?? { x: trainer.x, y: trainer.y };
       const toward = facingBetween(here, {
         x: player.tileX,
@@ -1516,7 +1546,7 @@ export function OverworldGame({
         setEmote(null);
         const delta = DIRECTION_DELTA[toward];
         const path: { x: number; y: number }[] = [];
-        for (let step = 1; step < distance; step += 1) {
+        for (let step = 1; !stands && step < distance; step += 1) {
           path.push({ x: here.x + delta.x * step, y: here.y + delta.y * step });
         }
         const arrive = () => {
@@ -1601,6 +1631,44 @@ export function OverworldGame({
   const startRivalApproachRef = useRef(startRivalApproach);
   startRivalApproachRef.current = startRivalApproach;
 
+  /** A story NPC already on the map (the lab rival) walks up to the player, then `onArrive` runs. */
+  const startStoryNpcApproach = useCallback(
+    (key: string, onArrive: () => void) => {
+      const engine = npcEngineRef.current;
+      const player = playerRef.current;
+      const from = engine?.tile(key);
+      const here = { x: player.tileX, y: player.tileY };
+      const route =
+        engine && from
+          ? pathToAdjacent({
+              from,
+              target: here,
+              isFree: (x, y) => npcFreeRef.current(x, y),
+            })
+          : null;
+      if (!engine || !from || !route || route.length === 0) {
+        if (engine && from) {
+          engine.turn(key, facingBetween(from, here));
+          player.facing = facingBetween(here, from);
+        }
+        onArrive();
+        return;
+      }
+      cutsceneRef.current = true;
+      resetInput();
+      engine.scriptWalk(key, route, NPC_TRAINER_WALK_MS, performance.now(), () => {
+        const at = engine.tile(key) ?? from;
+        engine.turn(key, facingBetween(at, here));
+        player.facing = facingBetween(here, at);
+        cutsceneRef.current = false;
+        onArrive();
+      });
+    },
+    [resetInput],
+  );
+  const startStoryNpcApproachRef = useRef(startStoryNpcApproach);
+  startStoryNpcApproachRef.current = startStoryNpcApproach;
+
   /** Called when the rival's battle starts: the walked-in actor leaves the map. */
   const finishRivalScene = useCallback(() => {
     npcEngineRef.current?.removeActor("cutscene-rival");
@@ -1618,7 +1686,10 @@ export function OverworldGame({
     if (!after) return;
     afterBattleRef.current = null;
     const timer = window.setTimeout(() => {
-      if (!isStoryTrainerDefeated(storyRef.current, after.trainerId)) return;
+      const done = after.until
+        ? after.until(storyRef.current)
+        : isStoryTrainerDefeated(storyRef.current, after.trainerId);
+      if (!done) return;
       showInteractionRef.current(
         after.text,
         `trainer:${after.trainerId}:after`,
@@ -1940,11 +2011,19 @@ export function OverworldGame({
         worldObjectsRef.current = renderableObjects(
           nextWorldData,
           nextMapId,
-        ).map((object) => ({
-          ...object,
-          homeX: object.x,
-          homeY: object.y,
-        }));
+        ).map((object) => {
+          const moved = resolveNpcPositionOverride(
+            nextMapId,
+            object.local_id,
+            storyRef.current,
+          );
+          return {
+            ...object,
+            ...(moved ?? {}),
+            homeX: object.x,
+            homeY: object.y,
+          };
+        });
         npcEngineRef.current?.reset();
         worldDataRef.current = nextWorldData;
         const boulderIds = resolveScriptedWorldObjects(nextMapId)
@@ -2073,17 +2152,20 @@ export function OverworldGame({
       currentStory.starter &&
         currentStory.playerPokemon,
     );
+    // FireRed: a new game wakes up in the player's bedroom (2F of the house in Pallet Town).
     const initialMapId =
       canResumeSavedPosition && saved
         ? saved.mapId
-        : "pallet-town";
+        : NEW_GAME_START.mapId;
     const initialDefinition = WORLD_MAPS[initialMapId];
 
     void loadMap(
       initialMapId,
       canResumeSavedPosition && saved
         ? { x: saved.x, y: saved.y }
-        : initialDefinition.spawn,
+        : initialMapId === NEW_GAME_START.mapId
+          ? { x: NEW_GAME_START.x, y: NEW_GAME_START.y }
+          : initialDefinition.spawn,
       canResumeSavedPosition && saved
         ? saved.facing
         : "south",
@@ -2513,7 +2595,23 @@ export function OverworldGame({
 
         battleTriggerRef.current = true;
         resetInput();
-        onFirstBattleTrigger(context);
+        startStoryNpcApproachRef.current("story-rival", () => {
+          afterBattleRef.current = {
+            trainerId: "lab-rival",
+            speaker: "Blue",
+            text: t("I'm going to be the greatest POKéMON trainer! Smell ya later!"),
+            until: (current) => current.firstBattleComplete,
+          };
+          showDialogue(
+            onDialogueInteraction({
+              kind: "text",
+              id: "lab-rival:challenge",
+              speaker: "Blue",
+              text: t("Wait! Let's check out our POKéMON! Come on, I'll take you on!"),
+            }),
+            () => onFirstBattleTrigger(context),
+          );
+        });
       }
     };
 
@@ -2980,14 +3078,14 @@ export function OverworldGame({
           npcTracked.push({ key, object });
         }
         for (const object of storyList) {
-          if (object.kind !== "trainer") continue;
+          if (object.kind !== "trainer" && object.kind !== "rival") continue;
           const key = `story-${object.id}`;
           seeds.push({
             key,
             x: object.x,
             y: object.y,
             movementType: 0,
-            facing: object.facing,
+            facing: object.kind === "trainer" ? object.facing : "south",
           });
           npcTracked.push({ key, object });
         }
@@ -3415,7 +3513,7 @@ export function OverworldGame({
               <div
                 key={object.id}
                 ref={
-                  object.kind === "trainer"
+                  object.kind === "trainer" || object.kind === "rival"
                     ? registerNpc(
                         `story-${object.id}`,
                         {
@@ -3426,7 +3524,7 @@ export function OverworldGame({
                             Math.round(object.sheetWidth / object.frameWidth),
                           ),
                         },
-                        object.facing,
+                        object.kind === "trainer" ? object.facing : "south",
                       )
                     : undefined
                 }
