@@ -8,3 +8,6 @@
 - [x] Fase 3 PC — lib/pcBoxes.ts (boxSlots paralelo a boxedPokemon + pcBoxes; 5 grátis, +₽1000 cumulativo por box até 14; migração: save antigo = 30 por box em ordem, boxes com Pokémon contam abertas), lib/pcActions.ts (applyPcAction puro), story.ts/captureChoice.ts usam appendBoxed/removeBoxed/pcHasRoom, PcWindow.tsx substitui StorageOverlay (removido), css, i18n, tests/pc-boxes.test.ts (12), e2e pc.e2e.ts (3, drag real + clique MOVE→destino)
 - Obs: tests/content-integrity e world-reachability falham esporadicamente enquanto `pnpm dev` regenera mapas (passam isolados).
 - Próximo: Fase 4 Bag (abas, grade de ícones, hover, arrastar item sobre Pokémon), depois Market + Premier
+- [x] Fase 4 Bag — BagWindow.tsx (abas, grade 6 col com ícone+qtd, hover=detalhe, arrastar item sobre Pokémon usa; ordenar default/nome/qtd; teclado: setas andam na grade, passar do fim troca bolso), StartMenu activateBag/useBagOn, css, i18n, e2e bag.e2e.ts 2/2. Walkthrough 26/26 (falhas esporádicas de timing E3/E11 em runs concorrentes).
+- Sem dados de raridade/origem de drop no jogo: detalhe mostra nome, qtd, descrição.
+- Próximo: Fase 5 Market (estoque total, comprar/vender drag, Premier Ball bônus 20/15/10)

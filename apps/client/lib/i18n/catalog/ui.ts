@@ -2,6 +2,54 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  "Pockets": {
+    pt: "Bolsos",
+    es: "Bolsillos",
+    fr: "Poches",
+    zh: "口袋",
+  },
+  "SORT: NAME": {
+    pt: "ORDEM: NOME",
+    es: "ORDEN: NOMBRE",
+    fr: "TRI : NOM",
+    zh: "排序：名称",
+  },
+  "SORT: QTY": {
+    pt: "ORDEM: QTD",
+    es: "ORDEN: CANT.",
+    fr: "TRI : QTÉ",
+    zh: "排序：数量",
+  },
+  "SORT: DEFAULT": {
+    pt: "ORDEM: PADRÃO",
+    es: "ORDEN: PREDET.",
+    fr: "TRI : DÉFAUT",
+    zh: "排序：默认",
+  },
+  "Quantity: {count}": {
+    pt: "Quantidade: {count}",
+    es: "Cantidad: {count}",
+    fr: "Quantité : {count}",
+    zh: "数量：{count}",
+  },
+  "Drag it onto a Pokémon to use it.": {
+    pt: "Arraste sobre um Pokémon para usar.",
+    es: "Arrástralo sobre un Pokémon para usarlo.",
+    fr: "Faites-le glisser sur un Pokémon pour l'utiliser.",
+    zh: "拖到宝可梦身上即可使用。",
+  },
+  "Point at an item to see its details.": {
+    pt: "Aponte para um item para ver os detalhes.",
+    es: "Señala un objeto para ver sus detalles.",
+    fr: "Pointez un objet pour voir ses détails.",
+    zh: "指向物品查看详情。",
+  },
+  "Use {item} on which move?": {
+    pt: "Usar {item} em qual golpe?",
+    es: "¿Usar {item} en qué movimiento?",
+    fr: "Utiliser {item} sur quelle attaque ?",
+    zh: "对哪个招式使用 {item}？",
+  },
   "Pokémon moved to the box.": {
     pt: "Pokémon movido para a box.",
     es: "Pokémon movido a la caja.",
