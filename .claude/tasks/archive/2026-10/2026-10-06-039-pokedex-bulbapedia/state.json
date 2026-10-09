@@ -1,10 +1,10 @@
 {
   "id": "2026-10-06-039-pokedex-bulbapedia",
   "title": "Pok\u00e9dex pr\u00f3pria com locais, learnset, TMs e melhor nature (estilo Bulbapedia)",
-  "status": "running",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "9f2121c7",
-  "current_head": "b002d505",
+  "current_head": "56307468",
   "skills": [
     "pokemon-ui",
     "verification",
@@ -16,6 +16,10 @@
     "asset-pipeline"
   ],
   "files": [],
-  "commits": [],
+  "commits": [
+    "59afa75d",
+    "8725fd0e",
+    "56307468"
+  ],
   "tests": []
 }

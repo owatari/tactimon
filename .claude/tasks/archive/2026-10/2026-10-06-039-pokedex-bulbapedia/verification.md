@@ -1,0 +1,4 @@
+- engine typecheck ✓ · client typecheck ✓
+- `pnpm test`: client 105 arquivos / 587 testes ✓, engine 18 / 290 ✓
+- e2e em série (hud, pokemon, pc, bag, market, pokedex, walkthrough, playthrough): 8 arquivos / 56 testes ✓
+- screenshots 1365×768 e 1792×851 (lista, locais, info) inspecionados

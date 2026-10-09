@@ -1,0 +1,4 @@
+- Pokédex GBA fiel mantida como "Classic mode" dentro da nova janela (custo zero, nada removido).
+- Locais "estáticos" (presentes, prêmios, fósseis, trocas, lendários) ficam numa tabela à mão (`STATIC_SOURCES`): os scripts da ROM não foram varridos para isso; lendários mostram "raid (coming soon)" conforme regra do produto.
+- Anti-spoiler: capturado desbloqueia Locais/Golpes/TMs/nature; visto mostra só o básico.
+- Melhor nature é heurística documentada (bestNature.ts), não otimização de dano.
