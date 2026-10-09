@@ -1,10 +1,10 @@
 {
   "id": "2026-10-06-038-player-hud-and-windows",
   "title": "HUD permanente + janelas Pok\u00e9mon, Bag, PC Box (5 boxes pagas) e Market (comprar/vender, estoque total, Premier Ball) com drag and drop",
-  "status": "running",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "9f2121c7",
-  "current_head": "1ae4e11c",
+  "current_head": "e73c6a52",
   "skills": [
     "pokemon-ui",
     "verification",
@@ -16,6 +16,12 @@
     "gameplay-systems"
   ],
   "files": [],
-  "commits": [],
+  "commits": [
+    "7962d059",
+    "dd29db5c",
+    "45387028",
+    "b183872b",
+    "e73c6a52"
+  ],
   "tests": []
 }

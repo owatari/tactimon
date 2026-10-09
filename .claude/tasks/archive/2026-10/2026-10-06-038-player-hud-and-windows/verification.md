@@ -1,0 +1,5 @@
+- engine typecheck ✓ · client typecheck ✓
+- `pnpm test`: 103 arquivos / 578 testes ✓ (client) + engine 18/290 ✓
+- e2e (dev server): hud 4, pokemon 2, pc 3, bag 2, market 2, walkthrough 26, playthrough ✓ (rodados em série; E3/E11 falharam uma vez em runs concorrentes, passam isolados)
+- screenshots 1365×768 e 1792×851 de HUD, Pokémon, PC, Bag, Market inspecionados
+- git diff --check ✓

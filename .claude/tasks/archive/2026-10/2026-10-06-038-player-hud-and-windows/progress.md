@@ -11,3 +11,5 @@
 - [x] Fase 4 Bag — BagWindow.tsx (abas, grade 6 col com ícone+qtd, hover=detalhe, arrastar item sobre Pokémon usa; ordenar default/nome/qtd; teclado: setas andam na grade, passar do fim troca bolso), StartMenu activateBag/useBagOn, css, i18n, e2e bag.e2e.ts 2/2. Walkthrough 26/26 (falhas esporádicas de timing E3/E11 em runs concorrentes).
 - Sem dados de raridade/origem de drop no jogo: detalhe mostra nome, qtd, descrição.
 - Próximo: Fase 5 Market (estoque total, comprar/vender drag, Premier Ball bônus 20/15/10)
+- [x] Fase 5 Market — lib/market.ts (estoque total, venda 50%, Premier 20/15/10 com contador `ballPurchases`), engine `premier-ball` (+teste capture), MarketWindow.tsx (drag/clique, prompt de quantidade, confirmação de venda) substitui MartOverlay (removido), css, i18n, tests/market.test.ts (10), e2e market.e2e.ts 2/2
+- [x] Docs knowledge atualizados. Verificação completa ok.
