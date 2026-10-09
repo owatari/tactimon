@@ -68,6 +68,7 @@ describe("starter duel", () => {
   it("keeps combatants well separated on the expanded battle field", () => {
     for (const seed of [1, 2, 3, 77, 2026]) {
       const state = createStarterDuel("bulbasaur", {
+        openingTiles: 0, // raw spawn layout
         seed,
         width: 13,
         height: 7,
@@ -5836,6 +5837,7 @@ describe("battle movement and deployment scale", () => {
 
   it("deploys large wild packs with player units on the left and enemies on the right", () => {
     const state = createWildDuel({
+      openingTiles: 0, // raw spawn layout
       seed: 1901,
       width: 17,
       height: 9,

@@ -309,7 +309,17 @@ export interface DuelPokemonBuild {
   ownerKind?: "local" | "party-member";
 }
 
+/**
+ * Free steps every Pokémon takes toward its nearest foe before round 1. Measured on mirror fights
+ * (same team both sides): without it the side that acts first wins ~41% of the time because it has to
+ * walk into the other side; with 1 step the gap is -4 points (2 steps overshoot to +5 and make Auto
+ * Catch kill ~10% of what it could catch instead of ~4%). See task 040 decisions (archive).
+ */
+export const OPENING_TILES = 1;
+
 export interface TrainerDuelOptions {
+  /** Opening walk in tiles (default OPENING_TILES; 0 keeps the old spawn distance). */
+  openingTiles?: number;
   seed?: number;
   width?: number;
   height?: number;
@@ -323,6 +333,7 @@ export interface TrainerDuelOptions {
 }
 
 export interface StarterDuelOptions {
+  openingTiles?: number;
   seed?: number;
   width?: number;
   height?: number;
@@ -338,6 +349,8 @@ export interface StarterDuelOptions {
 }
 
 export interface WildDuelOptions {
+  /** Opening walk in tiles (default OPENING_TILES; 0 keeps the old spawn distance). */
+  openingTiles?: number;
   seed?: number;
   width?: number;
   height?: number;
@@ -4202,7 +4215,7 @@ export function createTrainerDuel(
     ]),
   };
   activateNextTurnUnit(state, 0);
-  return state;
+  return applyOpeningMovement(state, options.openingTiles ?? OPENING_TILES);
 }
 
 export function createStarterDuel(
@@ -4235,6 +4248,9 @@ export function createStarterDuel(
   ).slice(0, 6);
 
   return createTrainerDuel({
+    ...(options.openingTiles !== undefined
+      ? { openingTiles: options.openingTiles }
+      : {}),
     ...(options.seed !== undefined
       ? { seed: options.seed }
       : {}),
@@ -4396,7 +4412,7 @@ export function createWildDuel(
     ]),
   };
   activateNextTurnUnit(state, 0);
-  return state;
+  return applyOpeningMovement(state, options.openingTiles ?? OPENING_TILES);
 }
 
 export function manhattanDistance(
@@ -8193,6 +8209,48 @@ function chooseAiCandidate(
 
   candidates.sort(compareAiCandidates);
   return candidates[0] ?? null;
+}
+
+/**
+ * Opening phase: before the first round every living Pokémon walks up to `tiles` steps toward the
+ * nearest foe for free (no AP, no attacks). The side that happens to act first no longer pays the
+ * walk alone; Speed still decides who strikes first once everyone is in position.
+ */
+export function applyOpeningMovement(input: DuelState, tiles: number): DuelState {
+  if (tiles <= 0 || input.status !== "active") return input;
+  const state = cloneState(input);
+  const reach = DUEL_MOVES.tackle;
+  // Interleave the sides (player, rival, player, ...) and walk one tile at a time, so neither side
+  // gets the better squares just because it is processed first.
+  const bySide = (side: DuelSide) =>
+    state.units
+      .filter((unit) => unit.side === side && unit.hp > 0)
+      .map((unit) => unit.id)
+      .sort((a, b) => a.localeCompare(b));
+  const player = bySide("player");
+  const rival = bySide("rival");
+  const order: string[] = [];
+  for (let index = 0; index < Math.max(player.length, rival.length); index += 1) {
+    if (player[index]) order.push(player[index]);
+    if (rival[index]) order.push(rival[index]);
+  }
+  for (let step = 0; step < tiles; step += 1) {
+    for (const id of order) {
+      const unit = state.units.find((candidate) => candidate.id === id);
+      if (!unit) continue;
+      const target = state.units
+        .filter((candidate) => candidate.hp > 0 && candidate.side !== unit.side)
+        .sort(
+          (a, b) =>
+            manhattanDistance(unit.position, a.position) - manhattanDistance(unit.position, b.position) ||
+            a.id.localeCompare(b.id),
+        )[0];
+      if (!target) continue;
+      const path = shortestAiPathToRange(state, unit, target, reach);
+      if (path && path.length > 0) unit.position = { ...path[0] };
+    }
+  }
+  return state;
 }
 
 function aiMovementDestination(

@@ -72,6 +72,7 @@ function hasPath(
 describe("battle team spawn placement", () => {
   it("places a 6x10 encounter on unique connected cells with tactical separation", () => {
     const state = createWildDuel({
+      openingTiles: 0, // these tests are about the raw spawn layout
       seed: 20261004,
       width: 13,
       height: 7,
@@ -105,6 +106,7 @@ describe("battle team spawn placement", () => {
     blocked.push({ x: 9, y: 4 }, { x: 9, y: 5 }, { x: 8, y: 4 }, { x: 8, y: 5 });
 
     const state = createWildDuel({
+      openingTiles: 0, // these tests are about the raw spawn layout
       seed: 44,
       width: 10,
       height: 7,
@@ -133,6 +135,7 @@ describe("battle team spawn placement", () => {
     }
 
     const state = createWildDuel({
+      openingTiles: 0, // these tests are about the raw spawn layout
       seed: 90,
       width: 11,
       height: 5,
@@ -167,6 +170,7 @@ describe("battle team spawn placement", () => {
       }
 
       const state = createWildDuel({
+      openingTiles: 0, // these tests are about the raw spawn layout
         seed,
         width,
         height,
@@ -208,6 +212,7 @@ describe("battle team spawn placement", () => {
       }
     }
     const state = createWildDuel({
+      openingTiles: 0, // these tests are about the raw spawn layout
       seed: 7,
       width: 17,
       height: 9,
@@ -227,6 +232,7 @@ describe("battle team spawn placement", () => {
       { x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 },
     ];
     const state = createWildDuel({
+      openingTiles: 0, // these tests are about the raw spawn layout
       seed: 12,
       width: 12,
       height: 7,
