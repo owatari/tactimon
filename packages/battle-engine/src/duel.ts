@@ -8139,7 +8139,7 @@ function chooseAiCandidate(
 
   if (candidates.length === 0 && !options.statusAlreadyUsed) {
     // Out of PP for every damaging move but with a status move left (Struggle only unlocks when ALL
-    // PP is gone): burn it, however useless, so two such Pokémon cannot idle a battle forever.
+    // PP is gone): burn it, however useless, so two such PokÃ©mon cannot idle a battle forever.
     const burn = actor.moves
       .filter((moveId) => canDuelUnitUseMove(actor, moveId))
       .map((moveId) => DUEL_MOVES[moveId])

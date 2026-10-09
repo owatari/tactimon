@@ -99,7 +99,7 @@ describe("team planning versus one-at-a-time choice", () => {
         const turn = resolveSimpleAiTurnDetailed(state, actor.side, { teamPlanning: actor.side === planningSide });
                 state = turn.state;
       }
-      // Out of damaging PP, a Pokémon burns its status PP and then Struggles: no battle may idle forever.
+      // Out of damaging PP, a PokÃ©mon burns its status PP and then Struggles: no battle may idle forever.
       expect(state.status, `seed ${seed} never finished`).toBe("finished");
       if (state.winner === planningSide) teamWins += 1;
       else if (state.winner) soloWins += 1;
