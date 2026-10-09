@@ -10,10 +10,14 @@ import {
   type NatureId,
   type NatureStat,
 } from "@tactimon/battle-engine";
+import { SMOGON_NATURES } from "./generated/smogonNatures";
 import { TM_COMPAT, TM_MOVES } from "./generated/tmCompat";
+import { isNatureId } from "@tactimon/battle-engine";
+import { speciesEvolvesTo } from "./pokedexData";
 
 /** Why the nature was picked (the Pokédex turns this into a sentence). */
 export type BestNatureKind =
+  | "database"
   | "physical"
   | "special"
   | "fast-physical"
@@ -22,11 +26,20 @@ export type BestNatureKind =
 
 export type BestNature = {
   nature: NatureId;
-  up: NatureStat;
-  down: NatureStat;
+  up: NatureStat | null;
+  down: NatureStat | null;
   kind: BestNatureKind;
-  /** Offensive stat the Pokémon leans on (null for the bulky kind). */
+  /** Offensive stat the Pokémon leans on (null for the bulky kind and database picks). */
   offense: "attack" | "specialAttack" | null;
+  /** Where the answer comes from: Smogon's own sets, its evolution's sets, or the stat heuristic. */
+  source: "smogon" | "evolution" | "heuristic";
+  /** Other natures the same sets use (e.g. Modest next to Timid). */
+  alternatives: NatureId[];
+  /** Smogon tier and set name when the answer comes from the database. */
+  tier?: string;
+  set?: string;
+  /** The evolution whose sets were used (source "evolution"). */
+  from?: string;
 };
 
 /** A species this fast (and nearly as strong as its offense) wants +Speed instead of more power. */
@@ -74,7 +87,7 @@ function movePoolPower(species: DuelSpeciesId, category: "physical" | "special")
  * - a species with no real offense (Chansey, Magikarp) boosts its better bulk stat and drops its worse attack.
  * Deterministic and pure: the same species always gets the same nature.
  */
-export function bestNatureFor(species: DuelSpeciesId): BestNature {
+export function heuristicBestNature(species: DuelSpeciesId): BestNature {
   const base = duelSpeciesBaseStats(species);
   const physicalPower = movePoolPower(species, "physical");
   const specialPower = movePoolPower(species, "special");
@@ -88,7 +101,7 @@ export function bestNatureFor(species: DuelSpeciesId): BestNature {
   if (strongest < WEAK_OFFENSE) {
     const up: NatureStat = base.defense >= base.specialDefense ? "defense" : "specialDefense";
     const down: NatureStat = base.attack <= base.specialAttack ? "attack" : "specialAttack";
-    return { nature: natureFor(up, down), up, down, kind: "bulky", offense: null };
+    return { nature: natureFor(up, down), up, down, kind: "bulky", offense: null, source: "heuristic", alternatives: [] };
   }
 
   const offenseStat = base[offense];
@@ -99,6 +112,8 @@ export function bestNatureFor(species: DuelSpeciesId): BestNature {
       down: unused,
       kind: offense === "attack" ? "fast-physical" : "fast-special",
       offense,
+      source: "heuristic",
+      alternatives: [],
     };
   }
 
@@ -108,5 +123,51 @@ export function bestNatureFor(species: DuelSpeciesId): BestNature {
     down: unused,
     kind: offense === "attack" ? "physical" : "special",
     offense,
+    source: "heuristic",
+    alternatives: [],
   };
+}
+
+function fromDatabase(species: string): BestNature | null {
+  const entry = SMOGON_NATURES[species];
+  if (!entry || !isNatureId(entry.nature)) return null;
+  const effect = natureEffect(entry.nature);
+  return {
+    nature: entry.nature,
+    up: effect.up,
+    down: effect.down,
+    kind: "database",
+    offense: null,
+    source: "smogon",
+    alternatives: entry.alternatives.filter((id): id is NatureId => isNatureId(id)),
+    tier: entry.tier,
+    set: entry.set,
+  };
+}
+
+/**
+ * The best nature for a species, in order of trust:
+ * 1. Smogon's Gen 3 competitive sets for that species (the most voted nature of its highest tier);
+ * 2. the sets of what it evolves into (an unevolved Pokémon grows into that role);
+ * 3. the stat-and-movepool heuristic above, for the few species without any set (e.g. Chansey).
+ */
+export function bestNatureFor(species: DuelSpeciesId): BestNature {
+  const direct = fromDatabase(species);
+  if (direct) return direct;
+  const seen = new Set<string>([species]);
+  let frontier: string[] = [species];
+  while (frontier.length > 0) {
+    const next: string[] = [];
+    for (const current of frontier) {
+      for (const step of speciesEvolvesTo(current)) {
+        if (seen.has(step.species)) continue;
+        seen.add(step.species);
+        const inherited = fromDatabase(step.species);
+        if (inherited) return { ...inherited, source: "evolution", from: step.species };
+        next.push(step.species);
+      }
+    }
+    frontier = next;
+  }
+  return heuristicBestNature(species);
 }

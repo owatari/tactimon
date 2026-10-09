@@ -2,6 +2,24 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  "Also used: {natures}": {
+    pt: "Também usadas: {natures}",
+    es: "También se usan: {natures}",
+    fr: "Aussi utilisées : {natures}",
+    zh: "也常用：{natures}",
+  },
+  "Most used nature in Smogon's Gen 3 {tier} sets ({set}).": {
+    pt: "Nature mais usada nos sets de Gen 3 {tier} do Smogon ({set}).",
+    es: "Naturaleza más usada en los sets de Gen 3 {tier} de Smogon ({set}).",
+    fr: "Nature la plus utilisée dans les sets Gen 3 {tier} de Smogon ({set}).",
+    zh: "Smogon 第三世代 {tier} 配置中最常用的性格（{set}）。",
+  },
+  "It has no Gen 3 sets of its own: taken from its evolution {name}.": {
+    pt: "Não tem sets de Gen 3 próprios: usa os da evolução {name}.",
+    es: "No tiene sets de Gen 3 propios: se toma de su evolución {name}.",
+    fr: "Pas de sets Gen 3 propres : repris de son évolution {name}.",
+    zh: "没有自己的第三世代配置：参考其进化形态 {name}。",
+  },
   "Search name or number": {
     pt: "Buscar nome ou número",
     es: "Buscar nombre o número",

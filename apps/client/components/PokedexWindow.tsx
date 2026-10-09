@@ -227,16 +227,28 @@ export function PokedexWindow({ story, onClose, onClassic }: Props) {
             <div className="dex-nature">
               <strong>{t("Best nature")}</strong>: {natureName(best.nature)}{" "}
               <span className="dex-nature-effect">{natureEffectText(best.nature)}</span>
+              {best.alternatives.length > 0 && (
+                <p>{t("Also used: {natures}", { natures: best.alternatives.map((alt) => natureName(alt)).join(", ") })}</p>
+              )}
               <p>
-                {best.kind === "bulky"
-                  ? t("It has no strong attack, so it benefits from sturdier defenses.")
-                  : best.kind === "physical"
-                    ? t("It relies on Attack: raise it and drop the unused Sp. Atk.")
-                    : best.kind === "special"
-                      ? t("It relies on Sp. Atk: raise it and drop the unused Attack.")
-                      : best.kind === "fast-physical"
-                        ? t("It is fast enough that Speed beats extra Attack; the unused Sp. Atk pays.")
-                        : t("It is fast enough that Speed beats extra Sp. Atk; the unused Attack pays.")}
+                {best.source === "smogon"
+                  ? t("Most used nature in Smogon's Gen 3 {tier} sets ({set}).", {
+                      tier: (best.tier ?? "").toUpperCase(),
+                      set: best.set ?? "",
+                    })
+                  : best.source === "evolution"
+                    ? t("It has no Gen 3 sets of its own: taken from its evolution {name}.", {
+                        name: localizedSpeciesName(best.from ?? selected),
+                      })
+                    : best.kind === "bulky"
+                      ? t("It has no strong attack, so it benefits from sturdier defenses.")
+                      : best.kind === "physical"
+                        ? t("It relies on Attack: raise it and drop the unused Sp. Atk.")
+                        : best.kind === "special"
+                          ? t("It relies on Sp. Atk: raise it and drop the unused Attack.")
+                          : best.kind === "fast-physical"
+                            ? t("It is fast enough that Speed beats extra Attack; the unused Sp. Atk pays.")
+                            : t("It is fast enough that Speed beats extra Sp. Atk; the unused Attack pays.")}
               </p>
             </div>
           ) : (
