@@ -44,6 +44,6 @@
 | 2026-10-06-037-team-level-autobattle-ai | IA do Auto Battle pensa o time como conjunto: efetividade e escolha de alvo pela cobertura da equipe | done | archive/2026-10 |
 | 2026-10-06-038-player-hud-and-windows | HUD permanente + janelas Pokémon, Bag, PC Box (5 boxes pagas) e Market (comprar/vender, estoque total, Premier Ball) com drag and drop | done | archive/2026-10 |
 | 2026-10-06-039-pokedex-bulbapedia | Pokédex própria com locais, learnset, TMs e melhor nature (estilo Bulbapedia) | done | archive/2026-10 |
-| 2026-10-06-040-first-mover-disadvantage | Equilibrar a desvantagem de quem começa a batalha (medir e escolher a solução) | planned | active |
+| 2026-10-06-040-first-mover-disadvantage | Equilibrar a desvantagem de quem começa a batalha (medir e escolher a solução) | done | archive/2026-10 |
 | 2026-10-06-041-world-event-fixes | Corrigir rival do lab, Campeão, velhinho do Viridian Gym, Oak's Parcel, spawn da conta nova e varrer erros semelhantes | done | archive/2026-10 |
 | 2026-10-06-042-npc-pending-resolution | Resolver todas as pendências de NPC (event NPCs, cenas, movimentos) | done | archive/2026-10 |

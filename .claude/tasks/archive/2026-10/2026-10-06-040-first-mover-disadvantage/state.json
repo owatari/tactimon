@@ -1,10 +1,10 @@
 {
   "id": "2026-10-06-040-first-mover-disadvantage",
-  "title": "Equilibrar a desvantagem de quem começa a batalha (medir e escolher a solução)",
-  "status": "planned",
+  "title": "Equilibrar a desvantagem de quem come\u00e7a a batalha (medir e escolher a solu\u00e7\u00e3o)",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "9f2121c7",
-  "current_head": "9f2121c7",
+  "current_head": "e068a7ce",
   "skills": [
     "battle-development",
     "verification",
@@ -15,6 +15,9 @@
     "battle-engine"
   ],
   "files": [],
-  "commits": [],
+  "commits": [
+    "6741a991",
+    "e068a7ce"
+  ],
   "tests": []
 }

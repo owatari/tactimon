@@ -47,3 +47,7 @@
 - `scoreAiCandidate` soma `teamBonus` (22 + 12 se mata + 6 se super efetivo) quando o alvo é o designado; sem penalidade aos demais (−38 piorou: 11×17 vs a IA antiga; bônus leve dá 47×25 em 80 seeds, lados alternados).
 - `DuelAiTurnOptions.teamPlanning` (padrão ligado; `false` = escolha individual, usado para medir). Auto Catch continua antes (`planAutoCatch`). Rival e Auto Battle usam o mesmo caminho.
 - Sem PP em nenhum golpe de dano mas com PP de status (Struggle só libera com TODO o PP zerado, como no GB): a IA gasta o golpe de status `self` (score 1, fallback em `chooseAiCandidate`) até acabar o PP e então usa Struggle; antes duas partes assim ficavam num empate infinito.
+
+## Abertura simultânea (task 040)
+- Quem age primeiro precisava andar até o inimigo e perdia (~41% de vitória em lutas espelhadas, gap −9 pp). Todo combate agora começa com `applyOpeningMovement(state, OPENING_TILES)`: cada Pokémon dá `OPENING_TILES` (=1) passos grátis em direção ao inimigo mais próximo (lados intercalados, um tile por vez) antes do round 1; AP, ordem de turno e IA não mudam. Gap medido: −4 pp. `openingTiles: 0` nas opções de criação devolve o spawn bruto (testes de layout).
+- Medir de novo: `FM_SEEDS=300 FM_TILES=0,1,2 pnpm --filter @tactimon/battle-engine exec vitest run test/first-mover.test.ts` (`test/support/firstMover.ts`: `playMirror`, `measureBalanced`). 2 tiles → +5 pp mas o Auto Catch mata ~10% do que poderia capturar; 3+ tiles fazem o primeiro golpe decidir.

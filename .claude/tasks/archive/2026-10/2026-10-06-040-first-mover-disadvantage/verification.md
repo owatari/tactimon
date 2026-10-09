@@ -1,0 +1,4 @@
+- engine typecheck ✓ · client typecheck ✓
+- `pnpm test`: client 105/589 ✓, engine 19/294 ✓ (inclui first-mover: gap −3,1 pp com 480 lutas, 0 stalls)
+- e2e em série: walkthrough/playthrough/hud/pokemon/pc/pokedex ✓; bag e market falharam uma vez por flakiness de browser e passam isolados (4/4)
+- medição completa e escolha: decisions.md
