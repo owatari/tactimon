@@ -703,6 +703,11 @@ export interface DuelAiTurnOptions {
    * This is intentionally independent from full Auto Battle.
    */
   autoCapture?: boolean;
+  /**
+   * Plan the whole team's turn at once (who hits whom, with which move), instead of each Pokémon
+   * choosing alone. On by default; `false` keeps the old one-at-a-time choice (used to measure it).
+   */
+  teamPlanning?: boolean;
 }
 
 const LEVEL = 5;
@@ -7619,12 +7624,156 @@ function aiRetaliationRisk(
   return worst;
 }
 
+/** One member's job in the team plan. */
+export interface TeamAssignment {
+  unitId: string;
+  targetId: string;
+  moveId: DuelMoveId;
+  /** Expected damage of the planned move (hit chance and tempo included). */
+  expected: number;
+  /** The plan counts this hit as the one that knocks the target out. */
+  kills: boolean;
+  typeEffectiveness: number;
+}
+
+export interface TeamPlan {
+  assignments: TeamAssignment[];
+  byUnit: ReadonlyMap<string, TeamAssignment>;
+}
+
+type TeamMatchup = {
+  moveId: DuelMoveId;
+  expected: number;
+  typeEffectiveness: number;
+  reach: number;
+  /** What the matchup is worth: super effective hits count more, resisted ones less. */
+  worth: number;
+};
+
+function aiTeamMatchup(
+  state: DuelState,
+  ally: DuelUnit,
+  enemy: DuelUnit,
+): TeamMatchup | null {
+  let best: TeamMatchup | null = null;
+  const distance = manhattanDistance(ally.position, enemy.position);
+
+  for (const moveId of ally.moves) {
+    if (!canDuelUnitUseMove(ally, moveId)) continue;
+    const move = DUEL_MOVES[moveId];
+    if (!move || move.category === "status") continue;
+    const hit = getDuelMoveHitChance(ally, enemy, move) / 100;
+    if (hit <= 0) continue;
+    const result = calculateDamage(state, ally, enemy, move);
+    if (result.damage <= 0) continue;
+    const expected =
+      expectedMoveDamage(move, result.damage) * hit * expectedMoveTempoFactor(move);
+    const multiplier =
+      result.typeEffectiveness >= 2 ? 1.5 : result.typeEffectiveness < 1 ? 0.6 : 1;
+    // The AP pool pays for walking and hitting together: can it land this hit next to the foe this turn?
+    const walkBudget = Math.max(0, Math.max(ally.ap, ally.maxAp) - move.apCost);
+    const reach = distance <= walkBudget + move.maxRange ? 1 : 0.4;
+    const worth = expected * multiplier * reach;
+    if (!best || worth > best.worth) {
+      best = { moveId, expected, typeEffectiveness: result.typeEffectiveness, reach, worth };
+    }
+  }
+
+  return best;
+}
+
+/**
+ * Plays the side as one trainer: every living member gets a target and a move so that the team
+ * (1) lands super effective hits, (2) does not waste two attackers on a foe one of them already
+ * defeats, (3) focuses what it can actually knock out, and (4) answers the biggest threats. A
+ * greedy pick of the best remaining (member, foe) pair, crediting no more damage than the foe has
+ * left, which is what moves the second attacker to the next foe.
+ */
+export function planTeamTurn(state: DuelState, side: DuelSide): TeamPlan {
+  const allies = state.units
+    .filter((unit) => unit.hp > 0 && unit.side === side && !unit.captured)
+    .sort((a, b) => a.id.localeCompare(b.id));
+  const enemies = state.units
+    .filter((unit) => unit.hp > 0 && unit.side !== side)
+    .sort((a, b) => a.id.localeCompare(b.id));
+  const matchups = new Map<string, TeamMatchup | null>();
+  for (const ally of allies) {
+    for (const enemy of enemies) {
+      matchups.set(`${ally.id}>${enemy.id}`, aiTeamMatchup(state, ally, enemy));
+    }
+  }
+
+  const remaining = new Map(enemies.map((enemy) => [enemy.id, enemy.hp]));
+  const assignments: TeamAssignment[] = [];
+  const pending = new Set(allies.map((unit) => unit.id));
+
+  while (pending.size > 0) {
+    let best: { allyId: string; enemy: DuelUnit; matchup: TeamMatchup; gain: number; kills: boolean } | null = null;
+    for (const allyId of [...pending]) {
+      for (const enemy of enemies) {
+        const matchup = matchups.get(`${allyId}>${enemy.id}`);
+        if (!matchup) continue;
+        const left = remaining.get(enemy.id) ?? 0;
+        const kills = left > 0 && matchup.expected >= left;
+        // Damage beyond what the foe has left is wasted, so it earns nothing.
+        const credit = Math.min(matchup.expected, Math.max(left, 0));
+        const ratio = credit / Math.max(1, enemy.maxHp);
+        const gain =
+          credit * (matchup.worth / Math.max(1, matchup.expected)) +
+          (kills ? 160 : 0) +
+          aiThreatScore(enemy) * 0.1 * ratio +
+          (matchup.typeEffectiveness >= 2 && credit > 0 ? 20 : 0) +
+          (left <= 0 ? matchup.worth * 0.05 : 0);
+        if (
+          !best ||
+          gain > best.gain + 1e-9 ||
+          (Math.abs(gain - best.gain) <= 1e-9 &&
+            (allyId < best.allyId || (allyId === best.allyId && enemy.id < best.enemy.id)))
+        ) {
+          best = { allyId, enemy, matchup, gain, kills };
+        }
+      }
+    }
+    if (!best) break;
+    pending.delete(best.allyId);
+    remaining.set(best.enemy.id, Math.max(0, (remaining.get(best.enemy.id) ?? 0) - best.matchup.expected));
+    assignments.push({
+      unitId: best.allyId,
+      targetId: best.enemy.id,
+      moveId: best.matchup.moveId,
+      expected: best.matchup.expected,
+      kills: best.kills,
+      typeEffectiveness: best.matchup.typeEffectiveness,
+    });
+  }
+
+  return { assignments, byUnit: new Map(assignments.map((entry) => [entry.unitId, entry])) };
+}
+
+const TEAM_PLAN_CACHE = new WeakMap<DuelState, Map<DuelSide, TeamPlan>>();
+
+/** The plan of a state is the same for every Pokémon deciding in it: compute it once. */
+function cachedTeamPlan(state: DuelState, side: DuelSide): TeamPlan {
+  let bySide = TEAM_PLAN_CACHE.get(state);
+  if (!bySide) {
+    bySide = new Map();
+    TEAM_PLAN_CACHE.set(state, bySide);
+  }
+  let plan = bySide.get(side);
+  if (!plan) {
+    plan = planTeamTurn(state, side);
+    bySide.set(side, plan);
+  }
+  return plan;
+}
+
 function scoreAiCandidate(
   state: DuelState,
   actor: DuelUnit,
   target: DuelUnit,
   move: DuelMove,
   path: DuelPoint[],
+  teamPlan?: TeamPlan | null,
 ): { score: number; damage: number } {
   const livingAllies = state.units.filter(
     (unit) =>
@@ -7821,7 +7970,18 @@ function scoreAiCandidate(
         )
       : 0;
 
+  // The team plan: hit the foe this Pokémon was picked for (a finishing blow is always welcome).
+  const assignment = teamPlan?.byUnit.get(actor.id);
+  const teamBonus = !assignment
+    ? 0
+    : assignment.targetId === target.id
+      ? 22 +
+        (assignment.kills ? 12 : 0) +
+        (result.typeEffectiveness > 1 ? 6 : 0)
+      : 0;
+
   const onHitScore =
+    teamBonus +
     expectedDamage * 7 +
     damageRatio * 125 +
     (move.power ?? 0) * 0.35 +
@@ -7890,8 +8050,13 @@ function chooseAiCandidate(
     statusAlreadyUsed: boolean;
     damageAlreadyUsed: boolean;
     ignoreAp?: boolean;
+    teamPlanning?: boolean;
   },
 ): AiCandidate | null {
+  const teamPlan =
+    options.teamPlanning === false
+      ? null
+      : cachedTeamPlan(state, actor.side);
   const enemies = state.units.filter(
     (unit) =>
       unit.hp > 0 &&
@@ -7956,6 +8121,7 @@ function chooseAiCandidate(
         target,
         move,
         path,
+        teamPlan,
       );
       if (!Number.isFinite(scored.score)) {
         continue;
@@ -8548,6 +8714,7 @@ export function resolveSimpleAiTurnDetailed(
         requireInRange: true,
         statusAlreadyUsed: statusUsed,
         damageAlreadyUsed: damageUsed,
+        teamPlanning: options.teamPlanning,
       },
     );
     const strategic = chooseAiCandidate(
@@ -8557,6 +8724,7 @@ export function resolveSimpleAiTurnDetailed(
         requireInRange: false,
         statusAlreadyUsed: statusUsed,
         damageAlreadyUsed: damageUsed,
+        teamPlanning: options.teamPlanning,
       },
     );
 
@@ -8660,6 +8828,7 @@ export function resolveSimpleAiTurnDetailed(
           requireInRange: false,
           statusAlreadyUsed: statusUsed,
           damageAlreadyUsed: damageUsed,
+        teamPlanning: options.teamPlanning,
           ignoreAp: true,
         },
       );
