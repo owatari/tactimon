@@ -1,1 +1,5 @@
-# Verification — 2026-10-06-037-team-level-autobattle-ai
+- engine typecheck ✓ · client typecheck ✓
+- vitest engine: 18 arquivos / 289 ✓
+- pnpm test raiz: 1 falha `tests/world-reachability.test.ts` (mapas locais; não importa o engine, fora do escopo)
+- sim em massa (ai-team.test.ts, 80 seeds, lados alternados): plano 47 × IA antiga 25
+- git diff --check ✓

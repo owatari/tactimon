@@ -1,7 +1,7 @@
 {
   "id": "2026-10-06-037-team-level-autobattle-ai",
   "title": "IA do Auto Battle pensa o time como conjunto: efetividade e escolha de alvo pela cobertura da equipe",
-  "status": "planned",
+  "status": "done",
   "created_at": "2026-10-06",
   "base_head": "d2ec5a1f",
   "current_head": "d2ec5a1f",
@@ -15,6 +15,6 @@
     "battle-engine"
   ],
   "files": [],
-  "commits": [],
+  "commits": ["fe419480"],
   "tests": []
 }

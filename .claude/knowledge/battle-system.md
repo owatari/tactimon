@@ -41,3 +41,9 @@
 - Summary: uma tela (3 colunas: retrato+info, HP/tabela STAT-IV-EV/EXP, 4 slots+detalhe). Setas trocam de Pokémon, Enter escolhe golpe. sync-assets agora gera type-icons.png (dev apagava o PNG).
 - Líderes: `GYM_LEADER_TEAMS` (lib/trainers.ts). Cards de batalha: altura automática (não fixar altura). Onix/espécies longas ocupam 1 tile lógico; footprint multi-tile não existe.
 - Level-up: `POKEMON_LEARNSETS` = hand (placeholders) < `ROM_HAND_LEARNSETS` < generated; rode `python tools/rom-data/generate-engine-species.py` apos mexer em golpes. Golpes da ROM sem equivalente na engine ficam fora do learnset.
+
+## IA em nível de equipe (task 037)
+- `planTeamTurn(state, side)` (duel.ts) joga o lado como um só treinador: guloso sobre pares (membro, inimigo), crédito de dano limitado ao HP restante do alvo (evita overkill duplo), bônus por KO, super efetivo (só com crédito > 0) e ameaça. Devolve `assignments`/`byUnit` (alvo + golpe + KO esperado). Cache por `DuelState` (`cachedTeamPlan`).
+- `scoreAiCandidate` soma `teamBonus` (22 + 12 se mata + 6 se super efetivo) quando o alvo é o designado; sem penalidade aos demais (−38 piorou: 11×17 vs a IA antiga; bônus leve dá 47×25 em 80 seeds, lados alternados).
+- `DuelAiTurnOptions.teamPlanning` (padrão ligado; `false` = escolha individual, usado para medir). Auto Catch continua antes (`planAutoCatch`). Rival e Auto Battle usam o mesmo caminho.
+- Dois lados sem PP de dano ficam em empate eterno (não é stall do plano); testes tratam como empate.
