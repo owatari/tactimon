@@ -2,6 +2,126 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  "Starter: Prof. Oak's Lab": {
+    pt: "Inicial: Laboratório do Prof. Oak",
+    es: "Inicial: Laboratorio del Prof. Oak",
+    fr: "Starter : Labo du Prof. Chen",
+    zh: "初始宝可梦：大木博士研究所",
+  },
+  "Gift: Celadon Mansion": {
+    pt: "Presente: Mansão de Celadon",
+    es: "Regalo: Mansión de Azulona",
+    fr: "Cadeau : Manoir de Céladopole",
+    zh: "赠送：绿荫市大厦",
+  },
+  "Gift: Saffron Fighting Dojo (one of two)": {
+    pt: "Presente: Dojo de Lutas de Saffron (um dos dois)",
+    es: "Regalo: Dojo de Azafrán (uno de dos)",
+    fr: "Cadeau : Dojo de Safrania (un des deux)",
+    zh: "赠送：金黄市格斗道场（二选一）",
+  },
+  "Gift: Silph Co. 7F": {
+    pt: "Presente: Silph Co. 7F",
+    es: "Regalo: Silph S.A. 7F",
+    fr: "Cadeau : Sylphe SARL 7F",
+    zh: "赠送：西尔佛公司7楼",
+  },
+  "Static: Route 12 and Route 16": {
+    pt: "Fixo: Rota 12 e Rota 16",
+    es: "Fijo: Ruta 12 y Ruta 16",
+    fr: "Fixe : Route 12 et Route 16",
+    zh: "固定出现：12号道路和16号道路",
+  },
+  "Sold: Route 4 Pokémon Center (₽500)": {
+    pt: "Vendido: Centro Pokémon da Rota 4 (₽500)",
+    es: "Venta: Centro Pokémon de la Ruta 4 (₽500)",
+    fr: "Vendu : Centre Pokémon de la Route 4 (₽500)",
+    zh: "出售：4号道路宝可梦中心（₽500）",
+  },
+  "Fossil: Helix Fossil (Mt. Moon)": {
+    pt: "Fóssil: Fóssil Hélix (Mt. Moon)",
+    es: "Fósil: Fósil Hélix (Mt. Moon)",
+    fr: "Fossile : Fossile Nautile (Mont Sélénite)",
+    zh: "化石：贝壳化石（月见山）",
+  },
+  "Fossil: Dome Fossil (Mt. Moon)": {
+    pt: "Fóssil: Fóssil Domo (Mt. Moon)",
+    es: "Fósil: Fósil Domo (Mt. Moon)",
+    fr: "Fossile : Fossile Dôme (Mont Sélénite)",
+    zh: "化石：甲壳化石（月见山）",
+  },
+  "Fossil: Old Amber (Pewter Museum)": {
+    pt: "Fóssil: Âmbar Antigo (Museu de Pewter)",
+    es: "Fósil: Ámbar Viejo (Museo de Plateada)",
+    fr: "Fossile : Ambre Ancien (Musée d'Argenta)",
+    zh: "化石：古老琥珀（深灰市博物馆）",
+  },
+  "Prize: Celadon Game Corner": {
+    pt: "Prêmio: Game Corner de Celadon",
+    es: "Premio: Casino de Azulona",
+    fr: "Lot : Salle de jeux de Céladopole",
+    zh: "奖品：绿荫市游戏城",
+  },
+  "In-game trade: Vermilion City": {
+    pt: "Troca no jogo: Vermilion City",
+    es: "Intercambio: Ciudad Carmín",
+    fr: "Échange en jeu : Carmin sur Mer",
+    zh: "游戏内交换：枯叶市",
+  },
+  "In-game trade: Route 18 gate": {
+    pt: "Troca no jogo: portão da Rota 18",
+    es: "Intercambio: puerta de la Ruta 18",
+    fr: "Échange en jeu : poste de la Route 18",
+    zh: "游戏内交换：18号道路关卡",
+  },
+  "In-game trade: Route 2 gate": {
+    pt: "Troca no jogo: portão da Rota 2",
+    es: "Intercambio: puerta de la Ruta 2",
+    fr: "Échange en jeu : poste de la Route 2",
+    zh: "游戏内交换：2号道路关卡",
+  },
+  "In-game trade: Cerulean City": {
+    pt: "Troca no jogo: Cerulean City",
+    es: "Intercambio: Ciudad Celeste",
+    fr: "Échange en jeu : Azuria",
+    zh: "游戏内交换：华蓝市",
+  },
+  "Static: Power Plant": {
+    pt: "Fixo: Usina de Energia",
+    es: "Fijo: Central Energía",
+    fr: "Fixe : Centrale",
+    zh: "固定出现：发电厂",
+  },
+  "Legendary raid (coming soon): Seafoam Islands": {
+    pt: "Raid lendária (em breve): Ilhas Seafoam",
+    es: "Incursión legendaria (próximamente): Islas Espuma",
+    fr: "Raid légendaire (bientôt) : Îles Écume",
+    zh: "传说团战（即将推出）：双子岛",
+  },
+  "Legendary raid (coming soon): Power Plant": {
+    pt: "Raid lendária (em breve): Usina de Energia",
+    es: "Incursión legendaria (próximamente): Central Energía",
+    fr: "Raid légendaire (bientôt) : Centrale",
+    zh: "传说团战（即将推出）：发电厂",
+  },
+  "Legendary raid (coming soon): Mt. Ember": {
+    pt: "Raid lendária (em breve): Mt. Ember",
+    es: "Incursión legendaria (próximamente): Monte Ascuas",
+    fr: "Raid légendaire (bientôt) : Mont Braise",
+    zh: "传说团战（即将推出）：火焰山",
+  },
+  "Legendary raid (coming soon): Cerulean Cave": {
+    pt: "Raid lendária (em breve): Caverna Cerulean",
+    es: "Incursión legendaria (próximamente): Cueva Celeste",
+    fr: "Raid légendaire (bientôt) : Grotte Azurée",
+    zh: "传说团战（即将推出）：华蓝洞窟",
+  },
+  "Mythical raid (coming soon)": {
+    pt: "Raid mítica (em breve)",
+    es: "Incursión mítica (próximamente)",
+    fr: "Raid mythique (bientôt)",
+    zh: "幻之团战（即将推出）",
+  },
   "Leave": {
     pt: "Sair",
     es: "Salir",

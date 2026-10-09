@@ -3930,6 +3930,28 @@ export function duelSpeciesTypes(
   return SPECIES[species].types;
 }
 
+export type DuelBaseStats = {
+  hp: number;
+  attack: number;
+  defense: number;
+  specialAttack: number;
+  specialDefense: number;
+  speed: number;
+};
+
+/** Base stats of a species (what the Pokédex bars show). */
+export function duelSpeciesBaseStats(species: DuelSpeciesId): DuelBaseStats {
+  const base = SPECIES[species];
+  return {
+    hp: base.hp,
+    attack: base.attack,
+    defense: base.defense,
+    specialAttack: base.specialAttack,
+    specialDefense: base.specialDefense,
+    speed: base.speed,
+  };
+}
+
 function makeUnit(
   build: DuelPokemonBuild,
   side: DuelSide,

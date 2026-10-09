@@ -1197,6 +1197,22 @@ function grantExperience(
   };
 }
 
+export type SpeciesEvolutions = {
+  /** Evolves by level into `species`. */
+  level: { level: number; species: DuelSpeciesId } | null;
+  /** Stone id -> species it turns into. */
+  stones: Readonly<Record<string, string>>;
+};
+
+/** How a species evolves (the Pokédex evolution line). */
+export function speciesEvolutions(species: DuelSpeciesId): SpeciesEvolutions {
+  return {
+    level: LEVEL_EVOLUTIONS[species] ?? null,
+    stones:
+      (GENERATED_STONE_EVOLUTIONS as Record<string, Record<string, string>>)[species] ?? {},
+  };
+}
+
 /** Evolution stone (Fire/Thunder/Water/Leaf/Moon). Null when it has no effect. */
 export function evolveWithStone(
   input: PokemonProgression,
