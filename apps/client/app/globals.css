@@ -7737,3 +7737,149 @@ body {
   filter: brightness(1.08);
   outline: none;
 }
+
+/* Pokémon window (task 038): six draggable slots + the Summary of the hovered / pinned Pokémon. */
+.pokemon-window {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.2fr);
+  gap: 12px;
+  min-height: 0;
+}
+.start-menu-party .pokemon-window-slots {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+.start-menu-party .pokemon-window-slots li:first-child {
+  grid-row: auto;
+  display: flex;
+  justify-items: stretch;
+  text-align: left;
+  gap: 10px;
+}
+.start-menu-party .pokemon-window-slots li:first-child .start-menu-front.compact {
+  flex-basis: 56px;
+  width: 56px;
+  height: 56px;
+}
+.start-menu-party .pokemon-window-slots li:first-child .start-menu-front.compact img {
+  width: 56px;
+  height: 56px;
+}
+.pokemon-window-slot {
+  position: relative;
+  min-height: 64px;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.pokemon-window-slot .start-menu-front.compact {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+}
+.pokemon-window-slot .start-menu-front.compact img {
+  width: 56px;
+  height: 56px;
+  margin: 0;
+}
+.pokemon-window-slot .start-menu-party-copy {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.pokemon-window-slot .start-menu-hp-track {
+  width: 70px;
+}
+.pokemon-window-slot.empty {
+  justify-content: center;
+  color: #6c8c80;
+  background: rgba(248, 248, 232, 0.4);
+  border-style: dashed;
+  cursor: default;
+}
+.pokemon-window-slot.pinned {
+  border-color: #d84838;
+  box-shadow: inset 0 0 0 2px #d84838;
+}
+.pokemon-window-slot.dragging {
+  opacity: 0.45;
+}
+.pokemon-window-slot.drop-over,
+.move-slot.drop-over {
+  outline: 3px solid #d84838;
+  outline-offset: 1px;
+}
+.pokemon-window-summary {
+  min-width: 0;
+  overflow: auto;
+}
+.pokemon-window-card {
+  display: grid;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+}
+.pokemon-window-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.pokemon-window-card-top {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+.pokemon-window-hint,
+.pokemon-window-notice {
+  margin: 0;
+  font-size: 11px;
+  color: #405868;
+}
+.move-slot[draggable],
+.move-slot {
+  touch-action: none;
+}
+.move-slot.dragging {
+  opacity: 0.45;
+}
+.drag-ghost {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  transform: translate(10px, 10px);
+}
+.drag-chip {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 3px solid #203850;
+  background: #f8e8a0;
+  color: #182838;
+  font: 700 13px/1 inherit;
+  box-shadow: 3px 3px 0 rgba(24, 40, 56, 0.4);
+}
+.pokemon-window-card-top {
+  grid-template-columns: 84px 1fr;
+}
+.pokemon-window-card .start-menu-front,
+.pokemon-window-card .battle-portrait-frame {
+  width: 84px;
+  height: 84px;
+  flex: 0 0 84px;
+}
+.pokemon-window-card .start-menu-front img {
+  width: 84px;
+  height: 84px;
+  margin: 0;
+}
+.pokemon-window-card .start-menu-dl {
+  font-size: 12px;
+  gap: 2px 8px;
+}
+.pokemon-window-card .move-detail {
+  display: none;
+}
+.pokemon-window-card .move-slots {
+  display: block;
+}

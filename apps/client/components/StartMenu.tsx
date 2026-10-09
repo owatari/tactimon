@@ -18,6 +18,7 @@ import { pokemonDisplayName } from "@/lib/pokemonName";
 import { ShinyStar } from "./ShinyStar";
 import { TypeIcon } from "./TypeIcon";
 import { MoveSlots } from "./MoveSlots";
+import { PokemonWindow } from "./PokemonWindow";
 import { PokemonStatTable } from "./PokemonStatTable";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
 import { pokedexFrontSpriteUrl } from "@/lib/pokedex";
@@ -34,6 +35,7 @@ import {
   buildBagPockets,
   buildTrainerCard,
   getStoryParty,
+  reorderPartyMoves,
   reorderStoryParty,
   type MenuScreen,
 } from "@/lib/gameMenu";
@@ -167,6 +169,7 @@ export function StartMenu({
   const [summaryMove, setSummaryMove] = useState<number | null>(null);
   const [bagUse, setBagUse] = useState<BagUse | null>(null);
   const [notice, setNotice] = useState("");
+  const [pinnedIndex, setPinnedIndex] = useState<number | null>(null);
   const eraseArmedRef = useRef(false);
 
   const party = useMemo(() => getStoryParty(story), [story]);
@@ -566,46 +569,93 @@ export function StartMenu({
       {screen === "party" && (
         <section className="start-menu-screen start-menu-party">
           <h2>{t("POKéMON")}</h2>
-          <ul data-nav="vertical">
-            {party.map((pokemon, index) => (
-              <li
-                key={`${pokemon.species}-${index}`}
-                className={[
-                  "start-menu-party-row",
-                  index === partyIndex ? "selected" : "",
-                  index === switchFrom ? "switching" : "",
-                  pokemon.currentHp <= 0 ? "fainted" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                <FrontSprite
-                  species={pokemon.species}
-                  name={speciesDisplayName(pokemon.species)}
-                  compact
-                  shiny={pokemon.shiny}
-                />
-                <div className="start-menu-party-copy">
-                  <strong>
-                    {pokemonDisplayName(pokemon)}
-                    {pokemon.shiny && <ShinyStar />}
-                  </strong>
-                  <span>Lv{pokemon.level}</span>
-                  {pokemon.status && (
-                    <b className={`start-menu-status ${pokemon.status}`}>
-                      {pokemon.status.slice(0, 3).toUpperCase()}
-                    </b>
-                  )}
-                </div>
-                <HpBar pokemon={pokemon} />
-              </li>
-            ))}
-            {party.length === 0 && (
-              <li className="start-menu-empty">
-                {t("You do not have any Pokémon yet.")}
-              </li>
-            )}
-          </ul>
+          {party.length === 0 ? (
+            <p className="start-menu-empty">{t("You do not have any Pokémon yet.")}</p>
+          ) : (
+            <PokemonWindow
+              party={party}
+              selectedIndex={partyIndex}
+              pinnedIndex={pinnedIndex}
+              switchFrom={switchFrom}
+              notice={notice}
+              onPin={(index) => {
+                setPartyIndex(index);
+                setPinnedIndex((current) => (current === index ? null : index));
+              }}
+              onReorder={(from, to) => {
+                const result = reorderStoryParty(story, from, to);
+                if (result.accepted) {
+                  onStoryChange(result.story);
+                  setPinnedIndex(null);
+                  setNotice(t("Pokémon swapped places."));
+                } else if (result.reason === "lead-locked") {
+                  setNotice(t("The lead Pokémon cannot be swapped."));
+                }
+              }}
+              renderSlot={(pokemon) => (
+                <>
+                  <FrontSprite
+                    species={pokemon.species}
+                    name={speciesDisplayName(pokemon.species)}
+                    compact
+                    shiny={pokemon.shiny}
+                  />
+                  <div className="start-menu-party-copy">
+                    <strong>
+                      {pokemonDisplayName(pokemon)}
+                      {pokemon.shiny && <ShinyStar />}
+                    </strong>
+                    <span>Lv{pokemon.level}</span>
+                    {pokemon.status && (
+                      <b className={`start-menu-status ${pokemon.status}`}>
+                        {pokemon.status.slice(0, 3).toUpperCase()}
+                      </b>
+                    )}
+                  </div>
+                  <HpBar pokemon={pokemon} />
+                </>
+              )}
+              summary={(() => {
+                const shownIndex = pinnedIndex ?? partyIndex;
+                const shown = party[shownIndex];
+                if (!shown) return null;
+                return (
+                  <div className="pokemon-window-card" data-pinned={pinnedIndex !== null}>
+                    <h3>
+                      {pokemonDisplayName(shown)}
+                      {shown.shiny && <ShinyStar />} · Lv{shown.level}
+                    </h3>
+                    <div className="pokemon-window-card-top">
+                      <FrontSprite
+                        species={shown.species}
+                        name={speciesDisplayName(shown.species)}
+                        shiny={shown.shiny}
+                      />
+                      <SummaryInfo pokemon={shown} story={story} />
+                    </div>
+                    <SummaryStats pokemon={shown} />
+                    <MoveSlots
+                      moves={shown.activeMoves}
+                      movePp={shown.movePp}
+                      onReorder={
+                        pinnedIndex !== null
+                          ? (from, to) => {
+                              const result = reorderPartyMoves(story, shownIndex, from, to);
+                              if (result.accepted) onStoryChange(result.story);
+                            }
+                          : undefined
+                      }
+                    />
+                    <p className="pokemon-window-hint">
+                      {pinnedIndex !== null
+                        ? t("Drag moves to reorder them. Click the Pokémon again to unpin.")
+                        : t("Click a Pokémon to pin its Summary. Drag Pokémon to reorder the party.")}
+                    </p>
+                  </div>
+                );
+              })()}
+            />
+          )}
           {partyAction !== null && (
             <div className="start-menu-popup">
               {PARTY_ACTIONS.map((action, index) => (

@@ -5,6 +5,7 @@ import {
   buildTrainerCard,
   formatPlayTime,
   getStoryParty,
+  reorderPartyMoves,
   reorderStoryParty,
 } from "../apps/client/lib/gameMenu";
 import {
@@ -62,6 +63,33 @@ describe("start menu party", () => {
       accepted: false,
       reason: "same-slot",
     });
+  });
+});
+
+describe("party move order", () => {
+  it("moves a move to a new slot for the lead and for captured Pokémon", () => {
+    const story = storyWithParty();
+    const lead = story.playerPokemon!;
+    const [a, b] = lead.activeMoves;
+    expect(lead.activeMoves.length).toBeGreaterThan(1);
+    const moved = reorderPartyMoves(story, 0, 0, 1);
+    expect(moved.accepted).toBe(true);
+    expect(moved.story.playerPokemon!.activeMoves.slice(0, 2)).toEqual([b, a]);
+    expect(story.playerPokemon!.activeMoves[0]).toBe(a);
+
+    const other = story.capturedPokemon[1];
+    if (other.activeMoves.length > 1) {
+      const swapped = reorderPartyMoves(story, 2, 0, 1);
+      expect(swapped.story.capturedPokemon[1].activeMoves[0]).toBe(other.activeMoves[1]);
+      expect(swapped.story.capturedPokemon[0]).toBe(story.capturedPokemon[0]);
+    }
+  });
+
+  it("rejects out-of-range and no-op drops", () => {
+    const story = storyWithParty();
+    expect(reorderPartyMoves(story, 0, 1, 1).accepted).toBe(false);
+    expect(reorderPartyMoves(story, 0, 0, 9).accepted).toBe(false);
+    expect(reorderPartyMoves(story, 5, 0, 1).accepted).toBe(false);
   });
 });
 

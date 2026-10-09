@@ -334,3 +334,48 @@ export function buildTrainerCard(
     hasPokedex: hasPokedex(story),
   };
 }
+
+/** Reads / writes a party slot (0 = the lead, held apart from the captured ones). */
+function partySlotPokemon(story: StoryState, index: number) {
+  return index === 0 ? story.playerPokemon : story.capturedPokemon[index - 1];
+}
+
+export type MoveReorderResult = { accepted: boolean; story: StoryState };
+
+/** Moves the move at `from` to `to` (the others shift), the way a drag in the Summary drops it. */
+export function reorderPartyMoves(
+  story: StoryState,
+  partyIndex: number,
+  from: number,
+  to: number,
+): MoveReorderResult {
+  const pokemon = partySlotPokemon(story, partyIndex);
+  const moves = pokemon?.activeMoves;
+  if (
+    !pokemon ||
+    !moves ||
+    from === to ||
+    from < 0 ||
+    to < 0 ||
+    from >= moves.length ||
+    to >= moves.length
+  ) {
+    return { accepted: false, story };
+  }
+  const nextMoves = [...moves];
+  const [moved] = nextMoves.splice(from, 1);
+  nextMoves.splice(to, 0, moved);
+  const next = { ...pokemon, activeMoves: nextMoves };
+  return {
+    accepted: true,
+    story:
+      partyIndex === 0
+        ? { ...story, playerPokemon: next }
+        : {
+            ...story,
+            capturedPokemon: story.capturedPokemon.map((entry, i) =>
+              i === partyIndex - 1 ? ({ ...entry, activeMoves: nextMoves } as typeof entry) : entry,
+            ),
+          },
+  };
+}

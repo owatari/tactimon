@@ -2,6 +2,18 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  "Drag moves to reorder them. Click the Pokémon again to unpin.": {
+    pt: "Arraste os golpes para reordenar. Clique no Pokémon de novo para soltar.",
+    es: "Arrastra los movimientos para reordenarlos. Haz clic de nuevo en el Pokémon para soltarlo.",
+    fr: "Faites glisser les attaques pour les réordonner. Cliquez à nouveau sur le Pokémon pour le détacher.",
+    zh: "拖动招式可重新排序。再次点击宝可梦可取消固定。",
+  },
+  "Click a Pokémon to pin its Summary. Drag Pokémon to reorder the party.": {
+    pt: "Clique em um Pokémon para fixar o Resumo. Arraste os Pokémon para reordenar o time.",
+    es: "Haz clic en un Pokémon para fijar su Resumen. Arrastra los Pokémon para reordenar el equipo.",
+    fr: "Cliquez sur un Pokémon pour épingler son Résumé. Faites glisser les Pokémon pour réordonner l'équipe.",
+    zh: "点击宝可梦可固定其概要。拖动宝可梦可调整队伍顺序。",
+  },
   Windows: { pt: "Janelas", es: "Ventanas", fr: "Fenêtres", zh: "窗口" },
   BACK: { pt: "VOLTAR", es: "ATRÁS", fr: "RETOUR", zh: "返回" },
   INTERACT: { pt: "INTERAGIR", es: "INTERACTUAR", fr: "AGIR", zh: "互动" },
