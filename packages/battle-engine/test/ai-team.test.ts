@@ -99,12 +99,12 @@ describe("team planning versus one-at-a-time choice", () => {
         const turn = resolveSimpleAiTurnDetailed(state, actor.side, { teamPlanning: actor.side === planningSide });
                 state = turn.state;
       }
-      // Two sides that both ran out of damaging PP can idle forever: that is a draw, not a stall.
-      if (state.status !== "finished") continue;
+      // Out of damaging PP, a Pokémon burns its status PP and then Struggles: no battle may idle forever.
+      expect(state.status, `seed ${seed} never finished`).toBe("finished");
       if (state.winner === planningSide) teamWins += 1;
       else if (state.winner) soloWins += 1;
     }
     console.log(`team plan wins ${teamWins} vs one-at-a-time ${soloWins}`);
     expect(teamWins).toBeGreaterThanOrEqual(soloWins);
-  });
+  }, 60_000);
 });

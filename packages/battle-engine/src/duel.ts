@@ -8137,6 +8137,28 @@ function chooseAiCandidate(
     }
   }
 
+  if (candidates.length === 0 && !options.statusAlreadyUsed) {
+    // Out of PP for every damaging move but with a status move left (Struggle only unlocks when ALL
+    // PP is gone): burn it, however useless, so two such Pokémon cannot idle a battle forever.
+    const burn = actor.moves
+      .filter((moveId) => canDuelUnitUseMove(actor, moveId))
+      .map((moveId) => DUEL_MOVES[moveId])
+      .find(
+        (move) =>
+          move &&
+          move.category === "status" &&
+          move.targeting === "self" &&
+          actor.ap >= move.apCost,
+      );
+    const hasDamagingPp = actor.moves.some(
+      (moveId) =>
+        DUEL_MOVES[moveId]?.category !== "status" && canDuelUnitUseMove(actor, moveId),
+    );
+    if (burn && !hasDamagingPp) {
+      return { move: burn, target: actor, path: [], score: 1, damage: 0 };
+    }
+  }
+
   candidates.sort(compareAiCandidates);
   return candidates[0] ?? null;
 }
@@ -8828,7 +8850,7 @@ export function resolveSimpleAiTurnDetailed(
           requireInRange: false,
           statusAlreadyUsed: statusUsed,
           damageAlreadyUsed: damageUsed,
-        teamPlanning: options.teamPlanning,
+          teamPlanning: options.teamPlanning,
           ignoreAp: true,
         },
       );

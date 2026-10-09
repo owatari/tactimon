@@ -46,4 +46,4 @@
 - `planTeamTurn(state, side)` (duel.ts) joga o lado como um só treinador: guloso sobre pares (membro, inimigo), crédito de dano limitado ao HP restante do alvo (evita overkill duplo), bônus por KO, super efetivo (só com crédito > 0) e ameaça. Devolve `assignments`/`byUnit` (alvo + golpe + KO esperado). Cache por `DuelState` (`cachedTeamPlan`).
 - `scoreAiCandidate` soma `teamBonus` (22 + 12 se mata + 6 se super efetivo) quando o alvo é o designado; sem penalidade aos demais (−38 piorou: 11×17 vs a IA antiga; bônus leve dá 47×25 em 80 seeds, lados alternados).
 - `DuelAiTurnOptions.teamPlanning` (padrão ligado; `false` = escolha individual, usado para medir). Auto Catch continua antes (`planAutoCatch`). Rival e Auto Battle usam o mesmo caminho.
-- Dois lados sem PP de dano ficam em empate eterno (não é stall do plano); testes tratam como empate.
+- Sem PP em nenhum golpe de dano mas com PP de status (Struggle só libera com TODO o PP zerado, como no GB): a IA gasta o golpe de status `self` (score 1, fallback em `chooseAiCandidate`) até acabar o PP e então usa Struggle; antes duas partes assim ficavam num empate infinito.
