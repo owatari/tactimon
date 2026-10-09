@@ -5,3 +5,6 @@
 - [x] Fase 2 Pokémon window — PokemonWindow.tsx, dragDrop.tsx (hook pointer-based, reutilizar nas próximas fases), MoveSlots onReorder (Alt+setas), StartMenu party usa PokemonWindow (hover=Summary lateral via cursor, clique fixa, golpes arrastáveis quando fixado), lib gameMenu `reorderPartyMoves` + testes, i18n, e2e pokemon.e2e.ts 2/2, walkthrough 26/26, tests 556 ok
 - Decisão: líder continua travado (regra existente/teste); teclado mantém Enter→SUMMARY/SWITCH.
 - Próximo: Fase 3 PC (5 boxes pagas, migração, drag/drop), depois Bag, Market+Premier
+- [x] Fase 3 PC — lib/pcBoxes.ts (boxSlots paralelo a boxedPokemon + pcBoxes; 5 grátis, +₽1000 cumulativo por box até 14; migração: save antigo = 30 por box em ordem, boxes com Pokémon contam abertas), lib/pcActions.ts (applyPcAction puro), story.ts/captureChoice.ts usam appendBoxed/removeBoxed/pcHasRoom, PcWindow.tsx substitui StorageOverlay (removido), css, i18n, tests/pc-boxes.test.ts (12), e2e pc.e2e.ts (3, drag real + clique MOVE→destino)
+- Obs: tests/content-integrity e world-reachability falham esporadicamente enquanto `pnpm dev` regenera mapas (passam isolados).
+- Próximo: Fase 4 Bag (abas, grade de ícones, hover, arrastar item sobre Pokémon), depois Market + Premier

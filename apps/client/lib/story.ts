@@ -1,4 +1,5 @@
 import { partyCanUseHm } from "./hmParty";
+import { appendBoxed, pcHasRoom, removeBoxed, PC_BOX_COUNT, PC_FREE_BOXES } from "./pcBoxes";
 import { t, tx } from "./i18n";
 import {
   calculateDuelPokemonMaxHp,
@@ -142,6 +143,10 @@ export type StoryState = {
   playerPokemon: PokemonProgression | null;
   capturedPokemon: CapturedPokemon[];
   boxedPokemon: CapturedPokemon[];
+  /** Box (0-based) of each boxed Pokémon, parallel to `boxedPokemon` (see lib/pcBoxes.ts). */
+  boxSlots?: number[];
+  /** PC boxes open (5 free, up to 14 bought). */
+  pcBoxes?: number;
   /** Freshly caught Pokémon waiting, in order, for the player to name them and pick team or box. */
   pendingCaptures?: CapturedPokemon[];
   collectedItemIds: string[];
@@ -512,6 +517,40 @@ export function normalizeStoryState(
     ? (input as { boxedPokemon: unknown[] }).boxedPokemon
     : [];
 
+  const rawBoxSlots = (input as { boxSlots?: unknown } | null | undefined)?.boxSlots;
+  const rawPcBoxes = (input as { pcBoxes?: unknown } | null | undefined)?.pcBoxes;
+  const normalizedBox = (() => {
+    const entries = rawBoxed
+      .map((entry, index) => ({
+        pokemon: normalizeCapturedPokemon(entry),
+        slot: Array.isArray(rawBoxSlots) ? (rawBoxSlots[index] as unknown) : undefined,
+        // Saves from before paid boxes were packed in order, 30 to a box.
+        legacy: Math.min(PC_BOX_COUNT - 1, Math.floor(index / 30)),
+      }))
+      .filter(
+        (entry): entry is { pokemon: CapturedPokemon; slot: unknown; legacy: number } =>
+          entry.pokemon !== null,
+      )
+      .slice(0, POKEMON_STORAGE_CAPACITY);
+    const slots = entries.map((entry) =>
+      typeof entry.slot === "number" &&
+      Number.isInteger(entry.slot) &&
+      entry.slot >= 0 &&
+      entry.slot < PC_BOX_COUNT
+        ? entry.slot
+        : entry.legacy,
+    );
+    const paid =
+      typeof rawPcBoxes === "number" && Number.isFinite(rawPcBoxes)
+        ? Math.trunc(rawPcBoxes)
+        : PC_FREE_BOXES;
+    return {
+      pokemon: entries.map((entry) => entry.pokemon),
+      slots,
+      pcBoxes: Math.max(PC_FREE_BOXES, Math.min(PC_BOX_COUNT, paid)),
+    };
+  })();
+
   let playerWorld = normalizePlayerWorldState(
     input?.playerWorld,
     {
@@ -552,13 +591,9 @@ export function normalizeStoryState(
           pokemon !== null,
       )
       .slice(0, 5),
-    boxedPokemon: rawBoxed
-      .map(normalizeCapturedPokemon)
-      .filter(
-        (pokemon): pokemon is CapturedPokemon =>
-          pokemon !== null,
-      )
-      .slice(0, POKEMON_STORAGE_CAPACITY),
+    boxedPokemon: normalizedBox.pokemon,
+    boxSlots: normalizedBox.slots,
+    pcBoxes: normalizedBox.pcBoxes,
     pendingCaptures: normalizePendingCaptures(input),
     collectedItemIds: Array.isArray(
       input?.collectedItemIds,
@@ -893,8 +928,7 @@ export function storyCanCapturePokemon(
 ): boolean {
   return (
     story.capturedPokemon.length < 5 ||
-    story.boxedPokemon.length <
-      POKEMON_STORAGE_CAPACITY
+    pcHasRoom(story)
   );
 }
 
@@ -916,20 +950,12 @@ export function placeCapturedPokemon(
     };
   }
 
-  if (
-    story.boxedPokemon.length <
-    POKEMON_STORAGE_CAPACITY
-  ) {
+  const stored = appendBoxed(story, pokemon);
+  if (stored) {
     return {
       accepted: true,
       destination: "storage",
-      story: {
-        ...story,
-        boxedPokemon: [
-          ...story.boxedPokemon,
-          pokemon,
-        ],
-      },
+      story: stored,
     };
   }
 
@@ -943,6 +969,8 @@ export function placeCapturedPokemon(
 export function depositCapturedPokemon(
   story: StoryState,
   capturedIndex: number,
+  /** Box to put it in (the first one with room when omitted or full). */
+  preferredBox?: number,
 ): PokemonStorageActionResult {
   if (
     !Number.isInteger(capturedIndex) ||
@@ -956,10 +984,17 @@ export function depositCapturedPokemon(
     };
   }
 
-  if (
-    story.boxedPokemon.length >=
-    POKEMON_STORAGE_CAPACITY
-  ) {
+  const pokemon = story.capturedPokemon[capturedIndex];
+  const capturedPokemon = story.capturedPokemon.filter(
+    (_, index) => index !== capturedIndex,
+  );
+  const stored = appendBoxed(
+    { ...story, capturedPokemon },
+    pokemon,
+    preferredBox,
+  );
+
+  if (!stored) {
     return {
       accepted: false,
       story,
@@ -967,22 +1002,7 @@ export function depositCapturedPokemon(
     };
   }
 
-  const pokemon = story.capturedPokemon[capturedIndex];
-  const capturedPokemon = story.capturedPokemon.filter(
-    (_, index) => index !== capturedIndex,
-  );
-
-  return {
-    accepted: true,
-    story: {
-      ...story,
-      capturedPokemon,
-      boxedPokemon: [
-        ...story.boxedPokemon,
-        pokemon,
-      ],
-    },
-  };
+  return { accepted: true, story: stored };
 }
 
 export function withdrawBoxedPokemon(
@@ -1009,20 +1029,19 @@ export function withdrawBoxedPokemon(
     };
   }
 
-  const pokemon = story.boxedPokemon[boxedIndex];
-  const boxedPokemon = story.boxedPokemon.filter(
-    (_, index) => index !== boxedIndex,
-  );
+  const removed = removeBoxed(story, boxedIndex);
+  if (!removed) {
+    return { accepted: false, story, reason: "invalid-index" };
+  }
 
   return {
     accepted: true,
     story: {
-      ...story,
+      ...removed.story,
       capturedPokemon: [
-        ...story.capturedPokemon,
-        pokemon,
+        ...removed.story.capturedPokemon,
+        removed.pokemon,
       ],
-      boxedPokemon,
     },
   };
 }

@@ -7856,7 +7856,9 @@ body {
   border: 3px solid #203850;
   background: #f8e8a0;
   color: #182838;
-  font: 700 13px/1 inherit;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13px;
   box-shadow: 3px 3px 0 rgba(24, 40, 56, 0.4);
 }
 .pokemon-window-card-top {
@@ -7882,4 +7884,218 @@ body {
 }
 .pokemon-window-card .move-slots {
   display: block;
+}
+
+/* PC window (task 038): party | box with tabs | Summary, all drag and drop. */
+.pc-overlay {
+  place-items: center;
+}
+.pc-window {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 8px;
+  width: min(1240px, calc(100vw - 24px));
+  height: min(720px, calc(100vh - 24px));
+  padding: 12px 14px;
+  border: 4px solid #203850;
+  background: #78b8a0;
+  box-shadow: inset 0 0 0 3px #a8c0d0, 5px 5px 0 rgba(24, 40, 56, 0.4);
+  color: #182838;
+  overflow: hidden;
+}
+.pc-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pc-header h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  margin-right: auto;
+}
+.pc-money {
+  font-size: 14px;
+}
+.pc-close,
+.pc-actions button,
+.pc-tab {
+  border: 3px solid #203850;
+  background: #f8f8e8;
+  color: #182838;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.pc-close:hover,
+.pc-actions button:hover,
+.pc-tab:hover:not(:disabled),
+.pc-actions button[aria-pressed="true"] {
+  background: #f8e8a0;
+}
+.pc-body {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr) 380px;
+  gap: 10px;
+  min-height: 0;
+}
+.pc-party,
+.pc-box,
+.pc-summary {
+  min-height: 0;
+  overflow: auto;
+  padding: 8px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+}
+.pc-party {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+.pc-party h3,
+.pc-summary h3 {
+  margin: 0;
+  font-size: 14px;
+}
+.pc-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 52px;
+  padding: 4px 6px;
+  border: 2px solid #405868;
+  background: #fffff4;
+  color: #182838;
+  font: inherit;
+  text-align: left;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.pc-slot .start-menu-front.compact {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+}
+.pc-slot .start-menu-front.compact img {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+}
+.pc-slot-name {
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pc-slot-level {
+  margin-left: auto;
+  font-size: 11px;
+  color: #506878;
+}
+.pc-slot.lead {
+  cursor: default;
+  background: #e8f0d8;
+}
+.pc-slot.empty {
+  justify-content: center;
+  border-style: dashed;
+  background: rgba(248, 248, 232, 0.5);
+  color: #6c8c80;
+  cursor: default;
+}
+.pc-slot.pinned {
+  border-color: #d84838;
+  box-shadow: inset 0 0 0 2px #d84838;
+  background: #f8e8a0;
+}
+.pc-slot.dragging {
+  opacity: 0.45;
+}
+.pc-slot.drop-over,
+.pc-tab.drop-over {
+  outline: 3px solid #d84838;
+  outline-offset: 1px;
+}
+.pc-box {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+}
+.pc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.pc-tab {
+  min-width: 38px;
+  padding: 5px 8px;
+}
+.pc-tab small {
+  margin-left: 4px;
+  font-size: 9px;
+  color: #506878;
+}
+.pc-tab.active {
+  background: #f8e8a0;
+  border-color: #d84838;
+}
+.pc-tab.buy {
+  background: #ffd84a;
+}
+.pc-tab:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 64px;
+  gap: 4px;
+  align-content: start;
+}
+.pc-grid .pc-slot {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  padding: 2px;
+  min-height: 0;
+}
+.pc-grid .pc-slot-level {
+  display: none;
+}
+.pc-grid .pc-slot-name {
+  font-size: 10px;
+  max-width: 100%;
+}
+.pc-summary {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.pc-actions {
+  display: flex;
+  gap: 8px;
+}
+.pc-notice {
+  margin: 0;
+  padding: 6px 10px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+  font-size: 13px;
+  min-height: 20px;
+}
+.pc-summary .move-detail {
+  display: none;
+}
+@media (max-width: 1100px) {
+  .pc-body {
+    grid-template-columns: 200px minmax(0, 1fr) 300px;
+  }
 }

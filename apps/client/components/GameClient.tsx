@@ -65,7 +65,7 @@ import type { OverworldItemId } from "@/lib/items";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
 import { StarterChoice } from "@/components/StarterChoice";
-import { StorageOverlay } from "@/components/StorageOverlay";
+import { PcWindow } from "@/components/PcWindow";
 import {
   buyMartItem,
   martStockFor,
@@ -1182,12 +1182,9 @@ export function GameClient() {
       )}
 
       {storageOpen && (
-        <StorageOverlay
-          starter={story.playerPokemon}
-          party={story.capturedPokemon}
-          storage={story.boxedPokemon}
-          onDeposit={handleStorageDeposit}
-          onWithdraw={handleStorageWithdraw}
+        <PcWindow
+          story={story}
+          onStoryChange={(update) => setStory((current) => update(current))}
           onClose={() => setStorageOpen(false)}
         />
       )}

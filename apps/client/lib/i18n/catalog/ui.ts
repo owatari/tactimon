@@ -2,6 +2,60 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  "Pokémon moved to the box.": {
+    pt: "Pokémon movido para a box.",
+    es: "Pokémon movido a la caja.",
+    fr: "Pokémon déplacé vers la boîte.",
+    zh: "宝可梦已移到箱子。",
+  },
+  "That box is full.": {
+    pt: "Essa box está cheia.",
+    es: "Esa caja está llena.",
+    fr: "Cette boîte est pleine.",
+    zh: "这个箱子已满。",
+  },
+  "Boxes": {
+    pt: "Boxes",
+    es: "Cajas",
+    fr: "Boîtes",
+    zh: "箱子",
+  },
+  "Buy box {n} for ₽{price}": {
+    pt: "Comprar a box {n} por ₽{price}",
+    es: "Comprar la caja {n} por ₽{price}",
+    fr: "Acheter la boîte {n} pour ₽{price}",
+    zh: "以 ₽{price} 购买第 {n} 个箱子",
+  },
+  "Box {n} bought!": {
+    pt: "Box {n} comprada!",
+    es: "¡Caja {n} comprada!",
+    fr: "Boîte {n} achetée !",
+    zh: "已购买第 {n} 个箱子！",
+  },
+  "Not enough money.": {
+    pt: "Dinheiro insuficiente.",
+    es: "No tienes suficiente dinero.",
+    fr: "Pas assez d'argent.",
+    zh: "钱不够。",
+  },
+  "Click where it should go.": {
+    pt: "Clique onde ele deve ir.",
+    es: "Haz clic donde debe ir.",
+    fr: "Cliquez où il doit aller.",
+    zh: "点击要放置的位置。",
+  },
+  "MOVE": {
+    pt: "MOVER",
+    es: "MOVER",
+    fr: "DÉPLACER",
+    zh: "移动",
+  },
+  "Point at a Pokémon to see its Summary. Drag it to a slot, a box tab or the party.": {
+    pt: "Aponte para um Pokémon para ver o Resumo. Arraste-o para um slot, uma aba de box ou o time.",
+    es: "Señala un Pokémon para ver su Resumen. Arrástralo a una casilla, una pestaña de caja o el equipo.",
+    fr: "Pointez un Pokémon pour voir son Résumé. Faites-le glisser vers une case, un onglet de boîte ou l'équipe.",
+    zh: "指向宝可梦查看概要。将其拖到格子、箱子标签或队伍中。",
+  },
   "Drag moves to reorder them. Click the Pokémon again to unpin.": {
     pt: "Arraste os golpes para reordenar. Clique no Pokémon de novo para soltar.",
     es: "Arrastra los movimientos para reordenarlos. Haz clic de nuevo en el Pokémon para soltarlo.",

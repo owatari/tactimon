@@ -79,9 +79,9 @@ export function makeHelpers(getCdp: () => Cdp) {
     await sleep(350);
   }
 
-  function seedStory(story: StoryState, position?: { mapId: string; x: number; y: number }) {
+  function seedStory(story: StoryState, position?: { mapId: string; x: number; y: number; facing?: string }) {
     const seed: Record<string, unknown> = { [STORY_STORAGE_KEY]: serializeStorySave(story) };
-    if (position) seed["tactimon.position.v1"] = { ...position, facing: "south" };
+    if (position) seed["tactimon.position.v1"] = { facing: "south", ...position };
     return seed;
   }
 

@@ -1,6 +1,6 @@
 import { normalizeNickname } from "@tactimon/battle-engine";
+import { appendBoxed, pcHasRoom } from "./pcBoxes";
 import {
-  POKEMON_STORAGE_CAPACITY,
   depositCapturedPokemon,
   type CapturedPokemon,
   type StoryState,
@@ -37,7 +37,7 @@ export function captureRoster(story: StoryState): {
 } {
   return {
     teamHasRoom: story.capturedPokemon.length < MAX_PARTY_COMPANIONS,
-    boxHasRoom: story.boxedPokemon.length < POKEMON_STORAGE_CAPACITY,
+    boxHasRoom: pcHasRoom(story),
   };
 }
 
@@ -60,12 +60,9 @@ export function resolvePendingCapture(
   const roster = captureRoster(story);
 
   if (choice.destination === "box") {
-    if (!roster.boxHasRoom) return { ok: false, reason: "box-full" };
-    return {
-      ok: true,
-      destination: "box",
-      story: { ...base, boxedPokemon: [...base.boxedPokemon, named] },
-    };
+    const stored = appendBoxed(base, named);
+    if (!stored) return { ok: false, reason: "box-full" };
+    return { ok: true, destination: "box", story: stored };
   }
 
   if (roster.teamHasRoom) {
@@ -103,20 +100,20 @@ export function sendAllPendingToBox(story: StoryState): {
   remaining: number;
 } {
   const queue = pendingCaptures(story);
-  const room = Math.max(0, POKEMON_STORAGE_CAPACITY - story.boxedPokemon.length);
-  const moving = queue.slice(0, room).map((pokemon) => {
+  let next: StoryState = story;
+  let moved = 0;
+  for (const pokemon of queue) {
     const plain: CapturedPokemon = { ...pokemon };
     delete plain.nickname;
-    return plain;
-  });
-  const remaining = queue.slice(moving.length);
+    const stored = appendBoxed(next, plain);
+    if (!stored) break;
+    next = stored;
+    moved += 1;
+  }
+  const remaining = queue.slice(moved);
   return {
-    story: {
-      ...story,
-      boxedPokemon: [...story.boxedPokemon, ...moving],
-      pendingCaptures: remaining,
-    },
-    moved: moving.length,
+    story: { ...next, pendingCaptures: remaining },
+    moved,
     remaining: remaining.length,
   };
 }
