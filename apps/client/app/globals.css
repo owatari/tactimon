@@ -7647,3 +7647,93 @@ body {
   0% { transform: translateY(4px) scale(0.6); }
   100% { transform: translateY(0) scale(1); }
 }
+
+/* Player HUD (task 038): round window buttons top right, interact / back / run bottom right. */
+.player-hud-windows {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 55;
+  display: flex;
+  gap: 8px;
+}
+.hud-round {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: 3px solid #202020;
+  border-radius: 50%;
+  background: #f8f0d8;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #202020;
+}
+.hud-round:hover:not(:disabled),
+.hud-round:focus-visible {
+  background: #ffe9a0;
+  outline: none;
+}
+.hud-round:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.hud-round .hud-icon {
+  width: 26px;
+  height: 26px;
+  image-rendering: pixelated;
+}
+.hud-icon .ink {
+  fill: #202020;
+}
+.hud-icon .accent {
+  fill: #e03c28;
+}
+.hud-round kbd,
+.hud-action kbd {
+  font: 700 9px/1 monospace;
+  color: #f8f0d8;
+  background: #202020;
+  border-radius: 3px;
+  padding: 2px 3px;
+}
+.hud-round kbd {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+}
+.player-hud-actions {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.hud-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 112px;
+  justify-content: space-between;
+  border: 3px solid #202020;
+  border-radius: 999px;
+  background: #f8f0d8;
+  color: #202020;
+  padding: 6px 12px;
+  font: 700 12px/1 monospace;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #202020;
+}
+.hud-action.primary {
+  background: #ffd84a;
+}
+.hud-action[aria-pressed="true"] {
+  background: #b8e0a0;
+}
+.hud-action:hover,
+.hud-action:focus-visible {
+  filter: brightness(1.08);
+  outline: none;
+}

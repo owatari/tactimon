@@ -2,6 +2,9 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  Windows: { pt: "Janelas", es: "Ventanas", fr: "Fenêtres", zh: "窗口" },
+  BACK: { pt: "VOLTAR", es: "ATRÁS", fr: "RETOUR", zh: "返回" },
+  INTERACT: { pt: "INTERAGIR", es: "INTERACTUAR", fr: "AGIR", zh: "互动" },
   Next: { pt: "Avançar", es: "Siguiente", fr: "Suivant", zh: "继续" },
   "Balanced, sturdy and great for control.": {
     pt: "Equilibrado, resistente e ótimo para controle.",

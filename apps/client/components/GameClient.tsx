@@ -45,6 +45,7 @@ import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
 import { MartOverlay } from "@/components/MartOverlay";
 import { StartMenu } from "@/components/StartMenu";
+import type { MenuScreen } from "@/lib/gameMenu";
 import {
   findHealLocation,
   findHealLocationByCenter,
@@ -273,6 +274,7 @@ export function GameClient() {
   const [martId, setMartId] = useState<string | null>(null);
   const martOpen = martId !== null;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuScreen, setMenuScreen] = useState<MenuScreen | undefined>(undefined);
   const [options, setOptions] = useState<GameOptions>(
     DEFAULT_GAME_OPTIONS,
   );
@@ -1012,8 +1014,9 @@ export function GameClient() {
       <OverworldGame
         story={story}
         paused={paused}
-        onMenuOpen={() => {
+        onMenuOpen={(screen) => {
           flushPlayTime();
+          setMenuScreen(screen);
           setMenuOpen(true);
         }}
         respawnRequest={respawnRequest}
@@ -1138,6 +1141,7 @@ export function GameClient() {
 
       {menuOpen && (
         <StartMenu
+          initialScreen={menuScreen}
           story={story}
           options={options}
           onStoryChange={setStory}

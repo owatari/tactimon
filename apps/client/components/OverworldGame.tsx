@@ -34,6 +34,7 @@ import {
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -141,6 +142,8 @@ import {
   techniqueBlockedMessage,
 } from "@/lib/fieldTechniques";
 import { t, useLocale } from "@/lib/i18n";
+import { PlayerHud, type HudWindow } from "@/components/PlayerHud";
+import type { MenuScreen } from "@/lib/gameMenu";
 import { isDarkMap } from "@/lib/darkCaves";
 import {
   resetBoulders,
@@ -266,7 +269,7 @@ type Props = {
     },
   ) => void;
   onMartOpen: (martId: string) => void;
-  onMenuOpen: () => void;
+  onMenuOpen: (screen?: MenuScreen) => void;
   /** Functional story update applied to GameClient's latest state. */
   onStoryUpdate: (
     update: (story: StoryState) => StoryState,
@@ -826,7 +829,7 @@ export function OverworldGame({
   onPokemonStorageOpen,
   onDialogueInteraction,
 }: Props) {
-  useLocale();
+  const locale = useLocale();
   const viewportRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLDivElement>(null);
   const playerElementRef = useRef<HTMLDivElement>(null);
@@ -1021,6 +1024,28 @@ export function OverworldGame({
 
   const resetInput = useCallback(() => {
     pressedRef.current = [];
+  }, []);
+
+  const hudWindows = useMemo<HudWindow[]>(
+    () => [
+      { id: "pokedex", screen: "pokedex", label: t("POKéDEX"), key: "1", enabled: hasPokedex(story), icon: "pokedex" },
+      { id: "map", screen: "townmap", label: t("TOWN MAP"), key: "2", enabled: hasStoryKeyItem(story, "town-map"), icon: "map" },
+      { id: "party", screen: "party", label: t("POKéMON"), key: "3", enabled: Boolean(story.playerPokemon), icon: "party" },
+      { id: "bag", screen: "bag", label: t("BAG"), key: "4", enabled: true, icon: "bag" },
+      { id: "card", screen: "card", label: t("TRAINER CARD"), key: "5", enabled: true, icon: "card" },
+      { id: "options", screen: "options", label: t("OPTION"), key: "6", enabled: true, icon: "options" },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [story, locale],
+  );
+
+  const hudWindowsRef = useRef(hudWindows);
+  hudWindowsRef.current = hudWindows;
+
+  /** HUD buttons feed the same keys the keyboard uses, so the world keeps one input path. */
+  const pressHudKey = useCallback((key: string) => {
+    window.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }));
+    window.dispatchEvent(new KeyboardEvent("keyup", { key, bubbles: true, cancelable: true }));
   }, []);
 
   const toggleRunning = useCallback(() => {
@@ -2383,6 +2408,23 @@ export function OverworldGame({
         ) {
           resetInput();
           onMenuOpen();
+        }
+        return;
+      }
+
+      const hudIndex = "123456".indexOf(event.key);
+      if (
+        hudIndex >= 0 &&
+        event.key.length === 1 &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey
+      ) {
+        const entry = hudWindowsRef.current[hudIndex];
+        event.preventDefault();
+        if (entry?.enabled && !event.repeat && !dialogueRef.current && !cutsceneRef.current) {
+          resetInput();
+          onMenuOpen(entry.screen);
         }
         return;
       }
@@ -3962,22 +4004,21 @@ export function OverworldGame({
             <span>{t("Coins {count}", { count: story.coins ?? 0 })}</span>
           )}
         </div>
-        {canRun(story) && (
-          <button
-            type="button"
-            className="run-mode-indicator"
-            onClick={toggleRunning}
-            aria-pressed={running}
-            title={t("R toggles walking and running")}
-          >
-            {running ? t("RUN") : t("WALK")}
-          </button>
-        )}
-        <div className="control-hint">
-          {t("WASD / arrows · E/Space interact")}
-          {canRun(story) ? ` · ${t("R toggles WALK/RUN")}` : ""}
-        </div>
       </div>
+
+      {!paused && (
+        <PlayerHud
+          windows={hudWindows}
+          running={running}
+          canRun={canRun(story)}
+          onKey={pressHudKey}
+          onOpen={(screen) => {
+            if (dialogueRef.current || cutsceneRef.current) return;
+            resetInput();
+            onMenuOpen(screen);
+          }}
+        />
+      )}
 
       {dialogue && dialogue.pages[dialoguePageIndex] && (
         <div className="interaction-toast dialogue-panel">

@@ -73,6 +73,8 @@ type Props = {
   /** Fly to a visited town (Town Map screen). */
   onFly?: (destination: TownMapEntry) => void;
   onClose: () => void;
+  /** Opens straight on this screen (HUD buttons). Going back from it closes the menu. */
+  initialScreen?: MenuScreen;
 };
 
 type BagUse = {
@@ -131,6 +133,7 @@ export function StartMenu({
   onItemReward,
   onFly,
   onClose,
+  initialScreen,
 }: Props) {
   const locale = useLocale();
   const optionLabels = [
@@ -141,7 +144,11 @@ export function StartMenu({
     t("ERASE SAVE"),
     t("CLOSE"),
   ];
-  const [screen, setScreen] = useState<MenuScreen>("root");
+  const closeOnBack = initialScreen !== undefined && initialScreen !== "root";
+  const [screen, setScreen] = useState<MenuScreen>(initialScreen ?? "root");
+  const leave = () => (closeOnBack ? onClose() : setScreen("root"));
+  const leaveRef = useRef(leave);
+  leaveRef.current = leave;
   const [rootIndex, setRootIndex] = useState(0);
   const [partyIndex, setPartyIndex] = useState(0);
   const [partyAction, setPartyAction] = useState<number | null>(
@@ -328,7 +335,7 @@ export function StartMenu({
         else if (down) setPartyIndex(wrap(s.partyIndex + 1, count));
         else if (back) {
           if (s.switchFrom !== null) setSwitchFrom(null);
-          else setScreen("root");
+          else leaveRef.current();
         } else if (confirm && count > 0) {
           if (s.switchFrom !== null) {
             const result = reorderStoryParty(
@@ -406,7 +413,7 @@ export function StartMenu({
           setBagIndex(0);
         } else if (up) setBagIndex(wrap(s.bagIndex - 1, entries.length));
         else if (down) setBagIndex(wrap(s.bagIndex + 1, entries.length));
-        else if (back) setScreen("root");
+        else if (back) leaveRef.current();
         else if (confirm && entries[s.bagIndex]) {
           const entry = entries[s.bagIndex];
           if (entry.id === "town-map") {
@@ -449,7 +456,7 @@ export function StartMenu({
         if (confirm) setCardBack((flipped) => !flipped);
         else if (back) {
           setCardBack(false);
-          setScreen("root");
+          leaveRef.current();
         }
         return;
       }
@@ -474,7 +481,7 @@ export function StartMenu({
       const o = s.options;
       if (up) setOptionIndex(wrap(s.optionIndex - 1, OPTION_ROWS.length));
       else if (down) setOptionIndex(wrap(s.optionIndex + 1, OPTION_ROWS.length));
-      else if (back) setScreen("root");
+      else if (back) leaveRef.current();
       else if (left || right || confirm) {
         const step = left ? -10 : 10;
         if (s.optionIndex === 0 && (left || right)) {
@@ -502,7 +509,7 @@ export function StartMenu({
           }
           return;
         } else if (s.optionIndex === 5 && confirm) {
-          setScreen("root");
+          leaveRef.current();
         }
       }
     };
@@ -551,7 +558,7 @@ export function StartMenu({
           <PokedexGba
             story={story}
             musicVolume={options.musicMuted ? 0 : options.musicVolume}
-            onClose={() => setScreen("root")}
+            onClose={() => leaveRef.current()}
           />
         </section>
       )}
