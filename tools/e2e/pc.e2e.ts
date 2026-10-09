@@ -25,6 +25,13 @@ function story(): StoryState {
   return s;
 }
 
+async function openPc() {
+  for (let attempt = 0; attempt < 4 && (await h.count(".pc-window")) === 0; attempt += 1) {
+    await h.press("e");
+    await sleep(600);
+  }
+}
+
 const saved = () =>
   cdp.eval<{ party: string[]; boxed: string[]; slots: number[]; pcBoxes: number; money: number }>(
     `(() => { const raw = JSON.parse(localStorage.getItem("tactimon.story.v1") ?? "{}"); const s = raw.story ?? raw; return { party: (s.capturedPokemon ?? []).map((p) => p.species), boxed: (s.boxedPokemon ?? []).map((p) => p.species), slots: s.boxSlots ?? [], pcBoxes: s.pcBoxes ?? 0, money: s.money }; })()`,
@@ -43,8 +50,7 @@ describe("PC window (browser)", () => {
     it(`opens from the Pokémon Center PC and moves Pokémon by drag and drop (${w}x${hgt})`, async () => {
       await h.open(w, hgt);
       await h.load(h.seedStory(story(), POS));
-      await h.press("e");
-      await sleep(600);
+      await openPc();
       expect(await h.count(".pc-window")).toBe(1);
       expect(await h.count(".pc-tab[data-pc-tab]")).toBe(5);
       expect(await h.count(".pc-grid .pc-slot:not(.empty)")).toBe(2);
@@ -93,8 +99,7 @@ describe("PC window (browser)", () => {
   it("buys the next box, charging the price, and select-then-place works without dragging", async () => {
     await h.open();
     await h.load(h.seedStory(story(), POS));
-    await h.press("e");
-    await sleep(600);
+    await openPc();
     await h.click("[data-pc-buy]");
     let s = await saved();
     expect(s.pcBoxes).toBe(6);

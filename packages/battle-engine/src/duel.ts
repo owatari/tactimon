@@ -142,6 +142,7 @@ export type DuelItemId =
   | "great-ball"
   | "ultra-ball"
   | "master-ball"
+  | "premier-ball"
   | "max-potion"
   | "full-restore"
   | "full-heal"
@@ -157,6 +158,7 @@ const DUEL_EXTRA_ITEM_IDS = [
   "great-ball",
   "ultra-ball",
   "master-ball",
+  "premier-ball",
   "max-potion",
   "full-restore",
   "full-heal",
@@ -1608,6 +1610,14 @@ export const DUEL_ITEMS = {
   "poke-ball": {
     id: "poke-ball",
     name: "Poké Ball",
+    kind: "capture",
+    target: "wild-enemy",
+    ballModifier: 1,
+  },
+  /** Bonus ball of the Poké Mart: catches like a Poké Ball. */
+  "premier-ball": {
+    id: "premier-ball",
+    name: "Premier Ball",
     kind: "capture",
     target: "wild-enemy",
     ballModifier: 1,

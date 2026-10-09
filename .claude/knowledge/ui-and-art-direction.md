@@ -17,3 +17,9 @@
 - Nomes: `namesData.ts` (fr/zh espécies; pt/es/fr/zh golpes) + `localizedSpeciesName/MoveName/localizeKnownNames`; log da engine é estruturado (`state.logData` template+params) e localizado em `localizeLogEntry`.
 - Casca: sem cabeçalho/rodapé web; viewport 100dvh; caixa de texto cream com ▼; banner de mapa temporário; telas do menu limitadas a 960px.
 - Combate: números flutuantes (`battle-floater`), FX por tipo (`.fx-<type>` CSS) quando não há sprite PMD, projétil atacante→alvo.
+
+## HUD e janelas do jogador (task 038)
+- `PlayerHud` (no OverworldGame, escondido quando `paused`): 6 botões redondos (Pokédex/Mapa/Pokémon/Bag/Card/Options, atalhos 1–6) abrem o `StartMenu` direto na tela (`initialScreen`; voltar fecha tudo). Canto inferior direito: RUN/WALK (R), BACK (Esc), INTERACT (E) — enviam as mesmas teclas do teclado. Esc continua abrindo o menu-lista (fallback).
+- Drag and drop: `components/dragDrop.tsx` (`useDragDrop`, baseado em pointer events — funciona com mouse/touch e com `Input.dispatchMouseEvent` do CDP; HTML5 drag não). Fonte: `dragProps(payload, ghost)`; alvo: `data-drop-kind`/`data-drop-id`. Clique sem mover continua clique. Sempre há alternativa sem arrastar (clique/MOVE/Enter).
+- Janelas: `PokemonWindow` (hover = Summary lateral via cursor do bridge, clique fixa, golpes arrastáveis; líder travado), `PcWindow`, `BagWindow` (grade 6 colunas, usar item = arrastar sobre Pokémon), `MarketWindow`. CSS `pokemon-window-*`, `pc-*`, `bag-*`, `market-*` em globals.css. Armadilha: `font: 700 12px/1 inherit` é inválido (descarta a regra) — use `font-family: inherit`.
+- Botões dentro de `.start-menu-overlay`/`.mart-overlay` entram no bridge de input (setas movem foco, Enter clica, Esc = `[data-input-back]`); `data-input-native` evita o confirm automático do clique.

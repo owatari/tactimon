@@ -29,6 +29,7 @@ export const ITEM_AP_COSTS = {
   "max-revive": 9,
   "poke-ball": 4,
   "great-ball": 4,
+  "premier-ball": 4,
   "ultra-ball": 4,
   "master-ball": 5,
 } as const;

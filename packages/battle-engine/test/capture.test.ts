@@ -96,3 +96,24 @@ describe("captureChanceFor (the hover odds)", () => {
     expect(captureChanceFor(trainer, foe.id, "potion")).toBeNull();
   });
 });
+
+describe("Premier Ball", () => {
+  it("catches exactly like a Poké Ball, costs 4 AP and is a usable battle item", async () => {
+    const { createWildDuel, captureChanceFor, applyDuelAction, DUEL_ITEMS, itemApCost } = await import("../src");
+    expect(DUEL_ITEMS["premier-ball"].ballModifier).toBe(DUEL_ITEMS["poke-ball"].ballModifier);
+    expect(itemApCost("premier-ball")).toBe(itemApCost("poke-ball"));
+    const state = createWildDuel({
+      seed: 3, width: 9, height: 7, blocked: [], captureAllowed: true,
+      items: { potion: 0, "poke-ball": 2, "premier-ball": 2 },
+      players: [{ species: "bulbasaur", level: 20, moves: ["tackle"] }],
+      wildSpecies: "rattata", wildLevel: 4,
+    } as never);
+    const player = state.units.find((u) => u.side === "player")!;
+    const wild = state.units.find((u) => u.side === "rival")!;
+    const ready = { ...state, activeUnitId: player.id, units: state.units.map((u) => (u.id === player.id ? { ...u, ap: 12, maxAp: 12 } : u)) };
+    expect(captureChanceFor(ready, wild.id, "premier-ball")).toBe(captureChanceFor(ready, wild.id, "poke-ball"));
+    const thrown = applyDuelAction(ready, { kind: "use-item", unitId: player.id, itemId: "premier-ball", targetId: wild.id });
+    expect(thrown.accepted).toBe(true);
+    expect(thrown.state.items["premier-ball"]).toBe(1);
+  });
+});

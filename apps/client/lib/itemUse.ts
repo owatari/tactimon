@@ -384,6 +384,7 @@ const BATTLE_BAG_ITEM_IDS = [
   "great-ball",
   "ultra-ball",
   "master-ball",
+  "premier-ball",
   "max-potion",
   "full-restore",
   "full-heal",

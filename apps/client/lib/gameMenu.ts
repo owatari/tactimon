@@ -163,6 +163,7 @@ const BALL_IDS: ReadonlySet<OverworldItemId> = new Set([
   "great-ball",
   "ultra-ball",
   "master-ball",
+  "premier-ball",
 ]);
 
 function itemEntry(

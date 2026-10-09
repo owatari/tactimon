@@ -11,6 +11,7 @@ import { GENERATED_BAG_ITEMS } from "./generated/worldItems";
 const HAND_BAG_ITEM_CATALOG = {
   "master-ball": { name: "Master Ball", firered: 1 },
   "great-ball": { name: "Great Ball", firered: 3 },
+  "premier-ball": { name: "Premier Ball", firered: 12 },
   antidote: { name: "Antidote", firered: 14 },
   "burn-heal": { name: "Burn Heal", firered: 15 },
   "ice-heal": { name: "Ice Heal", firered: 16 },
@@ -92,6 +93,7 @@ const ITEM_DESCRIPTIONS: Partial<Record<OverworldItemId, string>> = {
   potion: tx("Restores 20 HP of a Pokémon."),
   "poke-ball": tx("Used to catch wild Pokémon."),
   "great-ball": tx("A better ball than the Poké Ball for catching Pokémon."),
+  "premier-ball": tx("A commemorative ball: it catches like a Poké Ball."),
   "ultra-ball": tx("A high-performance ball: catches better than the Great Ball."),
   "master-ball": tx("The best ball: it never fails to catch a Pokémon."),
   antidote: tx("Cures a poisoned Pokémon."),

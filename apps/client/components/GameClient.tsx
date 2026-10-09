@@ -43,7 +43,7 @@ import {
 } from "@/lib/battleResult";
 import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
-import { MartOverlay } from "@/components/MartOverlay";
+import { MarketWindow } from "@/components/MarketWindow";
 import { StartMenu } from "@/components/StartMenu";
 import type { MenuScreen } from "@/lib/gameMenu";
 import {
@@ -61,16 +61,10 @@ import {
   type GameOptions,
 } from "@/lib/options";
 import { musicManager } from "@/lib/music";
-import type { OverworldItemId } from "@/lib/items";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
 import { StarterChoice } from "@/components/StarterChoice";
 import { PcWindow } from "@/components/PcWindow";
-import {
-  buyMartItem,
-  martStockFor,
-  type MartPurchaseResult,
-} from "@/lib/mart";
 import {
   applyBattleInventory,
   toBattleInventory,
@@ -834,48 +828,6 @@ export function GameClient() {
     setPendingWhiteOut(null);
   };
 
-  const handleMartPurchase = (
-    itemId: OverworldItemId,
-    quantity: number,
-  ): MartPurchaseResult => {
-    const stock = martStockFor(martId ?? "viridian-mart");
-    const preview = buyMartItem(
-      story.money,
-      story.inventory,
-      itemId,
-      quantity,
-      story.bagItems ?? {},
-      stock,
-    );
-
-    if (!preview.accepted) {
-      return preview;
-    }
-
-    setStory((current) => {
-      const result = buyMartItem(
-        current.money,
-        current.inventory,
-        itemId,
-        quantity,
-        current.bagItems ?? {},
-        stock,
-      );
-
-      if (!result.accepted) {
-        return current;
-      }
-
-      return {
-        ...current,
-        money: result.money,
-        inventory: result.inventory,
-        bagItems: result.bagItems,
-      };
-    });
-
-    return preview;
-  };
 
   const handleStorageDeposit = (
     capturedIndex: number,
@@ -1170,13 +1122,11 @@ export function GameClient() {
         />
       )}
 
-      {martOpen && (
-        <MartOverlay
+      {martOpen && martId && (
+        <MarketWindow
           martId={martId}
-          money={story.money}
-          inventory={story.inventory}
-          bagItems={story.bagItems ?? {}}
-          onBuy={handleMartPurchase}
+          story={story}
+          onStoryChange={(update) => setStory((current) => update(current))}
           onClose={() => setMartId(null)}
         />
       )}

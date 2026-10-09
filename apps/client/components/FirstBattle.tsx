@@ -770,7 +770,7 @@ export function FirstBattle({
     active?.side === "player" &&
     state.battleKind === "wild" &&
     state.captureAllowed &&
-    (["poke-ball", "great-ball", "ultra-ball", "master-ball"] as const).some(
+    (["poke-ball", "great-ball", "ultra-ball", "master-ball", "premier-ball"] as const).some(
       (ball) => (state.items[ball] ?? 0) > 0,
     ) &&
     state.units.some(

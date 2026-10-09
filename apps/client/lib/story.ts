@@ -175,6 +175,8 @@ export type StoryState = {
   pokemonTrades?: number;
   /** Remaining Repel steps (FireRed: 100 per item). */
   repelSteps?: number;
+  /** Poké / Great / Ultra Balls bought toward the next bonus Premier Ball (see lib/market.ts). */
+  ballPurchases?: Partial<Record<"poke-ball" | "great-ball" | "ultra-ball", number>>;
   /** Pokémon seen/caught (owned Pokémon always count as caught). */
   pokedex?: PokedexData;
   keyItemIds?: StoryKeyItemId[];
@@ -293,6 +295,20 @@ export function chooseStarter(
     poisonStepCounter: 0,
     playerWorld,
   };
+}
+
+const BALL_PURCHASE_STEPS = { "poke-ball": 20, "great-ball": 15, "ultra-ball": 10 } as const;
+
+function normalizeBallPurchases(value: unknown): NonNullable<StoryState["ballPurchases"]> {
+  const result: NonNullable<StoryState["ballPurchases"]> = {};
+  if (!value || typeof value !== "object") return result;
+  for (const [id, step] of Object.entries(BALL_PURCHASE_STEPS)) {
+    const raw = (value as Record<string, unknown>)[id];
+    if (typeof raw === "number" && Number.isFinite(raw) && raw > 0) {
+      result[id as keyof typeof BALL_PURCHASE_STEPS] = Math.min(step - 1, Math.trunc(raw));
+    }
+  }
+  return result;
 }
 
 function normalizeCapturedPokemon(
@@ -653,6 +669,7 @@ export function normalizeStoryState(
     valuables: normalizeValuables(input?.valuables),
     bagItems: normalizeBagItems(input?.bagItems),
     pokedex: normalizePokedex(input?.pokedex),
+    ballPurchases: normalizeBallPurchases(input?.ballPurchases),
     repelSteps:
       typeof input?.repelSteps === "number" &&
       Number.isFinite(input.repelSteps)
