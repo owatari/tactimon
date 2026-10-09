@@ -126,6 +126,7 @@ describe("walkthrough (browser)", () => {
     story = placeCapturedPokemon(story, createPokemonProgression("pidgey", 6) as never).story;
     await load(seedStory(story, { mapId: "pallet-town", x: 12, y: 17 }));
     await press("Escape", "Enter");
+    await cdp.eval(`document.querySelector("[data-dex-classic]")?.click()`);
     await sleep(1200);
     const lit = await cdp.eval<number>(`(() => { const c = document.querySelector("canvas.gba-canvas"); if (!c) return -1; const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 0; i < d.length; i += 4) if (d[i] + d[i + 1] + d[i + 2] > 60) n += 1; return n; })()`);
     expect(lit).toBeGreaterThan(5000);

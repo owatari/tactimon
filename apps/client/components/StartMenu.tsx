@@ -19,6 +19,7 @@ import { ShinyStar } from "./ShinyStar";
 import { TypeIcon } from "./TypeIcon";
 import { MoveSlots } from "./MoveSlots";
 import { PokemonWindow } from "./PokemonWindow";
+import { PokedexWindow } from "./PokedexWindow";
 import { BAG_COLUMNS, BAG_SORTS, BagWindow, type BagSort } from "./BagWindow";
 import { PokemonStatTable } from "./PokemonStatTable";
 import { PokemonPortrait } from "@/components/PokemonPortrait";
@@ -176,6 +177,7 @@ export function StartMenu({
 
   const party = useMemo(() => getStoryParty(story), [story]);
   const [bagSort, setBagSort] = useState<BagSort>("default");
+  const [dexClassic, setDexClassic] = useState(false);
   const pockets = useMemo(() => {
     const built = buildBagPockets(story);
     if (bagSort === "default") return built;
@@ -585,12 +587,22 @@ export function StartMenu({
         </nav>
       )}
 
-      {screen === "pokedex" && (
+      {screen === "pokedex" && !dexClassic && (
+        <section className="start-menu-screen start-menu-dex">
+          <PokedexWindow
+            story={story}
+            onClose={() => leaveRef.current()}
+            onClassic={() => setDexClassic(true)}
+          />
+        </section>
+      )}
+
+      {screen === "pokedex" && dexClassic && (
         <section className="start-menu-gba">
           <PokedexGba
             story={story}
             musicVolume={options.musicMuted ? 0 : options.musicVolume}
-            onClose={() => leaveRef.current()}
+            onClose={() => setDexClassic(false)}
           />
         </section>
       )}

@@ -8436,3 +8436,233 @@ body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+/* Pokédex window (task 039): list | detail with tabs. */
+.start-menu-screen.start-menu-dex {
+  display: block;
+  padding: 0;
+  background: #d84838;
+  overflow: hidden;
+}
+.pokedex-window {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  height: 100%;
+  padding: 10px 12px;
+  color: #182838;
+}
+.dex-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dex-header h2 {
+  margin: 0;
+  margin-right: auto;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: #f8f8e8;
+}
+.dex-counts {
+  font-size: 12px;
+  color: #f8f8e8;
+}
+.dex-list-panel,
+.dex-detail {
+  min-height: 0;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+}
+.dex-list-panel {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.dex-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px;
+  border-bottom: 2px solid #203850;
+}
+.dex-filters input {
+  flex: 1 1 100%;
+  padding: 5px 6px;
+  border: 2px solid #405868;
+  background: #fffff4;
+  font: inherit;
+  font-size: 12px;
+}
+.dex-chip,
+.dex-tab {
+  padding: 4px 8px;
+  border: 2px solid #405868;
+  background: #fffff4;
+  color: #182838;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 11px;
+  cursor: pointer;
+}
+.dex-chip.active,
+.dex-tab.active {
+  background: #f8e8a0;
+  border-color: #d84838;
+}
+.dex-tab.disabled {
+  opacity: 0.45;
+}
+.dex-list {
+  overflow: auto;
+  padding: 4px;
+}
+.dex-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 4px 6px;
+  border: 2px solid transparent;
+  background: transparent;
+  color: #182838;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.dex-row.selected {
+  background: #f8e8a0;
+  border-color: #d84838;
+}
+.dex-row.unseen {
+  color: #8898a8;
+}
+.dex-no {
+  font-size: 11px;
+  color: #506878;
+  min-width: 28px;
+}
+.dex-ball {
+  width: 12px;
+  color: #d84838;
+  font-size: 11px;
+}
+.dex-detail {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 8px;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+.dex-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dex-title h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+.dex-sprite {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+  border: 3px solid #203850;
+  background: #a8d8c8;
+}
+.dex-sprite.silhouette {
+  filter: brightness(0);
+}
+.dex-types {
+  display: flex;
+  gap: 4px;
+}
+.dex-tabs {
+  display: flex;
+  gap: 4px;
+}
+.dex-body {
+  overflow: auto;
+  min-height: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.dex-body p {
+  margin: 0 0 6px;
+}
+.dex-category {
+  font-weight: 700;
+}
+.dex-text {
+  padding: 6px 8px;
+  border: 2px solid #405868;
+  background: #fffff4;
+}
+.dex-hint,
+.dex-locked {
+  color: #506878;
+}
+.dex-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1858a8;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.dex-nature {
+  padding: 6px 8px;
+  border: 2px solid #405868;
+  background: #e8f0d8;
+}
+.dex-nature-effect {
+  color: #1858a8;
+  font-weight: 700;
+}
+.dex-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.dex-table th,
+.dex-table td {
+  padding: 3px 6px;
+  border-bottom: 1px solid #c8c8b8;
+  text-align: left;
+}
+.dex-table th {
+  position: sticky;
+  top: 0;
+  background: #203850;
+  color: #f8f8e8;
+  font-size: 10px;
+}
+.dex-source {
+  padding: 4px 8px;
+  border: 2px solid #405868;
+  background: #f8e8a0;
+}
+.dex-machine b {
+  display: inline-block;
+  min-width: 44px;
+}
+.dex-stat-row {
+  display: grid;
+  grid-template-columns: 90px 36px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.dex-bar {
+  display: block;
+  height: 10px;
+  border: 1px solid #203850;
+}
+.dex-bar.great { background: #38a848; }
+.dex-bar.good { background: #a8c838; }
+.dex-bar.mid { background: #f8c838; }
+.dex-bar.low { background: #e85838; }
