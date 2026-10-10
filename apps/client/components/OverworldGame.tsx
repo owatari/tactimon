@@ -3684,8 +3684,13 @@ export function OverworldGame({
           (targetCameraY - cameraPosition.y) * response;
       }
 
+      // Snap the camera to whole device pixels: a fractional translate on the composited layer is
+      // resampled bilinearly, which blurs the whole map while the camera is easing.
+      const pixelRatio = window.devicePixelRatio || 1;
+      const snappedX = Math.round(cameraPosition.x * pixelRatio) / pixelRatio;
+      const snappedY = Math.round(cameraPosition.y * pixelRatio) / pixelRatio;
       camera.style.transform =
-        `translate3d(${cameraPosition.x}px, ${cameraPosition.y}px, 0)`;
+        `translate3d(${snappedX}px, ${snappedY}px, 0)`;
     };
 
     const tick = (now: number) => {
