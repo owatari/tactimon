@@ -8666,3 +8666,71 @@ body {
 .dex-bar.good { background: #a8c838; }
 .dex-bar.mid { background: #f8c838; }
 .dex-bar.low { background: #e85838; }
+
+/* EXP share sliders under the Pokémon window (task 2026-10-09-001). */
+.pokemon-window {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.pokemon-window-footer {
+  grid-column: 1 / -1;
+}
+.exp-share {
+  padding: 6px 10px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+  color: #182838;
+}
+.exp-share header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+.exp-share header strong {
+  letter-spacing: 0.06em;
+}
+.exp-share-hint {
+  margin-right: auto;
+  color: #506878;
+  font-size: 11px;
+}
+.exp-share button {
+  padding: 2px 8px;
+  border: 2px solid #405868;
+  background: #fffff4;
+  color: #182838;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 10px;
+  cursor: pointer;
+}
+.exp-share button:hover {
+  background: #f8e8a0;
+}
+.exp-share-rows {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px 14px;
+}
+.exp-share-row {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) 38px auto;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+.exp-share-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+.exp-share-row input[type="range"] {
+  width: 100%;
+  accent-color: #d84838;
+}
+.exp-share-row output {
+  text-align: right;
+  font-weight: 700;
+}

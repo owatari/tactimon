@@ -17,6 +17,8 @@ type Props = {
   renderSlot: (pokemon: PokemonProgression, index: number) => ReactNode;
   /** The Summary of the pinned or hovered Pokémon, shown at the side. */
   summary: ReactNode;
+  /** Full-width strip under the slots and the Summary (the EXP share sliders). */
+  footer?: ReactNode;
   notice?: string;
 };
 
@@ -32,6 +34,7 @@ export function PokemonWindow({
   onReorder,
   renderSlot,
   summary,
+  footer,
   notice,
 }: Props) {
   const { dragProps, dragging, over, ghost } = useDragDrop<number>((from, target) => {
@@ -80,6 +83,7 @@ export function PokemonWindow({
         {summary}
         {notice ? <p className="pokemon-window-notice">{notice}</p> : null}
       </div>
+      {footer ? <div className="pokemon-window-footer">{footer}</div> : null}
     </div>
   );
 }

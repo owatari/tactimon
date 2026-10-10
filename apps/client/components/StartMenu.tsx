@@ -19,6 +19,8 @@ import { ShinyStar } from "./ShinyStar";
 import { TypeIcon } from "./TypeIcon";
 import { MoveSlots } from "./MoveSlots";
 import { PokemonWindow } from "./PokemonWindow";
+import { ExpShareSlider } from "./ExpShareSlider";
+import { fitExpShare } from "@/lib/expShare";
 import { PokedexWindow } from "./PokedexWindow";
 import { BAG_COLUMNS, BAG_SORTS, BagWindow, type BagSort } from "./BagWindow";
 import { PokemonStatTable } from "./PokemonStatTable";
@@ -289,6 +291,8 @@ export function StartMenu({
     const onKey = (event: KeyboardEvent) => {
       if (event.ctrlKey || event.metaKey || event.altKey) return;
       const k = event.key.toLowerCase();
+      // A focused slider / text box keeps its own arrows (only Escape still goes back).
+      if ((event.target as HTMLElement | null)?.tagName === "INPUT" && k !== "escape") return;
       const up = k === "arrowup" || k === "w";
       const down = k === "arrowdown" || k === "s";
       const left = k === "arrowleft" || k === "a";
@@ -553,6 +557,13 @@ export function StartMenu({
               selectedIndex={partyIndex}
               pinnedIndex={pinnedIndex}
               notice={notice}
+              footer={
+                <ExpShareSlider
+                  party={party}
+                  shares={fitExpShare(story.expShare, party.length)}
+                  onChange={(next) => onStoryChange({ ...story, expShare: next })}
+                />
+              }
               onPin={(index) => {
                 setPartyIndex(index);
                 setPinnedIndex((current) => (current === index ? null : index));

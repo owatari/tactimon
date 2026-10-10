@@ -1,4 +1,5 @@
 import { partyCanUseHm } from "./hmParty";
+import { fitExpShare } from "./expShare";
 import { appendBoxed, pcHasRoom, removeBoxed, PC_BOX_COUNT, PC_FREE_BOXES } from "./pcBoxes";
 import { t, tx } from "./i18n";
 import {
@@ -177,6 +178,8 @@ export type StoryState = {
   repelSteps?: number;
   /** Poké / Great / Ultra Balls bought toward the next bonus Premier Ball (see lib/market.ts). */
   ballPurchases?: Partial<Record<"poke-ball" | "great-ball" | "ultra-ball", number>>;
+  /** Percent of each battle's EXP per party slot (lead first): min 5% each, total 100. Equal when missing. */
+  expShare?: number[];
   /** Pokémon seen/caught (owned Pokémon always count as caught). */
   pokedex?: PokedexData;
   keyItemIds?: StoryKeyItemId[];
@@ -670,6 +673,10 @@ export function normalizeStoryState(
     bagItems: normalizeBagItems(input?.bagItems),
     pokedex: normalizePokedex(input?.pokedex),
     ballPurchases: normalizeBallPurchases(input?.ballPurchases),
+    expShare: fitExpShare(
+      (input as { expShare?: unknown } | null | undefined)?.expShare,
+      (input?.playerPokemon || starter ? 1 : 0) + Math.min(5, rawCaptured.length),
+    ),
     repelSteps:
       typeof input?.repelSteps === "number" &&
       Number.isFinite(input.repelSteps)

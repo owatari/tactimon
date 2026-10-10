@@ -2,6 +2,36 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  "EXP SHARE": {
+    pt: "DIVISÃO DE EXP",
+    es: "REPARTO DE EXP",
+    fr: "PARTAGE D'EXP",
+    zh: "经验分配",
+  },
+  "Each Pokémon keeps at least {min}%. Put the rest on one.": {
+    pt: "Cada Pokémon recebe no mínimo {min}%. Concentre o resto em um.",
+    es: "Cada Pokémon recibe al menos {min}%. Concentra el resto en uno.",
+    fr: "Chaque Pokémon garde au moins {min} %. Mettez le reste sur un seul.",
+    zh: "每只宝可梦至少获得 {min}%，其余可集中给一只。",
+  },
+  "EQUAL": {
+    pt: "IGUAL",
+    es: "IGUAL",
+    fr: "ÉGAL",
+    zh: "平均",
+  },
+  "EXP share of {name}": {
+    pt: "EXP de {name}",
+    es: "EXP de {name}",
+    fr: "EXP de {name}",
+    zh: "{name} 的经验份额",
+  },
+  "Give all the rest to this Pokémon": {
+    pt: "Dar todo o resto a este Pokémon",
+    es: "Dar todo el resto a este Pokémon",
+    fr: "Donner tout le reste à ce Pokémon",
+    zh: "把其余全部给这只宝可梦",
+  },
   "Enter pins the Summary · Shift+↑↓ moves the Pokémon": {
     pt: "Enter fixa o Resumo · Shift+↑↓ move o Pokémon",
     es: "Enter fija el Resumen · Shift+↑↓ mueve el Pokémon",

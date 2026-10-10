@@ -51,7 +51,41 @@ describe("Pokémon window (browser)", () => {
     expect(await savedCaptured()).toEqual(["pidgey", "rattata", "caterpie"]);
   }, 60_000);
 
+  const shares = () =>
+    cdp.eval<number[]>(`(() => { const raw = JSON.parse(localStorage.getItem("tactimon.story.v1") ?? "{}"); return (raw.story ?? raw).expShare ?? []; })()`);
+
   for (const [w, hgt] of [[1365, 768], [1792, 851]] as const) {
+    it(`EXP share sliders: min 5%, total 100%, the rest on one Pokémon, saved (${w}x${hgt})`, async () => {
+      await h.open(w, hgt);
+      await h.load(h.seedStory(party(), POS));
+      await h.click('[data-hud="party"]');
+      expect(await h.count("[data-exp-slider]")).toBe(4);
+      expect((await shares()).reduce((a, b) => a + b, 0)).toBe(100);
+      await h.shot(`exp-share-${w}`);
+
+      // a real click near the end of the second slider pushes it up and takes from the others
+      const c = await cdp.eval<{ x: number; y: number; w: number }>(`(() => { const r = document.querySelector('[data-exp-slider="1"]').getBoundingClientRect(); return { x: r.left, y: r.top + r.height / 2, w: r.width }; })()`);
+      await cdp.send("Input.dispatchMouseEvent", { type: "mousePressed", x: c.x + c.w * 0.9, y: c.y, button: "left", buttons: 1, clickCount: 1 });
+      await cdp.send("Input.dispatchMouseEvent", { type: "mouseReleased", x: c.x + c.w * 0.9, y: c.y, button: "left", buttons: 0, clickCount: 1 });
+      await sleep(300);
+      let now = await shares();
+      expect(now.reduce((a, b) => a + b, 0)).toBe(100);
+      expect(now[1]).toBeGreaterThan(50);
+      expect(Math.min(...now)).toBeGreaterThanOrEqual(5);
+
+      // "ALL" on the third Pokémon: 5% for the others, 85% for it
+      await h.click('[data-exp-all="2"]');
+      now = await shares();
+      expect(now).toEqual([5, 5, 85, 5]);
+      expect(await h.text('[data-exp-value="2"]')).toBe("85%");
+
+      // EQUAL goes back to an even split
+      await h.click("[data-exp-equal]");
+      now = await shares();
+      expect(Math.max(...now) - Math.min(...now)).toBeLessThanOrEqual(1);
+      expect(cdp.errors).toEqual([]);
+    }, 60_000);
+
     it(`hover shows the side Summary, click pins it, drag reorders (${w}x${hgt})`, async () => {
       await h.open(w, hgt);
       await h.load(h.seedStory(party(), POS));

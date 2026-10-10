@@ -1,3 +1,4 @@
+import { fitExpShare, swapExpShares } from "./expShare";
 import type {
   DuelItemId,
   PokemonProgression,
@@ -129,7 +130,12 @@ export function reorderStoryParty(
 
   return {
     accepted: true,
-    story: { ...story, capturedPokemon: next },
+    // The EXP share follows the Pokémon, not the slot.
+    story: {
+      ...story,
+      capturedPokemon: next,
+      expShare: swapExpShares(fitExpShare(story.expShare, 1 + captured.length), from, to),
+    },
   };
 }
 

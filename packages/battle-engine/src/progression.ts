@@ -1319,6 +1319,31 @@ export function grantWildBattleProgressToParty(
   );
 }
 
+/** Minimum EXP share (percent) every party member keeps when the player splits EXP by hand. */
+export const MIN_EXP_SHARE_PERCENT = 5;
+
+/**
+ * Splits a whole EXP pool between members by percentage weights. Shares are renormalised, every
+ * member gets its floor, and the few points lost to rounding go to the biggest share, so the pieces
+ * always add up to the pool. Without valid weights the split is equal (remainder to the first).
+ */
+export function splitExperience(total: number, shares?: readonly number[] | null, count?: number): number[] {
+  const size = shares && shares.length > 0 ? shares.length : (count ?? 0);
+  if (size <= 0) return [];
+  const pool = Math.max(0, Math.trunc(total));
+  const valid = shares && shares.length === size && shares.every((value) => Number.isFinite(value) && value >= 0);
+  const weights = valid ? [...shares] : Array.from({ length: size }, () => 1);
+  const sum = weights.reduce((acc, value) => acc + value, 0) || size;
+  const parts = weights.map((weight) => Math.floor((pool * weight) / sum));
+  let left = pool - parts.reduce((acc, value) => acc + value, 0);
+  const order = weights.map((_, index) => index).sort((a, b) => weights[b] - weights[a] || a - b);
+  for (let i = 0; left > 0; i = (i + 1) % order.length) {
+    parts[order[i]] += 1;
+    left -= 1;
+  }
+  return parts;
+}
+
 export function grantWildBattlesProgressToParty(
   party: readonly PokemonProgression[],
   enemies: readonly {
@@ -1329,6 +1354,8 @@ export function grantWildBattlesProgressToParty(
     evYield?: boolean;
   }[],
   defaultXpRatio = 1,
+  /** Percent of the EXP pool per party member (see splitExperience); equal when omitted. */
+  shares?: readonly number[],
 ): ProgressionReward[] {
   if (
     party.length === 0 ||
@@ -1362,9 +1389,9 @@ export function grantWildBattlesProgressToParty(
     },
     0,
   );
-  const xpPerParticipant = Math.floor(
-    totalXp / party.length,
-  );
+  const xpParts = shares
+    ? splitExperience(Math.floor(totalXp), shares, party.length)
+    : party.map(() => Math.floor(totalXp / party.length));
 
   const evYield = sumEvYield(
     enemies
@@ -1372,10 +1399,10 @@ export function grantWildBattlesProgressToParty(
       .map((enemy) => enemy.species),
   );
 
-  return party.map((progression) =>
+  return party.map((progression, index) =>
     grantExperience(
       progression,
-      xpPerParticipant,
+      xpParts[index] ?? 0,
       evYield,
     ),
   );
@@ -1387,6 +1414,8 @@ export function grantTrainerBattleProgressToParty(
     species: DuelSpeciesId;
     level: number;
   }[],
+  /** Percent of the EXP pool per party member (see splitExperience); equal when omitted. */
+  shares?: readonly number[],
 ): ProgressionReward[] {
   if (party.length === 0) {
     return [];
@@ -1404,11 +1433,15 @@ export function grantTrainerBattleProgressToParty(
   );
 
   const evYield = sumEvYield(enemies.map((enemy) => enemy.species));
+  // A trainer pays the full reward to every participant; by hand the same pool (reward x members) is split.
+  const xpParts = shares
+    ? splitExperience(xpPerParticipant * party.length, shares, party.length)
+    : party.map(() => xpPerParticipant);
 
-  return party.map((progression) =>
+  return party.map((progression, index) =>
     grantExperience(
       progression,
-      xpPerParticipant,
+      xpParts[index] ?? 0,
       evYield,
     ),
   );

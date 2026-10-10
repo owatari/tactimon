@@ -43,6 +43,7 @@ import {
 } from "@/lib/battleResult";
 import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
+import { fitExpShare, sharesForSlots } from "@/lib/expShare";
 import { MarketWindow } from "@/components/MarketWindow";
 import { StartMenu } from "@/components/StartMenu";
 import type { MenuScreen } from "@/lib/gameMenu";
@@ -600,6 +601,11 @@ export function GameClient() {
           !((outcome.playerHp[outcomeIndex] ?? 0) > 0)
         ),
     );
+    // The player's EXP split (min 5% each) for the members that took part.
+    const expShares = sharesForSlots(
+      fitExpShare(story.expShare, fullPartySnapshot.length),
+      rewardPartyIndices,
+    );
     const partySnapshot = session.partyIndices
       .map<PokemonProgression | null>((partyIndex, outcomeIndex) => {
         const pokemon = fullPartySnapshot[partyIndex];
@@ -645,6 +651,7 @@ export function GameClient() {
           ? grantTrainerBattleProgressToParty(
               partySnapshot,
               outcome.defeatedEnemies,
+              expShares,
             )
           : [];
       const trainerId =
@@ -742,6 +749,8 @@ export function GameClient() {
       grantWildBattlesProgressToParty(
         partySnapshot,
         rewardEnemies,
+        1,
+        expShares,
       );
 
     setStory((current) => {
