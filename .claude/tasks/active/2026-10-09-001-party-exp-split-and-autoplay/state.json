@@ -1,0 +1,24 @@
+{
+  "id": "2026-10-09-001-party-exp-split-and-autoplay",
+  "title": "Party sem popup, slider de EXP por Pok\u00e9mon (m\u00edn. 5%) e Auto Player de teste (mudo, 1x\u201316x)",
+  "status": "planned",
+  "created_at": "2026-10-09",
+  "base_head": "fe38ac09",
+  "current_head": "fe38ac09",
+  "skills": [
+    "pokemon-ui",
+    "overworld-development",
+    "battle-development",
+    "verification",
+    "safe-main",
+    "task-ledger"
+  ],
+  "agents": [
+    "ui-visual",
+    "gameplay-systems",
+    "battle-engine"
+  ],
+  "files": [],
+  "commits": [],
+  "tests": []
+}

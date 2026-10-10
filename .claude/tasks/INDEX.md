@@ -47,3 +47,4 @@
 | 2026-10-06-040-first-mover-disadvantage | Equilibrar a desvantagem de quem começa a batalha (medir e escolher a solução) | done | archive/2026-10 |
 | 2026-10-06-041-world-event-fixes | Corrigir rival do lab, Campeão, velhinho do Viridian Gym, Oak's Parcel, spawn da conta nova e varrer erros semelhantes | done | archive/2026-10 |
 | 2026-10-06-042-npc-pending-resolution | Resolver todas as pendências de NPC (event NPCs, cenas, movimentos) | done | archive/2026-10 |
+| 2026-10-09-001-party-exp-split-and-autoplay | Party sem popup (drag/click), slider de EXP por Pokémon (mín. 5%) e Auto Player de teste (mudo, 1x–16x) | planned | active |
