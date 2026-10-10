@@ -2,6 +2,12 @@ import type { Catalog } from "../index";
 
 /** Catalog domain: ui (format: see tools/i18n/README.md). */
 export const uiCatalog: Catalog = {
+  "Enter pins the Summary · Shift+↑↓ moves the Pokémon": {
+    pt: "Enter fixa o Resumo · Shift+↑↓ move o Pokémon",
+    es: "Enter fija el Resumen · Shift+↑↓ mueve el Pokémon",
+    fr: "Entrée épingle le Résumé · Maj+↑↓ déplace le Pokémon",
+    zh: "Enter 固定概要 · Shift+↑↓ 移动宝可梦",
+  },
   "Also used: {natures}": {
     pt: "Também usadas: {natures}",
     es: "También se usan: {natures}",

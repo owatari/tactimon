@@ -36,6 +36,21 @@ beforeAll(async () => {
 afterAll(() => proc?.kill());
 
 describe("Pokémon window (browser)", () => {
+  it("has no SUMMARY / SWITCH / CANCEL popup: Enter pins the Summary and Shift+arrows move a Pokémon", async () => {
+    await h.open();
+    await h.load(h.seedStory(party(), POS));
+    await h.click('[data-hud="party"]');
+    await h.press("ArrowDown");
+    await h.press("Enter");
+    expect(await h.count(".start-menu-popup")).toBe(0);
+    expect(await h.count(".pokemon-window-slot.pinned")).toBe(1);
+    expect(await h.text(".pokemon-window-card h3")).toContain("Rattata");
+    await cdp.eval(`window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", shiftKey: true, bubbles: true }))`);
+    await sleep(300);
+    expect(await names()).toEqual(["Charmander", "Pidgey", "Rattata", "Caterpie"]);
+    expect(await savedCaptured()).toEqual(["pidgey", "rattata", "caterpie"]);
+  }, 60_000);
+
   for (const [w, hgt] of [[1365, 768], [1792, 851]] as const) {
     it(`hover shows the side Summary, click pins it, drag reorders (${w}x${hgt})`, async () => {
       await h.open(w, hgt);

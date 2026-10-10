@@ -12,8 +12,6 @@ type Props = {
   selectedIndex: number;
   /** Slot whose Summary a click pinned open. */
   pinnedIndex: number | null;
-  /** Slot being swapped through the keyboard SWITCH action. */
-  switchFrom: number | null;
   onPin: (index: number) => void;
   onReorder: (from: number, to: number) => void;
   renderSlot: (pokemon: PokemonProgression, index: number) => ReactNode;
@@ -30,7 +28,6 @@ export function PokemonWindow({
   party,
   selectedIndex,
   pinnedIndex,
-  switchFrom,
   onPin,
   onReorder,
   renderSlot,
@@ -58,7 +55,6 @@ export function PokemonWindow({
                 "pokemon-window-slot",
                 index === selectedIndex ? "selected" : "",
                 index === pinnedIndex ? "pinned" : "",
-                index === switchFrom ? "switching" : "",
                 dragging === index ? "dragging" : "",
                 over?.kind === "party-slot" && over.id === String(index) && dragging !== null && dragging !== index
                   ? "drop-over"

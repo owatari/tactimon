@@ -90,7 +90,6 @@ type BagUse = {
   moveIndex: number;
 };
 
-const PARTY_ACTIONS = ["SUMMARY", "SWITCH", "CANCEL"] as const;
 const OPTION_ROWS = [
   "MUSIC VOLUME",
   "MUSIC",
@@ -156,20 +155,12 @@ export function StartMenu({
   leaveRef.current = leave;
   const [rootIndex, setRootIndex] = useState(0);
   const [partyIndex, setPartyIndex] = useState(0);
-  const [partyAction, setPartyAction] = useState<number | null>(
-    null,
-  );
-  const [switchFrom, setSwitchFrom] = useState<number | null>(
-    null,
-  );
-  const [summaryIndex, setSummaryIndex] = useState(0);
   const [pocketIndex, setPocketIndex] = useState(0);
   const [bagIndex, setBagIndex] = useState(0);
   const [optionIndex, setOptionIndex] = useState(0);
   const [townIndex, setTownIndex] = useState(0);
   const [cardBack, setCardBack] = useState(false);
   // FireRed Summary: A on the moves page enters move selection, A again opens the move info page.
-  const [summaryMove, setSummaryMove] = useState<number | null>(null);
   const [bagUse, setBagUse] = useState<BagUse | null>(null);
   const [notice, setNotice] = useState("");
   const [pinnedIndex, setPinnedIndex] = useState<number | null>(null);
@@ -200,10 +191,6 @@ export function StartMenu({
     screen,
     rootIndex,
     partyIndex,
-    partyAction,
-    switchFrom,
-    summaryIndex,
-    summaryMove,
     pocketIndex,
     bagIndex,
     optionIndex,
@@ -219,10 +206,6 @@ export function StartMenu({
     screen,
     rootIndex,
     partyIndex,
-    partyAction,
-    switchFrom,
-    summaryIndex,
-    summaryMove,
     pocketIndex,
     bagIndex,
     optionIndex,
@@ -357,8 +340,7 @@ export function StartMenu({
                     ? "card"
                     : "options",
             );
-            setPartyAction(null);
-            setSwitchFrom(null);
+            setPinnedIndex(null);
           }
         }
         return;
@@ -370,72 +352,26 @@ export function StartMenu({
 
       if (s.screen === "party") {
         const count = s.party.length;
-        if (s.partyAction !== null) {
-          if (up) setPartyAction(wrap(s.partyAction - 1, PARTY_ACTIONS.length));
-          else if (down) setPartyAction(wrap(s.partyAction + 1, PARTY_ACTIONS.length));
-          else if (back) setPartyAction(null);
-          else if (confirm) {
-            const action = PARTY_ACTIONS[s.partyAction];
-            setPartyAction(null);
-            if (action === "SUMMARY") {
-              setSummaryIndex(s.partyIndex);
-              setScreen("summary");
-            } else if (action === "SWITCH") {
-              if (s.partyIndex === 0) {
-                setNotice(t("The lead Pokémon cannot be swapped."));
-              } else {
-                setSwitchFrom(s.partyIndex);
-                setNotice(t("Choose the other Pokémon."));
-              }
-            }
-          }
-          return;
-        }
-        if (up) setPartyIndex(wrap(s.partyIndex - 1, count));
-        else if (down) setPartyIndex(wrap(s.partyIndex + 1, count));
-        else if (back) {
-          if (s.switchFrom !== null) setSwitchFrom(null);
-          else leaveRef.current();
-        } else if (confirm && count > 0) {
-          if (s.switchFrom !== null) {
-            const result = reorderStoryParty(
-              s.story,
-              s.switchFrom,
-              s.partyIndex,
-            );
+        if (up || down) {
+          const next = wrap(s.partyIndex + (up ? -1 : 1), count);
+          if (event.shiftKey && count > 0) {
+            // Shift + arrows: the keyboard / gamepad way of dragging a Pokémon to another slot.
+            const result = reorderStoryParty(s.story, s.partyIndex, next);
             if (result.accepted) {
               onStoryChange(result.story);
+              setPartyIndex(next);
+              setPinnedIndex(null);
               setNotice(t("Pokémon swapped places."));
             } else if (result.reason === "lead-locked") {
               setNotice(t("The lead Pokémon cannot be swapped."));
             }
-            setSwitchFrom(null);
           } else {
-            setPartyAction(0);
+            setPartyIndex(next);
           }
-        }
-        return;
-      }
-
-      if (s.screen === "summary") {
-        // One screen with everything: arrows flip between Pokémon, A selects a move, B backs out.
-        if (s.summaryMove !== null) {
-          const moveCount = s.party[s.summaryIndex]?.activeMoves.length ?? 0;
-          if (up) setSummaryMove(wrap(s.summaryMove - 1, moveCount));
-          else if (down) setSummaryMove(wrap(s.summaryMove + 1, moveCount));
-          else if (back || confirm) setSummaryMove(null);
-          return;
-        }
-        if (confirm) {
-          if ((s.party[s.summaryIndex]?.activeMoves.length ?? 0) > 0) setSummaryMove(0);
-          return;
-        }
-        if (up || left) setSummaryIndex(wrap(s.summaryIndex - 1, s.party.length));
-        else if (down || right) setSummaryIndex(wrap(s.summaryIndex + 1, s.party.length));
-        else if (back) {
-          setSummaryMove(null);
-          setPartyIndex(s.summaryIndex);
-          setScreen("party");
+        } else if (back) leaveRef.current();
+        else if (confirm && count > 0) {
+          // Enter = click: pin / unpin the Summary of the highlighted Pokémon.
+          setPinnedIndex((current) => (current === s.partyIndex ? null : s.partyIndex));
         }
         return;
       }
@@ -552,7 +488,6 @@ export function StartMenu({
     return () => window.removeEventListener("keydown", onKey);
   }, [menuEntries, onClose, onFly, onOptionsChange, onSave, onStoryChange]);
 
-  const summaryPokemon = party[summaryIndex] ?? null;
 
   return (
     <div
@@ -617,7 +552,6 @@ export function StartMenu({
               party={party}
               selectedIndex={partyIndex}
               pinnedIndex={pinnedIndex}
-              switchFrom={switchFrom}
               notice={notice}
               onPin={(index) => {
                 setPartyIndex(index);
@@ -697,52 +631,6 @@ export function StartMenu({
               })()}
             />
           )}
-          {partyAction !== null && (
-            <div className="start-menu-popup">
-              {PARTY_ACTIONS.map((action, index) => (
-                <div
-                  key={action}
-                  className={index === partyAction ? "selected" : ""}
-                >
-                  {t(action)}
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-      )}
-
-      {screen === "summary" && summaryPokemon && (
-        <section className="start-menu-screen start-menu-summary start-menu-summary-single">
-          <h2>
-            {pokemonDisplayName(summaryPokemon)}
-            {summaryPokemon.shiny && <ShinyStar />} · Lv
-            {summaryPokemon.level}
-            <span className="capture-summary-count">
-              {" "}
-              {summaryIndex + 1}/{party.length}
-            </span>
-          </h2>
-          <div className="start-menu-summary-body">
-            <div className="summary-col summary-col-id">
-              <FrontSprite
-                species={summaryPokemon.species}
-                name={speciesDisplayName(summaryPokemon.species)}
-                shiny={summaryPokemon.shiny}
-              />
-              <SummaryInfo pokemon={summaryPokemon} story={story} />
-            </div>
-            <div className="summary-col">
-              <SummaryStats pokemon={summaryPokemon} />
-            </div>
-            <div className="summary-col">
-              <MoveSlots
-                moves={summaryPokemon.activeMoves}
-                movePp={summaryPokemon.movePp}
-                selected={summaryMove}
-              />
-            </div>
-          </div>
         </section>
       )}
 
@@ -919,7 +807,7 @@ export function StartMenu({
       <p className="start-menu-help">
         {t("↑↓ move · Enter confirm · Esc back")}
         {screen === "bag" ? ` · ${t("←→ change page")}` : ""}
-        {screen === "summary" ? " · " + t("←→ switch Pokémon · Enter moves") : ""}
+        {screen === "party" ? " · " + t("Enter pins the Summary · Shift+↑↓ moves the Pokémon") : ""}
         {screen === "card" ? ` · ${t("Enter flip card")}` : ""}
         {screen === "townmap"
           ? ` · ${t("Enter fly (HM Fly + Thunder Badge) · ● visited")}`
