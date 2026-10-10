@@ -1,5 +1,6 @@
 "use client";
 
+import { isGameMuted } from "@/lib/autoplay/gameClock";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { duelSpeciesTypes } from "@tactimon/battle-engine";
 import { GbaCanvas } from "@/components/GbaCanvas";
@@ -112,6 +113,7 @@ function loadImage(url: string): Promise<RgbaImage | null> {
 }
 
 export function playPokemonCry(dex: number, volume = 0.7): void {
+  if (isGameMuted()) return;
   try {
     const audio = new Audio(`/game-assets/gba-ui/cries/${String(dex).padStart(3, "0")}.wav`);
     audio.volume = Math.max(0, Math.min(1, volume));

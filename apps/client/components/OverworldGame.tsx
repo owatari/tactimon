@@ -142,6 +142,9 @@ import {
   techniqueBlockedMessage,
 } from "@/lib/fieldTechniques";
 import { t, useLocale } from "@/lib/i18n";
+import { advanceGameClock, gameNow, splitFrame, timeScale } from "@/lib/autoplay/gameClock";
+import { registerOverworldControl, runOverworldStepHooks } from "@/lib/autoplay/bridge";
+import { mapExits } from "@/lib/autoplay/exits";
 import { PlayerHud, type HudWindow } from "@/components/PlayerHud";
 import type { MenuScreen } from "@/lib/gameMenu";
 import { isDarkMap } from "@/lib/darkCaves";
@@ -846,6 +849,8 @@ export function OverworldGame({
   const foregroundRef = useRef<HTMLCanvasElement>(null);
 
   const layoutRef = useRef<MapLayout | null>(null);
+  /** The loop's own walkability test (collision, water, NPCs), shared with the Auto Player. */
+  const canWalkRef = useRef<(x: number, y: number) => boolean>(() => false);
   const worldObjectsRef = useRef<WorldObject[]>([]);
   const worldDataRef = useRef<WorldMapData | null>(null);
   const surfingRef = useRef(false);
@@ -1679,7 +1684,7 @@ export function OverworldGame({
           key,
           path,
           NPC_TRAINER_WALK_MS,
-          performance.now(),
+          gameNow(),
           arrive,
         );
       }, NPC_EMOTE_MS);
@@ -1742,7 +1747,7 @@ export function OverworldGame({
           movementType: 0,
           facing: facingBetween(start, route[0]),
         },
-        performance.now(),
+        gameNow(),
       );
       setCutsceneActor({
         key,
@@ -1750,14 +1755,14 @@ export function OverworldGame({
         y: start.y,
         spriteUrl: spec.spriteUrl ?? RIVAL_SPRITE_URL,
       });
-      engine.scriptWalk(key, route, NPC_TRAINER_WALK_MS, performance.now(), () => {
+      engine.scriptWalk(key, route, NPC_TRAINER_WALK_MS, gameNow(), () => {
         const at = engine.tile(key) ?? start;
         engine.turn(key, facingBetween(at, here));
         player.facing = facingBetween(here, at);
         cutsceneRef.current = false;
         const leave = () => {
           const back = [at, ...[...route].reverse().slice(1), start];
-          engine.scriptWalk(key, back.slice(1), NPC_TRAINER_WALK_MS, performance.now(), () => {
+          engine.scriptWalk(key, back.slice(1), NPC_TRAINER_WALK_MS, gameNow(), () => {
             engine.removeActor(key);
             setCutsceneActor((current) => (current?.key === key ? null : current));
           });
@@ -1804,7 +1809,7 @@ export function OverworldGame({
       }
       cutsceneRef.current = true;
       resetInput();
-      engine.scriptWalk(key, route, NPC_TRAINER_WALK_MS, performance.now(), () => {
+      engine.scriptWalk(key, route, NPC_TRAINER_WALK_MS, gameNow(), () => {
         const at = engine.tile(key) ?? from;
         engine.turn(key, facingBetween(at, here));
         player.facing = facingBetween(here, at);
@@ -2545,6 +2550,11 @@ export function OverworldGame({
       return !isOccupied(x, y);
     };
 
+    canWalkRef.current = (x: number, y: number) => {
+      const current = layoutRef.current;
+      return current ? canWalk(current, x, y) : false;
+    };
+
     const startStep = (
       direction: Direction,
       now: number,
@@ -2845,7 +2855,7 @@ export function OverworldGame({
               limit: 150,
             });
             if (route && route.length > 0) {
-              engine.scriptWalk("world-5", route, NPC_TRAINER_WALK_MS, performance.now(), () => {
+              engine.scriptWalk("world-5", route, NPC_TRAINER_WALK_MS, gameNow(), () => {
                 engine.turn("world-5", "north");
               });
             }
@@ -3694,9 +3704,13 @@ export function OverworldGame({
     };
 
     const tick = (now: number) => {
-      const deltaTime = Math.min(50, now - previousTime);
+      const realDelta = Math.min(50, now - previousTime);
       previousTime = now;
-      renderScene(now, deltaTime);
+      // The Auto Player runs the world faster: the frame is cut into <= 50 ms physics steps.
+      for (const step of splitFrame(realDelta * timeScale())) {
+        runOverworldStepHooks();
+        renderScene(advanceGameClock(step), step);
+      }
       animationFrame = requestAnimationFrame(tick);
     };
 
@@ -3716,6 +3730,89 @@ export function OverworldGame({
     startStaticBattle,
     triggerTrainerBattle,
   ]);
+
+  /** Runs the request behind a dialogue choice (a warp choice also loads the map). */
+  const pickDialogueChoice = (
+    request: Parameters<typeof onDialogueInteraction>[0],
+  ) => {
+    showDialogue(
+      onDialogueInteraction(request),
+      request.kind === "warp"
+        ? () => {
+            void loadMap(request.mapId, { x: request.x, y: request.y }, "south");
+          }
+        : undefined,
+    );
+  };
+  const pickDialogueChoiceRef = useRef(pickDialogueChoice);
+  pickDialogueChoiceRef.current = pickDialogueChoice;
+
+  // Auto Player bridge: a read-only snapshot of the world and a few controls (see lib/autoplay).
+  const interactRef = useRef(interact);
+  interactRef.current = interact;
+  const advanceDialogueRef = useRef(advanceDialogue);
+  advanceDialogueRef.current = advanceDialogue;
+  useEffect(() => {
+    return registerOverworldControl({
+      snapshot() {
+        const layoutNow = layoutRef.current;
+        const player = playerRef.current;
+        if (!layoutNow) return null;
+        const activeDialogue = dialogueRef.current;
+        const page = activeDialogue?.pages[dialoguePageIndexRef.current];
+        return {
+          mapId: mapIdRef.current,
+          width: layoutNow.width,
+          height: layoutNow.height,
+          x: player.tileX,
+          y: player.tileY,
+          facing: player.facing,
+          moving: player.moving,
+          transitioning: transitioningRef.current,
+          paused: pausedRef.current,
+          cutscene: cutsceneRef.current,
+          dialogue: activeDialogue ? { choices: (page?.choices ?? []).map((choice) => choice.label) } : null,
+          surfing: surfingRef.current,
+          walkable: (x, y) => canWalkRef.current(x, y),
+          isCounter: (x, y) => isCounterCell(layoutNow, x, y),
+          isEncounter: (x, y) => {
+            const table = surfingRef.current ? null : LAND_ENCOUNTERS[mapIdRef.current];
+            const cell = layoutNow.cells[y * layoutNow.width + x];
+            if (!table || !cell) return false;
+            const terrain = table.terrain ?? "grass";
+            return terrain === "grass" ? cell.metatile === 0x00d : terrain === "cave" ? cell.collision === 0 : false;
+          },
+          objects: [
+            ...storyObjectsRef.current.map((object) => ({ id: object.id, kind: object.kind, x: object.x, y: object.y })),
+            ...worldObjectsRef.current.map((object) => ({
+              id: `world-${object.local_id}`,
+              kind: "npc",
+              x: object.x,
+              y: object.y,
+            })),
+          ],
+          exits: mapExits(mapIdRef.current, layoutNow.width, layoutNow.height),
+        };
+      },
+      hold(dir) {
+        pressedRef.current = dir ? [dir] : [];
+      },
+      face(dir) {
+        if (!playerRef.current.moving) playerRef.current.facing = dir;
+      },
+      interact() {
+        interactRef.current();
+      },
+      advanceDialogue() {
+        return advanceDialogueRef.current();
+      },
+      chooseDialogue(index) {
+        const page = dialogueRef.current?.pages[dialoguePageIndexRef.current];
+        const choice = page?.choices?.[index];
+        if (choice) pickDialogueChoiceRef.current(choice.request);
+      },
+    });
+  }, []);
 
   const handlePadPointerDown = (
     event: React.PointerEvent<HTMLButtonElement>,
@@ -4044,21 +4141,7 @@ export function OverworldGame({
                   key={choice.id}
                   type="button"
                   className="dialogue-continue"
-                  onClick={() => {
-                    const request = choice.request;
-                    showDialogue(
-                      onDialogueInteraction(request),
-                      request.kind === "warp"
-                        ? () => {
-                            void loadMap(
-                              request.mapId,
-                              { x: request.x, y: request.y },
-                              "south",
-                            );
-                          }
-                        : undefined,
-                    );
-                  }}
+                  onClick={() => pickDialogueChoice(choice.request)}
                 >
                   {choice.label}
                 </button>

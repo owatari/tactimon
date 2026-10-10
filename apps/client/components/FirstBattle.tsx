@@ -56,6 +56,7 @@ import {
   WORLD_ZOOM,
   type BattleSceneContext,
 } from "@/lib/maps";
+import { useGameClock } from "@/lib/autoplay/gameClock";
 import { E2E_BATTLE_SPEED, isE2eMode } from "@/lib/e2eMode";
 import { pokemonDisplayName } from "@/lib/pokemonName";
 import { ShinyStar } from "./ShinyStar";
@@ -124,6 +125,8 @@ type Props = {
   onComplete: (outcome: BattleOutcome) => void;
   /** Options menu default; the battle HUD can still toggle it. */
   initialBattleSpeed?: number;
+  /** The Auto Player may turn Auto Catch on (not before the Pokédex: a catch would skip Oak's Parcel). */
+  autoPlayCatchAllowed?: boolean;
 };
 
 type CommandMode =
@@ -451,6 +454,7 @@ export function FirstBattle({
   context,
   onComplete,
   initialBattleSpeed = 1,
+  autoPlayCatchAllowed = true,
 }: Props) {
   useLocale();
   const initialState = useMemo(() => {
@@ -596,6 +600,20 @@ export function FirstBattle({
 
   const aiRunningRef = useRef(false);
   const battleSpeedRef = useRef<number>(battleSpeed);
+  // Auto Player: Auto Battle + Auto Catch on, muted, and the battle runs at the chosen 1x-16x.
+  const clock = useGameClock();
+  useEffect(() => {
+    if (!clock.autoplay) {
+      const back = isE2eMode() ? E2E_BATTLE_SPEED : initialBattleSpeed;
+      battleSpeedRef.current = back;
+      setBattleSpeed(back);
+      return;
+    }
+    battleSpeedRef.current = clock.speed;
+    setBattleSpeed(clock.speed);
+    setAutoBattle(true);
+    setAutoCatch(autoPlayCatchAllowed);
+  }, [clock.autoplay, clock.speed, initialBattleSpeed, autoPlayCatchAllowed]);
   const animationNonceRef = useRef(0);
   const vfxNonceRef = useRef(0);
   const captureThrowNonceRef = useRef(0);
@@ -1865,7 +1883,7 @@ export function FirstBattle({
 
   return (
     <div
-      className={`battle-overlay battle-speed-${battleSpeed}`}
+      className={`battle-overlay battle-speed-${Math.min(2, battleSpeed)}`}
     >
       <div className="battle-shell battle-shell-clean">
         <header className="battle-minimal-header">

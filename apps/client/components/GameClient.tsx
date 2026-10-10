@@ -43,6 +43,7 @@ import {
 } from "@/lib/battleResult";
 import { BlackoutOverlay } from "@/components/BlackoutOverlay";
 import { GameMusic } from "@/components/GameMusic";
+import { useGameClock } from "@/lib/autoplay/gameClock";
 import { fitExpShare, sharesForSlots } from "@/lib/expShare";
 import { MarketWindow } from "@/components/MarketWindow";
 import { StartMenu } from "@/components/StartMenu";
@@ -52,7 +53,7 @@ import {
   findHealLocationByCenter,
 } from "@/lib/healLocations";
 import { isSpeciesCaught, markPokedexSeen, syncPokedexCaught } from "@/lib/pokedex";
-import { hasPokedex } from "@/lib/story";
+import { hasPokedex, hasStoryPlayerEvent } from "@/lib/story";
 import { PokedexRegistration } from "@/components/PokedexGba";
 import {
   DEFAULT_GAME_OPTIONS,
@@ -65,6 +66,7 @@ import { musicManager } from "@/lib/music";
 import { OverworldGame } from "@/components/OverworldGame";
 import { ProgressionOverlay } from "@/components/ProgressionOverlay";
 import { StarterChoice } from "@/components/StarterChoice";
+import { AutoPanel } from "@/components/AutoPanel";
 import { PcWindow } from "@/components/PcWindow";
 import {
   applyBattleInventory,
@@ -404,11 +406,13 @@ export function GameClient() {
     setOptions(loadGameOptions());
   }, []);
 
+  const gameClock = useGameClock();
   useEffect(() => {
+    // The Auto Player mutes the game whatever the options say.
     musicManager.setMasterVolume(
-      effectiveMusicVolume(options),
+      gameClock.autoplay ? 0 : effectiveMusicVolume(options),
     );
-  }, [options]);
+  }, [options, gameClock.autoplay]);
 
   const flushPlayTime = useCallback(() => {
     const seconds = pendingPlaySecondsRef.current;
@@ -966,6 +970,7 @@ export function GameClient() {
   return (
     <div className="game-client">
       <InputBridge />
+      <AutoPanel story={story} onStoryUpdate={(update) => setStory((current) => update(current))} />
       <GameMusic
         mapId={mapAudioContext.mapId}
         mapMusicId={mapAudioContext.musicId}
@@ -1162,6 +1167,7 @@ export function GameClient() {
             context={battleSession.context}
             onComplete={handleBattleComplete}
             initialBattleSpeed={options.battleSpeed}
+            autoPlayCatchAllowed={hasStoryPlayerEvent(story, "story", "pokedex-received")}
           />
         )}
 

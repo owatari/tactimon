@@ -8734,3 +8734,86 @@ body {
   text-align: right;
   font-weight: 700;
 }
+
+/* Auto Player panel (docked, never pauses the game). */
+.auto-panel {
+  position: fixed;
+  left: 12px;
+  top: 64px;
+  z-index: 9000;
+  display: grid;
+  gap: 6px;
+  max-width: 280px;
+  font-size: 12px;
+  color: #182838;
+}
+.auto-toggle {
+  justify-self: start;
+  padding: 6px 12px;
+  border: 3px solid #202020;
+  border-radius: 999px;
+  background: #f8f0d8;
+  color: #202020;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #202020;
+}
+.auto-panel.on .auto-toggle {
+  background: #b8e0a0;
+}
+.auto-body {
+  display: grid;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 3px solid #203850;
+  background: #f8f8e8;
+  box-shadow: 4px 4px 0 rgba(24, 40, 56, 0.4);
+}
+.auto-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+.auto-speeds {
+  display: flex;
+  gap: 4px;
+}
+.auto-speeds button {
+  flex: 1;
+  padding: 4px 0;
+  border: 2px solid #405868;
+  background: #fffff4;
+  color: #182838;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.auto-speeds button.active {
+  background: #f8e8a0;
+  border-color: #d84838;
+}
+.auto-status {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1px 8px;
+  margin: 0;
+}
+.auto-status dt {
+  color: #506878;
+}
+.auto-status dd {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.auto-log {
+  margin: 0;
+  padding-left: 16px;
+  max-height: 90px;
+  overflow: hidden;
+  font-size: 10px;
+  color: #506878;
+}
